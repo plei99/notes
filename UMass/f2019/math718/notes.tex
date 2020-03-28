@@ -1,0 +1,1630 @@
+\documentclass[twoside, 10pt]{article}
+\usepackage{../../../notes}
+\usepackage{dynkin-diagrams}
+%\geometry{margin=2cm}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\shaf}{\textbf{Shaf}}
+\renewcommand{\d}{\ \mathrm{d}}
+\mdfdefinestyle{default}{%
+    linecolor=black,
+    outerlinewidth=0.4pt,
+    roundcorner=0pt,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+    innerrightmargin=\baselineskip,
+    innerleftmargin=\baselineskip,
+    backgroundcolor=white}
+
+
+    \definecolor{darkblue}{RGB}{0,0,128}
+    \definecolor{darkred}{RGB}{128,0,0}
+    \definecolor{darkyellow}{RGB}{96,96,0}
+    \definecolor{darkgreen}{RGB}{0,128,0}
+    \definecolor{darkdarkred}{RGB}{64,0,0}
+    
+    
+
+\lstset
+{
+    basicstyle=\ttfamily\scriptsize, 
+    breaklines=true,
+    postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+    showstringspaces=false
+    keywordstyle = [1]\bfseries\color{darkred},
+    keywordstyle = [2]\itshape\color{darkgreen},
+    keywordstyle = [3]\sffamily\color{darkblue},
+    keywordstyle = [4]\color{darkyellow},
+}
+
+\title{Math 718: Lie Algebras}
+\author{Taught by Eric Sommers; Notes by Patrick Lei}
+\affil{University of Massachusetts, Amherst}
+\date{Fall 2019}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+
+\fancypagestyle{pages}
+{
+    \fancyhf{}
+    \fancyhead[LO]{\scshape Math 718}
+    \fancyhead[RO]{\scshape Lecture Notes}
+    \fancyhead[CO]{\scshape Lie Algebras}
+    \fancyhead[CE]{\scshape University of Massachusetts, Amherst}
+    \fancyhead[LE]{\scshape Patrick Lei}
+    \fancyhead[RE]{\scshape Fall 2019}
+    \fancyfoot[RO,LE]{\itshape Page \thepage \space of \pageref{LastPage}}
+    \renewcommand{\headrulewidth}{0.1pt}
+}
+
+\pagestyle{pages}
+
+\begin{document}
+
+    \maketitle\thispagestyle{firstpage}
+    
+    \begin{abstract}
+        The goal of the course is the classification of semisimple Lie algebras over the complex numbers and an introduction to their representation theory. The classification is essentially the same as that for simply-connected compact Lie groups, which are central objects in mathematics and physics. Topics covered include representations of sl(2), Jordan decomposition, structure theorems, Weyl groups, roots systems, Dynkin diagrams, complete reducibility, finite-dimensional representations and their characters formulas.
+    \end{abstract}
+
+    \tableofcontents
+
+    \textbf{Disclaimer:} Any errors in these notes are mine and not the instructor's. In addition, these notes are picture-free (but will contain commutative diagrams) and may not be exactly the same as the lectures (I tend to leave out boring computations, streamline certain things, and use category theory).
+
+    \section{Lecture 1 (Sep 3)}%
+    \label{sec:lecture_1_sep_3_}
+
+
+    We will be using the book by Humphreys in this course, but we will not be following the book too closely. Homework will be approximately weekly, with the first due in two weeks.
+
+    \subsection{Overview}%
+    \label{sub:overview}
+    
+    
+    First we will discuss symmetry. Recall the platonic structures and their dual structure. We can consider the finite reflection group that preserves the object, which leads us to the following question:
+
+    \begin{quest}
+        What are the finite reflection groups?
+    \end{quest}
+    In the case of Lie Algebras, we will need our groups to preserve integer lattices (root systems), so we specialize the question:
+    \begin{quest}
+        What are the finite reflection groups that can be represented by integer matrices?
+    \end{quest}
+
+    In two dimensions, only the dihedral group for the triangle, square, and hexagon are representable by integer matrices. We will reduce the classification of semisimple Lie algebras to the above question.
+
+    Intimately related to Lie algebras are Lie groups, which are just group objects in $\mathbf{Diff}$. We will not need Lie groups in this course. However, it is worth mentioning that Lie algebras arise as the tangent space at the identity of a Lie group $G$. We can also pass to algebraic groups, which are just group objects in a category of varieties. The advantage of this approach is that we can work over arbitrary fields.
+
+    \subsection{Basic Notions}%
+    \label{sub:basic_notions}
+    
+    
+    We will now define Lie algebras. First recall that a $k$-algebra $A$ is a $k$-vector space $A$ with a bilinear map $A \otimes A \to A$. If $A$ is unital, we call it central. If $A$ is associative, then $A$ is a monoid in $\mathbf{Vect}_k$.
+
+    \begin{exm}
+        An example of an associative algebra is a matrix algebra $M_n(k)$.
+    \end{exm}
+
+    \begin{defn}
+        A \textit{Lie Algebra} $\mathfrak{g}$ is a $k$-algebra with a multiplication 
+        \[ [-,-]: \mathfrak{g} \wedge \mathfrak{g} \to \mathfrak{g} \] 
+        satisfying the Jacobi identity:
+        \[ [x,[y,z]] + [y,[z,x]] + [z,[x,y]] = 0. \]
+    \end{defn}
+
+    \begin{exm}
+        From any associative algebra $A$, we can build a Lie algebra using the commutator as the Lie bracket. In particular, $M_n(k)$ can be turned into a Lie algebra $\mathfrak{gl}_n$.
+    \end{exm}
+
+    The notion of a morphism of Lie algebras is entirely analogous to the case of rings, so we can define Lie subalgebras.
+
+    \begin{exm}
+        Some subalgebras of $\mf{gl}_n$ are the set of diagonal matrices, which is abelian, the set of strictly upper triangular matrices, and the set of upper triangular matrices $\mf{b}$.\footnote{For Borel}.
+    \end{exm}
+
+    \begin{defn}
+        A Lie algebra is \textit{abelian} if $[-,-] = 0$.
+    \end{defn}
+
+    \begin{exm}
+        An important subalgbebra of $\mf{gl}_n$ is the set $\mf{sl}_n$ of matrices of trace $0$.
+    \end{exm}
+
+    \begin{rmk}
+        $\mf{sl}_n$ is what is called a \textit{simple} Lie algebra whose Weyl group is $S_n$.
+    \end{rmk}
+
+    \section{Lecture 2 (Sep 5)}%
+    \label{sec:lecture_2_sep_5_}
+    
+    \subsection{Derivations}%
+    \label{sub:derivations}
+    
+    
+    First we discuss derivations.
+
+    \begin{defn}
+        Let $A$ be a $k$-algebra. Then $\delta \in \operatorname{End} A$ is a derivation if \[\delta(ab) = \delta(a)b+a\delta(b)\] for all $a,b \in A$.
+    \end{defn}
+
+    We will denote the derivations of $\mf{g}$ by $\operatorname{Der} \mf{g}$.
+
+    \begin{rmk}
+        $\Der \mf{g}$ is a Lie subalgebra of $\End{\mf{g}}$.
+    \end{rmk}
+
+    The Jacobi identity is related to derivations. Recall the adjoint representation of a Lie algebra $\mf{g}$.
+
+    \begin{defn}
+        For $x \in \mf{g}$, write $\operatorname{ad}_x$ for the \textit{adjoint map} \[\operatorname{ad}_x: y \mapsto [x,y].\]
+    \end{defn}
+
+    Now observe that 
+    \begin{align*}
+        [x,[y,z]] &= -[y,[x,z]] - [z,[x,y]] \\
+                  &= -[z,[x,y]] - [y,[z,x]] \\
+                  &= [[x,y],z] + [y, [x,z]],
+    \end{align*}
+    so we see that $\operatorname{ad}_x$ is a derivation.
+
+    \subsection{Basic Examples}%
+    \label{sub:basic_examples}
+    
+    
+
+    We will now expand our set of examples of Lie algebras.
+
+    \begin{exm}
+        The \textit{orthogonal group} $O(n)$ is the set of matrices that preserve a Hermitian inner product. Equivalently, $O(n)$ is defined by the equation $X^tX = I$.
+    \end{exm}
+
+    \begin{rmk}
+        On the Lie group side, we may define subgroups of $GL_n$ via $X^tJX = J$ for invertible matrices $J$. For Lie algebras, this differentiates to $X^tJ + JX = 0$.
+    \end{rmk}
+
+    \begin{exm}
+        For $k = \C$, the orthogonal Lie algebra is denoted by $\mf{o}(n)$ and is given by $J = I$. We may also define the symplectic Lie algebra $\mf{sp}(2n)$ by \[J = \begin{pmatrix}
+            0 & I \\
+            -I & 0 \\
+        \end{pmatrix}. \]
+    \end{exm}
+
+    \begin{rmk}
+        The orthogonal groups behave differently in even and ood dimension. In fact, they are given by different classes of Dynkin diagrams.
+    \end{rmk}
+
+    \begin{rmk}
+        The four infinite families of simple Lie algebras are $\mf{sp}_{2n}, \mf{o}_{2n}, \mf{o}_{2n+1}, \mf{sl}_n$. There are five other exceptional simple Lie algebras.
+    \end{rmk}
+
+    \subsection{More Basic Notions}%
+    \label{sub:more_basic_notions}
+    
+    
+
+    We will now consider the basic structure of a Lie algebra.
+
+    \begin{defn}
+        The \textit{derived subalgebra} $[\mf{g},\mf{g}]$ of $\mf{g}$ is the span of all elements of the form $[x,y]$.
+    \end{defn}
+
+    This is clearly a subalgebra of $\mf{g}$, but in fact it is an ideal.
+
+    \begin{defn}
+        An \textit{ideal} $I$ of $\mf{g}$ is a subalgebra satisfying $[\mf{g},I] \subset I$.
+    \end{defn}
+
+    \begin{exm}
+        The center of a Lie algebra is an ideal. To see this, note that $[A,X] = 0$ for all $A \in \mf{g}$ and $X \in Z(\mf{g})$. Also, it is easy to see that the derived subalgebra is an ideal.
+    \end{exm}
+
+    \begin{defn}
+        A Lie algebra $\mf{g}$ is \textit{nilpotent} if the lower central series \[\mf{g}, [\mf{g}, \mf{g}], [\mf{g}, [\mf{g}, \mf{g}]], \ldots \] eventually becomes $0$.
+    \end{defn}
+
+    \begin{exm}
+        Clearly all abelian Lie algebras are nilpotent because $[\mf{g}, \mf{g}] = 0$.
+    \end{exm}
+
+    \begin{defn}
+        A Lie algebra $\mf{g}$ is \textit{solvable} if the upper central series
+        \[\mf{g}, [\mf{g}, \mf{g}], [[\mf{g}, \mf{g}], [\mf{g}, \mf{g}]], \ldots \] eventually becomes $0$.
+    \end{defn}
+
+    \begin{exm}
+        We note that all nilpotent Lie algebras are solvable because the upper central series is contained in the lower central series.
+    \end{exm}
+
+    \begin{exm}
+        The set of all upper triangular matrices is solvable, and the set of strictly upper triangular matrices is nilpotent.
+    \end{exm}
+
+    \begin{defn}
+        The \textit{radical} $\operatorname{Rad} \mf{g}$ is the maximal solvable ideal in $\mf{g}$.
+    \end{defn}
+
+    \begin{defn}
+        A Lie algebra $\mf{g}$ is \textit{semisimple} if $\operatorname{Rad} \mf{g} = 0$.
+    \end{defn}
+
+    \begin{defn}
+        A Lie algebra $\mf{g}$ is \textit{simple} if it has no nontrivial ideals and $\dim_k \mf{g} \neq 1$.
+    \end{defn}
+
+    \begin{exm}
+        The simplest example of a simple Lie algebra is $\mf{sl}_2$.
+    \end{exm}
+
+    Homomorphisms and quotients are defined entirely analogously to the case of rings or groups. Checking this is well-defined is left to the reader.
+
+    \begin{rmk}
+        The first isomorphism theorem holds for Lie algebras.
+    \end{rmk}
+
+    Recall that a representation of a finite group $G$ is a morphism $G \to GL(V)$ for some vector space $V$. Alternately, this is a functor $\mc{B}G \to \mathbf{Vect}_k$.
+
+    \begin{defn}
+        A \textit{representation} of a Lie algebra $\mf{g}$ is a morphism $\mf{g} \to \End{V}$ for some vector space $V$. Alternatively, we can define this as a $\mf{g}$-module.\footnote{Better, we can define this as a representation of the universal enveloping algebra, which allows us to define representations as functors $U_{\mf{g}} \to \mathbf{Vect}_k$.}
+    \end{defn}
+
+    \section{Lecture 3 (Sep 10)}%
+    \label{sec:lecture_3_sep_10_}
+
+    Recall the adjoint representation of a Lie algebra $\mf{g}$. This is a very important representation. For a simple Lie algebra, $\ad$ is an isomorphism onto its image. In general, we will write $\ad \mf{g}$ for the image of the adjoint map. In general, the kernel of $\ad$ is the center. 
+
+    \begin{rmk}
+        When we define the $E_8$ algebra, which has dimension 248, we will have a 248-dimensional subalgebra of a $248^2$-dimensional Lie algebra.
+    \end{rmk}
+
+    \begin{rmk}
+        From now on, we will only consider finite-dimensional Lie algebras.
+    \end{rmk}
+    
+    \subsection{Nilpotent Lie Algebras}%
+    \label{sub:nilpotent_lie_algebras}
+    
+    
+    \begin{notn}
+        We will denote the set of all strictly upper triangular matrices by $\mf{n}_n(k)$.
+    \end{notn}
+
+    Eric then proceeded to spend time computing products and Lie brackets of matrices of the form $e_{ij}$.\footnote{This demonstrates the axiom that mathematicians are terrible at computing things.} It is then clear that $\mf{n}$ is nilpotent because bracketing shifts nonzero entries towards the top right corner.
+
+    We now discuss some properties of nilpotent Lie algebras.
+
+    \begin{prop}
+        The following hold for nonzero nilpotent Lie algebras:
+        \begin{enumerate}
+            \item Subalgebras and quotients of nilpotent Lie algebras are nilpotent.
+            \item If $\mf{g}/Z(\mf{g})$ is nilpotent, then so is $\mf{g}$.
+            \item If $\mf{g}$ is nilpotent, it has nonzero center.
+        \end{enumerate}
+    \end{prop}
+
+    Proof of these is easy and is omitted.
+
+    \begin{rmk}
+        The adjoint representation of a nilpotent Lie algebra consists entirely of nilpotent matrices.
+    \end{rmk}
+
+    \begin{thm}[Engel]
+        If $\ad_x$ is nilpotent for all $x \in \mf{g}$, then $\mf{g}$ is a nilpotent Lie algebra.
+    \end{thm}
+
+    First, we need the following lemma:
+
+    \begin{lem}
+        Suppose $\mf{g} \subset \mf{gl}(V)$ consists of nilpotent endomorphisms. Then there exists $v \in V \setminus 0$ such that $zv = 0$ for all $z \in \mf{g}$.
+    \end{lem}
+
+    \begin{proof}[Proof of Engel's Theorem]
+        Take the adjoint representation of $\mf{g}$. By hypothesis, this consists of nilpotent endomorphisms. By Lemma 38, then we have a common eigenvector, which is in the center. Thus $\ad \mf{g}$ has smaller dimension than $\mf{g}$.
+        
+        To complete the proof with induction, we need to show that nilpotent matrices are sent to milpotent matrices by $\ad$. However, this is clear from the definition of commutator and nilpotence of the original matrix. Now, by induction, $\ad \mf{g}$ is a nilpotent Lie algebra. Because $\ad \mf{g} \simeq \mf{g} / Z(\mf{g})$, we use part $2$ of Proposition 35 to conclude that $\mf{g}$ is nilpotent.
+    \end{proof}
+
+    \begin{proof}[Proof of Lemma 38]
+        If $K \subset \mf{g}$ is a proper maximal subalgebra, then the adjoint representation of $K$ descends to $\mf{g}/K$. Then $\ad z$ is nilpotent for $z \in K$. Therefore the image of $K$ in $\mf{gl}(\mf{g}/K)$ consists of nilpotent endomorphisms. By induction on dimension, there is a common engenvector $w$ for $K$.
+
+        Now consider $w = l+K$. Then $K + k \cdot l$ must generate all of $\mf{g}$ with $K$ an ideal of $\mf{g}$. Viewing $K \subset \mf{g} \subset \mf{gl}(V)$, induction gives us an eigenvector in $V$ for $K$. Define $W$ to be the subspace spanned by the eigenvectors of $K$. Then it is easy to check that $l$ preserves $W$. Now choose $v \in W$ an eigenvector of $l$, and then $K + k \cdot l$ annihlates $v$. Thus $L$ annihlates $v$.
+    \end{proof}
+
+    \section{Lecture 4 (Sep 12)}%
+    \label{sec:lecture_4_sep_12_}
+
+    We began class (~30 minutes) by finishing the class of Lemma 38 from last time.
+
+    \subsection{More Nilpotent Lie Algebras}%
+    \label{sub:more_nilpotent_lie_algebras}
+    
+    
+    \begin{cor}
+        Let $L \subset \mf{gl}(V)$ consist of nilpotent endomorphisms. Then there exists a basis of $V$ such that $L$ is strictly upper triangular in this basis.\footnote{This is the same as $L$ fixing a flag $\mc{F}$. In fact, $L.F_i \subset F_{i-1}$.}
+    \end{cor}
+
+    \begin{proof}
+        By Lemma 38, there exists a nonzero $v_1 \in V$ such that $L$ annihlates $v_1$. Then $L$ is nilpotent on $V / \gen{v_1}$. Now induct.
+    \end{proof}
+
+    \begin{cor}
+        If $L$ is a nilpotent Lie algebra, and $0 \neq K \subset L$ is an ideal, then $K \cap Z(L) \neq 0$.
+    \end{cor}
+
+    \subsection{Solvable and Semisimple Lie Algebras}%
+    \label{sub:solvable_and_semisimple_lie_algebras}
+    
+    
+    We now discuss solvable Lie algebras. We know already that nilpotent implies solvable. Recall that $\Rad L$ is defined to be the maximal solvable ideal of $L$. This is unique and contains all solvable ideals.
+
+    \begin{defn}
+        $L$ is semisimple if $\Rad L = 0$.\footnote{These are the main object of study in this course. Also, these will turn out to be sums of simple objects.}
+    \end{defn}
+
+    \begin{prop}
+        Simple implies semisimple.
+    \end{prop}
+
+    \begin{proof}
+        $[L,L] = L$ because $L$ is simple, so $L$ cannot be solvable. Therefore there are no nonzero solvable ideals.
+    \end{proof}
+    
+    Now we will define a symmetric bilinear form
+    $\kappa: S^2(L) \to k$ given by \[\kappa(X,Y) = \tr(\ad_X \ad_Y)\] known as the \textit{Killing form}.\footnote{This actually turns out to be a multiple of the normal trace form for the classical Lie algebras.}
+
+    From now on, we will work in an algebraically closed field of characteristic $0$.
+    \begin{thm}[Killing]
+        $L$ is semisimple if and only if $\kappa$ is non-degenerate.
+    \end{thm}
+
+    \begin{thm}[Lie]
+        If $L \subset \mf{gl}(V)$ is solvable, then there exists a common eigenvector for $L$.
+    \end{thm}
+    
+    We concluded class with a linear algebra review. Specifically, observe the following:
+    \begin{enumerate}
+        \item Diagonalizable is equivalent to semisimple;
+        \item If $[x,y] = 0$, then:
+            \begin{itemize}
+                \item $x,y$ nilpotent implies $x+y$ nilpotent;
+                \item $x,y$ semisimple implies $x+y$ semisimple.
+            \end{itemize}
+        \item If $W \subset V$ and $x(W) \subset W$, then:
+            \begin{itemize}
+                \item $x|_W$ is semisimple if $x$ is semisimple.
+                \item $x|_W$ is nilpotent if $x$ is nilpotent.
+            \end{itemize}
+    \end{enumerate}
+
+    \section{Lecture 5 (Sep 17)}%
+    \label{sec:lecture_5_sep_17_}
+
+    \subsection{Jordan Decomposition}%
+    \label{sub:jordan_decomposition}
+    
+    
+    Class began with a discussion of the Jordan canonical form. In particular, recall:
+
+    \begin{prop}
+        $x \in \End V$ can be written $x=x_s+x_n$ where $x_s$ is semisimple and $x_n$ is nilpotent, and $[x_s,x_n] = 0$. In particular, they are both polynomials in $x$ with constant term $0$. Finally, $x(B) \subset A$ if and only if $x_s(B), x_n(B) \subset A$ for subspaces $A \subset B \subset V$.
+    \end{prop}
+
+    Proof of this can be found in any standard algebra text. In addition, the decomposition is unique.
+
+    Now we would like to have the notion of Jordan decomposition in an arbitrary Lie algebra. This only has nice properties for semisimpe Lie algebras. In particular, we want:
+    \begin{enumerate}
+        \item If $L \subset \mf{gl}(V)$, then the Jordan decomposition agrees with that of $\mf{gl}(V)$.
+        \item The Jordan decomposition respects morphisms.
+    \end{enumerate}
+    
+    \begin{defn}
+        For a semisimple Lie algebra, an \textit{abstract Jordan decomposition} is a Jordan decomposition of $\ad x = \ad x_s + \ad x_n$
+    \end{defn}
+
+    \begin{cor}
+        Let $x \in \mf{gl}(V)$ with $x=x_s+x_n$. Then $(\ad x)_s = \ad x_s$ and $(\ad x)_n = \ad x_n$.
+    \end{cor}
+
+    \begin{proof}
+        Note that if $x$ is nilpotent, then $\ad x$ is also nilpotent. In addition, if $x$ is semisimple, choose a basis of $V$ such that $x$ is diagonal. Then it is easy to see that $\ad x$ is semisimple. Finally, note that because $x_s,x_n$ commute, so do their adjoint operators.
+    \end{proof}
+
+    Recall the symmetric bilinear form $\gen{-,-}: M_n \otimes M_n \to \F$ given by $A \otimes B \mapsto \tr(AB)$. We can verify that this is associative with respect to the Lie bracket:
+    \[\gen{[x.y],z} = \gen{x,[y,z]}.\]
+    Also, it is easy to verify that this bilinear form is nondegenerate. Now recall the Killing form on $L$ given by \[L \otimes L \xrightarrow{\ad \otimes \ad} \mf{gl}(L) \otimes \mf{gl}(L) \xrightarrow{\gen{-,-}} \F.\]
+    This is an associative symmetric bilinear form, but in general, it is degenerate.
+    
+    Next time, we will show that
+
+    \begin{thm}
+        $L$ is semisimple if and only if the Killing form is nondegenerate.
+    \end{thm}
+
+    \section{Lecture 6 (Sep 19)}%
+    \label{sec:lecture_6_sep_19_}
+    
+    \subsection{Proof of Theorem 48}%
+    \label{sub:proof_of_theorem_48}
+
+    Today we begin with the proof of Theorem 48.
+
+    \begin{lem}
+        Let $A \subset B$ be subspaces of $\mf{gl}(V)$. Define \[ M \coloneqq \{ x \in \mf{gl}(V) \mid [x,B] \subset A\}.\] Suppose $x \in M$ satisfies $\tr(xy) = 0$ for all $y \in M$. Then $x$ is nilpotent.
+    \end{lem}
+
+    Proof of this fact is in Humphreys and uses the Jordan canonical form and the fact that our field has characteristic $0$.
+    
+    \begin{thm}[Cartan's Criterion]
+        Let $L \subset \mf{gl}(V)$. Suppose $\tr(xy) = 0$ for all $x \in [L,L], y \in L$. Then $L$ is solvable.
+    \end{thm}
+
+    \begin{proof}
+        Note that it is enough to show that $x \in [L,L]$ is nilpotent. We will apply Lemma 49 to $A = [L,L], B = L$. Note that $L \subset M$. We know that $[L,L]$ is generated by $[y,z]$ for all $y,z \in L$. Let $m \in M$. We know that
+        \[ \tr([y,z]m) = \tr(y[z,m]) = \tr([z,m]y) = 0\] by hypothesis. Because $[y,z]$ is a generator of $[L,L]$, we know that $\tr(xm) = 0$ for all $x \in [L,L], m \in M$. By Lemma 49, $x$ is nilpotent.
+    \end{proof}
+
+    \begin{cor}
+        Let $L$ be a Lie algebra such that $\tr(\ad_x \ad_y) = 0$ for all $x \in [L,L], y \in L$. Then $L$ is solvable.
+    \end{cor}
+
+    \begin{proof}
+        $\ad L$ is solvable by the theorem. Then $L$ is solvable because $L \simeq L/Z(L)$.
+    \end{proof}
+    
+    \begin{lem}
+        Let $I$ be an ideal of $L$ and $\kappa_I$ be the Killing form for $I$ as a Lie algebra. Then $\kappa_I = \kappa|_{I \otimes I}$.
+    \end{lem}
+
+    Proof of this amounts to the fact that the product respects the block form. To review some linear algebra, given a symmetric bilinear form $\beta:V \otimes V \to \F$, the radical is the kernel of the induced map $x \mapsto \beta(x,-)$. Then $\beta$ is nondegenerate if the radical is trivial. Then note that if $\beta$ is a symmetric bilinear associative form on a Lie algbera, the radical is an ideal.
+
+    \begin{proof}[Proof of Theorem 48]
+        Let $S$ be the radical of $\kappa$. Then it is easy to see that $S$ is solvable by Corollary 51. Thus $S \subset \Rad L$. Thus if $L$ is semisimple, $S = 0$.
+
+        In the other direction, note that being semisimple is equivalent to having no nonzero abelian ideals. Let $I$ be a nonzero abelian ideal of $L$. Choose $x \in I, y \in L$. Then $L \xrightarrow{\ad y} L \xrightarrow{\ad x} I \xrightarrow{\ad y} I \xrightarrow{\ad x} 0$. Thus $\ad_y \ad_x$ is nilpotent, so it has trace $0$. Thus $x \in S$ and thus $I \subset S$. In particular, if $\kappa$ is nondegenerate, then $S = 0$, so every abelian ideal is zero. Therefore $L$ is semisimple.
+    \end{proof}
+
+    \begin{thm}
+        $L$ is semisimple if and only if there exists $L_1, \ldots, L_t$ ideals of $L$ which are simple such that $L = L_1 \oplus \cdots \oplus L_t$. Here the direct sum is just the coproduct.
+    \end{thm}
+
+    Also, note that every simple ideal in $L$ coincides with some $L_i$ and that the direct sum decomposition is unique.
+
+    \begin{proof}
+        Suppose $L$ is semisimple. If $L$ is simple, we are done. Otherwise, consider $I \subset L$ a proper nonzero ideal. Then it is easy to see that $I^{\perp}$ is an ideal and that $L = I \oplus I^{\perp}$. By induction, $L$ is a direct sum of simple Lie algebras.
+
+        In the other direction, Note that $[L,L] = \bigoplus [L_i,L_i] = \bigoplus L_i = L$. Also note that $\Rad L = \bigoplus \Rad L_i = 0$. This gives semisimplicity.
+    \end{proof}
+
+    \section{Lecture 7 (Sep 24)}%
+    \label{sec:lecture_7_sep_24_}
+    
+    We began class by finishing the proof of Theorem 53. Everything is in the notes from last time.
+
+    \begin{rmk}
+        If $I$ is an ideal in $L_1 \oplus L_2$, then $I = I_1 \oplus I_2$.
+    \end{rmk}
+
+    \begin{rmk}
+        Let $L$ be semisimple and $I \subset L$ an ideal. Then $I = L_{i_1} \oplus \cdots \oplus L_{i_k}.$ In particular, the $L_i$ are the only simple ideals in $L$.
+    \end{rmk}
+
+    Thus our goal for this class is to classify the simple Lie algebras.
+        
+    \subsection{Some Classical Computations}%
+    \label{sub:classical_lie_algebras}
+    
+    Now recall the definition of the orthogonal Lie algebra. We will take $J$ to be the identity matrix. For $n = 2$, we have the set of matrices such that $A^t+A = 0$, which is one-dimensional. However, we will consider $n=4$ with matrix
+    \[ J = \begin{pmatrix}
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0 \\
+        0 & 1 & 0 & 0 \\
+        1 & 0 & 0 & 0
+    \end{pmatrix}. \]
+
+    \begin{prop}
+        $\mf{so}_4 \simeq \mf{sl}_2 \oplus \mf{sl}_2$.
+    \end{prop}
+
+    Now we will compute the Killing form of $\mf{sl}_2$ explicitly. We will use the standard basis $e,h,f$. By the standard relations, we have:
+    \[ \ad e = \begin{pmatrix}
+        0 & -2 & 0 \\
+        0 & 0 & 1 \\
+        0 & 0 & 0
+    \end{pmatrix};\ \ad h = \begin{pmatrix}
+        2 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & -2
+    \end{pmatrix};\ \ad f = \begin{pmatrix}
+        0 & 0 & 0 \\
+        -1 & 0 & 0 \\
+        0 & 2 & 0
+    \end{pmatrix}. \] Now we can see that
+    \[ \kappa = \begin{pmatrix}
+        0 & 0 & 4 \\
+        0 & 8 & 0 \\
+        4 & 0 & 0
+    \end{pmatrix}.\]
+
+    Now recall that a bilinear form is nondegenerate if and only if its matrix is nonsingular. In addition, a nondegenerate bilinear form gives an isomorphism to $V^*$. Thus we can construct a dual basis in $V$.
+
+    To motivate the dual basis, we can define a Casimir operator as follows: Choose a basis $\{x_i\}$ for $L$, and then choose a dual basis $\{y_i\}$. Then in the universal enveloping algebra $U_L$, consider $\Omega = \sum x_iy_i$. Then $\Omega \in Z(U_L)$.
+
+    Now recall Schur's Lemma:
+    \begin{lem}[Schur]
+        If $V$ is an irreducible representation, then any nonzero equivariant endomorphism of $V$ is a scalar.
+    \end{lem}
+
+    \section{Lecture 8 (Sep 26)}%
+    \label{sec:lecture_8_sep_26_}
+
+    \subsection{Representations of Lie Algebras}%
+    \label{sub:representations_of_lie_algebras}
+    
+    Recall the definition of a representation of a Lie algebra $L$. Note that this is equivalent to the notion of a module over $L$. Then recall that a representation is \textit{completely reducible} (or semisimple) if it is a direct sum of irreducible representations.
+
+    \begin{thm}[Weyl]
+        If $L$ is semisimple, then any representation of $V$ is semisimple.
+    \end{thm}
+    
+    For finite groups, we have the analogous statement:
+
+    \begin{thm}[Maschke]
+        Let $G$ be a finite group. If $\operatorname{char} k \nmid \abs{G}$, then any $k$-representation of $G$ is semisimple.
+    \end{thm}
+    
+    \begin{rmk}
+        The original proof of Weyl's theorem was analytic and uses the unitary trick.
+    \end{rmk}
+
+    Note that if $L$ is not semisimple, Weyl's theorem can fail. For example, consider the standard two-dimensional representation of the set of upper triangular matrices. Then the $x$-axis is a subrepresentation, but there is no other common eigenvector.
+
+    Now we construct a representation structure on $\Hom(V,W)$ by $(x.f)(v) = x.f(v) - f(x.v)$, so $L-\mathbf{mod}$ is enriched over itself. In particular, the dual space of a representation is also a representation. Finally, we may construct a tensor product representation by $x.(v \otimes w) = (w.v)\otimes w + v \otimes (x.w)$.
+
+    \begin{rmk}
+        The isomorphism $V^* \otimes W \simeq \Hom(V,W)$ holds in $L$-$\mathbf{mod}$.
+    \end{rmk}
+
+    \begin{rmk}
+        The tensor-hom adjunction holds for representations of Lie algebras, so $L$-$\mathbf{mod}$ is closed monoidal.
+    \end{rmk}
+
+    \begin{proof}[Proof of Schur's Lemma]
+        Let $0 \neq \pi:V \to W$ be a morphism of irreducible representations. Consider the kernel. For a nonzero morphism, this must be the source. In addition, the image must be nonzero, so it is the entire target.
+
+        To show any nonzero endomorphism is a scalar, use algebraic closure to find an eigenvalue. Then the kernel of $\pi - \lambda I$ is nonzero, so it must be all of $V$.
+    \end{proof}
+
+    \begin{rmk}
+        When we prove Weyl's theorem, we use $\beta(x,y) = \tr(\phi(x)\phi(y))$. This is nondegenerate when the kernel is nonzero.
+    \end{rmk}
+
+    \subsection{Jordan decomposition for Semisimple Lie Algebras}%
+    \label{sub:jordan_decomposition_for_semisimple_lie_algebras}
+    
+    For an arbitrary Lie algebra $L$, call $x \in L$ semisimple if $\ad x$ is semisimple, and nilpotent if $\ad x$ is nilpotent. Then we can decompose $\ad x = (\ad x)_s + (\ad x)_n$. What we will show is that 
+
+    \begin{lem}
+        If $\delta \in \Der L$, then $\delta_s, \delta_n \in \Der L$.
+    \end{lem}
+
+    \begin{lem}
+        If $L$ is semisimple, then $\Der L = \ad L$.
+    \end{lem}
+
+    Now we can form an abstract Jordan decomposition of any semisimple Lie algebra.
+
+    \begin{thm}
+        Let $\phi$ be a representation of $L$ and $x=s+n$ be the Jordan decomposition in $L$. Then $\phi(x) = \phi(x) + \phi(n)$ is the Jordan decomposition in $\mf{gl}(V)$.
+    \end{thm}
+
+    \section{Lecture 9 (Oct 1)}%
+    \label{sec:lecture_9}
+    
+    \subsection{Jordan Decomposition Continued}%
+    \label{sub:jordan_decomposition_continued}
+    
+    \begin{proof}[Proof of Lemma 65]
+        Recall that if $L$ is semisimple, then $L \simeq \ad L$. Then we know that $\kappa$ on $\ad L$ is non-degenerate. Also, $\ad L \subset \Der L$ is an ideal. Now take $(\ad L)^{\perp}$ and note that $\ad L \cap (\ad L)^{\perp} = 0$. Thus $\Der L = \ad L \oplus (\ad L)^{\perp}$. Then, by perpendicularity, the direct sub holds as Lie algebras.
+
+        We now recall that $[\delta, \ad x] = \ad \delta(x)$. Now for $\delta \in (\ad L)^{\perp}$, we have
+    \[ 0 = [\delta, \ad x] = \ad \delta(x).\] However, $L$ is semisimple, so $\delta(x) = 0$ for all $x$. The desired result follows..
+    \end{proof}
+
+    As a consequence, we can describe an abstract Jordan decomposition on a semisimple Lie algebra.
+
+    \begin{cor}[Jordan Decomposition]
+        Given $x \in L$, then the Jordan decomposition $\ad x = (\ad x)_s + (\ad x)_n$ restricts to 
+        \[ \ad x = \ad x_s + \ad x_n\] for some $x_s, x_n \in L$. In particular, $x = x_s + x_n$.
+    \end{cor}
+
+    Now note that $[x_s,x_n] = 0$ because \[\ad [x_s,x_n] = [\ad x_s, \ad x_n] = 0\] by the usual Jordan decomposition and because $L$ is semisimple.
+
+    \begin{rmk}[Eric's Research]
+        Consider the group $G = SL_2(\C)$ with Lie algebra $\mf{g} = \mf{sl}_2(\C)$. Now $G$ acts on $\mf{g}$ by conjugation. We consider the following question:
+
+        \begin{quote}
+            What are the orbits of $G$ on the set of nilpotent elements in $\mf{g}$?
+        \end{quote}
+
+        We find that there are two orbits of $\mf{sl}_2$ and that the set of nilpotents is a closed subvariety of $\mf{g}$.
+    \end{rmk}
+
+    \begin{thm}
+        Let $L \subset \mf{gl}(V)$ be semisimple. Then the usual Jordan decomposition in $\mf{gl}(V)$ agrees with the abstract Jordan decomposition in $L$.
+    \end{thm}
+
+    \begin{cor}
+        Let $\phi:L \to \mf{gl}(V)$ be any representation of $L$. Let $x = x_s + x_n$ be the abstract Jordan decomposition. Then $\phi(x) = \phi(x_s) + \phi(x_n)$ is the usual Jordan decomposition in $\mf{gl}(V)$.
+    \end{cor}
+
+    \subsection{Representations of $\mf{sl}_2$}%
+    \label{sub:representations_of_al_2_}
+    
+    We will classify irreducible representations of $\mf{sl}_2$. \footnote{This was done in Ivan's homework, and is an exercise in Etingof's book.} Let $V$ be some finite-dimensional representation of $\mf{sl}_2$. Recall that $\mf{sl}_2$ has standard basis $e,h,f$ with the usual relations.
+
+    Now we note that $h$ is semisimple in $\mf{sl}_2$, so $\phi(h)$ is semisimple for any representation $\phi$. Then we can take the eigenspace decomposition
+    \[ V = \bigoplus_{\lambda \in \F} V_{\lambda}.\]
+
+    \begin{lem}
+        If $v \in V_{\lambda}$, then $e.v \in V_{\lambda + 2}$ and $f.v \in V_{\lambda - 2}$.
+    \end{lem}
+
+    \begin{proof}
+        \[ h.(e.v) = [h.e].v + e.(h.v) = (2e).v + e.(\lambda v) = (\lambda + 2)(e.v)\]
+        and 
+        \[ h.(f.v) = [h.f].v + f.(h.v) = -2f.v + f.(\lambda v) = (\lambda -2) f.v.\]
+    \end{proof}
+
+    Next, because $V$ has finite dimension, then there is an eigenspace $V_{\lambda}$ that is killed by $e$. We will call any $v_0 \in V_{\lambda}$ a maximal vector. Now define $v_i = \frac{1}{i!}f^i.v_0$.
+
+    We will study the span of $\{v_m, \ldots, v_1, v_0\}$, where $f.v_m = 0$ but $v_m \neq 0$.
+
+    \begin{exm}
+        Consider the usual $2$-dimensional representation. Then $e_1$ has eigenvalue $1$ and $e_2$ has eigenvalue $-1$. In addition, $f.e_1 = e_2$ and $e.e_2 = e_1$.
+
+        For the adjoint representation, $f,h,e$ have weights $-2,0,1$.
+    \end{exm}
+
+    We will show that $\gen{v_m, \ldots, v_0} \subset V$ is a subrepresentation:
+
+    \begin{prop}
+        The following are true:
+        \begin{enumerate}
+            \item $h.v_i = (\lambda - 2i).v_i$;
+            \item $f.v_i = (i+1)v_{i+1}$;
+            \item $e.v_i = (\lambda - i+1)v_{i-1}$.
+        \end{enumerate}
+    \end{prop}
+
+    \begin{proof}
+        We only need to prove the third claim. Here, we note that
+        \begin{align*}
+            e.v_i &= \frac{1}{i}(e.(f.v_{i-1})) \\
+            &= \frac{1}{i} ([e,f].v_{i-1} + f.(e.v_{i-1}))\\ 
+            &= \frac{1}{i} (h.v_{i-1} + f.(\lambda-i+2)v_{i-2}) \\
+            &= \frac{1}{i} ((\lambda -2i+2) v_{i-1} + (i-1)(\lambda -i + 2) v_{i-1}) \\
+            &= (\lambda -i + 1) v_{i-1}. \qedhere
+        \end{align*}
+    \end{proof}
+
+    \begin{cor}
+        If $V$ is irreducible, then $V_{\lambda}$ is one-dimensional. In particular, $V = \gen{v_m, \ldots, v_0}$.
+    \end{cor}
+
+    Now all we need to do is classify the highest weights and the dimensions for irreducible representations. Here we observe that
+    \[0 = e.(f.v_m) = e.(m+1)v_{m+1} = (m+1)(\lambda - (m+1)+1)v_m = (m+1)(\lambda - m)v_m.\] Because $m$ is nonnegative and $v_m$ is nonzero, $m = \lambda$. Thus we have proved:
+
+    \begin{thm}
+        For an irreducible representation $V$, $\lambda$ is a nonnegative integer and $V$ has weights $\lambda, \lambda - 2, \ldots, -\lambda$.
+    \end{thm}
+
+    Next time we will construct a representation with these weights.
+
+    \section{Lecture 10 (Oct 3)}%
+    \label{sec:lecture_10_oct_3_}
+
+    \subsection{Representation Theory of $\mf{sl}_2$ Continued}%
+    \label{sub:representation_theory_of_sl_2_continued}
+    
+    Last time, we proved the following result:
+    \begin{thm}
+        There is at most one irreducible representation of $\mf{sl}_2(\C)$ of a given finite dimension. Furthermore, its weights are $m, m-2, \ldots, 2-m, -m$ where $m = \dim V - 1$. In addition, all weight spaces are $1$-dimensional and there is a unique maximal weight space.
+    \end{thm}
+
+    This time, we will show:
+    \begin{thm}
+        There exists a unique irreducible representation of each positive dimension.
+    \end{thm}
+
+    \begin{proof}[Proof 1]
+        We write down three matrices:\[E = \begin{psmallmatrix}
+        0 & n \\
+        & 0 & n-1 \\
+        & & \ddots & \ddots \\
+        & & & 0 & 2 \\
+        & & & & 0 & 1 \\
+        & & & & & 0
+    \end{psmallmatrix}, H = \begin{psmallmatrix}
+        n \\
+        & n-2 \\
+        & & n-4 \\
+        & & & \ddots \\
+        & & & & 2-n \\
+        & & & & & -n
+    \end{psmallmatrix}, F = \begin{psmallmatrix}
+        0  \\
+        1 & 0 & \\
+        & 2 & 0  \\
+        & & \ddots & \ddots \\
+        & & & n-1 & 0  \\
+        & & & & n & 0
+    \end{psmallmatrix}.\]
+    Checking this is left to the reader.\footnote{This is taken from Ivan's homework. Eric normalized the $e$, so we have a different $f$.}
+    \end{proof}
+
+    \begin{proof}[Proof 2]
+        Let $\C^2$ be the standard representation. Then note that $(\C^2)^* \simeq \C^2$. Thus we can consider the infinite-dimensional representation $S(V^*) = S(\C^2)$.\footnote{This was on Ivan's homework, but for the group $SL_2$.}
+
+        Now we can take our representations to be $S^{k-1}(\C^2)$. Then we can check that 
+        \[h.(x^iy^{k-1-i}) = \sum x^{i-1}(h.x) y^{k-1-i} + \sum_{k-1-i}x^i(h.y)(y^{k-2-i}) = (-k+1+2i)x^iy^{k-1-i}.\]
+        Therefore we have the correct weights, so we are done.
+    \end{proof}
+
+    Now, Weyl tells us that a general representation of $\mf{sl}_2$ is a sum of the form
+    \[ V = \oplus_{m \in \Z} a_iV_i.\] To find the multiplicities, just find the largest eigenvalue of $h$ and take away weights of $h$.
+
+    \subsection{Maximal Tori}%
+    \label{sub:maximal_tori}
+    
+    Consider $\mf{sl}_n$ and denote the set of diagonal elements by $\mf{h}$. This is an abelian subalgebra, so we will find an analog for arbitrary semisimple Lie algebras.
+
+    \begin{defn}
+        A subalgebra of $L$ consisting of semisimple elements is a \textit{toral subalgebra.}.
+    \end{defn}
+
+    \begin{thm}
+        Toral subalgebras are abelian.
+    \end{thm}
+
+    \begin{proof}
+        Let $T$ be a toral subalgebra and choose $x \in T$. Because $x$ is semisimple, $\ad x$ is semisimple as a map $T \to T$. Thus $\ad x|_T$ is semisimple. 
+
+        Choosing an eigenvector $y \in T$, let $y_i$ be a basis of eigenvectors for $\ad y$. Now we write $x = \sum c_iy_i$, we have
+        \[ [y,x] = \sum c_i [y,y_i] = -ay,\] which implies that $[x,y] = 0$.
+    \end{proof}
+
+    We consider the action of $H$ on $L$. Because $\ad h$ are commuting semisimple operators, they are simultaneously diagonalizable.
+
+    \begin{defn}
+        Define the \textit{root space}
+        \[ L_{\alpha} = \{x \in L \mid [h,x] = \alpha(h) x \text{ for $h \in H$}\]
+        where $\alpha \in H^*$.
+    \end{defn}
+
+    Note that $H \subset L_0$. In particular, $L_0 = C_L(H)$ and
+    \[ L = C_L(H) \oplus \bigoplus_{\alpha \neq 0} L_{\alpha}.\]
+
+    \begin{exm}
+        In $\mf{sl}_n$, $[h,e_{ij}] = \alpha_{ij}(t_i-t_j)e_{ij}$. Thus
+        \[ \mf{sl_n} = H \oplus \bigoplus_{i \neq j} L_{\alpha_{ij}}.\]
+        We conclude that $H$ is a maximal torus and that $H = L_0$.
+    \end{exm}
+
+    \section{Lecture 11 (Oct 08)}%
+    \label{sec:lecture_11_oct_08_}
+
+    Recall our discussion of toral subalgebras from last time.
+
+    \subsection{Tori in $\mr{sl}_n$}%
+    \label{sub:tori_in_sl_n_}
+
+    \begin{prop}
+        $\tr(\ad x \ad y) = 2n \tr(xy)$ for $x,y \in \mf{h}$.
+    \end{prop}
+
+    \begin{proof}
+        Note $\ad x$ has eigenvalues $t_i - t_j$ and $\ad y$ has eigenvalues $u_i - u_j$. Then 
+        \begin{align*}
+            \tr(\ad x \ad y) &= \sum_{i,j} (t_i-t_j)(u_i-u_j) \\
+            &= \sum t_iu_i + \sum t_ju_j - \sum t_iu_j - \sum t_ju_i \\
+            &= 2n \sum t_iu_i \\
+            &= 2n \tr(xy).
+        \end{align*}
+    \end{proof}
+    
+    \begin{cor}
+        $\kappa$ is nondegenerate on $H$.
+    \end{cor}
+
+    \begin{prop}
+        $H = C_L(H)$. 
+    \end{prop}
+    
+    \begin{proof}
+        Let $x = \sum a_{ij} e_{ij}$. Then
+        \[ [h,x] = \sum a_{ij}(t_i-t_j)e_{ij}.\] If $x \notin H$, then $a_{ij} \neq 0$ for some $i \neq j$. But then there exiss $h \in H$ such that $\alpha_{ij}(h) = t_i-t_j$.
+    \end{proof}    
+
+    \begin{thm}
+        In general, $H = C_L(H)$ for any maximal torus $H$ in a semisimple Lie algebra $L$.
+    \end{thm}
+    
+    \subsection{The General Case}%
+    \label{sub:the_general_case}
+    
+    Take $H \subset L$ to be a maximal torus.
+
+    \begin{prop}
+        \begin{enumerate}
+            \item For all $\alpha, \beta \in H^*$, $[L_{\alpha}, L_{\beta}] \subset L_{\alpha + \beta}$.
+            \item For $x \in L_{\alpha}$ with $\alpha \neq 0$, $\ad x$ is nilpotent.
+            \item For $\alpha, \beta \in H^*$ with $\alpha + \beta \neq 0$, $L_{\alpha} \perp L_{\beta}$.
+        \end{enumerate}
+    \end{prop}
+
+    \begin{proof}
+        \begin{enumerate}
+            \item $ [h,[x_{\alpha},x_{\beta}]] = [[h,x_{\alpha}],x_{\beta}] + [x_{\alpha}, [h,x_{\beta}]] = (\alpha(x) + \beta(x))[x_{\alpha},x_{\beta}].$
+            \item This follows from finite dimensionality of $L$.
+            \item $ -\alpha(h)\kappa(x,y) = \kappa([x,h],y) = \kappa(x,[h,y]) = \beta(h) \kappa(x,y).$ \qedhere
+        \end{enumerate}
+    \end{proof}
+
+    \begin{cor}
+        $\kappa$ is nondegenerate on $C_L(H)$.
+    \end{cor}
+
+    \begin{proof}
+        If $\kappa(x,y) = 0$ for all $y \in C_L(H) = L_0$, then $\kappa(x,z) = 0$ for all $z \in L$. Thus $x = 0$.
+    \end{proof}
+
+    \begin{lem}
+        If $x$ is nilpotent and $[x,y] = 0$, then $\kappa(x,y) = 0$.
+    \end{lem}
+
+    \begin{proof}
+        $\ad x$ is nilpotent by definition, and because it commutes with $\ad y$, $\ad x \ad y$ must also be nilpotent.
+    \end{proof}
+
+    \begin{proof}[Proof of Theorem 85]
+        If $x \in C_L(H)$, then $\ad_X(H) = 0$. Therefore $\ad x_s(H) = \ad x_n(H) = 0$, so $x_s, x_n \in C$.
+
+        Now suppose $x \in C_L(H)$ is semisimple. Then $H + \F x$ is abelian and is toral because it consists of commuting semisimple elements. Thus $x \in H$.
+
+        Next we show $\kappa$ is nondegenerate on $H$. Suppose $\kappa(h,h') = 0$ for all $h' \in H$. Then choose $z \in C_L(H)$. Because $z_n$ commutes with $H$, $\kappa(h,z_n) = 0$ by Lemma 88. Thus $h = 0$ by Corollary 87.
+
+        We now show $C_L(H)$ is nilpotent. For $z \in C_L(H)$, $z_s \in H$, so $\ad z_s = 0$. On the other hand, $\ad z_n$ is nilpotent. Thus $\ad z$ is nilpotent because $z_s, z_n$ commute. By Engel, $C_L(H)$ is nilpotent.
+
+        Next we show that $H \cap [C_L(H),C_L(H)] = 0$. Choosing $[x,y] \in [C_L(H),C_L(H)]$ and $h \in H$, we see $\kappa([x,y],h) = \kappa(x,[y,h]) = 0$, so $[C_L(H),C_L(H)] \perp H$. Because $\kappa$ is nondegenerate on $H$, $H \cap [C,C] = 0$.
+
+        Next note that $Z(C_L(H)) \cap [C_L(H),C_L(H)] \neq 0$. Choose a nonzero $z \in Z(C_L(H)) \cap [C_L(H), C_L(H)]$. Thus $z_s,z_n \in Z(C_L(H))$. However, $[C_L(H), C_L(H)]$ is an ideal, so $z_s \in [C_L(H), C_L(H)] \cap H$. Thus $z_s = 0$. Therefore $\kappa(z,C_L(H)) = 0$. Thus $z = 0$. Therefore $C_L(H)$ is abelian.
+
+        Finally, we show that $H = C_L(H)$. Choose $z \in C_L(H)$. Then $z_n \in C_L(H)$, so $\kappa(z_n,C_L(H)) = 0$, so $z_n = 0$. Thus $z = z_s \in H$.
+    \end{proof}
+
+    \begin{cor}
+        $\kappa$ is nondegenerate on $H$.
+    \end{cor}
+     
+    Now we may identify $H$ with $H^*$ using $\kappa$.\footnote{This will help us in our study of root systems.} In addition, we may write $L = H \oplus \bigoplus_{\alpha \neq 0}L_{\alpha}$. We define the set of roots $\Phi = \{ \alpha \in H^* \mid L_{\alpha} \neq 0, \alpha \neq 0.\}$.
+
+    \section{Lecture 12 (Oct 10)}%
+    \label{sec:lecture_12_oct_10_}
+    
+    Last time we proved that $\kappa$ is nondegenerate on $H$ and that $C_L(H) = H$. Thus we may associate $t_{\alpha} \in H$ to every $\alpha \in H^*$.
+
+    \begin{prop}
+        \begin{enumerate}
+            \item $\Phi$ spans $H^*$.
+            \item If $\alpha \in H$, then $-\alpha \in \Phi$.
+            \item If $\alpha \in \Phi$, $x \in L_{\alpha}, y \in L_{-\alpha}$, then $[x,y] = \kappa(x,y)t_{\alpha}$.
+            \item If $\alpha \in \Phi$, then $[L_{\alpha}, L_{-\alpha}]$ is $1$-dimensional.
+            \item $\alpha(t_{\alpha}) = \kappa(t_{\alpha}, t_{\alpha}) \neq 0$ for all $\alpha \in \Phi$.
+            \item The span of $L_{\alpha}, L_{-\alpha}, t_{\alpha}$ is a copy of $\mf{sl}_2$.
+            \item $h_{\alpha} = \frac{2t_{\alpha}}{\kappa(t_{\alpha}, t_{\alpha})}$ and $h_{\alpha} = h_{-\alpha}$.
+        \end{enumerate}
+    \end{prop}
+
+    \begin{proof}
+        \begin{enumerate}
+            \item If not, then thee exists $h \in H$ such that $\alpha(h) = 0$ for all $\alpha \in \Phi$. But this implies $h \in Z(L)$, which is a contradiction for nonzero $h$.
+            \item Recall that $L_{\alpha} \perp L_{\beta}$ if $\alpha + \beta \neq 0$. Thus $\kappa(L_{\alpha}, L_{-\alpha}) \neq 0$, so $L_{-\alpha}$ is nonempty.
+            \item Just evaluate $\kappa(h,[x,y])$. We have
+                \begin{align*}
+                    \kappa(h,[x,y]) &= \kappa([h,x],y) \\
+                                    &= \kappa(\alpha(h)x,y) \\
+                                    &= \kappa(t_{\alpha},h) \kappa(x,y) \\
+                                    &= \kappa(\kappa(x,y)t_{\alpha},h).
+                \end{align*}
+            \item Follows from the previous part.
+            \item The first part follows from the definition. Then if the inner product is zero, $[t_{\alpha},x] = 0 = [y,t_{\alpha}]$ for all $x \in L_{\alpha}, y \in L_{-\alpha}$. Choosing nonzero $x,y$ such that $\kappa(x,y) \neq 0$, rescale so $\kappa(x,y) = 1$. Then $[x,y] = t_{\alpha}$. Then the subalgebra $S$ spanned by $x,t_{\alpha},y$ is solvable. By Lie's theorem, $[\ad_L S, \ad_L S]$ consists of nilpotent matrices. Then $t_{\alpha}$ is ad-nilpotent, so it must be $0$, which is a contradiction.
+            \item Choose $h_{\alpha}$ a multiple of $t_{\alpha}$ such that $[h_{\alpha},x] = 2x$. Now let $c$ be such that $h_{\alpha} = ct_{\alpha}$ and choose $y_{\alpha}$ such that $\kappa(y_{\alpha},y_{\alpha}) = c$. 
+            \item $c^2\kappa(t_{\alpha},t_{\alpha}) = \kappa(h_{\alpha},h_{\alpha}) = c \kappa(h_{\alpha},t_{\alpha}) = 2c$.
+        \end{enumerate}
+    \end{proof}
+
+    We will call the $h_{\alpha}$ coroots and denote the set of coroots by $\Phi^{\vee}$.
+
+    \begin{exm}
+        In $\mf{sl}_n$, $\alpha(h) = t_i - t_j$. Then $h_{\alpha} = e_{ii} - e_{jj}$.
+    \end{exm}
+
+    Now let $S_{\alpha}$ be the $\mf{sl}_2$ associated to $\alpha$. Then we consider $L$ as an $S_{\alpha}$-module. In particular, consider $M = H \oplus \bigoplus_c L_{c_{\alpha}}$. We can then write $M = \ker(\alpha) \oplus S_{\alpha} \oplus M'$, where $M'$ has all of the odd weights. Also, this shows that the $L_{\alpha}$ are one-dimensional.
+
+    Now we can also observe that if $\alpha \in \Phi$, no other positive multiple of $\alpha$ is in $\Phi$.
+
+    \section{Lecture 13 (Oct 17)}%
+    \label{sec:lecture_13_oct_17_}
+
+    Recall our discussion of root systems from last time. We showed that all root spaces are one-dimensional and that if $\alpha$ is a root, no other positive multiple of $\alpha$ is a root. It is easy to show that:
+
+    \begin{prop}
+        \begin{enumerate}
+            \item $[L_{\alpha},L_{\beta}] = L_{\beta + \alpha}$ if $\alpha + \beta$ is a root.
+            \item $\beta(h_{\alpha}) \in \Z$ and $\beta - \beta(h_{\alpha})\alpha \in \Phi$.
+            \item The $L_{\alpha}$ generate $L$.
+            \item Say $\beta + q\alpha \in \Phi$ but $\beta + q'\alpha \notin \Phi$ for $q' > q$. In addition, suppose $\beta - r\alpha \in \Phi$ but $\beta - r'\alpha \notin \Phi$ for $r' > r$. Then $\beta + i \alpha \in \Phi$ for all $-r \leq i \leq q$.
+        \end{enumerate}
+    \end{prop}
+    
+    \begin{proof}
+        Consider the space $M = \oplus L_{\beta + i \alpha}$. Then $M$ is an $S_{\alpha}$-module. Then note the eigenvalues of $h_{\alpha}$ are $\beta(h_{\alpha}) + 2i$. Thus $\beta(h_{\alpha}) \in \Z$. In addition, the eigenvalues of $h_{\alpha}$ are distinct and have the same parity. Thus the last part is true. To complete the second part, note that $(\beta - \beta(h_{\alpha})\alpha)(h_{\alpha}) = -\beta(h_{\alpha})$. To do the first part, note that $\ad x_{\alpha}$ is surjective if and only if $\beta + \alpha$ is a root (because $M$ is irreducible). Finally, the third part follows from the fact that the $\alpha$ span $H^*$.
+    \end{proof}
+
+    \subsection{An Example: The symplectic Lie algebra}%
+    \label{sub:an_example_the_symplectic_lie_algebra}
+
+    Use the standard symplectic form. Then a matrix $X = \begin{pmatrix}
+        A & B \\ C & D
+    \end{pmatrix}$ is symplectic if and only if $A^T = -D, B^T = B, C^T = C$. Thus $\mf{sp}_{2n}$ has dimension $2n^2+n$. We can define $H$ to be the set of diagonal matrices. Then everything simply restricts from $\mf{sl}_{2n}$.
+
+    Restricting to $\mf{sp}_4$, we have four roots: $t_1-t_2, 2t_1, 2t_2, t_1+t_2$. Note that $H^*$ is an $F$-vector space. Now consider the $\Q$-vector space $E_{\Q}$ spanned by $\Phi$.
+
+    \begin{prop}
+        $\dim_{\Q} E_{\Q} = \dim_F H^*$.
+    \end{prop}
+
+    \begin{proof}
+        Choose an $F$-basis of $H^*$ from $\Phi$. Then for $\beta \in \Phi$, we have $\beta = \sum c_i \alpha_i$. Then taking the inner product with $\beta$ and using that $\beta(h_{\alpha}) \in \Z$, we are done.
+    \end{proof}
+
+    \begin{rmk}
+        The inner product on $E_{\Q}$ is positive-definite. Thus we can extend scalars to $\R$ to obtain a Euclidean space.
+    \end{rmk}
+    
+    \section{Lecture 14 (Oct 22)}%
+    \label{sec:lecture_14_oct_22_}
+    
+    Last time, we defined the real Euclidean space associated to the root system $\Phi$. Now we define the axioms of a root system.
+
+    \subsection{Root Systems}%
+    \label{sub:root_systems}
+    
+    \begin{defn}
+        A \textit{root system} is a collection of finitely many nonzero vectors $\Phi \subset E$ in a Euclidean space that satisfies:
+        \begin{description}
+            \item[(R1):] $\Phi$ spans $E$;
+            \item[(R2):] If $\alpha \in \Phi$ and $c\alpha \in \Phi$, then $c = \pm 1$.
+            \item[(R3):] For $\alpha \in \Phi$, $\sigma_{\alpha}(\Phi) = \Phi$, where $\sigma_{\alpha}$ is the reflection through $\alpha$.
+            \item[(R4):] If $\alpha,\beta \in \Phi$, then $\gen{\beta,\alpha} \coloneqq \frac{2(\beta,\alpha)}{\alpha,\alpha} \in \Z$.
+        \end{description}
+    \end{defn}
+
+    \begin{rmk}
+        If we relax (R2), then our definition is called ``reduced.'' If we relax (R4), then our definition is called ``crystallographic.''
+    \end{rmk}
+
+    \begin{prop}
+        $\Phi \subset E$ attached to $L$ is a root system.
+    \end{prop}
+
+    \begin{prop}
+        We showed last time that $\gen{\beta,\alpha} = \beta(h_{\alpha}) \in \Z$. Also we showed that the root strings are unbroken and that $\beta - \beta(h_{\alpha})\alpha$ is a root. We already knew that the inner product was positive-definite and that (R1) and (R2) hold.
+    \end{prop}
+
+    \begin{exm}
+        In $\mf{sl}_{n+1}$, the roots are simply the $\ep_i-\ep_j$ and we use the usual Euclidean structure on $\R^n$ induced from $\mf{gl}_n$. Checking the axioms is easy.\footnote{This was in Ivan's homework.}
+    \end{exm}
+
+    \subsection{Classifying Root Systems}%
+    \label{sub:classifying_root_systems}
+    
+    Note that (R4) limits the possibilities for $\gen{\beta,\alpha}$. In addition, we can analyze the Weyl group. We can also consider $\gen{\beta,\alpha}\gen{\alpha,\beta} = 4 \cos^2 \theta_{\alpha,\beta}$. This constrains the angles between the roots to be $\pi/2, \pi/6, \pi/3, \pi/4, 3\pi/4, 2\pi/3, 5\pi/6, 0, \pi$. 
+
+    \begin{defn}
+        A root system $E,\Phi$ is \textit{reducible} if $E = E_1 \oplus E_2$ and all roots are contained in either $E_1$ or $E_2$.
+    \end{defn}
+
+    \begin{exm}
+        If $\dim E = 1$, then we only have one root system, $A_1$. If $\dim E = 2$, then one possibility is the root system $A_1 \oplus A_1$, which is just an orthonormal basis. In addition, we have the case where $\alpha,\beta$ have angle $2\pi/3$, which is the $A_2$ root system. If $\alpha,\beta$ have angle $3\pi/4$, then one has length $\sqrt{2}$ and the other has length $1$. This is the root system $B_2$. Finally, if $\theta = 5\pi/6$, we have $G_2$.
+      
+    \end{exm}
+
+    \begin{defn}
+        The \textit{Weyl group} is the group generated by the $\sigma_{\alpha}$.
+    \end{defn}
+
+    It is easy to see that $W \subset S_{\Phi}$. In particular, $W$ is finite.
+
+    \begin{exm}
+        The Weyl group of $A_n$ is $S_{n+1}$.
+    \end{exm}
+    
+    \section{Lecture 15 (Oct 24)}%
+    \label{sec:lecture_15_oct_24_}
+    
+    Recall that the group $SL_n$ acts transitively on flags in $\C^n$. Then the stabilizer of any flag is the group $B$ of upper triangular matrices. Then the set of all flags can be identified with $G/B$. This has a left action on $G/B$, so we have
+
+    \begin{thm}[Bruhat]
+        The orbits of $B$ on $G/B$ are indexed by the Weyl group.
+    \end{thm}
+
+    A standard fact is that the orbit $X_w$ is an affine space of dimension $\ell(w)$. Here $\ell(w)$ is the smallest number adjacent transpositions needed to write $w$. In addition, the closure of $X_w$ is no longer smooth, and we can study its singularities, where Kazhdan-Lusztig polynomials appear.\footnote{The Kazhdan-Lusztig conjectures relate these to representation theory, and were proven by Beilinson and Bernstein}.
+
+    \subsection{Weyl Groups continued}%
+    \label{sub:weyl_groups_continued}
+    
+    Recall that the Weyl group preserves the inner product. Today we will discuss the analogue of the adjacent transpositions that allow us to define the length of an element in the Weyl group. 
+
+    \begin{rmk}
+        Any irreducible root system has a corresponding semisimple Lie algebra.
+    \end{rmk}
+
+    \begin{defn}
+        A set of \textit{simple roots} $\Delta \subset \Phi$ is a set of roots such that every root $\gamma \in \Phi$ can be written $\gamma = \sum_{\Delta} c_{\alpha}\alpha$, where all $c_{\alpha}$ have the same sign. Also, $\Delta$ must span $E$.
+    \end{defn}
+
+    \begin{exm}
+        $\alpha,\alpha + \beta$ form a set of simple roots in $A_2$.
+    \end{exm}
+
+    \begin{prop}
+        $W$ acts transitively on the set of bases.
+    \end{prop}
+
+    \begin{prop}
+        Every root system has a base.
+    \end{prop}
+
+    \begin{proof}
+        Choose $\gamma \in E$ to not be orthogonal to any root. Now define $\Phi^+(\gamma)$ to be the set of roots with positive inner product with $\gamma$. Now call $\beta \in \Phi^+$ indecomposable if $\beta$ cannot be written as $\alpha_1 + \alpha_2$ for positive roots $\alpha_i$. Now choose $\Delta(\gamma)$ to be the set of indecomposable roots in $\Phi^+(\gamma)$.
+
+        Now we show that $\Delta(\gamma)$ is a base and every base is of this form. It is easy to see that any positive root not in $\Delta$ is decomposable, so then it must be a sum of $\beta_1 + \beta_2$. Then using the inner product and well-ordering, $\beta$ must be a nonnegative sum.
+
+        Next we show that if $\alpha \neq \beta \in \Delta(\gamma)$, then $(\alpha,\beta \leq 0)$. This is because otherwise, $\alpha - \beta$ is a root. Now either $\alpha-\beta$ or $\beta-\alpha$ is a positive root, which implies that either $\alpha$ or $\beta$ is decomposible.
+
+        Next, we show that $\Delta(\gamma)$ is linearly independent. If not, then we can take the inner product of some vector $\tau$ with itself to see that $\tau = 0$.
+
+        To show that every base is of this form, we can choose $\gamma$ such that $(\alpha,\gamma) > 0$ for all $\alpha \in \Delta$. By construction, $\Delta \subset \Phi^+(\gamma)$. Now note that $\Phi^+$ is the set of nonnegative combinations of $\Delta$, so it is contained in $\Phi^+(\gamma)$. Also $\Phi^- \subset -\Phi^+(\gamma)$. By uniqueness of $\beta = \sum c_{\alpha}\alpha$, $\Delta$ consists of indecomposable elements. Because both $\Delta, \Delta(\gamma)$ are bases of $E$, they must be the same.
+    \end{proof}
+
+    Now denote $\alpha^{\perp}$ by $P_{\alpha}$. Then the connected components of $E \setminus \cup P_{\alpha}$ are called \textit{Weyl chambers}.
+
+    \begin{thm}
+        Let $\Delta$ be a base of $\Phi$. Then $W$ acts transitively on the set of Weyl chambers and on the set of bases. In addition, each base corresponds to a unique Weyl chamber. In fact, the action of $W$ on the set of Weyl chambers is faithful.
+    \end{thm}
+
+    \section{Lecture 16 (Oct 29)}%
+    \label{sec:lecture_16_oct_29_}
+    
+    Let $\Delta$ be a base of $\Phi$. Then define $W' \subset W$ to be the subgroup generated by the simple reflections. Our goal is to show that $W' = W$. Then for any $w \in W'$, we define $\ell(w)$ to be the smallest $t$ such that $w = \sigma_1 \cdots \sigma_t$.
+
+    \begin{lem}
+        For $\alpha \in \Delta$, $\sigma_{\alpha}$ permutes $\Phi^+ \setminus \{\alpha\}$.
+    \end{lem}
+
+    \begin{proof}
+        Note that $\sigma_{\alpha}$ only changes the $\alpha$ coefficient of any positive root $\beta$. However, this coefficient remains nonnegative.
+    \end{proof}
+
+    \begin{lem}
+        Let $\delta = \frac{1}{2} \sum_{\alpha \in \Phi^+} \alpha$. Then $\gen{\delta, \alpha} = 1$.
+    \end{lem}
+
+    \begin{proof}
+        Write $\delta = \frac{1}{2} \left( \sum_{\beta \neq \alpha} \beta + \alpha\right)$, apply $\sigma_{\alpha}$, and then use the previous lemma.
+    \end{proof}
+
+    \begin{lem}
+        Suppose $w = \sigma_{i_1} \cdots \sigma_{i_t}$ is reduced, then $\sigma_{i_1} \cdots \sigma_{i_{t-1}}(\alpha_t)$ is a negative root.
+    \end{lem}
+
+    Now we define a partial order on $\Z[\Phi]$ where $\alpha \leq \beta$ if $\beta - \alpha$ has positive coefficients in $\Delta$. We write $\alpha > 0$ if $\alpha$ is a positive root.
+
+    \begin{prop}
+        $W$ acts transitively on bases.
+    \end{prop}
+
+    \begin{proof}
+        First we show this for $W'$. Choose two bases $\Delta(\gamma), \Delta(\gamma')$. Then note that $\sigma(\Delta(\gamma)) = \Delta(\sigma(\gamma))$. Also, $\sigma$ sends positive roots to positive roots.
+
+        Choose $\sigma \in W'$ such that $(\sigma(\gamma), \delta)$ is as large as possible. Then for $\alpha \in \Delta$, $(\sigma_{\alpha}\sigma(\gamma), \delta) \leq (\sigma(\gamma),\delta)$. This implies that $(\sigma(\gamma),\alpha) \geq 0$. Because $\gamma$ is regular, so is $\sigma(\gamma)$. Therefore $\sigma(\gamma)$ is in the Weyl chamber associated to $\Delta$, as desired.
+    \end{proof}
+
+    Next, any root $\beta$ is part of some base, so it can be obtained from some simple root by a series of simple reglections. Next, we want to show that $W' = W$. This follows from the fact that $g \sigma_v g^{-1} = \sigma_{g(v)}$ for any $g \in O(E)$.
+
+    Finally, we will show that $W$ acts simply transitively on bases. Choosing a reduced expression for $w$, we have $w(\alpha_{i_t}) < 0$ if $t \geq 1$. However, $w(\Delta) = \Delta$, so $w(\alpha)_{i_t} > 0$. This is a contradiction, so $w = 1$.
+
+    This discussion defines a length function $W \to \Z \geq 0$. Then for $w \in W$, define $\Phi^+(w) = \{ \alpha \in \Phi^+ \mid w(\alpha) < 0 \}$. For example, $\Phi^+(1) = \emptyset$ and $\Phi^+(\sigma_{\alpha}) = \{\alpha\}$.
+
+    \begin{prop}
+        There exists a unique $w_0 \in W$ such that $\Phi^+(w_0) = \Phi^+$.
+    \end{prop}
+
+    \begin{proof}
+        If $\Delta$ is a base, then so is $-\Delta$.
+    \end{proof}
+
+    \begin{lem}
+        $\ell(w) = \# \Phi^+(w)$.
+    \end{lem}
+
+     \section{Lecture 17 (Oct 31)}%
+    \label{sec:lecture_17_oct_31_}
+
+    The projector is on and the screen is down over the board. I do not know what Eric plans to do with the computer.
+
+    Recall that last time we defined the length function. We need to prove Lemma 116.
+    \begin{proof}[Proof of Lemma 116]
+        We use induction. It is true for $w=1$ and for $w$ a simple reflection, so then we use the fact that the expressions are reduced to write $\Phi^+(w') = \sigma_{i_t}(\Phi^+(w) \setminus \{\alpha_{i_t})$. Checking this simply follows from applying $\sigma_{i_t}$ to $\Phi^+(w')$.
+    \end{proof}
+
+    \begin{lem}
+        Let $C$ be a Weyl chamber for $\Delta$. Then for $\lambda, \mu \in \overline{C}$, $w(\lambda) = \mu$ only if $\lambda = \mu$.
+    \end{lem}
+
+    Now given $\Delta$, we may associate its \textit{Dynkin diagram}. To each simple root, we associate a node. There is no connection if two roots are orthogonal, one line if $\gen{\beta,\alpha}, \gen{\alpha,\beta}$ are both $-1$, two lines if one is $-2$, and three lines if one is $-3$. The arrow points to the shorter root.
+
+    \begin{exm}
+        Some Dynkin diagrams:
+        \begin{itemize}
+            \item $A_n$: \dynkin{A}{}
+            \item $B_n$: \dynkin{B}{}
+            \item $C_n$: \dynkin{C}{}
+            \item $D_n$: \dynkin{D}{}
+            \item $G_2$: \dynkin{G}{2}
+        \end{itemize}
+    \end{exm}
+
+    Now it is easy to see that if $\Phi$ is irreducible, then $\Delta$ can not be decomposed in the same way. Thus irreducibility is captured by the Dynkin diagram.
+
+    \begin{prop}
+        If $\Phi$ is irreducible, there are at most two lengths of roots.
+    \end{prop}
+
+    \begin{prop}
+        If $\Phi$ is ireducible, there exists a maximal positive root and it is long.
+    \end{prop}
+
+    Next we will classify the irreducible Dynkin diagrams and then show the existence of each possible Lie algebra. For now, we can assume that all roots have the same length (simply laced). We will consider the affine Dynkin diagram, formed by adjoining $-\theta$ to the diagram. Finally, we can decorate the affine diagram by the coefficients of $\Theta = \sum_{\alpha \in \Phi} K_{\alpha} \alpha$. Also, if $\beta_1, \ldots, \beta_k$ are the nodes connnected to $\alpha$, we have $2K_{\alpha} = \sum K_{\beta_i}$.
+
+    \section{Lecture 18 (Nov 5)}%
+    \label{sec:lecture_18_nov_5_}
+    
+    Recall the construction of the Dynkin diagrams from last time. Note that $\Phi$ is irreducible if and only if the Dynkin diagram is connected. Our goal is to classify irreducible root systems, which is equivalent to classifying connected Dynkin diagrams. Later, we will see that $L$ is simple if and only if $\Phi$ is irreducible. Today, we will classify simply-laced (ADE) Dynkin diagrams.
+
+    \begin{thm}
+        The simply-laced connected Dynkin diagrams are the ADE.
+    \end{thm}
+
+    \begin{proof}
+        We will use the highest root $\theta$, which is maximal in the partial order. We know that $\theta$ is unique, has positive inner product with all positive roots, and is long. We may adjoin $-\theta$ to the Dynkin diagram to obtain the affine Dynkin diagram.
+
+        By definition, we will attach a coefficient of $1$ on $-\theta$. For the extended diagram, we have $2c_i - \sum_{i-j} c_j = 0$. We will use this fact to construct the decorated extended diagrams.
+
+        Starting from the coefficient of $-\theta$, note that we can either have a degree $2$ vertex with label $1$, where the other vertices are also $1$, or a vertex with $1$ attached to a vertex with label $2$.
+
+        In the first case, it is easy to see that all vertices we attach have label $1$, so to have a finite diagram, we must form a cycle. Then we have $A_n$.
+
+        In the second case, if we branch at the label $2$ vertex, it is easy to see that we have $D_n$. If we do not branch, then we attach a vertex with label $3$.
+
+        In this case, the next vertex can be either $2$ or $4$. If we have a $2$, then we need a third vertex with label $2$ and to each vertex of label $2$, we attach a $1$. This gives us $E_6$. If the fourth vertex is a $4$, then the next vertex can be $2,3,5$. In the case of either $2$ or $3$, we have $E_7$. In the case of a $5$, the next vertex is forced to be $6$, which gives us $E_8$.
+    \end{proof}
+
+    For non-simply laced root systems, we can show existence by writing down the Dynkin diagrams, writing down a list of vectors in an integral lattice of a given length, and showing that the inner product is integral. Then reflecting keeps us in the lattice.
+
+    Alternatively, we could use the computer to generate all roots from the Cartan matrix. This gives us a set of roots which is stable under simple reflections. Then this set is also stable under all reflections, and the integrality follows from this.
+
+    \begin{prop}
+        If $L$ is simple, then $\Phi$ is irreducible. In ddition, if $L$ is semisimple, then the decomposition into simples gives an orthogonal decomposition of $\Phi$.
+    \end{prop}
+
+    \begin{proof}
+        Suppose $\Phi = \Phi_1 \times \Phi_2$ and that $\alpha \in \Phi_1, \beta \in \Phi_2$. If $\alpha + \beta$ is a root, it is in either $\Phi_1$ or $\Phi_2$. However, $\alpha + \beta$ has nonzero inner product with both $\alpha, \beta$, so $\alpha,\beta$ commute. Thus the subalgebra $K$ generated by $\Phi_1$ commutes with $\beta$, so $K$ is a proper subset of $L$. Then $K$ must be an ideal, so $L$ is not simple.
+
+        For the second part, consider the decomposition into irreducibles$L_i$. Then the maximal torus $H$ in $L$ is simply a direct sum of the $H_i$. 
+    \end{proof}
+
+    \begin{cor}
+        $\Phi$ is irreducible if and only if $L$ is simple.
+    \end{cor}
+
+    \section{Lecture 19 (Nov 7)}%
+    \label{sec:lecture_19_nov_}
+    
+    We know that each semisimple Lie algebra gives us a Dynkin diagram, but we have not shown whether each Dynkin diagram gives us a Lie algebra. Also, we need to show that all maximal tori are conjugate and that two Lie algebras are isomorphic iff they have the same root system.
+
+    \begin{lem}
+        All maximal Borels of $L$ are conjugate via $\Aut(L)$.
+    \end{lem}
+
+    We know this to be true for $\mf{sl}_n$ by Lie's theorem.
+
+    \begin{lem}
+        In a solvable subalgebra of $L$, all toral subalgebras are conjugate.
+    \end{lem}
+
+    To generate automorphisms of $L$, we can take $x \in L$ nilpotent. Then take $\exp(\ad x)$, which is an automorphism of $L$. Then we call the group $\mr{Int}(L)$ the group generated by $\exp(\ad x)$ for $x$ nilpotent.
+
+    \begin{prop}
+        If $\sigma:L \to L'$ is an isomorphism that takes $H$ to $H'$, then it induces an isomorphism of $\Phi, \Phi'$.
+    \end{prop}
+
+    \begin{proof}
+        Let $h \in H$, $x \in L_{\alpha}$. Then $[h,x] = \alpha(h)x = \alpha \circ \sigma^{-1}(\sigma(h)) \sigma(x)$. Therefore $\sigma(x) \in L_{\alpha \circ \sigma^{-1}}$. Thus $\alpha \sigma^{-1} \in \Phi'$. Then note that $\sigma$ takes root strings to root strings, so we must have $\gen{\beta, \alpha} = \gen{\beta',\alpha'}$. Thus $\sigma^*$ is an isomorphism of root systems.
+    \end{proof}
+
+    \begin{defn}
+        $H \subset L$ is a \textit{Cartan subalgebra} if $H$ is nilpotent and $N_L(H) = H$.
+    \end{defn}
+
+    \begin{prop}
+        If $L$ is semisimple and $H$ is maximal toral, then $H$ is a Cartan subalgebra.
+    \end{prop}
+
+    Proof of this uses the decomposition of $L$ into eigenspaces for $H$.
+
+    \begin{thm}
+        If $L$ is semisimple and $H$ is a Cartan subalgebra, then $H$ is maximal toral.
+    \end{thm}
+
+    Define the group $E(L)$ to be the collection of $\exp(\ad x)$, where $\ad x$ is called strongly nilpotent. Here, strongly nilpotent means that $x \in L_a(\ad y)$ for some $y \in L$ and nonzero $a$.
+
+    \begin{thm}
+        If $L$ is solvable, then all Cartans are conjugate under $E(L)$.
+    \end{thm}
+
+    \begin{thm}
+        If $L$ is a general Lie algebra, then all Borels are conjugate under $E(L)$.
+    \end{thm}
+
+    \begin{cor}
+        If $H$ is maximal toral, then $H = C_L(s)$ for some $s \in L$ semisimple.
+    \end{cor}
+
+    \begin{defn}
+        $s \in L$ is called \textit{regular semisimple} if $C_L(s)$ has minimal dimension among all semisimple elements.
+    \end{defn}
+
+    \begin{exm}
+        In $\mf{sl}_n$, the regular semisimple elements are the ones with all distinct eigenvalues.
+    \end{exm}
+
+    \begin{cor}
+        All Borels containing $H$arise from some choice of positive roots $\Phi^+$.
+    \end{cor}
+
+    \begin{defn}
+        A \textit{parabolic subalgebra} is a subalgebra containing a Borel.
+    \end{defn}
+
+    \begin{thm}
+        All parabolic subalgebra is conjugate under $E(L)$ to a standard parabolic (block upper-triangular).
+    \end{thm}
+
+    \section{Lecture 20 (Nov 12)}%
+    \label{sec:lecture_20_nov_12_}
+    
+    From a Lie algebra $L$, we will construct its \textit{universal enveloping algebra} $U(L)$. This is the left adjoint to the Lie functor from associative algebras to Lie algebras.\footnote{We can just show that the Lie functor preserves limits, but Eric turned down my shitposting request.}
+
+    \begin{defn}
+        A pair $(i,U)$ is a \textit{universal enveloping algebra} for $L$ if $U$ is an associative algebra over $k$ with a representation $i:L \to U$ satisfying the following condition: for any associative algebra $A$, if $j: L \to A$ preserves the Lie bracket, then $j$ factors uniquely through $i$.
+    \end{defn}
+
+    \begin{prop}
+        The universal enveloping algebra is unique up to unique isomorphism.
+    \end{prop}
+
+    This follows directly from the universal property (equivalently from being the adjoint of the Lie functor).
+
+    Now we will show existence of the universal enveloping algebra. We will construct this by taking the quotient of the tensor algebra $T(V)$ by the relations $[x,y] = x \otimes y - y \otimes x$, recalling that the tensor algebra is the left adjoint of the forgetful functor from associative algebras to vector spaces. Note that the universal enveloping algebra is not graded.
+
+    \begin{rmk}
+        Later, we will see that $L$ is isomorphic to its image in $U(L)$ (the unit of the adjunction).
+    \end{rmk}
+
+    It is easy to see that $i([x,y]) = i(x)i(y) - i(y)i(x)$. This follows directly from the definition of $U(L)$.
+
+    Now we will show that $(i,U)$ is universal. Note that the map $L \to A$ factors uniquely through $T(L)$. Then the map from $T(L)$ kills anything of the form $x \otimes y - y \otimes x - [x,y]$, so it factors uniquely through $U(L)$.
+
+    Now given any left ideal of $U(L)$, we may consider modules $U(L)/I$. There are also representations of $L$. We will use this technique to construct representations of semisimple Lie algebras.
+
+    \begin{exm}
+        Let $L = \mf{sl}_2$. Then we can construct $U(L)$, which is a filtered algebra.\footnote{The associated graded algebra is a symmetric algebra by the PBW theorem}. The filtration is given by
+        \[ U_m \coloneqq \pi(T^0 \oplus \cdots \oplus T^m).\]
+        Then the associated graded algebra is $G = U_0 \oplus U_1/U_0 \oplus \cdots$ with multiplication induced from $U(L)$. It is easy to see that $G$ is commutative. In addition, it is easy to see that the Casimir element is $xy+\frac{1}{2}h^2 + yx$, which is contained in the center of $U(L)$.
+
+        Now we try to construct the two-dimensional representation as a quotient of $U(L)$. Consider the ideal $I = \gen{x,h-1, y^2}$. Then $U/I$ is spanned by $1,y$.
+    \end{exm}
+
+    \section{Lecture 21 (Nov 14)}%
+    \label{sec:lecture_21_nov_14_}
+    
+    Note that by the universal property of the universal enveloping algebra, a representation of $L$ is the same thing as a representation of $U(L)$. In fact, once we see that $L \subset U(L)$, then this gives an equivalence of categories between the two notions.
+
+    \begin{thm}[Poincare-Birkhoff-Witt]
+        Choose an ordered basis $x_1 < x_2 < \cdots$ for $L$. Then the products $x_{i(1)}x_{i(2)}\cdots x_{i(m)}$ where $1 \leq i(1) \leq i(2) \leq \cdots \leq i(m)$ form a basis for $U(L)$.
+    \end{thm}
+
+    \begin{cor}
+        \begin{enumerate}
+            \item $L \subset U(L)$.
+            \item If $H \subset L$, then $U(H) \subset U(L)$. In addition, $U(L)$ is a free $U(H)$-module.
+        \end{enumerate}
+    \end{cor}
+
+    Now recall that a semisimple Lie algebra can be decomposed as $H \oplus N \oplus N^-$, where $N$ is the sum of the weight spaces of the positive roots.
+
+    Also recall the symmetric and exterior algebras and their graded pieces. Next, if $L$ is semisimple, $\bigwedge L$ splits as an an $L$-module. We may ask in what degrees the trivial representation appears because $\bigwedge^m L$ is an $L$-module. This allows us to construct a ``Frobenius polynomial'' by
+    \[ \sum_{i=1}^{\dim L} \dim (\Hom(k, \bigwedge^i L))q^i.\]
+    By a result of Konstant, this polynomial is
+    \[ \prod_{i=1}^{\dim H} (1 + q^{2m_i + 1}) \] where $m_1 \leq \cdots \leq m_n$.
+
+    \begin{exm}
+        $\bigwedge^2 \mf{sl}_2$ is the irreducible representation with highest weight $2$, so the Frobenius polynomial is $1+q^3$.
+    \end{exm}
+
+    \begin{cor}
+        The PBW theorem is equivalent to the following: the associated graded algebra for $U(L)$ is isomorphic to $S(L)$.
+    \end{cor}
+    
+    After this, we went into a discussion about the infinite-dimensional exercise from the last homework. Now consider the ideal $I \subset U(\mf{{sl}_2})$ generated by $x, h - \lambda$. Then note $U/I$ is generated by the image of $1$. By construction, $x$ kills $1$ and $h.1 = \lambda$. Unfortunately, this is infinite-dimensional, so we need to kill some power of $y$. By PBW, all powers of $y$ are linearly independent, so $U(L)/I_{\lambda} \simeq Z(\lambda)$.
+
+    Now let $L$ be semisimple with Borel $H \oplus N$. Then $N$ has a basis $\{x_{\alpha}\}$ given by the positive roots $\Phi^+$ and $H$ has a basis given by $h_i$ for $\alpha_i \in \Delta$. Then for any $\lambda \in H^*$, we can define
+    \[ I_{\lambda} = (\{ x_{\alpha} \mid \alpha \in \Phi^+ \}, \{ h_i - \lambda(h_i) \}). \]
+
+    \section{Lecture 22 (Nov 19)}%
+    \label{sec:lecture_22_nov_19_}
+
+    Today we will begin the classification finite dimensional irreducible representations of $L$ for $L$ semisimple. Let $V$ be a finite dimensional representation of $L$. Then restricting to $H$, we obtain that 
+    \[V = \bigoplus_{\mu \in H^*} L_{\mu}.\]
+    We denote the \textit{$\mu$-weight space} of $V$ by $V_{\mu}$. 
+
+    Now recall that the Borel is associated to a set of simple roots. It is easy to see that $B$ is solvable. By Lie's theorem, there exists $v^+ \in V$ such that $B.v^+ \in F.v^+$. In particular, $N.v^+ = 0$ and $h.v^+ = \lambda(h).v^+$ for some $\lambda \in H^*$.
+    
+    We will call $v^+$ a \textit{maximal vector} and $\lambda$ is called the \textit{highest weight}. Now we consider what weights may occur as highest weights. If $\beta \in \Phi^+$, then a choice of nonzero $x_{\beta} \in L_{\beta}$ we have a unique $h_{\beta} \in H, y_{\beta \in L_{-\beta}}$ such that $x_{\beta}, h_{\beta}, y_{\beta}$ is the usual basis of $\mf{sl}_2$. Now let $S_i$ be the $\mf{sl}_2$ associated to the simple root $\alpha_i$. Then because $v^+$ is an eigenvector for $h_i$, $\lambda(h_i)$ must be a nonnegative integer. In addition, $v^+$ is maximal for $S_i$.
+
+    \begin{defn}
+        \begin{enumerate}
+            \item Any $\lambda \in H^*$ is called a \textit{weight}.
+            \item If $\gen{\lambda, \alpha_i} \in \Z$ for all $i$, then $\lambda$ is an \textit{integral weight}.
+            \item If $\gen{\lambda, \alpha_i} \in \Z_{\geq 0}$, then $\lambda$ is \textit{dominant integral}. If $\gen{\lambda, \alpha_i} \in \Z_{>0}$, then $\lambda$ is \textit{strictly dominant}.
+        \end{enumerate}
+    \end{defn}
+
+    We will call $\Lambda$ the set of integral weights and $\Lambda^+$ the set of dominant integral weights. We focus on the integral weights, which must be rational combinations of the simple roots. We know that amongst the roots of $L$ there are at most two dominant integral weights: the highest long root $\Theta$ and the short dominant root $\Theta_s$.
+
+    It is also easy to see that $\Phi \subset \Lambda$, so we have $\Z[\Phi] \subset \Lambda \subset E \simeq \R^n$. We call $\Z[\Phi]$ the root lattice and $\Lambda$ the weight lattice.
+
+    \begin{exm}
+        In $A_2$, the dominant region is $0 < \theta < \pi/3$. An example of a dominant weight is $\frac{1}{3} \alpha_1 + \frac{2}{3} \alpha_2$.
+
+        In addition, the dominant integral root is $\alpha_1 + \alpha_2$. Therefore $\mf{sl}_3$ is a highest weight representation for $\Theta = \alpha_1 + \alpha_2$.
+
+        The standard representation has maximal vector $(1,0,0)$ and highest weight $\frac{1}{3} (\alpha_2 + 2 \alpha_1)$.
+    \end{exm}
+
+    This suggests
+    \begin{prop}
+        If $V$ is a finite dimensional irreducible representation, then $\lambda \in \Lambda^+$.
+    \end{prop}
+    
+    First recall that if $R$ is a rint and $L$ is some left ideal, then $M \simeq R/I$ is a left ideal. In adition, $M$ is a cyclic module (generated by one element).
+    \begin{defn}
+        $V$ is a \textit{standard cyclic} module if $V$ is cyclic and $B.v^+ = \F v^+$, where $v^+$ is the highest weight vector.
+    \end{defn}
+    Note that any standard cyclic module is of the form $U(L)/I$, where $I$ contains the span of $x_i, h_i - \lambda(h_i)$.
+
+    \begin{thm}[Theorem on standard cyclic modules of highest weight $\lambda$]
+        \begin{enumerate}[label=(\alph*)]
+            \item $V$ is spanned by $\prod_{\beta \in \Phi^+}y_{\beta}^{i_{\beta}}$ and $V$ is a direct sum of its weight spaces.
+            \item The weights are of the form $\mu = \lambda - \sum_{i=1}^n K_i \alpha_i$.
+            \item For all $\mu \in H^*$, $V_{\mu}$ is finite dimensional and $\dim V_{\lambda} = 1$.
+        \end{enumerate}
+    \end{thm}
+
+    \begin{proof}
+        Write $L = N^- \oplus B$. Then if $u \in U(L)$, by PBW, we have $\sum_I \prod y_{\beta}^{i_I} u_I$, where $\beta$ runs over the positive roots and $u_I \in U(B)$. Then $u.v^+ = \sum_I \prod_{\beta} y_{\beta}^{i_I} c_I.v^+$. Because $c_I$ is a constant we have the first part of (a).
+
+        Next note that $v^+ \in V_{\lambda}$ implies that $w$ has eigenfunctional $\lambda - \sum i_k \beta_k$. This implies (a). For (b), just write $\beta_i$ as a sum of the $\alpha_i$.
+
+        Finally, fix $\mu \in H^*$. We need to solve $\mu = \lambda - \sum i_k \beta_k$ in nonnegative integers. This is the same as writing $\lambda - \mu = \sum i_k \beta_k$. Because the positive roots are nonnegative combinations of simple roots, there are a finite number of solutions. In addition, there is one solution for $\lambda - \mu$.
+    \end{proof}
+
+    \begin{rmk}
+        The number of solutions of $\lambda - \mu = \sum i_k \beta_k$ is called the \textit{Kostant partition function}. This is given by 
+        \[ \prod_{\beta > 0} (1-e^{\beta})^{-1}.\]
+    \end{rmk}
+
+    We will prove additional parts of the theorem on standard cyclic modules.
+    \begin{prop}
+        Each submodule of $V$ is a direct sum of its weight spaces.
+    \end{prop}
+
+    \begin{proof}
+        Let $W \subset V$ be a submodule. Then $w \in W$ is given by $w = v_1 + \cdots + v_n$. Then acting by $h$ repeatedly, we obtain that $v_n \in W$. Then we use induction.
+    \end{proof}
+
+    \begin{prop}
+        $V$ is indecomposable with a unique proper maximal submodule.
+    \end{prop}
+
+    \begin{proof}
+        Note that any proper submodule $W \subset V$ lies in a sum of weight spaces not containing $V_{\lambda}$. Therefore $V$ is indecomposable. In addition, the sum of all proper submodules is the unique maximal submodule.
+    \end{proof}
+
+    \begin{cor}
+        Standard cyclic modules have a unique irreducible quotient.
+    \end{cor}
+
+    \section{Lecture 23 (Nov 21)}%
+    \label{sec:lecture_23_nov_21_}
+    
+    Recall that $V$ is standard cyclic if it has a maximal vector which generates $V$. Now let $\Phi$ be an irreducible root system. Then we define the \textit{fundamental weights} to be the dual basis to $\frac{2\alpha_i}(\alpha_i, \alpha_i)$. We call the final weights $\lambda_i$ (or $\varpi$). Then the $\lambda_i$ are a $\Z$-basis of $\Lambda$ and the $\Z_{\geq 0}$-monoid spanned by the $\lambda_i$ is $\Lambda^+$.
+
+    In general, the $\lambda_i$ can be written as $\sum d_j\alpha_j$, where $0 < d_j \in \Q$. As a consequence, we have
+
+    \begin{prop}
+        For $\lambda \in \Lambda^+$, the number of $\mu \in \Lambda^+$ with $\mu < \lambda$ is finite.
+    \end{prop}
+
+    Recall from last time that weight spaces in standard cyclic modules are finite-dimensional and that $V$ has a maximal proper submodule. Therefore it has a unique irreducible quotient. 
+
+    It turns out that the standard cyclic module $Z(\lambda)$ is isomorphic to $U(L) \otimes_{U(B)} D_{\lambda}$, where $x_{\alpha}.v = 0, h.v = \lambda(h)v$. This is called the \textit{Verma module} of high weight $\lambda$. By PBW, we know $U(L)$ is free over $U(B)$.
+
+    It is easy to see that the map from $Z(\lambda)$ to the Verma module is an isomorphism. Then consider the unique irreducible quotient $V(\lambda)$.
+
+    \begin{thm}
+        If $\lambda \in \Lambda^+$, then $V(\lambda)$ is finite dimensional.
+    \end{thm}
+    
+    \begin{lem}
+        Any $V(\lambda)$ has a unique maximal vector. 
+    \end{lem}
+
+    \begin{proof}
+        If there are two maximal vectors with weights $\lambda, \mu$, then it is easy to see that $\lambda = \mu$. We also know that $V_{\lambda}$ is one-dimensional.
+    \end{proof}
+
+    \begin{lem}
+        \begin{enumerate}
+            \item $[x_j, y_i^{k+1}] = 0$.
+            \item $[h_j, y_i^{k+1}] = -(k+1) \alpha_i(h_j) y_j^{k+1}$.
+            \item $[x_i, y_i^{k+1}] = -(k+1) y_i^k(k-h_i)$.
+        \end{enumerate}
+    \end{lem}
+
+    \begin{proof}[Proof of Theorem 156]
+        Choose $m_i = \gen{\lambda, \alpha_i} \in \Z_{\geq 0}$. First set $w = y_i^{m_i+1}$. Then by Lemma 158, we have $x_j.w = x_i.w = 0$, so $N.w = 0$. Thus $w$ is a maximal vector, but it has weight $\lambda - (m_i+1)\alpha_i$, so $w = 0$.
+
+        This implies that $V(\lambda)$ contains a nonzero finite-dimensional $S_i$-module for each $i = 1, \ldots, n$. Next we observe that $V$ is a sum of finite-dimensional $S_i$-modules. Now let $W \subset V(\lambda)$ be a finite dimensional $S_i$-submodule. Then consider the span of $x_{\alpha}W$ for all $\alpha \in \Phi$. This is finite-dimensional and is an $S_i$-submodule because $[x_i, x_{\alpha}]$ is either $h_i$ or $x_{\alpha+\alpha_i}$.
+
+        Now let $S'$ be the sum of finite-dimensional $S_i$-submodules. Then clearly $S'$ is $L$-stable. Therefore because $V(\lambda)$ is irreducible, $S' = V(\lambda)$. Therefore, for each $i$, $V(\lambda)$ is a sum of finite-dimensional $S_i$-submodules. However, each weight space is finite dimensional, so it is contained in some finite sum of finite-dimensional $S_i$-modules. Finaly, the sum
+        \[ \bigoplus_{k \in \Z} V_{\mu + k\alpha_i} \] 
+        is a finite-dimensional $S_i$-module. Thus we need to show that there are finitely many strings. By the standard theory of $\mf{sl}_2$, we know that the string runs between $\mu, s_i(\mu)$, where $s_i$ is the reflection across $\alpha_i$. Also, $\dim V_{S_i(\mu)} = \dim V_{\mu}$. Also, there exists $w$ such that $w(\mu) \in \Lambda^+$. Therefore all weights in $V(\lambda)$ are $W$-conjugate to a dominant weight $\mu^+$, so there are only finitely many strings of the form given above.
+    \end{proof}
+
+    \section{Lecture 24 (Dec 3)}%
+    \label{sec:lecture_24_dec_3_}
+
+    We begin by finishing the proof of Theorem 156. This is given at the end of the previous lecture.
+
+    \begin{cor}
+        Note that $\dim V(\lambda)_{\mu} = \dim V(\lambda)_{w(\mu)}$ for $w \in W$.
+    \end{cor}
+
+    Now it remains to compute the dimension of $V(\lambda)_{\mu}$ and the dimension of $V(\lambda)$. We have formulas of Weyl, Freudenthal, and Kostant.
+
+    Consider $G = \operatorname{Int} L$ the group of automorphisms of $L$ generated by $e^{\ad x}$ for $x$ nilpotent. Then construct the flag variety $G/B$ and the line bundle $\mc{L}_{\lambda} = G \times_B \C_{\lambda}$, where $\C_{\lambda}$ is given by the character $x_ix_j^{-1}$.
+
+    Then we have:
+    \begin{thm}[Borel-Weil-Bott]
+        For any weight $\lambda$, we have 
+        \[H^0(G/B, \mc{L}_{\lambda}) = \begin{cases}
+            0 & \lambda \notin \Lambda^+ \\
+            V(\lambda) & \lambda \in \Lambda^+
+        \end{cases}.\] 
+        In addition, if $w(\lambda + \delta)$ is strictly dominant for some $\delta, w$, then $\mc{L}_{\lambda}$ has a unique nonzero cohomology group 
+        \[H^{\ell(w)}(G/B, \mc{L}_{\lambda}) \simeq V(w(\lambda+\delta) - \delta). \]
+    \end{thm}
+
+    \begin{thm}[Kostant's Formula]
+        For weights $\lambda, \mu$, recall that $\dim Z(\lambda)_{\mu}$ is the number of ways to write $\lambda - \mu$ as a nonnegative sum of positive roots. Write $p(\lambda - \mu) = \dim Z(\lambda)_{\mu}$. We have
+        \[ \dim V(\lambda)_{\mu} = \sum_{w \in W} (-1)^{\ell(w)} p(w(\lambda + \delta) - (\mu + \delta)). \]
+    \end{thm}
+
+    \section{Lecture 25 (Dec 5)}%
+    \label{sec:lecture_25_dec_5_}
+    
+    Note that $V(\lambda)$ is finite dimensional iff $\lambda$ is dominant integral. Today we will compute $\dim V(\lambda)$ and $\dim V(\lambda)_{\mu}$. First, we will capture the action of $H$ on $V$. Assume that $V$ is a direct sum of weight spaces for $H$ (this is always true if $V$ is finite-dimensional). Consider the group ring $\Z[\Lambda]$ where $\mu \in \Lambda$ is represented by $e^{\mu}$ (so we do not confuse multiplication and addition).
+
+    \begin{defn}
+        The \textit{character} of $V = \bigoplus_{\mu \in H^*} V_{\mu}$ is
+        \[ \mathrm{ch}_V = \sum_{\mu \in \Lambda} (\dim V_{\mu}) e^{\mu}. \]
+    \end{defn}
+
+    Then recall that $\dim Z(\lambda)_{\mu} = p(\lambda - \mu)$.
+
+    \begin{exm}
+        The dominant weights (for $A_2$) less than $2 \alpha_1 + 2 \alpha_2$ are $2 \alpha_1 + \alpha_2, \alpha_1 + 2 \alpha_2, \alpha_1 + \alpha_2$. Then we obtain $p(2 \alpha_1 + 2 \alpha_2) = 3$. More generally, $p(a\alpha_1 + b \alpha_2) = \min(a,b) + 1$.
+    \end{exm}
+
+    \begin{exm}
+        Note that $V(\alpha_1 + \alpha_2) = L$. In the Verma module, we see that $\alpha_1 + \alpha_2, \alpha_1, \alpha_2, \alpha_1 - \alpha_2, \alpha_2 - \alpha_1$ have dimension $1$, $0, -\alpha_1, -\alpha_2$ have dimension $2$, and $-\alpha_1 - \alpha_2$ has dimension $3$.
+    \end{exm}
+
+    Now consider $V(2\alpha_1 + 2 \alpha_2)$. Applying $s_1$, then we obtain $-\alpha_1 + 2 \alpha_2$, and applying $s_2$, we obtain $2 \alpha_1 - \alpha_2$. Then note that $2 \alpha_1 + 2 \alpha_2, \alpha_1 + 2 \alpha_2, 2 \alpha_1 + \alpha_2$ have dimension $1$, and $\alpha_1 + \alpha_2$ has dimension $2$, and $0$ has dimension $3$. Then we put this together to find that $\dim V(2 \alpha_1 + 2 \alpha_2) = 27$.
+
+    Recall the notion of a composition series for a finite group. We apply the same notion here for $R$-modules over any rings $R$. In addition, when composition series exist, a version of the Jordan-H\"older theorem holds.
+
+    \begin{thm}
+        Every Verma module has a composition series. In addition, simple quotients are of the form $V(\mu)$, where $\mu + \delta$ is $w$-conjugate to $\lambda + \delta$.
+    \end{thm}
+
+    Call $\mu \sim \lambda$ (linked) if there exists $w$ such that $w(\lambda + \delta) = \mu + \delta$. Then define the set of $\mu \leq \lambda$ that are linked to $\lambda$ by $\Theta(\lambda)$. then we have
+    \begin{cor}
+        $\operatorname{ch} Z(\lambda) = \sum_{\mu \in \Theta(\lambda)} c_{\mu} \operatorname{ch}(V(\mu))$, where $c_{\mu} \in \mathbb{N}$.
+    \end{cor}
+    This formula comes from analyzing a short exact sequence. By some M\"obius inversion-like process, we obtain $\operatorname{ch}(V(\lambda)) = \sum_{\mu \in \Theta(\lambda)} d_{\mu}^{\lambda} \operatorname{ch}(Z(\mu))$.
+
+    \section{Lecture 26 (Dec 10)}%
+    \label{sec:lecture_26_dec_10_}
+    
+    We can define a $q$-analog of the Konstant partition function:
+    \[ p_q(\mu) = \sum_{(k_{\alpha} \in S_{\mu})} q^{\# \{\text{nonzero }k_{\alpha}\}}.\]
+    Then we may deine a $q$-analog of multiplicity. Then for dominant integral $\lambda, \mu$, $m_{\mu}^{\lambda}(q)$ has nonzero coefficients and is a Kazhdan-Lusztig polynomial for the affine Weyl group of $L$.
+
+    \begin{proof}[Sketch of proof of Theorem 165]
+        Consider $\mc{Z} = Z(U(L))$. In addition, consider a maximal vector $v^+$ of weight $\lambda$. Then $h.z.v^+ = z.h.v^+ = \lambda(h)z.v^+$ and $x_{\alpha}.z.v^+ = z.x_{\alpha}.v^+ = 0$, so $z.v^+$ is a scalar multiple of $v^+$. Then this scalar is $\chi_{\lambda}: \mc{Z} \to \F$. In fact, $z \in \mc{Z}$ acts by this scalar on all of $Z(\lambda)$.
+
+        Next choose $\alpha_i$ such that $\gen{\lambda, \alpha_i} = m \geq 0$. Then $y_{\alpha_i}^{m+1}.v^+$ is a maximal vector of weight $\lambda - (m+1) \alpha_i = s_{\alpha_i}(\lambda + \delta) - \delta$. Then, after taking the quotient, we can obtain that $\chi_{s_i \lambda} = \chi_{\lambda}$. Thus, $\chi_{\lambda}$ is invariant under $W$.
+
+        Now using Harish-Chandra, if $Z(\lambda)$ is not irreducible, then we have a proper submodule $V \subset Z(\lambda)$. Then choose $v$ a maximal vector of some weight $\mu$. Then we have a morphism $Z(\mu) \to U(L).v$, so $\chi_{\mu} = \chi_{\lambda}$, and thus $\lambda \sim \mu$. There are only finitely many $\mu$ such that $\mu \sim \lambda$, and each $Z(\lambda)_{\mu}$ is finite dimensional, so the process terminates with a composition series.
+    \end{proof}
+
+    \begin{thm}[Harish-Chandra]
+        For $\lambda \in H^*$, if $\chi_{\lambda} = \chi_{\mu}$, then $\lambda \sim \mu$.
+    \end{thm}
+    
+    \begin{rmk}
+        $\mc{Z} = U(L)^G$. In addition, by PBW, $\mc{Z} \simeq S(L)^G$. Finally, $S(L)^G \simeq S(H)^W$ and is a polynomial ring $\C[f_1, \ldots, f_n]$. In addition, $\abs{W} = \prod \deg f_i$. We may also define a $q$-analog
+        \[ \sum_{w \in W} q^{\ell(w)} = \prod \frac{q^{\deg f_i} - 1}{q-1}.\]
+    \end{rmk}
+
+    \begin{thm}[Weyl Character Formula]
+        For $\lambda$ dominant integral, we have
+        \[ \operatorname{ch} V(\lambda) = \frac{ \sum_{w \in W} (-1)^{\ell(w)} e^{w(\lambda + \delta)} }{\sum_{w \in W} (-1)^{\ell(2)}e^{w(\delta)}}.\]
+    \end{thm}
+
+    \begin{exm}
+        For $\mf{sl}_2$, the Weyl character is 
+        \[ \frac{e^{m+1} - e^{-m-1}}{e^1 - e^{-1}} = e^m + e^{m-2} + \cdots + e^{-m+2} + e^{-m}.\]
+    \end{exm}
+
+    \begin{thm}[Weyl Dimension Formula]
+        Choose an invariant inner product on $H^*$. Then we have
+        \[ \dim V(\lambda) = \frac{\prod_{\alpha > 0} (\lambda + \delta, \alpha)}{\prod_{\alpha > 0} (\delta, \alpha)}.\] 
+    \end{thm}
+    
+    
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

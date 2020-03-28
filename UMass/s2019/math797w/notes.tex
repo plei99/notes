@@ -1,0 +1,1970 @@
+\documentclass[twoside, 10pt]{article}
+\usepackage{../../../notes}
+%\geometry{margin=2cm}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\shaf}{\textbf{Shaf}}
+\renewcommand{\d}{\ \mathrm{d}}
+\mdfdefinestyle{default}{%
+    linecolor=black,
+    outerlinewidth=0.4pt,
+    roundcorner=0pt,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+    innerrightmargin=\baselineskip,
+    innerleftmargin=\baselineskip,
+    backgroundcolor=white}
+
+
+    \definecolor{darkblue}{RGB}{0,0,128}
+    \definecolor{darkred}{RGB}{128,0,0}
+    \definecolor{darkyellow}{RGB}{96,96,0}
+    \definecolor{darkgreen}{RGB}{0,128,0}
+    \definecolor{darkdarkred}{RGB}{64,0,0}
+    
+    
+
+\lstset
+{
+    basicstyle=\ttfamily\scriptsize, 
+    breaklines=true,
+    postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+    showstringspaces=false
+    keywordstyle = [1]\bfseries\color{darkred},
+    keywordstyle = [2]\itshape\color{darkgreen},
+    keywordstyle = [3]\sffamily\color{darkblue},
+    keywordstyle = [4]\color{darkyellow},
+}
+
+\title{Math 797W Lecture Notes}
+\author{Taught by Jenia Tevelev; Notes by Patrick Lei}
+\affil{University of Massachusetts, Amherst}
+\date{Spring 2019}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+
+\fancypagestyle{pages}
+{
+    \fancyhf{}
+    \fancyhead[LO]{\scshape Math 797W}
+    \fancyhead[RO]{\scshape Lecture Notes}
+    \fancyhead[CO]{\scshape Algebraic Geometry}
+    \fancyhead[CE]{\scshape University of Massachusetts, Amherst}
+    \fancyhead[LE]{\scshape Patrick Lei}
+    \fancyhead[RE]{\scshape Spring 2019}
+    \fancyfoot[RO,LE]{\itshape Page \thepage \space of \pageref{LastPage}}
+    \renewcommand{\headrulewidth}{0.1pt}
+}
+
+\pagestyle{pages}
+
+\begin{document}
+
+    \maketitle\thispagestyle{firstpage}
+    
+    \begin{abstract}
+        This will be the first course in algebraic geometry - the study of geometric spaces locally defined by polynomial equations. It is a central subject in mathematics with strong connections to differential geometry, number theory, and representation theory. We will pursue an algebraic approach to the subject, when local data is studied via the commutative algebra of quotients of polynomial rings in several variables. The emphasis will be on basic constructions and examples. Topics will include projective varieties, resolution of singularities, divisors and differential forms. Examples will include algebraic curves of low genus and surfaces in projective 3-space. In addition to theoretical approach, we will also learn how to use computer algebra software, specifically the Macaulay 2 package, to help with basic calculations in commutative algebra and algebraic geometry.
+
+        Forms of evaluation: biweekly homeworks (25\%), take-home midterms (50\%) and computer algebra project (25\%).
+    \end{abstract}
+
+    \tableofcontents
+
+    \section{Organizational/Philosophical}
+
+    Warning: All jokes and conversations are reproduced as best as I can remember and my transcription is not necessarily faithful. In addition, footnotes and some definitions are based on my understanding of algebraic geometry and related topics. Also, I am a terrible person and do not include diagrams. Form your own geometric intuition.
+
+    The syllabus is on Moodle. He wanted to project the syllabus on the board, but was unable to get the projector to work. Jenia promised to email everyone the syllabus today.
+
+    Jenia considers Shafarevich (hereto referred to as \textbf{Shaf}) to be the best way to learn algebraic geometry.\footnote{He said something about starting with schemes (like Vakil's notes) being a bad idea.} It combines the Russian algebraic geometry approach (by Shafarevich, others, and Jenia himself) with the translation by Miles Reid (British, more colloquial approach). He has used the book to teach both undergrads and graduate students. Knowing projective algebraic varieties is very helpful in the future whether you use homological/categorical, complex (holomorphic), or scheme theory methods. The plan is to cover all of Shafarevich in this semester.
+    
+    There are people who attempt to read Mumford instead (it's fantastic), but the book is much more difficult and he attempts to develop both varieties and schemes at the same time.
+
+    Jenia notes that people who do algebraic geometry use computers, and he is going to be teaching us some Macaulay 2 (especially because computer packages can do commmutative algebra). Note that this is not a course in computational algebraic geometry (which Jenia, Paul, and Eyal don't know very much about). There is David Cox at Amherst, who is retiring in June, who wrote a book titled \emph{Ideals, Varieties, and Algorithms}. There will be a computer algebra project.
+
+    There will be two kinds of homework problems. Some are normal homework assignments while others will be posted on Moodle. Two homeworks will be designated as take-home midterms.
+
+    Jenia struggled to turn off the projector but managed to do so.
+
+    \section{Affine Plane Curves}
+
+    \subsection{Lecture 1 (Jan 22)}
+    Historically, algebraic geometry came from two directions: projective geometry and abelian integrals. These are the two big sources of algebraic geometry, and much early progress was about the two subjects.
+
+    \subsubsection{Enumerative Geometry}
+
+    \begin{thm}[Butterfly Theorem]
+        Consider an ellipse with a chord $AC$ and let $B$ be the midpoint of $AC$. Draw two chords through $B$ and form a ``butterfly.'' We have two new points $P,Q$. Then $PB=BQ$.
+
+        \begin{proof}
+            Observe we have three plane curves passing through four points: A conic $e$ given by $f$ and two unions of two lines $c_1,c_2$ given by $f_1,f_2$. We have a linear system of conics passing through four points. 
+
+            The space of all conics forms an $\R^6$. Every point imposes a linear condition on the coefficients, so conics passing through out four points, so the space we care about is at least two-dimensional. We will later prove that this is exactly two.
+
+            We see that $f_2 = \alpha f + \beta f_1$. Now we restrict our polynomials to the line passing through $A,C$ and assume it is the $x-axis$ and that $B$ is the origin. We see that $f \mid_{y=0} = (x-c)(x+c)$, $f_1 \mid_{y=0} = x^2$, and $f_2 \mid_{y=0} = (x-p)(x-q)$. Then we must have that $p+q=0$.
+        \end{proof}
+    \end{thm}
+
+    Jenia learned this theorem in high school.\footnote{Unlike Americans, he seems to have gotten an actual Euclidean geometry education.} He told a story about Sheldon Katz and one of his interviews.
+
+    \begin{lem}
+        The dimension of the vector space is exactly $2$.
+
+        \begin{proof}
+            Assume $\dim(V) \geq 3$. Let $X$ be another point of the ellipse and consider the subspace $V_0 \subset V$ of conics passing through $X$. Then we see that $\dim(V_0) \geq 2$. Then we have two linearly independent conics passing $C,D$ passing through five points. This contradicts Bezout's Theorem which states that if $C$ has degree $n$ and $D$ has degree $n$, then $\abs{C \cap D} \leq nm$ unless the curves have a shared component.
+        \end{proof}
+    \end{lem}
+
+    Jenia says this is nice argument because it connects to enumerative geometry, the connection between algebraic and geometric objects, and curves on surfaces, which we will talk about later when we talk about divisors.
+
+    Another famous example of a similar argument is Pascal's Theorem:
+
+    \begin{thm}[Pascal]
+        Given a conic with an inscribed hexagon, then opposite sides intersect at three collinear points.
+    \end{thm}
+
+    Jenia attempted to draw the diagram on the board, but diagrams are not to scale. The argument is very similar to the butterfly proof and can be found in \shaf.
+
+    \subsubsection{Basic Notions}
+
+    We will give some definitions to formalize affine plane curves.
+    
+    \begin{defn}[Affine Plane Curve]
+        Let $k$ be algebraically closed and denote by $\A^2$ the affine plane. Let $f \in k[x,y]$ be nonconstant of degree $d>0$. Then the vanishing locus $C$ of $f$ is an affine plane curve of degree $d$. Examples are lines, conics, cubics, quartics, and quintics (which are only for experts).
+    \end{defn}
+
+    \begin{rmk}
+        Observe that $k[x,y]$ is a UFD (more generally, if $R$ is a UFD, then $R[x]$ is a UFD). This is an application of Gauss's Lemma.
+    \end{rmk}
+
+    \begin{defn}[Irreducible Components]
+        We factor $f = f_1 \cdots f_r$ into irreducibles. Then the vanishing locus $c_i$ of each $f_i$ is an irreducible component of $C$.
+    \end{defn}
+    
+    Why do we consider algebraically closed fields? One reason is to have more points. We can see that if our field is algebraically closed, our curve has points.
+
+    \begin{lem}
+        Let $k= \overline{k}$. Then:
+
+        \begin{enumerate}
+            \item $C$ contains infinitely many points.
+            \item Suppose $f \in k[x,y]$ is irreducible and $g \in k[x,y]$. Then the set $\{f=g=0\}$ is finite unless $f$ divides $g$. In particular, an irreducible polynomial is uniquely determined up to a scalar by its curve.
+        \end{enumerate}
+
+        \begin{proof}
+            We use the fact that $k$ is algebraically closed.
+            \begin{enumerate}
+                \item Every algebraically closed field is infinite, so we can write $f = \sum g_i(x)y^i$. Then take any $x_0$ and solve for $y$. Note each $g_i$ is a polynomial and has finitely many roots, so there are only finitely many $x_0$ such that $\sum g_i(x_0)y^i$ is a nonzero constant.
+                \item We use Gauss's Lemma in a different form: Let $R$ be a UFD with field of fractions $K$. Then let $f \in R[y]$. Then if $f$ is irreducible over $R$, it must be irreducible over $K$. We see that $f,g \in k[x,y] = k[x][y] \subset k(x)[y]$. By Gauss's Lemma, we know that $f$ does not divide $g$ in $k(x)[y]$ and that $f$ is irreducible. Note that $k(x)[y]$ is a PID, so $f,g$ are coprime and using Bezout's Lemma, we have $1 = \alpha f + \beta g$. Let $p$ be an LCM of the denominators of the coefficients of $\alpha,\beta$. Then we have $p(x) = \alpha_0 f + \beta_0 g$. Suppose $f(x_0,y_0) = g(x_0,y_0) = 0$. Then $p(x_0) = 0$, which has only finitely many solutions for $x_0$. By the same argument, there are only finitely many possible values for $y_0$.
+            \end{enumerate}
+        \end{proof}
+    \end{lem}
+
+    During the proof of the previous lemma, Jenia said, ``Every time we run into a problem, we have to use a little bit more commutative algebra. That's how algebraic geometry works.'' In addition, Jenia's phone rang and made frog noises.
+
+    We now have enough vocabulary in plane curves to state Bezout's Theorem, but Jenia now wants to talk about Abelian integrals.
+
+    \subsubsection{Abelian Integrals}
+
+    We want to be able to calculate \[\int u(x,\sqrt{1-x^2})\ \mathrm{d}x,\] where $u$ is a rational function in two complex variables. In Calc 2, we use trig substitutions, but Jenia learned something called Euler's substitutions. We can rewrite the integral over the unit circle, which has a rational parameterization \[(x,y) = \left( \frac{2t}{1+t^2}, \frac{t^2-1}{t^2+1} \right).\] We can now express the integral in terms of $t$ and compute the integral using partial fractions.
+
+    This method is harder than using trig substitution, but is more general. If your curve is rational, then integrating over it is amenable to this method.
+
+    \begin{defn}[Rational Curve]
+        An irreducible curve $C = (f=0)$ is rational if there exist $\varphi(t), \psi(t) \in k(t)$ nonconstant such that $f(\varphi(t),\psi(t)) = 0$.\footnote{We will see that this is equivalent to having function field $k(t)$, or being birational to the line.}
+    \end{defn}
+
+    \begin{cor}
+        If $C$ is rational, then the integral over the curve $\int u(x,y) dx$, where $u$ is rational, can be computed using partial fractions.
+    \end{cor}
+
+    \begin{rmk}
+        Later in the semester, we will talk about differential forms, which are a way to talk about integration is multiple dimensions.
+    \end{rmk}
+
+    \subsection{Lecture 2 (Jan 24)}%
+    \subsubsection{Non-Mathematics}%
+    Jenia was actually able to make the projector work today. He told us to install \texttt{Macaulay 2} which you can run with the command \texttt{M2}. Jenia showed us some basic commands in \texttt{Macaulay 2}. Next, he showed us the Moodle and the forum with problems for us to solve.
+
+    \subsubsection{Rational Curves Continued}%
+    We continue with our preliminary discussion of plane algebraic curves to discuss some history and motivation. Last time we discussed Abelian integrals focusing on the example of the circle. From the rational parameterization $\left( \frac{2t}{1+t^2}, \frac{t^2-1}{t^2+1} \right)$, we can find all possible Pythagorean triples by choosing rational values for $t$. We saw last time that we can reduce an integral of the form $\int u(x,y) \d x + \int v(x,y) \d y$ to an integral of the form $\int \varphi(t) \d t$. 
+
+    We introduce a new notion, the field of rational functions $k(C)$ which is the field of all rational functions on the curve. Observe, however, that rational functions are not everywhere defined. There are finitely many points on the curve where the denominator vanishes. We can say that $u_1 = u_2$ if they agree outside their bad points. Algebraically, we can say that $\frac{p_1}{q_1} \sim \frac{p_2}{q_2} \Leftrightarrow f \mid p_1q_2-p_2q_1$. 
+
+    Alternately, we can define the coordinate algebra $k[C] = k[x,y]/(f)$ and then define $k(C)$ to be its field of fractions.\footnote{We will formally define the function field and coordinate for affine varieties later.}
+
+    \begin{defn}[Regular Function]
+        $u \in k(C)$ is regular at $P \in C$ if there exist $p,q \in k[x,y]$ such that $u=\frac{p}{q}$ such that $q(P) \neq 0$.
+    \end{defn}
+
+    \begin{exm}
+        Let $C = \Set{x^2+y^2=1}$ and $u = \frac{1-x}{y}$. Then we can write $u = \frac{y}{1+x}$, so it is regular at the point $(1,0)$.
+    \end{exm}
+
+    We can see that $k(C)$ is finitely generated by $x,y$. We also see that $k(C)$ has transcendence degree\footnote{This equals its geometric dimension.} $1$ because $f(x,y) = 0$ is an algebraic dependence. 
+
+    \begin{lem}
+        Every finitely generated field of transcendence degree $1$ is isomorphic to $k(C)$ for some irreducible curve $C$.
+    \end{lem}
+
+    \begin{rmk}
+        Different curves can have the same function field.
+    \end{rmk}
+
+    \begin{defn}
+        We say that curves $C,D$ are birational if $k(C) \simeq k(D)$.\footnote{This is equivalent to the geometric dimension.} 
+    \end{defn}
+
+    \begin{exm}
+        Let $C$ be the circle and observe that $k(C) \simeq k(t) \simeq k(\A^1) = k(x)$, so $C$ is birational to $\A^1$.
+    \end{exm}
+
+    Suppose $C$ is a rational curve $\Set{f=0}$. Then there exist $\varphi, \psi \in k(t)$ nonconstant such that $f(\varphi(t), \psi(t)) = 0$.
+
+    \begin{lem}
+        If $C$ is a rational curve, then $k(C) \hookrightarrow k(t)$.
+        \begin{proof}
+            Take the obvious map. Then we see that this is defined because if $q(\varphi(t), \psi(t)) = 0$, then $f \mid q$.
+        \end{proof}
+    \end{lem}
+
+    So we see that rational curves have function field a subfield of $k(t)$. However, we invoke a theorem from algebra.
+
+    \begin{thm}[L\"uroth]
+        Every subfield of $k(t)$ that is not a subfield of $k(t)$ is isomorphic to $k(t)$.
+    \end{thm}
+
+    \begin{cor}
+        A curve $C$ is rational if and only if $C$ is birational to a line.
+    \end{cor}
+
+    Now we discuss nonrational curves and try to find a simple example.
+
+    \subsubsection{Elliptic Curves}%
+    In 1655, Wallis was interested in computing the arc length of an ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$. Then we see that $y = \frac{b}{a} \sqrt{a^2-x^2}$ and $y' = \frac{-bx}{a\sqrt{a^2-x^2}}$. We substitute into the formula for arc length $\int \sqrt{1+(y')^2} \d x$, change variables, and obtain an integral of the form \[ \int \frac{a-ae^2x^2}{\sqrt{(1-e^2x^2)(1-x^2)} \d x}. \] Then set $C = \Set{y^2 = (1-e^2x^2)(1-x^2)}$. We will see that this curve is an elliptic curve.
+
+    Let's perform an invertible change of variables by moving $1$ to $\infty$. Then we set $t = \frac{1}{1-x}$. We now obtain the equation \[y^2 = \left( 1-e^2 \frac{(t-1)^2}{t^2} \right) \frac{1}{t} \left( 1+ \frac{t-1}{t} \right).\] Now multiply by $t^4$ and obtain the equation \[ (yt^2)^2 = t^2-e^2(t-1)^2(2t-1) \] before setting $s=yt^2$ to obtain an equation of the form $s^2 = f_3(t)$, where $f_3(t)$ is a cubic polynomial. Then, after further simplification,\footnote{This is only possible if the field is not of characteristic $2,3$.} we obtain an elliptic curve $D$ given by $s^2 = w^3 + aw+b$, which is birational to our original curve $C$.
+
+    \begin{thm}
+        Elliptic curves are not rational.\footnote{Jenia says Dummit and Foote give an algebraic proof of this fact.} Proof of this fact will give us motivation to understand other definitions
+        \begin{proof}[Sketch]
+            First, we projectivize our curves, so we have an elliptic curve $C \hookrightarrow \P^2$ and a line $L \hookrightarrow \P^2$. The next step is to show that the two curves are non-singular. Third, we show that if $C,L$ are birational and non-singular, then they are isomorphic. Then, we see that $C$ has a simple involution $\varphi$ given by $s \mapsto -s$. Then we see that $s$ has four fixed points. Now we use this involution to create an involution $f \circ \varphi \circ f^{-1}$ with $4 > 2$ fixed points. However, every automorphism\footnote{The automorphism group of $\P^1$ is $\mathrm{PGL}(2,k)$} of $L$ is given by the images of three points,\footnote{This generalizes to higher dimensional projective spaces.} so this is impossible.
+        \end{proof}
+    \end{thm}
+
+    \subsubsection{Non-singularity of plane curves}
+    Conider a curve $C = \Set{f=0}$ and let $(a,b) \in C$. Then we have a Taylor expansion $f(x,y) = f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b) + \cdots$.
+   
+    \begin{defn}[Non-singularity]
+        A plane curve $C$ is nonsingular at $(a,b)$ if at least one of $f_x(a,b), f_y(a,b) \neq 0$. In this case, $f(x,y) = f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b)$ is called the tangent line.
+    \end{defn}
+
+    \begin{defn}[Multiplicity]
+        We say that $(a,b) \in C$ has multiplicity $m$ is the smallest positive integer such that an order $m$ partial derivative does not vanish at $m$.
+    \end{defn}
+
+    We see that a point is singular if it has multiplicity at least $2$.
+
+    \begin{exm}[Singular Conics]
+        Take $(0,0) \in C$ and suppose the origin is a singularity. Then $f = \alpha x^2 + \beta y^2 + \gamma xy = (ax+by)(cx+dy)$. Thus $C$ must be a union of two lines.
+    \end{exm}
+
+    \section{Affine Zariski-Closed Sets}
+    \subsection{Lecture 3 (Jan 29)}
+
+    We will put plane curves away for a while and then return to them. In this section, we will review several facts from commutative algebra.
+
+    \begin{thm}[Noether Normalization Lemma]
+        Let $A$ be a finitely generated $k$-algebra.\footnote{Note here that $k$ does not have to be closed.} Then $A$ contains $x_1, \ldots, x_n$ algebraically independent over $k$ and such that $A$ is integral over $k[x_1, \ldots, x_n]$.
+        \begin{proof}
+            We will assume that $k$ is infinite. Choose some generators $y_1, \ldots, y_r$. We argue by induction on $r$. If $r=0$, then $A=k$, so there is nothing to prove. If $y_1, \ldots, y_r$ are algebraically independent, then $A=k[y_1, \ldots, y_r]$. 
+            
+            Suppose that $f(y_1, \ldots, y_r) = 0$ for some $f \in k[Y_1, \ldots, Y_r]$. We can write \[ f = \sum_{i=0}^d h_i(y_1, \ldots, y_{r-1})y_r^i. \] If $h_d = 1$, then $y_r$ is integral over the subring $B$ generated by $y_1, \ldots, y_{r-1}$. By induction, $B$ contains algebraically independent $x_1, \ldots, x_n$ such that $B$ is integral over $k[x_1, \ldots, x_n]$. Therefore, $A$ must be integral over $k[x_1, \ldots, x_n]$ by transitivity of integrality.
+
+            Noether's trick is to show that we can always reduce to the simple case by a linear change of variables. Introduce $y_1'=y_1-  \lambda_1y_r, \ldots, y_{r-1}'=\lambda_{r-1}y_r, y_r' = y_r$. We see that $y_1', \ldots, y_r'$ generate $A$. Then we see that $f(y_1, \ldots, y_r) = f(y_1' + \lambda_1y_r', \ldots, y_{r-1}'+\lambda_{r-1}y_r', y_r') = 0$. Write $f = F + \mathrm{l.o.t.}$ and suppose $F$ is of degree $d$. Then we see that $F(y_1' + \lambda_1y_r', \ldots, y_{r-1}'+\lambda_{r-1}y_r', y_r') = F(\lambda_1, \ldots, \lambda_{r-1}, 1)y_r'^d$. We simply need $F(\lambda_1, \ldots, \lambda_{r-1}, 1) \neq 0$, which is always possible if $k$ is infinite.
+        \end{proof}
+    \end{thm}
+
+    Recall the fundamental theorem of algebra, which states that $\C$ is algebraically closed. This gives a bijection between $\C$ and maximal ideals $m \subset \C[x]$ by $a \leftrightarrow (x-a)$. Indeed, over any field, maximal ideals of $k[x]$ are principal ideals generated by irreducible monic polynomials. If $k = \overline{k}$, then all monic polynomials are linear.
+
+    \begin{thm}[Weak Nullstellensatz]
+        Let $k = \overline{k}$. Then there is a bijection between $\A^n = k^n$ and maximal ideals in $k[x_1, \ldots, x_n]$ given by $(a_1, \ldots, a_n) \leftrightarrow (x_1-a_1, \ldots, x_n-a_n)$.
+        \begin{proof}
+            Given a point $(a_1, \ldots, a_n) \in \A^n$, consider a homomorphism $k[x_1, \ldots, x_n] \rightarrow k$ given by $f \mapsto f(a_1, \ldots, a_n)$. Then the kernel of this morphism is a maximal ideal, but it must be equal to $(a_1, \ldots, a_n)$
+
+            Now take $m \subset k[x_1, \ldots, x_n]$ maximal and suppose $k[x_1, \ldots, x_n]/m \xrightarrow[\simeq]{\varphi} K \supset k$ is a field. If $K=k$, define $a_i= \varphi(x_i)$. Then because $\varphi$ acts on the variables just like the evaluation morphism, we must have $m = \mathrm{ker} \varphi = (x_1-a_1, \ldots, x_n-a_n)$. 
+            
+            We need to show that $K=k$. Note that $K$ must be a finitely generated $k$-algebra. By Noether, $K$ is integral over a polynomial subring $k[x_1, \ldots, x_n]$. Recall the fact that if $A$ is a field and $A$ is integral over $B$, then $B$ is a field. To show this, we see that $b^{-1} \in A$, so $b^{-1} = (b^{-1})^r + a_1(b^{-1})^{r-1} + \cdots + a_r = 0$ where $a_1, \ldots, a_r \in B$. Multiplying through by $b^{r-1}$, we see that $b^{-1} \in B$. Therefore $k[x_1, \ldots, x_n]$ is a field and $n=0$ and $K$ is integral over $k$. Because $k$ is algebraically closed, $K=k$.
+        \end{proof}
+    \end{thm}
+
+    \begin{defn}
+        A subset $X \subset \A^n$ is called a closed affine set\footnote{Shafarevich calls these closed sets. Some people call them affine sets and other names. Reid uses algebraic sets.} if $X = \Set{\mathbf{a} \in \A^n | f_1(\mathbf{a}) = \cdots = f_r(\mathbf{a}) = 0 }$ for some polynomials $f_1, \ldots, f_r \in k[x_1, \ldots, x_n]$. 
+    \end{defn}
+
+    \begin{lem}
+        Closed sets have the form $V(I) = \Set{(a_1, \ldots, a_n) \in \A^n | f(a_1, \ldots, a_n) = 0 \text{ for all $f \in I$}}$ for some ideal $I \subset k[x_1, \ldots, x_n]$.
+        \begin{proof}
+            Take $X = \Set{f_1 = \cdots = f_r = 0}$. Then let $I = (f_1, \ldots, f_r) \subset k[x_1, \ldots, x_n]$. Then $V(I)$ must equal $X$. On the other hand, take $V(I)$. Because $k[x_1, \ldots, x_n]$ is Noetherian, let $f_1, \ldots, f_r$ to be generators of $I$. Then $V(f_1, \ldots, f_r) = V(I) = X$.
+        \end{proof}
+    \end{lem}
+
+    Now let $X \subset \A^n$ be a closed set. Define $I(X) = \Set{f \in k[x_1, \ldots, x_n] | f(\mathbf{a}) = 0 \text{ for all $\mathbf{a} \in X$}}$. We now have two maps $\Set{\text{Closed Sets}} \xleftrightarrow[I(X)]{V(I)} \Set{\text{Ideals}}$.
+
+    \begin{thm}[Strong Nullstellensatz]
+        $V(I(X))$ and $I(V(J)) = \sqrt{J}$.
+        \begin{proof}
+            Take $g = I(V(I))$. Suppose $I = (f_1, \ldots, f_r)$. We need to show that if $g$ vanishes at every point $(a_1, \ldots, a_n)$ such that $f_i(a_1, \ldots, a_n) = 0$, then $g^{\ell} = h_1f_1 + \cdots + h_rf_r$ for some $\ell$. We use a trick of Rabinowitch: Let $B = (f_1, \ldots, f_r, 1 - gx_{n+1}) \subset k[x_1, \ldots, x_{n+1}]$. We show that $B = k[x_1, \ldots, x_{n+1}]$. If not, it is contained in some maximal ideal $B \subset m = (x_1-a_1, \ldots, x_{n+1}-a_{n+1})$. However, $f_i(a_1, \ldots, a_n) = 0$ and $1-g(a_1, \ldots, a_n)a_{n+1} = 0$. But remember $g \in I(X)$, so we obtain that $1=0$.
+
+            Thus we can write $1 = \sum h_if_i + h_{n+1}(1-gx_{n+1})$. Then we write $x_{n+1} = \frac{1}{g(x_1, \ldots, x_n)}$. Then we obtain an expression of the form \[1 = \sum_{i=1}^r h_i(x_1, \ldots, \frac{1}{g(x_1, \ldots, x_n)})f_i.\] Then we can clear denominators and obtain that $g \in \sqrt{I}$.
+
+            Finally we show that $V(I(X)) = X$. Then there exists an ideal $J$ such that $X=V(J)$. Then $V(I(X)) = V(I(V(J))) = V(\sqrt{J}) = V(J) = X$.
+        \end{proof}
+    \end{thm}
+
+    \begin{rmk}
+        $I(X)$ is always radical. In fact $V(\sqrt{I}) = V(I)$.
+    \end{rmk}
+
+    \begin{cor}
+        The operations $I$ and $V$ give a bijection between closed sets in $\A^n$ and radical ideals in $k[x_1, \ldots, x_n]$. 
+    \end{cor}
+
+    \subsection{Lecture 4 (Jan 31)}
+
+    Recall that the weak Nullstellensatz gives a bijection between points in $\A^n$ and maximal ideals in $k[x_1, \ldots, x_n]$. Also, the strong Nullstellensatz gives a bijection between affine closed sets and radical ideals. 
+
+    \subsubsection{Zariski Topology on $\A^n$}
+    \begin{prop}
+        The affine closed sets $V(I)$ form the set of closed sets for the Zariski topology on $\A^n$.
+        \begin{proof}
+            \begin{enumerate}
+                \item $\A^n = V(0)$ and $\emptyset = V((1))$;
+                \item $\cap_{i \in I} Y_i = V(\sum I_i)$;
+                \item $\cup_{i=1}^r Y_i = V(I_1\cdots I_r) = V(I_1 \cap \cdots \cap I_r)$.
+            \end{enumerate}
+        \end{proof}
+    \end{prop}
+
+    \begin{defn}[Irreducible Closed Sets]
+        A closed set is called irreducible if it is not the union of two proper closed subsets.
+    \end{defn}
+
+    \begin{exm}
+        In $\R^n$ with the Euclidean topology only points are irreducible.
+    \end{exm}
+
+    \begin{thm}
+        Under the correspondence between $V(I), I(X)$, we will see that irreducible subsets $Y \subset \A^n$ correspond to prime ideals $\mathfrak{p} \subset k[x_1, \ldots, x_n]$, which we denote by $\mathrm{Spec}\ k[x_1, \ldots, x_n]$.
+        \begin{proof}
+            Suppose $Y \subset \A^n$ is reducible with $Y = Y_1 \cup Y_2$. Then $I(Y) \subsetneq I(Y_i)$ for $i=1,2$ by the Nullstellensatz. Then choose $f_1 \in I(Y_1) \setminus I(Y)$ and $f_2 \in I(Y_2) \setminus I(Y)$. Then $f_1f_2$ vanishes on $Y$ and therefore $I(Y)$ is not prime.
+
+            Suppose $I(Y)$ is not prime. Then there exist $f,g \notin I(Y)=I$ with $fg \in I(Y)$. Then write $Y_1 = V(f) \cap Y$ and $Y_2 = V(g) \cap Y$, so we see that $Y = Y_1 \cup Y_2$.
+        \end{proof}
+    \end{thm}
+
+    Now we consider this correspondence in the case of the plane.
+
+    \begin{figure}[H]
+        \begin{center}
+            \begin{tabular}{cc}
+                \toprule
+                Irreducible subsets & Prime ideals \\
+                \midrule
+                Points $(a,b)$ & Maximal ideals $(x-a, y-b)$ \\
+                Irreducible affine plane curves & $(f)$ \\
+                $\A^2$ & 0 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+        \caption{Irreducible subsets of $\A^2$ and prime ideals in $k[x,y]$.}
+    \end{figure}
+
+    Why is there nothing else? Suppose we have a prime ideal $0 \neq \mathfrak{p} \subset k[x,y]$. Then write $\mathfrak{p} = (f_1, \ldots, f_r) = f(g_1, \ldots, g_r)$ where $f = \mathrm{gcd}(f_1, \ldots, f_r)$. Then either $f \in \mathfrak{p}$ or $g_i \in \mathfrak{p}$ for all $i$. If $f \in \mathfrak{p}$, we have that $\mathfrak{p} = (f)$. Otherwise, $\mathfrak{p} = (g_1, \ldots, g_r)$. However, the $g_i$ are coprime so $V(\mathfrak{p})$ is a finite union of points, so it must be a single point. Thus $\mathfrak{p}$ is maximal.
+
+    ``That's what most arguments in algebraic geometry look like: some input from algebra and some input from geometry.''
+
+    \begin{defn}[Irreducible Component]
+        Let $Y \subset \A^n$ be a Zariski closed set. Then an irreducible component of $Y$ is a maximal irreducible subset of $Y$.
+    \end{defn}
+
+    \begin{lem}
+        There exist only finitely many irreducible components $Y_1, \ldots, Y_s$ and $Y = Y_1 \cup \cdots \cup Y_s$.
+        \begin{proof}
+            We show that $Y$ can be written as a finite union $z_1 \cup \cdots \cup z_r$ of irreducible subsets. Given that, we can also assume that $z_i \subsetneq z_j$ for all $i \neq j$. Take some irreducible subset $W \subset Y = Z_1 \cup \cdots \cup Z_r$. But in fact $W = \cup (W \cap Z_i)$, so $W \subset Z_i$ for some $I$. Then in particular, if $W$ is an irreducible component, then $W = Z_i$. Therefore this decomposition is a decomposition into irreducible components.
+
+            To prove the claim, if $Y$ is irreducible, then clearly this is true. Then write $Y = Y_1 \cup Y_2$. If $Y_1, Y_2$ are irreducible, the we are done. Suppose $Y_1$ is reducible. Then write it as a union and continue to form a binary tree. But this tree must be finite because $k[x_1, \ldots, x_n]$ is Noetherian.
+        \end{proof}
+    \end{lem}
+
+    \begin{rmk}
+        The algebraic counterpart to that is $I = \mathfrak{p}_1 \cap \cdots \cap \mathfrak{p}_s$.
+        \begin{proof}
+            Take $f \in \mathfrak{p}_1 \cap \cdots \cap \mathfrak{p}_s$. Then $f$ vanishes on every $y_i$, so it vanishes on $y$. Thus $f \in I$.
+        \end{proof}
+    \end{rmk}
+
+    \begin{thm}
+        Every radical ideal in $l[x_1, \ldots, x_n]$ is the intersection of minimal prime ideals which contain $I$.\footnote{This is true in every Noetherian ring.}
+    \end{thm}
+
+    We now shift to a more general perspective. So far we have considered $\A^n$ and $k[x_1, \ldots, x_n]$. Now we will consider $X,k[X]$ where $X$ is an irreducible Zariski-closed subset of $\A^n$ and $k[X] = k[x_1, \ldots, x_n]/I(X)$ the coordinate ring of $X$. We see that $X$ is irreducible if and only if $k[X]$ is an integral domain.
+
+    \begin{thm}[Generalized Nullstellensatz]
+        There is a bijection between points of $X$ and maximal ideals of $k[X]$, between closed subsets of $X$ and radical ideals of $k[X]$, and between irreducible closed subsets of $X$ and prime ideals of $k[X]$.
+        \begin{proof}
+            Suppose $Y \subset X$ is a closed subset. Then $I(Y) \supset I(X)$ as radical ideals. Then $I(Y)/I(X) \subset k[X]$ is a radical ideal.
+        \end{proof}
+    \end{thm}
+
+    \subsection{Lecture 5 (Feb 5)}
+
+    \subsubsection{Macaulay 2 Interlude}
+    Recall that we have algebraic sets $X \hookrightarrow \A^n$ and the coordinate algebra $k[X] = k[x_1, \ldots, x_n]/I(X)$. Then for any $Y \subset X$, $I(Y) \subset k[X]$ is a radical ideal and $Y$ irreducible implies $I(Y)$ is prime. Then we can decompose $Y$ as a union of irreducible components and $I(Y)$ as an intersection of minimal primes.
+
+    There are algorithms that can do these computations, but they generally use Gr\"obner bases, which are difficult to compute by hand. Fortunately, we can use computers, such as Macaulay2, to perform these calculations.
+
+    \begin{mdframed}[style=default]
+        \lstinputlisting{code/lec05_01.M2}
+    \end{mdframed}
+
+    We now consider the Clebsch cubic surface $x^3+y^3+z^3+1 = (x+y+z+1)^3$. There is a famous theorem that any smooth cubic surfaces contain exactly 27 lines. We will calculate these 27 lines.
+
+    \begin{mdframed}[style=default]
+        \lstinputlisting{code/lec05_02.M2}
+    \end{mdframed}
+
+    We found an interesting phenomenon where the computation took longer and was the computer was unable to find the expected 25 affine lines when we worked over $\Z/103\Z$ because 5 is not a quadratic residue mod 103.\footnote{We went into a digression about quadratic reciprocity.}
+
+    \subsubsection{Morphisms of Affine Closed Sets}
+
+    Let $f: \A^n \rightarrow \A^m$ be given by $y_i = f_i(x_1, \ldots, x_n)$, where $f_i \in k[x_1, \ldots, x_n]$ for $i = 1, \ldots, m$. Algebraically, this corresponds to a morphism $k[y_1, \ldots, y_m] \xrightarrow{\varphi} k[x_1, \ldots, x_n]$, which is given by $y_i \mapsto f_i(x_1, \ldots, x_n)$.
+
+    We know that the kernel of this morphism is a prime ideal because the quotient by it is a subring of $k[x_1, \ldots, x_n]$, so is an integral domain. Then $V(\mathrm{Ker}\varphi) = \overline{f(\A^n)}$. To see this, suppose that $(b_1, \ldots, b_m) = f(a_1, \ldots, a_n)$. Then let $g \in \mathrm{Ker}\varphi$. We see that
+    \begin{align*}
+        g(b_1, \ldots, b_m) &= g(f_1(a_1, \ldots, a_n), \ldots, f_m(a_1, \ldots, a_n)) \\ 
+        &= [\varphi(g)](a_1, \ldots, a_n) \\ 
+        &= 0.
+    \end{align*}
+    
+    In fact, $\overline{\mathrm{Im} f} = V(\mathrm{Ker}\varphi)$.
+
+    Let $X \hookrightarrow \A^n$. Now we define a morphism to be a restriction of a polynomial morphism from $\A^n \rightarrow \A^m$. We pull back $k[y_1, \ldots, y_m] \rightarrow k[X]$ in the same way.
+
+    Finally, suppose $X \subset \A^n, Y \subset \A^m$. Then let $f:X \rightarrow \A^m$ and suppose $f(X) \subset Y$. Then we have a morphism $X \rightarrow Y$ and a pullback morphism $k[Y] \rightarrow k[X]$.
+
+    \begin{thm}
+        There is a bijection $\mathrm{Hom}(X,Y) \simeq \mathrm{Hom}(k[Y], k[X])$.\footnote{This induces an equivalence of categories between affine algebraic sets and finite $k$-algebras with no nilpotent elements.}
+    \end{thm}
+
+    \subsection{Lecture 6 (Feb 7)}
+
+    \subsubsection{Morphisms Continued}
+    Recall the definition of a morphism of affine algebraic sets. Also recall that any morphism $f : X \rightarrow Y$ induces a pullback homomorphism $f^*: k[Y] \rightarrow k[X]$.
+    
+    Also recall Theorem 40. In particular, $X \simeq Y$ if and only if $k[X] \simeq k[Y]$.
+
+    \begin{proof}[Proof of Theorem 40]
+        Recover $f$ from $f^*$ by $b_i = y_i(b) = y_i(f(a)) = (f^*y_i)(a)$. Then given a morphism $\alpha: k[Y] \rightarrow k[X]$, consider the following diagram.
+
+        \begin{center}
+            \begin{tikzcd}
+                k[Y] \arrow{r}{\alpha} & k[X] \\
+                k[y_1, \ldots, y_m] \arrow[twoheadrightarrow]{u} & k[x_1, \ldots, x_n] \arrow[twoheadrightarrow]{u}
+            \end{tikzcd}
+        \end{center}
+
+        Then there exist $f_i$ such that the image of $f_i$ under the map $k[x_1, \ldots, x_n] \rightarrow k[X]$ is $\alpha(y_i)$. Define $f = (f_1, \ldots, f_m)$. Clearly $\alpha = f^*$. 
+
+        We check that $f(X) \subset Y$. Note $g \in O(Y)$ given by $g(f(a_1, \ldots, a_n)) = 0$ if and only if $g(f_1, \ldots, f_m) \in I(X)$ if and only if $\alpha(g) \in I(X)$ if and only if $g$ restricted to $Y$ is zero.
+    \end{proof}
+
+    Recall that $X \hookrightarrow \A^n$ corresponds algebraically to $k[x_1, \ldots, x_n] \twoheadrightarrow k[X]$, which is choice of generators of $k[X]$.
+
+    Let $G$ be a finite group acting on $X$. Then $G$ must also act on $k[X]$.
+    \begin{thm}
+        If the $\mathrm{char} k$ does not divide $\abs{G}$, then $k[x]^G$ is finitely generated.
+    \end{thm}
+    Choose generators $g_1, \ldots, g_n$ of $k[X]^G$ given by $\psi: k[y_1, \ldots, y_n] \twoheadrightarrow k[X]^G$. Let $I = \ker \psi$.
+    \begin{defn}[Quotient by a finite group]
+        Define $Y = V(I) \subset \A^n$. Then $k[Y] \simeq k[X]^G$. Then $Y = X/G$. Note that $k[X]^G \hookrightarrow k[X]$, so there is a quotient morphism $\pi: X \rightarrow X/G$.
+    \end{defn}
+    
+
+    \begin{exm}
+        Consider the action of $\Z/2\Z$ on $\A^2$ given by $(x,y) \mapsto (-x,-y)$. This gives an action on $k[x,y]$, so $k[x,y]^{\Z^2} = k[x^2,y^2,xy] = k[u,v,w]/(uv-w^2)$. Then we see $\A^2/(\Z/2\Z) = V(uv-w^2) \hookrightarrow \A^3$ and the quotient morphism is given by $(x,y) \rightarrow (x^2,y^2,xy)$.
+    \end{exm}
+
+    Now we can translate some geometry into algebra and some algebra into geometry.
+
+    \begin{defn}[Dominance]
+        A morphism $f:X \rightarrow Y$ is dominant if $f(X)$ is (Zariski-)dense in $Y$.
+    \end{defn}
+
+    \begin{prop}
+        $f$ is dominant if and only if $f^*$ is injective.
+        \begin{proof}
+            Suppose $f$ is dominant. Let $\varphi \in \ker \varphi$. We compute $\varphi(f(a)) = (f^*\varphi)(a) = 0$, so $\varphi |_{f(X)} = 0$. However, $f(X) \subset Y$ is dense, so $\varphi|_Y = 0$.  
+
+            Now suppose $f^*$ is injective but $f$ is not dominant. Therefore $f(X)$ is not dense in $Y$, which is possible if and only if there exists $\varphi \in K[Y]$ nonzero such that $\varphi|_{f(X)} = 0$. Therefore $\varphi(f(a)) = 0$ for all $a \in X$ and thus $f^*\varphi = 0$, so $f^*$ is not injective. 
+        \end{proof}
+    \end{prop}
+
+    \begin{defn}[Finite Morphism]
+        A dominant morphism $f: X \rightarrow Y$ is called finite if $k[X]$ is integral over $k[Y]$. More generally, a morphism is finite if $k[X]$ is integral over the image of $k[Y]$.
+    \end{defn}
+
+    \begin{exm}[Noether Normalization]
+        An integral extension $k[X] \hookleftarrow k[y_1, \ldots, y_m]$ corresponds to a finite morphism $X \rightarrow \A^m$.
+    \end{exm}
+
+    \begin{exm}[Normalization of Cusp]
+        Note the map $\A^1 \rightarrow V(y^2-x^3) \subset \A^2$ given by $t \mapsto (t^2,t^3)$. Algebraically, $k[x,y]/(y^2-x^3) \rightarrow k[t]$ given by $x \mapsto t^3, y \mapsto t^2$. Because the morphism is dominant, we have $R \simeq k[t^2, t^3] \hookrightarrow k[t]$ is an integral extension ($t$ is a root of $T^2-t^2$).
+    \end{exm}
+
+    \begin{exm}
+        Consider $k[X]^G \subset k[X]$. This is always integral, so $X \twoheadrightarrow X/G$ is finite. Consider $\alpha \in K[X]$. It is a root of $\prod_{g \in G}(T-g\alpha)$. Each coefficient is invariant because they are elementary symmetric functions on the $g\alpha$.
+    \end{exm}
+
+    Recall the Going-up theorem:
+
+    \begin{thm}[Going-up]
+        Let $\mathfrak{p} \subset A$ be a prime ideal and let $A \hookrightarrow B$ be an integral extension. Then there exists a prime ideal $\mathfrak{q} \subset B$ such that $\mathfrak{q} \cap A = \mathfrak{p}$.
+    \end{thm}
+
+    \begin{thm}
+        Any dominant finite morphism is surjective and has finite fibers.
+        \begin{proof}
+            Let $\alpha$ be a finite dominant morphism. Take $y \in Y$, which corresponds to a maximal ideal $m \subset K[Y]$. We find a point $x \in X$ (a maximal ideal $n \subset k[X]$) such that $\alpha(x) = y$ ($n \cap k[Y] = m$). By going-up, there exists a prime ideal $q \subset k[X]$ such that $q \cap k[Y] = m$. Take any maximal ideal $n \supset q$. Then $n \cap k[Y] \supset m$, so by maximality of $m$, $n \cap k[Y] = m$.
+
+            Now we prove that the fibers are finite. Let $y \in Y$ correspond to a maximal ideal $m \subset k[Y]$. Then we show that there are finitely many maximal ideals in $k[X]/(k[x]\cdot m)$. Then $k[X]$ is integral over $k[Y]$, so $A = k[X]/(k[x]\cdot m)$ is integral over $k[Y]/m = k$. Therefore $A$ is a finitely-generated $k$-module (a finite-dimensional $k$-vector space).\footnote{We run into an algebra qual problem (Artinian rings have finitely many maximal ideals).}
+        \end{proof}
+    \end{thm}
+
+    \subsection{Lecture 7 (Feb 14 $\heartsuit$)}
+
+    We begin with a remark: Let $\alpha: X \rightarrow Y$ be a morphism of affine algebraic sets $X \rightarrow Y$. Then there is a pullback $\alpha^*: k[Y] \rightarrow k[X]$. We note that if $Z \subset Y$ is closed, then $\alpha^{-1}(Z) \subset X$ is also closed. Then if $I(Z) = (f_1, \ldots, f_r)$, the ideal of $\alpha^{-1}(Z)$ is given by $(\alpha^*f_1, \ldots, \alpha^*f_r)$.
+
+    This becomes trickier when $\alpha$ is dominant (which is equivalent to $\alpha^*$ being injective). Then we recall the computation of the fiber over a point to prove that dominant morphisms are surjective with finite fibers.\footnote{Jenia discussed this again in class, but I will point you back to Theorem 51.}
+
+    We prove that Artinian rings have finitely many maximal ideals:
+
+    \begin{lem}
+        Artinian rings have finitely many maximal ideals.
+        \begin{proof}
+            Consider all finite intersections of maximal ideals. This set contains a minimal element $m_1 \cap \cdots \cap m_r$x. Therefore $m_1, \cap \cdots \cap m_r \subset m$ for al maximal ideals $m$. Then we see $m = m_i$ for some $i$. (Otherwise, there exists $x_i \in m_i \setminus m$, and then $x_1\cdots x_r \in m$, which contradicts maximality.)
+        \end{proof}
+    \end{lem}
+
+    We recall our discussion of group actions and quotients. Suppose we have a finite group $G$ acting on $X$. Then we have a finitely generated algebra $k[X]^G \hookrightarrow k[X]$. Then we define $X/G$ to be an affine algebraic set such that $k[Y] \simeq k[X]^G$. Then there exists a quotient morphism $\pi: X \rightarrow X/G$.
+
+    \begin{prop}
+        The fibers of $\pi$ are $G$-orbits.
+        \begin{proof}
+            First we show that $y = gx$ implies $\pi(X) = \pi(y)$. Suppose not. Then there exists $f \in k[X/G]$ such that $f(\pi(x)) = 0$ and $f(\pi(y)) = 1$. We have a pullback $\pi^*: k[X]^g \hookrightarrow k[X]$. Then there exists a $G$-invariant function $f$ such that $f(x) = 0$ and $f(y) = 1$, which is impossible.
+
+            Next we show that the fiber is precisely the orbit. Suppose that $G$-orbits of $x,y$ are disjoint. Then there exists $f \in k[X]$ such that $f \vert_{G \cdot x} = 0$ and $f \vert_{G \cdot y} = 1$. Then we define $f^\#(x) = \frac{1}{\#G} \sum_{g \in G} f(g \cdot x)$. This new polynomial is now $G$-invariant and is always $0$ on the orbit of $x$ and $1$ on the orbit of $y$. Then we see that $f^{\#}(\pi(x)) = (\pi^*f^{\#})(x) = f^{\#}(x) = 0$ and $f^{\#}(\pi(y)) = (\pi^*f^{\#})(y) = f^{\#}(y) = 1$. Thus $\pi(x) \neq pi(y)$.
+        \end{proof}
+    \end{prop}
+
+    \subsubsection{Rational Maps}
+
+    Now let $X$ be an affine variety. Then $k[X]$ is an integral domain.
+    \begin{defn}[Function Field]
+        The function field $k(X)$ of an affine variety $X$ is the field of fractions of $k[X]$.
+    \end{defn}
+
+    \begin{defn}[Regular function]
+        Let $f \in k(X)$. Then $f$ is regular at $x \in X$ if $f$ can be written as a fraction $f = \frac{p}{q}$ where $p,q \in k[X]$ and $q(x) \neq 0$.
+    \end{defn}
+
+    \begin{defn}[Domain of Definition]
+        The domain of definition of $f$ is the set of all $x \in X$ such that $f$ is regular at $X$.
+    \end{defn}
+
+    \begin{prop}
+        The of definition is open.
+        \begin{proof}
+            $D = \bigcup_{f = p/q} (X\setminus V(q))$.
+        \end{proof}
+    \end{prop}
+
+    \begin{prop}
+        $f(x)$ is regular at every $x \in X$ if and only if $f \in k[X]$.
+        \begin{proof}
+            For all $x \in X$, there exists an expression $f = p_x/q_x$ where $q_x(x) \neq 0$. Then take $I = (q_x)$. The vanishing set $V(I) = \emptyset$, so $\sqrt{I} = (1)$, which implies that $1 \in I$. We can write $1 = a_1q_{x_1} + a_2q_{x_2} + \cdots + a_rq_{x_r}$. Then \[ f = f \cdot 1 = \sum_{i=1}^r a_i(q_{x_i}f) = \sum_{i=1}^r a_ip_{x_i} \in k[X]. \]
+        \end{proof}
+    \end{prop}
+    
+    \begin{defn}[Local ring of a point.]
+        Let $x \in X$. Then the ring $\mathcal{O}_x$ is the set of all functions regular at $x$. Note that this is the same as $k[X]_{m_x}$. This is a local ring.
+    \end{defn}
+
+    \begin{defn}[Rational Maps]
+        Let $Y \hookrightarrow \A^n$. Then a rational map is a map $f = (f_1, \ldots, f_n)$, where $f_i \in k(X)$ such that $f(x) \in Y$ whenever $f_1, \ldots, f_n$ are regular at $x$. Given this, we have a pullback homomorphism $f^*: k[Y] \rightarrow k(X)$.
+    \end{defn}
+
+    \begin{prop}
+        We will see that $f^*$ is injective if and only if $f(X)$ is dense in $Y$. If so, we induce a field extension $k(Y) \hookrightarrow k(X)$. Additionally, the other way around, given $\alpha: k(Y) \hookrightarrow k(X)$, we can construct a dominant rational map $f:X \dashrightarrow Y$ such that $\alpha = f^*$.
+        \begin{proof}
+            Take $f = (f_1, \ldots, f_n) = (\alpha(y_1), \ldots, \alpha(y_n))$.
+        \end{proof}
+    \end{prop}
+
+    \begin{defn}[Birational Equivalence]
+        $X$ and $Y$ are birationally equivalent if $k(X) \simeq k(Y)$, or equivalently, there exist dominant rational maps $f,g: X \dashleftarrow \dashrightarrow Y$ such that $f \circ g, g \circ f$ are the identity wherever they are defined.
+        In particular, $X$ is rational if it is birational to an affine space.
+    \end{defn}
+
+    We will skip projective and quasiprojective varieties and return to them next week.
+
+    \subsubsection{Dimension}
+    Let $X \subset \A^N$. What is the dimension of $X$? Here are some ideas: \begin{itemize}
+        \item ``Maximal number of independent parameters.'' To make this rigorous, we define the dimension of $X$ to be the transcendence degree of $k(X)$;
+        \item ``Maximum possible dimension of a subspace $+1$.'' Convert this into algebra and we define the dimension of $X$ to be the Krull dimension of $k[X]$.
+    \end{itemize}
+
+    \begin{thm}
+        If $X$ is an affine variety, then the two definitions of dimension agree.
+        \begin{proof}
+            By Noether's Normalization Lemma, $k[X]$ is integral over its polynomial subalgebra $k[y_1, \ldots, y_n] = k[\A^n]$. Then $\mathrm{dim}\ X = \mathrm{trdeg}\ k(X) = \mathrm{trdeg}\ k(y_1, \ldots, y_n) = n = \mathrm{dim}\ \A^n$.
+
+            First we show that the Krull dimension of $k[y_1, \ldots, y_n] = n$, and then we show that Krull dimension is preserved by integral extensions.
+
+            To see the second claim, let $p_1 \subsetneq \cdots \subsetneq p_r \subsetneq k[X]$ be a chain of prime ideals. Then $p_1 \cap R \subset \cdots \subset p_r \cap R \subset R$ is a chain of prime ideals. As an exercise, show that $p_i \cap R \neq p_{i+1} \cap R$. Now let $q_1 \subset \cdots q_r \subset R$ be a chain of prime ideals in $R$. Then we use a stronger going-up theorem to lift the whole chain to $k[X]$. If the $q_i$ are different, then the lifted ideals are different. Thus the Krull dimensions are equal.
+        \end{proof}
+    \end{thm}
+
+    \section{Projective Space}
+    
+    \subsection{Lecture 8 (Feb 21, given by Luca Schaffler)}
+
+    We will work over an algebraically closed field.
+
+    \begin{defn}[Projective Space]
+        Let $n \in \Z$ be positive. Then the projective space $\P^n$ is defined as $\P^n = (k^{n+1} \setminus \{0\} ) / G_m$, which is the set of lines in $k^{n+1}$ through the origin.\footnote{The mean way to define this is $\P^n = \mathrm{Gr}(1,n+1)$}
+    \end{defn}
+
+    In $\P^n$, we denote the equivalence class of $(z_0, \ldots, z_n)$ by $(z_0:\cdots:z_n)$ in homogeneous coordinates. Observe that at least one of $z_0, \ldots, z_n$ is nonzero.
+
+    \begin{defn}
+        We say that a polynomial $f \in k[z_0, \ldots, z_n]$ vanishes at a point $\xi \in \P^n$ if $f(x_0, \ldots, x_n)$ for every choice of homogeneous coordinates $\xi = (x_0:\cdots:x_n)$. In this case, we simply write $f(\xi) = 0$.
+    \end{defn}
+
+    \begin{defn}[Homogeneous Polynomial]
+        A polynomial $f \in k[z_0, \ldots, z_n]$ is homogeneous if every monomial term in $f$ has the same degree.
+    \end{defn}
+
+    \begin{exm}
+        $z_0^3 + z_0z_1^2 + z_1^2z_2$ is homogeneous with degree $3$.
+    \end{exm}
+
+    \begin{rmk}
+        Every polynomial $f \in k[z_0, \ldots, z_n]$ can be decomposed as the sum of its homogeneous components, i.e. $k[x_1, \ldots, x_n]$ is a graded algebra.
+    \end{rmk}
+
+    \begin{prop}
+        If $f \in k[z_0, \ldots, z_n]$ vanishes at $p \in \P^n$, then all of its homogeneous components vanish at $p$.
+        \begin{proof}
+            Let $f = \sum_{d \geq 0} f_d$ and $p = (x_0:\cdots:x_n)$. Then for all $\lambda \in k^*$ we have 
+            \begin{align*}
+                f(\lambda x_0, \ldots, \lambda x_n) &= \sum_{d \geq 0} f_d(\lambda x_0, \ldots, \lambda x_n) \\
+                                                    &= \sum_{d \geq 0} \lambda^d f_d(x_0, \ldots, x_n) = 0.
+            \end{align*}
+            Because $k$ is infinite, then $f_d(x_0, \ldots, x_n) = 0$ for all $d \geq 0$. Therefore all $f_d$ vanish at $p$.
+        \end{proof}
+    \end{prop}
+
+    \begin{rmk}
+        With the same assumptions as the previous proposition, the above proof also implies that $f_0 = 0$.
+    \end{rmk}
+
+    \begin{defn}[Closed Set]
+        Let $X \subset \P^n$ is called closed if $X$ is the vanishing set of some set of polynomials $f_1, \ldots, f_r \in k[x_0, \ldots, z_n]$.
+    \end{defn}
+
+    By the previous proposition, it is not restrictive to assume that $f_1, \ldots, f_r$ are homogeneous.
+
+    \begin{defn}[Homogeneous Ideal]
+        An ideal $I \subset k[z_0, \ldots, z_n]$ is called homogeneous if it is generated by homogeneous polynomials. Equivalently, $I$ is closed under taking homogeneous parts.
+    \end{defn}
+
+    \begin{defn}[Vanishing Set of Ideal]
+        Let $U \subset k[z_0, \ldots, z_n]$ be an ideal. Define $V(I) = \Set{p \in \P^n | f(p) = 0 \text{ for all $f \in I$ }}$.
+    \end{defn}
+
+    \begin{rmk}
+        If $I \subset k[z_0, \ldots, z_n]$ is a homogeneous ideal, then by the Hilbert Basis Theorem, $I = (f_1, \ldots, f_r)$, where each $f_i$ can be assumed to be homogeneous.
+    \end{rmk}
+
+    \begin{defn}[Zariski Topology on $\P^n$]
+        The closed subsets of $\P^n$ are $V(I)$, where $I \subset k[z_0, \ldots, z_n]$ is a homogeneous ideal. This forms a topology. If $X \subset \P^n$ is closed, then the Zariski topology on $X$ is the one induced by $\P^n$.
+    \end{defn}
+
+    \subsubsection{Affine Constructions}
+
+    We will now consider a useful construction. 
+    \begin{defn}[Affine Cone]
+        Let $I \subset k[z_0, \ldots, z_n]$ be a homogeneous ideal. We can conside the vanishing set $V(I) \subset \P^n$ or the affine cone $V^a(I) \subset \A^{n+1}$.
+    \end{defn}
+
+    \begin{exm}
+        Consider $V(z_0) \subset \P^n$, which is a point. Then $V^a(z_0)$ is a line.
+    \end{exm}
+
+    \begin{rmk}
+        $V(I) = (V^a(I) \setminus \{0\}) / G_m$.
+    \end{rmk}
+
+    \begin{rmk}
+        $I(V(I)) = I(V^a(I))$.
+    \end{rmk}
+
+    \begin{rmk}
+        In the affine cone construction, then something happens: If $I = k[z_0, \ldots, z_n]$, then $V(I) = \emptyset$ and $V^a(I) = \emptyset$. Let $I = (z_0, \ldots, z_n)$. Then $V(I) =\emptyset $ but $V^a(I) = \{0\}$. The map $V^a(I) \mapsto V(I)$ fails to be injective exactly in this case.
+    \end{rmk}
+
+    \begin{prop}
+        Let $I \subset k[z_0, \ldots, z_n]$ be a homogeneous ideal. Then the following are equivalent:
+        \begin{enumerate}
+            \item $V(I) = \emptyset$;
+            \item $\sqrt{I} \supset (z_0, \ldots, z_n)$;
+            \item There exists $s \in \Z_{>0}$ such that $I \supset I_s$ and $V(I_s) = \emptyset$ but $V^a(I) = \{0\}$.
+        \end{enumerate}
+        \begin{proof}
+            First we prove $(1) \Leftrightarrow (2)$. This is because $V(I) = \emptyset$ if and only if $V^a(I) \subset \{0\}$ if and only if $\sqrt{I} = I(V^a(I)) \supset I(0) = (z_0, \ldots, z_n)$. To show that $(3) \Rightarrow (2)$, note that $I_s \subset I$, so $(z_0, \ldots, z_n)=\sqrt{I_s} \subset \sqrt{I}$.
+
+            To see that $(2) \Rightarrow (3)$, then for all $i = 0, \ldots, n$, there exists $p_i \in \Z_{> 0}$ such that $z_i^{p_i} \in I$. Let $p = \max\{p_i\}$. Then if $s > (n+1)(p-1)$, $I_s \subset I$.
+        \end{proof}
+    \end{prop}
+
+    \begin{defn}
+        In $\P^n$ consider the open subset $\A_i^n = \Set{(z_0:\cdots:z_n) \in \P^n | z_i \neq 0}$. Note that there is an identification $\A_i^n \to \A^n$ given by $(z_0:\cdots:z_n) \to \left( \frac{z_0}{z_i}, \ldots, \frac{z_n}{z_i} \right)$. Moreover, for all $X \subset \P^n$ closed, we can define $X_i \coloneqq X \cap \A_i^n$.
+    \end{defn}
+
+    Explicitly, if $X = V(F_1, \ldots, F_r)$, then $X_i = V(f_1^{(i)}, \ldots, f_r^{(i)})$, where $f_j^{i}(x_0, \ldots, x_n) = F_j(x_0, \ldots, 1, \ldots, x_n)$. this is known as de-homogeneization.
+
+    Conversely, every closed $Y \subset \A^n$ defines canonically $\overline{Y} \subset \P^n$ where we identify $\A^n$ with $\A_0^n$. The equations for $\overline{Y}$ are given as follows. If $Y = V^a(f_1, \ldots, f_r)$, define $F_j(z_0, \ldots, z_n) = z_0^{\mathrm{deg} f_j} f_j \left( \frac{z_1}{z_0}, \ldots, \frac{z_n}{z_0} \right)$, which is known as homogeneization. 
+
+    \begin{prop}
+        $\overline{Y} = V(F_1, \ldots, F_r)$.
+    \end{prop}
+
+    \begin{rmk}
+        $X$ is not nexessarily the closure of its affine patches. For example, consider a line at infinity. It is lost during the procedure.
+    \end{rmk}
+
+    \begin{rmk}
+        Let $F$ be a homogeneous polynomial. Then $F = z_i^{\mathrm{deg} F} f^{(i)}$.
+    \end{rmk}
+
+    \subsubsection{Irreducibility}
+    \begin{defn}
+        A closed set $X \subset \P^n$ is irreducible if $X$ cannot be written as a union $X = X_1 \cup X_2$, where $X_1, X_2$ are proper closed subsets.
+    \end{defn}
+
+    \begin{rmk}
+        We have a decomposition into irreducible components like in the affine case. Also, $X$ is irreducible if and only if $I(X)$ is prime.
+    \end{rmk}
+
+    \subsubsection{Projective and Quasiprojective Varieties}
+    \begin{defn}[Projective Variety]
+        $X \subset \P^n$ closed is called a projective variety.
+    \end{defn}
+
+    \begin{defn}[Quasiprojective Variety]
+        A quasiprojective variety is an open subset of a projective variety.
+    \end{defn}
+
+    \begin{exm}
+        Affine and projective varieties are both quasiprojective.
+    \end{exm}
+
+    \subsection{Lecture 9 (Feb 26)}
+    Let $X \subset \P^n$ be a quasiprojective variety. We need to define a regular function on $X$. We define $k(\P^n) = \set{\frac{f(z_0, \ldots, z_n)}{g(z_0, \ldots, z_n)} | f,g \in k[z_0, \ldots, z_n]_d \text{ for some $d$ }}$, where $z_0, \ldots, z_n$ are homogeneous coordinates on $\P^n$.
+
+    \begin{rmk}
+        In an affine chart, $\A_0^n \subset \P^n$ given by $z_0 \neq 0$, we can write
+    \[ \frac{f(z_0, \ldots, z_n)}{g(z_0, \ldots, z_n)} = \frac{z_0^df(1,z_1/z_0, \ldots, z_n/z_0)}{g(1, z_1/z_0, \ldots, z_n/z_0)} = \frac{f(1, x_1, \ldots, x_n)}{g(1, x_1, \ldots, x_n)}. \]
+        We can reverse this process, so $k(\P^n) = k(\A^n)$.
+    \end{rmk}
+
+    If $f \in k(\P^n)$, $f = \frac{p}{q}$, then $f$ defines a function in some open neighborhood of $x \in X$.
+    \begin{defn}[Regular at a Point]
+        We call this function $f$ regular at $x \in X$.
+    \end{defn}
+
+    \begin{defn}[Regular Function]
+        A funciton $f:X \to k$ is regular on $X$ if for all $x \in X$, $f$ can be written as $f = \frac{p}{q}$ in some open neighborhood of $x \in X$ with $p,q \in k[z_0, \ldots, z_d]$ and $q(x) \neq 0$.
+    \end{defn}
+
+    \begin{rmk}
+        We write $k[X]$ for the set of regular functions on $X$.
+    \end{rmk}
+
+    \begin{rmk}
+        If $X$ is affine, then $k[X] = k[x_1, \ldots, x_n]/I(X)$.
+    \end{rmk}
+
+    \begin{rmk}
+        If $X$ is projective, then $k[X] = k$.
+    \end{rmk}
+
+    \begin{rmk}
+        There are examples of quasi-projective varieties $X$ such that $k[X]$ is not finitely generated.\footnote{Jenia wrote a paper about this. The first examples were due to Rees and Nagata.}
+    \end{rmk}
+
+    \begin{defn}
+        A map $X \to \A^m$ is regular if $f = (f_1, \ldots, f_m)$ and $f_i \in k[X]$.
+    \end{defn}
+
+    \begin{defn}
+        A map $f: X \to Y \hookrightarrow \P^m$ quasiprojective varieties is called regular if for all $x \in X$ we can choose an affine chart $\A_i^m \subset \P^m$ containing $f(x)$ and an open set $U \ni x$ such that $f(U) \subset \A_i^m$ and the induced map $f\vert_U$ is regular.
+    \end{defn}
+
+    \begin{rmk}
+        This definition does not depend on the choice of affine chart containing $f(x)$.
+    \end{rmk}
+
+    \begin{defn}
+        Quasi-projective varieties $X,Y$ are isomorphic if there exists regular maps $f:X \to Y$ and $g:Y \to X$ such that $f = g^{-1}$.
+    \end{defn}
+
+    \begin{lem}
+        Let $X$ be a quasi-projective variety. Then every $x \in X$ has an affine neighborhood.
+        \begin{proof}
+            Let $X \subset \P^n$ and $x \in \A_i^n$. Then $X \cap \A_i^n = \overline{X} \cap \A_i^n - (\overline{X}\setminus X) \cap \A_i^n$, so $x \in Y - Z \subset \A^n$, where $Y,Z$ are both affine. Choose $0 \neq F \in I(Z) \subset k[Y]$ and set $u = Y - V((F))=: D(F)$. We will show that $D(F)$ is affine, called a principal open set. Principal open sets form a basis of the Zariski topology.
+
+            To prove this, note that $Y = (G_1 = \cdots = G_s= 0) \subset \A^n$. Define $Z \coloneqq (G_1 = \cdots G_s = Fy_{n+1} = 0) \subset \A^{n+1}$. Then $Z$ is affine and isomorphic to $D(F)$. Simply take the last coordinate to be $1/F$, which is possible because $F \neq 0$ on $Z$.
+        \end{proof}
+    \end{lem}
+
+    \begin{defn}
+        A regular map $f:X \to Y$ of quasi-projective varieties is called finite if all $y \in Y$ have an affine neighborhood such that $f^{-1}(V) = U$ is also affine and the induced map $f\vert_U$ is a finite map of affine varieties.
+    \end{defn}
+
+    \begin{prop}
+        If $X, Y$ are both affine, then this agrees with the previous definition.
+        \begin{proof}
+            Suppose $f:X \to Y$ is a map of affine varieties. Let $k[X] = B, k[Y] = A$ and the pullback be $f^*:A \to B$. For all $y \in Y$, there exists an affine $y \in V \subset Y$ such that $U = f^{-1}(V) \subset X$ is affine and $f|_U$ is finite.
+
+        Choose a principal open set $y \in D(F) \subset V \subset Y$ for some $f \in A$. Then $f^{-1}(D(F)) \subset U \subset X$. We see that $f^{-1}(D(F)) = D(f^*F)$, so it is affine.
+
+        Now we show that $f\vert_{D(f^*F)}$ is finite. To prove this claim, note that $k[U]$ is a finite $k[V]$-module via $f^*$, so we show that $k[U][\frac{1}{f^*F}]$ is a finite $k[V][\frac{1}{F}]$-module. Simply take the basis to be the basis of $k[U]$ over $k[V]$.
+
+        We need to show that $B$ is a finite $A$-module via $f^*$. We know that $Y$ is covered by principal open sets $D(F_{\alpha})$ such that $k[D(f^*F)]$ is a finite $k[D(F)]$-module via $f^*$. We see that $k[D(F)] = A[\frac{1}{F}]$, so $k[D(f^*F)] = B[\frac{1}{f^*F}]$. Also, $Y$ is covered by $D(F_{\alpha})$ if and only if $(F_{\alpha}) = A$. Thus we can write $1 = \sum h_{\alpha}F_{\alpha}$. In particular, we need only finitely many $D(F_{\alpha})$.
+
+        We know that $B[\frac{1}{f^*F_{\alpha}}]$ is a finite $A[\frac{1}{F_{\alpha}}]$-module. Choose a basis of the form $\omega_{\alpha, i} \in B$. We will show that the $\omega_{\alpha, i}$ form a basis of $B$ over $A$. Choose $b \in B$. Then for all $\alpha$ we can write $b = \sum \omega_{\alpha, i} \frac{a_{i, \alpha}}{F_{\alpha}^{n_{\alpha}}}$. We can still write $1 = \sum H_{\alpha}F_{\alpha}^{n_{\alpha}}$.
+
+        We write $b = b \sum H_{\alpha}F_{\alpha}^{n_{\alpha}} = \sum H_{\alpha}(\sum_i \omega_{\alpha, i}a_{i,\alpha})$. 
+        \end{proof}
+    \end{prop}
+    
+    \subsection{Lecture 10 (Feb 28)}
+Let $f:X \to Y$ be a morphism of quasiprojective varieties. Then $f$ is locally given by a polynomial map $f = (f_1, \ldots, f_m)$ where $f_i = \frac{p_i(x_0, \ldots, x_n)}{q_i(x_0, \ldots, x_n)}$ and $f_i$ is of degree $0$.
+
+    Homogeneizing, we obtain that $f$ is given by $f(x) = [F_0:\cdots:F_m]$, where $F_i(x) \in k[x_0, \ldots, x_n]_d$ for some $d$. Also, for every $x \in X$, there exists a presentation $[f_0:\cdots:F_m]$ such that at least one $F_i(x) \neq 0$.
+
+    \begin{prop}
+        The above two notions are equivalent.
+        \begin{proof}
+            SUppose $f$ regular at $x$ and $f(x) \in \A^m_0$. Then $f(x) = [1:p_1/q_1:\cdots:p_m/q_m]$, so we can clear denominators to get $f = [q_1\cdots q_m:\cdots:\cdots]$.
+        \end{proof}
+    \end{prop}
+
+    \begin{exm}
+        Consider the projection from $\P^{\ell} \subset \P^n$. On the affine cones, this is just a projection, so the projection is given by $[x_0:\cdots:x_n] \mapsto [x_{\ell+1}:\cdots:x_n]$. In this case the $F_i$ are just coordinates. This gives a regular map $\P^n \setminus \P^{\ell} \to P^{n-\ell - 1}$.
+    \end{exm}
+    
+    \begin{exm}
+        Consider the $d$-th Veronese embedding $\P^n \xrightarrow{v_d} \P^N$ given by $x \mapsto [F_i(x)]$ where $F_i$ runs through monomials of degree $d$ and $N+1 = \binom{n+d}{d}$. This is regular everywhere because one of the powers is nonzero. In fact, $v_d$ is an embedding.
+
+        An example of this is the rational normal curve.
+    \end{exm}
+
+    \begin{thm}
+        Let $X \subset \P^n$ be an irreducible projective variety. Then $k[X] = k$.
+        \begin{proof}
+            We will deduce this from another theorem, which is given below. Using the theorem, take $f \in k[X]$. Then $f$ is a morphism $X \to \A^1 \hookrightarrow \P^1$. If $f(X)$ is dense in $\A^1$, then it is dense in $\P^1$. By the next theorem, $f(X) = \P^1$, which contradicts the fact that $f(X) \subset \A^1$. 
+
+            If $f(X)$ is not dense in $\A^1$, then $f(X) = \{p_1, \ldots, p_r\}$. However, $X$ is irreducible, so $f(X) = p$ (consider the fiber above each point).
+        \end{proof}
+    \end{thm}
+
+    \begin{thm}
+        Let $X$ be a projective variety and $f:X \to Y$. Then $f(X) \subset Y$ is closed.
+        \begin{proof}
+            To prove this, we prove the main theorem of elimination theory. Now we consider the map $f:X \to Y$. Then consider the graph $\Gamma_f: X \to X \times Y$ given by $x \to (x,f(x))$. We show that $\Gamma = \Gamma_f(X)$ is closed for all $X,Y$. Using this, we reduce to the following:
+            \begin{quote}
+                \begin{thm}
+                    Let $X \subset X \times Y$ be closed. Then $\pi_2(Z) \subset Y$ is closed.
+                \end{thm}
+                This motivates the following definition:
+                \begin{defn}
+                    A variety is called proper if for every variety $Y$ and closed subvariety $Z \subset X \times Y$, $\pi_2(X) \subset Y$ is closed.
+                \end{defn}
+            \end{quote}
+            Next we cover $Y$ by affine open sets $Y_i$. Then $Z = \bigcup z \cap (X \times Y_i) = Z_i$ and $Z_i$ is closed in $X \times Y$. Then $\pi_2(X) = \cup \pi_2(Z_i)$. It is enough to show that the projections of the $z_i$ are closed.
+
+            Now we have $X \subset \P^n$ projective and $Y \subset \A^m$ affine. Then $Z$ is defined by equations $g_i(u,y)$ homogeneous in $x$ and arbitrary in $y$. The second projection of $Z$ is precisely the locus $T$ from the main theorem of elimination theory, which is closed.
+        \end{proof}
+    \end{thm}
+
+    \begin{thm}[Main Theorem of Elimination Theory]
+        Let $g_i(u,y)$ be polynomials homogeneous in $u = (u_0, \ldots, u_n)$ and arbitrary in $y = (y_1, \ldots, y_m)$. Let $T = \Set{y_0 \in \A^m | g_i(u,y_0)=0 \text{ has a nonzero solution }}$. Then $T$ is closed.
+        \begin{proof}
+            Recall $g_i(u, y_0)=0$ has a nonzero solution if and only if $(g_1(u,y_0), \ldots, g_t(u,y_0)) \not \supseteq I_s$ for all $s$. Then $T = \cap_{n \geq 1} T_s$ where $T_s = \Set{y_0 \in \A^m | (g_1(u,y_0), \ldots g_t(u,y_0)) \not\supseteq I_s}$. It suffices to check that $T_s$ is closed, or that the complement is open.
+
+            Indeed, we see that for all monomials $N_{\alpha \in I_s}$, then $M_{\alpha} = \sum g_i(u,y_0)F_{i,\alpha}(u)$. Let $N_{i,\beta}$ be all monomials of degree $s - \mathrm{deg}g_i$. Thus $M_{\alpha}\in I_s$ is in the linear span of $g_i(u,y_0) \cdot N_{i,\beta}$. Therefore, $g_i(u,y_0) \cdot N_{i,\beta}$span the vector space of all degree $s$ polynomials, which means that at least one of the maximal minors is nonzero. Therefore the complement of $T_s$ is a union of open sets and is thus open.
+        \end{proof}
+    \end{thm}
+
+    \subsubsection{Products}%
+    We discuss products of projective spaces. To do this, we consider the Segre embedding $\P^n \times \P^m \to \P^N$, where $N+1 = (n+1)(m+1)$, given by $[x_0:\cdots:x_n], [y_0:\cdots:y_m] \mapsto [x_iy_j]_{ij}$. Note that at least one $x_i$ and at least one $y_j$ are nonzero, so this is well-defined.
+
+    Alternately, we present this as $[x],[y] \mapsto [xy^T]$, which gives a linear map $\psi:k^{m+1} \to k^{n+1}$ with kernel $y^{\perp}$ and image $x$. Therefore, the Segre embedding is injective. Matrices of this form are precisely the rank $1$ matrices, so the image is defined by equations the $2 \times 2$ minors of the matrix. In particular, $\P^n \times \P^m$ is a projective variety. This endows $\P^n \times \P^m$ with the structure of a projective variety.
+
+    \begin{rmk}
+        In the charts $\A^n_0, \A^m_0$, we see $s([1:x_1:\cdots:x_n],[1:y_1:\cdots:y_m]) = [1:x_1:\cdots:x_n:y_1:\cdots:y_m:c_iy_j] \subset \A_0^N$. This image is isomorphic to $\A^{n+m}$. Therefore this agrees on the charts with a product of affine spaces.
+    \end{rmk}
+
+    If $X \subset \P^n, Y \subset \P^m$ are projective varieties, then $X \times Y \subset \P^n \times \P^m$ is a projective variety.
+
+    To define closed subvarieties in $\P^n \times \P^m$ (or $\P^n \times \A^m$) without referring to the ambient projective space $\P^N$, we do the following:
+
+    \begin{thm}
+        The closed subvarieties of $\P^n \times \P^m$ are given by multihomogeneous (homogeneous in both variables) polynomials $g_i(u,v) = 0$. For $\P^n \times \A^m$, just remove the assumption that $g_i$ are homoegeneous in $v$.
+        \begin{proof}
+            Consider the image under the Segre embedding. Then we see that $Z = (F_{\alpha}(w_{ij}) = 0)$ os the same as $F_{\alpha}(x_i,y_j) = 0$ homogeneous in $X$ and $Y$ of the same degree. If the $g_i$ are not of the same degree in $u,v$ ($s>t$), we can multiply by $v_j^{s-t}$ to obtain equivalent equations.
+        \end{proof}
+    \end{thm}
+
+    \subsection{Lecture 11 (Mar 5)}
+    We continue our discussion of dimension (from Valentine's Day). Let $X \subset \P^n$ be an irreducible quasi-projective variety. Then we define the local ring $\mathcal{O}_X = \{f \in k(\P^n) \mid f \text{ is regular at $x \in X$ }\}$. Then we can define $k(X) = \mathcal{O}_X/m_X$ where $m_X$ is the maximal ideal of functions that vanish on $X$.
+
+    Then if $U \subset X$ is open, $k(U) = k(X)$. Thus we can assume $X$ is affine. Then we see that $X \subset \A^n \subset \P^n$ is the vanishing $X = V(\mathfrak{p})$ and $\mathcal{O}_X = k[x_!, \ldots, x_n]_{\mathfrak{p}}$. Then $m_X = \mathfrak{p}R_{\mathfrak{p}}$, and this agrees with the old definition by a ``qualifying exam problem.''
+
+    Then, if we define $\mathrm{dim} X \coloneqq \mathrm{tr.deg} k(X)$, it is easy to see that $\mathrm{dim} X = \mathrm{dim} U$ for an open subset $U \subset X$.
+
+    \begin{thm}
+        If $X$ is affine and irreducible, then $\mathrm{dim} X = \mathrm{Kr.dim} k[X]$.
+        \begin{proof}
+            We use Noether normalization. Then there exists $k[x_1, \ldots, x_n] \subset k[X]$, which is an integral extension. First it is easy to see that $\mathrm{dim}X = \mathrm{dim}\A^n = n$ because the field extension is algebraic.
+
+            To see that the Krull dimensions are equal, any chain $q_0 \subset q_1 \subsetneq \cdots \subsetneq q_r \subsetneq k[x_1, \ldots, x_n]$ gives a chain $p_0 \subsetneq \cdots p_r \subsetneq k[X]$ by going-up. However, all $p_i$ are distinct, so their intersections with $k[x_1, \ldots, x_n]$ are distinct (quotient by $p_i$, then take the field of fractions of the smaller ring).
+
+            Now we show that the Krull dimension of $k[x_1, \ldots, x_n]$ is $n$. Clearly it is at least $n$  because we have the following chain of prime ideals: $(0) \subset (x_1) \subset \cdots \subset (x_1, \ldots, x_n)$. Take a chain $p_0 \subsetneq \cdots \subsetneq p_s$. Then $V(p_s) \subsetneq \cdots \subsetneq V(p_0) \subsetneq \A^n$. We prove a lemma which implies what we want.
+        \end{proof}
+    \end{thm}
+
+    \begin{lem}
+        Let $X \subset Y$ be irreducible affine varieties. Then $\mathrm{dim} X \leq \mathrm{dim} Y$. If $X \neq Y$, then the inequality is strict.
+        \begin{proof}
+            Let $X \subsetneq Y \subsetneq \A^N$ and let $n = \mathrm{dim}Y$. Then given $t_1|_Y, \ldots, t_N|$, any $n+1$ are algebraically independent. However, $t_1|_X, \ldots, t_N|_X$ generate $k[X]$ and therefore $k(X)$, so $\mathrm{dim}X \leq n$. 
+            
+            Suppose $\mathrm{dim} X = \mathrm{dim} Y = n$. Then some $n$ coordinates $t_1|_X, \ldots, t_n|_X$ are algebraically independent in $k(X)$. Thus $t_1|_Y, \ldots, t_1|_Y$ are also algebraically independent. Choose $0 \neq u \in k[Y]$ such that $u|_X = 0$ Then there is a relation $a_0(t_1, \ldots, t_n)u^m + \cdots + a_m(t_1, \ldots, t_n)$ which vanishes along $Y$. We can also assume that $a_m \neq 0$ along $Y$. However, it becomes $0$ when restricted to $X$ because $u|_X = 0$.
+        \end{proof}
+    \end{lem}
+
+    We use the Krull Principal Ideal Theorem:
+    \begin{thm}[Krull Principal Ideal]
+        If $X$ is affine, irreducible, and $f \in k[X]$, then all irreducible components of $V(f) \subset X$ have codimension $1$.
+    \end{thm}
+
+    \begin{cor}
+        In $\A^n$, irreducible hypersurfaces correspond exactly to irreducible polynomials $f \in k[x_1, \ldots, x_n]$.
+        \begin{proof}
+            Let $f \in k[x_1, \ldots, x_n]$ be irreducible. Then because $k[x_1, \ldots, x_n]$ is a UFD, $(f)$ is prime, so $V(f)$ is irreducible and has the correct dimension by PIT.
+
+            In the other direction, let $X \subset \A^n$ be an irreducible hypersurface. Then choose $f \in k[x_1, \ldots, x_n]$ such that $f|_X = 0$. Factor $f = f_1\cdots f_r$ into irreducibles. Then $X \subset V(f_i)$ because $V(f_i)$ are irreducible hypersurfaces. Because they have the same dimension, they are equal.
+        \end{proof}
+    \end{cor}
+
+    \begin{cor}
+        Let $X \subset \P^n$ be projective and $F \in k[x_0, \ldots, x_n]$ be homogeneous of positive degree $d$. Then $X \subset V(F)$ is non-empty and all irreducible components have codimension $1$.
+        \begin{proof}
+            Work in the charts. Then use the PIT on the irreducible affine components. To show that the intersections in the affine charts are nonempty, pass to the affine cone. By the PIT, the intersection has codimension $1$ and is non-empty because it contains the origin. Then the same is true for $X$.
+        \end{proof}
+    \end{cor}
+
+    \begin{rmk}
+        This implies that if $X,Y \subset \P^2$ are projective curves, $X \cap Y$ are nonempty. This implies that every irreducible curve of degree at least $3$ has inflection points.
+    \end{rmk}
+
+    \begin{thm}
+        Let $f:X \to Y$ be a regular surjective map of irreducible varieties. Suppose $\mathrm{dim}X = n, \mathrm{dim}Y = m$. Then:
+        \begin{enumerate}
+            \item $\mathrm{dim}\ F \geq n-m$ for every component $F$ of every fiber $f^{-1}(y)$.
+            \item There exists $U \subset Y$ open, nonempty such that $\mathrm{dim}\ F = n-m$ for all $y \in U$.
+            \item Sets $Y_k = \{y \in Y \mid \mathrm{dim} f^{-1}(y) \geq k\}$ are closed.
+        \end{enumerate}
+        \begin{proof}
+            To prove the first part, take $y \in Y$. Then we can take. We can assume $X,Y$ are affine by taking affine charts. Choose $f_1 \neq 0$ such that $f_1(y) = 0$. Then $\mathrm{dim}(f_1=0) = m-1$ by the PIT. Choose $f_2 |_D \neq 0$ ($f_2(y) = 0$) for all irreducible components $D$ of $V(f_1)$. Then $\mathrm{dim}(f_1=f_2=0) = m-2$. Then $y \in (f_1 = \cdots = f_m = 0)$, which is a finite set of points. Now we pass from $Y$ to $D(F) \subset Y$ where $F(\widetilde{y}) = 0$ for all $y \in (f_1 = \cdots = f_m = 0) \setminus \{y\}$. With this new $Y$, $y = (f_1, = \cdots = f_m = 0)$ where $m = \mathrm{dim}Y$, we see that $f^{-1}(y) = V(f^*(f_1), \ldots, f^*(f_m))$. By the PIT, the dimension is at least $n-m$.
+        \end{proof}
+    \end{thm}
+
+    \subsection{Lecture 12 (Mar 7)}
+    
+    Last time we discussed Krull's Principal Ideal Theorem and began the proof of the theorem on dimension of fibers.
+
+    \begin{cor}
+        Let $X$ be irreducible of dimension $n$ and $f_1, \ldots, f_r \in k[X]$. Then every irreducible component of $V(f_1, \ldots, f_r) \subset X$ has dimension at least $n - r$.
+        \begin{proof}[Sketch]
+            We induct on $r$. If $r = 1$, we use the P.I.T. The rest is left as an exercise.
+        \end{proof}
+    \end{cor}
+    
+    \begin{proof}[Conclusion of proof of Theorem 121]
+        To prove the second part, we do something similar to the below theorem. We may assume $X,Y$ are affine and $f:X \to Y$ dominant. Then we can decompose $f^*:k[Y] \hookrightarrow k[Y][z_1, \ldots, z_r] \hookrightarrow k[X]$. This corresponds to a map $Y \overset{\pi_1}{\gets} Y \times \A^r \overset{g}{\gets} X$. Then $f^{-1}(y) = g^{-1}(Y \times \A^r)$.
+
+        We will show that there exists $D(F) \subset Y$ such that for all $y \in D(F)$, $p_1\vert_{f^{-1}(y)}, \ldots, p_{\ell}\vert_{f^{-1}(y)}$ are algebraic over $z_1\vert_{f^{-1}(y)}, \ldots, z_r\vert_{f^{-1}(y)}$, so every component of $f^{-1}(y)$ has dimension at most $r$. By part $1$, the dimension is at least $r$, so it must equal $r$.
+
+        To prove the claim, write the equations of algebraic dependence $F_i(p_i, z_1, \ldots, z_r, q_1, \ldots, q_s) = 0$ with $p_i$ appearing in the polynomial. Then restrict to a specific $y$ and show that not all coefficients become zero (which is because there is an open set where the product of all coefficients does not vanish).
+
+        Now we prove the third part, we induct on the dimension of $Y$. If $Y$ is a point, there is nothing to prove. Also, by part ($1$), $Y_{n-m} = Y$ is closed. By part ($2$), there exists $U \subset Y$ open where $\mathrm{dim}\ f^{-1}(y) = n-m$ for all $y \in U$. Then $Y_j$ for $j > n-m$ is contained in $f^{-1}(Y \setminus U) = Y'$. Now consider $f$ restricted to $f^{-1}(Y')$. Because $\mathrm{dim}\ Y' < \mathrm{dim}\ Y$, $Y_j$ is closed.
+    \end{proof}
+
+    \begin{thm}
+        Let $f: X \to Y$ be a regular map of quasi-projective varieties. Then $f(X)$ contains an open subset $U \subset \overline{f(X)}$.
+        \begin{proof}
+            We may assume that $f$ is dominant and that $Y$ is irreducible by considering the irreducible components of $Y$. Considering the irreducible components of $X$, we may assume that $X$ is irreducible. Passing to an affine chart $U \subset Y$ and its preimage, we may assume that $Y$ is affine and irreducible. Take any affine chart in the preimage of $U$ and we may assume that $X$ is affine. 
+            
+            Thus we have $X \overset{X}{\to} Y$ and $f^*: k[Y] \hookrightarrow k[X]$ a map of domains. Then we can decompose $f^*:k[Y] \hookrightarrow k[Y][z_1, \ldots, z_r] \hookrightarrow k[X]$. This corresponds to a map $Y \overset{\pi_1}{\gets} Y \times \A^r \overset{g}{\gets} X$. If $\alpha$ is integral, then $g$ (and thus $f$) is surjective. 
+            
+            We use a trick that there exists a principal affine $D(F) \subset Y \times \A^r$ such that $g\vert_{g^{-1}(D(F))} \to D(F)$ is finite. Let $p_1, \ldots, p_{\ell} \in k[X]$ be generators of the algebra. Then they are algebraic over $k[Y][z_1, \ldots, z_r]$ so we can write $a_0p_i^{m_i} + a_1p_i^{m_i-1} + \cdots + a_{m_i} = 0$, where $a_i \in k[Y][z_1, \ldots, z_r]$. If we invert $F = a_0^1a_0^2\cdots a_0^{\ell}$, then $p_i$ are all integral over $k[Y][z_1 \ldots, z_r][1/F] = k[D(F)]$.
+
+            Then the image of $g$ contains $D(F)$ because finite maps are surjective. Then $D(F) \hookrightarrow Y \times \A^r \to Y$. We find $U \subset Y$ such that $U \subset \pi_1(D(F))$. Note that $F = \sum b_{i_1 \ldots i_r} z_1^{i_1} \cdots z_r^{i_r}$. Define $U = D(b_{i_1 \ldots i_r})$ for some coefficient. If $y \in U$, then $F(y, z_1, \ldots, z_r) \neq 0$ for some choice of $y, z_1, \ldots, z_r$. Thus $(y, z_1, \ldots, z_r) \in D(F)$.
+        \end{proof}
+    \end{thm}
+
+    \begin{thm}
+        Let $f:X \to Y$ be a regular map between projective varieties such that $f(X) = Y$ and suppose $Y$ is irreducible. Suppose $f^{-1}(y)$ is irreducible of the same dimension ($\mathrm{dim}\ X - \mathrm{dim}\ Y$). Then $X$ is irreducible.
+        \begin{proof}
+            Decompose $X = \cup X_i$. Then $f(X_1) = \cdots = f(X_s) = Y$ and $f(X_i) \subsetneq Y$ for all $i > s$. Define $f_i = f \vert_{x_i}$. Then there exists $U_i \subset Y$ open such that $f^{-1}(y)$ has smallest dimension $n_i$. Set $U = \cap_{i=1}^s U_i \setminus \cup_{j > s} f(x_j)$. Fix $y_0 \in U$. Then $f^{-1}(y_0) \subset \cup f_i^{-1}(y_0)$. WLOG we see that $f^{-1}(y_0) = f_1^{-1}(y_0)$, which implies $n = n_1$. Then for $y \in Y$, we see that $f_1^{-1}(y) \subset f_1^{-1}(y)$. Because $Y$ is irreducible, $X = X_1$.
+        \end{proof}
+    \end{thm}
+
+    Jenia apologizes that this is too abstract and wants to calculate some actual examples.
+
+    \begin{thm}
+        Every cubic surface contains a line.
+        \begin{proof}
+            We postulate the existence of the Grassmanian. One property of $\mathrm{Gr}(k.n)$ is that the incidence variety $\mathcal{L} = \{p \in \P^{n-1}, L \in \mathrm{Gr}(k,n) \mid p \in L\} \subset \P^{n-1} \times \mathrm{Gr}(k,n)$ is closed. It is easy to see that $\mathcal{L}$ is irreducible because $p_2: \mathcal{L} \to \mathrm{Gr}(k,n)$ and all fibers are $\P^{k-1}$.
+
+            Define $\mathrm{Cub} = \P^{19} = \P(\mathrm{Sym}^3(k^4))$ and $W = \{p \in \P^3, S \in \mathrm{Cub} \mid p \in S\}$. Clearly $W$ is a projective variety. Define $Z = \{L \in \mathrm{Gr}(2,4), S \in \mathrm{Cub} \mid L \subset S\} \subset \mathrm{Gr}(2,4) \times \mathrm{Cub}$. This is also a closed set (construct a map such that $Z$ is the locus of points with $1$-dimensional fibers). Therefore $Z$ is projective.
+
+            Now consider $\pi_2(Z) \subset \mathrm{Cub}$. Becuase the Grassmanian is projective, it is proper. Then $\pi_2(Z)$ is closed. This is the set of cubic surfaces containing at least one line. If the image is not all cubic surfaces, we may use the theorem on the dimension of the fibers. We see that each cubic contains a positive-dimensional set of lines. But the Clebsch cubic surface contains only $27$ lines, which is a contradiction.
+        \end{proof}
+    \end{thm}
+
+    \section{Local Properties}
+    
+    \subsection{Lecture 13 (Mar 19)}
+    We begin our discussion of local properties. Let $p \in X$ be a point on a quasi-projective variety. We can assume $X$ is affine and $k[X] = A$. Then $m_p \subset A$ is a maximal ideal. The local ring is $\mathcal{O}_p = A_{m_p}$, which is independent of the affine chart. If $X$ is irreducible, then $\mathcal{O}_p \subset k(X)$. If $X$ is not irreducible, then $A$ has zero-divisors and localization is harder to define.
+
+    \subsubsection{Tangent space}%
+    Let $X \subset \A^n$. Then $X = V(I), I = (F_1, \ldots, F_s), p = (x_1^0, \ldots, x_n^0)$.
+
+    \begin{defn}[Tangent Line]
+        We say that a line $L$ passing through $p$ is tangent to $X$ at $p$ if the multiplicity of $L \cap X$ is at least $2$.
+    \end{defn}
+
+    \begin{defn}[Tangent space, ambient version]
+        The tangent space $T_pX$ is the locus of all lines tangent to $X$ at $p$.
+    \end{defn}
+
+    \begin{defn}[Multiplicity]
+        Let $L$ be defined parametrically. Then $I|_L \subset k[t]$ is a principal ideal $(f)$. Then $f = t^mu$, where $u(0) = 0$. The multiplicity of intersection is $m$.
+    \end{defn}
+
+    \begin{exm}
+        Let $X = (y=x^2)$ the parabola. Then if $L = \begin{cases}
+            x = x_0+at \\
+            y = y_0+at
+        \end{cases}$ we see that $f(t) = (b-2ax_0)t + O(t^2)$. Thus the line is tangent if $b = 2ax_0$, or $b/a = 2x_0$.
+    \end{exm}
+
+    \begin{exm}
+        Let $X = (y^2=x^3)$ and $p = x_0$. Then $f(t) = (bt)^2 - (at)^3 = t^2(b^2-a^3t)$, so every line is a tangent line through the origin, and the tangent space is $\A^2$.
+    \end{exm}
+
+    Again let $I = (F_1, \ldots, F_s)$ and $p = (x_1^0, \ldots, x_n^0)$. Then \[F_{\ell}(x) = F_{\ell}(p) + \sum \frac{\partial F_{\ell}}{\partial x_i}(p)(x_i - x_i^0) + \mathrm{h.o.t}, \] where $\sum \frac{\partial F_{\ell}}{\partial x_i}(p)(x_i - x_i^0)$ is the linearization of $d_pF_{\ell}$. Then $F_{\ell}|_L = \frac{\partial F_{\ell}}{\partial x_i}(p)a_it + \mathrm{h.o.t}$. Thus $L$ is a tangent line if and only if \[\sum_{i=1}^n \frac{\partial F_{\ell}}{\partial x_i}(p) a_i = 0 \] for all $\ell = 1, \ldots, s$. Thus the defining equations for $T_pX$ are \[\sum \frac{\partial F_{\ell}}{\partial x_i}(p)(x_i - x_i^0), \ell = 1, \ldots, s.\]
+
+    Note that $T_pX$ is an affine subspace of $\A^n$. One can also view the linear subspace parallel to $T_pX$ as the tangent space.
+
+    \begin{thm}
+        There is a canonical isomorphism $T_p^* \simeq m_p/m_p^2$, where either we take $m_p \subset A = k[X]$ or $m_p \subset \mathcal{O}_p$. This is known as the Zariski cotangent space.
+        \begin{proof}
+            Let $g \in m_p$. Then $g = G+I$ for some $G \in k[x_1, \ldots, x_n]$. Then $d_pG = \sum \frac{\partial G}{\partial x_i}(x_i - x_i^0)$, but for all $F \in I$, $d_pF|_{T_pX} = 0$. Therefore we can define $d_pg = d_pG|_{T_pX}$. This gives a map $d_p: m_p \to T_p^*$. Then $d_p$ is clearly $k$-linear and surjective (linear function is its own differential). Then $m_p^2 \subset \mathrm{Ker}d_p$ because $m_p^2$ is generated by $(x_i-x_i^0)(x_j-x_j^0)$, which vanish under the differential by Leibniz.
+
+            Thus $d_p$ induces a surjective map $m_p/m_p^2 \to T_p^*$. We show that the kernel of $d_p$ is $m_p^2$. WLOG let $p = (0,\ldots, 0)$. Suppose $d_p g = 0$. Then $g = G|_X, G \in k[x_1, \ldots, x_n]$ and $d_pG|_{T_p} = 0$. Then $T_p = \{d_pF_{\ell} = 0 \mid \ell = 1, \ldots, s \}$, so $d_pG = \lambda_1 d_pF_1 + \cdots + \lambda_s d_p F_s$. Set $G_1 = G - \sum_{i=1}^s \lambda_i F_i$. Then $g_1|_X = g$ and $d_p G_1 = 0$, so $G_1 \in (x_1, \ldots, x_n)^2$. Therefore $G_1|_X \in m_p^2$.
+        \end{proof}
+    \end{thm}
+
+    \begin{cor}
+        $T_p$ and therefore its dimension is a local invariant of $p \in X$.
+    \end{cor}
+
+    \begin{rmk}
+        Suppose $X \subset \P^n$ is projective. Then $X = (F_1 = \cdots = F_s = 0)$. Choose $p \in X$, and suppose WLOG that $p \in \A^n_0$, so $p = (1:x_1^0:\cdots:x_n^0)$. Then $T_p X \subset \A_0^n$ is given by $\sum_{i=1}^n \frac{\partial F_{\ell}}{\partial x_i}(p)(x_i - x_i^0) = 0$ where $\ell = 1, \ldots, s$.
+
+        We can take $\overline{T_pX} \subset \P^n$ the projective tangent space. Recall Euler's formula $\sum_{i=0}^n \frac{\partial F_{\ell}}{\partial x_i}(p) x_i^0 = (\mathrm{deg}F_{\ell}) F_{\ell}(p) = 0$. Therefore the projective tangent space is given by \[ \sum_{i=1}^n \frac{\partial F_{\ell}}{\partial x_i}(p) x_i = 0, \ell = 1, \ldots, s. \]
+    \end{rmk}
+    
+    \begin{thm}
+        Suppose $X$ is irreducible. Then $X^{\mathrm{sm}} = \{p \in X \mid \mathrm{dim}T_p X = \mathrm{dim} X \}$ is a non-empty open subset of ``smooth'' or ``non-singular'' points. The complement is known as the singular locus $X^{\mathrm{sing}}$, and for all $p \in X^{\mathrm{sing}}$, $\mathrm{dim}T_pX > \mathrm{dim} X$.
+        \begin{proof}
+            We assume $X \subset \A^N$ is affine. Then define $TX = \{(a,p) \in \A^N \times X \mid a \in T_p X \}$. This is called the tangent bundle (or fiber space). Its equations are $F_1, \ldots, F_s$ the equations of $X$ and the equations of tangency $\sum \frac{\partial F_{\ell}}{\partial x}(x_1, \ldots, x_n) (y_i-x_i) = 0$. Thus $TX$ is algebraic.
+
+            Now the second projection $\pi_2: TX \to X$ has fiber the tangent space of $X$. By the theorem on the dimension of fibers, $X^{\mathrm{sm}} = \{p \in X \mid \mathrm{dim}T_pX = s\}$, where $s$ is the minimum possible, is an open subset. It remains to be seen that $s = n$.
+
+            Note every irreducible algebraic variety is birational to a hypersurface. Also, we show that $X$ is birational to $Y$, if and only if there exist $U \subset X, V \subset Y$ open, nonempty such that $U \simeq V$.\footnote{The second claim is on the midterm.}
+
+            Given both claims, we can assume $X \subset \A^{n+1}$ is a hypersurface. Then $X = (F=0)$ for some irreducible $F \in k[x_0, \ldots, x_{n+1}]$. Then $T_pX$ is given by $\sum_{i=0}^n \frac{\partial F}{\partial x_i}(p)(x_i - x_i^0) = 0$. Then the dimension of the tangent space is $n$ unless $\frac{\partial F}{\partial x_i}(p) = 0$ for all $i$. This implies that $\frac{\partial F}{\partial x_i} \in (F)$ and thus the partial derivatives are zero. In characteristic $0$, this implies $F = 0$, which is a contradiction, and in positive characteristic, $F$ is a $p$th power, so it is not irreducible. Thus we have a contradiction.
+        \end{proof}
+    \end{thm}
+
+    \begin{lem}
+        Every irreducible variety is birational to a hypersurface. 
+        \begin{proof}
+            We work in characteristic zero. Choose a transcendence basis $k(x_1, \ldots, x_n) \subset k(X)$ a finite extension. This extension is separable, so we use the primitive element theorem. Then $k(x_1, \ldots, x_n, y)$, where $y$ has minimal polynomial $F \in k[x_1, \ldots, x_n, y]$. Thus $k(X) \simeq k(H)$, where $H = V(F)$.
+        \end{proof}
+    \end{lem}
+
+    If $X$ is reducible, then $p \in X$ is nonsingular if $\mathrm{dim}T_p X = \max (\mathrm{dim} Y)$ where $Y \ni p$ is an irreducible component of $X$. In fact, there is a theorem that if $p$ lies on several irreducible components, then $p$ is singular. 
+
+    \subsection{Lecture 14 (Mar 21)}
+    
+    Last time we considered local properties at a point. Today we will prove more theorems. Let $p$ be a non-singular point of $X$.
+
+    \begin{thm}
+        $\mc{O}_p \hookrightarrow k[[u_1, \ldots, u_n]]$.
+    \end{thm}
+
+    \begin{cor}
+        $\mc{O}_p$ is an integral domain. Thus $X$ has only one irreducible component passing through $p$.
+    \end{cor}
+
+    \begin{rmk}
+        This is an analogue of the result from complex analysis that holomorphic functions are analytic and the map $\mathcal{O}_U \to \C[[z]]$ is injective.
+    \end{rmk}
+
+    \begin{defn}
+        $u_1, \ldots, u_n \in m_p$ are called local parameters if $\{u_i\}$ is a basis of $m_p/m_p^2$. Equivalently, $d_p u_1, \ldots, d_p u_n$ form a basis of $T_p^{\vee}$.
+    \end{defn}
+    
+    Fix $u_1, \ldots, u_p \in m_p$ a system of local parameters. 
+
+    \begin{lem}
+        $m_p = (u_1, \ldots, u_n)$.
+        \begin{proof}
+            Let $U = (u_1, \ldots, u_n) \subset m_p$. Then $m_p (m_p/I) = m_p/I$, so by Nakayama's lemma, $m_p/I = 0$.
+        \end{proof}
+    \end{lem}
+
+    \begin{defn}
+        A formal power series $\phi = \sum_{k \geq 0} \phi_k(u_1, \ldots, u_n)$ is called a Taylor series of $f \in \mc{O}_p$ if $\left( f - \sum_{k=0}^n \phi_k \right) \in m_p^{n+1}$.
+    \end{defn}
+
+    \begin{lem}
+        Every $f \in \mc{O}_p$ has a Taylor series.
+        \begin{proof}
+            Note $f = f(p) + g_1$, where $g_1$ vanishes at $p$, so $g_1 \in m_p$. Then we can write $g_1 = \sum_{i=1}^n a_iu_i$ where $a_i \in \mc{O}_p$. Thus we can write $a_i = a_i(p) + \overline{a_i}$, where $\overline{a_i} \in m_p$. Then we can write $g_1 = \sum_{i=1}^n a_i(p)u_i + \sum \overline{a_i} u_i$. Set the second sum to be $g_2 \in m_p^2$.
+
+            Now suppose $g_k \in m_p^k$. Thus $g_k = \sum_i h_1^i \cdots h_k^i$. Noting that $h_j^i = \sum a_{j,k}^i u_k$. Decompose this as above and then the claim follows by induction.
+        \end{proof}
+    \end{lem}
+
+    \begin{lem}
+        A Taylor series is unique. Thus we have a morphism $\mathcal{O}_p \to k[[u_1, \ldots, u_n]]$.
+    \end{lem}
+
+    \begin{lem}
+        This morphism is injective.
+        \begin{proof}
+            Take $f \in \mc{O}_p$ and suppose $f$ has Taylor series $0$. This happens if and only if $f \in m_p^n$ for every $n$. We know that by Krull's intersection theorem, if $(R,m)$ is a Noetherian local ring and $I \subset R$ is some ideal, then $\cap_{n \geq 1} I^n = 0$. Therefore $f = 0$.
+        \end{proof}
+    \end{lem}
+
+    \begin{thm}[Krull's Intersection Theorem]
+        If $(R,m)$ is a Noetherian local ring and $I \subset R$ is some ideal, then $\cap_{n \geq 1} I^n = 0$.
+    \end{thm}
+
+    \begin{proof}[Proof of Krull's intersection Theorem]
+        Consider the Rees ring $\widetilde{R} = R \oplus I \oplus I^2 \oplus \cdots$ with graded multiplication. Then $\widetilde{R}$ is Noetherian. Consider $N = \cap_{n\geq 1}I^n$ and $\widetilde{N} = N \oplus N \oplus N \oplus \cdots \subset \widetilde{R}$, which is an ideal. Thus $\widetilde{N}$ has a finite generating set. Thus all generators live in the first $k$ components for some $k$. Then any $n \in N_{k+1}$ can be written $n = \sum \widetilde{r_i} n_i$ where $\widetilde{r_i} \in I \oplus I^2 \oplus \cdots$. Then $N = I \cdot N$. $I$ is contained in a maximal ideal, so $N = mN$, and therefore $N=0$ by Nakayama.
+    \end{proof}
+
+    \begin{rmk}
+        This leads to the Artin-Rees lemma.
+    \end{rmk}
+
+    \begin{proof}[Proof of Lemma 143]
+        Suppose $f \in \mc{O}_p$ has $2$ different Taylor series. Equivalently, suppose $0$ has a nontrivial Taylor series. Then $\phi_0 \in m_p$, so $\varphi_0 = 0$. Then $\phi_1 = \sum a_i u_i \in m_p^2$. However, $u_1, \ldots, u_n$ are linearly independent mod $m_p^2$ by definition of local parameters. Thus $a_1 = \cdots = a_n = 0$. Thus $\phi_i = 0$.
+
+        Now $\phi_2 = \sum a_{ij}u_iu_j \in m_p^3$. We show that $\phi_k(u_1, \ldots, u_n) \in m_p^{k+1}$ if and only if $\phi_k$ is a trivial polynomial. If $n = 1$, then $m_p = (u)$ and $\phi_k(u) = \alpha u^k \in (u)^{j+1}$. If $\alpha \neq 0$, then $(u)^k = (u)^{k+1}$, which implies $(u) = 0$ by Nakayama.
+
+        From the proof of Noether's normalization, WLOG $\phi_k = u_1^k + \text{other monomials}$ We restrict to a hypersurface $Y = V(u_n) \subset X$. Then all irreducible components of $Y$ have codimension $1$ by the PIT. We claim that $Y$ is non-singular at $p$ and $u_1|_Y, \ldots, u_{n-1}|_Y$ are local parameters of $Y$ at $p$.
+
+        Given the claim, $\phi_k|_Y = \phi(u_1|_Y, \ldots, u_{n-1}|_Y, 0)$ is a nontrivial polynomial. It contains $(u_1|_Y)^k$. On the other hand, $\phi_k \in m_p^{k+1}$, so $\phi_k|Y \in (m_{p,Y})^{k+1}$. By induction, this is a contradiction.
+    \end{proof}
+
+    \begin{thm}
+        Let $u_1, \ldots, u_n \in m_p \subset \mc{O}_p$ be local parameters. Shrink $X$ so that $u_1, \ldots, u_n \in k[X]$. Then $X_i = V(u_i)$ is nonsingular at $p$ and $\{u_j|_{x_i}\}_{j \neq i}$ are local parameters of $X_i$. Also, $\cap_{i=1}^n T_{p,X_i} = 0$.
+        \begin{proof}
+            Note $u_i \in I(x_i) \subset k[X]$. Then $T_p X_i = \{d f_p = 0 \text{ for all } f_p \in I(x_i) \} \subset L_i = \{ d_p u_i = 0\} \subset T_p X$. By the PIT, $\mathrm{dim}_p X_i = n-1$. However, $\mathrm{dim} T_pX_i \leq n-1$. Thus $x_i$ is smooth and $T_p X_i = L_i$. Also, $\{d_p u_j |_{L_i} \}_{j \neq i}$ is a basis of $L_i^{\vee}$. Therefore $\{u_j|_{X_i}\}_{j \neq i}$ are local parameters on $X_i$.
+        \end{proof}
+    \end{thm}
+
+    This completes the proof of Lemma 143.
+
+    \subsubsection{Tangent Cone}
+    Consider the cusp $X = \{y^2 = x^3\}, T_0 X = \A^2$. Rescale $x \to tx, y \to ty$, so the equation becomes $t^2y^2 = t^3x^3$, so $y^2 = tx^3$. Note that $X \simeq X_t$ for $t \neq 0$. Then we set $X_0 = \{y^2 = 0\}$.
+
+    Let $0 \in X \subset \A^n$. Then $X = V(I)$. For all $f \in I$ we can write $f = \mathrm{in}(f) + \mathrm{h.o.t.}$. Then define $I_0 = \mathrm{in}(I) = (\mathrm{in}(f) \mid f \in I)$. For example, $\mathrm{in}(y^2-x^3) = (y^2)$. 
+
+    \begin{defn}
+        The Tangent cone is defined to be $V(I_0)$, at least if $I_0$ is a radical ideal.
+    \end{defn}
+
+    \begin{thm}
+        The tangent cone has the same dimension as the original variety. There is a family of varieties $X_t \simeq X$ such that ``$\lim_{t \to 0} X_t$''$= X_0$.
+    \end{thm}
+
+    More precisely, there exists an affine variety $\mc{X} \subset \A^n \times \A^1_t$ such that $\pi_2^{-1}(t) \simeq X$ for $t \neq 0$, $\pi_2(1) = X$, and $\pi_2^{-1}(0) = X_0$.
+
+    \subsection{Lecture 15 (Mar 26)}
+    We can consider lines (or curves on a variety $X$ as maps $\P^1 \dashrightarrow X$). Also, we can consider maps $f: X \dashrightarrow \P^1$. Then $Y = f^{-1}(a) \subset X$ is a hypersurface.
+
+    \begin{defn}[Locally Principal]
+        A hypersurface $Y \subset X$ is called locally principal if it is locally given by $1$ equation.
+    \end{defn}
+
+    \begin{defn}[Local Equations]
+        $f_1, \ldots, f_r \in \mc{O}_p$ are called local equations of a subvariety $Y \subset X$ if there exists and affine neighborhood $U \subset X$ of $p$ such that $f_1, \ldots, f_r \in k[U]$ and $I(Y) = (f_1, \ldots, f_r)$.
+    \end{defn}
+
+    \begin{lem}
+        $f_1, \ldots, f_r$ are local equiations of $Y$ at $p$ if and only if $\mc{L}_{Y,p} \subset \mc{O}_p$ is generated by $f_1, \ldots, f_r$. Here $\mc{L}_{Y,p} = \{f \in \mc{O}_p \mid f|_{Y \cap U} = 0 \text{ for some neighborhood } p \in U \}$. Equivalently, if $X$ is already affine, $I(Y) \subset k(X)$ and $\mc{L}_{Y,p} = I(Y)_{m_p}$.
+        \begin{proof}
+            If $f_1, \ldots, f_r \in \mc{O}_p$ are local equations, then after shrinking $X$ to $U$, we have $I(Y) = (f_1, \ldots, f_r) \subset k[X]$. Then $\mathcal{L}_{Y,p} = (f_1, \ldots, f_r)$ because localization preserves generators.
+
+            Now suppose that $\mc{L}_{Y,p} = (f_1, \ldots, f_r) \subset \mc{O}_p$. By shrinking, we can assume that $f_1, \ldots, f_r \in k[X]$ and that $X$ is affine. We know that $I(Y) = (g_1, \ldots, g_s) \subset K[X]$. We can write $g_i = \sum_{j=1}^r h_{ij}f_j$ in $\mc{O}_p$. We can shrink $X$: Choose a principal open set $U = D(w) \subset X$ such that $h_{ij} \in k[U]$. We claim that in $U$, $I(Y \cap U) = (g_1, \ldots, g_s) \subset k[U]= k[X][1/w]$ is also generated by $f_1, \ldots, f_r$. We know $(g_1, \ldots, g_s) \subset (f_1, \ldots, f_r).$ Then $f_i|_Y = 0$, so $(f_1, \ldots, f_r) \subset (g_1, \ldots, g_s)$.
+        \end{proof}
+    \end{lem}
+    
+    \begin{thm}[Criterion for Smoothness]
+        Let $X$ be a variety of dimension $n$. Then suppose $p \in Y \subset X$ and $Y$ is locally principal at $p$, as in $\mc{L}_{Y,p} = (g) \subset \mc{O}_p$. If $Y$ is nonsingular at $p$, then so is $X$.
+        \begin{proof}
+            Shrink $X$ to be affine. Then $I(Y) = (g) \subset k[X]$. We see that $I(X) = (F_1, \ldots, F_s)$ and $\overline{I(Y)} = (F_1, \ldots, F_s, G)$. Recall that $T_pX = \{d_pF_1, \cdots, f_pF_s = 0 \}$ with dimension at least $n$. Then $T_pY = \{d_pF_1 = \cdots = d_pF_s = d_pG = 0\}$. Then we see that $T_pY$ has dimension $n-1$, so $T_pX$ must have dimension $n$, so $X$ is nonsingular at $p$.
+        \end{proof}
+    \end{thm}
+    
+    \begin{rmk}
+        It is not enough to assume that $Y = V(g)$. For example, take $X = \{z^2=xy\}$ and $Y = V(x)$. $Y$ is nonsingular at the origin but $X$ is singular. In fact, this implies that $Y \subset X$ is not locally principal, so $I(Y) = (x,z)$ needs at least $2$ generators.
+    \end{rmk}
+
+    \begin{thm}
+        Suppose $X$ is nonsingular at $p$ and suppose $p \in Y \subset X$ is an irreducible hypersurface. Then $Y$ is locally principal at $p$.\footnote{This does not imply that $I(Y) \subset K[X]$ is principal. For an example, take $p \in E = \{y^2 = x^3+ax+b\}$ where the discriminant in nonzero. Then $m_p \subset \mc{O}_p = (t)$ is principal, but $I(p) \subset k[E]$ is not principal. If $I(p) = (t) \subset k[E]$, then we have a map $f:E \to \A^1$ where $f^{-1}(0) = p$. This induces a map $f:\overline{E} \to \P^1$ such that $f(\infty) = \infty$. This implies $f$ is birational, which is a contradiction.}
+    \end{thm}
+
+    \begin{thm}[Equivalent Theorem]
+        Let $p \in X$ be a nonsingular point. Then $\mc{O}_p$ is a UFD.
+        \begin{proof}[Proof of Equivalence]
+            Suppose $p \in Y \subset X$ where $X$ is affine. Then consider $f \in \mc{L}_{Y,p}$. This is a UFD, so we can factor $f = f_1 \cdots f_r$. We can assume that $f \in k[X]$ and $f|_Y = 0$. If $Y$ is irreducible, then $f_1$ vanishes on $Y$ (up to renumbering). We will show that $\mc{L}_{Y,p} = (f_1=g)$.
+            
+            We know that $Y \subset V(g)$. We will sow that $Y$ is the only irreducible component of $V(g)$ passing through $p$. Suppose $Y'$ is another component passing through $p$. Then there exists $h|_Y = h'|_{Y'} = 0$, and $hh'|_{V(g)} = 0$. Thus $g | (hh')^k$ for some $k$. Thus $g$ divides $h$ or $h'$ in a UFD, which leads to a contradiction. This implies that $Y = V(g)$ is irreducible. Take $s \in I(Y)$. Then $g|s^k$ for some $k$. Because $g$ is prime, it divides $s$. Thus $s \in (g)$. In fact, $I(Y) = (g)$.
+
+            In the other direction, note that $\mc{O}_p$ is Noetherian, which implies existence of prime factorization. We prove Euclid's Lemma. Let $g$ be irreducible. Let $Y = V(g)$. Then $Y$ is irreducible at $p$. Take $Y_1 \subset Y$ an irreducible component. By Krull, $Y_1$ has codimension $1$. Thus $Y_1$ is locally principal, so $Y_1 = V(g_1)$ after shrinking. We also know $I(Y_1) = (g_1)$. Then $g|_{Y_1} = 0$, so $g \in (g_1)$. Thus $g = g_1h_1 \in \mc{O}_p$, so $h_1$ is a unit. Then $(g) = (g_1)$ and thus $Y = Y_1$. Thus $Y$ is irreducible and $g$ is prime.
+        \end{proof}
+
+        \begin{proof}[Proof of Theorem 156.]
+            The idea is to use the injection $\mc{O}_p \subset k[[T_1, \ldots, T_n]]$ where $p \in X$ nonsingular and $n = \mathrm{dim} X$. We check that Euclid's Lemma holds. We know that this holds in $k[[T_1, \ldots, T_n]]$. Then if $a,c \in \mc{O}_p$ with $a|c$ in $\widehat{\mc{O}}_p$. We also check that if $a,b$ are coprime in $\mc{O}_p$ then they are coprime in $\widehat{\mc{O}}_p$. We show that if $I \subset \mc{O}_p$, then $(I\widehat{\mc{O}}_p) \cap \mc{O}_p = I$.
+
+            To prove the claim, let $I \subset \mc{O}_p$ where $I = (f_1, \ldots, f_s)$ and $x \in I (widehat{\mc{O}}_p) \cap \mc{O}_p$. Then $x = \sum f_i \alpha_i$, $\alpha_i \in \widehat{\mc{O}}_p$. Then for all $n \geq 1$ we see that $\alpha_i = a_i^{(n)} + \xi_i^{(n)}$ where $a_i \in \mc{O}_p$ and $\xi_i \in \widehat{m}_p^n$. Thus $x = \sum a_i^{(n)} f_i + \sum \xi_i^{(n)} f_i$. We know $\xi = x-a \in \widehat{m}_p^n \cap \mc{O}_p$, so $\xi \in m_p^n$. Therefore $x \in I + m_p^n$ for all $n$, and thus $x \in I$ by Krull's Intersection Theorem.
+
+            Given the claim, we see that $c \in (a)\widehat{\mc{O}}_p$. However, $c \in \mc{O}_p$, so $c \in (a)$. Now we show that gcd is preserved by the embedding. Suppose $a = \gamma \alpha, b = \gamma\beta$ where $(\alpha, \beta) \in \widehat{\mc{O}}_p$. Choose $n$ such that $\alpha, \beta \notin \widehat{m}_p^n$. Then $\alpha = x_n+u_n, \beta = y_n+v_n$ where $x_n, y_n \in \mc{O}_p$ and $u_n, v_n \in \widehat{m}_p^n$. Because $a \beta - b \alpha = 0$, we see that $ay_n - bx_n = a(\beta - v_n) - b (\alpha - u_n) = -av_n + bu_n \in (a,b)\widehat{m}_p^n$. By the claim, $ay_n - bx_n \in (a,b)m_p^n$, so $ay_n - bx_n = a_n + bs_n$ where $t_n,s_n \in m_p^n$. Bt algebraic manipulation, $\alpha(y_n-t_n) = \beta(x_n+s_n)$. Because $\alpha, \beta$ are coprime, then $\alpha \mid x_n+s_n$, so $x_n+s_n = \alpha \lambda$. Thus $\lambda = 1 + \mathrm{h.o.t.}$ is a unit. Therefore $x_n+s_n \mid \alpha$, so $x_n + s_n \mid a$ in $\mc{O}_p$. Then $a = (x_n+s_n)h$ and therefore $h(y_n-t_n) = b$, so $b = h(y_n-t_n)$. Therefore $h$ is a unit. In the power series ring, $\alpha \mid a$ and $a \mid \alpha$, so $\gamma$ is a unit.
+        \end{proof}
+    \end{thm}
+
+    \subsection{Lecture 16 (Mar 28)}
+    We prove that if $p \in X$ is smooth, then $\mc{O}_p$ is a UFD. We will finish the proof in last time's section.
+    
+    \begin{cor}
+        Let $f: X \dashrightarrow Y$ is a rational map with $X$ nonsingular, $Y$ projective. Then the indeterminancy locus has codimension at least $2$. In particular, if $X$ is nonsingular, $f$ is regular.
+        \begin{proof}
+            We work near $p \in X$ and assume $Y = \P^n$. Then $f = (f_0: \cdots : f_n)$ where $f_i \in k(X)$. We can assume that $f_i \in \mc{O}_p$ with no common factor. We show that $V(f_0, \ldots, f_n) \subset X$ has codimension $2$ near $p$.
+
+            Suppose $Y \subset V(f_0, \ldots, f_n)$ and $Y$ has codimension $1$. Then $\mc{L}_{Y,p} = (h)$ because $\mc{O}_p$ is a UFD. Then $f_i|_Y = g_ih$. This contradicts the fact that the $f_i$ have no common factor.
+        \end{proof}
+    \end{cor}
+    
+    \subsubsection{Blowups}
+    \begin{exm}
+        Consider $\xi = [1:0:\cdots:0] \in \P^n$ and take the map $\pi: \P^n \dashrightarrow \P^{n-1}$ given by $[x_0: \cdots :x_n] \mapsto [x_1:\cdots:x_n]$. We know $\pi$ is regular at $\P^n \setminus \xi$. We want to resolve $\pi$:
+
+        \begin{center}
+            \begin{tikzcd}
+                & \mathrm{Bl}_{\xi}\P^n \arrow{dl}{\sigma} \arrow{dr} & \\
+                \P^n \arrow[dashrightarrow]{rr}{\pi} & & \P^{n-1}
+            \end{tikzcd}
+        \end{center}
+
+        Consider the map $\P^n \times \P^{n-1} \supset \mathrm{Bl}_{\xi}\P^n = \overline{\Gamma_{\pi}}$, where $\Gamma_{\pi} = \{(x,y) \mid y = \pi(x) \}$. By construction, $\sigma = \pi_1$ and the right arrow is $\pi_2$. We also know that $\mathrm{Bl}_{\xi}\P^n \setminus \sigma^{-1}(\xi) \simeq \P^n \setminus \xi$. Also, the blowup is irreducible. 
+        
+        Fix $[y_1: \cdots: y_n] \in \P^{n-1}$. We know $\pi^{-1}(y) \supset \{[1:t_{y_1: \cdots : ty_n}]\}$. Then the closure contains $\xi, [y_1: \cdots : y_n]$. Therefore $\sigma^{-1}(\xi) = \P^{n-1}$ and is called the exceptional divisor of the blowup.
+
+        Now we find equations for the blowup. We know that $\P^n \times \P^{n-1}$ is given by $x_iy_j = x_jy_i$. Then if $x_1 = \cdots = x_n = 0$ ($\xi$), we get $\P^{n-1}$. If $x_1 \neq 0$, then $[x_1:\cdot : x_n] \sim [y_1: \cdots : y_n]$ and we can use equations for $\Gamma_{\pi}$.
+    \end{exm}
+
+    \subsection{Lecture 17 (Apr 02)}
+    We finish the discussion of blowups from last time. Let $f:X \to Y$ be a birational regular surjective morphism. Then $f$ restricts to an isomorphism $U \simeq V$ of open subsets. Using the theorem on dimension of the fibers, there exists an open $W \subset Y$ such that $f$ has finite fibers over points in $W$. Away from $W$, every component of every fiber is positive dimensional.
+
+    \begin{defn}[Exceptional Locus]
+        $\mathrm{Exc}(f) = f^{-1}(Y \setminus W)$ is the exceptional locus of $f$.
+    \end{defn}
+
+    \begin{thm}
+        Suppose $f:X \to Y$ is a surjective birational regular map. Suppose $f(x) = y$ and assume that $Y$ is smooth at $y$ (more generally, $Y$ is locally factorial at $y$, meaning that $\mc{O}_y$ is a UFD). Assume that $g = f^{-1}$ is not defined at $y$. Then there exists a subvariety $Z \subset X$ of codimension $1$ passing through $x$ such that $Z \subset \mathrm{Exc}(f)$.
+    \end{thm}
+    
+    \begin{cor}
+        If $f:X \to Y$ is birational, surjective, regular, and $\mathrm{codim}(\mathrm{Exc}(f)) \geq 2$, then $Y$ is singular and in fact not even locally factorial.
+        \begin{proof}
+            Pass to an affine neighborhood of $x$ at $X$, and assume that $X \subset \A^n$ with $g = f^{-1}$. Then denote $g_i = g^*(f_i) \in k(Y)$. Then $g$ is not defined at $y \in Y$, so one of the $g_i$, say $g_1$ is not regular at $y \in Y$. Thus $g_1 \notin \mc{O}_y$.
+            
+            If $\mc{O}_y$ is a UFD we can write $g_1 = u/v$ where $u,v$ are coprime and $v(y) = 0$. We know that $t_1$ is a regular function on $X$, where $t_1 = f^*(g^*(t_1)) = f^*(g_1) = \frac{f^*(u)}{f^*(v)}$.
+
+            Define $Z = V(f^* v) \subset X$, which is a hypersurface. We know $f^*(u)|_Z = (t_1 f^* v)|_Z = 0$. Thus $f(Z) \subset V(u) \cap V(v)$. We know $V(u,v) \subset Y$ has codimension $2$ at $y$ becuase the local ring at $y$ is a UFD.
+        \end{proof}
+    \end{cor}
+
+    We observe that the blowup is a local construction. Take $\A^n_{x_1, \ldots, x_n}$ and let $\xi = 0$. Then $\mathrm{Bl}_{\xi} = \overline{\Gamma}_{\pi} \subset \A^n \times \P^{n-1} \subset \mathrm{Bl}_{\xi} \P^n$. To find equations, we dehomogeneize to find $x_iy_j=x_j$ if we take $y_i = 1$. Also, other equations are $x_jy_k = x_ky_j$. Also $\mathrm{Bl}_{\xi}\A^n = \bigcup_{i=1}^n U_i$ where $u_i = \{y_i \neq 0\}$. Thus $U_i \simeq \A^n_{y_1, \ldots, x_i, \ldots, y_n}$ and there is a map $U_i \to \A^n$ given by $(y_1, \ldots, x_i, \ldots y_n) \mapsto (x_iy_1, \ldots, x_i, x_iy_n)$.
+
+    \begin{cor}
+        The blowup of $\A^n$ is smooth, covered by $\A^n$'s.
+    \end{cor}
+
+    \begin{defn}[Proper Transform]
+        Take $X \subset \A^n$. Then $\sigma^{-1}(X) = E \cup \overline{\sigma^{-1}(X \setminus \xi)}$. the components are $E \simeq \P^n$ and $\widetilde{X}$, which is called a proper transform of $X$.
+    \end{defn}
+
+    \begin{exm}
+        Consider $X = (x_2=tx_1) \subset \A^2$. Then consider $U_1 \simeq \A^2_{x_1,y_2}$ and $U_2 = \A^2_{y_1,y_2}$/ Them if $\alpha:U_1 \to \A^2$ is the covering map, $\alpha^{-1}(x) = x_1y_2-tx_1=0$, so either $x_1=0$ or $y_2=t$. On $U_{21}$, we see $x_1 \mapsto x_2y_1, y_2 \mapsto y_2$, so $\beta^{-1}(x) = x_2-tx_2y_1 = 0$, so either $x_2 = 0$ or $1-ty_1 = 0$.
+    \end{exm}
+
+    \begin{exm}
+        Consider $X  =(x_2^2-x_1^3=0)$ in $U_1$. Then $\alpha^{-1}(X) = (x_1y_2)^2-x_1^3 = 0$, so either $x_1=0$ ($E$) or $x_1=y_2^2$ ($\widetilde{X}$).
+    \end{exm}
+
+    \subsubsection{Local Blowup II}
+    Let $\xi \in X$ be a smooth point and the dimension of $X$ be $n$. We find the blowup of $X$ at $\xi$.
+    \begin{defn}
+        Choose local parameters $u_1, \ldots, u_n \in m_{\xi}$. Near $\xi$, a rational map $X \dashrightarrow \P^n$ given by $x \mapsto [u_1(x): \cdots : u_n(x)]$ is not regular only at $\xi$. Then $\mathrm{Bl}_{\xi} X = \overline{\Gamma}_{\pi} \subset X \times \P^1$ which is irreducible, smooth and the map $\sigma: \mathrm{Bl}_{\xi}(X) \to X$ is an isomorphism away from $\xi$ with equations as before.
+    \end{defn}
+
+    \begin{thm}
+        Let $\zeta \in X \subset \A^n$ with $X$ smooth. Then $\widetilde{X} \subset \mathrm{Bl}_{\xi} \A^n$ is isomorphic to $\mathrm{Bl}_{\xi} X$.
+    \end{thm}
+
+    \begin{thm}
+        $\mathrm{Bl}_{\xi} X$ is independent of the choice of local parameters. For two choices of local parameters, there exists a unique isomorphism $\psi$ that commutes with the $\sigma$.
+    \end{thm}
+
+    \subsection{Lecture 18 (Apr 04)}
+    Recall that local parameters are essentially a substitute for homolorphic local coordinates in complex geometry. 
+
+    \begin{lem}[Weak Inverse Function Theorem]
+        Let $p \in Y \subset X$ be a smooth point of both $X$ and $Y$. Then there exist local parameters $u_1, \ldots, u_n$ such that $u_1|_Y, \ldots, u_m|_Y$ are local parameters on $Y$ and $I(Y) = (u_{m+1}, \ldots, u_n)$ locally in some affine neighborhood of $p$. Equivalently, a smooth subvariety of a smooth variety is a local complete intersection.
+        \begin{proof}
+            Observe the following short exact sequences:
+            \begin{center}
+                \begin{tikzcd}
+                    & 0 & 0 & 0\\
+                    0 \arrow{r}  & I_{Y,X}/(m_{p,X}^2 \cap I_{Y,X}) \arrow{r} \arrow{u}& T^*_{p,X} \arrow{r} \arrow{u}& T^*_{p,Y} \arrow{r} \arrow{u}& 0 \\ 
+                    0 \arrow{r} & I_{Y,X} \arrow[twoheadrightarrow]{u} \arrow{r} & m_{p,X} \arrow[twoheadrightarrow]{u}\arrow{r} & m_{p,Y}\arrow[twoheadrightarrow]{u} \arrow{r} & 0 \\ 
+                    0 \arrow{r} & m_{{p,X}^2} \cap I_{Y,X} \arrow[hookrightarrow]{u} \arrow{r} & m_{p,X}^2 \arrow[hookrightarrow]{u}\arrow{r} & m_{p,Y}^2 \arrow[hookrightarrow]{u} \arrow{r} & 0 \\ 
+                                & 0 \arrow{u} & 0 \arrow{u} & 0 \arrow{u}
+                \end{tikzcd}
+            \end{center}
+            Choose a basis $u_1, \ldots, u_m$ of $T_{p,Y}^*$ and lift to $X$. Then choose $u_{m+1}, \ldots, u_n$ which generate the quotient. This gives local parameters $u_1, \ldots, u_n$ in $m_{p,X}$ such that $u_1|_Y, \ldots, u_m|_Y$ are local parameters on $Y$. Define $Y' = V(u_{m+1}, \ldots, u+n)$. By previous results, $Y'$ is smooth at $p$ and has dimension $m$. Then $Y \subset Y'$ is smooth with the same dimension, so they must be equal in some neighborhood of $p$.
+        \end{proof}
+    \end{lem}
+
+    \begin{rmk}
+        $Y$ is a local complete intersection at $p$ if $\mc{L}_Y \subset \mc{O}_p$ is generated by $s= \mathrm{codim}_Y X$ equations.
+    \end{rmk}
+
+    Now let $p \in X$ be smooth and $u_1, \ldots, u_n$ be local parameters. Then $\overline{X} = \mathrm{Bl}_p X \subset X \times \P^{n-1}$. We check that this is smooth. We know that $\mathrm{Bl}_p X \setminus E \simeq X \setminus \{p\}$. Therefore we check for a point $y^0 \in E$. We show that $m_{y^0} \overline{X}$ is generated by $n$ elements. Take the chart $U_i$ of $\overline{X}$ given by $U_i \subset X \times \A^{n-1}_{y_2, \ldots, y_n}$. Then the equations are $u_j=u_1y_j$. Then \[m_{y^0} U_1 = m_p X|_{u_1} + m_{(y_2^0, \ldots, y_n^0)} \A^{n-1}|_{U_1} = (u_1, \ldots, u_n, y_2-y_2^0, \ldots, y_n-y_n^0)|_{U_1} = (u_1, y_2-y_2^0, \ldots, y_n-y_n^0).\] Thus $\overline{X}$ is smooth at $Y^0$.
+
+    \begin{thm}
+        Let $0 \in X \subset \A^n$ be a smooth point. The proper transform of $X$ in $\mathrm{Bl}_0 \A^n$ is isomorphic to $\mathrm{Bl}_0 X$.
+        \begin{proof}
+            Choose local parameters $u_1, \ldots, u_n$ such that $I(X) = u_{m+1}, \ldots, u_n$ locallat at $0$. Then $u_1|_X, \ldots, u_m|_X$ are local parameters at $0 \in X$. We know the blowup is independent of the choice of local parameters.
+
+            Therefore $\mathrm{Bl}_0 \A^n \subset \A^n \times \P^{n-1}$ with equations $u_iy_j = u_jy_i$ and $\mathrm{Bl}_0 X \subset X \times \P^{m-1}$ is given by $u_iy_j = u_jy_i$ (with appropriate indices). To get equations of $\mathrm{Bl}_0 X$ from equations of $\mathrm{Bl}_0 \A^n$, take equations $u_{m+1} = \cdots = u_n = y_{m+1} = \cdots = y_n = 0$ to cut out $X$ and $\A^n$.
+
+            To see that this is the proper transform $\widetilde{X}$, note that $u_{m+1} = \cdots = u_n$ along $\widetilde{X}$ because they cut $X \times \P^{n-1}$ from $\A^n \times \P^{n-1}$. Then choose one of the $u_i$, say $u_1 \neq -$ at some part of $X - 0$. Then $u_1y_j=u_jy_1$ for all $j$ in $\mathrm{Bl}_0 \A^n$. Since $u_j=0$ for $j=m+1, \ldots, n$, $y_j = 0$.
+        \end{proof}
+    \end{thm}
+    
+    \subsubsection{Normal Varieties}
+    Let $p \in X$ be an irreducible variety. Then $X$ is normal at $p$ is $\mc{O}_p \subset k(X)$ is integrally closed. Then $X$ is normal if it is normal at every point.
+
+    \begin{lem}
+        If $p \in X$ is a smooth point, or factorial at $p$, then $X$ is normal at $p$.
+        \begin{proof}
+            $\mc{O}_p$ is a UFD and any UFD is integrally closed. To see this suppose $f \in k(X), f= \mathrm{a}{b}$ where $a,b \in \mc{O}_p$ and $a,b$ are coprime, is integral over $\mc{O}_p$. Then $f^s + a_1 f^{s-1} + \cdots + a_s = 0$. Clearing denominators, we see that $a^s + a_1a^{s-1}b + \cdots + a_sb^s = 0$. Then $b \mid a^s$, so $b$ is a unit. Thus $f \in \mc{O}_p$.
+        \end{proof}
+    \end{lem}
+
+    \begin{lem}
+        Let $X$ be affine. Then $X$ is normal if and only if $k[X] \subset k(X)$ is integrally closed.
+        \begin{proof}
+            Let $R \subset f.f.R$ be integrally closed. Then we know that $R_{\mathfrak{p}} \subset f.f.R$ is integrally closed for every prime $p \subset R$.
+
+            In the other direction, note that $R_m \subset K$ is integrally closed. Then note that $R = \cap R_m$ where the intersection is over all maximal ideals $m$. Then if $x \in K$ is integral over $R$, it must be integral over $R_m$ for all $m$, so it must be in $R_m$ for all $m$. Thus $x \in R$.
+
+            To prove that $R = \cap_m R_m$, define $I = \{b \in R \mid xb \in R \}$. If $I=R$, then $1 \in I$ and thus $x \in R$. Otherwise, $I \subset m$ for some maximal ideal $m$. This is impossible because we can write $x=\frac{a}{b}$ where $b \notin m$ because $x \in R_m$.
+        \end{proof}
+    \end{lem}
+
+    \begin{rmk}
+        Every irreducible surface in $\A^3$ with isolated singularities is normal.
+    \end{rmk}
+
+    \begin{thm}[Serre's Criterion]
+        Let $R$ be a Noetherian domain and $K$ the fraction field of $R$. Then $R \subset K$ is integrally closed if and only if
+        \[R = \bigcap_{\substack{\mathfrak{p} \subset R \\ \text{minimal prime}}} R_{\mathfrak{p}}\] and for all minimal primes $\mathfrak{p} \subset R$, $R_{\mathfrak{p}}$ is a DVR.
+    \end{thm}
+
+    Now let $R=k[X]$ for some affine $X$. Then we find when $\mathfrak{p} \subset R$ is a minimal prime (of height $1$) if $\mathrm{dim} R/\mathfrak{p} = \mathrm{dim} R - 1$, or $Y = V(\mathfrak{p}) \subset X$ is a hypersurface.
+
+    Note that $R_{\mathfrak{p}} = \mc{O}_Y = \{ f \in k(X) \mid f \text{ is regular at some point of } Y$.
+        Then note that $\cap R_{\mathfrak{p}} = \{f \in k(X) \mid f \text{ is regular at some point of every hypersurface}\}$. Thereofre $R = \cap R_{\mathfrak{p}}$ if and only if every rational function regular at some point of every hypersurface is regular everywhere.
+
+        \begin{thm}[Hartog's Extension Principle]
+            Let $Z \subset X$ of codimension at least $2$. Then if $f \in k(x)$ is regular on $X \setminus Z$, $f$ is regular at some point of every hypersurface, so $f$ is regular.
+        \end{thm}
+
+        \subsection{Lecture 19 (Apr 09)}
+        \subsubsection{Differential of a regular map}
+        Let $\varphi:X \to Y$ be regular. Then we want to define $d_x \varphi: T_{X,x} \to T_{Y,y}$. We may assume that $X,Y$ are affine, so choose charts. Then recall that $T_{X,x} = (d_xf_1 = \cdots d_xf_r = 0)$ where $I(X) = (f_1, \ldots, f_r)$, so we define $d_x \varphi = (d_x \varphi_1, \ldots, d_x\varphi_m)$. 
+
+        \begin{prop}
+            $d_x \varphi(T_{X,x}) \subset T_{Y,y}$. 
+            \begin{proof}
+                $(d_yg_i)(d_x \varphi) = d_x (f_i \circ \varphi) = d_x 0 = 0$.
+            \end{proof}
+        \end{prop}
+
+        More intrinsically, the dual map $T_{Y,y}^{\vee} \to T_{X,x}^{\vee}$ is induced by the pullback $\varphi^*: \mc{O}_{Y,y} \to \mc{O}_{X,x}$.
+
+        \begin{exm}
+            Consider $X = (xy=t) \subset \A^3$ and $\varphi:X \to \A^1$ given by $(x,y,t) \mapsto t$. Note that $T_pX = \{y_0dx + x_0dy - dt = 0 \} \subset \A^3$. Therefore $X$ is smooth and $T_pX$ has coordinates $dx,dy$ (basis of $T_p X^{\vee}$) and $d\varphi = dt = y_0dx+xd_0y$, which is surjective unless $x_0=y_0=0$.
+
+            To see the geometry of this map, we see that the fiber above every nonzero point is smooth (a torus), but the fiber at $0$ is the union of two coordinate axes.
+        \end{exm}
+
+        \begin{lem}
+            Let $\varphi:X \to Y$ be a regular map of smooth varieties with $\varphi(x) = y$. Suppose that $d_x \varphi: T_{X,x} \to T_{Y,y}$ is surjective. Then $varphi^{-1}(y)$ is nonsingular at $x$.
+            \begin{proof}
+                Consider the differential $d_x \varphi: T_{X,x} \to T_{Y,y}$. We show that $T_{f^{-1}(y),x} \subset \mathrm{Ker} d_x \varphi$. Given the claim, we see that $\mathrm{dim} T_{f^{-1}(y),x} \leq \mathrm{dim}\ \mathrm{Ker} d_x \varphi = \mathrm{dim} T_{X,x} - \mathrm{dim}T_{Y,y} = \mathrm{dim}X - \mathrm{dim}Y$. On the other hand, $\mathrm{dim}T_{f^{-1}(y),x} \geq \mathrm{dim_x} f^{-1}(y) \geq \mathrm{dim}X - \mathrm{dim}Y$. Thus all inequalities are equalities and $f^{-1}(y)$ is smooth at $x$.
+
+                To proe the claim, consider the sequence of maps $T_{f^{-1}(y),x} \overset{d_x \iota}{\to} T_{X,x} \overset{d_x \varphi}{\to} T_{Y,y}$. Then $T_{f^{-1}(y),x} \to T_{Y,y}$ is a differential of the map $\varphi^{-1}(y) \to Y$. This is constant, so the differential is zero.
+            \end{proof}
+        \end{lem}
+        
+        \subsubsection{Normal Varieties Continued}
+        \begin{thm}
+            A nonsingular variety is normal.
+        \end{thm}
+        Proof of this theorem comes from Lemma 173.
+
+        \begin{defn}[Discrete Valuation]
+            A discrete valuation on a field $k$ is a function $v: k^* \to \Z$ such that $v(fg) = v(f)+v(g)$ and $v(x+y) \geq \min\{v(x),v(y)\}$.
+
+            Define $R = \{f \in K \mid v(f) \geq 0 \}$ and $m = \{ f \in R \mid v(f) > 0 \}$.
+        \end{defn}
+
+        \begin{lem}
+            $R$ is a local ring with maximal ideal $m$ (called a DVR) with field of fractions $k$.
+            \begin{proof}
+                Clearly by definition of discrete valuation, $R$ is a ring and $m$ is an ideal. It is easy to see that everything with valuation $0$ is a unit in $R$, so $m$ is a maximal ideal. Then we see that for all $x \in K$, at least one of $v(x),v(x^{-1})$ is nonnegative, so at least one of $x,x^{-1}$ is in $R$.
+            \end{proof}
+        \end{lem}
+
+        \begin{lem}
+            Every DVR is a PID and in fact, every ideal has form $(t^n)$ for some fixed $t \in m \setminus m^2$.
+            \begin{proof}
+                Choose $t$ such that $v(t) = 1$. Then clearly $t \in m$. Take $I \subset R$ an ideal. Then let $n$ be the minimum valuation of any element of $I$, so $v(g/t^n) \geq 0$ and thus $g \in (t^n)$. Then choose a minimizing $f$, and we see that $f/t^n$ is a unit, so $t^n \in I$.
+            \end{proof}
+        \end{lem}
+
+        \begin{thm}
+            Let $R$ be a ring. Then the following are equivalent:
+            \begin{enumerate}
+                \item $R$ is a DVR.
+                \item $R$ is a Noetherian local domain which is integrally closed and has Krull dimension $1$.
+            \end{enumerate}
+        \end{thm}
+
+        \begin{cor}
+            Let $R$ be a Noetherian integrally closed domain and let $\mathfrak{p} \subset R$ is a height $1$ prime ideal. Then $R_{\mathfrak{p}}$ is a Noetherian, integrally closed, local domain of Krull dimension $1$.
+        \end{cor}
+
+        \begin{proof}[Proof of Theorem 184]
+            First let $R$ be a DVR. Then $R$ is a PID, so it is Noetherian and integrally closed. Also $R$ is local with prime ideals $(0)$ and $m$, so it has Krull dimension $1$.
+
+            In the other direction, let $m \subset R$ be the maximal ideal. Take $x \in R$ nonzero. Then there exists a unique $n \geq 0$ such that $x \in m^n \setminus m^{n+1}$ by Krull intersection theorem.We need to show that $m$ is principal. Given the claim, take $x \in R \setminus 0$. Then $x \in (t^n) \setminus (t^{n+1})$ for a unique $n$. Thus $x = ut^n$ for some unit $u$, and thus $n$ defines a valuation $k^* \to \Z$.
+
+            To prove the claim, $m \neq m^2$ by Krull or by Nakayama. Take $t \in m \setminus m^2$. Since the only prime ideals are $0,m$, and every radical ideal is an intersection of primes, $m = \sqrt{t}$.Thus $m^n \subset (t)$ for some $n \geq 1$. Choose $n$ to be the smallest such $n$, so choose $b \in m^{n-1} \setminus (t)$. Take $x = \frac{t}{b} \in K$. Then $b \in (t)$, so $x^{-1} \notin R$. Because $R$ is integrally closed, $x^{-1}$ is not integral over $K$. This implies that $x^{-1}m \not\subseteq m$ (otherwise, choose $m=(e_1, \ldots, e_s)$ and write $x^{-1}e_i = \sum a_{ij} e_j$. Then $\sum (x^{-1} \delta_{ij} - a_{ij})e_j = 0$, so $\mathrm{det} \abs{ x^{-1} \delta_{ij} - a_{ij}} = 0$. Thus $x^{-1}$ is integral).
+
+            However, $x^{-1}m \subset R$ because if $z \in m$ then $bz \in m^n \subset (t)$, so we can write $bz = rt$, so $x^{-1}z = r \in R$. We see that $x^{-1}m \subset R$, so it is an ideal $R$ but not contained in a maximal ideal. Therefore $x^{-1}m = R$, so $m = (x)$.
+        \end{proof}
+
+        Let $X$ be a normal variety. Then we have local rings $R_{\mathfrak{p}} \subset k(X)$ and a DVR for every irreducible subvariety $Y \subset X$ of codimension $1$. Thus we have a collection of discrete valuations $v_Y: k(X)^* \to \Z$. There are called orders of zeroes or poles of $f \in k(X)$ along $Y$.
+
+        \subsection{Lecture 20 (Apr 11)}
+        Recall that if $X$ is a normal variety and $Y \subset X$ is an irreducible subvariety, then $\mc{O}_{Y,X}$ is a DVR. Last time we defined the order of zeroes or poles as the valuation.
+
+        \begin{cor}
+            Let $X$ be normal and $Y \subset X$ be irreducible. Then there exists an affine chart $U \subset X$ with $U \cap Y \neq 0$ such that $I(Y) \subset k[U]$ is principal.
+            \begin{proof}
+                Assume that $X$ is affine. Then $\mf{p} = I(Y) = (u_1, \ldots, u_m) \subset k[X] = R$. Then we note that $\mf{p}_{\mf{p}} \subset R_{\mf{p}}$ is the maximal ideal in the DVR and it is principal. Then we can write $t = \frac{a}{b}$ where $b \notin \mf{p}$. We can write $u_i = tv_i$, where $v_i \in R_{\mf{p}}$, where $v_i = \frac{a_i}{b_i}$ where $b_i \notin \mf{p}$. Now we know $t \in k[U]$ and $u_i = tv_i$, where $v_i \in k[U]$. Then $I(Y \cap U) = (t) \subset k[U]$.
+            \end{proof}
+        \end{cor}
+
+        \begin{cor}
+            The singular locus of a normal variety ha codimension at least $2$.
+            \begin{proof}
+                Suppose there exists an irreducible hypersurface $Y$ in the singular locus. As a variety, $Y$ has an open smooth locus. Thus we can shrink $X$ to an affine chart $U \subset X$ such that $U \cap Y$ is nonempty and smooth. By the previous corollary, we can also assume that $X$ is affine. Then $I(Y) = (t)$. This implies $X$ is smooth along $Y$ by Theorem 153. This gives a contradiction.
+            \end{proof}
+        \end{cor}
+
+        \begin{cor}
+            For curves, smooth is equivalent to normal.
+        \end{cor}
+
+        \subsubsection{Normalization}
+        Trying to resolve singularities is not very well resolved, and has led to several Fields Medals. On the other hand, normalization is relatively easy to understand and always available.
+        \begin{exm}
+            Consider the curve $X = \{y^2=x^3\}$. This is singular, so not normal. We see that $t \in k(X)$ is a root of a monic equation $T^2-x$, but $t \notin k[X]$. We know that the rational parameterization from $\A^1$ is birational and finite, and the source is normal.
+        \end{exm}
+
+        \begin{defn}
+            A morphism $\nu:X^{\nu} \to X$ is called a normalization if it is birational and finite and $X^{\nu}$ is normal.
+        \end{defn}
+
+        \begin{thm}
+            Every irreducible variety has a normalization, which is unique up to isomorphism.
+            \begin{proof}[Construction for affine $X$]
+                Let $k[X] \subset k(X)$, so defien $R$ to be the integral closure of $k[X]$ in $k(X)$. We show that $R$ is a finitely generated $k[X]-module$. Given the claim, $R$ is also a finitely-generated $k$-algebra, so $R=k[Y]$ for some variety $Y$, which must be birational to $X$ because $k[X] \subset k[Y] \subset k(X)$. The extension $k[Y] /k[X]$ is integral, so $Y \to X$ is finite. Also, we know $R$ is integrally closed, so $Y$ is normal.
+
+                To prove the claim, use Noether's normalization lemma. We have a diagram
+
+                \begin{center}
+                    \begin{tikzcd}
+                        k[X] \arrow[hookrightarrow]{r} & R \arrow[hookrightarrow]{r} & k(X) \\
+                        k[T_1, \ldots, T_n] \arrow[hookrightarrow]{rr} \arrow[hookrightarrow]{u} & & k(T_1, \ldots, T_n) \arrow[hookrightarrow]{u}
+                    \end{tikzcd}
+                \end{center}
+                We know that $A$ is a UFD, so it is integrally closed. Thus $\A^n$ is normal, so $R$ is integral over $A$. This implies that $R$ is the integral closure of $A$ in $L$. It remains to prove the following lemma.
+            \end{proof}
+        \end{thm}
+
+        \begin{lem}
+            Let $A$ be an integrally closed Noetherian domain in its field of fractions $K$. Then if $L/K$ is a finite separable extension and $B$ is the intgral closure of $A$ in $L$, then $B$ is a finitely generated $A$-module.
+            \begin{proof}
+                Consider the map $L \to K$ given by the trace of the map given by multiplication by $x$. Because $L/K$ is separable, then $Tr(xy)$ is a nondegenerate quadratic form. It suffices to find a basis $v_1, \ldots, v_n$ of $L$ over $K$ such that $B \subset A v_1 + \cdots + Av_n$ (this is because $A$ is Noetherian).
+
+                To find the basis, first choose some basis $u_1, \ldots, u_n$. After rescaling by elements of $A$, we can assume that $u_1, \ldots, u_n \in B$. Then the $u_i$ are algebraic over $K$, so it is a root of some polynomial $a_0u_i^{d_i} + \cdots + a_{d_i} = 0$. Then we see that $a_0u_i \in B$. Finally, let $v_1, \ldots, v_n$ be a dual basis via the trace form. Take $x \in B$ and write it as $x_1v_1 + \cdots + x_nv_n$. First note that $Tr(xu_j) = x_j$. On the other hand, $x \in B$, $u_i \in B$ implies that $xu_i \in B$, so $Tr(xu_i) \in A$. Therefore $x_i \in A$ for all $i$.
+            \end{proof}
+        \end{lem}
+
+        \begin{thm}[Universal Property of Normalization]
+            \begin{enumerate}
+                \item Suppose $g:Y \to X$ is a finite birational regular map. Then there exists a unique morphism  $f:X^{\nu} \to Y$ such that $\nu = g \circ f$.
+                \item If $Y$ is a normal variety with a dominant regular map $g:Y \to X$, then there exists a unique morphism $f:Y \to X^{\nu}$ such that $g = \nu \circ f$.
+            \end{enumerate}
+        \end{thm}
+
+        \begin{proof}
+            Assume $X$ is affine. In 1, we can also asusme $Y$ is affine. Then note that $k(Y) = k(X)$, so we must conclude that $k[Y] \subset k[X^{\nu}]$, and this inclusion is unique.
+
+            In 2, we can also assume $Y$ is affine. Then we again know that $k[X] \subset k[Y]$ and $k[X]\subset k[X^{\nu}]$ and that $k(X) \subset k(Y)$. We know $k[Y]$ is integrally closed, so $k[Y] \supset k[X^{\nu}]$ and this containment is unique.
+        \end{proof}
+
+        \subsection{Lecture 21 (Apr 16)}
+        Homework is now due next Tuesday as opposed to this Thursday. There will be one more homework and then the second take-home midterm.
+        
+        \section{Divisors}
+        Let $X$ be an irreducible variety.
+
+        \begin{defn}[Prime Divisor]
+            A prime divisor $D \subset X$ is an irreducible subvariety of codimension $1$ (hypersurface).
+        \end{defn}
+
+        \begin{defn}[Divisor Group]
+            The divisor group $\operatorname{Div} X$ is a free abelian group generated by symbols $[D]$ for each prime divisor $D \subset X$.
+        \end{defn}
+
+        \begin{defn}
+            A divisor $D = \sum n_i H_i$ is effective, or $D \geq 0$, if $n_i \geq i$ for all $i$.
+        \end{defn}
+
+        Suppose $X$ is normal (or at least non-singular in codimension $1$) and let $H \subset X$ a prime divisor. Then $\mc{O}_{H,X} \subset k(X)$ is a DVR with valuation $v_H: k(X)^* \to \Z$. If $v_H(f) > 0$ then we say that $f$ has a zero of order $v_H(f)$ along $H$. If $v_H(f) < 0$, then $f$ has a pole. To every $f \in k(X)^*$ we associate a divisor $(f) = \sum_{H \subset X} v_H(f)[H]$ called the divisor of zeros and poles.
+
+        \begin{lem}
+            $v_H(f) = 0$ for all but finitely many prime divisors.
+            \begin{proof}
+                We can shrink $X$ as much as we want because if $U \subset X$ is open, then $X \setminus  U$ contains only finitely many hypersurfaces. We can also assume that $X$ is affine and that $f \in k[X]$. We can also remove $V(f)$ and assume that $f$ is invertible. Then it is easy to see that $(f) = 0$.Indeed, $f$ is invertible on every hypersurface, so its valuation must be $0$.
+            \end{proof}
+        \end{lem}
+
+        \begin{rmk}
+            Divisors of the form $(f)$ are called principal divisors. Principal divisors form a subgrop in $\operatorname{Div} X$ because the valuation is like a logarithm (takes products to sums).
+        \end{rmk}
+        
+        \begin{exm}
+            If $X$ is normal and projective and $f \in k(X)$, $(f) \geq 0$ if and only if $f$ is constant.
+        \end{exm}
+        \begin{defn}
+            The divisor class group $\operatorname{Cl} X \coloneqq \operatorname{Div} X / \{(f)\}$ is the quotient of the divisor group by the subgroup of principal divisors.
+        \end{defn}
+        
+        \begin{exm}
+            Take $X = \A^n$. Then a prime divisor $H \subset X$ is an irreducible hypersurface given by an irreducible polynomial $F \in k[x_1, \ldots, x_n]$. We claim that $div(F) = H$. In particular, all divisors are principal, so $\operatorname{Cl}(\A^n) = 0$. To see the claim, we compute $v_H(F) = 1$ and then for any other hypersurface, $v_{H'}(f) = 0$.
+        \end{exm}
+
+        \begin{rmk}
+            Suppose $X$ is normal, $f \in k(X)$ and suppose $(f) \geq 0$. Then $f$ is regular outside of that divisor and at general points of irreducible components of $(f)$, so $f$ is not regular only in codimension $2$. Therefore $f$ is regular everywhere.
+        \end{rmk}
+
+        \begin{prop}[Homework]
+            Let $X$ be an affine variety. Then the class group of $X$ is trivial if and only if $k[X]$ is a UFD.
+        \end{prop}
+
+        \begin{exm}
+            Let $X = \P^n$. Then $H \subset X$ irreducible hypersurface is given by an irreducible homogeneous polynomial $F \in k[T_0, \ldots, T_n]$ of degree $k$. However, $F \notin k(\P^n)$. However, we know $I(H \cap \A^n_i) = \left(\frac{F}{T_i^k}\right)$. Then we know $v_{\widetilde{H}}(f)$ is $1$ when $\widetilde{H} = H$, $0$ when $\widetilde{H} \neq H$ and $\widetilde{H} \cap \A^n_i \neq \emptyset$, and unknown when $\widetilde{H}$ is the hyperplane at infinity.
+
+            To compute this, choose a different affine chart which gives $-k$. Now take any $f \in k(\P^n)$. We know $f = \frac{\prod F_i^{n_i}}{\prod G_j^{m_j}}$, so we can write $(f) = \sum n_i [F_i = 0] - \sum m_j[G_j = 0]$.
+        \end{exm}
+
+        \begin{cor}
+            $D \in \operatorname{Div}\P^n$ is principal if and only if $\mathrm{deg}(D) = 0$, where $\mathrm{def}(D) = \sum n_i \mathrm{deg}(F_i)$, where $F_i \in k[T_0, \ldots, T_n]$ is a homogeneous equation of $H_i$. Therefore the class group of $\P^n$ is $\Z$.
+        \end{cor}
+
+        \begin{defn}
+            Divisors $D,D'$ on $X$ are called linearly equivalent ($D \sim D'$) if $D-D'$ is a principal divisor.
+        \end{defn}
+
+        \begin{rmk}
+            Every divisor on $\P^n$ is linearly equivalent to a unique multiple of a hyperplane.
+        \end{rmk}
+
+        The notion of a divisor we just introduced is called a Weil divisor.
+
+        \begin{defn}[Cartier Divisor]
+            A Cartier divisor on an irreducible variety $X$ is the following data:
+            \begin{enumerate}
+                \item A cover $X = \cup U_i$ by open sets;
+                \item Rational functions $f_i \in k(X)^*$ ``defining a divisor on $U_i$'' satisfying a compatibility condition: $f_i/f_j$ is invertible on $U_i \cap U_j$.
+            \end{enumerate}
+            Two such data $(U_i,f_i)$ and $(V_j,g_j)$ are considered equivalent if $f_i/g_j$ is an invertible regular function on $U_i \cap V_j$.
+        \end{defn}
+
+        Now suppose $X$ is normal, or at least nonsingular in codimension $1$. Then to each Cartier divisor $(U_i,f_i)$ we associate a Weil divisor $F$ such that $D \cap U_i = (f_i) \cap U_i$. Concretely, $D = \sum n_jH_j$, where $n_j = v_{H_j}(f_i)$ as long as $H_j \cap U_i \neq \emptyset$. 
+
+        \begin{exm}
+            Take a prime divisor $H \subset \P^n$ and take the standard cover $\P^n = \cup U_i$. We see that $I(H \cap U_i) = (f_i)$ where $f_i \in k[x_0, \ldots, x_n]$. Thus $H$ is in fact given by a Cartier divisor $(U_i, f_i)$.
+
+            Why are the $f_i$ compatible? If $H$ is given by homogeneous $F$ of degree $k$, then $f_i = F/T_i^k$. Then $f_i/f_j = (T_j/T_i)^k$, which is regular and invertible on $U_i \cap U_j$. 
+        \end{exm}
+
+        We can turn $\operatorname{CDiv}$, the group of Cartier divisors into a group $(U_i,f_i) \cdots (V_j,g_j) = (U_i \cap V_j, f_ig_j)$. By the above construction, we have a homomorphism $\operatorname{CDiv} \to \operatorname{Div}$. If $f \in k(X)^*$, there is a Cartier divisor $(X,f)$, so principal divisors lie in the Cartier divisors. If $X$ is normal, this is an inclusion.
+
+        \begin{defn}[Picard Group]
+            The Picard group $\operatorname{Pic} X \coloneqq \operatorname{CDiv}/\{(f)\}$ is the quotient of the group of Cartier divisors by principal divisors.
+        \end{defn}
+
+        Note that the Picard group is contained in the class group if $X$ is normal. We want to determine when every Weil divisor is Cartier. If $X$ is nonsingular (more generally, $\mc{O}_{x,X}$ is a UFD) for all $x \in X$, choose $H \subset X$ a prime Weil divisor. We need to construct an open cover: first take $U_0 = X \setminus H, f_0 = 1$. For all $x \in X$, there exists some affine neighborhood $U \supset X$, which depends on $x \in X$, such that $H$ is principal in this neighborhood. This gives an infinite open cover, but we can choose a finite subcover. Thus $H$ is a Cartier divisor.
+
+        \begin{cor}
+            If $X$ is locally factorial, every divisor is Cartier.
+        \end{cor}
+
+        \subsection{Lecture 22 (Apr 18)}
+        We will continue our discussion of divisors. Here we will assume that $X$ is nonsingular and study the behavior of divisors under regular maps.
+
+        Let $D = (U_{\alpha}, f_{\alpha})$ where $Y= \cup U_{\alpha}$, $f_{\alpha}\in k(Y)^*$. Then we define $\varphi^*D = (\varphi^{-1}U_{\alpha}, \varphi^* f_{\alpha})$. We need to see that the pullback of each $f_{\alpha}$ is well defined and nonzero. This happens with $\overline{\varphi(X)}$ is not contained in the divisor of zeroes and poles of $f_{\alpha}$, so when $\overline{\varphi(X)} \not\subseteq D$. Fortunately, we can pass to a linearly equivalent divisor.
+
+        \begin{lem}
+            Let $X$ be nonsingular. Then for any divisor $D \subset X$ there exists $D' \sim D$ such that $x_1, \ldots, x_m \notin D'$.
+            \begin{proof}
+                We argue by induction on $m$. We can assume that $x_1, \ldots, x_{m-1} \notin D, x_m \in D$. We can also assume that $D$ is prime and assume that $X$ is affine. Thn $D$ has a local equation at $x_m$: $(\pi) = \mc{L}_D \subset \mc{O}_{x_m}$, where $\pi = p/q$ for some $p,q \in k[X]$. Near $x_m$, we see that $D = (p)$. Then $D' = D-(p) \sim D$ does not contain $x_m$, but it may contain $x_1, \ldots, x_{m-1}$.
+
+                Choose $g_i \in k[X]$ such that $g_i(x_i) \neq 0$. Then for all $i = 1, \ldots, m-1$, $g_i|_{D \cup \{x_1, \ldots, x_m\}} = 0.$ Then choose constants $\alpha_1, \ldots, \alpha_{m-1}$ such that for $f = p+\sum\alpha_i g_i^2$, $f(x_i) \neq 0$. We claim that $D' = D-(f)$ does nto contain $x_1, \ldots, x_m$. We know that $f(x_i) \neq 0$, so $x_1, \ldots, x_{m-1} \notin (f)$. Now we need to know that $f$ is a local equation of $D$. Then because $f = \sum \alpha_i g_i^2$, we know that $p|g_i$, so $f = p(1+\sum \alpha_i pw^2)$,so it is also a local equation of $D$.
+            \end{proof}
+        \end{lem}
+
+        This defines a pullback on the level of Picard groups.
+
+        \subsubsection{Divisors of rational maps to $\P^n$}
+        Suppose $\varphi: X \dashrightarrow \P^n$ is a rational map defined by $(\varphi_0: \cdots : \varphi_n)$. Suppose know $(\varphi) = D_i - D$ where $D_0, \ldots, D_n,D$ are effective. Choose $D$ to be the smallest possible.
+
+        We want to know where $\varphi$ is regular. Choose $x \in X$. Then $\varphi_i = p_i/q$, where $p_i$ is a local equation of $D_i$ and $q$ is a local equation of $D$. Thus $\varphi = (p_0: \cdots : p_n).$ If $p_i(x) \neq 0$ for some $x$, $\varphi$ is regular at $p$. The converse is also true because $\mc{O}_x$ is a UFD.
+        
+        \begin{thm}
+            The indeterminancy locus of $\varphi$ is $D_0 \cap \cdots \cap D_n$, where $D_i = (p_i=0)$.
+        \end{thm}
+
+        \begin{exm}
+            Consider the rational normal curve $\P^1 \to \P^n$. Then $\varphi_i = x^i$ and $(x^i) = i[0]-i[\infty]$. In another chart, $x = \frac{1}{y}$. Then $D = n[\infty]$, so $D_i = i[0]+(n-i)[\infty]$ and then $D_0 \cap \cdots \cap D_n = \emptyset$, so the map is indeed regular everywhere.
+        \end{exm}
+
+        Suppose $X$ is a nonsingular variety and $D$ is a divisor. Then set $\mc{L}(D) = \{f \in k(X) \mid (f) + D \geq 0 \}$ the complete linear system.
+
+        \begin{thm}[Serre]
+            If $X$ is projective, $\mc{L}(D)$ has dimension $\ell(D) < \infty$.
+        \end{thm}
+
+        We can define $\varphi_D: X \dashrightarrow \P^{\ell(D)-1}$. First choose a basis $\varphi_1, \ldots, \varphi_{\ell(D)}$ and then set $\varphi_D = [\varphi_1: \cdots : \varpi_{\ell(D)}]$.
+
+        \begin{lem}
+            If $D \sim D'$ then $\mc{L}(D) \simeq \mc{L}(D')$ and $\varphi_D = \varphi_{D'}$, so we have distinguished maps to projective spaces parameterized by the Picard group.
+            \begin{proof}
+                If $D \sim D'$ then $D = D'+(f)$. Therefore there are isomorphisms between the linear systems given by multiplying and dividing by $f$, so they are isomorphic. Then if $\varphi_1, \ldots, \varphi_{\ell(D)}$ is a basis of $\mc{L}(D)$, $f \varphi_1, \ldots, f \varphi_{\ell(D)}$ is a basis of $\mc{L}(D')$. Then the two maps are the same.
+            \end{proof}
+        \end{lem}
+
+        \begin{rmk}
+            If $X$ is projective then if $(f)+D = (g)+D$, we must have $(f) = (g)$, so $(f/g) = 0$ and thus $f/g$ is a constant.
+        \end{rmk}
+
+        If $X$ is projective, then $\P^{ell(D)-1} = \P(\mc{L}(D)) = \abs{D}$, which is defined to be the set of effective divisors linearly equivalent to $D$.
+
+        \begin{exm}
+            If $X= \P^r$, then $\operatorname{Pic}X = \operatorname{Cl}X = \Z = \Z[H]$, where $H$ is a hyperplane. Then $\abs{dH}$ is the set of hypersurfaces of degree $d$, which is $\P^{\binom{r+d}{d}-1}$. We see that $\mc{L}(dH) = \mc{L}(dH_0) = \{f \in k(\P^r) \mid (f) + dH_0 \geq 0 \}$. Note that $\P^r \setminus H_0 = \A^r_{x_1, \ldots, x_r}$. Then we have that all poles of $f$ are at infinity. Thus $f \in k[x_1, \ldots, x_r]$, so $v_{H_0}(f) = - \operatorname{deg}(f)$. After homogeneizing, this becomes the set of degree $d$ hypersurfaces, so the map given by the divisor is the Veronese embedding.
+        \end{exm}
+        
+        \subsection{Lecture 23 (Apr 23)}
+        We continue with our discussion of linear systems of divisors. We will always assume that $X$ is projective and nonsingular. Suppose $\varphi:X \dashrightarrow \P^r$ is a rational map.
+
+        \begin{rmk}
+            Given $\varphi:X \to \P^r$, it can be degenerate, say $\varphi(X) \subset \P^{r-1} \subset \P^r$. In this case, $\varphi_0, \ldots, \varphi_r$ are linearly dependent. This does not happen for $\varphi_D$, so we can assome that $\varphi:X \dashrightarrow \P^r$ is not degenerate.
+        \end{rmk}
+
+        For a basis $f_0, \ldots, f_r$ of $\mc{L}(D)$,
+        \begin{enumerate}
+            \item We can assume that $D$ is effective because $\varphi_D = \varphi_{D'}$ for all $D \sim D'$.
+            \item If $D$ is effective, $(f_i) = D_i - D$. However, it can happen that the $D_i$ have a common prime divisor.
+        \end{enumerate}
+
+        \begin{defn}[Fixed Part]
+            A fixed part of a linear system $\mc{L}(D)$ is the largest effective divisor $F$ such that $D_i - F \geq 0$. We can write $D_i = F+M_i$, where $M_i$ is the moving part of the linear system.
+        \end{defn}
+
+        We can write $abs{D} = \{D' \sim D \mid D' \geq 0\} = \P(\mc{L}(D))$. Another way to phrase this is to introduce the base locus.
+
+        \begin{defn}[Base Locus]
+            The base locus $BL_D$ of a divisor $D$ is defined by $BL_D = \cap_{D' \in \abs{D}} D' \supset F$. 
+        \end{defn}
+        
+        We know that $\mc{L}(D) \simeq \mc{L}(D-F)$ and that $\varphi_D = \varphi_{D-F}$. Thus we can always reduce to linear systems without fixed part.
+
+        \begin{defn}[Base-point-free]
+            A divisor $D$ is base-point-free if its base locus is empty. Note this implies $\varphi_D$ is regular.
+        \end{defn}
+
+        \begin{defn}[Very Ample]
+            $D$ is very ample if it is base-point-free and $\varphi_D$ is an embedding.
+        \end{defn}
+
+        \begin{defn}[Ample]
+            $D$ is called ample if $kD$ is very ample for some $k > 0$.
+        \end{defn}
+
+        When we start with $\varphi:X \dashrightarrow \P^r$, $\varphi_0, \ldots, \varphi_r \in \mc{L}(D)$. Now we consider incomplete linear systems: a subspace $V \subset \mc{L}(D) \subset k(X)$. Choose a basis $f_0, \ldots, f_s$ of $V$. Then $\varphi_V = [f_0: \cdots : f_s]: X \dashrightarrow \P^s$. We can complete $f_0, \ldots, f_s$ to a basis $f_0, \ldots, f_r$ of $\mc{L}(D)$ and recover $\varphi_V$ as the composition of $\varphi_D$ and the projection.
+
+        We can talk about the base locus, fixed part of $V$, define global generation, and very ampleness of $V$.
+
+        \begin{exm}
+            Consider $\P^2$ with coordinates $x,y,z$ and let $H = (Z=0)$. Then $\mc{L}(2H) = \{f \in k(\P^2) \mid (f) + 2H \geq 0 \} = \{f \in k[x,y] \mid \operatorname{deg} f \leq 2 \} = k[x,y,z]_2$. Thus $\abs{2H}$ is the set of conics in $\P^2$ and $\varphi_{2H} = [z^2:xz:yz:x^2:xy:y^2]$, the Veronese embedding. Thus $2H$ is very ample.
+
+            Now we consider an incomplete linear system. Chooise points $p = [1:0:0],q = [0:1:0]$. Consider $V$ the set of conics passing through $a,b$. Then $\mc{L}(2H) = k^6$ and $\operatorname{dim}V \geq 4$. In fact, $V$ is spanned by $1,x,y,xy$. Then $\varphi_V: \P^2 \dashrightarrow \P^3$ is given by $[x:y:1] \mapsto [1:x:y:xy]$. In particular, $\varphi_V$ is birational. The equation of the image is actually $AD-BC = 0$, which makes $\varphi_V$ a birational map $\P^2 \dashrightarrow Q$ to a quadric surface in $\P^3$. We see that the base locus is $p,q$.
+
+            We consider the image of $H$. For any point $[x:y:0]$, the image is $[0:0:0:xy] = [0:0:0:1]$. Thus $H$ collapses to the point $[0:0:0:1]$. In the hyperplane at infinity $Q \cap (A = 0)$ is given by $BC = 0$, which is a union of two lines. We have two points where $\varphi_V$ is not regular, so we resolve by blowing up at $p,q$. We blowup at $p$ and consider two charts of the local blowup.
+
+            In the chart $x=1$, we see $y=u,z=uv$, so $v = z/y$. Thus the chart $u=0$ is exceptional. In this chart, the map is $[z^2:z:yz:y] = [u^2v^2:uv:u^2v:u] = [uv^2:v:uv:1]$. We see this is regular. Note $v$ is a coordinate along $\P^1$, so restricting to the exceptional divisor $E$, we get the map $[0:v:0:1]$, which maps $E$ onto a line $A=C=0$. The exceptional divisor over $q$ will map to another line $A=B=0$.
+
+            Thus $\varphi_V$ is given by blowing up $p,q$ and then contracting the proper transform of $H$.
+        \end{exm}
+
+        \begin{exm}
+            We will do similar calculations without being able to do it too explicitly. Choose $6$ points $p_1, \ldots, p_6$ on $\P^2$ that are distinct, in general linear position, and not coconic. Consider the linear system $\mc{L}(3H)$ and $\varphi_{3H}$. Note $\abs{3H}$ is the space of cubics in $\P^2$, so consider $V$ to be the set of cubics through $p_1, \ldots, p_6$. We check that the dimension of $V$ is $4$. If this is not the case, then every cubic that passes through $p_2, \ldots, p_6$ also passes through $p_1$. This is false because we can take a conic through $p_1, \ldots, p_6$ and add a line not through $p_1$. Thus we get a rational map $\varphi_V: \P^2 \dashrightarrow \P^3$.
+
+            First we find the base locus, which is $\{p_1, \ldots, p_6\}$. For any other point $q$, we can take the conic through five of the points and a line containing $p_6$ but not $q$. If $q$ is on the conic, just change the five points and then note that $q$ cannot be on the new conic because both conics are smooth and they already have four intersections points.
+        \end{exm}
+
+        \subsection{Lecture 24 (Apr 25)}
+        Last time we were building up to a theorem of Clebsch:
+        \begin{thm}[Clebsch]
+            For a smooth projective surface $X$, the following are equivalent:
+            \begin{enumerate}
+                \item $X \simeq Bl_6\P^2$ where the six points are in general position (no three are collinear and the six points are not coconic).
+                \item $X$ is a smooth cubic surface in $\P^3$.
+                \item $X$ is a del Pezzo surface of degree $3$ (Fano variety of dimension $2$, which means the anticanonical divisor is ample).
+            \end{enumerate}
+        \end{thm}
+
+        We continue Example 226 from last time.
+        \begin{exm*}[Continuation of Example 226]
+        We show that for all $p,q \in \P^2 \setminus \{p_1, \ldots, p_6 \}$, $\varphi_V(p) \neq \varphi_V(q)$. To see this, take the conic through $1,2,3,4,5$ and the line through $6,p$ and a similar combinatorial argument from the base locus calculation tells us that at least one choice works.
+
+        Next we show that the induced rational map $Bl_6 \P^2 \to \P^3$ is regular. It suffices to show that it is regular at every point of $E \simeq \P^1$ over $p_1$. To do this, we find two cubics $D_1, D_2 \in V$ transversal at $p_1$. To do this, we take the conic $C$ through $p_2, \ldots, p_6$ and then two distinct lines $L_1, L_2$ through $p_1$. Then $D_1 = C \cup L_1, D_2 = C \cup L_2$. To see that this is enough, choose a basis $f_1, \ldots, f_4$ of $V$ such that $D_1 = (f_1 = 0)$ and $D_2 = (f_2 = 0)$. Assume $p_1 = [0:0:1]$. We know $\varphi_V$ is given by $[f_1:f_2:f_3:f_4] = [f_1:z^3: \cdots : f_4/z^3]$. We can dehomogeneize in the standard chart and write $\varphi_V = [y + \alpha:x + \beta:g_3:g_4]$, where $\alpha,\beta \in m_{(0,0)}^2$ and $g_3(0,0) = g_4(0,0) = 0$. 
+
+        Next we blow up and consider the chart $x=u,y=uv$. Then $\varphi_V = [uv+u^2g_1:u+u^2g_2:ug_3:ug_4] = [v+ug_1:1+ug_2:g_3:g_4]$. The equation of $E_1$ is $u=0$, so we substitute $u=0$ and in the second component we have $1$, so $\varphi_V$ is regular at every point of $E_1$.
+        \end{exm*}
+
+        \begin{rmk}
+            We consider $\pi^* V$ where $\pi: Bl_6 \P^2 \to \P^2$. Then for all $D \in V$, we see $\pi^* D = E_1 + \cdots + E_6 + D'$, so $\pi^*V = (E_1 + \cdots + E_6) + \abs{D'}$. Thus $D' \sim \pi^*(3H) - E_1 - \cdots - E_6$. The $D'$ are the preimages of hyperplanes in $\P^3$. Because $\varphi(E_i)$ are not points (it intersects a general hyperplane at one point), it must be a curve. In fact it must be a line because a general hyperplane will give a cubic in $\P^2$ smooth at $p_i$, so its proper transform intersects $E_i$ in one point.
+        \end{rmk}
+
+        Next we will show that $\varphi(Bl_6 \P^2)$ is smooth. Indeed, if not, $T_x$ has dimension $3$ for some $x \in X$. (To be continued next lecture).
+
+        \section{Regular Differential Forms}%
+        Now we will attempt to perform calculus on algebraic varieties. Let $X$ be a variety and $f \in k[X]$. Then $d_xf$ is a linear function on $T_x$.
+
+        \begin{defn}
+            $\Phi[X] = \{ \text{ functions that assign every } x \in X \text{ an element of } T_x^{\vee} \}$. Note that $\Phi[X]$ is a $k[X]$-module. For $f \in k[X], \alpha \in \Phi[X]$, $(f \alpha)(x) = f(x) \alpha(x)$.
+        \end{defn}
+
+        \begin{defn}
+            The regular differential forms $\Omega[X] \subset \Phi[X]$ are $\alpha \in \Phi[X]$ such that for every $x \in X$, there exists a neighborhood $U \ni x$ such that $\alpha|_U - \sum_i f_i dg_i$. We have a map $d: k[X] \to \Omega[X]$ and the Leibniz rule $d(fg) = f(dg) + g(df)$.
+        \end{defn}
+
+        \begin{lem}
+            If $X$ is affine, then $\Omega[X]$ is generated by differentials.
+            \begin{proof}
+                We use another algebraic partition of unity. For all $x \in X$, we can write $\alpha = \sum f_{i,x}dg_{i.x}$ is some neighborhood of $x$. Clearing denominators, $p_x \alpha = \sum_i r_{i,x} dg_i,x$ where $p_x,r_{i,x},g_{i,x} \in k[X]$ and $p_x(x) \neq 0$. Then the ideal $(p_x) = k[X]$ by the Nullstellensatz, so we can choose finitely many of them and write $\sum p_x q_x = 1$. Then multiply by $q_x$ and add, and we get $\alpha = \sum_{i.x} r_{i,x} q_x dg_{i,x}$.
+            \end{proof}
+        \end{lem}
+
+        \begin{cor}
+            Let $X$ be affine and $g_1, \ldots, g_s$ generate $k[X]$. Then $dg_1, \ldots, dg_s$ generate $\Omega[X]$ as a $k[X]$-module (use the Leibniz rule to prove this).
+        \end{cor}
+
+        In the simplest case, $\Omega[\A^n]$ is a free $k[x_1, \ldots, x_n]$-module with generators $dx_1, \ldots, dx_n$ (if $\sum f_i dx_i = 0$ then $\exists x \in \A^n$ where one $f_i \neq 0$, and then $dx_1, \ldots, dx_n$ ar e linearly dependent in $T_x\A^3$, which is a contradiction).
+
+        \begin{thm}
+            Suppose $x \in X$ is a nonsingular point with local parameters $u_1, \ldots, u_n$. Then there exists an affine neighborhood $U$ of $x$ such that $\Omega[U]$ is a free $k[U]$-module generated by $du_1, \ldots, du_n$.
+            \begin{proof}
+                Without loss of generality, $x \subset \A^N$. Then $I(X) = (F_1, \ldots, F_m)$, so $k[X]$ is generated by $f_i = T_i|_X$, so $\Omega[X]$ is generated by $dt_1, \ldots, dt_N$. We know $F_i|X = 0$, so $\sum_j \frac{\partial F_i}{\partial T_j} dt_j = 0$ for all $i$. The Jacobian matrix has rank $N-n$ at all nonsingular $x \in X$, so it has a nondegenerate minor with the last variables.
+
+                Thus $t_1, \ldots, t_n$ are local parameters of $x$. From We get that $dt_j = \sum_{i=1}^n f^i_j dt_i$ for all $j > n$ using Cramer's rule, where $f_j^i \in \mc{O}_X$. Now we shrink $X$ to an affine neighborhood $U$ such that all $f_j^i \in k[U]$. After this shrinking, $\Omega[U]$ is generated by $dt_1, \ldots, dt_n$ and $t_1, \ldots, t_n$ are local parameters for all $y \in U$.
+            \end{proof}
+        \end{thm}
+
+        \subsection{Lecture 25 (Apr 30)}
+        There will be extra office hours tomorrow from $2$ to $4$.
+
+        We will continue our study of multivariable calculus. Last time we discussed regular differential forms. 
+        
+        \begin{exm}
+            We calculate $\Omega^1[\P^1]$. We know $\Omega^1[\A^1] = k[x] dx$. Take another chart with coordinate $y = 1/x$, we can write $\omega = f(x) dx = f \left( \frac{1}{y} \right) d \frac{1}{y} = \frac{g(y)}{y^n} \left( -\frac{dy}{y^2} \right) = \frac{g(y) dy}{y^{n+2}}$ where $g(y) \neq 0$. This is not a polynomial multiple of $dy$, so $\Omega^1[\P^1] = 0$.
+        \end{exm}
+
+        Now we talk about differential $r$-forms. We introduce $\Phi^r[X] = \{ x \in X \mapsto \omega(x) \in \land^r T_x^*\}$ and $\Omega^r[X]$ as the subspace that can be written locally as $\omega = \sum f_{i_1, \ldots, i_r} dg_{i_1} \land \cdots \land dg_{i_r}$.
+
+        \begin{thm}
+            Let $X$ be nonsingular at $x$ and $U \ni x$ an affine neighborhood with a system of local parameters $u_1, \ldots, u_n$. Then $\Omega^r[U]$ is a free $k[U]$-module generated by $\binom{n}{r}$ forms of the form $du_{i_1} \land \cdots \land du_{i_r}$.
+        \end{thm}
+
+        Proof of this is the same as for $\Omega^1$. Now we discuss the case of $\Omega^n[X]$ the space of canonical differentials. Here we have $\Omega^n[u] = k[U] du_1 \land \cdots \land du_n$. If $u_1', \ldots, u_n'$ is another system of local parameters, then $du_1 \land \cdots \land du_n = \mc{J}(u_1, \ldots, u_n, u_1', \ldots, u_n') du_1' \land \cdots \land du_n'$ where $J$ is an invertible function.
+
+        We discuss rational canonical differentials $\Omega^n(X)$ where every pair is a form $(U,\omega)$ where $U \subset x$ is open and $\omega \in \Omega^n[U]$. They are subject to equivalence by equality on intersections. We can assume from now on that $X$ is nonsingular and $\omega \in \Omega^n(X)$ is regular on some affine open with local parameters $u_1, \ldots, u_n$, so $\omega = f(x) du_1 \land \cdots \land du_n$ where $f \in k(X)$ is regular on $U$.
+
+        \begin{lem}
+            $\Omega^n(X)$ is a one-dimensional vector space over $k(X)$ generated by $du_1, \ldots, du_n$ for all choices of local parameters somewhere.
+        \end{lem}
+
+        \begin{defn}
+            Choose $\omega \in \Omega^n(X)^*$. We will define $(\omega)$ as a Cartier divisor. Cover $X = \cup U_{\alpha}$ such that for all alpha there exist $u_1^{\alpha}, \ldots, u_n^{\alpha}$ are local parameters on $U_{\alpha}$. Then $\omega|_{U_{\alpha}} = f^{\alpha} du_1^{\alpha} \land \cdots \land du_n^{\alpha}$ for $f^{\alpha} \in k(X)$. This gives a Cartier divisor $(U_{\alpha}, f_{\alpha})$. 
+            
+            To see this is Cartier, on the overlaps $U_{\alpha} \cap U_{\beta}$ we see that $\omega|_{U_{\alpha} \cap U_{\beta}} = f^{\alpha} du_1^{\alpha} \land \cdots \land du_n^{\alpha} = f^{\alpha'} du_1^{\alpha'} \land \cdots \land du_n^{\alpha'} = f^{\alpha} \mc{J} du_1^{\alpha'} \land \cdots \land du_n^{\alpha'}$, so $f^{\alpha} = \mc{J} f^{\alpha'}$, where the Jacobian is invertible.
+        \end{defn}
+
+        Note that if $\omega' = f\omega$ then $(\omega') = (f) + (\omega)$, so they are equivalent. Thus the class of $K_X$ in the Picard group only depends on $X$.
+
+        \begin{exm}
+            We calculate the canonical divisor of $\P^n$. Let $\A^n = \{ z_0 \neq 0 \}$ and choose $\omega = dx_1 \land \cdots \land dx_n$. This has no zeroes or poles on $\A^1$ and let $H = \P^n \setminus \A^n$ be the plane at infinity. We see that $[1:x_1: \cdots: x_n] = [1/x_1: 1 : x_2/x_1 : \cdots : x_n/x_1]$, so writing $y_1 = 1/y_1, x_2 = y_2, \ldots, x_n = y_n/y_1$, we have 
+            \begin{align*}
+                \omega &= d(1/y_1) \land d(y_2/y_1) \land \cdots \land d(y_n/y_1) \\ 
+                       &= -\frac{dy_1}{y_1^2} \land \frac{(dy_2)y_1 - y_2 dy_1}{y_1^2} \land \cdots \land \frac{y_1dy_n - y_ndy_1}{y_1^2} \\ 
+                       &= \pm \frac{dy_1}{y_1^2} \land \frac{dy_2}{y_1} \land \cdots \land \frac{dy_n}{y_1} \\ 
+                       &= \pm \frac{1}{y_1^{n+1}} dy_1 \land \cdots \land dy_n 
+            \end{align*} 
+            Thus $K_{\P^n} = -(n+1)H$.
+        \end{exm}
+
+        \begin{defn}
+            $X$ is Fano is $-K_X$ is ample.
+        \end{defn}
+
+        \begin{cor}
+            $\P^n$ is Fano. $\varphi_{-K_X} = \varphi_{(n+1)H}$ is the $(n+1)$-th Veronese embedding of $\P^n$.
+        \end{cor}
+
+        For example, $-K_{\P^2} = 3H$. and $\abs{-K_{\P^2}}$ is the set of cubic curves in $\P^2$. We now determine the relationship between $K_S$ and $K_X$ if $S$ is a blowup of $X$ at a point $p$. Choose local parameters $u,v$ at $p$ and $\omega = du \land dv$ on $X$. Then $(\omega)$ is disjoint from $p$, and we know $k(S) = k(X)$, so $\omega \in \Omega^n(S)$. We compute its divisor on $S$.
+
+        Working in a chart of the blowup with local parameters $x,y$ where $u = x, v = xy$, we have $\omega = du \land dv = dx \land (x dy + y dx) = x dx \land dy$. Near $E$, $(\omega)$ is precisely $E$. This proves the following:
+
+        \begin{thm}
+            Let $S \overset{\pi}{\to} X$ be the blowdown. Then $K_S = \pi^*K_X + E$, where $E$ is the exceptional divisor.
+        \end{thm}
+
+        \begin{cor}
+            Let $S$ be a blowup of $\P^2$ at $6$ points. Then $K_S = \pi^* K_{\P^2} + E_1 + \cdots + E_6 = -3H + E_1 + \cdots + E_6$ and thus $-K_S = 3H - E_1 - \cdots - E_6$.
+        \end{cor}
+
+        Last time, we constructed the map $\varphi:S \to \P^3$. We have the following:
+
+        \begin{thm}
+            $\varphi$ is an isomorphism onto its image, which is a smooth cubic surface.
+            \begin{proof}
+                We already know that $\varphi$ is birational and bijective away from $E_1, \ldots, E_6$. Also, $\varphi|_{E+i}$ is a line in $\P^3$. Therefore $\varphi$ has finite fibers. We claim that $\varphi$ is finite. Instead of a proof of the claim, we state the Stein Factorization Theorem (after the end of this proof).
+
+                Given Stein, $\varphi$ is finite and birational, so we need to check that $Y$ is normal. Note $X$ is smooth, so it is normal. We use Serre's criterion. If $X$ is a hypersurface in $\P^n$ then $X$ is Cohen-Macaulay and is thus $S1$ by Hartog's principle. Now we need to show that $X = \varphi(S) \subset \P^3$ has isolated singularities. If not, then $X$ is singular along $C \subset X$, so every plane section $X \cap H$ is singular at $C \cap H$. Thus $X \cap H$ is a singular cubic curve, which means it is rational. However, on $S$, $X \cap H$ is a member of $\abs{3H} - p_1 - \cdots - p_6$, which for some $H$ is a smooth cubic curve, which is not rational.
+            \end{proof}
+        \end{thm}
+
+               
+            
+
+        \begin{cor}
+            $-K_S$ is very ample, so $S$ is a Fano surface, or a del Pezzo surface.
+        \end{cor}
+        
+        \begin{thm}[Stein Factorization Theorem]
+            Let $f: X \to Y$ be a proper regular map. Then there exists a commutative diagram
+            \begin{center}
+                \begin{tikzcd}
+                    X \arrow{rr} \arrow{dr} & & Y \\
+                                            & Z \arrow{ur}
+                \end{tikzcd}
+            \end{center}
+            where $X \to Z$ has conncted fibers and $Z \to Y$ is finite. In particular, if $f$ is proper and has finite fibers, then $f$ is finite.
+        \end{thm}
+        
+    
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
