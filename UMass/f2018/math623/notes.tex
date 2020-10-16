@@ -1,0 +1,1706 @@
+%!TEX TS-program = lualatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont[Ligatures={Common}, Numbers={OldStyle}]{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\setmonofont{Inconsolata}
+\setmathfont{Libertinus Math}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Real Analysis 1 \\ Math 623}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei,
+                    May 2020}\\[0.2\textheight]
+    {\Large Lectures by Robin Young, Fall 2018}\par
+    \vfill
+    {\Large \sffamily University of Massachusetts, Amherst}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes are a May 2020 transcription of handwritten notes taken during lecture in Fall 2018. 
+Any errors are mine and not the instructor's. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style 
+(omit lengthy computations, use category theory) and that of the instructor.
+If you find any errors, please contact me at \texttt{plei@umass.edu}.
+\newpage
+
+
+
+\tableofcontents
+
+\chapter{Lebesgue Measure}%
+\label{cha:lebesgue_measure}
+
+\section{Motivation for the Course}%
+\label{sec:introduction}
+
+We will consider some examples that show us some fundamental problems in analysis.
+
+\begin{exm}[Fourier Series]
+    Let $f$ be periodic on $[0, 2\pi]$. Then if $f$ is sufficiently nice, we can write
+    \[ f(x) = \sum_{n} a_n e^{inx}, \]
+    where $a_n = \frac{1}{2\pi} \int_0^{2\pi} f(x) e^{inx} \dd{x}$. If this is possible, then we have Parseval's identity:
+    \[ \sum \abs{a_n}^2 = \frac{1}{2\pi} \int_0^{2\pi} \abs{f(x)}^2 \dd{x}. \]
+    However, the function space we are working in on the RHS is not complete because there exist sequences $a_n$ such that the associated function $\abs{f}^2$ is not Riemann-integrable. This tells us that we need a better notion of integration.
+\end{exm}
+
+\begin{exm}[Dirichlet Function]
+    Enumerate the rationals in the interval $[0,1]$ by $r_n$. Then define 
+    \[ f_N(x) = \begin{cases}
+        1 & x \in {r_1, \ldots, r_N} \\
+        0 & \text{otherwise}
+    \end{cases}. \]
+    Then the limit of $f_N$ is simply the indicator function $f = \chi_{\Q}$. Here, the $f_N$ are Riemann integrable, but $f$ is not.
+\end{exm}
+
+Next, we can consider the problem of characterizing which functions are Riemann-integrable.
+
+\begin{thm}
+    A function $f$ is Riemann-integrable if and only if the set of points where $f$ is not continuous has measure $0$.
+\end{thm}
+
+Fourth, we may consider lengths of curves. Suppose we have a fractal (this will remain undefined) such as the Cantor set, a coastline, or broccoli. What is is the correct dimension for such a set? When is the ``length'' of such a curve finite?
+
+Finally, recall the fundamental theorem of calculus: For a differentiable function $F$, 
+\[ F(b) - F(a) = \int_a^b F'(t) \dd{t} \]
+and for an integrable function $f$, 
+\[ \dv{x} \int_a^t f(t) \dd{t} = f(x). \]
+When do these two results apply?
+
+\begin{quest}
+    All of these examples tell us that the fundamental problem in analysis is the exchange of limits. We will see that many of the results in the course are of this form.
+\end{quest}
+
+\section{Basic Notions}%
+\label{sec:basic_notions}
+
+First recall the very basic notions of set theory: unions, intersections, complements, relations, and functions. We use the usual definitions of image, preimage, and partial and total orders.\footnote{The reader not familiar with these can refer back to their Math 300 materials.} We will also assume the axiom of choice, so in particular, we have the following results:
+\begin{description}
+    \item[Hausdorff Maximal Principle:] Every partially ordered set has a maximal totally ordered subset. 
+    \item[Zorn's Lemma:] If $X$ is a partially ordered set where every chain has an upper bound, then $X$ has a maximal element.
+    \item[Well Ordering Principle:] Ever set admits a well-ordering.
+\end{description}
+
+Next, we will recall some basic properties of Euclidean space.
+
+\begin{thm}[Bolzano-Weierstrass]
+    Every bounded sequence in $\R^n$ has a limit point. Note that the lim sup is an accumulation point.
+\end{thm}
+
+Next recall that $\R^n$ with the Euclidean distance $\rho$ is a metric space. In fact, $\R^n$ is a complete normed metric space, and the triangle inequality is implied by Cauchy-Schwarz. Recall that open balls are given by $B_r(x) = \qty{y \mid \rho(x,y) < r}$ and closed balls are given by $\ol{B}_r(X)\qty{y \mid \rho(x,y) \leq r}$. Then a set $G$ is \textit{open} if around any $x \in G$ we can find an open ball $B_r(x) \subset G$ and a set $F$ is \textit{closed} if $F^c$ is open. We can then define the interior, closure, and boundary of a set in the usual way.
+
+\begin{exm}
+    Consider $\Q \subset \R$. Then $\Q^{\circ} = \emptyset$ and $\ol{\Q} = \R$, so $\Q$ is a countable dense subset of $\R$. Therefore, $\R$ is \textit{separable}.
+\end{exm}
+
+Convergence is defined in the usual way.
+\begin{lem}
+    Let $X$ be a metric space and $E \subset X$. Then the following are equivalent:
+    \begin{enumerate}
+        \item $x \in \ol{E}$;
+        \item For all $\ep > 0$, $B_e(x) \cap E \neq \emptyset$;
+        \item There exists a sequence $\qty{x_n} \subset E$ such that $x_n \to x$.
+    \end{enumerate}
+\end{lem}
+
+\section{Rectangles}%
+\label{sec:rectangles}
+
+We now build towards defining the Lebesgue measure. First, we call any set of the form
+\[ R = \prod_{i=1}^n [a_i,b_i] \]
+a \textit{closed rectangle}. We define the volume $\abs{R}$ of any rectangle by
+\[ \abs{R} = \prod_{i=1}^n (b_i - a_i). \]
+It should be obvious what a cube and an open rectangle are.
+
+\begin{defn}
+    A collection of rectangles is \textit{almost disjoint} if their interiors are disjoint.
+\end{defn}
+
+\begin{lem}
+    If a rectangle $R$ is an almost disjoint union $R = \bigcup R_j$, then $\abs{R} = \sum \abs{R_j}$.
+\end{lem}
+
+Now let $\ep > 0$ small enough. Then $R^{\ep} = \prod [a_i + \ep, b_i - \ep] \subset R^{\circ} \subset R$, As $\ep \to 0$, we obtain $\abs{R^{\circ}} = \abs{R}$.
+
+\begin{cor}
+    Let $R \subset \bigcup_{i=1}^n R_i$, where the union is not necessarily almost disjoint. Then $\abs{R} \leq \sum \abs{R_i}$.
+\end{cor}
+
+Our goal is to extend this notion of volume to open sets in terms of rectangles.
+
+\begin{lem}
+    In $\R$, any open set $G$ is a disjoint union of countable many open intervals.
+\end{lem}
+
+\begin{proof}
+    Let $x \in G$. Then there is a maximal interval $I_x \subseteq G$. Then if $y \in I_x$, note that $I_x = I_y$. Thus $G = \bigcup_{x \in G} I_x$. However, each interval must contain a rational number, so there are only countably many of them.
+\end{proof}
+
+Therefore, if $G \subseteq \R$ is open, we can declare its measure to be $\mu(G) = \sum \abs{I_j}$, where $G$ is a disjoint union of the intervals $I_j$. Note that this is not convenient in higher dimension, so we use closed rectangles instead. Note that any open set in $\R$ is a countable union of closed rectangles $G = \bigcup [a_j + 1/n, b_j - 1/n]$, but this union is not even almost disjoint.
+
+\begin{thm}
+    In $\R^d$, any open set $G$ can be written as an almost disjoint union $G = \bigcup_{j=1}^{\infty} F_j$ of closed rectangles. Given this, we expect $m(G) = \sum_{j=1}^{\infty} \abs{F_j}$.
+\end{thm}
+
+\begin{proof}
+    Grid $\R^d$ by the points in $\Z^d$. Then each cube $Q$ of length $1$ satisfies either $Q \subseteq G, Q \subseteq \ol{G}^c$, or neither. At the first step, include all $Q \subseteq G$ and exclude all $Q \subseteq \ol{G}^c$. Then we reduce $\Z^d$ to $\frac{1}{2} \Z^d$ and proceed by induction.
+\end{proof}
+
+\begin{exm}[Cantor Set]
+    This is not really an example of rectangles, but is an important example for this course. It is a closed, compact, totally disconnected set where every point is a limit point. Define the sets
+    \begin{itemize}
+        \item $C_0 = [0,1]$;
+        \item $C_1 = [0,1/3] \cup [2/3,1]$;
+        \item $C_2 = [0,1/9] \cup [2/9,1/3] \cup [2/3, 7/9] \cup [8/9,1]$,
+    \end{itemize}
+    and then continue the process. Then we define the \textit{Cantor set} to be $C = \bigcap_{k=1}^{\infty} C_k$.
+
+    First, note that $C$ is an intersection of closed sets, so it is closed. Then given $x,y \in C$, note that there exists $k$ such that $x-y > \frac{2}{3^k}$, so $x,y$ are in different intervals in $C_k$. Clearly there are no isolated points. Finally, note that $C$ is the set of all real numbers with no $1$ in their ternary expansions, so it is uncountable. However, note that $C^c$ is a disjoint union of open intervals with measure
+    \[ m(C^c) = \frac{1}{3} + 2 \frac{1}{9} + 4 \frac{1}{27} + \cdots = \frac{1}{3} \sum_{k=0}^{\infty} \qty(\frac{2}{3})^k = 1. \]
+    Therefore, we expect $m(C) = 0$.
+\end{exm}
+
+\section{Outer Measure}%
+\label{sec:outer_measure}
+
+It is reasonable to expect that if $G$ is an almost disjoint union $G = \bigcup_j Q_j$ then $m(G) = \sum_j \abs{Q_j}$. Instead of imposing this inequality for general $E$, we will make it an inequality, so we drop the condition of being almost disjoint. Define for any $E \subset \R^d$ the \textit{outer measure}
+\[ m_*(E) = \inf_{E \subseteq \bigcup Q_j} \sum_j \abs{Q_j}. \]
+
+We can show that $m_*(C) = 0$ directly. Note that $C_k$ is a union of $2^k$ closed subintervals of length $3^{-k}$, so we see that $m_*(C) \leq \qty(\frac{2}{3})^k$ for all $k$. Therefore, $m_*(C) = 0$. For another example, it is easy to show that if $P$ is countable, then $m_*(P) = 0$. To see this, let $\ep > 0$ and then take the rectangle of width $\frac{\ep}{2^i}$ centered at $p$. Then $m_*(P) \leq 2 \ep$.
+
+\textbf{Properties of outer measure.} Here are some properties of the outer measure:
+\begin{enumerate}
+    \item (Monotonicity) If $E_1 \subseteq E_2$, then $m_*(E_2) \leq m_*(E_2)$. As a corollary, bounded sets have finite outer measure.
+    \item (Countable subadditivity) If $E \subseteq \bigcup_j E_j$, then $m_*(E) \leq \sum_j m_*(E_j)$.
+        \begin{proof}
+            Assume that each $m_*(E_j) < \infty$. Then for all $j$, there exist countably many cubes $Q_{j,k}$ such that $E_j \subseteq \bigcup_k Q_{j,k}$, so we have
+            \[ m_*(E_j) \leq \sum_k \abs{Q_{j,k}} + \frac{\ep}{2^j}. \]
+            Then any $E \subseteq \bigcup_j E_j \subseteq \bigcup_{j,k} Q_{j,k}$, so
+            \[ m_*(E) \leq \sum_{j,k} \abs{Q_{j,k}} \leq \sum_j \sum_k \abs{Q_{j,k}} \leq \sum_j m_*(E_j) + \frac{\ep}{2^j} \leq \sum_j m_*(E_j) + \ep. \qedhere \]
+        \end{proof}
+    \item For any $E \subseteq \R^d$, we can write 
+        \[ m_*(E) = \inf_{\substack{G \text{ open}\\E \subseteq G}} m_*(G). \qedhere \]
+        \begin{proof}
+            It is easy to see that $m_*(E) \leq \inf m_*(G)$. In the other direction, assume $m_*(E)$ is finite. Then $E \subseteq \bigcup Q_j$, so $\sum \abs{Q_j} - \ep \leq m_*(E_j) \leq \sum \abs{Q_j}$. Choose $G_j$ open such that $\ol{Q_j} \subseteq G_j$ and $\abs{G_j} \leq \abs{Q_i} + \frac{\ep}{2^k}$. 
+
+            Now $E \subseteq \bigcup G_j$ and $G = \bigcup G_j$, so 
+            \[ m_*(G) \leq \sum \qty(\abs{Q_j} + \frac{\ep}{2^j}) \leq \sum \abs{Q_j} + \ep \leq m_*(E) + 2 \ep. \qedhere \]
+        \end{proof}
+    \item (Wannabe additivity) If $E = E_1 + E_2$ and $d(E_1, E_2) > 0$, then $m_*(E) = m_*(E_1) + m_*(E_2)$. Here $d(A,B) = \inf \qty{d(x,y) \mid x \in A, y \in B}$.
+        \begin{proof}
+            Choose $0 < \delta < d(E_1, E_2)$ and choose $Q_j$ such that $E \subseteq \bigcup Q_j$, $m_*(E) > \sum \abs{Q_j} - \ep$, and $\mr{diam}(Q_j) < \delta$. If $E_1 \cap Q_j \neq \emptyset$, then $E_2 \cap Q_j = \emptyset$. Therefore, there exist $J_1, J_2$ such that $E_1 \subseteq \bigcup_{j \in J_1} Q_j$ and $E_2 \subseteq \bigcup_{i \in J_2} Q_i$, so
+            \[ m_*(E_1) + m_*(E_2) \leq \sum_{j \in J_1} \abs{Q_j} + \sum_{i \in J_2} \abs{S_i} = \sum \abs{Q_j} \leq m_*(E) + \ep. \qedhere \]
+        \end{proof}
+    \item If $E$ is a countable union of almost disjoint cubes, then $m_*(E) = \sum \abs{Q_j}$.
+        \begin{proof}
+            For each $j$, pick $\wt{Q_j} \subseteq Q_j^{\circ}$ such that $\abs{\wt{Q}_j} > \abs{Q_j} - \frac{\ep}{2^j}$. Then $\bigcup \wt{Q}_j \subseteq E$ and are disjoint and a finite distance apart, so for each $N$, we have $\sum_1^N m_*(\wt{Q}_j) \leq m_*(E)$, and therefore $\sum_{j=1}^n \abs{Q_j} - \ep \leq m_*(E)$, and thus $\sum_{j=1}^{\infty} \abs{Q_j} \leq m_*(E)$.
+        \end{proof}
+        Note we cannot conclude finite additivity for general disjoint sets $E_1, E_2$.
+\end{enumerate}
+
+\section{Measurable Sets}%
+\label{sec:measurable_sets}
+
+\begin{defn}
+    A subset $E \subseteq \R^n$ is \textit{measurable} if for all $\ep > 0$, there exists $G \supseteq E$ such that $m_*(G \setminus E) < \ep$.
+\end{defn}
+
+If $E$ is measurable, define its \textit{Lebesgue measure} as $m(E) = m_*(E)$. Here are some properties of measurable sets:
+\begin{enumerate}
+    \item Open sets are measurable;
+    \item If $m_*(E) = 0$, then $E$ is measurable;
+    \item Countable unions of measurable sets are measurable;
+    \item Closed sets are measurable;
+    \item If $E$ is measurable, then so is $E^c$;
+    \item Countable intersections of measurable sets are measurable.
+\end{enumerate}
+
+This says that measurable sets form a $\sigma$-algebra. In addition, we should note that if $F$ is closed and $K$ is compact such that $F \cap K = \emptyset$, then $d(F,K) > 0$.\footnote{This was proved in complex analysis.}
+
+\begin{thm}
+    If $E_j$ are measurable and disjoint, then $m(\bigcup E_j) = \sum m(E_j)$.
+\end{thm}
+
+\begin{proof}
+    Assume that the $E_j$ are bounded. Then there exist $F_j$ closed with $F_j \subseteq E_j$ such that $m(E_j \setminus F_j) < \frac{\ep}{2^j}$ for all $j$. Then for finite $N$, $\bigcup_{j=1}^N F_j$ is compact, so $m\qty(\bigcup F_j) = \sum m(F_j)$. Therefore $m(E) \geq \sum_{j=1}^N m(F_j) \geq \sum_{j=1}^N m(E_j) - \ep$ uniformly in $N$. Therefore, $m(E) \geq \sum m(E_j)$. The other inequality is from subadditivity.
+
+    Next, if some of the $E_j$ are unbounded, set $Q_j$ to be the cube with sides $[-k,k]$. Then set $S_1 = Q_1$ and $S_{j+1} = Q_{j+1} \setminus Q_j$. Finally, set $E_{j,k} = E_j \cap S_k$. Then each $E_{j,k}$ is bounded, so we have
+    \[ m(E) = \sum_{j,k} m(E_{j,k}) = \sum_j \sum_k m(E_{j,k}) = \sum_j m\qty(\bigcup_k E_{j,k}) = \sum_j m(E_j). \qedhere \]
+\end{proof}
+
+\begin{cor}
+    \begin{enumerate}
+        \item If $E_k \nearrow E = \bigcup E_k$ with $E_k$ measurable, then $m(E) = \lim m(E_k)$;
+        \item If $E_k \searrow F = \bigcap E_k$ and some $E_k$ has finite measure, then $\lim m(E_k) = m(F)$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Set $D_k = E_{k+1} \setminus E_k$. Then the $D_k$ are disjoint and measurable, so $E = \bigcup D_k$. Therefore, 
+            \[ m(E) = \sum_{k=1}^{\infty} m(D_k) = \lim_{N \to \infty} \sum_{k=1}^N m(D_k) = \lim m(E_k). \]
+        \item Set $B_k = E_k \setminus E_{k+1}$. Then $E_{k_0} = \qty(\bigcap E_k) \cup \qty(\bigcup_{k\geq k_0} B_k)$. Then $m(E_{k_0}) < \infty$ by assumption, so 
+            \begin{align*}
+                m(E_{k_0}) &= m\qty(\bigcap E_k) + \sum_{k \geq k_0} m(B_k) \\
+                           &= m\qty(\bigcap E_k) + \lim_{N \to \infty} \sum_{k=k_0}^{N} m(B_k) \\
+                           &= m\qty(\bigcap E_k) + m(E_{k_0}) - \lim_{N \to \infty} m (E_N). 
+            \end{align*}
+            Therefore $m\qty(\bigcap E_k) = \lim m(E_N)$.
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}
+    If $E$ is measurable, then for all $\ep > 0$:
+    \begin{enumerate}
+        \item There exists an open $G \supseteq E$ such that $m(G \setminus E) < \ep$;
+        \item There exists closed $F \subseteq E$ such that $m(E \setminus F) < \ep$;
+        \item If $m(E) < \infty$, then there exists compact $K \subseteq E$ such that $m(E \setminus K) < \ep$;
+        \item If $m(E) < \infty$, then there exists $F = \bigcup_{j=1}^N Q_j$ such that $m(E \triangle F) < \ep$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    We only need to prove the last two, the first two are by definition.
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+        \item There exist a closed $F$ with $m(E \setminus F) < \ep / 2$. Then for all $n$, set $K_n = \ol{B}_n \cap F$. Then the $E \setminus K_n$ are measurable, and converge down to $E \setminus F$, so there exists $n$ such that $m(E \setminus K_n) < \ep/2 + m(E \setminus F) < \ep$.
+        \item Note there exists $G = \bigcup_{j=1}^{\infty} Q_j$ containing $E$ such that $m(G) < m(E) + \ep/2$. Then there exists $N$ such that $\sum_{j < N} \abs{Q_j} < \ep/2$, so we can set $F = \bigcup_{i=1}^N Q_j$. Then
+            \begin{align*}
+                m(E \triangle F) &= m(E \setminus F) + m(F \setminus E) \\
+                                 &\leq m\qty(\bigcup_{j>N} Q_j) + m\qty(\bigcup_{j=1}^{\infty} \setminus E) \\
+                                 &\leq \sum_{j=N} \abs{Q_j} + m(G \setminus E) \\
+                                 &< \ep. \qedhere
+            \end{align*}
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    $E$ is measurable if and only if
+    \begin{enumerate}
+        \item $E$ differs from a $G_{\delta}$ set by a null set;
+        \item $E$ differs from an $F_{\sigma}$ set by a null set.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item For all $n$ there exists $G_n$ open such that $m(G_n \setminus E) < 1/n$ and $G_n \supseteq E$. Therefore, set $S = \bigcap G_n$. Clearly $E \subseteq S$ and $m(S \setminus E) = 0$ by Corollary 1.16.
+        \item The argument is the same.
+    \end{enumerate}
+\end{proof}
+
+\textbf{Other Properties of Lebesgue Measure}
+\begin{enumerate}
+    \item $m$ is translation invariant;
+    \item If $E$ is measurable, then $m(\lambda E) = \lambda^d m(E)$;
+    \item $m$ is reflection invariant.
+\end{enumerate}
+
+\begin{defn}
+    A set $\Sigma \subset \mc{P}(X)$ is a \textit{$\sigma$-algebra} if it is closed under complements and countable unions.
+\end{defn}
+
+The \textit{Borel Sets} are the smallest $\sigma$-algebra containing the open balls.
+
+\begin{lem}
+    If $E \subseteq \R$ is measurable and $m(E) > 0$, then the set of differences $E \ominus E = \qty{x - y \mid x,y \in E}$ contains an open interval around $0$.
+\end{lem}
+
+\begin{proof}
+    There exists an open set $G \supseteq E$ such that $m(G) \leq (1+\ep) m(E)$. Then $G$ is a disjoint union $G = \bigcup_{k=1}^{\infty}$ of open intervals. Set $E_k = I_k \cap E$. Then we know that $\sum \abs{I_k} \leq (1+\ep) \sum m_*(E_k)$, so there exists $k_0$ such that $\abs{I_{k_0}} \leq m_*(E_{k_0})$. Then for small $\delta$ if $E_{k_0}$ and $E_{k_0} + \delta$ are disjoint, then $m(E_{k_0} \cup E_{k_0} + \delta) \geq \frac{2}{1+\ep} \abs{I_{k_0}}$. However, if $\delta < \abs{I_{k_0}}$, then $I_{k_0} \cup I_{k_0} + \delta$ is an interval. Thus $m(E_{k_0} \cup E_{k_0} + \delta) \leq \abs{I_{k_0}} + \delta$. Finally, we see that $\delta \geq \frac{1-\ep}{1+\ep} \abs{I_{k_0}}$, so $E_{k_0} \cap E_{k_0} + \delta \neq \emptyset$ for small enough $\delta$.
+\end{proof}
+
+\begin{thm}[Vitali]
+    There is a non-measurable set $S \subset [0,1]$.
+\end{thm}
+
+\begin{proof}
+    Enumerate the rationals in $[0,1]$ by $r_k$. Now consider the set $\R / \Q$ and choose one representative of each equivalence class using the axiom of choice.\footnote{If we assume choice is false, then every subset of the real numbers is measurable.} Call this set $P$. Next, note that $P \ominus P$ contains no interval because it contains no rationals. If $m_*(P) = 0$, then $[0,1] \subseteq \bigcup_{r \in \Q} P + r$, which would imply that $m([0,1]) = 0$. Thus $P$ must be non-measurable.
+\end{proof}
+
+\begin{cor}
+    Any set with positive outer measure contains a non-measurable set.
+\end{cor}
+
+\begin{proof}
+    Let $P$ be as in Theorem 1.21. Then let $A_r = A \cap (P+r)$. At least one of these sets must be non-measurable.
+\end{proof}
+
+\section{Measurable Functions}%
+\label{sec:measurable_functions}
+
+Our goal will be integration. We expect that if $E$ is a measurable set, then $\int \chi_E = m(E)$. More generally, we want
+\[ \int \sum_{k=1}^N a_k \chi_{E_k} = \sum_{k=1}^N m(E_k). \]
+Functions of this form are called \textit{simple}. We also want to have some results where the integral of a limit is equal to the limit of the integral. Similar to continuity, we can try to define $f$ to be measurable if $f^{-1}(E)$ is measurable for all measurable $E$. However, this is too hard to check, we find a minimal condition.
+
+\begin{defn}
+    A function $f: \R^d \to \R$ is \textit{measurable} if for all $a$, $f^{-1}(-\infty, a)$ is measurable.
+\end{defn}
+
+Here are some properties of measurable functions:
+\begin{enumerate}
+    \item $f$ is measurable if and only if $f^{-1}(G)$ is measurable for all open $G$. Alternatively, $f^{-1}(F)$ is measurable for all closed $F$.
+    \item Continuous functions are measurable. In addition, if $f$ is measurable and finite-valued and $\Phi$ is continuous, then $\Phi \circ f$ is measurable.
+    \item If $\{f_n \}$ is a sequence of measurable functions, then $\sup f_n, \inf f_n, \liminf f_n, \limsup f_n$, and $\lim f_n$ (if it exists) are all measurable.
+    \item If $f,g$ are measurable, then $f+g, fg$ are both measurable.
+    \item Define $f=g$ \textit{almost everywhere} if the set on which they differ has measure $0$. If $f=g$ almost everywhere, then $f$ is measurable if and only if $g$ is measurable.
+\end{enumerate}
+
+We will now prove some approximation theorems for measurable functions. First, we attempt to approximate them by simple functions.
+
+\begin{thm}
+    If $f \geq 0$ is measurable on $\R^d$, then there exists an increasing sequence $\varphi_k$ of simple functions converging pointwise to $f$.
+\end{thm}
+
+\begin{proof}
+    Define the sequence of functions
+    \[ f_N(x) = \begin{cases}
+        f(x) & x \in Q_N \text{ and } f(x) \leq N \\
+        N & x \in Q_N \text{ and } f(x) > N \\
+        0 & x \notin Q_N
+    \end{cases}. \]
+    Clearly $F_N(x) \nearrow f(x)$ for all $x$ and $F_N(\R) \subseteq [0,N]$. Now define the set
+    \[ E_{\ell,m}^N = \qty{ x \in Q_N \mathrel{\bigg|} \frac{\ell}{m} < F_N(x) \leq \frac{\ell+1}{m} } \]
+    and the simple function
+    \[ f_{N,M}(x) = \sum_{\ell = 0}^{MN} \frac{\ell}{M} \chi_{E_{\ell,M}^N}. \]
+    Clearly $f_{N,M}$ is increasing in $M$. We also see that $0 \leq F_N(x) - F_{N,M}(x) \leq \frac{1}{M}$. Now set $N = M = 2^k$. Then we see that 
+    \[ \lim_{k \to \infty} F_{2^k,2^k} = f(x) \]
+    for all $x$.
+\end{proof}
+
+\begin{cor}
+    Suppose $f$ is measurable. Then there exists a sequence $\varphi_k$ simple such that $\abs{\varphi_k(x)} \nearrow \abs{f(x)}$ and $\lim \varphi_k(x) = f(x)$.
+\end{cor}
+
+\begin{proof}
+    Write $f(x) = f_+(x) - f_-(x)$, where $f_+(x) = \max \qty{0,f(x)}$ and $f_-(x) = \max \qty{-f(x),0}$. The rest is left to the reader.
+\end{proof}
+
+\begin{thm}
+    If $f$ is measurable, there exists a sequence $\psi_k$ of step functions such that $\psi_k \to f$ almost everywhere.
+\end{thm}
+
+\begin{proof}
+    First, there exist $\varphi_k$ simple converging to $f$ everywhere. Write $\varphi_k = \sum_{j=1}^{N_k} a_{j,k} \chi_{E_{j,k}}$. Then for all $E_{j,k}$, there exists a finite collection of cubes $\Q_{\ell}$ such that $m\qty(E \triangle \bigcup Q_{\ell}) < \ep$. Therefore, there exist almost disjoint rectangles $\wt{R}_p$ such that $\bigcup Q_{\ell} = \bigcup \wt{R}_p$. Shrink the $\wt{R}_p$ to obtain disjoint closed rectangles $R_p$ such that $m\qty(E \triangle \bigcup R_p) < 2 \ep$. Then there exist step functions $\psi_k$ and measurable sets $F_k$ such that
+    \begin{enumerate}
+        \item $m(F_k) < \frac{1}{2^k}$;
+        \item $\{ \varphi_k \neq \psi_k \} \subseteq F_k$.
+    \end{enumerate}
+    Then set $F = \limsup F_k$, so $F$ has measure $0$. Then for all $x \notin F$, we have
+    \[ \lim_{k \to \infty} f(x) - \psi_k(x) = \lim_{k \to \infty} f(x) - \varphi_k(x) = 0. \qedhere \]
+\end{proof}
+
+\begin{thm}[Egorov]
+    Let $f_k$ be a sequence of measurable functions on $E$ with $m(E) < \infty$ and $f_k \to f$ pointwise. Then for all $\ep$ there exists a closed set $A_{\ep} \subseteq E$ with $m(E \setminus A_{\ep}) < \ep$ and such that $f_k \to f$ uniformly on $A_{\ep}$.
+\end{thm}
+
+\begin{proof}
+    For given $n,k$, set
+    \[ E_{k,n} = \qty{x \mathrel{\bigg|} \abs{f_j(x) - f(x)} < \frac{1}{n} \text{ for all } j > k} = \qty{x \mathrel{\Bigg|} \sup_{j>k} \abs{f_j(x) - f(x)} < \frac{1}{n}}. \]
+    If we fix $n$, then $E_k^n \subseteq E_{k+1}^n$ and $E_k^n \nearrow E$. Therefore there exists $k_n$ such that $m(E \setminus E_{k_n}^n) < \frac{1}{2^n}$. Now choose $N$ such that $2^{1-N} < \frac{\ep}{2}$ and set $\wt{A}_{\ep} = \bigcap_{n \geq N} E_{k_n}^n$. Then 
+    \[ m(E \setminus \wt{A}_{\ep}) = m\qty(E \setminus \bigcap E_{k_n}^n) = m\qty(\bigcup E \setminus E_{k_n}^n) \leq \sum_{n \geq N} m(E \setminus E_{k_n}^N) < \frac{\ep}{2}. \]
+    Choose $A_{\ep} \subseteq \wt{A}_{\ep}$ such that $m(\wt{A}_{\ep} \setminus A_{\ep}) < \frac{\ep}{2}$. Then $m(E \setminus A_{\ep}) < \ep$. To prove uniform convergence on $A_{\ep}$, choose $M$ such that $M \geq N$ and $\frac{1}{M} \leq \delta$. Then if $x \in A_{\ep}$, $x \in E_{k_n}^M$, so 
+    \[ \sup_{j < k_m} \abs{f_j(x) - f(x)} < \frac{1}{m} < \delta. \qedhere \]
+\end{proof}
+
+\begin{thm}[Lusin]
+    Let $f$ be measurable and finite-valued on $E$ and $m(E) < \infty$. Then for all $\ep$, there exists $F_{\ep} \subseteq E$ closed such that $m(E \setminus F_{\ep}) < \ep$ and $f |_{F_{\ep}}$ is continuous.
+\end{thm}
+
+\begin{proof}
+    First, there exists a sequence of step functions $f_n$ such that $f_n \to f$ pointwise. Then remove thin boundaries of rectangles to find $E_n$ such that $m(E_n) < \frac{1}{2^n}$ and such that $f_n$ is continuous off of $E_n$. By Egorov, there exists $A_{\ep/3}$ closed such that $f_n \to f$ uniformly on $A_{\ep/3}$ and $m(E \setminus A_{\ep/3}) < \ep/3$. Next, let $F' = A_{\ep/n} \setminus \bigcup_{n \geq N} E_n$, where $2^{1-N} < \frac{\ep}{3}$. Now if $m \geq N$, $f_n$ is continuous on $F'$ and $f_n \to f$ uniformly, so $f$ is continuous on $F'$. Finally, approximate $F'$ by a closed set $F_{\ep} \subseteq F'$ such that $m(F' \setminus F_{\ep}) < \frac{\ep}{3}$.
+\end{proof}
+
+Finally, we will construct a non-measurable function. First, we will define the \textit{Cantor function} $f_c: [0,1] \to [0,1]$ which is given by
+\[ f_c(x) = \begin{cases}
+    \qty(0.\frac{d_1}{2}\frac{d_2}{2}\ldots)_2 & x = (0.d_1d_2\ldots)_3 \in C \\
+    \qty(0.\frac{d_1}{2}\ldots\frac{d_k}{2}0\ldots)_2 & x = (0d_1\ldots d_k 1 \ldots)_3 \notin C
+\end{cases}. \]
+Note that $f$ is monotone and continuous on $[0,1]$ and constant on $C^c$.
+
+Then define $f(x) = f_c(x) + x$, so $f: [0,1] \to [0,2]$ is a continuous bijection. On any excluded interval $I$, $f$ sends $I$ to $I + f_c(I)$. Therefore, $m\qty(f\qty(\bigcup I)) = 1$, so $m(f(C)) = 1$. Then there exists a non-measurable set $S \subseteq f(C)$. Then $\chi_S$ is not measurable.
+
+\chapter{Integration}%
+\label{cha:integration}
+
+\section{Defining the Integral}%
+\label{sec:defining_the_integral}
+
+Our goal is to integrate measurable functions. If $f = \sum a_k \chi_{E_k}$ is simple, then we define
+\[ \int f = \sum a_k m(E_k). \]
+To check that this is well-defined, if we can write $f = \sum b_{\ell} \chi_{F_{\ell}}$, then we can consider $E_1 \cap E_2, E_1 \setminus E_2, E_2 \setminus E_1$. This gives a canonical representation of a simple function (where all of the $E_j$ are disjoint).
+It is easy to see that we have linearity, monotonicity, and the triangle inequality. We want to extend this to a larger class of functions.
+
+Next, we will consider bounded measurable functions on sets of finite measure. If $f$ is supported on a set of finite measure and $f$ is bounded, we define
+\[ \int f = \lim_{n \to \infty} \int \varphi_n \]
+for some sequence $\varphi_n$ of simple functions converging to $f$. We need to show this is independent of the sequence.
+
+\begin{lem}
+    If $\varphi_n \to f$ pointwise on $E$ with $m(E) < \infty$, and $f$ is bounded, then
+    \begin{enumerate}
+        \item The limit $\lim \int \varphi_n$ exists;
+        \item If $f = 0$ almost everywhere, then $\lim \int \varphi_n = 0$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    For the first part, we use Egorov. There exists a closed set $A_{\ep} \subseteq E$ such that $\varphi_n \to f$ uniformly on $A_{\ep}$ and $m(E \setminus A_{\ep}) < \ep$. Let $I_n = \int_E \varphi_n$. Then
+    \begin{align*}
+        \abs{I_n - I_m} &\leq \int \abs{\varphi_n - \varphi_m} \dd{x} \\
+                        &\leq \int_{A_{\ep}} \abs{\varphi_n - \varphi_m} \dd{x} + \int_{E \setminus A_{\ep}} \abs{\varphi_n - \varphi_m} \dd{x}. 
+    \end{align*}
+    On $A_{\ep}$, we have uniform convergence, so
+    \begin{align*}
+        \int_{A_{\ep}} \abs{\varphi_n - \varphi_m} &\leq m(A_{\ep}) \sup_{A_{\ep}} \abs{\varphi_n - \varphi_m} \\
+                                                   &\leq 2m(A_{\ep}) \sup_{A_{\ep}} \abs{\varphi_n - f},
+    \end{align*}
+    which clearly converges to $0$. Then the second terms are $\int_{E \setminus A_{\ep}} \abs{\varphi_n - \varphi_m} \dd{x} \leq 2M m(E \setminus A_{\ep})$, which also converges to $0$, where $M = \sup \abs{f}$. Thus $I_n$ is Cauchy, so it converges.
+
+    If $f = 0$ almost everywhere, then 
+    \[ \abs{I_n} \leq \int_{A_{\ep}} \abs{\varphi_n} + \int_{E \setminus A_{\ep}} \abs{\varphi_n}. \leq m(A_{\ep}) \cdot \ep, \]
+    so $\lim I_n = 0$.
+\end{proof}
+
+By Lemma 2.1, integration is well-defined. Again, we have the desired properties. Before we extend the definition of the integral to all functions, we will prove a convergence theorem. This is the first exchange of limits result.
+
+\begin{thm}[Bounded Convergence Theorem]
+    If $f_n$ is a sequence of functions, uniformly bounded by $M$ and uniformly supported on $E$ of finite measure, and it $f_n \to f$ pointwise almost everywhere, then $f$ is measurable and $\int f = \lim \int f_n$. In fact, $\int \abs{f - f_n} \to 0$ as $n \to \infty$.
+\end{thm}
+
+\begin{proof}
+    The proof of this is the same as proof of the consistency of the definition of the integral.
+\end{proof}
+
+\begin{cor}
+    If $f \geq 0$ is bounded and supported on $E$ with $m(E) < \infty$, and if $\int f = 0$, then $f = 0$ almost everywhere.
+\end{cor}
+
+\begin{proof}
+    Set $f_k(x) = f(x) \chi_{\qty{f(x) \geq 1/k}}$. Then $f_k$ is bounded, supported on $E$, and $f_k \leq f$. Then
+    \[ 0 = \int f(x) \geq \int f_k(x) \geq \frac{1}{k} m\qty(\qty{f(x) \geq 1/k}), \]
+    so $m\qty(\qty{f(x) > 0}) = 0$.
+\end{proof}
+
+\begin{thm}
+    If $f$ is Riemann-integrable on $[a,b]$, then it is Lebesgue integrable, and the integrals coincide.
+\end{thm}
+
+\begin{proof}
+    Translate the condition about partitions into step functions $\varphi_i \leq f \leq \psi_i$, where $\varphi_i \nearrow f$ and $\psi_i \searrow f$. Clearly the $\psi_i, \varphi_i$ are uniformly bounded. Therefore, by bounded convergence, $\wt{\varphi}, \wt{\psi}$ are both measurable and bounded, and $\int \wt{\varphi} = \int \wt{\psi}$, so $\wt{\psi} = \wt{\varphi}$ almost everywhere. Then clearly $\wt{\varphi} = f$ almost everywhere, so $f$ is measurable, and by monotonicity, $\int^R f = \int^L f$.
+\end{proof}
+
+Finally, we can define integration for all nonnegative functions. We define
+\[ \int f = \sup \qty{\int g \mathrel{\bigg|} 0 \leq g \leq f, m\qty{\supp(g)}< \infty, g \text{ bounded}}. \]
+For any measurable $E$, define $\int_E f = \int f \cdot \chi_E$. Note that it is easy to check that the definition makes sense. If $\int f < \infty$, we say that $f$ is \textit{integrable}.
+
+\textbf{Properties of the Integral.}
+\begin{enumerate}
+    \item Linearity;
+    \item Monotonicity;
+    \item Additivity on disjoint sets;
+    \item If $g$ is integrable and $0 \leq f \leq g$, then $f$ is integrable;
+    \item If $f$ is integrable, then $f(x) < \infty$ almost everywhere;
+    \item If $\int f = 0$, then $f = 0$ almost everywhere.
+\end{enumerate}
+
+Note that if $f_n \to f$ almost everywhere, then $\int f_n$ does not necessarily converge to $\int f$. For example, if we take $f_n = n \chi_{[0,1/n]}$, then $\int f_n = 1$, but $f = 0$.
+
+\section{Some Convergence Results}%
+\label{sec:some_convergence_results}
+
+We will state some convergence results where we can swap limits and integrals. We will also give the general definition of the integral here.
+
+\begin{lem}[Fatou]
+    If $f_n$ is a sequence of functions with $f_n \geq 0$ and if $f(x) = \liminf f_n(x)$, then 
+    \[ \int f \leq \liminf \int f_n. \]
+\end{lem}
+
+\begin{proof}
+    Suppose $g$ bounded satisfies $m(\supp g) < \infty$ and $0 \leq g < f$. Then set $g_n = \min \qty{g,f_n}$. Then $\int g$ is bounded, so by bounded convergence, $\int g_n \to \int g$. Also, $\int g_n \leq \int f_n$, so $\int g \leq \lim \inf f_n$. Because $\int f = \sup \int g$, we get the desired result.
+\end{proof}
+
+\begin{cor}
+    If $f_n \leq f$ with $f_n(x) \to f(x)$ almost everywhere, then $\lim \int f_n = \int f$.
+\end{cor}
+
+\begin{proof}
+    By monotonicity, $\limsup \int f_n \leq \int f \leq \liminf \int f_n$.
+\end{proof}
+
+\begin{cor}[Monotone Convergence]
+    If $f_n(x) \nearrow f(x)$ almost everywhere, then $\lim \int f_n = \int f$.
+\end{cor}
+
+\begin{cor}
+    Given $a_k(x) \geq 0$ measurable, then $\int \sum a_k(x) \leq \sum \int a_k(x)$. Moreover, if $\sum \int a_k(x)$ converges, $\sum a_k(x)$ converges almost everywhere.
+\end{cor}
+
+\begin{proof}
+    Let $f_n$ be the partial sums. Then by monotone convergence, if $\sum \int a_k$ converges, $\int \sum a_k$ also converges, so it is integrable. Thus $\sum a_k$ converges almost everywhere.
+\end{proof}
+
+\begin{exm}[Borel-Cantelli]
+    Given $E_k$ measurable with $\sum m(E_k) < \infty$, then $m(\ol{\lim} E_k) = 0$. To see this, set $a_k = \chi_{E_k}$ and use the previous result.
+\end{exm}
+
+\begin{exm}
+    Let 
+    \[ f(x) = \begin{cases}
+        \frac{1}{\abs{x}^{d+1}} & x \neq 0 \\
+        0 & x = 0
+    \end{cases}. \]
+    Then $\int_{\abs{x}=\ep} f(x) \dd{x} \leq \frac{c}{\ep}$ for all $\ep > 0$.
+
+    To see this, we will bound $\int_{\abs{x} \geq \ep} f$. Consider the annulus $A_k = \qty{x \mid 2^k \ep \leq \abs{x} < 2^{k+1} \ep}$. Then set
+    \[ a_k = \chi_{A_k} \sup_{x \in A_k} f(x) = \chi_{A_k} \frac{1}{( 2^k \ep )^{d+1}}. \]
+    Then set $g(x) = \sum a_k(x)$. Clearly $f \leq g$, so $\int f$ is finite if $\int g$ is. However, we see that
+    \begin{align*}
+        \int g &= \int \sum a_k \\
+               &= \sum \int a_k \\
+               &= \sum \frac{1}{(2^k \ep)^{d+1}} m(A_k) \\
+               &= \sum \frac{1}{(2^k \ep)^{d+1} m(A)} \\
+               &= \sum \frac{1}{2^k \ep} m(A) \\
+               &= \frac{2m(A)}{\ep}.
+    \end{align*}
+\end{exm}
+
+We now give the general definition of the integral. Let $f$ be a measurable function and write $f(x) = f_1(x) - f_2(x)$, where both $f_1, f_2$ are nonnegative. Then we want $\int f = \int f_1 - \int f_2$. Clearly this is defined if at most one of the two integrals on the RHS is infinite.
+
+\begin{defn}
+    $f$ is \textit{integrable} if both $\int f_1, \int f_2$ are finite.
+\end{defn}
+
+\begin{thm}
+    The integrable is linear, additive, monotone, and satisfies the triangle inequality.
+\end{thm}
+
+\begin{lem}
+    Let $f$ be integrable. Then
+    \begin{enumerate}
+        \item Given $\ep > 0$, there exists a ball $B$ of finite measure such that $\int_{B^c} \abs{f} < \ep$;
+        \item For all $\ep > 0$, there exists $\delta$ such that whenever $m(E) < \delta$, then $\int_E \abs{f} < \ep$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item We assume $f \geq 0$. The for each $N$ consider $B_N = \qty{\abs{x} \leq N}$ and $f_n = \chi_{B_n}$. Then we see that $f_n \nearrow f$, so by monotone convergence, $\int f_n \to \int f < \infty$. Therefore, there exists $N$ such that
+            \[ \int B_N^c f = \int f(1-\chi_{B_N}) = \int f - \int f_N < \ep. \]
+        \item Again assume $f \geq 0$. Then set $E_n = \qty{f(x) \leq n}$ and $f_n = f \cdot \chi_{E_n}$. Again, $f_n \nearrow f$ and $f$ is integrable, so there exists $N$ such that $f- f_n < \frac{\ep}{2}$ for all $n \geq N$. Then choose $\delta$ such that $N \delta < \frac{\ep}{2}$. Now if $m(E) < \delta$, we see that
+            \[ \int_E f = \int_E f-f_n + \int_E f_N = \int_E f-f_N + N \cdot m(E) < \ep. \qedhere \]
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}[Dominated Convergence]
+    If $f_n \to f$ almost everywhere and $\abs{f_n} \leq \abs{g}$ almost everywhere for some integrable $g$, then $f$ is integrable and $\int \abs{f_n - f} \to 0$ as $n \to \infty$.
+\end{thm}
+
+\begin{proof}
+    For $N \geq 0$, set $E_N = \qty{ x \mid \abs{x} g(x) \leq N }$. Then define $g_n = g \cdot \chi_{E_n}$. As in the lemma above, there exists $N$ such that $\int E_N^c g < \ep$.
+
+    Note that $f_k \chi_{E_n} \leq n$ for all $k$ and is supported on $E_n$, which has finite measure. Also, $f_k \chi_{E_n} \to f \chi_{E_n}$. By bounded convergence, 
+    \[ \int \abs{f_k \chi_{E_n} - f \chi_{E_n}} = \int_{E_n} \abs{f_k - f} < \ep \]
+    for $k$ large enough, so
+    \[ \int \abs{f_k - f} = \int_{E_n} \abs{f_k - f} + \int_{E_n^c} \abs{f_k - f} \leq \ep + 3 \int_{E_n^c} g < 4 \ep. \qedhere \]
+\end{proof}
+
+We now briefly consider functions $f: \R^d \to \C$. Then note that $f = u+iv$, so $\abs{f} = \sqrt{u^2 + v^2}$. Also, because $\sqrt{a+b} \leq \sqrt{a} + \sqrt{b}$, $\abs{f} \leq \abs{u} + \abs{v}$. We conclude that $f$ is integrable if and only if $u,v$ are both integrable.
+
+\section{Vector Space of Integrable Functions}%
+\label{sec:vector_space_of_integrable_functions}
+
+Let $L^1$ denote the set of integrable functions. Define the $L^1$ norm $\norm{f}_1 = \int \abs{f}$. Note that this is only a seminorm, so we set $f \sim g$ if $f = g$ almost everywhere.
+
+\begin{thm}
+    $L^1$ is a normed vector space.
+\end{thm}
+
+\begin{thm}[Riesz-Fischer]
+    $L^1$ is a Banach space.\footnote{We will define this in 624, but a Banach space is just a complete normed vector space.}
+\end{thm}
+
+\begin{proof}
+    Suppose $\qty{f_n}$ is Cauchy in $L^1$. Then for all $k$ choose $n_{k+1}$ such that $\norm{f_{n_{k+1}} - f_{n_k}} < \frac{1}{2^k}$. Then we define
+    \begin{align*}
+        f &= f_{n_1} + \sum_k \qty(f_{n_{k+1}} - f_{n_k}) \\
+        g &= \abs{f_{n_1}} + \sum_k \abs{f_{n_{k+1}} - f_{n_k}}.
+    \end{align*}
+    Note that $g$ is nonnegative, so by monotone convergence, 
+    \[ \int \abs{g} = \int \abs{f_{n_1}} + \sum \int \abs{f_{n_{k+1}} - f_{n_k}} < \infty, \]
+    so by dominated convergence, $f$ is integrable. In addition, $\norm{f - f_{n_{k+1}}} \to 0$, so we have a convergent subsequence. But then because the sequence is Cauchy and by the triangle inequality, it converges to $f$.
+\end{proof}
+
+\begin{cor}
+    If $f_n \to f$ in $L^1$, there exists a subsequence $f_{n_k}$ such that $f_{n_k} \to f$ almost everywhere.
+\end{cor}
+
+\begin{defn}
+    We say $f_n$ \textit{converges to $f$ in measure} if $m \qty{x \mid \abs{f_n(x) - f(x)} > \ep} \to 0$.
+\end{defn}
+
+\begin{exm}
+    Write natural numbers $n$ as $n = k + 2^v$, where $0 \leq k < 2^v$. Set $f_n = \chi_{\qty[\frac{k}{2^v}, \frac{k+1}{2^v}]}$. Then this converges to $0$ in measure but not pointwise anywhere.
+\end{exm}
+
+\begin{thm}
+    If $f_n \to f$ in measure, there exists a subsequence $f_{n_k} \to f$ almost everywhere.
+\end{thm}
+
+\begin{proof}
+    Given $v$, there exists $n_v$ such that $m \qty{x \mid \abs{f_n(x) - f(x)} \geq 2^{-v}} \leq 2^{-v}$ for $n \geq n_v$. Then choose 
+    \[ E_v = \qty{x \mid \abs{f_{n_v}(x) - f(x)} \geq 2^{-v}}. \]
+    Now if $x \notin E_v$, then $f_{n_v}(x) \to f(x)$ for $x \notin \bigcap_{k=1}^{\infty} \bigcup_{v = k}^{\infty} E_v$. However, $\sum m(E_v) < \infty$, so this is a set of measure $0$.
+\end{proof}
+
+\begin{rmk}
+    In Fatou's lemma, monotone convergence, and dominated convergence, we can replace pointwise convergence by convergence in measure.
+\end{rmk}
+
+Recall that in a topological space $X$, a set $A$ is dense if $A \cap \mc{O} \neq \emptyset$ for all open $\mc{O}$. In a normed space, this is equivalent to saying that for all $x \in X$ and $\ep > 0$, there exists $a \in A$ such that $\norm{a-x} < \ep$.
+
+\begin{thm}
+    The following classes of functions are dense in $L^1$:
+    \begin{enumerate}
+        \item Simple functions;
+        \item Step functions;
+        \item Continuous functions of compact support.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    Take $f \geq 0$.
+    \begin{enumerate}
+        \item We know that there exists a sequence of increasing simple functions $\varphi_n \nearrow f$ pointwise, but $f$ is integrable, so $\norm{f-f_n} = \int f-f_n \to 0$.
+        \item We approximate simple functions by step functions. Let $\varphi = \sum a_i \chi_{E_i}$ be simple. Then there exist disjoint closed rectangles $R_j$ such that $m\qty(E \triangle \bigcup R_j) < \ep$. This bounds $\int \chi_E - \chi_{R_j}$.
+        \item It is easy to approximate $\chi_R$ by continuous functions. Just build side ramps.
+    \end{enumerate}
+\end{proof}
+
+\section{Symmetries}%
+\label{sec:symmetries}
+
+First, note that the integral is translation invariant. To see this, we can translate step functions. In addition, it is easy to see that $n^d \int f(nx) \dd{x} = \int f(x) \dd{x}$.
+
+\begin{exms}
+    First, note that
+    \[ \int_{\abs{x} \geq \ep} \frac{\dd{x}}{\abs{x}^a} = \ep^{-a+d} \int_{x \geq 1} \frac{\dd{x}}{\abs{x}^a}. \]
+    Similarly, 
+    \[ \int_{\abs{x} \leq \ep} \frac{\dd{x}}{\abs{x}^a} = \ep^{-a+d} \int_{\abs{x} \leq 1} \frac{\dd{x}}{\abs{x}^a}. \]
+\end{exms}
+
+\begin{exm}[Convolution]
+    Given integrable $f,g$, define their convolution $f * g$ by
+    \[ (f * g)(x) = \int f(x-y)g(y) \dd{y}. \]
+    It is easy to see that $f * g = g * f$.
+\end{exm}
+
+Now write $d = d_1 + d_2$, so $\R^d = \R^{d_1} \times \R^{d_2}$. Then for fixed $y$ write $f^y = f(-,y)$. Similarly, for $E \subseteq \R^d$, write $E^y = \qty{x \mid (x,y) \in E} \subseteq \R^{d_1}$. Define $f_x$ and $E_x$ similarly. The main issue is that if $E$ is measurable, then $E^y, E_x$ might not be.
+
+\begin{thm}[Fubini]
+    Suppose $f(x,y)$ is integrable on $\R^d = \R^{d_1} \times \R^{d_2}$. Then
+    \begin{enumerate}
+        \item For almost every $y \in \R^{d_2}$, $f^y$ is integrable on $\R^{d_1}$;
+        \item The function $\int_{\R^{d_1}} f^y(x)$ is integrable on $\R^{d_2}$;
+        \item $\int_{\R^{d_2}} \int_{\R^{d_1}} f^y(x) \dd{x} \dd{y} = \int_{\R^d} f(x,y)$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    Let $\mc{F}$ be the set of integrable functions where all three conditions hold. We show that $\mc{F} = L^1$. First, we show that $\mc{F} \neq 0$.
+
+    Given any rectangle $R \subseteq \R^d$, it is easy to see that $\chi_R \in \mc{F}$. If we write $R = R_1 \times R_2$, then $\chi_R^y(x) = \chi_{R_1}(x) \cdot \chi_{R_2}(y)$. Then the first condition holds everywhere. For the second condition, note that
+    \[ \int \chi_R^y(x) \dd{x} = m(R_1) \cdot \chi_{R_2}(y). \]
+    For the third condition, note that 
+    \[ \int \int \chi_R^y(x) \dd{x} \dd{y} = m(R_1) \cdot m(R_2) = m(R) = \int \chi_R. \]
+    Therefore, all step functions are in $\mc{F}$.
+
+    Now we will show that
+    \begin{enumerate}
+        \item $\mc{F}$ is closed under linear combinations;
+
+            To see this, let $f_k \in \mc{f}$ and $a_k \in \R$. Then use linearity of the integral.
+        \item $\mc{F}$ is closed under limits.
+
+            We do this for monotone limits. Note that for all $f \in \mc{F}$, there exists $A$ of measure $0$ such that $f^y$ is not integrable for $y \in A$. If $f_k \in \mc{F}$ and $f_k \nearrow f$ and $f$ is integrable, we want to show that $f \in \mc{F}$. Let $A_k$ correspond to $f_k$. Then their union has measure $0$, so $f^y$ is integrable almost everywhere. 
+
+            Now set $g_k(y) = \int f_k^y \nearrow \int f^y = g$. Now each $g_x$ is integrable and $g_k \nearrow g$, so $\int g_k = \int f_k \nearrow \int f$, so $\int g < \infty$ and thus $g < \infty$ almost everywhere. Thus $f^y$ is integrable almost everywhere, so $f \in \mc{F}$.
+
+            Recall that if $f$ is integrable, there exists a set $\varphi_k$ of simple functions converging up to $f$. Each simple is a linear combination of $\chi_E$ for some measurable $E$ of finite measure, so we prove $\chi_E \in \mc{F}$.
+    \end{enumerate}
+    This reduces the problem to measurable sets:
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+        \item $G_{\delta}$ sets;
+
+            If $E$ is contained in the boundary of a rectangle, the result is obvious. Next, suppose $E$ is a finite union of almost disjoint rectangles $R_j$. Then write $\chi_E$ as a linear combination of the $\chi_R$ and the $\chi_P$, where $P \subseteq \partial R$. Thus $\chi_E \in \mc{F}$.
+
+            Now if $E$ is open and of finite measure, write $E = \bigcup Q_j$, where the $Q_j$ are almost disjoint cubes. Then write $\chi_E = \sum \chi_{Q_j}$, which is a monotone limit. Finally, if $E = \bigcap G_k$ for $G_k$ open, then $\chi_E$ is also a monotone limit.
+        \item Null sets;
+
+            Recall that there exists a $G_{\delta}$ set $B$ of measure $0$ such that $E \subseteq B$. Then $\chi_B \in \mc{F}$, so $\int \int \chi_B^y = 0$, so $\int \chi_B^y = 0$ almost everywhere. Because $E^y \subseteq B^y$ for all $y$, $E^y$ is measurable and null almost everywhere, so $\chi_E \in \mc{F}$.
+        \item Limiting procedure;
+
+            For any measurable $E$, $E$ differs from a $G_{\delta}$ set by a null set.
+    \end{enumerate}
+    Finally, for general $f$, write $f = f_+ - f_-$, which are both integrable and nonnegative.
+\end{proof}
+
+\begin{thm}[Tonelli]
+    Fubini extends to measurable functions for which $\int f$ is defined but infinite.
+\end{thm}
+
+\begin{cor}[Cavaleiri's Principle]
+    Let $E$ be a measurable subset of $\R^{d_1} \times \R^{d_2}$. Then for almost every $y$, the slice $E^y$ is measurable, and $m(E) = \int m(E^y)$.
+\end{cor}
+
+\chapter{Differentiation}%
+\label{cha:differentiation}
+
+\section{Integration and Differentiation}%
+\label{sec:integration_and_differentiation}
+
+Recall the fundamental theorem of calculus:
+\begin{enumerate}
+    \item For $f$ continuous, the function $F(x) = \int_a^x f(x) \dd{x}$ is differentiable and $F' = f$.
+    \item If $F'$ is Riemann-integrable, then $F(b) = F(a) = \int_a^b F'(x) \dd{x}$.
+\end{enumerate}
+
+This roughly tells us that integration is anti-differentiation. We can replace differential equations with formulations in terms of integrals. Then recall that
+\[ F'(x) = \lim \frac{F(x+h) - F(x)}{h} = \lim \frac{1}{h} \int_x^{x+h} f. \]
+What happens when we generalize to higher dimensions and consider $\frac{1}{m(B)} \int_B f$? Define $f^*(x) = \sup \frac{1}{m(B)} \int \abs{f}$. Note that $f^*$ need not be integrable.
+
+\begin{thm}
+    \begin{enumerate}
+        \item $f^*$ is measurable;
+        \item $f^* < \infty$ almost everywhere;
+        \item There exists $A$ depending only on $d$ such that for all $\alpha$,
+            \[ m \qty(\qty{x \mid f^*(x) > \alpha}) \leq \frac{A}{\alpha} \norm{f}_1. \]
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Define $E_{\alpha} = \qty{x \in \R^d \mid f^*(x) > \alpha}$. Then note that $x \in E_{\alpha}$ if and only if 
+            \[ \frac{1}{m(B)} \int_B \abs{f} > \alpha \]
+            for some ball $B \ni x$. In fact, for all $y \in B$, $y \in E_{\alpha}$, so $E_{\alpha}$ is open.
+        \item This is a corollary of part 3.
+        \item The proof of this relies on the Vitali Covering Lemma, which is stated below.
+            
+            Let $E_{\alpha} = \qty{x \mid f^*(x) > \alpha}$. Then we know $x \in E_{\alpha}$ if and only if there exists $B \ni x$ such that $m(B) < \frac{1}{\alpha} \int_B \abs{f}$. Given a compact $K \subseteq E_{\alpha}$, write $K \subseteq \bigcup_{x \in K} B_x$ and extract a finite subcover. Then we use Vitali, so
+            \[ m(K) < 3^d \sum m(B_{i}) \leq \frac{3^d}{\alpha} \sum \int_{B_{i}} \abs{f} \leq \frac{3^d}{\alpha} \int \abs{f}. \]
+            Because $K$ is arbitrary, we have the desired result.
+    \end{enumerate}
+\end{proof}
+
+\begin{lem}[Vitali's Covering Lemma]
+    Let $B = \qty{B_1, \ldots, B_N}$ be a finite set of open balls. Then there exists a set of disjoint open balls $\qty{B_{i_1}, \ldots, B_{i_k}} \subset B$ such that $\bigcup B_j \subseteq \bigcup 3 \cdot B_{i_k}$.
+\end{lem}
+
+\begin{proof}
+    Inductively choose $B_{i_k}$ to be the ball of largest radius not disjoint to thre previous balls and not contained in $\bigcup 3 \cdot B_{i_j}$. We started with a finite collection, so the process terminates.
+\end{proof}
+
+\begin{thm}[Lebesgue Differentiation Theorem]
+    If $f$ is integrable, then for almost every $x$,
+    \[ f(x) = \lim_{\substack{m(B) \to 0 \\ x \in B}} \frac{1}{m(B)} \int_B f(y) \dd{y}. \]
+    In $\R$, this implies $\dv{x} F(x) = f(x)$.
+\end{thm}
+
+\begin{proof}
+    For $\alpha > 0$, define the set
+    \[ E_{\alpha} = \qty{x \mathrel{\Bigg|} \limsup_{\substack{m(B) \to 0 \\ x \in B}} \abs{\frac{1}{m(B)} \int f(y) \dd{y} - f(x)} > 2\alpha}. \]
+    We will show that $m(E_{\alpha}) = 0$.
+
+    Let $\ep > 0$. Recall that continuous functions of compact support are dense in $L^1$, so choose a continuous function with compact support $g$ such that $\norm{f-g} < \ep$. Then $g$ is uniformly continuous, so $\frac{1}{m(B)} \int g(y) \dd{y} \to g(x)$ as $m(B) \to 0$. Now use the triangle inequality:
+    \begin{align*}
+        \frac{1}{m(B)} \int f - f(x) &= \frac{1}{m(B)} \int f(y) - g(y) \dd{y} + \frac{1}{m(B)} \int g(y) \dd{y} - g(x) + (g(x) - f(x)). 
+    \end{align*}
+    Therefore, we have
+    \[ \limsup_{\substack{m(B) \to 0 \\ x \in B}} \abs{\frac{1}{m(B)} \int_B f(y) \dd{y} - f(x)} \leq (f-g)^*(x) + \abs{f(x) - g(x)}. \]
+    Let $F_{\alpha}$ be the set where $(f-g)^*(x) > \alpha$ and $G_{\alpha}$ where $\abs{f - g} > \alpha$. By Theorem 3.1, $m(F_{\alpha}) \leq \frac{A}{\alpha} \norm{f-g}$, and by Chebyshev, $m(G_{\alpha}) \leq \frac{1}{\alpha} \norm{f-g}$.
+\end{proof}
+
+\begin{cor}
+    For almost every $x$, $f^*(x) \geq \abs{f(x)}$.
+\end{cor}
+
+Also note that we can replace integrability by local integrability in these results. If $E$ is measurable, define $x$ to be a \textit{point of density} of $E$ if 
+\[ \lim_{\substack{m(B) \to 0 \\ x \in B}} \frac{1}{m(B)} \int_B \chi_E(y) \dd{y} = 1. \]
+
+\begin{cor}
+    Let $E$ be measurable. Then 
+    \begin{enumerate}
+        \item Almost every $x \in E$ is a point of density;
+        \item Almost every $x \notin E$ is not a point of density.
+    \end{enumerate}
+\end{cor}
+
+In a related notion, we can define the \textit{Lebesgue set} $\mc{L}(f)$ of $f$ as the set of all $x$ such that $f(x) < \infty$ and
+\[ \lim \frac{1}{m(B)} \int \abs{f(y) - f(x)} \dd{y} = 0. \]
+Clearly if $x \in \mc{L}(f)$, then the Lebesgue differentation theorem holds. Also, if $f$ is continuous at $x$, then $x \in \mc{L}(f)$.
+
+\begin{cor}
+    For any $f \in L^1_{\mr{loc}}$, almost every $x$ belongs to $\mc{L}(f)$.
+\end{cor}
+
+\begin{proof}
+    For rationals $r \in \Q$, consider $h_r = \abs{f(x) - r}$. Then there exists $E_r$ with $m(E_r) = 0$ such that the Lebesgue differentiation theorem holds for $h_r$ for all $x \notin E_r$. Thus if $x \notin E = \bigcup E_r$, then there exists $r$ such that $\abs{f(x) - r} < \ep$ for all $\ep$. For this $\ep, r$, choose $\delta$ such that if $m(B) < \delta$, then 
+    \[ \abs{\frac{1}{m(B)} \int \abs{f(y) - r} - \abs{f(x) - r}} < \ep, \]
+    so $\frac{1}{m(B)} \int \abs{f(y) - r} < \abs{f(x) - r} + \ep$. Therefore
+    \[ \frac{1}{m(B)} \int \abs{f(y) - f(x)} \leq \frac{1}{m(B)} \int \abs{f(y) - r} + \abs{f(x) - r} < 2 \abs{f(x) - r} + \ep < 3 \ep. \qedhere \]
+\end{proof}
+
+Note that any locally integrable function has different representatives up to sets of measure $0$. We know that for almost every $x$, $f(x) = \lim \frac{1}{m(B)} \int_B f$ and if $f = \ol{f}$ almost everywhere, $\int_B f = \int_B \ol{f}$, but $\mc{L}(f) \neq \mc{L}(\ol{f})$ up to a set of measure $0$.
+
+On the Lebesgue set, we can generalize average. Instead of balls, we can consider general sets $U$. Note that $\frac{1}{m(U)} \int_U f = \int \frac{1}{m(U)} \chi_U f$, which is morally equal to $\int Kf$, where the kernel $K$ satisfies $\int K = 1$. We will actually consider families of such kernels $K_{\delta}$.
+
+\section{Kernels}%
+\label{sec:kernels}
+
+Consider sets $U$ for which $\frac{1}{m(U)} \int_U f$ converges.
+
+\begin{defn}
+    A family of sets $U_{\alpha}$ \textit{shrinks regularly} to $x$ if there exists $c > 0$ such that for all $B \ni x$, there exists $\alpha$ such that $x \in U_{\alpha} \subseteq B$, and $m(U_{\alpha}) \geq c \cdot m(B)$.
+\end{defn}
+
+\begin{cor}
+    If $f$ is locally integrable and $U_{\alpha}$ shrinks regularly to $x \in \mc{L}(f)$, then
+    \[ \lim_{m(U_{\alpha}) \to 0} \frac{1}{m(U_{\alpha})} \int_{U_{\alpha}} f = f(x). \]
+\end{cor}
+
+\begin{proof}
+    Note that
+    \[ \frac{1}{m(U_{\alpha})} \int_{U_{\alpha}} \abs{f(y) - f(x)} \dd{y} \leq \frac{1}{m(U_{\alpha})} \int_B \abs{f(y) - f(x)} \dd{y} \leq \frac{1}{c} \frac{1}{m(B)} \int_B \abs{f(y) - f(x)} \dd{y} \to 0. \qedhere \]
+\end{proof}
+
+Note that $E$ is measurable if and only if for all $A$, $m_*(A) = m_*(A \cap E) + m_*(A \cap E)^c$. Also, note that $\frac{1}{m(B)} \int_B f = \frac{1}{m(B)} \int_{R^d} \chi_B \cdot f = \int f \cdot \frac{1}{m(B)} \chi_B$. Instead of multiplication, we will convolce. We will show later that $*$ commutes with differentiation.
+
+Note that $f * \chi$ is a restriction of $f$. Far from $x$, $f * \chi = 0$ and $f * \chi = f$ near $x$. However, $\chi_E$ is not usually differentiable. Instead, we will convolve with different kernels.
+
+\begin{defn}
+    A \textit{good kernel} $K_{\delta}$ satisfies
+    \begin{enumerate}
+        \item $\int K_{\delta} = 1$ for all $\delta > 0$.
+        \item $\int \abs{K_{\delta}} \leq A$ uniformly. Also, for all $\xi > 0$, 
+            \[ \int_{\abs{x} \geq \xi} \abs{K_{\delta}(x)} \dd{x} \to 0 \]
+            as $\delta \to 0$.
+    \end{enumerate}
+\end{defn}
+
+\begin{exm}
+    We will construct a smooth bump function. Let 
+    \[ f_1(x) = \begin{cases}
+        e^{-1/x} & 0 < x < 1 \\
+        0 & x \leq 0 \\
+        \frac{1}[e] & x \geq 1
+    \end{cases}. \]
+    Now set $f_2(x) = f_1(x) \cdot f_1(1-x)$. Then set $\varphi(x) = \frac{f_2(x+1/2)}{\int f_2}$. This is a smooth even function with integral $1$ supported on $[-1/2, 1/2]$. Now we will introduce scaling, to define a family $\phi_{\ep}: \R^d \to \R$ defined by
+    \[ \phi_{\ep}(x) = K \cdot \varphi\qty(\frac{\abs{x}}{\ep}), \]
+    where $K$ is chosen such that $\int \varphi_{\ep}(x) = 1$. If we define $f_{\ep} = f*\phi_{\ep}$, then $f_{\ep}$ is a smooth approximation to $f$ that is $C^{\infty}$. In addition, the derivative of $f_{\ep}$ is $D \phi_{\ep} * f$.
+
+    The bottom line is that for all $\ep > 0$, $\phi_{\ep} * f$ is $C^{\infty}$. Also, $(\phi_{\ep} * f)(x) \to f(x)$ as $\ep \to 0$ for all Lebesgue points of $f$.
+\end{exm}
+
+We call a kernel $K_{\delta}$ an \textit{approximation to the identity} if it satisfies
+\begin{enumerate}
+    \item $\int K_{\delta} = 1$;
+    \item $\abs{K_{\delta}(x)} \leq A \delta^{-d}$ for all $\delta > 0$;
+    \item $\abs{K_{\delta}(x)} \leq \frac{A \delta}{\abs{x}^{d+1}}$ for all $\delta > 0, x \in \R^d, x \neq 0$.
+\end{enumerate}
+Therefore, $K_{\delta} \to \infty$ as $\delta \to 0$ for $x = 0$. If $x \neq 0$, $K_{\delta}(x) \to 0$ as $\delta \to 0$. Note that the \textit{Dirac mass}\footnote{In 624, we will see that the Dirac mass is a \textit{distribution}.} is a ``generalized function'' which satisfies $\int \delta = 1$, $\delta(x) = 0$ for $x \neq 0$, and $\int \delta \cdot f(x) = f(0)$.
+
+\begin{exm}[Poisson Kernel]
+    Consider the upper half plane (or equivalently the disk). Then define
+    \[ P_y = \frac{1}{\pi} \frac{y}{x^2 + y^2} \]
+    for $x \in \R, y > 0$. Then for $x \neq 0$, $P_y \to 0$ as $y \to 0$. On the disk, define
+    \[ P_r(x) = \begin{cases}
+        \frac{1}{2 \pi} \cdot \frac{1-r^2}{1 - 2r \cos x + r^2} & \abs{x} \leq \pi \\
+        0 & \abs{x} > \pi
+    \end{cases}. \]
+    Note that $\Delta P = 0$ away from the origin. If we convolve $u = P * g$, $u$ solves $\Delta u = 0$ on $y > 0$ and $u(x,0) = g(x)$.
+\end{exm}
+
+\begin{exm}[Heat Kernel]
+    Define the heat kernel
+    \[ H_t = \frac{1}{(4 \pi t)^{d/2}} e^{-\abs{x}^2/4t}. \]
+    Again, if $x \neq 0$, $H_t(x) \to 0$ as $t \to 0$. If $x = 0$, then $H_t(0) \to \infty$. Also, for $t > 0$, $\int_{\R^d} H_t(x) \dd{x} = 1$. Note that for $t > 0$, the heat equation $u_t = \Delta u$ with initial conditions $u(0,x) = g(x)$ is solved by $u(t,x) = H_t * g$.
+
+    Because the heat equation is linear, since $\delta = \lim H_t$ is a convolution identity, $*$ commutes with $\partial_x$, so given $f$, set $u = H_t * f$. Because differentiation commutes with $*$, we see that
+    \[ \partial_t(H_t * f) - \Delta(H_t * f) = (\partial_t H_t - \Delta H_t) * f, \]
+    but at $t = 0$, then $\delta * f = f$.
+\end{exm}
+
+\begin{exm}[Fejer Kernel]
+    This kernal is defined by
+    \[ \frac{1}{2 \pi} F_N(x) = \begin{cases}
+        \frac{1}{2 \pi N} \frac{\sin^2 \frac{Nx}{2}}{\sin^2 \frac{x}{2}} & \abs{x} \leq \pi \\
+        0 & \abs{x} > \pi
+    \end{cases}. \]
+    It is related to the Fourier transform. Recall that the Fourier transform $\wt{f}$ is defined by
+    \[ \wt{f}(\xi) = \int f(x) e^{-2\pi i x \xi} \dd{x} \]
+    and its inverse 
+    \[ f(x) = \int \wt{f}(\xi) e^{2\pi i x \xi} \dd{\xi}. \]
+    Note that $f(x)e^{2 \pi i x \xi}$ as a function of $\xi$ is a wave.
+\end{exm}
+
+\begin{thm}
+    If $f$ is measurable and $x \in \mc{L}(f)$, then $(f * K_{\delta})(x) \to f(x)$ as $\delta \to 0$.
+\end{thm}
+
+\begin{proof}
+    We calculate 
+    \begin{align*}
+        (f * K_{\delta})(x) - f(x) &= \int f(x-y) K_{\delta}(y) \dd{y} - f(x) \\
+                                   &= \int (f(x-y) - f(x)) K_{\delta}(y) \dd{y}.
+    \end{align*}
+    We will show that $\int \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} \to 0$. We will use properties to $K_{\delta}$ and split the integral into parts $\abs{y} \leq \delta$ and $\abs{y} > \delta$. Define for $x \in \mc{L}(f)$, 
+    \[ A(r) = \frac{1}{W_d r^d} \int_{\abs{y} \leq r} \abs{f(x-y) - f(x)} \dd{y}, \]
+    where $W_d = m(B_0(1))$. We then need Lemma 3.15, which is stated after this proof. This yields boundedness on $(0,R]$. Then for large $e$, we use the triangle inequality:
+    \[ A(r) \leq \frac{1}{W_dr^d} \norm{f} + \frac{1}{W_dr^d} \int_{\abs{y} \leq r} \abs{f(y)} \leq \frac{1}{W_dr^d} \norm{f} + \abs{f(x)}. \]
+    Turning back to our original problem, note that
+    \[ \int \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} \leq \int\displaylimits_{\abs{y} \leq \delta} \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} + \sum_{k=0}^{\infty} \int\displaylimits_{2^k \delta < \abs{y} \leq 2^{k+1} \delta} \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y}. \]
+    The first term is given by
+    \begin{align*}
+        \int_{\abs{y} \leq \delta} \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} &\leq \frac{c}{\delta^d} \int_{\abs{y} \leq \delta} \abs{f(x) - f(y)} \dd{y} \\
+                                                                                  &\leq c A(\delta) \to 0. 
+    \end{align*}
+    On the annulus, we will estimate $\abs{K_{\delta}} \leq \frac{C \delta}{\abs{x}^{d+1}}$. Then we can write
+    \begin{align*}
+        \int_{2^k \delta < \abs{y} \leq 2^{k+1} \delta} \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} &\leq \frac{c \delta}{(2^k \delta)^{d+1}} \int_{\abs{y} \leq 2^{k+1} \delta} \abs{f(x-y) - f(x)} \dd{y} \\
+                                                                                                        &\leq (2^{k+1} \delta)^d A(2^{k+1}\delta) W_d \frac{c \delta}{(2^k\delta)^{d+1}} \\
+                                                                                                        &\leq A(2^{k+1}\delta)W_d c 2^{d-k} \\
+                                                                                                        &\leq A(2^{k+1}\delta)(W_d c 2^d)2^{-k},
+    \end{align*}
+    so
+    \[ \int \abs{f(x-y) - f(x)} \abs{K_{\delta}(y)} \dd{y} \leq c W_d \qty(A(\delta) + \sum_{k=0}^{\infty} 2^d 2^{-k}A(2^{k+1} \delta)). \]
+    For large $k$, $A(2^{k+1}\delta) \leq M$, so for any $N$, we see that
+    \[ \int \abs{f(x-y)-f(x)}\abs{K_{\delta}(y)} \dd{y} \leq cW_d \qty(A(\delta) + \sum_{k=1}^N 2^d 2^{-k} A(2^{k+1}\delta) + 2^dM2^{-N}). \]
+    Therefore, given $\ep$, choose $N$ such that $c W_d 2^d M 2^{-N} < \frac{\ep}{2}$. Then for all sufficiently small $\delta$,
+    \[ c W_d \qty(A(\delta) + \sum_{k+1}^N 2^{d-k}A(\delta 2^{k+1})) < \frac{\ep}{2}. \qedhere \]
+\end{proof}
+
+\begin{lem}
+    If $f \in L^1$ and $x \in \mc{L}(f)$, then $A(r)$ is continuous on $(0, \infty)$ and $A(r) \to 0$ as $r \to 0$.
+\end{lem}
+
+\begin{proof}
+    Because the integral is absolutely continuous, $A(r)$ is continuous: absolute continuity of the integral means that for all $\ep > 0$, there exists $\delta > 0$ such that if $m(U) < \delta$, then $\int_U \abs{f} < \ep$.
+
+    Now consider small annuli. For $r > 0$ fixed, the annuli have measure $W_d ((r+\delta)^d - (r-\delta)^d)$, which is small. Then $A(r) \to 0$ is just the statement that $x \in \mc{L}(f)$.
+\end{proof}
+
+\section{Differentiation}%
+\label{sec:differentiation}
+
+Let $f: \R \to \R$ be monotone increasing. Given only two points $x_L, x_R$, for any increasing sequence $x_L \leq \cdots < x_{-1} < x_0 < x_1 < \ldots < x_R$, we have
+\[ \sum_{k=-N}^M f(x_{k+1}) - f(x_k) = f(x_M) - f(x_N) \leq f(x_R) - f(x_L). \]
+In particular, this series converges absolutely, so there are only countably many discontinuities, and moreover $\sum_j f(x_j,+) - f(x_j,-) < \infty$, where $f(x_j,+) = \lim_{x>x_j}f(x)$ and $f(x_j,-)$ is defined similarly.
+
+We know that $f(x,-) \leq f(x) \leq f(x,+)$ for all $x$ and that the three values are equal if and only if $f$ is continuous at $x$. Then $\sum f(x_k,+) - f(x_k,-) < \infty$ means that there are countably many jumps and that their sum is finite. Now assume that $f$ is continuous and increasing on $[a,b]$. 
+
+Note that the Cantor function is continuous, monotone, and takes $f: [0,1] \to [0,1]$. Recall that $f_c$ is constant on each excluded interbal, so $f'_c = 0$ almost everywhere. Therefore, $\int_0^1 f_c'(x) \dd{x} = 0$, but $f_c(1) - f_c(0) = 1$.
+
+\begin{thm}
+    If $f$ is continuous and monotone on $[a,b]$, then the derivative exists almost everywhere and
+    \[ f(b) - f(a) \geq \int_a^b f'(x) \dd{x}. \]
+\end{thm}
+
+Before we prove the theorem, we need to define the Dini derivatives. Define
+\begin{align*}
+    D^+ f(x) &= \limsup_{h \to 0^+} \Delta_h f(x) & & D^- f(x) = \limsup_{h \to 0^-} \Delta_h f(x) \\
+    D_+ f(x) &= \liminf_{h \to 0^+} \Delta_h f(x) & & D_- f(x) = \liminf_{h \to 0^-} \Delta_h f(x).
+\end{align*}
+Then the Dini numbers are defined everywhere and that $D_- \leq D^-, D_+ \leq D^+$. Then $f$ is differentiable at $x$ if and only if $D^+ \leq D_-$ and $D^- \leq D_+$ and all these values are finite.
+
+\begin{lem}[Rising Sun Lemma]
+    Let $G$ be continuous on $[a,b]$. Then the set $\qty{x \mid \exists h > 0 (G(x+h) > G(x))}$ is a relatively open union of disjoint intervals $\bigcup_i (a_i,b_i)$, and for all $x \in (a_i, b_i)$, $G(a_i) = G(b_i) > G(x)$. 
+\end{lem}
+
+\begin{proof}
+    It is clear that the set is open. Now if $G(b_i) > G(a_i)$, then we can extend the interval to the left, and similarly to the right if $G(a_i) > G(b_i)$.
+\end{proof}
+
+\begin{lem}[Vitali's Covering Lemma]
+    A collection $\mc{G}$ of open/closed interbals is a \textit{Vitali cover} of $E$ if for all $\ep > 0$ and $x \in E$, there exists $G \in \mc{G}$ such that $x \in G$ and $\abs{G} < \ep$. Let $E$ be of finite measure and $G$ a Vitali cover. Then for all $\ep > 0$, there exists a finite set of disjoint $G_n \in \mc{G}$ such that $m(E) \leq \sum \abs{G_j} + \ep$.
+\end{lem}
+
+\begin{proof}
+    Assume without loss of generality that each $G \in \mc{G}$ is closed. Fine $\mc{O}$ of finite measure with $E \subseteq \mc{O}$. Now choose a series of intervals as follows. Suppose that $G_1, \ldots, G_n$ have already been chosen. Then let 
+    \[ k_n = \sup_{G \subseteq \mc{O}, G \in \mc{G}, G \cap \qty(\bigcup G_n) = \emptyset} \abs{G}. \]
+    Either $E \subseteq \bigcup G_i$ or there exists $G_{n+1} \in \mc{G}$ contained in $\mc{O}$ and disjoint from the other sets such that $\abs{G_{n+1}} > \frac{1}{2} k_n > 0$. Continue the process. If this does not stop, then choose $N$ such that $\sum_{N+1}^{\infty} \abs{G_j} < \frac{\ep}{5}$. Let $R = E \setminus \bigcup_{j=1}^N G_j$.
+
+    To show that $m(R) < \ep$, choose $x \in R$. Because the $G_j$ are closed, there exists $G \in \mc{G}$ such that $x \in G$ and $\abs{G} < \frac{1}{2} d\qty(x, \bigcup_1^N G_j)$. Thus $G$ does not intersect any of the $G_j$. From our construction, there exists $n > N$ such that $\abs{G} \leq k_n \leq 2 \abs{G_{n+1}}$. however, $\abs{G_{n+1}}$ tends to $0$, so there exists a smallest $n>N$ such that $G \cap G_n$ is nonempty. For this $n$, if $m_n$ is the midpoint of $G_n$, we see that $\abs{x - m_n} \leq \abs{G} + \frac{1}{2}\abs{G_n}$. However, $\abs{G} \leq 2 \abs{G_n}$, so $\abs{x - m_n} \leq \frac{5}{2} \abs{G_n}$. Therefore $x \in J_n$ for some $J_n$ with $\abs{J_n} = 5 \abs{G_n}$, so
+    \[ m(R) \leq \sum \abs{J_j} \leq \sum 5 \abs{G_j} < \ep. \qedhere \]
+\end{proof}
+
+\begin{proof}[Proof of Theorem 3.16]
+    We want to show that $D^+ F \leq D_- F$ almost everywhere and $D^+ F < \infty$ amost everywhere. Fix $\gamma$ and set $E_{\gamma} = \qty{x \mid D^+ F(x) > \gamma}$. We will show that $E_{\gamma}$ is measurable. Note that $\Delta_h F$ is measurable and $f$ is continuous, so replace $h$ with $1/n$. Set $G(x) = F(x) - \gamma x$.
+
+    The idea is that on $E_{\gamma}$, $D^+ F(x) > \gamma$. 
+    Then there exists $h_0$ such that $\frac{F(x+h) - F(x)}{h} > \gamma$ for $0 < h < h_0$. Thus $F(x+h) - F(x) > \gamma h$, so $G(x+h) > G(x)$. $G$ is not monotone but is continuous. We will now eliminate $\qty{D^+ F=  \infty}$ and $\qty{D^+ F > D_- F}$. Note that $D^+ F(x) > \gamma$ if and only if $G_{\gamma}(x+h) > G_{\gamma}(x)$ for some $h$. By rising sun, we know that $E_{\gamma} = \qty{D^+ F > \gamma}$ is open and of finite measure, so $m\qty(\qty{D^+ F = \infty}) = 0$.
+
+    Now choose $R > r$ rational and set $E = \qty{x \mid D^+F > R > r > D_- F}$. We will show that $m(E) = 0$. If not, then there exists an open $\mc{O} \supseteq E$ with $m(\mc{O}) < m(E) \frac{R}{r}$. On some connected component $I_n$ of $\mc{O}$, apply rising sun to $G(x) = -F(-x) + rx$ on $-I_n$. Then we obtain intervals $(c_k,d_k)$, so wet $(a_k, b_k) = (-d_k, -c_k)$. Then we see that $-F(b_k) - rb_k = -F(a_k) - ra_k > -F(x) - rx$ for $x \in (a_k,b_k)$.
+
+    To show that $m(E) = 0$, find an open $\mc{O} \supseteq E$ such that $m(\mc{O}) < m(E) + \ep$. Then for all $x \in E$, there exists an interval $[x-h,x] \subseteq \mc{O}$ suchthat $F(x) - F(x-h) < rh$. This is a Vitali covering.
+
+    Now choose $I_1, \ldots, I_N$ such that $m(E) \leq \sum \abs{I_n} + \ep$. Summing over this finite subcover, we see that
+    \[ \sum_{j=1}^N [F(x_j) - F(x_j - h_j)] < r \sum h_j < rm(\mc{O}) < r(m(E) + \ep). \]
+    Then if we set $A$ to be the interior of $\bigcup I_j$, then for all $y \in A$ there exists $\delta$ such that $(y,y+\delta) \subseteq I_j$ and $F(y+\delta) - F(y) > R \delta$. By Vitali, there exists $J_1, \ldots, J_m$ of the form $J_i = [y_i, y_i + \delta_i]$ such that $m(\bigcup J_i) \geq m(A) - \ep \geq m(E) - 2 \ep$. For each $J_i$, we have $F(y_i + \delta_i) - F(y_i) > R \delta_i$, so adding, we get that
+    \[ \sum_{i=1}^m F(y_i + \delta_i) - F(y_i) > R \sum \delta_i > R(m(E) - 2 \ep). \]
+    Each $J_i$ is contained in an $I_{\ell}$, so we can sum over $i$ to see that
+    \[ R(m(E) - 2 \ep) < \sum_{i=1}^m F(y_i + \delta_i) - F(y_i) \leq \sum_{j=1}^N F(x_j) - F(x_j- h_j) \leq r(m(E) + \ep). \]
+    Because $\ep$ is arbitrary and $Rm(E) \leq r m(E)$, we see that $m(E) = 0$.
+\end{proof}
+
+We now claim that $F'$ is measurable. In addition, $F'$ is integrable and
+\[ \int_a^b F'(x) \dd{x} \leq F(b) - F(a). \]
+To see this, note that $F'$ is an almost everywhere limit of measurable functions. By Fatou, we see that 
+\begin{align*}
+    \int_a^b F'(x) &\leq \liminf_{n \to \infty} \int_a^b n \qty[F(x+1/n) - F(x)] \dd{x} \\ 
+                   &= n \int_{a+1/n}^{b+1/n} F(y) \dd{y} - n \int_a^b F(x) \dd{x} \\
+                   &= n \int_b^{b+1/n} F(y) \dd{y} - n \int_a^{a+1/n} F(y) \dd{y}.
+\end{align*}
+Because $F$ is continuous, 
+\[ n \int_b^{b+1/n} F(y) - F(b) \dd{y} \leq n \cdot \frac{1}{n} \cdot \ep\]
+for $n$ large enough, so $n \int_b^{b+1/n} F(y) \dd{y} \to F(b)$. The same argument holds for the integral near $a$.
+
+\section{Bounded Variation}%
+\label{sec:bounded_variation}
+
+Given $[a,b]$, create a finite partition $a = x_0 < x_1 < \cdots < x_n = b$. Then set
+\begin{align*}
+    p = \sum \qty[f(x_i) - f(x_{i-1})]_+ & & n = \sum \qty[f(x_i) - f(x_{i-1})]_- && t = n+p = \sum \abs{f(x_i) - f(x_{i-1})}. 
+\end{align*}
+Then define the increasing, decreasing, and total variations of $f$ by
+\begin{align*}
+    IV(f) = \sup p & & DV(f) = \sup n & & TV(f) = \sup t.
+\end{align*}
+We say $f$ is \textit{of Bounded Variation} if $TV(f)$ is finite.
+
+\begin{lem}
+    If $f$ is BV, then $TV(f) = IV(f) + DV(f)$ and $f(b) - f(a) = IV(f) - DV(f)$.
+\end{lem}
+
+\begin{proof}
+    Choose a finite partition. It is easy to see that $f(b) - f(a) = p - n$, so for all partitions, $n + f(b) - f(a) = p$. Then $n + f(b) - f(a) \leq IV(f)$, but this means $DV(f) + f(b) - f(a) \leq IV(f)$. Similarly, if we take the supremum over $n$ first, we get the inequality reversed. The first part of the lemma should be easy.
+\end{proof}
+
+\begin{thm}
+    A function $f$ is BV if and only if it is the difference of two bounded monotone increasing functions.
+\end{thm}
+
+\begin{proof}
+    If $f$ is BV, set $g(x) = IV_{[a,x]}(f)$ and $h(x) = DV_{[a,x]}(f)$. Because $f$ is BV, $g,h$ are monotone increasing and bounded, and by Lemma 3.19, $f(x) - f(a) = IV_{[a,x]}(f) - DV_{[a,x]}(f) = g(x) - h(x)$. On the other hand, if $f = g-h$ with $g,h$ monotone and bounded, then $TV(f) \leq TV(g) + TV(h)$ is finite.
+\end{proof}
+
+\begin{cor}
+    If $f$ is BV, then $f'$ exists almost everywhere.
+\end{cor}
+
+Now we will consider jumps. Assume $f$ is bounded and monotone increasing. At each point, the limits $f(x+) = \lim_{x \to x^+} f(x)$ and $f(x-)$ (defined analogously) exist. By monotonicity, $f(x+) \geq f(x) \geq f(x-)$. Define the jump set to be the set $J = \qty{x \mid f(x-) < f(x+)}$. We know that $J$ is countable, so enumerate it by $J = \qty{x_1, x_2, \ldots}$. For each $n$, define $[f]_n = f(x_n+) - f(x_n-)$. At each $n$, we have $f(x_n) = f(x_n-) + \theta[f]_n$ for some $0 \leq \theta \leq 1$. Now define
+\[ j_n(x) = \begin{cases}
+    1 & x > x_n \\
+    \theta_n & x = x_n \\
+    0 & x < x_n
+\end{cases} \]
+and define the jump function of $f$ by $J_f(x) = \sum_n [f]_n j_n(x)$.
+
+\begin{lem}
+    \begin{enumerate}
+        \item $J_f$ is monotone increasing;
+        \item $f - J_f$ is monotone increasing and continuous;
+        \item $J_f$ is differentiable almost everywhere and $J_f'(x) = 0$ almost everywhere.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item This is obvious.
+        \item The series defining $J_f$ converges uniformly and $J_F(x) \leq F(b) - F(a)$, so if $x \notin J$, each $j_n(-)$ is continuous at $x$, so $J_f$ is continuous at $x$. If $x$ is a jump, then $J_f(x) = \sum_{x_k < x} [f]_k j_k(x) + \sum_{x_k > x} [f]_k j_k(x) + [f]_n j_n(x)$. In particular, $J_f(x-) = \sum_{x_k < x} [f]_k, J_f(x+) = \sum_{x_k > x} [f]_k$, and $J_f(x) = J_f(x-) + \theta_n [f]_n$.
+
+            Now $f(x+) - J_f(x+) - (f(x-) - J_f(x-)) = 0$ at $x = x_n$. Also, $f(x) - J_f(x) = 0$ provided that $f - J_f$ is increasing, because it is continuous. If $x < y$, note that
+            \begin{align*}
+                J_f(y) - J_f(x) &= J_f(y) - J_f(y-) + \sum_{x < x_n < y} [f]_n + J_f(x-) - J_f(x) \\
+                                &\leq f(y) - f(y-) + \sum_{x < x_n < y} [f]_n + f(x+) - f(x-) \\
+                                &\leq f(y) - f(x),
+            \end{align*}
+            so we see that $f - J_f$ is increasing.
+        \item Note that $J_f$ is discontinuous on a countable set. Given any $\ep > 0$, there exists a closed $F$ such that $J \subseteq F^{\circ}$ and $m(F) < \ep$. Then $F^c$ is open and $J_f$ is constant on each component of $F^c$. Therefore, the set where $J_f'$ does not exist or is nonzero has measure less than $\ep$ for all $\ep$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+Morally, we say that $J_f'(x) = \sum [f]_n H_n'$, where $H$ is the Heaviside step function, and $H' = \delta$.
+
+We now consider the question of which continuous monotone functions satisfy the Fundamental Theorem of Calculus. We consider properties of $\int_a^x f(t) \dd{t}$, where $f$ is integrable on $[a,b]$. We will refer to the integral as a function $F(x)$.
+
+\begin{lem}
+    $F$ is continuous and of bounded variation.
+\end{lem}
+
+\begin{proof}
+    Continuity is easy. Use the fact that for all $\ep$, there exists $\delta$ such that if $m(E) < \delta$, then $\int_E \abs{f} < \ep$. To show that $F$ is BV, choose $a = x_0 < x_1 < \cdots < x_n = b$. Then we see that
+    \[ \sum_i \abs{F(x_i) - F(x_{i-1})} = \sum \abs{\int_{x_{i-1}}^{x_i} f(t) \dd{t}} \leq \sum \int_{x_{i-1}}^{x_i} \abs{f(t)} \dd{t} = \int_a^b \abs{f(t)} \dd{t}, \]
+    which is finite.
+\end{proof}
+
+\begin{lem}
+    If $f$ is integrable and $\int_a^x f(t) \dd{t} = 0$ for all $x$, then $f(x) = 0$ almost everywhere.
+\end{lem}
+
+\begin{proof}
+    Set $E = E_+ \cup E_-$, where $E_+ - \qty{f > 0}$ and $E_- = \qty{f < 0}$. If $m(E_+) > 0$, then there exists closed $F \subseteq E_+$ with $m(F) > 0$. Then $G = F^c$ is relatively open. Either we have $\int_a^b f(t) \dd{t} \neq 0$ or $0 = \int_a^b f(t) \dd{t} = \int_G f(t) \dd{t} + \int_F f(t) \dd{t}$. Then $\int_G f \neq 0$, so write $G = \bigcup (a_i,b_i)$. Therefore, at least one of the $\int_{a_i}^{b_i} f(t) \dd{t}$ is nonzero, so either $\int_a^{a_i} f(t) \dd{t}$ or $\int_a^{b_i} f(t) \dd{t}$ is nonzero.
+\end{proof}
+
+\begin{thm}
+    If $f$ is integrable and if $F(x) = F(a) + \int_a^x f(t) \dd{t}$, then $F'(x) = f(x)$ almost everywhere.
+\end{thm}
+
+\begin{proof}
+    If $f$ is bounded by $K$, then we know $F$ is BV, so $F'$ exists almost everywhere. Let $f_n(x) = \Delta_{1/n} F(x)$, so
+    \[ f_n(x) = n \int_x^{x+h} f(t) \dd{t} \leq K. \]
+    Also, $f_n \to F'$ almost everywhere. By bounded convergence, we then have
+    \begin{align*}
+        \int_a^c F'(x) \dd{x} &= \int_a^c \lim_{n \to \infty} f_n(x) \dd{x} \\
+                              &= \lim_{n \to \infty} \int_a^c f_n(x) \dd{x} \\
+                              &= \lim_{h \to 0} \frac{1}{h} \int_a^c F(x+h) - F(x) \dd{x} \\
+                              &= \lim_{h \to 0} \qty[\int_c^{c+h} F(x) \dd{x} - \int_a^{a+h} F(x) \dd{x}] \\
+                              &= F(c) - F(a) \\
+                              &= \int_a^c f(x) \dd{x},
+    \end{align*}
+    so $F'(x) = f(x)$ almost everywhere.
+
+    For the general case, assume that $f > 0$. Then set $f_n(x) = \min\qty{f(x),n}$. Then $f - f_n \geq 0$, so $G_n(x) = \int_a^x f(x) - f_n(x) \dd{x}$ is monotone increasing. Thus it has nonnegative derivative almost everywhere. By the above, we know that
+    \[ \dv{x} \int_a^x f_n(t) \dd{t} = f_n(x) \]
+    almost everywhere. Therefore
+    \[ F'(x) = \dv{x} G_n(x) + \dv{x} \int_a^x f_n(t) \dd{t} \geq f_n(x) \]
+    almost everywhere. Thus $\int_a^b F'(x) \dd{x} \geq \int_a^b f_n(x) \dd{x}$, so $\int_a^b f(x) \dd{x} \leq \liminf \int_a^b f_n(x) \dd{x} \leq \int_{a}^b F'(x) \dd{x}$, so then
+    \[ \int_a^b F'(x) \dd{x} \geq F(b) - F(a). \qedhere \]
+\end{proof}
+
+\section{Absolute Continuity}%
+\label{sec:absolute_continuity}
+
+\begin{defn}
+    A function $f: \R \to \R$ is \textit{absolutely continuous} if for all $\ep > 0$, there exists $\delta > 0$ such that if $x_i,x_i'$ for a finite set of non overlapping intervals and if $\sum_i \abs{x_i' - x_i} < \delta$, then
+    \[ \sum_i \abs{f(x_i') - f(x_i)} < \ep. \]
+\end{defn}
+
+Note that absolute continuity implies uniform continuity. From the previous lemma, then integrability of $f$ means that $\int_a^x f$ is absolutely continuous.
+
+\begin{lem}
+    If $f$ is absolutely continuous, then it is also BV.
+\end{lem}
+
+\begin{proof}
+    Let $f$ be absolutely continuous and choose $\ep = 1$. Then given any partition $x_0 < x_1 < \cdots < x_n$, choose $K > 1 + \frac{b - a}{\delta}$. Add in many partition elements so that $[a,b]$ is covered by $K$ sets of subinterbals each of length less than $\delta$. Now
+    \[ \sum \abs{f(y_{i+1}) - f(y_i)} \leq K \sum_{\sum \abs{y_{i+1} - y_i} < \delta} \abs{f(y_{i+1}) - f(y_i)} \leq K. \]
+    Therefore $TV(f) \leq K$.
+\end{proof}
+
+As a consequence, if $f$ is absolutely continuous, then its derivative exists almost everywhere.
+
+\begin{lem}
+    If $f$ is absolutely continuous on $[a,b]$ and if $f' = 0$ almost everywhere, then $f$ is constant.
+\end{lem}
+
+\begin{proof}
+    Fix $t \in (a,b)$ and set $E = (a,t) \cap \qty{f' = 0}$, so $m(E) = t-a$. Let two parameters be given: $\xi$ an upper bound for $f'$ on $E$ and $\ep$ a bound for $m((a,t) \setminus E)$. Use absolute continuity on $m((a,t) \setminus E)$: Choose $\delta$ according to the definition of $f$ depending on $\ep$.
+
+    If $x \in E$, then $f'(x) = 0$. Thus there exists $h$ such that $[x,x+h] \subseteq [a,t]$ and $\abs{f(x+h) - f(x)} < \xi h$, so $E \subseteq \bigcup_{x \in E} [x,x+h]$. Now use Vitali's covering lemma, so there exists a finite non-overlapping set of interals and $B$ such that $m(B) < \delta$ and
+    \[ E \subseteq \bigcup_{k=1}^n [x_k,y_k] \cup B. \]
+    Order the $x_k,y_k$ and set $y_0 = a, x_{n+1} = t$. Now we have
+    \begin{align*}
+        \abs{f(t) - f(a)} &\leq \sum_{i=1}^n \abs{f(y_i) - f(x_i)} + \abs{f(x_1) - f(a)} + \sum_{i=1}^n \abs{f(x_{i+1}) - f(y_i)} + \abs{f(t) - f(y_n)} \\
+                          &\leq \sum_{i=1}^n \abs{f(x_i + h_i) - f(x_i)} + \ep \\
+                          &\leq \sum_i \xi h_i + \ep \\
+                          &\leq (b-a) \xi + \ep. \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{thm}[Fundamental Theorem of Calculus, Part 2]
+    A function $F$ has integrable $f$ such that 
+    \[ F(x) = F(a) + \int_a^x f(t) \dd{t} \]
+    if and only if $F$ is absolutely continuous.
+\end{thm}
+
+\begin{proof}
+    Suppose that $F$ is absolutely continuous. Then $F$ is BV, so $F(x) = F_1(x) - F_2(x)$ for monotone increasing $F_1, F_2$. Therefore $F' = F_1' + F_2'$ exists almost everywhere and $F_1' \cdot F_2' = 0$. Therefore
+    \[ \int \abs{F'(x)} = \int F_1'(x) + F_2'(x) = F_1(b) + F_2(b) - F_1(a) - F_2(a). \]
+    Set $G(x) = \int_a^x F'(t) \dd{t}$ and $h(x) = F(x) - G(x)$. Then $h$ is also absolutely continuous and $G'(x) = F'(x)$ almost everywhere from the definition of $G$, so $h' = 0$ almost everywhere. Thus $h$ is constant and must be equal to $F(a)$.
+\end{proof}
+
+We will now characterize functions of bounded variation.
+\begin{enumerate}
+    \item If $F$ is BV, then $F = IV(F) - DV(F)$.
+    \item $F$ has a jump part $J_F = \sum_k [F]_k j_k(x)$, where $[F]_k = F(x_k+) - F(x_k-)$.
+    \item $F_c = F - J_F$ is continuous and the difference of two monotone continuous functions. Thus $F_c'$ exists almost everywhere. If we set
+        \[ F_{ac}(x) = \int_a^c F_c'(t) \dd{t}, \]
+        then $F_{ac}$ is absolutely continuous. Then the function $F_{sc} = F_c - F_{ac}$ is monotone increasing, but $F_{sc}' = 0$ almost everywhere, so it does not satisfy FTC (behaves like the Cantor function).
+\end{enumerate}
+In conclusion, we can write $F = J_F + F_{ac} + F_{sc}$.
+
+\chapter{General Measures}%
+\label{cha:general_measures}
+
+Let $X$ be a set and $\Sigma$ be a $\sigma$-algebra of $X$. Then $M$ is a \textit{measure} on $(X, \Sigma)$ if $M$ is a nonnegatie $\sigma$-additive function on $\Sigma$.
+
+\begin{exms}
+    \begin{enumerate}
+        \item The Lebesgue measure as defined previously;
+        \item The counting measure;
+        \item The discrete measure on $\Sigma = \mc{P}(X)$ where each element is assigned a weight;
+        \item Let $X$ be an uncountable set, set $\Sigma$ to be the countable or cocountable sets, and then let $\mu(E) = 0$ when $E$ is countable and $\mu(E) = 1$ otherwise.
+    \end{enumerate}
+\end{exms}
+
+\begin{lem}
+    The following properties hold for all measures:
+    \begin{enumerate}
+        \item Monotonicity;
+        \item Countable subadditivity;
+        \item If $E_i \in \Sigma$ and $\mu(E_i) < \infty$, then $\mu \qty(\bigcap E_i) = \lim \mu(E_n)$ if the $E_i$ are nested.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Observe that $B = A \cup (B \setminus A)$ and then use additivity and nonnegativity.
+        \item Let $F_i = E_n \setminus \qty(\bigcup_{i<n} E_i)$. Then $\mu\qty(\bigcup E_k) = \sum \mu(F_k) \leq \sum \mu(E_k)$.
+        \item Note that $E_1 = E \cup \bigcup_{k=1}^{\infty} E_k \setminus E_{k+1}$, so 
+            \begin{align*}
+                \mu(E_1) &= \mu(E) + \sum_{k=1}^{\infty} \mu(E_k \setminus E_{k+1}) \\
+                         &= \mu(E) + \sum_{k=1}^{\infty} \mu(E_k) - \mu(E_{k+1}) \\
+                         &= \mu(E) + \mu(E_1) - \lim_{n \to \infty} \mu(E_{n+1}). \qedhere
+            \end{align*}
+    \end{enumerate}
+\end{proof}
+
+We say that $\mu$ is finite if $\mu(X) < \infty$ and that $\mu$ is $\sigma$-finite if $X$ is a countable union of sets of finite measure.
+
+\begin{exm}
+    \begin{enumerate}
+        \item The Lebesgue measure is $\sigma$-finite (just take $[a,a+1]$ for $a \in \Z$).
+        \item The counting measure is finite if and only if $S$ is finite.
+        \item Then discrete measure if finite if and only if countably many points have positive weights and the sum of the weights is finite. It is $\sigma$-finite if and only if only countably many points have positive weight and each weight is finite.
+        \item This is a finite measure. In fact, any measure such that $\mu(X) = 1$ is a \textit{probability measure}.
+    \end{enumerate}
+\end{exm}
+
+\section{Outer Measures}%
+\label{sec:outer_measures}
+
+An \textit{outer measure} is a countable subadditive function defined on $\mc{P}(X)$ such that $m_*(\emptyset) = 0$. Our main question is to extract a measure from an outer measure when we have no recourse to open sets, unlike in the Lebesgue case.
+
+\begin{defn}
+    $E$ is \textit{(Caratheodory)-measurable} if for all $A \subseteq X$, $\mu_*(A) = \mu_*(E \cap A) + \mu_*(E^c \cap A)$.
+\end{defn}
+
+Note that
+\begin{enumerate}
+    \item This condition is equivalent to $\mu_*(A) \geq \mu_*(A \cap E) + \mu_*(A \cap E^c)$;
+    \item The condition holds for the emptyset;
+    \item $E$ is measurable if and only if $E^c$ is.
+\end{enumerate}
+This tells us that $\Sigma_c = \qty{E \mid E \text{ is measurable}}$ is a $\sigma$-algebra and that $\mu_*$ is a measure on $\Sigma_c$.
+
+To prove the last claim, we need to show countable additivity. First, we will do it for finite unions:
+\begin{align*}
+    m_*(A) &\geq m_*(A \cap E_1) + m_*(A \cap E_1^c) \\
+           &\geq m_*(A \cap E_1 \cap E_2) + m_*(A \cap E_1 \cap E_2^c) + m_*(A \cap E_1^c \cap E_2) + m_*(A \cap E_1^c \cap E_2^c) \\
+           &\geq m_*(A \cap E_1 \cap E_2 \cup A \cap E_1 \cap E_2^c \cup A \cap E_1^c \cap E_2) + m_*(A \cap E_1^c \cap E_2^c).
+\end{align*}
+Also, additivity on disjoint sets is easy. Now we will consider countable disjoint unions.
+Set $F_n = \bigcup_{j=1}^n E_j$ and $F = \bigcup_{i=1}^{\infty} E_j$. Then
+\[ m_*(F_n \cap A) = m_*(E_n \cap (F_n \cap A)) + m_*(E_n^c \cap (F_n \cap A)) = m_*(E_n \cap A) + m_*(E_{n-1} \cap A). \]
+Therefore, $m_*(F_n \cap A) = \sum_{j=1}^n m_*(E_j \cap A)$, so $m_*(A) \geq \sum_{j=1}^n m_*(E_j \cap A) + m_*(F_n^c \cap A)$, so if we allow $n \to \infty$, then 
+\begin{align*}
+    m_*(A) &= \sum_{i=1}^{\infty} m_*(E_j \cap A) + m_*(F^c \cap A) \\
+           &\geq m_*\qty(\bigcup E_j \cap A) + m_*(F^c \cap A) \\
+           &= m_*(F \cap A) + m_*(F^c \cap A).
+\end{align*}
+
+Now let $X$ be a metric space. As before, the Borel sets are the smallest $\sigma$-algebra containing all open balls. An outer measure is a \textit{metric outer measure} if it has the separation property.
+
+\begin{thm}
+    If $m_*$ is a metric outer measure, then the Borel sets are measurable and $m_*|_{\mc{B}_X}$ is a measure.
+\end{thm}
+
+\begin{proof}
+    We show that closed sets are measurable. Assume $F$ is closed and $m_*(A) < \infty$. Then set 
+    \[ A_n = \qty{x \in F^c \cap A \mid d(x,F) \geq \frac{1}{n}}. \] 
+    Then clearly the $A_n$ are increasing. We will show that $\lim m_*(A_n) = m_*(F^c \cap A)$.
+
+    Set $B_n = A_{n+1} \cap A_n^c$. Then $d(B_{n+1}, A_n) \geq \frac{1}{n} - \frac{1}{n+1}$. Then we see that 
+    \[ m_*(A_n \cup B_{n+1}) = m_*(A_n) + m_*(B_{n+1}) \leq m_*(A_{n+2}). \] 
+    Then we see that $m_*(A) \geq \sum_{\mr{odd}} m_*(B_n)$ and $m_*(A) \geq \sum_{\mr{even}} m_*(B_n)$, so in particular, $\sum_n m_*(B_n) \leq 2m_*(A)$. Then we obtain
+    \[ m_*(A_n) \leq m_*(F^c \cap A) \leq m_* \qty(A_n \cup \bigcup_{k\geq n} B_k) \leq m_*(A_n) + \sum_{k \geq n} m_*(B_n). \]
+    Because the sum is finite, we have the desired result.
+\end{proof}
+
+\begin{thm}
+    Let $\mu$ be a Borel measure that is finite on compact sets. Then for every $E \in \mc{B}$ and $\ep > 0$, there exists an open $G\supseteq E$ and closed $F \subseteq E$ such that $\mu(G \setminus E) < \ep$ and $\mu(E \setminus F) < \ep$.
+\end{thm}
+
+\begin{proof}
+    Let $\mc{b}$ be a collection of sets satisfying both properties. We show this is a $\sigma$-algebra containing $\mc{B}$. Clearly, it is closed under complements. Thus suppose $E_k \in \mc{b}$ for each $k$. First, there exist $G_k \supseteq E_k$ open such that $\mu(G_k \setminus E_k) < \frac{\ep}{2^k}$, so their union is open and $\mu(G \setminus E) < \ep$.
+
+    Similarly, there exists $F_k \subseteq E_k$ suchthat $\mu(E_k \setminus F_k) < \frac{\ep}{2^k}$, but the union $F^* = \bigcup F_k$ is not closed. We prove that there exists a closed $F \subseteq F^*$ such that $\mu(F^* \setminus F) < \ep$. Assume that $F_k$ are increasing, so choose $x_0$ and set $B_n$. Then let $A_n = \ol{B}_n \setminus B_{n-1}$, so write $F^* = \bigcup_n (F^* \cap A_n)$, where $F^* \cap A_n = \lim_k F_k \cap A_n = \bigcup_k (F_k \cap A_n)$.
+
+    For each $n$, there exists $k(n)$ such that $\mu(F^* \setminus F_{k(n)} \cap A_n) < \frac{\ep}{2^n}$ with $\mu(\ol{B}_n) < \infty$. Then we see that $F = \bigcup_{n \geq 1} (F_{k(n)} \cap A_n)$, so $\mu(F^* \setminus F) < \ep$ and each $F \cap \ol{B}_k$ is closed, so $F$ is closed.
+
+    Finally, we show that open $G \in \mc{b}$. Set $F_k = \qty{x \in \ol{B}_k \mid d(x,G^c) \geq \frac{1}{k}}$. Then we use the argument above.
+\end{proof}
+
+\section{Results and Applications}%
+\label{sec:results_and_applications}
+
+\begin{defn}
+    A \textit{premeasure} is a measure-like function on an algebra $A$ (closed under complement and finite union).
+\end{defn}
+
+We see that a premeasure defines an outer measure. Define $f$ to be \textit{measurable} if the preimage of any open set is a Borel set and define $f$ to be \textit{simple} if
+\[ f = \sum a_n \chi_{E_n} \]
+for $E_n$ measurable. Then given a measure $\mu$, definee
+\[ \int f \dd{\mu} = \sup_{\substack{\psi \leq f \text{ simple}}} \int \psi \dd{\mu}, \]
+where $\int \psi \dd{\mu} = \sum a_n \mu(E_n)$.
+
+\begin{thm}
+    $\mu_* |_{\Sigma_A}$ is a measure where $\Sigma_A$ is the smallest $\sigma$-algebra containing $A$.
+\end{thm}
+
+We have the following results, in analogy with the Lebesgue case.
+
+\begin{thm}[Egorov]
+    Let $f_k$ be defined on $E$ with $\mu(E) < \infty$. Then for all $\ep > 0$, there exists $A_{\ep} \subseteq E$ with $\mu(E \setminus A_{\ep}) < \ep$ and such that $f_k \to f$ uniformly on $A_{\ep}$.
+\end{thm}
+
+\begin{lem}[Fatou]
+    If $f$ is nonnegative, then $\int \liminf f_n \dd{\mu} \leq \liminf \int f_n \dd{\mu}$.
+\end{lem}
+
+As before, if $f = f_+ - f_-$ with both $f_+, f_- \geq 0$, then $\int f \dd{\mu}$ is defined provided that not both $\int f_+ \dd{\mu}$ and $\int f_- \dd{\mu}$ are infinite. Then $f$ is
+\begin{enumerate}
+    \item \textit{Integrable} if $\int_X \abs{f} \dd{\mu} < \infty$. We say $f \in L^1(X, \mu)$;
+    \item \textit{Square-integrable} if $\int_X f^2 \dd{\mu} < \infty$. We say that $f \in L^2(X, \mu)$.
+\end{enumerate}
+
+\begin{thm}[Monotone Convergence]
+    If $f_n \geq 0$ and $f_n \nearrow f$ almost everywhere, then $\int f \dd{\mu} = \lim \int f_n \dd{\mu}$.
+\end{thm}
+
+\begin{thm}[Dominated Convergence]
+    If $f_n \to f$ almost everywhere and $\abs{f_n} \leq g$ for some integrable $g$, then $\int_X \abs{f_n - f} \dd{\mu} \to 0$.
+\end{thm}
+
+\begin{exm}
+    Consider the Stieltjes integral. Recall that the Riemann integral is $\int f \dd{x}$, and the Stieltjes integral is $\int f \dd{g}$ for some monotone $g$. Finally, the Lebesgue integral is the correct definition of integration.
+\end{exm}
+
+To construct a measure associated to a monotone function $F$, first normalize by changing $F$ at the jumps to ensure right continuity.
+
+\begin{thm}
+    Given a monotone, right-continuous $F$, there exists a unique Borel measure $\mu_F$ such that $\mu_F([a,b]) = F(b) - F(a)$ for all $a < b$. Moreover, if $\mu$ is a Borel measure that is finite on compact sets, there exists a unique $F$ (up to constants) such that $\mu = \mu_F$.
+\end{thm}
+
+\begin{proof}
+    The first part is straightforward, but painful (Robin's words), so it is not given here. On the other hand, if $\mu$ is a given Borel measure and is finite on compact sets, how do we define $F$? We want $\mu((a,b]) = F(b) - F(a)$. If $x > 0$, then we must have $\mu((0,x]) = F(x)$ and similarly for $x < 0$. It is easy to see that this function is monotone, so we show right continuity:
+    \begin{align*}
+        F(0+) &= \lim_{\ep \to 0} F(\ep) \\
+              &= \lim_{\ep \to 0} \mu (0,\ep] \\
+              &= \mu \pqty{\lim_{\ep \to 0} (0, \ep] } \\
+              &= \mu(\emptyset) \\
+              &= 0.
+    \end{align*}
+\end{proof}
+
+\section{Signed Measures}%
+\label{sec:signed_measures}
+
+Note that we can add measures and multiply them by nonnegative constants. How can we obtain full linearity?
+
+\begin{defn}
+    A function $\nu$ on a $\sigma$-algebra $\Sigma$ is a \textit{signed measure} if
+    \begin{enumerate}
+        \item $\nu(\emptyset) = 0$;
+        \item $\nu$ does not take on both $\pm \infty$;
+        \item $\nu$ is additive on disjoint sets. In particular, if $\nu(E)$ is finite and $E = \bigcup E_j$, then $\sum \nu(E_j)$ converges absolutely.
+    \end{enumerate}
+\end{defn}
+
+We say that $A \subseteq X$ is \textit{positive with respect to $\nu$} if $A \in \Sigma$ and for each $E \subseteq A$ with $E \in \Sigma$, we have $\nu(E) \geq 0$. Define similar for negativity. Then a set $N$ is \textit{null} if it is both positive and negative. However, having measure $0$ does \textbf{not} imply that a set is null.
+
+\begin{lem}
+    Subsets and countable unions of positive sets are positive.
+\end{lem}
+
+\begin{proof}
+    Subsets of positive sets are positive by definition. For the second part, if $E \subseteq \bigcup A_n$, set $E_n = E \cap A_n \cap A_{n-1}^c \cap  \cdots \cap A_1^c$. Then $\nu(E_n) \geq 0$ and $\nu(E) = \sum \nu(E_n) \geq 0$.
+\end{proof}
+
+\begin{lem}
+    If $E$ satisfies $0 < \nu(E) < \infty$, then there exists a positive $A \subseteq E$ with $\nu(A) > 0$.
+\end{lem}
+
+\begin{proof}
+    If $E$ is positive, we are done. Otherwise, let $n_1$ be the smallest integer such that there exists $E_1 \subseteq E$ with $\nu(E_1) < - \frac{1}{n}$. Inductively, choose $n_k$ to be the smalles integer such that there exists $E_k \subseteq E \setminus \qty(\bigcup_{j<k} E_j)$ with $\nu(E_k) < - \frac{1}{n_k}$. This process may or may not terminate, so set $A = E \setminus \bigcup E_k$. Then clearly $A$ has positive measure because $\nu(A) = \nu(E) - \sum \nu(E_k) > 0$ and $\sum \nu(E_k)$ converges absolutely. Therefore $\sum \frac{1}{n_k} < - \sum \nu(E_k)$ is finite, so either the process stops or $n_k \to \infty$, so $\nu(A) < \infty$. 
+
+    To show that $A$ is positive, it is clear if the process stops. Otherwise, for all $\ep > 0$, there exists $k$ such that $\frac{1}{n_{k} - 1 < \ep}$. Then $A \subseteq E \setminus \bigcup_{j=1}^{n_k} E_j$, so $A$ contains no subset with measure less than $- \ep$. 
+\end{proof}
+
+\begin{thm}[Hahn Decomposition Theorem]
+    Given a signed measure $\nu$, there exists $A$ positive and $B$ negative such that $X = A \cup B$ and $A \cap B = \emptyset$.
+\end{thm}
+
+\begin{proof}
+    Assume that $\nu$ does not take the value $\infty$. Define $\lambda = \sup_{A \text{ positive}} \nu(A)$. Note that $\lambda \geq 0$. Then choose $A_i$ positive such that $\lambda = \lim \nu(A_i)$ and set $A = \bigcup A_i$ is positive and that $\lambda \geq \nu(A)$.
+
+    Also, $A \setminus A_i \subseteq A$, so each $\nu(A \setminus A_i) \geq 0$. Thus $\nu(A) \geq \nu(A_i)$ for all $i$, so $\nu(A) = \lambda$. Set $B = A^c$. We will show that $B$ is negative. To see this, if $E \subseteq B$ with $\nu(E) > 0$, then $A \cup E$ is positive with measure strictly greater than $\lambda$.
+\end{proof}
+
+Note that this $A,B$ are not unique. Then define the positive and negative parts of $\nu$ by $\nu_+(E) = \nu(E \cap A)$ and $\nu_-(E) = - \nu(E \cap B)$. These are both measures. Then we see that $\nu = \nu_+ - \nu_-$. This decomposition is unique. Also, define the \textit{total variation} of $\nu$ as $\abs{\nu} = \nu_+ + \nu_-$.
+
+Note that $\abs{\nu}$ is defined because $\nu_+, \nu_-$ cannot both be infinite. If $\abs{\nu} < \infty$, we say that $\nu$ is \textit{finite}. If two measures $\mu_1, \mu_2$ have sets $A_1, A_2$ such that $A_1 \cap A_2 = \emptyset, A_1 \cup A_2 = X$ and $\mu_1(A_2) = \mu_2(A_1) = 0$, then we call them \textit{mutually singular} and write $\mu_1 \perp \mu_2$.
+
+\begin{exm}
+    The discrete measure is mutually singular with the Lebesgue measure. The Cantor measure is also mutually singular with the Lebesgue measure.
+\end{exm}
+
+The opposite notion is absolute continuity of measures.
+\begin{defn}
+    We say that $\nu$ is \textit{absolutely continuous} with respect to $\mu$, written $\nu \ll \mu$, if for all $E$ with $\mu(E) = 0$, $\nu(E) = 0$.
+\end{defn}
+
+\begin{exm}
+    If $E$ is measurable and $f$ is integrable, then $\nu_f(E) = \int_E f \dd{\mu}$ is absolutely continuous with respect to $\mu$.
+\end{exm}
+
+\begin{thm}[Radon-Nikodym]
+    Let $(X, \mc{B}, \mu)$ be a measure space with Borel sets and suppose $\mu$ is $\sigma$-finite and $\nu \ll \mu$. Then there exists a nonnegative $\mu$-measurable $f$ such that for all $E \in \mc{B}$, $\nu(E) = \int_E f \dd{\mu}$. Here, $f$ is called the \textit{Radon-Nikodym derivative of $\nu$}, sometimes written $f = \qty[\dv{\nu}{\mu}]$. 
+\end{thm}
+
+Before we prove this result (following Royden), we need two lemmas:
+
+\begin{lem}
+    If $B_{\alpha}$ is a collection of Borel sets ordered by some countable $\alpha \in D$ satisfying $B_{\alpha} \subseteq B_{\beta}$ for $\alpha < \beta$, then there exists a measure $f$ such that $f \leq \alpha$ on $B_{\alpha}$ and $f \geq \alpha$ on $B_{\alpha}^c$.
+\end{lem}
+
+\begin{proof}
+    Given $x \in X$, set $f(x) = \inf \qty{\alpha \mid x \in B_{\alpha}}$. Then if $x \in B_{\alpha}$, $f(x) \leq \alpha$. Then if $x \notin B_{\alpha}$, $f(x) \geq \alpha$ because $x \notin B_{\beta}$ for $\beta < \alpha$. To show that $f$ is measurable, note that 
+    \[ \qty{x \mid f(x) < \alpha} = \bigcup_{\beta < \alpha} B_{\beta}, \]
+    which is measurable.
+\end{proof}
+
+\begin{lem}
+    Let $\alpha \in D$ countable and $B_{\alpha} \in \mc{B}$ such that if $\alpha < \beta$, then $\mu(B_{\alpha} \setminus B_{\beta}) = 0$. Then the same conclusion as in Lemma 4.23 holds.
+\end{lem}
+
+\begin{proof}
+    Let $C = \bigcup_{\alpha < \beta} B_{\alpha} \setminus B_{\beta}$. Set $B_{\alpha}' = B_{\alpha} \cup C$. Note that $C$ has measure $0$. Then apply Lemma 4.23 to the $B_{\alpha}'$.
+\end{proof}
+
+\begin{proof}[Proof of Radon-Nikodym]
+    Assume $\mu$ is finite. For all rational $\alpha$, consider the signed measure $\nu - \alpha \mu$. By the Hahn decomposition theorem, there exist $A_{\alpha}, B_{\alpha} = A_{\alpha}^c$ with $\nu - \alpha \mu \geq 0$ on $A_{\alpha}$ and $\nu - \alpha \mu \leq 0$ on $B_{\alpha}$. Then set $A_0 = X, B_0 = \emptyset$ and note that $B_{\alpha} \setminus B_{\beta} = B_{\alpha} \cap A_{\beta}$, so $\nu - \alpha \mu \leq 0$ on $B_{\alpha}$ and $\nu - \beta \mu \geq 0$ on $A_{\beta}$. Therefore, if $\beta > \alpha$, then $\mu(B_{\alpha}) \setminus B_{\beta} = 0$, so by Lemma 4.24, there exists $f$ such that $f \geq \alpha$ on $A_{\alpha}$ and $f \leq \alpha$ on $B_{\alpha}$. Because $B_0 = \emptyset$, $f \geq 0$.
+
+    We now show that $\int_E f \dd{\mu} = \nu(E)$. Fix $n$ and set 
+    \[ E_k = E \cap \qty( B_{\frac{k+1}{n}} \setminus B_{\frac{k}{n}} ), E_{\alpha} = E \setminus \bigcup_k B_{\frac{k}{n}}. \] 
+    Then $E$ is the disjoint union $E = \bigsqcup_{k=0}^{\infty} E_k \cup E_{\infty}$, so
+    \[ \nu(E) = \sum \nu(E_k) + \nu(E_{\infty}). \]
+    Now $E_k \subseteq B_{\frac{k+1}{n}} \cap A_{\frac{k}{n}}$, so $\frac{k}{n} \leq f \leq \frac{k+1}{n}$ on $E_k$, so
+    \[ \frac{k}{n} \mu(E_k) \leq \int_{E_k} f \dd{\mu} \leq \frac{k+1}{n} \mu(E_k). \]
+    By definition of $B, A$, we know that $\frac{k}{n} \mu(E_j) \leq \nu(E_k) \leq \frac{k+1}{n} \mu(E_k)$, so
+    \[ \nu(E_k) - \frac{1}{n} \mu(E_k) \leq \int_{E_k} f \dd{\mu} \leq \frac{1}{n} \mu(E_k). \]
+    Then add and take $n \to \infty$.
+\end{proof}
+
+
+
+
+
+
+\end{document}

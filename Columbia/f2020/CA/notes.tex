@@ -1,0 +1,1629 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Commutative Algebra \\ Fall 2020}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Eric Urban}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during lecture using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the instructor's. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the instructor.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+\newpage
+
+
+
+\tableofcontents
+
+\chapter{Basic Notions}%
+\label{cha:basic_notions}
+
+The references we will use in this course are Matsumura's \textit{Commutative Algebra} and Serre's \textit{Alg\`ebre Locale, Multiplicit\'es}. There is an English translation of Serre.
+We will begin with general results on rings and modules. We will assume all rings are commutative and unital. Recall that and ideal $I$ of a ring $A$ is prime if and only if $A/I$ is a domain, and $I$ is maximal if and only if $A/I$ is a field.
+
+\section{Basics of Ideals}%
+\label{sec:basics_of_ideals}
+
+
+\begin{defn}
+    Let $I \subset A$ be an ideal. Then the \textit{radical} $\sqrt{I}$ of $I$ is the set 
+    \[ \sqrt{I} \coloneqq \qty{x \in A \mid x^a \in I \text{ for some } a \in \N}. \]
+\end{defn}
+
+\begin{defn}
+    An ideal $I \subset A$ is \textit{primary} if $I \neq A$ and the zero divisors in $A/I$ are nilpotent. Thus if $xy \in I$ and $x \notin I$, then $y^n \in I$ for some $n$.
+\end{defn}
+
+\begin{prop}
+    \label{prop:radical_of_primary}
+    If $Q \subset A$ is primary, then $\sqrt{Q}$ is a prime ideal.
+\end{prop}
+
+\begin{proof}
+    If $xy \in \sqrt{Q}$, then $x^ny^n \in Q$. If $x^n \notin Q$, then $y \in \sqrt{q}$ because $(y^n)^a \in Q$.
+\end{proof}
+
+\begin{rmk}
+    The converse to Proposition \ref{prop:radical_of_primary} is false in general.
+\end{rmk}
+
+\begin{defn}
+    Let $A$ be a ring. Then the \textit{spectrum} $\spec A$ of $A$ as a set is the set of prime ideals of $A$. We may place the Zariski topology on this set, where the basis of open sets is given by $D_f = \spec A \setminus V_f$, where $V_f$ is the set of prime ideals containing $f$.
+\end{defn}
+
+If $\varphi:A \to B$ is a morphism of rings, the morphism $\varphi^*: \spec B \to \spec A$ is continuous in the Zariski topology. 
+
+\begin{exer}
+    In particular, if $\pi: A \to A/I$, then $\pi^*$ is an embedding.
+\end{exer}
+
+\begin{exer}
+    Let $I \subset A$ be an ideal. Then let $P_1, \ldots, P_r$ be ideals of $A$ that are all prime except possibly two of them. Show that if $I \not\subset P_i$ for all $i$, then $I \not\subset \bigcup_i P_i$.
+\end{exer}
+
+\begin{exer}
+    Let $ \mathfrak{a}_1, \ldots, \mathfrak{a}_r$ be ideals of $A$ such that $ \mathfrak{a}_i + \mathfrak{a}_j = A $. Then 
+    \begin{enumerate}
+        \item $\bigcap_i \mathfrak{a}_i = \mathfrak{a}_1 \cdots \mathfrak{a}_r$
+        \item There is an isomorphism of rings $A/ \bigcap_i \mf{a}_i \cong \prod_i A/\mf{a}_i$.
+    \end{enumerate}
+\end{exer}
+
+\section{Localization}%
+\label{sec:localization}
+
+Let $S \subset A$ be a multiplicative subset. The main examples are $S_f = \qty{1,f,f^2, \ldots}$ and $S_{\mf{p}} = A \setminus \mf{p}$ for a prime ideal $\mf{p}$. Then if $0 \notin S$, there is at least one ideal $\mf{a}$ such that $\mf{a} \cap S = \emptyset$. Denote the set of such $\mf{a}$ by $\mc{M}_S$. Then any maximal element of $\mc{M}_S$ is a prime ideal in $A$. Existence of a maximal element is seen using Zorn's lemma.
+
+To see that maximal elements of $\mc{M}_S$ are prime ideals, note that $(x) + P$ is not in $\mc{M}_S$, so if $x,y \notin P$, there exist $a,b \in A$ and $s,s' \in S$ such that $ax \equiv s \mod P$ and $by \equiv s' \mod P$. Therefore $abxy \notin P$, so $xy$ is not in $P$
+
+\begin{lem}
+Let $\operatorname{nil} A$ be the set of all nilpotent elements. Then 
+\[ \operatorname{nil} A = \bigcap_{\substack{P \subset A \\ P \text{ prime}}} P. \]
+\end{lem}
+
+\begin{proof}
+    One direction is easy, so let $x$ be contained in all prime ideals. Then consider the set $S_x$. If $0 \notin S_x$, then $\mc{M}_{S_x}$ is nonempty, so it has a maximal element. This is a prime ideal, which implies $x$ is not contained in some prime.
+\end{proof}
+
+\begin{cor}
+    Let $Q$ be an ideal of $A$. Then $\sqrt{Q}$ is the intersection of all prime ideals containing $Q$.
+\end{cor}
+
+Now fix a multiplicative subset $S$. Then we will define an equivalence relation on $A \times S$. We write
+\[ (a,s) \sim (b,r) \]
+if there exists $t \in S$ such that $t(ar - bs) = 0$. If $A$ is a domain, then this says that $\frac{a}{s} = \frac{b}{r}$. Now we will define the \textit{localization} $S^{-1}A$ to be the set of equivalence classes for this relation. Note there is a natural morphism $A \to S^{-1}A$ that sends $a \mapsto \frac{a}{1}$.
+
+Note that the localization has a universal property: If $\varphi:A \to B$ is a morphism such that $\varphi(S) \subset B^{\times}$, then $\varphi$ factors uniquely through $S^{-1}A$.
+
+Localization gives a map $\spec S^{-1}A \to \spec A$, and in particular, if $S = \qty{1, f, f^2, \ldots}$, we recover the set $D_f = \spec A_f$.
+
+\section{Modules}%
+\label{sec:modules}
+
+Let $A$ be a ring. Then an $A$-module $M$ is an abelian group with an action of $A$. If $M$ is an $A$-module and $S \subset A$ is a multiplicative set, then $S^{-1}M$ is the set of equivalence classes for $(m,s) \sim (m',s')$ if there exists $t \in S$ such that $t(s'm - sm') = 0$. This is an $S^{-1}A$-module.
+
+\begin{lem}
+    Let $M$ be an $A$-module. Then the map 
+    \[ M \to \prod_{\substack{ \mf{p} \subset A \\ \mf{p} \text{ maximal}}} M_{\mf{p}} \]
+    is injective.
+\end{lem}
+
+\begin{proof}
+    Let $x \in M$ be nonzero. Then the annihilator of $x$ is a proper ideal of $A$, so it is contained in a maximal ideal. This implies that $x_p \in M_p$ is nonzero.
+\end{proof}
+
+\begin{cor}
+    Let $A$ be a domain. Then $A = \bigcap_{\mf{p}} A_{\mf{p}}$, where this intersection makes sense inside the fraction field of $A$.
+\end{cor}
+
+\begin{proof}
+    Apply the previous lemma to $M = K/A$.
+\end{proof}
+
+\begin{defn}
+    Let $M$ be an $A$-module and $x \in A$. Then $x$ is \textit{$M$-regular} if the morphism $m \mapsto xm$ is injective. Additionally, if $x$ is $A$-regular, then it is called \textit{regular}.
+\end{defn}
+
+The set $S_0$ of all regular elements in $A$ is multiplicative, and the ring $S_0^{-1}A$ is called the \textit{total ring of fractions}. If $A$ is a domain, then $S_0 = A \setminus \{0 \}$, and $S_0^{-1}A$ is the field of fractions.
+
+\begin{defn}
+    A ring $A$ is a \textit{local ring} if $A$ has only one maximal ideal. In this case, all elements not in the maximal ideal are units.
+\end{defn}
+
+\begin{rmk}
+    If $I \subset A$ is an ideal such that $A \setminus I = A^{\times}$, then $A$ is a local ring and $I$ its maximal ideal.
+\end{rmk}
+
+\begin{exm}
+Now let $A$ be a general ring and $\mf{p} \in \spec A$. Then $A_{\mf{p}}$ is a local ring with maximal ideal $\mf{p} A_{\mf{p}}$.
+\end{exm}
+
+\begin{defn}
+    Now suppose $A,B$ are local rings. Then a morphism $\varphi:A \to B$ of rings is \textit{local} if $\varphi(\mf{m}_A) \subset \mf{m}_B$. This means we have a commutative diagram
+    \begin{equation}
+    \begin{tikzcd}
+        A \arrow{r}{\varphi} \arrow{d} & B \arrow{d} \\
+        k_A \arrow{r} & k_B
+    \end{tikzcd}
+    \end{equation}
+    where $k_A = A/ \mf{m}_A$ is the residue field of $A$.
+\end{defn}
+
+Recall that the nilradical is the set of all nilpotent elements, or equivalently the intersection of all prime ideals. Then the \textit{Jacobson radical} $\operatorname{rad} A$ is defined to be the intersection of all maximal ideals.
+
+\begin{prop}
+    Let $x \in A$. Then $x \in \operatorname{rad} A$ if and only if $1+xa$ is a unit for any $a \in A$.
+\end{prop}
+
+\begin{proof}
+    If $(1+x)A \neq A$, then $1+x$ is contained in some maximal ideal $mf{m}$, which implies $1 \in \mf{m}$. In the other direction, suppose there exists some maximal ideal $\mf{m}$ such that $x \notin \mathfrak{m}$. Then $x$ is nonzero in $A/ \mathfrak{M}$. Thus there exists $b$ such that $1-xb \in m$, which contradicts the assumption that $1+xa$ is a unit for any $a$.
+\end{proof}
+
+\begin{lem}[Nakayama's Lemma]
+    Let $M$ be a finitely generated $A$-module. Then let $I$ be an ideal such that $IM = M$. Then there exists $x \in I$ such that $(1+x) M = 0$. In particular, if $I \subseteq \operatorname{rad} A$, then $M = 0$.
+\end{lem}
+
+\begin{proof}
+    We will induct on the number of generators. If $M = A.m$, then $m = xm$ for some $x \in I$, and thus $(1-x)m = 0$. Now suppose $M = Am_1 + \cdots + Am_r$. Let $M' = M / Am_r$. By the inductive hypothesis, $(1+x)M' = 0$ for some $x \in I$.  Therefore $(1+x)M \subset A m_r$, so $(1+x) IM = (1+x)M \subset I m_r$. Therefore $(1+x) m_r = y m_r$ for some $y \in I$, and thus $(1+x - y) m_r = 0$. Thus $(1+x)(1+x-y) M \subset (1+x-y)A m_r = 0$.
+\end{proof}
+
+\begin{cor}
+    Let $N, N' \subset M$ and $I \subset A$ such that $M = N + I N'$. Then if either
+    \begin{enumerate}
+        \item $I$ is nilpotent;
+        \item $I \subset \operatorname{rad} A$ and $N'$ is finitely generated,
+    \end{enumerate}
+    then $M = N$.
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Suppose $I$ is nilpotent. Then
+            \begin{align*}
+                M &= N + IN' = N+IM \\
+                  &= N + I (N + IM) \\
+                  &= N + I^2 M \\
+                  &\ \vdots \\
+                  &= N + I^n M \\
+                  &= N
+            \end{align*}
+            because $I$ is nilpotent.
+        \item Let $I \subseteq \operatorname{rad} A$ and $N'$ be finitely generated. Then set $M_0 = M/N = I N_0'$, where $N_0'$ is the image of $N'$ inside $M_0$. Because $N_0'$ is finitely generated, so is $M_0$. Therefore $M_0 = I M_0 = 0$, so $M = N$.
+    \end{enumerate}
+\end{proof}
+
+\begin{rmk}
+    Most of the time, we apply this result when $A$ is local and $I$ is the maximal ideal of $A$. In this case, $M / \mf{m} M$ is a finite-dimensional vector space over $A / \mf{m}$.
+\end{rmk}
+
+\section{Artinian and Noetherian Rings}%
+\label{sec:artinian_and_noetherian_rings}
+
+\begin{defn}
+    We say that an $A$-module $M$ satisfies the \textit{ascending chain condition} if any ascending chain of submodules of $M$ becomes stationary. Similarly, $M$ satisfies the \textit{descending chain condition} if any descending chain of submodules becomes stationary. If $M$ satisfies the ascending chain condition, it is called \textit{Noetherian}, and if $M$ satisfies the descending chain condition, it is \textit{Artinian}.
+\end{defn}
+
+\begin{prop}
+    Assume we have a short exact sequence of $A$ modules
+    \begin{equation}
+    \begin{tikzcd}
+        0 \arrow{r} & N \arrow{r} & M \arrow{r} & P \arrow{r} & 0.
+    \end{tikzcd}
+    \end{equation}
+    Then $M$ is Noetherian (resp. Artinian) if and only if $N$ and $P$ are.
+\end{prop}
+
+\begin{proof}
+    Proving that if $M$ is Noetherian, then $N$ and $P$ are is left to the reader. Now consider a chain
+    \[ M_1 \subset M_2 \subset \cdots M_n \subset \cdots \]
+    Then let $P_i$ be the image of the $M_i$ in $P$ and $N_i = N \cap M_i$. Then we have an exact sequence
+    \[ 0 \to N_i \to M_i \to P_i \to 0. \]
+    Because $(N_i)$ and $(P_i)$ stabilize, so must $M_i$ from the exact sequence.
+\end{proof}
+
+\begin{cor}
+    If $A$ is Noetherian (resp. Artinian), then any finitely generated $A$-module is Noetherian (resp. Artinian).
+\end{cor}
+
+\begin{cor}
+    Assume $A$ is Noetherian. Then any finitely generated $A$-module $M$ has a projective resolution by finite free $A$-modules. In other worse, there exists an exact sequence 
+    \[ \cdots \to F_n \to F_{n-1} \to \cdots \to F_1 \to F_0 \to M \to 0 \]
+    such that each $F_i = A^{m_i}$.
+\end{cor}
+
+\begin{proof}
+    Suppose $M$ is finitely generated. Then $M = A m_1 + \cdots + A m_r$, so we have a sequence
+    \[ A^r \xrightarrow{\varphi_0} M \to 0. \]
+    Then $\ker \varphi_0 = N_0$ and $F_0 = A^r$. Then we repeat this process with $N_0$ taking the role of $M$.
+\end{proof}
+
+\begin{prop}
+    An $A$-module $M$ is noetherian if and only if any submodule of $M$ is finitely generated.
+\end{prop}
+
+\begin{proof}
+    Let $N \subseteq M$. Then choose $n_1 \in N$. Then if $A n_1 \neq N$, choose $n_2 \in N \setminus A n_1$. This process will stop because $M$ is Noetherian, so $N$ is finitely generated.
+
+    Now suppose any submodule is finitely generated. Given a chain
+    \[ M_1 \subset M_2 \subset \cdots \subset M_n \subset \cdots, \]
+    set $N = \bigcup_i M_i$. This is finitely generated and is also equal to the first $M_i$ that contains all of the generators.
+\end{proof}
+
+This means that a ring $A$ is noetherian if and only if all ideals of $A$ are finitely generated. In particular, fields and principal ideal domains are Noetherian.
+
+\begin{prop}
+    Let $M$ be Noetherian and suppose $S$ is a multiplicative subset of $A$. Then $S^{-1}M$ is Noetherian.
+\end{prop}
+
+\begin{proof}
+    Consider the morphism $M \to S^{-1}M$. Then let $N_i$ be a chain of $S^{-1}A$-modules in $S^{-1}M$. Their preimages $M_i$ form a chain, and they are stationary, so $N_i$ is also stationary.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be a Noetherian ring. Then $A[X]$ is Noetherian.
+\end{thm}
+
+\begin{proof}
+    Let $I \subset A[X]$. Then $\mf{A}_n \subset A$ be generated by the dominant coefficients of polynomials in $I$ of degree at most $n$. Then we can write $a \in \mf{A}_n$ as $a = \sum \alpha_i \beta_i$ where $\alpha_i \in A$ and $\beta_i$ a dominant coefficient of a polynomial of degree at most $n$ in $I$. Thus the $\mf{A}_n$ form a chain of ideals of $A$ that stabilizer for $n \geq N$. Then $\mf{A}_N = (\beta_1, \ldots, \beta_r)$. Set $Q_i = \beta_i X^N + \cdots \in I$. If $P \in I$, then there exists $S$ such that $P = QS+R$ such that $Q \in A Q_1 + \cdots + A Q_r$ and $\deg R < N$.
+
+    Therefore $P \in (Q_1, \ldots, Q_r) + A[X]_{N-1} \cap I$, so $I \subset (Q_1, \ldots, Q_r) + A[X]_{N-1} \cap I$ and is thus finitely generated.
+\end{proof}
+
+\begin{cor}
+    Let $B$ be a finitely-generated $A$-algebra. Then if $A$ is Noetherian, $B$ is also Noetherian.
+\end{cor}
+
+\begin{cor}
+    Any finitely generated algebra over a field is Noetherian.
+\end{cor}
+
+\begin{rmk}
+    Suppose $A$ is Noetherian and $M$ an $A$-module. If $M$ is finitely generated, then $M$ is Noetherian, but submodules are not necessarily Noetherian. However, they are finitely generated.
+\end{rmk}
+
+Suppose $A \subset B$ is an inclusion of rings. Then we say that $x \in B$ is 
+\textit{integral over $A$} if there exists a monic polynomial $Q \in A[t]$ such that $Q(x) = 0$.
+
+\begin{prop}
+    \label{prop:integral}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $x \in B$ is integral over $A$;
+        \item $A[x]$ is a finitely-generated $A$-module;
+        \item There exists $A[x] \subset C \subset B$ such that $C$ is a finitely-generated $A$-module.
+        \item There exists a faithful $A[x]$-module $M$ which is finitely generated over $A$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{description}
+        \item[1 implies 2] Note that $A[x]$ is generated by $1,x,x^2, \ldots, x^m$, where $Q$ has degree $m$.
+        \item[2 implies 3] Set $C = A[x]$.
+        \item[3 implies 4] Choose $M = C$.
+        \item[4 implies 1] Write $M = Am_1 + \cdots + A m_r$. $M$ is an $A[x]$-module, so we can consider $x . M \subset M$. Then for all $i$, we have $x m_i = \sum a_{ij} m_j$, so if we write consider the matrix $T = (a_{ij})$, then this matrix represents the map given by multiplication by $x$. Therefore we have
+            \[ \det (T - x I_r) \cdot \begin{pmatrix}
+                m_1 \\ \vdots \\ m_r
+            \end{pmatrix} = 0, \]
+            so set $Q = \det(T - x I_r)$. This is monic and $Q(x) . m_i = 0$ for all $i$, and therefore $Q(x)$ acts by $0$ on $M$. Because $M$ is a faithful $A[x]$-module, we have $Q(x) = 0$.
+    \end{description}
+\end{proof}
+
+\begin{exer}
+    Let $x,y \in B \supset A$. Show that if $x$ and $y$ are integral over $A$ then so are $x+y,xy$.
+\end{exer}
+
+\begin{prop}
+    Let $A \subset B \subset C$. Assume that $A$ is Noetherian and that $C$ is a finitely-generated $A$-algebra. If $C$ is a finitely-generated $B$-module, then $B$ is a finitely-generated $A$-algebra.
+\end{prop}
+
+\begin{proof}
+    Write $C = B c_1 + \cdots + B c_r$. Also, we can write $C = A[x_1, \ldots, x_m]$ for some $x_i \in C$. Then we can write $x_i = \sum b_{ij} c_j$ and $c_ic_j = \sum b_{ijk} c_k$ for $b_{ij}, b_{ijk} \in B$. Then $B_0 = A[b_{ij}, b_{ijk}]$ is a finitely-generated $A$-algebra. Any element of $C$ is a polynomial in the $x_i$ with coefficients in $A$, so $C$ is a finitely-generated $B_0$-module. In particular, $B_0$ is Noetherian. Because $B \subset C$, this implies that $B$ is a finitely generated $B_0$-module, so it is a finitely-generated $A$-algebra.
+\end{proof}
+
+\begin{cor}
+    Let $k$ be a field and $E$ a finitely-generated $k$-algebra. If $E$ is a field, then $E$ is a finite extension of $k$.
+\end{cor}
+
+\begin{proof}
+    Let $E$ be a finitely-generated $k$-algebra. Then there exist $x_1, \ldots, x_r \in E$ that are algebraically independent over $k$. Then $E$ is algebraic over $k(x_1, \ldots, x_r)$, which is the field of fractions of $k[x_1, \ldots, x_r]$. However, this gives an inclusion $k \subset F \subset E$, where $E$ is a finitely-generated $k$-algebra and $E$ is algebraic over $F$.
+
+    By the proposition, $F$ is a finitely-generated $k$-algebra. Therefore, we can write $F = h[y_1, \ldots, y_s]$, where $y_i = \frac{f_i}{g_i}$. Because $k[x_1, \ldots, x_n]$ is a UFD, then we can write
+    \[ h = \prod_{i=1}^s g_i + 1 \in k[x_1, \ldots, x_n]. \]
+    $h$ is repatively prime to all of the $g_i$, so $\frac{1}{h} \notin k[y_!, \ldots, y_s]$. This gives a contradiction, so $E$ must be algebraic over $k$.
+\end{proof}
+
+\subsection{Primary Decomposition in Noetherian Rings}%
+\label{sub:existence_of_}
+
+\begin{defn}
+    An ideal $\mf{a} \subset A$ is \textit{irreducible} if for any decomposition $\mf{a} = \mf{b} \cap \mf{c}$, then either $\mf{a} = \mf{b}$ or $\mf{a} = \mr{c}$.
+\end{defn}
+
+\begin{exm}
+    If $\mf{a}$ is a prime ideal, then $\mf{a}$ is irreducible. To see this, if $\mf{a} \mid \mf{bc}$, then $\mf{a}$ contains one of $\mf{b}, \mf{c}$, and so either $\mf{a} = \mf{b}$ or $\mf{a} = \mf{c}$.
+\end{exm}
+
+\begin{rmk}
+    Suppose $\mf{m} \subset A$ is a maximal ideal. Then any power $\mf{m}^n$ of $\mf{m}$ is primary.
+\end{rmk}
+
+\begin{proof}
+    We want to prove that the zero divisors of $A / \mf{m}^n$ are nilpotent. Because $\mf{m}$ is maximal, then $A / \mf{m}^n$ is a local ring with maximal ideal $\mf{m} / m^n$. But then $A / \mf{m}^n \setminus \mf{m} / \mf{m}^n$ are all units, so everything in $\mf{m}$ is nilpotent.
+\end{proof}
+
+\begin{lem}
+    If $A$ is Noetherian, then every irreducible ideal is primary.
+\end{lem}
+
+\begin{proof}
+    Let $\mf{a} \subset A$ be irreducible. Then we can pass to the quotient, so we may asusme $\mf{a} = 0$. Let $x,y$ be nonzero with $xy = 0$. We want to show that $x$ is nilpotent.
+
+    Because $A$ is Noetherian, then there exists $n$ such that $\operatorname{Ann} x^n = \operatorname{Ann} x^{n+1}$. We want to show that $(x^n) \cap (y) = 0$, so choose $z = ax^n = by$. Then $zx = ax^{n+1} = byx = 0$, so $a \in \operatorname{Ann} x^{n+1} = \operatorname{Ann} x^n$. However, this means $z = 0$. Because $0$ is irreducible, then $(x^n) = 0$, so $x^n = 0$.
+\end{proof}
+
+\begin{cor}
+    If $A$ is Noetherian, then every ideal of $A$ has a primary decomposition. In other words, we can write $I = \mf{a}_1 \cap  \cdots \cap \mathfrak{a}_r$, where each $\mf{a_i}$ is primary. 
+\end{cor}
+
+\begin{proof}
+    Let $S$ be the set of ideals with no primary decomposition. If $S$ is nonempty, then $S$ has a maximal element $I$. To see this, we can use the fact that $A$ is Noetherian, so any chain of ideals in $S$ eventually stabilizes. We know that $I$ is not irreducible, we can write $I = \mf{a} \cap \mathfrak{b}$ such that $I \neq \mf{a}, \mf{b}$. In addition, $\mf{a}, \mf{b} \notin S$, so they have a primary decomposition. This implies that $\mf{a} \cap \mf{b} = I$ has a primary decomposition.
+\end{proof}
+
+\begin{rmk}
+    This decomposition is not unique. For example, consider $I = \ev{ x^2, xy } \subset k[x,y]$. Then $I = \ev{x} \cap \ev{x^2, xy, y^n}$ for all $n > 0$.
+\end{rmk}
+
+\subsection{Artinian Rings}%
+\label{sub:artinian_rings}
+
+\begin{prop}
+    Assume that $A$ is Artinian.
+    \begin{enumerate}
+        \item Every prime ideal of $A$ is maximal.
+        \item $A$ has finitely many maximal ideals.
+        \item The Jacobson radical of $A$ is nilpotent.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Fix a prime ideal $\mf{p}$ and consider the domain $B = A / \mf{p}$. Choose $B \ni x \neq 0$ and consider the decreasing chain $(x^n)$ of ideals. This stabilizes, so there exists $(x^n) = (x^{n+1})$, so we can write $x^n = x^{n+1}y$ for some $y \in B$, and therefore $1 = xy$ because $B$ is a domain. Therefore $x$ has an inverse, so $B$ is a field. Thus $\mf{p}$ is maximal.
+        \item Suppose we have infinitely many maximal ideals $\mf{p}_1, \ldots, \mf{p}_n, \ldots$ that are pairwise distinct. Then we form a chain
+            \[ \mf{p}_1 \supset \mf{p}_1\mf{p}_2 \supset \cdots \]
+            which becomes stationary. Therefore $\mf{p}_1 \cdots \mf{p}_n \subset \mf{p}_{n+1}$, so $\mf{p}_{n+1}$ contains some $\mf{p}_i$. Because these ideals are maximal, this is a contradiction.
+        \item Consider $I = \mr{rad}(A) = \mf{m}_1 \cap \cdots \cap \mf{m}_n$. Then the chain $I \supset I^2 \supset \cdots$ stabilizes, so $I^n = I^{n+1}$ for some $n$. Let $J = ((0): I^n)$.\footnote{Here, $(\mf{a}: \mf{b}) = \qty{x \in A \mid x\mf{b} \in \mf{a}}$.} We will show that $J = A$. If not, let $J' \supsetneq J$ such that $J'$ is minimal for this property. Such a $J'$ exists because $A$ is Artinian.
+
+            Let $x \in J' \setminus J$ and consider the ideal $Ax + J$ By minimality of $J'$, we see that $Ix + J \subsetneq J'$ (otherwise $J = J'$ by Nakayama's lemma). Therefore $Ix + J = J$, so $Ix \subset J$ and thus $x \in (J:I)$. Therefore, $I^{n+1}x \subset I^n J = (0)$. This implies $I^nx = 0$, so $x \in J$ and thus $J' = J$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{defn}
+    An $A$-module $M$ is called \textit{irreducible} if $0$ and $M$ are the only submodules of $M$.
+\end{defn}
+
+\begin{defn}
+    An $A$-module $M$ is said to be \textit{of finite length}  if there exists a (finite) decreasing sequence of submodules 
+    \[ M = M_0 \supsetneq M_1 \supsetneq \cdots \supsetneq M_{n+1} = 0 \]
+    such that $M_i / M_{i+1}$ is irreducible for $i = 0, \ldots, n$. In this case, $n$ is actually unique and depends only on $M$. We will call $n$ the \textit{length} of $M$. 
+\end{defn}
+
+\begin{prop}
+    Let $A$ be a ring. Then $A$ is Artinian if and only if $A$ is of finite length as an $A$-module.
+\end{prop}
+
+\begin{proof}
+    If $A$ is of finite length, then we have a sequence $A = M_0 \supsetneq \cdots \supsetneq M_{n+1} = 0$ where $M_i / M_{i+1}$ is irreducible. If $\mf{a}_1 \supset \mf{a}_2 \supset \cdots$ is a decreasing chain of ideals, so $\mf{a}_i \cap M_n$ is a decreasing chain of ideals. However, each is either $M_n$ or $0$, so this chain stabilizes. Similarly, the chain $(M_j \cap \mf{a}_i) / (M_{j+1} \cap \mf{a}_i)$ also stabilizes for all $j$. Therefore, there exists $N$ such that for all $i > N$, $M_j \cap \mf{a}_i / (M_{j+1} \cap \mf{a}_i)$ is constant for all $j$, so $\mf{a}_i$ is constant for all $i > N$.
+
+    Now suppose that $A$ is Artinian. Choose $I = \mr{rad}(A) = \mf{m}_1 \cap \cdots \cap \mf{m}_m$, where the $\mf{m}_i$ are the maximal ideals of $A$. Then $I$ is nilpotent, so there exists $n > 0$ such that
+    \[ 0 = I^n = \mf{m}_1^n \cdots \mf{m}_m^n. \]
+    Then $A = A / I^n = \prod A/ \mf{m}_j^n$ by the Chinese remainder theorem, so $A / \mf{m}_j^n$ is clearly a local ring and is of finite length as an $A$-module. Note that the $A/\mf{m}_j$-vector space $\mf{m}_j^i / \mf{m}_j^{i+1}$ is finite-dimensional because $A$ is Artinian. Therefore $\mf{m}_j^i / \mf{m}_j^{i+1}$ is of finite length.
+\end{proof}
+
+\begin{exer}
+    If there is an exact sequence $0 \to N \to M \to P \to 0$ of $A$-modules, then $M$ is of finite length if and only if $N$ and $P$ are of finite length. Moreover, $\ell(M) = \ell(P) + \ell(N)$.
+\end{exer}
+
+\begin{thm}
+    $A$ is Artinian if and only if $A$ is Noetherian and $\dim A = 0$.
+\end{thm}
+
+\begin{proof}
+    If $A$ is Artinian, we have already proved that $\dim A = 0$. By the previous proposition, because $A$ is of finite length, $A$ is Noetherian. To see this, for a chain $\mf{a}_1 \subset \mf{a}_2 \subset \cdots$, note that $\mf{a}_m \cap M_i / \mf{a}_m \cap M_{i+1}$ stabilizes. We can do this for each $i$, so any increasing chain stabilizes.
+
+    Now assume $A$ is Noetherian and has dimension $0$. We know that $(0)$ has a primary decomposition, so we can write $(0) = \mf{q}_1 \cap \cdots \cap \mf{q}_r$, where each $\mf{q}_i$ is primary. Then $\mf{m}_i = \sqrt{\mf{q}_i}$ is a prime ideal, so it is maximal because $\dim A = 0$. Because $A$ is Noetherian and for all $x \in \mf{m}_i$, $x^n \in \mf{q}_i$ for $n \gg 0$, so there exists $N$ such that $\mf{m}_i^N \subset \mf{q}_i$ for each $i$. Therefore 
+    \[ \mf{m}_1^N \cdots \mf{m}_r^N \subset \mf{q}_1 \cdots \mf{q}_r \subset \mf{q}_1 \cap \cdots \cap \mf{q}_r = 0, \]
+    so $\mf{m}_1^N \cdots \mf{m}_1^N = 0$. Therefore, $A \cong A / \mf{m}_1^N \times \cdots \times A / \mf{m}_r^N$. Each $A / \mf{m}_i^N$ is of finite length (because each $\mf{m}_i^j / \mf{m}_i^{j+1}$ is a finite-dimensional vector space), so $A$ is of finite length.
+\end{proof}
+
+\begin{prop}
+    Let $A$ be a Noetherian local ring with maximal ideal $\mf{m}$. Then one of the following holds:
+    \begin{enumerate}[label=(\alph*)]
+        \item Either $\mf{m}^n \supsetneq \mf{m}^{n+1}$ for all $n$, or;
+        \item $\mf{m}^n = 0$ for $n \gg 0$ and in this case, $A$ is Artininian.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    If $\mf{m}^n = \mf{m}^{n+1}$, then $\mf{m}^n = 0$ by Nakayama's lemma. This implies that $A = A / \mf{m}^n$ is of finite length. Then if $\mf{p}$ is prime, then $\mf{m}^n = (0) \subset \mf{p}$, so $\mf{m} \subset \mf{p}$. Because $\mf{m}$ is maximal, $\mf{m} = \mf{p}$, so $\dim A = 0$.
+\end{proof}
+
+\begin{thm}[Structure Theorem for Artinian Rings]
+    An Artinian ring is uniquely up to isomorphism a finite product of Artinian local rings.
+\end{thm}
+
+\begin{proof}
+    Previously, we proved that $A = \prod A / \mf{m}_i^N$. Each of these is a local Artinian ring.
+\end{proof}
+
+\chapter{Linear Algebra of Modules}%
+\label{cha:linear_algebra_of_modules}
+
+\begin{prop}
+    Assume $M, N, P$ are $A$-modules.
+    \begin{enumerate}
+        \item The sequence $N \to M \to P \to 0$ is exact if and only if for all $A$-modules $Q$, the sequence
+            \[ 0 \to \Hom(P,Q) \to \Hom(M,Q) \to \Hom(N,Q) \]
+            is exact.
+        \item The sequence $0 \to N \to M \to P $ is exact if and only if for all $A$-modules $Q$, the sequence
+            \[ 0 \to \Hom(Q,N) \to \Hom(Q,M) \to \Hom(Q,P) \]
+            is exact.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    This is left as an exercise.
+\end{proof}
+
+\begin{rmk}
+    In general, if $0 \to M \to N \to P \to 0$ is exact, then
+    \[ 0 \to \Hom(P,Q) \to \Hom(N,Q) \to \Hom(M,Q) \\
+    0 \to  \Hom(Q,M) \to \Hom(Q,N) \to \Hom(Q,P) \]
+    are exact but the last morphism is not necessarily surjective.
+\end{rmk}
+
+\begin{defn}
+    A module $Q$ is \textit{projective} if the functor $\Hom(Q,-)$ is exact. Here, exact means that short exact sequences are preserved. Similarly, a module $I$ is \textit{injective} if the functor $\Hom(-,I)$ is exact.
+\end{defn}
+
+\begin{prop}
+    A module $Q$ is projective if and only if $Q$ is a direct factor of a free module. In other words, there exists a free module $F$ and $A$-module $Q'$ such that $F = Q \oplus Q'$.
+\end{prop}
+
+\begin{proof}
+    Suppose $Q$ is projective. Then there is a surjection $\pi: A^{(S)} \to Q \to 0$. Because $Q$ is projective, there exists a map $\theta$ such that $\pi \circ \theta = \mr{id}$. Therefore $A^{(S)} \cong Q  \oplus Q'$, where $Q'$ is the kernel of $\pi$.
+
+    On the other hand, if $A^{(S)} = Q \oplus Q'$, then for any diagram of the form
+    \begin{equation}
+    \begin{tikzcd}
+        M \arrow{r} & P \arrow{r} & 0 \\
+                    & Q \arrow{u}
+    \end{tikzcd}
+    \end{equation}
+    we can embed $Q$ in $A^{(S)}$ and then use projectivity of free modules (because $\Hom(A,M) = M$).
+\end{proof}
+
+\begin{rmk}
+    If $M$ is projective and finitely generated, then it is a direct factor of a finite free module.
+\end{rmk}
+
+\begin{defn}
+    A \textit{projective resolution} of an $A$-module $M$ is a right bounded complex
+    \[ \cdots \to P_{n+1} \to P_n \to \cdots \to P_0 \to 0 \]
+    of projective modules such that there exists $P_0 \to M$ such that
+    \[ \cdots P_{n+1} \to P_n \to \cdots \to P_0 \to M \to 0 \]
+    is exact.
+\end{defn}
+
+\begin{exer}
+    Show that any module has a projective resolution (\textbf{Hint:}  construct a free resolution). In addition, any two projective resolutions are homotopic.
+\end{exer}
+
+\begin{defn}
+    %A map of complexes $\phi: M_{.} \to N_{.}$ is a \textit{homotopy} if there exist maps 
+    $k_q: M_q \to N_{q+1}$ such that 
+    $\phi_q = d^N \circ k_q + k_{q-1} \circ d^M$. 
+\end{defn}
+
+\section{Tor and Ext Functors}%
+\label{sec:derived_functors}
+
+Note that for a complex, we can compute the \textit{homology} 
+$H_q(M_{\bullet}) \coloneqq \ker d_q / \Im d_{q+1}$. 
+This measures the defect of the complex from being exact. 
+For functors that are not exact, we can construct \textit{derived functors} that measure the defect of exactness. 
+Let $F: A\text{-}\ms{Mod} \to A\text{-}\ms{Mod}$ be right exact. 
+Then for any $M$, we can consider a projective resolution 
+$P_{\bullet} \to M \to 0$. 
+Applying $F$ to $P_{.}$, then the \textit{left derived functor} 
+$L_{\bullet} F(M)$ is defined by $L_{\bullet} F(M) = H_{\bullet}(F(P_{\bullet}))$.
+
+\begin{prop}
+    If $0 \to M \to N \to P \to 0$ is exact, then we have a long exact sequence
+    \[ \cdot \to L_1F(M) \to L_qF(N) \to L_q F(P) \to L_{q-1} F(M) \to \cdots \to L_0 F(M) \to L_0 F(N) \to L_0 F(P) \to 0. \]
+\end{prop}
+    
+Recall that the tensor product $M \otimes N$ of two modules $M,N$ is an $A$-module with a bilinear map $M \times N \to M \otimes N$ such that all bilinear maps $M \times N \to P$ factor through $M \otimes N$.
+
+\begin{prop}
+    The functors $- \otimes N, \Hom(N,-)$ are an adjoint pair.
+\end{prop}
+
+\begin{cor}
+    If $N \to M \to P \to 0$ is exact, then 
+    \[ N \otimes Q \to M \otimes Q \to P \otimes Q \to 0 \]
+    is exact.
+\end{cor}
+
+\begin{defn}
+    A module $Q$ is \textit{flat} if $- \otimes Q$ is exact. 
+\end{defn}
+
+We can defined the left derived functors $\operatorname{Tor}_q(Q,M)$ of the tensor product.
+
+\begin{prop}
+    Any projective module is flat.
+\end{prop}
+
+\begin{proof}
+    Clearly free modules are flat, so write $Q \oplus Q' = A^{(S)}$ and then note that the tensor product distributes over the sum.
+\end{proof}
+
+\begin{prop}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $M$ is flat over $A$.
+        \item If $N' \hookrightarrow N$, then $M \otimes N' \hookrightarrow M \otimes N$.
+        \item For all finitely generated ideals $I \subset A$, $I \otimes M \hookrightarrow M$.
+        \item For any finitely generated ideals $I \subset A$, $\operatorname{Tor}_1(M,A/I) = 0$.
+        \item For any finitely generated module $N$, we have $\operatorname{Tor}(M,N) = 0$.
+        \item For all $a_i \in A$ and $x_i \in M$ such that $\sum a_i x_i = 0$ there exist $y_1, \ldots, y_s \in M$ and $b_{ij}$ such that $x_i = \sum b_{ij} y_j$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    It is clear that 1 is equivalent to 2 implies 3 implies 4 implies 5. The directions 3 implies 2 and 4 implies 3 are left to the reader. 
+    \begin{description}
+        \item[1 implies 6] Choose $a_i \in A, x_i \in M$ such that $\sum_{i=1}^r a_i x_i = 0$. Then define a map $A^r \xrightarrow{f} A$ by
+            \[ f(b_1, \ldots, b_r) = \sum_{i=1}^r a_i b_i \]
+            and define $K = \ker f$. 
+            Because $M$ is $A$-flat, we have an exact sequence
+            \[ 0 \to K \otimes M \to M^r \to M. \]
+            Then $(x_1, \ldots, x_r) \in \ker f \otimes \mr{id}_M$. Therefore there exists $b_1, \ldots, b_s \in K$ and $y_1, \ldots, y_s \in M$ such that 
+            \[ (x_1, \ldots, x_r) = \sum_{j=1}^s b_j \otimes y_j. \]
+            Writing $b_j = (b_{1j}, \ldots, b_{rj})$, we obtain the identity
+            \[ \sum_{i=1}^r b_{ij} a_i = 0 \]
+            and thus $x_i = \sum b_{ji} y_j$.
+        \item[6 implies 3] Choose an ideal $I \subset A$. Consider the map $0 \to I \otimes M \to M$. Then for any element in the kernel, we can write 
+            \[ \sum_i a_i \otimes x_i \mapsto \sum a_i x_i = 0. \]
+            Then we can write $x_i = \sum b_{ij} y_j$ and so
+            \[ \sum a_i \otimes x_i = \sum \sum a_i \otimes b_{ij}y_j = \sum \qty(\sum a_i b_{ij}) \otimes y_j = 0 \]
+            and thus $I \otimes M \to M$ is injective. \qedhere
+    \end{description}
+\end{proof}
+
+Let $\phi: A \to B$ be a map of rings and let $M$ be a $B$-module. Define $\phi$ to be \textit{flat} if $B$ is flat as an $A$-module.
+
+\begin{prop}
+    If $\phi: A \to B$ is flat and $M$ is a flat $B$-module, then $M$ is also flat as an $A$-module.
+\end{prop}
+
+\begin{proof}
+    Let $S$ be an $A$-module. Then $S \otimes_A M = S \otimes_A (B \otimes_B M) = (S \otimes_A B) \otimes_B M$. If $0 \to N_1 \to N_2$ is an exact sequence of $A$-module, by flatness of $B$ as an $A$-module, then
+    \[ 0 \to N_1 \otimes_A B \to N_2 \otimes_A B\]
+    is exact. Because $M$ is flat over $B$, we see that
+    \[ 0 \to (N_1 \otimes_A B) \otimes_B M \to (N_2 \otimes_A B) \otimes_B M \]
+    is exact, as desired.
+\end{proof}
+
+Now let $M$ be an $A$-module. Then for any map $A \xrightarrow{\phi} B$, we can consider the $B$-module $M_{(B)} \coloneqq M \otimes_A B$.
+
+\begin{prop}
+    If $M$ is $A$-flat, then $M_{(B)}$ is $B$-flat.
+\end{prop}
+
+\begin{proof}
+    For a $B$-module $S$, write
+    \begin{align*}
+        S \otimes_B M_{(B)} &= S \otimes_B (M \otimes_A B) \\
+                            &\cong S \otimes_B (B \otimes_A M) \\
+                            &\cong (S \otimes_B B) \otimes_A M \\
+                            &\cong S \otimes_A M.
+    \end{align*}
+    Thus if $0 \to S_1 \to S_2$ is exact, then $0 \to S_1 \otimes_A M \to S_2 \otimes_A M$ is exact because $M$ is $A$-flat, as desired.
+\end{proof}
+
+\begin{prop}
+    Let $S \subset A$ be a multiplicative subset of $A$. Then the morphism of rings $A \to S^{-1}A$ is flat.
+\end{prop}
+
+The proof is left to the reader. This can be reformulated as $M \otimes_A S^{-1} A \cong S^{-1}M$.
+
+Now we will give some remarks about the $\operatorname{Ext}$ functors. For any left exact functor, we may define the right derived functors $R^{\bullet} F$ by
+\[ R^i F(M) = H^i(F(I^{\bullet})) \]
+where $M \to I^{\bullet}$ is an injective resolution. Then we will define the right derived functors of $\Hom_A(N,-)$ by $\Ext_A^i(N,-)$.
+
+\begin{prop}
+    If $M$ is injective, then $\Ext_A^i(N,M) = 0$ for all $i > 0$. Similarly, if $N$ is projective, then $\Ext_A^i(N,M) = 0$ for all $I > 0$.
+\end{prop}
+
+\begin{rmk}
+    We can compute $Ext^i(N,M)$ using a projective resolution of $N$.
+\end{rmk}
+
+\begin{prop}
+    Let $A \to B$ be a morphism of rings and let $M, N$ be $A$-modules. Then let $M_{(B)}, N_{(B)}$ be their base changes to $B$. Then we have
+    \[ \Ext_B^i (M_{(B)}, N_{(B)}) = \Ext_A^i(M,N)_{(B)} \]
+    and 
+    \[ \Tor_i^B(M_{(A)}, N_{(B)}) = \Tor_i^A(M,N)_{(B)} \]
+    if $B$ is $A$-flat.
+\end{prop}
+
+\begin{proof}
+    This follows from the definition of $\Ext, \Tor$ using projective resolutions using the following facts.
+    \begin{enumerate}
+        \item If $M$ is $A$-projective, then $M_{(B)}$ is $B$-projective.
+        \item Since $B$ is $A$-flat, for any complex $X^{\bullet}$ of $A$-modules, then $H^{\bullet}(X_{(B)}^{\bullet}) = H^{\bullet}(X^{\bullet})_{(B)}$.
+    \end{enumerate}
+\end{proof}
+
+\section{Flatness}%
+\label{sec:flatness}
+
+\begin{prop}
+    Let $A$ be a local ring. Then any finitely generated flat $A$-module is free. In particular, free, projective, and flat are equivalent for $A$-modules.
+\end{prop}
+
+\begin{proof}
+    We know that free implies projective implies flat. Therefore we will show that if $M$ is flat, then it is free. Assume that $M$ is finitely generated and $A$-flat. Let $k = A / \mf{m}$ be the residue field of $A$. Define $\ol{M} = M \otimes_A k$, which is a vector space of finite dimension over $k$. Then there exists $x_1, \ldots, x_r \in M$ that descend to a basis of $\mf{M}$.
+
+    Then the map $A^r \to M, (a_i) \mapsto \sum a_i x_i$ is surjective by Nakayama's lemma. We will prove that this map is injective by induction. If $r = 1$, then suppose $a x_1 = 0$. Then there exist $y_1, \ldots, y_s, b_{11}, \ldots, b_{1s}$ such that
+    \[ x_1 = \sum_{j=1}^s b_{ij} y_j \]
+    where $ab_{ij} = 0$ for all $j = 1, \ldots, s$. Because $\ol{x}_1 \neq 0$, there exists $j$ such that $\ol{b}_{1j} \neq 0$ so $b_{1j}$ is invertible in $A$. Thus $a = 0$.
+
+    Now suppose $a_1 x_1 + \cdots + a_r x_r = 0$. Then there exist $y_1, \ldots, y_s$ and $b_{ij}$ such that
+    \[ x_i = \sum b_{ij} y_j \]
+    and \[ \sum a_i \begin{pmatrix}
+        b_{i1} \\ \vdots \\ b_{ij}
+    \end{pmatrix} = 0. \]
+    Because $\ol{x}_r \neq 0$, we see that $\ol{b}_{rj} \neq 0$ for some $j$ and thus $b_{ij}$ is a unit. Then $a_1 b_{1j} + \cdots + a_r b_{rj} = 0$, so we can write
+    \[ \sum a_i (x_i - c_i x_r) = 0. \]
+    We know that $\ol{x}_1 - c_1 \ol{x}_r, \ldots, \ol{x}_{r-1} - c_{r-1} \ol{x}_r$ are linearly independent over $k$, so from the induction $a_1 = \cdots = a_r = 0$ and thus $a_r = 0$.
+\end{proof}
+
+
+\begin{rmk}
+    If $M$ is not finitely generated, the proposition is false. An example is given by taking the field of fractions of a local domain.
+\end{rmk}
+
+When proving the proposition, we in fact proved that
+\begin{lem}
+    If $x_1, \ldots, x_r \in M$ with $M$ a flat $A$-module for $A$ a local ring and $\ol{x}_1, \ldots, \mf{x}_r$ are linearly independent in $M \otimes_A k$, then $x_1, \ldots, x_r$ are linearly independent in $M$.
+\end{lem}
+
+\begin{prop}
+    Suppose that $A \to B$ is flat and $I_1, I_2$ are ideals of $A$. Then
+    \begin{enumerate}
+        \item $(I_1 \cap I_2)B = I_1 B \cap I_2 B$;
+        \item If $I_2$ is finitely generated, then $(I_1 : I_2)B = (I_1 B : I_2 B)$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    The proof is a formal consequence of flatness.
+    \begin{enumerate}
+        \item Consider the exact sequence $0 \to I_1 \cap I_2 \to A \to A/I_1 \times A/I_2$. Tensoring with $B$, we obtain an exact sequence
+            \[ 0 \to (I_1 \cap I_2) \otimes B \to B \to B/I_1 B \times B/I_2 B. \]
+            But then $(I_1 \cap I_2) \otimes B = (I_1 \cap I_2)B$, but the kernel of the last map is clearly $I_1 B \cap I_2 B$.
+        \item Set $I_2 = (x_1, \ldots, x_r)$. Then because
+            \[ (I_1 : I_2) = \bigcap_{i=1}^r (I_1 : x_i A), \]
+            it suffices to prove the result for $I_2$ a principal ideal. We have an exact sequence
+            \[ 0 \to (I_1 : x A) \to A \xrightarrow{\times x} A/I_1. \]
+            Tensoring by $B$, we obtain
+            \[ 0 \to (I_1 : x A) \otimes B \to B \to B/I_1 B, \]
+            and by analysing the kernel, we see that $(I_1: xA) B = (I_1 B: x B)$. By repeated application of the previous part, the desired result follows. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{exm}
+    We will give an example where the previous proposition is not true in general. Let $A = k[x,y]$ and $B = A/xA = k[y]$. Then choose $I_1 = (x+y), I_2 = (y)$, so $I_1 \cap I_2 = I_1 I_2 = ( (x+y)y )$. But then we have $(I_1 \cap I_2) B = y^2 B$, but $I_1 B \cap I_2 B = yB$.
+
+    Another example is $A = k[x,y], B = k[x,y,z]/(xz-y) \cong k[x,z], I_1 = xA, I_2 = yA$. Here we can check that $(I_1 \cap I_2) = (xy)$, that $(I_1 \cap I_2)B = x^2z B$, but $I_1 B \cap I_2 B = xz B$. Viewing this geometrically as $\Spec B \to \Spec A$, we can check the fiber over $(0,0)$ and see that the map is not flat.
+\end{exm}
+
+\begin{prop}
+    Let $A \xrightarrow{\varphi} B$ be a ring homomorphism. The following are equivalent:
+    \begin{enumerate}
+        \item $B$ is flat over $A$;
+        \item $B_{\mf{P}}$ is flat over $A_{\mf{p}}$ for all $\mf{P} \in \Spec B$ and $\mf{p} = \varphi^{-1} (\mf{P})$.
+        \item $B_{\mf{P}}$ is flat over $A_{\mf{p}}$ for any $\mf{P}$ maximal.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{description}
+        \item[1 implies 2:] We know that $B_{\mf{p}}$ is flat over $A_{\mf{p}}$. But then $B_{\mf{P}}$ is flat over $B_{\mf{p}}$ because it is a localization. By transitivity of flatness, $B_{\mf{P}}$ is flat over $A_{\mf{p}}$.
+        \item[2 implies 3:] This is obvious.
+        \item[3 implies 1:] Note that for all $\mf{P}$ maximal, $\Tor_i^A(B,N)_{\mf{P}} = 0$ for $i > 0$. This implies that $\Tor_i^!(B,N) = 0$, and thus $B$ is flat over $A$. To get that the first $\Tor$ is zero we need to use the lemma belos. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{lem}
+    Let $\varphi: A \to B$ be a morphism of rings and choose $\mf{P} \in \Spec B$. Then let $\mf{p} = \varphi^{-1}(\mf{P})$ and $N$ an $A$-module. Then $\Tor_i^A(B,N)$ is a $B$-module and $\Tor_i^A(B,N)_{\mf{P}} = \Tor_i^{A_{\mf{p}}}(B_\mf{P},N_{\mf{p}})$.
+\end{lem}
+
+\begin{proof}
+    Let $X_{\bullet} \to N$ be a projective resolution. Then $\Tor$ is computed by the homology of the complex $B \otimes_A X_{\bullet}$. When we localize, we localize the homology at the $B$ term. However, $B_{\mf{p}} \otimes_A X_{\bullet} = B_{\mf{P}} \otimes_{A_{\mf{p}}} (X_{\bullet})_{\mf{p}}$, so because $X_i$ is $A$-projective, then $X_{\mf{p}}$ is $A_{\mf{p}}$-projective, and thus $(X_{\bullet})_{\mf{p}}$ is a projective resolution of $N_{\mf{p}}$. Thus the complex $B_{\mf{P}} \otimes_{A_{\mf{p}}} (X_{\bullet})_{\mf{p}}$ computes the $\Tor$ as desired.
+\end{proof}
+
+\begin{defn}
+    An $A$-module $N$ is said to be \textit{faithfully flat} if
+    \begin{enumerate}
+        \item $N$ is $A$-flat;
+        \item For any sequence $P \to Q \to R$ of $A$-modules, if $P \otimes N \to Q \otimes N \to R \otimes N$ is exact, then $P \to Q \to R$ is exact.
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}
+    Let $M$ be an $A$-module. Then the following are equivalent:
+    \begin{enumerate}
+        \item $M$ is faithfully flat over $A$;
+        \item $M$ is flat and for any nonzero $N$, $M \otimes N \neq 0$;
+        \item $M$ is flat and for all maximal ideals $\mf{m} \subset A$, $\mf{m} . M \neq M$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    \begin{description}
+        \item[1 implies 2:] Choose the sequence $0 \to N \to 0$. Then tensor with  $M$. If $N \otimes M = 0$, the sequence is now exact, then the original sequence is exact, and thus $N = 0$.
+        \item[2 implies 3:] Consider $N = A/\mf{m}$. Then $N \otimes M = M / \mf{m}M \neq 0$, so $M \neq \mf{m}M$.
+        \item[3 implies 2:] Choose $0 \neq x \in N$ and set $I = \operatorname{Ann}(x) \subset \mf{m}$ for some maximal ideal $\mf{m}$. Then $Ax = A/I$, so $Ax \otimes M \cong M / IM \neq 0$. Because $Ax$ injects into $N$, $Ax \otimes M$ injects into $N \otimes M$, which must be nonzero.
+        \item[2 implies 1:] Consider the sequence $P \xrightarrow{f} Q \xrightarrow{g} R$. Then because $M$ is flat, $\ker(g \otimes \mr{id}_M) = \ker(g) \otimes M$ and $\Im(f \otimes \mr{id}_M) = \Im(f) \otimes M$. If $g \circ f = 0$, then $\Im(g \circ f) = 0$, which happens iff $\Im(g \circ f) \otimes M = 0$. Then $\Im((g \otimes \mr{id}_M) \circ (f \otimes \mr{id}_M)) = 0$. 
+            
+            If $P \otimes M \to Q \otimes M \to R \otimes M$ is exact, then $P \to Q \to R$ is a complex. Finally, we need that $\ker g = \Im f$. By flatness of $M$, we can tensor to find that $\ker g / \Im f \otimes M = 0$ and then we see that $\ker g / \Im f = 0$. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{cor}
+    Let $A \to B$ be a local homomorphism and let $M$ be a finitely-generated $B$=module. Then $M$ if flat over $A$ if and only if $M$ is faithfully flat over $A$.
+\end{cor}
+
+\begin{proof}
+    Clearly faithfully flat implies flat. Then we need to show that $M \neq \mf{m}_A. M$. By Nakayama's lemma, we know that $M \otimes k_B \neq 0$, so $\mf{m_B} M \neq M$. In particular, $\mf{m}_A M \neq M$. In particular, this implies that item \textbf{3} of the previous theorem holds. Thus $M$ is faithfully flat over $A$.  
+\end{proof}
+
+\begin{rmk}
+    This also shows that flat and faithfully flat are equivalent over local rings. Alternatively, we can use the equivalence of flat and free.
+\end{rmk}
+
+\begin{rmk}
+    Faithful flatness is transitive. In addition, if $A \to B$ is a morphism of rings, and $M$ is faithfully flat over $A$, then $M \otimes_A B$ is faithfully flat over $B$.
+\end{rmk}
+
+\begin{prop}
+    Let $M$ be a faithfully flat $B$-module which is faithfully flat over $A$. Then $B$ is faithfully flat over $A$.
+\end{prop}
+
+\begin{proof}
+    Let $N$ be an $A$-module. Then $(B \otimes_A N) \otimes_B M = M \otimes_A N \neq 0$ if $N \neq 0$. This implies that $B \otimes_A N$ is nonzero. Now it suffices to show that $B$ is flat over $A$.
+
+    Let $(S)$ be an exact sequence of $A$-modules. Then if we consider $((S) \otimes_A M) = (S) \otimes_A M$, this is exact by flatness of $M$ over $A$. By faithful flatness of $M$ over $B$, this implies that $(S) \otimes_A B$ is exact.
+\end{proof}
+
+\begin{prop}
+    Let $A \to B$ be faithfully flat. Then
+    \begin{enumerate}
+        \item For any $A$-module $N$, the map $N \to N \otimes_A B$ is injective;
+        \item If $I \subset A$ is an ideal, then $IB \cap A = I$;
+        \item The map $\Spec B \to \Spec A$ is surjective.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Let $0 \neq x \in N$. Then $Ax \otimes B \hookrightarrow N \otimes B$. Because $B$ is faithfully flat, $Ax \otimes B \neq 0$.
+        \item Recall that $B/IB = B \otimes A/I$. Then the map $A/I \to B/IB$ is injective. Therefore we have a map $A \to B/IB$ which has kernel $I = IB \cap A$.
+        \item Choose $\mf{p} \in \Spec A$. Then $B_{\mf{p}} = B \otimes_A A_{\mf{p}}$ and $A_{\mf{p}} \to B_{\mf{p}}$ is faithfully flat by base change. This means that $\mf{p} B_{\mf{p}} \subsetneq B_{\mf{p}}$. Thus if we choose $\mf{m}$ to be a maximal ideal of $B_{\mf{p}}$ containing $\mf{p} B_{\mf{p}}$, we see that $\mf{m} \cap A_{\mf{p}} \supset \mf{p}A_{\mf{p}}$ and thus they are equal by maximality of $\mf{p}A_{\mf{p}}$. Then if we choose $\mf{P} = \mf{m} \cap B$, we see that 
+            \begin{align*}
+                \mf{P} \cap A &= \mf{m} \cap A \\
+                              &= \mf{m} \cap A_{\mf{p}} \cap A \\
+                              &= \mf{p} A_{\mf{p}} \cap A \\
+                              &= \mf{p}.
+            \end{align*}
+            Thus the image of $\mf{P}$ is $\mf{p}$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}
+    Let $\varphi: A \to B$ be a map of rings. The following are equivalent:
+    \begin{enumerate}
+        \item The map $\varphi$ is faithfully flat.
+        \item The map $\varphi$ is flat and $\Spec B \to \Spec A$ is surjective.
+        \item The map $\varphi$ is flat and for all maximal ideals $\mf{m}$ of $A$, there exists some maximal ideal $\mf{m}'$ of $B$ such that $\varphi^{-1}(\mf{m}') = \mf{m}$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    \begin{description}
+        \item[1 implies 2:] This is the previous proposition.
+        \item[2 implies 3:] Choose a maximal ideal $\mf{m} \subset A$. Then there exists $\mf{P} \in \Spec B$ such that $\varphi^{-1}(\mf{P}) = \mf{m}$. But then if $\mf{m}'$ is any maximal ideal containing $\mf{P}$, we see that $\varphi^{-1}(\mf{m}') = \varphi^{-1}(\mf{P}) = \mf{m}$ by maximality of $\mf{m}$.
+        \item[3 implies 1:] We want to prove that $B \neq \mf{m}B$ for any maximal ideal $\mf{m}$ of $A$. Then there exists $\mf{m}'$ such that $\varphi^{-1}(\mf{m}') = \mf{m}$. But then $B \supsetneq \mf{m}' \supset \mf{m}B$. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{prop}[Descent]
+    Let $A \to B$ be faithfully flat and $M$ be an $A$-module. Then
+    \begin{enumerate}
+        \item $M$ is flat (resp. faithfully flat) if and only if $M \otimes_A B$ is $B$-flat (resp. $B$-faithfully flat).
+        \item Assume $A$ is a local ring and $M$ is finitely-generated. Then $M$ is free if and only if $M \otimes_A B$ is $B$-free.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Let $(S)$ be an exact sequence. Then $(S) \otimes_A B$ is exact, so $S \otimes_A B \otimes M \otimes_A B = (S \otimes_A M) \otimes_A B$ is exact. By faithful flatness of $B$, $(S) \otimes_A M$ is exact. Now if $N \neq 0$ is another $A$-module, we know that $M_{(B)} \otimes N_{(B)} \neq 0$, but this is the same as $(M \otimes_A N)_{(B)}$, so $M \otimes_A N$ is nonzero.
+        \item Assume that $A$ is local. Then suppose $M \otimes_A B$ is free. Therefore $M \otimes_A B$ is faithfully flat. But then, $M$ is faithfully flat over $A$, which means that $M$ is free because $M$ is finitely generated. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{exer}
+    Let $A \subset B$ be integral domains. Assume that $A$ and $B$ have the same field of fractions. Prove that $A \hookrightarrow B$ is faithfully flat if and only if $A = B$.
+\end{exer}
+
+\section{More on Integral Dependence}%
+\label{sec:more_on_integral_dependence}
+
+Recall Proposition \textbf{\ref{prop:integral}}. 
+
+\begin{cor}
+    Let $x_1, \ldots, x_n \in B$. If each $x_i$ is integral over $A$, then $A[x_1, \ldots, x_n]$ is a finitely-generated $A$-module.
+\end{cor}
+
+\begin{cor}
+    Let $C \subset B$ be the set of integral elements over $A$. Then $C$ is a subring of $B$.
+\end{cor}
+
+\begin{proof}
+    Note that $x + y, xy \in A[x][y] \in A[x,y]$, which is a finitely-generated $A$ module. Therefore they are integral over $A$.
+\end{proof}
+
+\begin{rmk}
+    The ring $C$ is not necessarily finitely-generated over $A$. For an example, choose $\Z \ol{\Z} \subset \ol{\Q}$.
+\end{rmk}
+
+\begin{defn}
+    Let $A \subset B$. Then we say that $B$ is \textit{integral over $A$} if all elements of $B$ are integral over $A$.
+\end{defn}
+
+\begin{cor}
+    Let $A \subset B \subset C$ be extensions of rings. Then if $B$ is integral over $A$ and $C$ is integral over $B$, then $C$ is integral over $A$.
+\end{cor}
+
+Proof of this is left to the reader.
+
+\begin{defn}
+    Let $A$ be an integral domain. We say that $A$ is \textit{integrally closed} if for all $x \in K = \operatorname{Frac} A$, then $x$ is integral over $A$ if and only if $x \in A$.
+\end{defn}
+
+\begin{defn}
+    Assume that $A \subset B$ is an inclusion of rings. Then the \textit{integral closure of $A$ inside $B$} is the set of all elements of $B$ that are integral over $A$. 
+\end{defn}
+
+\begin{exm}
+    A typical example of this situation is when $A$ is a domain, $K$ is its fraction field, and $L / K$ is a field extension. Then we can consider the integral closure $B$ of $A$ inside $L$. In number theory, if $K$ is a number field, we define its \textit{ring of integers} $\mc{O}_K$ to be the integral closure of $\Z$ in $K$.
+\end{exm}
+
+\begin{exer}
+    If $K = \Q(\zeta_p)$, prove that $\mc{O}_K = \Z[\zeta_p]$.
+\end{exer}
+
+\begin{exer}
+    Let $B$ be an integral domain and $A \subset B$. Prove that the integral closure of $A$ inside $B$ is integrally closed.
+\end{exer}
+
+\begin{lem}
+    Let $B$ be a domain that is integral over $A$. Then $A$ is a field if and only if $B$ is a field.
+\end{lem}
+
+\begin{proof}
+    Assume that $A$ is a field. Now choose $0 \neq x \in B$. But then we know that 
+    \[ x^n + a_{n-1}x^{n-1} + \cdots + a_0 = 0 \]
+    for some $a_i \in A$ and $a_0 \neq 0$. But then we have
+    \[ x^{-1} = -a_0^{-1} \qty( \sum_{i=1}^n a_i x^i ) \]
+    and so $x^{-1} \in B$.
+
+    Now assume that $B$ is a field. Choose $0 \neq x in A$. Then $x^{-1} \in B$. This means that $x^{-1}$ is integral over $A$, which means that
+    \[ a^{-n} + a_{n-1} x^{-(n-1)} + \cdots + a_0 = 0 \]
+    for some $a_i \in A, a_0 \neq 0$. Then if we multiply by $a^{n-1}$, we obtain
+    \[ a^{-1} + a_{n-1} + a_{n-2} x + \cdots + a_0 x^{n-1} = 0, \]
+    which means $x^{-1} \in A$.
+\end{proof}
+
+\begin{cor}
+    Let $A \subset B$ and $B$ be integral over $A$. Let $\mf{P} \in \Spec B$ and $\mf{p} = A \cap \mf{P}$. Then $\mf{p}$ is maximal if and only if $\mf{P}$ is maximal.
+\end{cor}
+
+\begin{proof}
+    Note that $B/ \mf{P}$ is integral over $A / \mf{p}$. Then we apply the lemma to $A / \mf{p} \subset B / \mf{P}$.
+\end{proof}
+
+We can refine this into going-up and going-down. Let $\phi: A \to B$ be a morphism of rings and let $\phi^*: \Spec B \to \Spec A$ be the induced map of spaces.
+
+\begin{defn}[Going-up]
+    A ring homomorphism $\phi$ satisfies the \textit{Going-up property} if the following holds:
+
+    Let $\mf{p} \subset \mf{p}'$ be prime ideals of $A$ and suppose that $\phi^*(\mf{P}) = \mf{p}$. Then there exists $\mf{P}' \subset \mf{P}$ such that $\phi^*(\mf{P}') = \mf{p}'$.
+\end{defn}
+
+\begin{defn}[Going-down]
+    A ring homomorphism $\phi$ satisfies the \textit{Going-down property} if the following holds:
+
+    Let $\mf{p} \subset \mf{p}'$ be prime ideals of $A$. Then let $\mf{P}' \in \Spec B$ satisfy $\phi^*(\mf{P}') = \mf{p}'$. Then there exists $\mf{P} \subset \mf{P}'$ with $\phi^*(\mf{P}) = \mf{p}$.
+\end{defn}
+
+\begin{lem}
+    \label{lem:goingdown}
+    The going-down property is equivalent to the following:
+
+    For all $\mf{p} \in \Spec A$ and $\mf{P}$ a minimal prime ideal of $B$ containing $\mf{p}B$, we have $\mf{P} \cap A = \mf{p}$.
+\end{lem}
+
+\begin{proof}
+    First suppose that going-down holds. Then choose $\mf{P}$ be a minimal prime containing $\mf{p}B$. Then $\mf{p}' = \phi^{-1} (\mf{P}) \supset \mf{p}$. If $\mf{p}' \neq \mf{p}$, then there exists $\mf{P}_0 \subset \mf{P}$ such that $\varphi^{-1}(\mf{P}_0) = \mf{P}$, which contradicts minimality.
+
+    Now suppose the other condition holds. Suppose $\mf{P}'$ goes to $\mf{p}' \supset \mf{p}$. Then we know that $\mf{p} B \subset \mf{p}' B \subset \mf{P}'$. If we fix $\mf{P}_0$ to be the minimal prime containing $\mf{p}B$, then we see that $\mf{P}_0 \cap A = \mf{p}$.
+\end{proof}
+
+\begin{thm}
+    If $\phi: A \to B$ is flat, then going-down holds.
+\end{thm}
+
+\begin{proof}
+    Fix $\mf{p} \subset \mf{p}'$ and let $\mf{P}'$ lie over $\mf{p}'$. Then we know that $B_{\mf{P}'}$ is flat over $\mf{A}_{\mf{p}'}$. Because $A_{\mf{p}'}$ is local and the map $A_{\mf{p}'} \to \mf{B}_{\mf{P}'}$ is local, it is faithfully flat. This implies that the map $\Spec B_{\mf{P}'} \to \Spec A_{\mf{p}'}$ is surjective, so there exists $\mf{P}_1 \in \Spec B_{\mf{P}'}$ such that $\phi^{-1}(\mf{P}_1) = \mf{p} A_{\mf{p}'}$. 
+
+    Now set $\mf{P} \coloneqq \mf{P}_1 \cap B$. Then we see that
+    \begin{align*}
+        \phi^{-1}(\mf{P}) &= \phi^{-1}(\mf{P}_1 \cap B) \\
+                          &= \phi^{-1}(\mf{P}_1) \cap A \\
+                          &= \mf{p A_{\mf{p}'}} \cap A \\
+                          &= \mf{p}. \qedhere
+    \end{align*}
+\end{proof}
+
+We will see consequences of this result in algebraic geometry.
+
+We will now consider integral ring extensions $A \subset B$.
+
+\begin{thm}[Cohen-Seidenberg]
+    Suppose $A \subset B$ is an integral extension. Then the following hold:
+    \begin{enumerate}
+        \item The map $\Spec B \to \Spec A$ is surjective.
+        \item There are no inclusion relations between the prime ideals of $B$ which are above a fixed prime ideal of $A$.
+        \item Going-up holds for $A \subset B$.
+        \item If $A$ is local with maximal ideal $\mf{m}$, then the prime ideals of $B$ lying over $\mf{m}$ are precisely the maximal ideals of $B$.
+        \item Assume further that $A$ and $B$ are integral domains and that $A$ is integrally closed. Then going-down holds for $A \subset B$.
+        \item If $B$ is the integral closure of $A$ in a normal extension of field $L$ of $K \coloneqq \operatorname{Frac} A$, then any two prime ideals of $B$ lying over the same prime ideal of $A$ are conjugate by an element of $\Aut(L/K)$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    We prove \textbf{4}, then \textbf{1}, \textbf{2}, and \textbf{3}, then \textbf{6}, and finally \textbf{5}.       
+    \begin{enumerate}
+        \item Let $\mf{p} \in \Spec A$. Then $B_{\mf{p}} = B \otimes_A A_{\mf{p}}$ is integral over $A_{\mf{p}}$. Applying \textbf{4}, we obtain the desired result.
+        \item Consider $B_{\mf{p}}$ again. By \textbf{4}, because ideals lying over $\mf{p}$ are maximal, there cannot be inclusion relations between them.
+        \item Let $\mf{p} \subset \mf{p}'$ and $\mf{P} \in \Spec B$ lying over $\mf{p}$. Then $B / \mf{P}$ is integral over $A / \mf{p}$. By \textbf{1}, we know that $\Spec B/\mf{P} \to \Spec A / \mf{p}$ is surjective. Thus there exists $\ol{\mf{P}}' \in \Spec B / \mf{P}$ lying over $\ol{\mf{p}}' = \mf{p}' / \mf{p}$. Then we know that $\ol{\mf{P}}' = \mf{P}' / \mf{P}$ for some prime ideal $\mf{P}'$ of $B$, and this is the ideal we are looking for. 
+        \item This is a consequence of Lemma \ref{lem:goingdown}.
+        \item Write $L = \operatorname{Frac} B \supset K = \operatorname{Frac} A$. Then let $L_1$ be the normal closure of $L / K$. Then let $\mf{p} \subset \mf{p}'$ in $A$ and $\mf{P}'$ in $B$ lie over $\mf{p}'$. Then let $\mf{P}_1 \subset \mf{P}'_1$ in $B_1$ the integral closure of $A$ in $L_1$. These exist thanks to \textbf{1} and \textbf{3}.  
+
+            Let $\mf{P}_1''$ in $B_1$ such that $\mf{P}_1'' \cap B = \mf{P}'$. Then there exists $\sigma$ such that $\mf{P}_1'' = \sigma(\mf{P}_1')$ because both ideals are above $\mf{p}'$. Then we can choose 
+            \[ \mf{P} \coloneqq \sigma(\mf{P}_1) \cap B \subset \mf{P}_1'' \cap B = \mf{P}'. \]
+            We need to show that $\mf{P} \cap A = \mf{p}$. But this is simply
+            \begin{align*}
+                \mf{P} \cap A &= \sigma(\mf{P}_1) \cap A \\
+                              &= \sigma(\mf{P}_1 \cap A) \\
+                              &= \sigma(\mf{p}) \\
+                              &= \mf{p}.
+            \end{align*}
+        \item We know that $A$ is integrally closed in $K$. Then let $L/K$ be a finite Galois (we can always reduce to this case) extension and $B$ the integral closure of $A$ in $L$. Then let $\mf{P}, \mf{P}' \in \Spec B$ lie above $\mf{p} \in \Spec A$. We will show there exists $\sigma \in \Gal(L/K)$ such that $\sigma(\mf{P}) = \mf{P}'$.
+
+            Suppose that no such $\sigma$ exists. Then for all $\sigma \in \Gal(L/K)$, $\mf{P}' \neq \sigma(\mf{P})$. In particular, $\mf{P}' \not\subset \sigma(\mf{P})$. Then there exists $x \in \mf{P}'$ which is not in any $\sigma(\mf{P})$ then we see that
+            \[ y \coloneqq \prod_{\sigma \in \Gal(L/K)} \sigma(x) \in K \]
+            is integral over $A$, so $y \in A$. Also, $y \notin \mf{P}$ because $x \notin \sigma(\mf{P})$, so $x \in \mf{P}'$ and thus $y \in \mf{P}'$, so $y \in \mf{p} \subset \mf{P}$. This gives a contradiction. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    Assume that $B$ is integral over $A$. 
+    \begin{enumerate}
+        \item If $\mf{P}_0 \subsetneq \mf{P}_1 \subsetneq \cdots \subsetneq \mf{P}_r$ is a chain of prime ideals of $B$, the the $\mf{p}_i \coloneqq \mf{P}_i \cap A$ for a chain of prime ideals of $A$.
+        \item If $p_0 \subsetneq \cdots \subsetneq \mf{p}_r$ is a chain of prime ideals of $A$, then there exists a chain $\mf{P}_0 \subsetneq \cdots \subsetneq \mf{P}_r$ of prime ideals of $B$ above it.
+        \item If $A$ is integrally closed and $B$ is a domain, then for any chain $\mf{p}_0 \subsetneq \cdots \subsetneq \mf{p}_r$ and $\mf{P}_r \in \Spec B$ above $\mf{p}_r$, there exists a chain $\mf{P}_0 \subsetneq \cdots \subsetneq \mf{P}_r$ above the chain in $A$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    The proof is clear and left to the reader.
+\end{proof}
+
+\begin{defn}
+    Let $\mf{p} \in \Spec A$. Then define the \textit{height}  of $\mf{p}$ by
+    \[ \mr{ht}(\mf{p}) = \max \qty{n \geq 0 \mid \exists \mf{p}_0 \subsetneq \cdots \subsetneq \mf{p}_n = \mf{p}}. \]
+    Then define the \textit{dimension} of $A$ by
+    \[ \dim A = \max \qty{ \mr{ht}(\mf{p}) \mid p \in \Spec A }. \]
+\end{defn}
+
+\begin{cor}
+    Let $A \subset B$ be an integral extension. Then
+    \begin{enumerate}
+        \item Suppose $\mf{P} \in \spec B$ lies above $\mf{p} \in \Spec A$. Then $\mr{ht}(\mf{P}) \leq \mr{ht}(\mf{p})$.
+        \item $\dim A = \dim B$.
+        \item If $A$ is integrally closed and $B$ is a domain, then we have $\mr{ht}(\mf{P}) = \mr{ht}(\mf{p})$. 
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    This is an immediate consequence of the previous corollary.
+\end{proof}
+
+\section{Associated Primes}%
+\label{sec:associated_primes}
+
+Let $M$ be an $A$-module and $\mf{p} \in \Spec A$.
+
+\begin{defn}
+    We say that $\mf{p}$ is an \textit{associated prime} of $M$ if one of the two following equivalent conditions hold.
+    \begin{enumerate}
+        \item There exists $x \in M$ such that $\mr{Ann}_A(x) = \mf{p}$;
+        \item There is an injection $A / \mf{p} \hookrightarrow M$.
+    \end{enumerate}
+\end{defn}
+
+We will denote the set of associated primes using the unfortunate notation $\mr{Ass}_A(M)$. Then the set of primes $\mf{p}$ such that $M_{\mf{p}} \neq 0$ will be denoted $\mr{Supp}_A(M)$.
+
+\begin{prop}
+    Let $\mf{p}$ be a maximal element of $\{ \Ann(x) \mid x \in M, x \neq 0 \}$. Then $\mf{p} \in \Ass_A(M)$.
+\end{prop}
+
+\begin{proof}
+    We will show that such a maximal element is actually a prime ideal. Suppose $ab \in \mf{p}$. Then $\mf{p} = \Ann(x)$ for some nonzero $x$, so $b.x \neq 0$. Then $\Ann(x) \subset \Ann(bx) \neq A$. By maximality, $\Ann(x) = \Ann(bx)$. Because $abx = 0$, then $a \in \Ann(bx) = \mf{p}$.
+\end{proof}
+
+\begin{cor}
+    Let $A$ be Noetherian.
+    \begin{enumerate}
+        \item $M$ is nonzero if and only if $\Ass_A(M)$ is nonempty.
+        \item The set of zero divisors for $M$ is the union of the associated primes of $M$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item If there is some associated prime, then clearly $M \neq 0$. In the other direction, the set of annihilators has a maximal element because $A$ is Noetherian, so there must be an associated prime.
+        \item Let $a \in \Ann(x)$ for some nonzero $x \in M$. Then $\Ann(x) \subset \mf{p}$ is contained in some associated prime (because it is contained in some maximal element), and thus every zero divisor is contained in an associated prime. The other direction is obvious. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{lem}
+    Let $S \subset A$ be a multiplicative set and $M$ an $A$-module. Then
+    \[ \Ass_A(S^{-1})M = \varphi^*(\Ass_{S^{-1}A}(S^{-1}M)). \]
+\end{lem}
+
+\begin{proof}
+    Let $\mf{p} \in \Ass_A(S^{-1}M)$. Then $\mf{p} = \Ann_A \frac{x}{1}$ for some $x \in M$, so $\mf{p} \cap S$ must be empty. Next, we see that the set $\qty{\Ann_A(sx) \mid s \in S}$ contains some maximal element $\mf{m}$ because $A$ is Noetherian. But then $\mf{m} = \Ann_A(s_0 \cdot x) = \mf{p}$.
+
+    On the other hand, if $a \in \mf{p}$, then $\frac{ax}{1} = 0$, which means $asx = 0$ for some $s \in S$. Then $a \in \Ann_A(sx) \subset \Ann(s_0 sx) = \Ann(s_0 x)$. Thus $\mf{p} \subset \Ann(s_0 x)$. Thus we have shown that
+    \[ \Ass_A(S^{-1}M) \subset \varphi^* \Ass_{S^{-1}A} (S^{-1}M). \]
+    The other inclusion is clear.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be Noetherian and $M$ and $A$-module. Then $\Ass_A(M) \subset \Supp_A(M)$ and any minimal element of $\Supp_A(M)$ is inside $\Ass_A(M)$.
+\end{thm}
+
+\begin{proof}
+    Let $\mf{p} \in \Ass_A(M)$. Then $A/\mf{p}$ injects in $M$, so we have an injection $A_{\mf{p}} / \mf{p}A_{\mf{p}} \hookrightarrow M_{\mf{p}}$. Thus $\mf{p} \in \Supp_A(M)$.
+
+    Now choose a minimal $\mf{p} \in \Supp_A(M)$. Thus $M_{\mf{p}}$ is nontrivial, so there exists a prime ideal $\mf{q} \subset \mf{p}$ such that $\mf{q} A_{\mf{p}} \in \Ass_{A_{\mf{p}}}(M_{\mf{p}})$. Thus $M_{\mf{q}} = (M_{\mf{p}})_{\mf{q}A_{\mf{p}}}$ is nonzero, so $\mf{q} \in \Supp(M)$. By minimality, $\mf{q} = \mf{p}$ and thus $\mf{p}A_{\mf{p}} \in \Ass_{A_{\mf{p}}} (M_{\mf{p}})$. Therefore $\mf{p} \in \Ass_A(M)$.
+\end{proof}
+
+\begin{defn}
+    If $\mf{p} \in \Ass_A(M)$, then $\mf{p}$ is not necessarily minimal in the support of $M$. Then such a prime is called an \textit{embedded prime}. 
+\end{defn}
+
+\begin{prop}
+    Let $A$ be Noetherian and $M$ a finitely-generated $A$-module. Then
+    \begin{enumerate}
+        \item There exists a chain
+            \[ 0 = M_0 \subset M_1 \subset \cdots \subset M_n = M \]
+            such that $M_i / M_{i-1} \cong A / \mf{p}_i$ for $i = 1, \ldots, n$ and $\mf{p}_i \in \Supp_A(M)$.
+        \item Given such a sequence, we have $\Ass_A(M) \subset \{ \mf{p}_1, \ldots, \mf{p}_n \}$. In particular this set is finite.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Suppose $M \neq 0$ Then choose $\mf{p}_1 \in \Ass_A(M)$ and let $M_1$ be the image of $A / \mf{p}_1$ in $M$. Then if $M / M_1$ is nonzero, choose $\mf{p}_1 \in \Ass_A(M / M_1)$ and $M_2$ defined analogously to $M_1$. This gives a sequence of submodules of $M$ such that $A / \mf{p}_i \cong M_i / M_{i-1}$. Because $M$ is Noetherian, this sequence becomes stationary. Thus there exists $n$ such that $M_n = M$.
+        \item This is a consequence of the next lemma.
+    \end{enumerate}
+\end{proof}
+
+\begin{rmk}
+    In general the support of a module is \textbf{not} finite. 
+\end{rmk}
+
+\begin{lem}
+    Assume we have an exact sequence of modules $0 \to M' \to M \to M''$. Then $\Ass(M) \subset \Ass(M') \cup \Ass(M'')$.
+\end{lem}
+
+\begin{proof}
+    If $\mf{p} \in \Ass(M)$, there exists $N \subset M$ such that $N \cong A / \mf{p}$. Then if $N \cap M' = 0$, $N \hookrightarrow M''$ and $\mf{p} \in \Ass(M'')$. If the intersection is nonzero, then there exists some nonzero $x \in N \cap M'$ such that $\Ann_A(x) = p$ because $A/\mf{p}$ is a domain. Thus $\mf{p} \in \Ass(M')$.
+\end{proof}
+
+\begin{defn}
+    We say that $M$ is \textit{coprimary} if $\Ass_A(M) = \qty{\mf{p}}$. 
+\end{defn}
+
+\begin{defn}
+    Let $N \subset M$. Then we say that $N$ is \textit{$\mf{p}$-primary} if $\Ass_A(M/N) = \{ \mf{p} \}$. Alternatively, we say that $N$ \textit{belongs to} $\mf{p}$.  
+\end{defn}
+
+\begin{lem}
+    A module $M$ is coprimary if and only if $M$ is nonzero and any zero divisor for $M$ is locally nilpotent (for all $x \in M$, there exists $n > 0$ such that $a^n . x = 0$).
+\end{lem}
+
+\begin{proof}
+    Suppose that $M$ is coprimary. Now suppose that $a \in \mf{p}$ and $x \in M$. Then $\Ass(Ax) = \{ \mf{p} \}$, so $\mf{p}$ is minimal in the support of $A_x$, which is $V(\Ann(x))$. Therefore, $\mf{p} = \sqrt{\Ann(x)}$. Thus for $a \in \mf{p}$, $a^n \in \Ann(x)$.
+    
+    In the other direction, let $\mf{p}$ be the set of locally nilpotent elements with respect to $M$. This is clearly an ideal of $A$. Then let $\mf{q} \in \Ass_A(M)$. Then $x \in M$, so $\mf{q} = \Ann(x)$. Therefore $\mf{p} \subset \mf{q}$ because $\mf{q}$ is a prime ideal. However, $\mf{q}$ is contained in the set of zero divisors, which is precisely $\mf{p}$.
+\end{proof}
+
+\begin{rmk}
+    Let $I \subset A$ be an ideal. Then $\Ass_A(A/I) = \{ \mf{p} \}$ if and only if the zero divisors of $A/I$ are locally nilpotent. This is equivalent to $I$ being primary.
+\end{rmk}
+
+\begin{lem}
+    \begin{enumerate}
+        \item Let $Q_1, Q_2 \subset M$ be $\mf{p}$-primary submodules. Then $Q_1 \cap Q_2$ is $\mf{p}$-primary.
+        \item Let $N = Q_1 \cap \cdots \cap Q_r$ be an irredundant decomposition (i.e. $Q_i$ is $\mf{p}_i$-primary) for distinct $\mf{p}_i$. Then $\Ass_A(M/N) = \qty{\mf{p}_1, \ldots, \mf{p}_r}$. 
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Note that $M / Q_1 \cap Q_2$ injects in $M / Q_1 \oplus M / Q_2$. The desired result follows from the previous lemma.
+        \item First, note that $M/N \hookrightarrow \bigoplus M / Q_i$. Then suppose $\Ass(M/N) = \{ \mf{p}_1, \ldots, \mf{p}_r \}$. Then we have an injection
+            \[ \frac{Q_2 \cap \cdots \cap Q_r}{N} \hookrightarrow M/N \]
+            and thus $\Ass((Q_1 \cap  \cdots \cap Q_r)/N)$ is contained in $\Ass(M/N)$. By the exact sequence
+            \[ 0 \to N \to Q_2 \cap \cdots \cap Q_r \to M/Q_1, \]
+            we see that $\Ass(Q_2, \cap \cdots \cap Q_r / N) = \{ \mf{p}_1 \}$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}
+    Let $M$ be a module over a Noetherian ring $A$. Then for all $\mf{p} \in \Ass(M)$, there exists a $\mf{p}$-primary submodule $Q(\mf{p}) \subset M$ such that
+    \[ \bigcap_{\mf{p} \in \Ass(M)} Q(\mf{p}) = \{0 \}. \]
+\end{thm}
+
+\begin{proof}
+    Fix $\mf{p} \in \Ass(M)$. Consider the set 
+    \[ \mc{S}_{\mf{p}} = \qty{ N \subseteq M \mid \mf{o} \notin \Ass(N) }. \]
+    This set is nonempty because $0 \in \mc{S}_{\mf{p}}$. Next, if $N_{\lambda} \in \mc{S}_{\mf{p}}$ is a chain, then the module $N = \bigcup N_{\lambda}$ is a submodule of $M$. In addition, $\Ass(N) \subset \bigcup \Ass(N_{\lambda})$. This implies that $\mc{S}_{\mf{p}}$ contains a maximal element by Zorn's lemma. Choose such a maximal element $Q(\mf{p})$.
+
+    We will show that $M/Q(\mf{p})$ is coprimary. By the exact sequence 
+    \[ 0 \to Q(\mf{p}) \to M \to M/\mf{Q}(\mf{p}), \]
+    if $\mf{p}' \in \Ass(M/Q(\mf{p}))$, then $\mf{p}' = \mf{p}$ because otherwise $A/ \mf{p}'$ would inject in $M / Q(\mf{p})$ as $Q'/Q(\mf{p})$. Then $\Ass(Q') \subset \Ass(Q(\mf{p})) \cup \Ass(Q' / Q(\mf{p}))$, so $Q' \supsetneq Q(\mf{p})$, contradicting minimality. Thus $\Ass(M / Q(\mf{p})) = \qty{\mf{p}}$. 
+
+    The second part of the claim follows immediately from the fact that $\Ass\qty(\bigcap Q(\mf{p})) = \bigcap \Ass(Q(\mf{p})) = \emptyset$.
+\end{proof}
+
+\begin{cor}
+    Let $M$ be an $A$-module of finite type. Then any $N \subset M$ has a primary decomposition
+    \[ N = Q_1 \cap \cdots \cap Q_r \]
+    such that
+    \begin{enumerate}
+        \item The $Q_i$ are $\mf{p}_i$-primary;
+        \item No $Q_i$ can be omitted;
+        \item This decomposition is irredundant: $\Ass(M/N) = \qty{\mf{p}_1, \ldots, \mf{p}_r}$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    Apply the previous theorem to $M/N$. Because $M/N$ is of finite type, $\Ass(M/N)$ is finite. Then use the previous lemma.
+\end{proof}
+
+\begin{exer}
+    Let $A \xrightarrow{\varphi} B$ be a morphism of rings and let $M$ be a $B$-module. Then prove that
+    \[ \varphi^*(\Ass_B(M)) = \Ass_A(M) \]
+    where $\varphi^* \colon \Spec B \to \Spec A$ is the induced map of spaces.
+\end{exer}
+
+\chapter{Dimension Theory}%
+\label{cha:dimension_theory}
+
+\section{Graded Rings and Modules}%
+\label{sec:graded_rings_and_modules}
+
+Let $A = \bigoplus_{n \geq 0} A_n$ be a graded ring. This means that $A_n \cdot A_m \subset A_{n+m}$. Then an $A$-module $M$ is a graded module if
+\[ M = \bigoplus_{n \in \Z} M_n \]
+such that $A_n \cdot M_m \subset M_{n+m}$. We will call $M_m$ the homogeneous elements of degree $m$ on $M$.
+
+Now let $N \subset M$ be a submodule. We say that $N$ is a graded submodule if $N = \bigoplus N \cap M_m$. $N$ is also called homogeneous. A homogeneous element of $M$ is an element of some $M_m$. Being a graded submodule is the same as every element being a sum of homogeneous elements.
+
+\begin{lem}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $N$ is a homogeneous submodule.
+        \item $N$ is generated by homogeneous elements.
+        \item If $x = x_r + \cdots + x_n \in N$ for $x_i \in M_i$, then for all $i$, $x_i \in N$.
+    \end{enumerate}
+    Moreover, if $N \subset M$ is homogeneous, then so is $M/N$, and
+    \[ M/N = \bigoplus_m M_m / N_m. \]
+\end{lem}
+
+\begin{proof}
+    The proof is left as an exercise to the reader.
+\end{proof}
+
+\begin{exm}
+    Let $k$ be any ring. Then the ring $A = k[x_1, \ldots, x_r]$ is a graded ring where the grading is by the degree of each monomial. In particular, $A_0 = k$. Then an ideal $I \subset A$ is graded if $I = \bigoplus_n I_n$ where $I_n = I \cap A_n$. In addition, $A/I$ is a graded ring.
+\end{exm}
+
+\begin{prop}
+    Let $A$ be a Noetherian graded ring and $M$ a graded $A$-module. Then
+    \begin{enumerate}
+        \item If $\mf{p} \in \Ass(M)$, then $\mf{p}$ is a graded ideal of $A$ and there exists a homogeneous $x \in M$ such that $\mf{p} = \Ann(x)$.
+        \item One can choose a $\mf{p}$-primary graded submodule $Q(\mf{p})$ such that $0 = \bigcap_{\mf{p} \in \Ass(M)} Q(\mf{p})$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    Let $x \in M$ and set $\mf{p} = \Ann(M)$. Then write $x = x_e + x_{e-1} + \cdots + x_0$. Then for $f \in \mf{p}$, write $f = f_r + \cdots + f_s$. If $fx = 0$, then we can write
+    \[ 0 = fx + f_r x_e + (f_{r-1} x_e + f_r x_{e-1}) + \cdots \]
+    and deduce that $0 = f_r x_e = f_r^2 x_{e-1} = \cdots$. Then $f_r^e \in \mf{p}$, so $f_r \in \mf{p}$. By induction, all $f_i \in \mf{o}$, so $\mf{p}$ is graded.
+
+    The proof of the second part is simply the following lemma.
+\end{proof}
+
+\begin{lem}
+    Let $\mf{p}$ be a graded prime ideal and $Q \subset M$ such that $Q$ is $\mf{p}$-primary. Let $Q' \subset Q$ be the submodule of $Q$ generated by the homogeneous elements of $Q$. Then $Q'$ is $\mf{p}$-primary.
+\end{lem}
+
+\begin{proof}
+    This will be proved later.
+\end{proof}
+
+We will now discuss filtrations of rings. A \textit{filtration} is a sequence of subgroups
+\[ A = J_0 \supset J_1 \supset J_2 \cdots \]
+such that $J_n \cdot J_m = J_{n+m}$. If we set
+\[ A' = \bigoplus_{n=0}^{\infty} J_n / J_{n+1}, \]
+then $A'$ is a graded ring.
+
+The basic example is $J_m = I^m$ for some fixed ideal $I \subset A$. in this case, the filtration is called the $I$-adic filtration.
+
+\begin{lem}
+    Let $A$ be a Noetherian ring and set $I \subset A$. Then 
+    \[ \operatorname{gr}^I A = \bigoplus_{n=0}^{\infty} I^n / I^{n+1} \]
+    is a Noetherian graded ring.
+\end{lem}
+
+\begin{proof}
+    Because $I$ is finitely-generated, then $I / I^2$ is a finitely-generated $A/I$-module. Thus $\operatorname{gr}^I(A)$ is a finitely-generated $A/I$-algebra. If $x_1, \ldots, x_r$ is a set of generators of $I$, then
+    \[ A/I[x_1, \ldots, x_r] \to \operatorname{gr}^I A \]
+    is surjective, so because $A/I$ is Noetherian, so is $A/I[x_1, \ldots, x_r]$ and thus so is $\operatorname{gr}^IA$.
+\end{proof}
+
+Let $A$ be an Artinian ring and $B = A[x_1, \ldots, x_r]$ be a graded ring. Then let $M$ be a finitely-generated graded $B$-module. Each graded piece $M_n$ is an $A$-module, so write $F_M(n) = \ell_A(M_n)$. Because $M$ is finitely generated, we have a map
+\[ \bigoplus_{i=1}^r B(d_i) \twoheadrightarrow M. \]
+Here, $B(d_i) = B$ as a $B$-module with the gradation $B(d)_n = B_{n-d}$. Thus $M$ is generated by homogeneous elements $x_{d_i}$ of degree $d_i$. This gives us the map
+\begin{align*}
+\bigoplus_{i=1}^r B_{m-d_i} \hookrightarrow M_m \\
+(f_i) \mapsto \sum_{i=1}^r f_i x_{d_i} 
+\end{align*}
+and thus $\ell_A(M_m) \leq \sum_{i=1}^r \ell_A(B_{m-d_i})$. But then $B_m$ is a free $A$-module, and thus 
+\[ \ell_A(B_m) \leq \binom{r+m-1}{m-1} \ell(A). \]
+
+\begin{thm}
+    Let $A, B,M$ be as above. Then there is a polynomial $f_M(x) \in \Q[x]$ such that
+    \[ \ell_A(M_n) = f_M(n) \]
+    for $n \gg 0$. This is called the \textit{Hilbert-Samuel polynomial} for $M$. The degree of this polynomial will give the first definition for the dimension of $M$. 
+\end{thm}
+
+\begin{proof}
+    Say that $M$ satisfies the property $P(M)$ if there exists $f \in \Q(x)$ such that $\ell(M_n) = f(n)$ for $n \gg 0$. 
+    \begin{enumerate}
+        \item First, we will show that if $N_1, N_2 \subset M$ and $P(M/N_1), P(M/N)2$ hold, then $P(M/N_1 \cap N_2)$ holds.
+        \item Second, if $N$ is irreducible, then $P(M/N)$ holds.
+    \end{enumerate}
+    If we prove these two things, then we simply use a primary decomposition of $0 \subset M$. Then the second statement implies that $P(M/N_i)$ holds and then we simply repeatedly apply the first to see that $P(M)$ holds.
+    \begin{enumerate}
+        \item Suppose $N = N_1 \cap N_2$ with $N, N_1, N_2$ graded. We then have an exact sequence
+            \[ 0 \to N_1 / (N_1 \cap N_2) \to M / (N_1 \cap N_2) \to M/N_1 \to 0 \]
+            and we know that $N_1 / (N_1 \cap N_2) = (N_1 + N_2) / N_1$ is graded. Then we see that $F_{M/(N_1 \cap N_2)} = F_{M/N} + F_{(N_1 + N_2)/N_1}$, so we only need to prove that $F_{N_1 + N_2 / N_1}$ exists. But then $F_{N_1 + N_2 / N_1} = F_{M / N_2} - F_{M/N_1 + N_2}$ and because $P(M/N_1 + N_2)$ holds, so does $P(M/N_1 \cap N_2)$.
+        \item Let $N$ be irreducible. We know that $M' = M/N$ is coprimary, so $N$ is $\mf{p}$-primary for some prime ideal $\mf{p} \subset B$. Write $I = (x_1, \ldots, x_m)$. If $I \subset \mf{p}$, then $M'_m = 0$ for $n \gg 0$. Indeed, if $d$ is the maximal degree of a system of generators of $M'$, then $M'_{n+d} = I^n \cdot M'_d$. On the other hand, because $M'$ is $\mf{p}$-primary, then elements in $\mf{p}$ are locally nilpotent. Thus there exists $k \gg 0$ such that $p^k \cdot M'_d = 0$ and thus $M'_{n+d} = 0$ for $n \geq k$. Thus $F_{M/N}$ exists and is identically zero.
+
+            In the second case, $I \not\subset \mf{p}$. Then suppose that $x_1 \notin \mf{p}$. Thus $x_1$ is not a zero divisor for $M'$. Thus, we have an exact sequence
+            \[ 0 \to M' \to x_1 \to M' \to M'/x_1M' \to 0 \]
+            which then gives
+            \[ 0 \to (M/N)_{n-1} \to (M/N)_n \to (M/N+x_1 M)_n \to 0 \]
+            when restricting to a single graded piece. Thus $N \subsetneq N + x_1 M$. This implies that $f_{M/N + x_1 M}$ exists because above, we proved that if $P(M/N')$ holds for any $N' \supsetneq N$ implies that $P(M/N)$ holds. Then for $n \geq n_0$, we have $\ell((M/N)_m) - \ell((M/N)_{n-1}) = f_{M/N + x_1 M}(n)$. This implies that
+            \[ \ell((M/N)_m) = f(n) + f(n-1) + \cdots + \ell(M/N)_{n_0}. \]
+            Then $f(n) + \cdots + f(n_0) = g(n)$ for some polynomial $g$ of degree $\deg f + 1$ and then $f_{M/N} = g + \ell((M/N)_{n_0})$.\qedhere
+    \end{enumerate}
+\end{proof}
+
+Now let $A \supset I$ and $M$ be an $A$-module with filtration
+\[ M_0 = M \supset M_1 \supset \cdots \supset M_n \supset \cdots \]
+We say that the filtration is
+\begin{enumerate}
+    \item \textit{$I$-admissible} if $I M_n \subset M_{n+1}$ for all $n \gg 0$;
+    \item \textit{$I$-acic} if $I M_n = M_{n+1}$ for all $n \geq 0$;
+    \item \textit{essentially $I$-adic} if $I M_n = M_{n+1}$ for $n \gg 0$. 
+\end{enumerate}
+
+\begin{rmk}
+    A filtration on $M$ defines a topology on $M$ so that $M$ is a topological group. Here, a system of neighborhoods of $0$ is $(M_n)_{n \gg 0}$. If $\bigcap M_n = 0$, then the topology is Hausdorff. If the filtration is essentially $I$-adic, then the topology is called the $I$-adic topology.
+\end{rmk}
+
+\begin{lem}
+    Let $A$ and $I$ be as before. Let $M$ be an $A$-module with an admissible filtration. Let $A' = \bigoplus_{n=1}^{\infty} I^n x^n \subset A[x]$ and 
+    \[ M' = \bigoplus M_n \otimes_A Ax^n = \bigoplus M_n x^n. \]
+    \begin{enumerate}
+        \item $M'$ is a $A'$-module.
+        \item The filtration is essentially $I$-adic if and only if $M'$ is a finitely-generate $A'$-module.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item This is trivial.
+        \item Note that $M'$ is a graded $A'$-module. If $M'$ is finitely generated, then write $M' = A' m_1 + \cdots + A' m_r$. Then we see that
+            $ M'_n = I x M'_{n-1}$ 
+            for $n > \max \qty{ \deg m_i }$. Thus $M_n$ is essentially $I$-adic.
+
+            Conversely, if $M_n = I^{n - n_0} M_{n_0}$ for $n \geq n_0$, then, then it is clear that $M'$ is generated by $M_{n_0} x^{n_0} + \cdots + M_1 x + M_0$ and is thus finitely generated. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}[Artin-Rees]
+    Let $A$ be a Noetherian ring and $I \subset A$. Then let $M$ be a finitely-generated $A$-module and $N \subset M$ be a submodule. Then there exists $r > 0$ such that
+    \[ I^n M \cap N = I^{n-r} (I^r M \cap N) \]
+    for all $n \geq r$.
+\end{thm}
+
+\begin{proof}
+    Let $M_n = I^n M$ be the $I$-adic filtration. Then $N_n = I^n M \cap N$ is $I$-admissible. Then both $N' \subset M'$ are both $A'$-modules. We know that $A'$ is Noetherian, so because $M_n$, $M'$ is finitely generated. Thus $N'$ is also Noetherian, so it is also finitely-generated. This implies that $N_m$ is essentially $I$-adic, as desired.
+\end{proof}
+
+\begin{rmk}
+    This theorem is saying that the filtration $I^n M \cap N$ is essentially $I$-adic.
+\end{rmk}
+
+\begin{cor}[Krull Intersection Theorem]
+    Let $A, I, M$ as above.
+    \begin{enumerate}
+        \item If $N = \bigcap_{n=0}^{\infty } I^n M$, then $IN = N$.
+        \item If $I \subset \mr{rad}(A)$, then $\bigcap_{n=0}^{\infty} I^n M = 0$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Note that $N \subset M$. Then apply the Artin-Rees theorem to $N = I^n M \cap N$.
+        \item Apply Nakayama's lemma. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    Let $A$ be a Noetherian domain and let $I \subset A$ be a proper ideal. Then $\bigcap_n I^n = 0$.
+\end{cor}
+
+\begin{proof}
+    Let $N = \bigcap_{n=0}^{\infty} I^n$. By the previous corollary, $IN = N$. Then $N$ is finitely generated because $A$ is Noetherian. Thus there exists $x \in I$ such that $(1+x)N = 0$, which implies that $N = 0$ because $A$ is a domain.
+\end{proof}
+
+\begin{exer}
+    Let $A$ be Noetherian and $M$ a finitely-generated $A$-module. Then let $I, J$ be generated by $M$-regular elements. Then there exists $r > 0$ such that $(I^n M : J) = I^{n-r} (I^r M : J)$. Here, $(N:J) = \qty{ m \in M \mid Jm \subset N }$.
+\end{exer}
+
+
+
+
+\end{document}

@@ -8,7 +8,6 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-%\usepackage{MnSymbol}
 \usepackage{bm}
 \usepackage{stmaryrd}
 \usepackage{accents}
@@ -24,13 +23,14 @@
 \usepackage{verbatim}
 \usepackage{graphicx}
 \graphicspath{ {./} }
+\usepackage{physics}
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 % font
 \usepackage{fontspec}
 \usepackage{unicode-math}
 \setmainfont[Ligatures={Common}, Numbers={OldStyle}]{Libertinus Serif}
-\setsansfont{Libertinus Sans}
+\setsansfont[Ligatures={Common}, Numbers={OldStyle}]{Libertinus Sans}
 \setmonofont{Inconsolata}
 \setmathfont{Libertinus Math}
 
@@ -63,9 +63,9 @@
 % delimiters
 \DeclarePairedDelimiter{\gen}{\langle}{\rangle}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+%\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
-\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+%\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
 
 \newtheorem{thm}{Theorem}[chapter]
@@ -139,22 +139,24 @@
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
-\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Bl}{Bl} %blowup
+
 
 \titleformat{\section}
     {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}[runin]
     {\large\sffamily\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\sffamily\itshape}{\thesubsubsection}{1em}{}
 
 \title{COURSE TITLE}
 \author{Lectures by INSTRUCTOR, Notes by Patrick Lei}
@@ -179,7 +181,7 @@
 
 %\renewcommand{\cftchapterpagefont}{}
 \renewcommand\cftchapterfont{\sffamily}
-\renewcommand\cftsectionfont{\scshape}
+\renewcommand\cftsectionfont{\sffamily\scshape}
 \renewcommand*{\cftchapterleader}{}
 \renewcommand*{\cftsectionleader}{}
 \renewcommand*{\cftsubsectionleader}{}
@@ -1681,6 +1683,491 @@ We need this equation to have a solution for all $t$, but it does because $\omeg
     \begin{exer}
         Let $X = \P^1 \times \P^1$ and $\omega = \pi_1^* \omega_{FS} + \pi_2^* \omega_{FS}$. Then recall that $\R\P^1$ is the fixed locus of complex conjugation on $\P^1$. Then $L = \R\P^1 \times \R\P^1$ is Lagrangian. How about a Lagrangian Klein bottle?
     \end{exer}
+
+    \chapter{March 24}%
+    \label{cha:march_24}
+    
+    \.Inan\c{c} decided on the following format for online class:
+    \begin{itemize}
+        \item He sends us lecture notes in a private Dropbox folder for us to read.
+        \item There will be a Zoom discussion every Thursday at the usual time.
+    \end{itemize}
+    From now on, these notes will simply be a transcription of the notes we were sent.
+
+    \section{Proof of Lagrangian Neighborhood Theorem}%
+    \label{sec:proof_of_lagrangian_neighborhood_theorem}
+    
+     \begin{thm*}
+        Let $(M, \omega)$ be a symplectic manifold and $L \subset (M, \omega)$ be a compact Lagrangian submanifold. Then there exist neighborhoods $U$ of the zero section in $T^*L$ and $V$ of $L$ in $M$ and a diffeomorphism $\phi: U \to V$ such that $\phi^* \omega = - d \lambda$ that is the identity on $L$.
+    \end{thm*}
+
+    \begin{proof}
+        First note that if $(V, \omega)$ is a symplectic vector space with $L$ Lagrangian, then $JL$ is also Lagrangian for any almost complex structure $J$. Finally, $L \perp JL$ under a compatible metric $g$.
+
+        For $(M, \omega)$ a symplectic manifold with $L \subset (M, \omega)$ Lagrangian and $J \in \mc{J}(M, \omega)$, the above applies to $J TL$. In addition, $JTL = TL^{\perp}$. Identifying this with $\nu L$, then we have an isomorphism with $T^* L$. Then for $g$ compatible with $\omega, J$, take the exponential map
+        \[ \psi: T^*L \to M \] defined by
+        \[ (q, v^*) \mapsto \exp(\beta(v^*)). \]
+        Fixing the decomposition $T_{(q,0)} T^*L = T_qL \oplus T_q^*L$ for $q \in L$, write any $v \in T_{(q,0)} T^*L$ as $v = (v_0, v_1^*)$, then $d \omega_{(q,0)}(v) = v_0 + \beta(v_1^*)$. Therefore
+        \begin{align*}
+            \psi^* \omega_{(q,0)} (u,v) &= \omega_q(\psi_* u, \psi_*v) \\
+                                        &= \omega_q(u_0 + \beta(u_1^*), v_0 + \beta(v_1^*)) \\
+                                        &= \omega_q(u_0, v_0) + \omega_q(u_0, \beta(v_1^*)) + \omega_q(\beta(u_1^*), v_0) + \omega_q(\beta(u_1^*), \beta(v_1^*)) \\
+                                        &= v_1^*(u_0) - u_1^*(v_0).
+        \end{align*}
+
+        On the other hand, at $q \in L$, $\left\{ \pdv{q_j} \right\}, \{ dq_j \}$ form a basis for $T_q L$ and $T_q^* L$, respectively. Therefore, for $u = \sum a_j \pdv{q_j} + \sum b_j dq_j$ and $v = \sum x_j \pdv{q_j} + \sum y_j dq_j$, then
+        \begin{align*}
+            d \lambda_{(q,0)}(u,v) &= \sum dp_j \wedge dq_j (u,v) \\
+                                   &= \sum a_j x_j - y_j b_j \\
+                                   &= \sum a_j x_j - \sum y_j b_j \\
+                                   &= v_1^*(u_0) - u_1^*(v_0).
+        \end{align*}
+        Therefore $\psi^* \omega = -d\lambda$ on $T_{(1,0)} T^*L$ for all $q \in L$. The desired result then follows from Moser's isotopy lemma.
+    \end{proof}
+
+    \begin{exm}
+        Let $L$ be a closed Lagrangian surface in a closed symplectic $4$-manifold $(X, \omega)$. Because $\nu L \cong T^*L \cong TL$ as bundles over $L$, then $e_{\nu L} [L] = e_{TL}[L]$, which implies that $L \cdot L = e(L) = 2 - 2g$.
+
+        For $L \cong \Sigma_g$, then the diffeomorphism type of $L$ determines the isomorphism class of $\nu L$. By the Lagrangian neighborhood theorem, there exists a \textit{Weinstein neighborhood} $N(L) \subset (X, \omega)$ such that 
+        \[ N(L) \cong \{ (q,p) \in T^* L \mid q \in L, \abs{p} < \ep \}. \]
+        Ovserve that any ``radial push-off'' of $L$ in $N(L)$ is also Lagrangian. For $L = T^2$, then $L \cdot L = e(L) = 0$ and $T^*L = L \times \R^2$, so $N(L) = T^2 \times B_{\ep}(0)$.
+    \end{exm}
+
+    \chapter{March 26}%
+    \label{cha:march_26}
+
+    \section{More Local Theory}%
+    \label{sec:more_local_theory}
+    
+    \begin{exm}
+        Let $X = \P^1 \times \P^1 = S^2 \times S^2$ with $\omega = p_1^* (\omega_{FS}) + p_2^*(\omega_{FS})$. Then any $S^2 \times y_0$ or $x_0 \times S^2$ are symplectic submanifolds because it is easy to see that $i^* \omega = \omega_{FS}$.
+
+        Now let $L = \R\P^1 \times \R\P^1$ which is the fixed locus of complex conjugation. Then $N(L) \cong T^2 \times \R^2$. Here, for $u,v \in T(S^1 \times S^1) \cong TS^1 \times TS^1$ with $u = (u_1, u_2)$ and $v = (v_1, v_2)$, then we have
+        \begin{align*}
+            i^* \omega(u,v) &= \omega_{FS}(d(p_1 \circ i)(-), d(p_1 \circ i)(-)) + \omega_{FS}(d(p_2 \circ i)(-), d(p_2 \circ i)(-)) \\
+                            &= \omega_{FS}(u_1, v_1) + \omega_{FS}(u_2, v_2) \\
+                            &= 0.
+        \end{align*}
+        Observe that for all $S_1 \to a \subset S^2$ and $S_1 \to b \subset S^2$, $a \times b$ is Lagrangian, so all $L_{a,b}$ are Lagrangian tori. All of these are boundaries, so they are topologically trivial.
+    \end{exm}
+
+    \begin{exer}
+        Construct a Lagrangian Klein bottle in the same symplectic manifold. Also construct a homologically \textit{essential} Lagrangian torus in $\Sigma_g \times \Sigma_g$.
+    \end{exer}
+
+    \begin{rmk}
+        There are similar theorems for isotropic manifolds (due to Weinstein) and coisotropic manifolds (due to Gotny) with more information on $\omega$ in a neighborhood.
+    \end{rmk}
+
+    \section{Another Application of Isotopy}%
+    \label{sec:another_application_of_isotopy}
+
+    Another application of Moser's isotopy conncerns equivalence of symplectic forms on a given manifold. Let $\omega_0, \omega_1$ be two symplectic forms on $M$. They they are 
+    \begin{description}
+        \item[Symplectomorphic] if there exists a diffeomorphism $\phi$ of $M$ such that $\phi^* \omega_1 = \omega_0$. 
+        \item[Deformation equivalent] if there exists a smooth family $\omega_*$ of symplectic forms joining $\omega_0$ to $\omega_1$.
+        \item[Isotopic] if there exists a deformation equivalence $\omega_*$ where $[\omega_*]$ is fixed.
+        \item[Strongly isotopic] if there exists an isotopy $\phi_*$ of $M$ such that $\phi_1^* \omega_1 = \omega_0$.
+    \end{description}
+    Observe that strongly isotopic implies isotopic which implies deformation equivalent. Also strongly isotopic implies symplectomorphic. If $M$ is compact, then a result of Moser says that isotopic implies strongly isotopic.
+
+    \begin{thm}[Moser Stability]
+        Let $M$ be a closed symplectic manifold and $\omega_*$ be a smooth family of symplectic forms all in the same cohomology class. Then there exists an isotopy $\psi_*$ of $M$ such that $\psi_t \omega_t = \omega_0$.
+    \end{thm}
+
+    \begin{proof}[Sketch of Proof]
+        To apply Moser's argument, we need a smooth family $\sigma_t \in \Omega^1 M$ such that $\frac{d}{dt} \omega_t = d \sigma_t$. Because the $\omega_t$ are in the same cohomology class, then $\tau_t = \dv{t} \omega_t$ must be exact. For each $t$, there exists $\sigma_t \in \Omega^1 M$ such that $\dd{\sigma_t} = \tau_t$. Such a \textit{smooth} family is constructed using the Poincare lemma and an inductive argument on the number of sets good covers of $M$.
+    \end{proof}
+
+    \begin{cor}
+        Let $S_a = \qty{\omega \in \Omega^2 M \mid \omega \text{is symplectic and} [\omega] = a}$. Then for a closed symplectic manifold $M$, any two forms on the same path component of $S_a$ are symplectomorphic.
+    \end{cor}
+
+    \begin{exm}
+        For $M = \Sigma$ with $\omega_0, \omega_1$ symplectic forms on $\Sigma$, then if $[\omega_0] = \omega_1$, there exists an isotopy $\psi_t$ of $\Sigma$ such that $\psi_1^* \omega_1 = \omega_0$.
+    \end{exm}
+
+    \chapter{March 31}%
+    \label{cha:march_31}
+    
+    \section{Constructions of Symplectic Manifolds Through Surgery}%
+    \label{sec:constructions_of_symplectic_manifolds_through_surgery}
+    
+    Here we will study important examples of \textit{symplectic} surgeries based on the local theory.
+
+    \subsection{As Smooth Operations}%
+    \label{sub:as_smooth_opera}
+
+    \subsubsection{Blowup} 
+    Here $M$ is replaced by 
+    \[ M' = M \# \overline{\C\P}^n. \]
+
+    \subsubsection{Blowdown}%
+    \label{ssub:blowdown}
+    
+    Consider $\C\P^{n-1} \cong S \subset M$ with $\nu S \cong \mc{O}(-1)$. For $N(S) \cong \nu S$, we have $\partial N(S) \cong S^{2n-1}$. Then we replace $M$ with 
+    \[ M' = (M \setminus N(S) \cup D^{2n}). \]
+
+    \subsubsection{Fiber Connected Sum}
+    Consider $S_i^{2n-2} \subset M_i^{2n}$ such that there exists an orientation \textit{reversing} bundle isomorphism $\overline{\phi}: \nu S_1 \to \nu S_2$. This induces $\psi: \partial N(S_1) \to \partial N(S_2)$. Then we replace $M$ with
+    \[ M' = (M_1 \setminus N(S_1)) \cup_{\psi} (M_2 \setminus N(S_2)). \]
+    
+    \subsubsection{Torus Surgery}
+    Let $L \subset X^4$ be a Lagrangian torus with trivial normal bundle. Then we replace $X$ by
+    \[ X' = (X \setminus N(L)) \cup N(L) \]
+    where $N(L)$ is twisted by the automorphism $\psi = \eta^{-1} \circ \phi \circ \eta$ for some diffeomorphism $\phi$ of $T^3$.
+        
+    \subsubsection{Rational Blowdown}
+    Let $S_1, \ldots, S_{p-1}$ be embedded $S^2$ in $X^4$ such that the space $C_p$ formed by plumbing disc bundles in the following sequence:\footnote{This is taken from the original paper by Fintushel and Stern.}
+    
+    \centerline{\unitlength 1cm
+    \begin{picture}(5,2)
+    \put(.9,.7){$\bullet$}
+    \put(1,.8){\line(1,0){1.3}}
+    \put(2.2,.7){$\bullet$}
+    \put(2.3,.8){\line(1,0){.75}}
+    \put(3.3,.8){.}
+    \put(3.5,.8){.}
+    \put(3.7,.8){.}
+    \put(4,.8){\line(1,0){.75}}
+    \put(4.65,.7){$\bullet$}
+    \put(.35,1.1){$-(p+2)$}
+    \put(2.1,1.1){$-2$}
+    \put(4.55,1.1){$-2$}
+    \put(.45,.4){$u_{p-1}$}
+    \put(2.1,.4){$u_{p-2}$}
+    \put(4.55,.4){$u_1$}
+    \end{picture}}
+    embeds in $X^4$. Then $\partial C_p = \partial B_p = L(p^2, p-1)$. Here $B_p$ is a rational ball (meaning it has the same rational homology as the disc) with fundamental group $\Z/p\Z$. Then rational blowdown is the process of removing the interior of $C_p$ and replacing it with $B_p$. \textbf{Note taker:} I only understood this part after looking at the original paper by Fintushel and Stern.
+
+    \subsection{As Symplectic Operations}%
+    \label{sub:as_symplectic_operations}
+    
+    \subsubsection{Symplectic Blowup}%
+    \label{ssub:symplectic_blowup}
+    
+    First recall the construction in the complex category. Here, the local model replaces $\C^n$ with the total space of $\mc{O}(-1)$, the tautological line bundle over $\P^{n-1}$.\footnote{For a more explicit presentation, see my algebraic geometry notes from Spring 2019.}
+
+    Recall that there are two holomorphic projections $\pi: \widetilde{C}^n \to \C^n$ and $p: \widetilde{C}^n \to \P^{n-1}$, which correspond to the blowup map and the projection from $\mc{O}(-1)$. The fiber $E = \pi^{-1}(0)$ is called the \textit{exceptional divisor} of the blowup. The normal bundle of $E$ in $\widetilde{C}^n$ is simply $\mc{O}(-1)$, where $E$ is the zero section. Note that $c_1(L) = -H$, where $H$ is the hyperplane class. 
+
+    On the other hand, the normal bundle $\nu \P^{n-1}$ of $\P^{n-1}$ in $\P^n$ is simply $\mc{O}(1)$. A complex line bundle on projective space is entirely determined by its first Chern class, so 
+    \[ \overline{\nu E} \cong \nu \P^{n-1} \cong \P^n \setminus N(0), \]
+    and therefore
+    \[ \widetilde{\C}^n = (\C^n \setminus \{0\} ) \cup E = (\C^n \setminus N(0)) \cup \overline{\P^n \setminus N(0)} \cong \C^n \# \overline{\P}^n. \]
+
+    \chapter{April 2}%
+    \label{cha:april_2}
+
+    \section{Complex Blowups}%
+    \label{sec:complex_blowups}
+
+    \textbf{Note taker:} A good reference for this lecture from the complex algebraic perspective is Griffiths and Harris, \textit{Principles of Algebraic Geometry.}
+
+    \begin{exm}
+        For $n = 2$, any exceptional divisor on a surface has self-intersection number $-1$. To see this, note that $c_1(L) = -h$.\footnote{For more details and a general form of this, see Griffiths and Harris.}
+    \end{exm}
+
+    It is possible to show that any local biholomorphic map $\C^n \to \C^n$ fixing the origin lifts to a local biholomorphic map on the blowup. Therefore, we can blow up any complex manifold $M$. From the topological point of view, this simply replaces $M$ with 
+    \[ \widetilde{M} = M \# \overline{\P}^{n}. \] 
+    In addition, it is easy to see that
+    \[ c_1(\widetilde{M}) = c_1(M) - (n-1) E. \]
+    In particular, for surfaces, we see that the canonical class of the blowup is
+    \[ K_{\widetilde{X}} = \pi^* K_X + E. \]
+
+    \begin{exm}
+        Let $X = \Bl_1 \P^2$. Then we have a projection to $\P^1$ with fiber $\P^1$. In addition, the exceptional divisor is the zero section, so this is a \textit{Hirzebruch surface}. In addition, we have $F \cdot F = 0$ and $E \cdot F = 1$.
+    \end{exm}
+
+    \begin{exm}
+        Let $C_0, C_1$ be two transverse, nonsingular cubics in $\P^2$. Then, we can consider the linear system generated by $C_0, C_1$ and resolve it. This will be a blowup of $\P^2$ in $9$ points. In addition, the linear system gives us a map to $\P^1$ which has generic fiber an elliptic curve. Thus $X \cong E(1)$, an \textit{elliptic surface}.
+    \end{exm}
+
+    \begin{exm}
+        The local model for the blowups above can be seen in the standard example of ``resolution of singularities.'' Let $C = (z_1z_2 = 0) \subset \C^2$. Then the \textit{proper transform} of $C$ is simply a disjoint union of two lines.
+    \end{exm}
+
+    \begin{rmk}
+        In general, one can blow up along any complex subvariety to resolve singularities.\footnote{However, the process for doing this is very complicated. The original proof of resolution of singularities by Hironaka is extremely long.}
+    \end{rmk}
+    
+    \chapter{April 7}%
+    \label{cha:april_7}
+    
+    \section{Symplectic Operations}%
+    \label{sec:symplectic_operations}
+    
+    In a symplectic manifold, we can blow up following a local $J$-holomorphic model to obtain a new symplectic manifold $(M \# \overline{\P}^n, \widetilde{\omega})$, where $\widetilde{\omega}$ depends on some additional parameters.
+
+    Let $\psi: B^{2n}(x) \to M$ be a symplectic embedding of a ball of radius $\lambda$. Then extend this by some $\ep >0$ and replace $\psi: B^{2n}(\sqrt{\lambda^2 + \ep^2})$ by the standard $\ep$-neighborhood of the zero section in $L$. Then recall that $L$ is the tautological bundle over $\P^{n-1}$, so we can write
+    \[ \omega_{\lambda} = \pi^* \omega_0 + \lambda^2 pr^* \omega_{FS}. \]
+    This is a K\"ahler form. Let $L(\ep)$ be the $\ep$-neighborhood of the zero section in $L$. Then
+    \[ L(\ep) \setminus E \cong B^{2n}(\sqrt{\lambda^2 + \ep^2}) \setminus B(\ep), \]
+    so we can glue symplectically. Moreover, we can normalize the construction so that:
+    \begin{prop}[McDuff]
+        The deformation class of $\wt{\omega}$ is unique, and the isotopy class is unique if we fix $\lambda$.
+    \end{prop}
+    
+    \begin{thm}[McDuff, Symplectic Blowup]
+        Given a symplectic manifold $(M, \omega)$, a compatible $J$, and a point $p_0 \in M$, we can symplectically blow up $M$ at $p_0$ and obtain a new symplectic manifold $(\wt{M}, \wt{\omega})$ such that $\pi: \wt{M} \to M$ is holomorphic, the exceptional divisor is $\wt{J}$-holomorphic, and 
+        \[ [\wt{\omega}] = \pi^* [\omega] - \pi \cdot \lambda^2 [E]. \]
+        Any two symplectic blowups of $(M, \omega)$ at points $p_0, p_1$ are equivalent up to symplectomorphism and deformation equivalence.
+    \end{thm}
+
+    \begin{rmks}
+        \begin{enumerate}
+            \item Complex blowup is infinitesimal, while symplectic blowup is local;
+            \item Complex blowup is intrinsic, while symplectic blowup depends on $\lambda$.
+            \item If $M$ is K\"ahler complex blowup is a symplectic blowup, but not the other way around.
+            \item Blowup can simplify the topology of (singular) submanifolds and thei configurations, while complicating the topology of the ambient manifold. Also, blowing up decreases the symplectic volume.
+            \item Complex curves in a complex surface intersect positively if if they are distinct. By a result of Gromov, the same holds for almost complex $J$.
+
+                However, this is not true for symplectic surfaces in a symplectic $4$-manifold. For example, in the smooth category, we can move the exceptional divisor $E$ to $E'$, and then $E \cdot E' = -1$. Thus resolution of singularities does not behave well in the symplectic category.
+        \end{enumerate}
+    \end{rmks}
+
+    \chapter{April 9}%
+    \label{cha:april_9}
+    
+    \section{Symplectic Blowdown}%
+    \label{sec:symplectic_blowdown}
+    
+    Suppose there exists a symplectic submanifold $\P^{n-1} \cong E \subset (M, \omega)$ and $\nu E \cong L$, then by the symplectic neighborhood theorem, there exists a small neighborhood $N(E)$ isomorphic to $L(\ep)$. Therefore, we can \textit{symplectically blow-down} $E$ to obtain a new symplectic manifold 
+    \[ M' = (M \setminus N(E)) \cup B(\lambda). \]
+    By a result of McDuff, only the choice of $E$ matters.
+
+    \begin{thm}[McDuff, Symplectic Blowdown]
+        Given a symplectic manifold $(M, \omega)$, compatible $J$, and symplectic exceptional divisor $E$, we can symplectcially blow down $M$ along $E$ and obtain a new symplectic manifold $(M', \omega')$ sith compatible $J'$ so that that the projection $M \to M'$ is holomorphic. Any two blowdowns along the same $E$ are symplectomorphic.
+    \end{thm}
+
+    \begin{exm}
+        Let $X = \P^1 \times \P^1$ with the product K\"ahler structure. If we blowup at a point $p_0 = (x_0, y_0)$, then denote $F = x_0 \times \P^1$, $S = \P^1 \times y_1$ with $y_1 \neq y_0$. These are complex submanifolds of $X$. Then let $[\wt{F}], [\wt{S}]$ be the proper transforms of $F, S$ in the blowup, we see that $[\wt{F}] = \pi^* [F] - E, [\wt{S}] = \pi^*[S] - E$.\footnote{\textbf{Note Taker:} This can be computed easily using standard techniques in algebraic geometry.}
+
+        Now we blow down $\wt{F}$ and obtain $(S', \omega')$. Then note that $S$ is another symplectic exceptional sphere, which can be blown down again to obtain $\P^2$. Therefore $\wt{X}$ has two different minimal models.
+
+        If we perform only complex blowdowns, then $X'' = \P^2$ because there exists a unique symply-connected complex surface on the BMW line. Thus $X' = \Bl \P^2$. If we perform symplectic blowdowns without worrying about complex structures, then $E \to E''$, and there exists a symplectic $E'' \cong \P^1$ with self-intersection $+1$.
+    \end{exm}
+
+    \begin{rmk}
+        Note that the local model of the blowup is always the same, so we must always have $[\wt{F}]^2 = F^2 - 1$.
+    \end{rmk}
+
+    \begin{prop}[McDuff]
+        If there exists a homologically essential degree of non-negative self-intersection in $(X, \omega)$, then $X$ is rational or ruled.
+    \end{prop}
+
+    \begin{rmk}
+        This implies that $(X'', \omega'') \cong (\P^2, \omega_{FS})$ in our example.
+    \end{rmk}
+
+    \chapter{April 14}%
+    \label{cha:april_14}
+    
+    \section{Symplectic Fiber Connected Sum}%
+    \label{sec:symplectic_fiber_connected_sum}
+    
+    Let $(M_i, \omega_i)$ be symplectic manifolds of dimension $2n$ and let $S_i$ be codimension $2$ symplectic submanifolds. Here $\nu S_i$ is determined by the Euler number of $S_i$. Then there exists an orientation-reversing bundle isomorphism $\nu S_1 \to \nu S_2$ if there is an orientation preserving isomorphism $S_1 \to S_2$ and $e_1 = - e_2$. 
+
+    For the symplectic construction, we want the orientation-reversing bundle isomorphism to be a symplectomorphism. For simplicity, let's suppose the normal bundle is trivial. 
+
+    Then by the symplectic neighborhood theorem, there exists a neighborhood $N(S_i)$ such that $N(S_i) \cong B^2(r_0) \times S_i$. For any $0 < r_1 < r_0$, we have a symplectic submanifold, the annulus $A^2(r_1,r_0) \subset B^2(r_0)$. Then given a symplectomorphism between the bundles, we obtain a symplectomorphism $A^2(r_1, r_0) \times S_1 \to A^2(r_1,r_0) \times S_2$ by switching the two boundary components of the annulus. This gives us a symplectomorphism
+    \[ \overline{\psi} N(S_1) \setminus \xi^{-1}(B^2(r_1) \times S_1) \to N(S_2) \setminus \xi)2^{-1}(B^2(r_0) \times S_2), \]
+    where $\xi_i$ is the isomorphism $N(S_i) \to B^2(r_0) \times S_i$. Therefore, we can set
+    \[ M = (M_1 \setminus N_1(S_1)) \cup_{\overline{\psi}} (M_2 \setminus N_2(S_2)). \]
+
+    \begin{rmks}
+        \begin{enumerate}
+            \item The same construction extends to the case $0 \neq e_1 = -e_2$, where instead of the product, we take an annular fiber bundle isomorphism. 
+            \item $M$ is determined up to orientation preserving diffeomorphism by the pairs $(M_i, S_i)$, trivializations $\xi_i$, and the symplectomorphism $\phi: S_1 \to S_2$. Often the trivializations are understood from the context, for example when the $S_i$ are fibers of a fibration.
+            \item When $2n = 4$, there exists a symplectomorphism $\phi: S_1 \to S_2$ if they are diffeomorphic and have the same volume. The latter can always be achieved by multiplying one of the $\omega_i$ by a constant. Thus it is enough to have $g(S_1) = g(S_2)$ and $S_1^2 = -S_2^2$. 
+            \item When $2n = 2$, then the $S_i$ are each a single point, and the fiber connected sum is the same as the regular connected sum.
+            \item Note that one cannot find a symplectomorphism of $B^{2n}(r_0) \setminus B^{2n}(r_1)$ when $n > 0$. Otherwise, we could glue two symplectic discs to form a symplectic sphere.
+        \end{enumerate}
+    \end{rmks}
+
+    \begin{thm}[Symplectic Fiber Connected Sum]
+        For $j = 1,2$ let $(M_j, \omega_j)$ be $2n$-dimensional symplectic manifolds with $(2n-2)$-dimensional submanifolds $S_j$. If there exists a symplectomorphism $\phi: S_i \to S_2$ and the Euler numbers $e_j$ of $\nu S_j$ satisfy $e_1 = -e_2$, then there exists a new symplectic manifold $(M, \omega) = (M_1 \omega_1) \#_{\phi} (M_2, \omega_2)$.
+
+        For $2n = 4$, it is enough to have $g(S_1) = g(S_2)$ and $S_1^2 = -S_2^2$.
+    \end{thm}
+
+    \begin{thm}[Usher]
+        If the $X_j$ are minimal and $g(S_j) \geq 1$, then $X = X_1 \#_{S_1 = S_2} X_2$ is minimal.
+    \end{thm}
+
+    \chapter{April 16}%
+    \label{cha:april_16}
+    
+    \begin{exm}
+        Consider $E(1) = \Bl_9 \P^1$ and $F$ a smooth fiber. Then we know $F^2 = 0$. If we let $(E(2), \omega_2) = (E(1), \omega_1) \# (E(1), \omega_1)$, and more generally, 
+        \[ (E(n), \omega_n) = (E(n-1), \omega_{n-1}) \# (E(1), \omega_1), \]
+        then the elliptic fibration on $E(1)$ extends to $E(n)$. In fact, all $E(n)$ are K\"ahler. In fact, the pullback of $E(1)$ along $z \mapsto z^n$ is birational to $E(n)$.
+    \end{exm}
+
+    Now we will study the algebraic topology of $X = E(2)$. We know that 
+    \[ \pi_1(X) \cong \pi_1(E(1) \setminus N(F)) * \pi_1(E(1) \setminus N(F)) \]
+    Here, $\pi_1(E(1)) \cong \pi_1(E(1) \setminus N(F)) * \pi_1(N(F)) \cong \pi_1(E(1) \setminus N(F)) * \Z^2$. Recall that $F$ is a $9$ times blown-up smooth cubic, so $\pi_1(E(1)) \cong \pi_1(E(1) \setminus N(F)) = F$, and thus $\pi_1(X) = 1$. Next, we know that 
+    \[ e(X) = 2e(E(1) \setminus N(F)), \] 
+    and $e(E(1)) = e(E(1) \setminus N(F))$, so $e(E(2)) = 24$. In addition, we can show that
+    \[ \sigma(E(2)) = 2 \sigma(E(1)) = -16. \]
+    In general, $E(n)$ is simply connected, $e(E(n)) = 12n$, and $\sigma(E(n)) = -8n$. Then, we see that $K^2 = 2e + 3 \sigma = 0$. Therefore, all $E(n)$ have Kodaira dimension.
+
+    \begin{prop}[Adjunction Formula]
+        If $\Sigma \subset (X, \omega)$ is a symplectic surface, then $-e(\Sigma) = [\Sigma]^2 + K_X \cdot \Sigma$. In particular, it holds for any $J$-holomorphic $\Sigma$.
+    \end{prop}
+
+    \begin{proof}
+        Note that $TX|_{\Sigma}$ is a symplectic vector bundle. In particular, $T \Sigma$ is a symplectic subbundle. Therefore, we can write
+        \[ T_{\Sigma} X = T \Sigma \oplus T \Sigma^{\omega} = T \Sigma \oplus \nu \Sigma, \]
+        so we have
+        \[ c_1(X) = c_1(T \Sigma) + c_1(\nu \Sigma). \]
+        Applying this to intersection with $\Sigma$ gives us the desired formula.
+    \end{proof}
+
+    From this, we see that any section of $E(2)$ has self-intersection $-2$. In general, there exists a symplectic sphere of self-intersection $-n$ in $E(n)$. Therefore $K \cdot S = n-2$, so $K$ is not torsion for $n \neq 2$. Thus $E(n)$ has Kodaira dimension $1$ for $n \geq 3$, while $E(2)$ is a K3 surface.
+
+    \chapter{April 21}%
+    \label{cha:april_21}
+    
+    \section{Luttinger Surgery}%
+    \label{sec:luttinger_surgery}
+    
+    This is a symplectic surgery along a Lagrangian torus. When $2n = 4$, $L$ is an embedded Lagrangian torus inside a symplectic $4$-manifold $(X, \omega)$. Let $\gamma$ be a loop inside $L$ which is co-oriented.
+
+    Here $N(L) \cong \nu L \cong T^*L \cong T^2 \times \R^2$ is the trivial bundle. Therefore we can perform a torus surgery along $L$ in $X$. To construct an explicit model, note that by Weinstein, there exists a neighborhood $N(L)$ of $L$ diffeomorphic to $T^*L$, where $L$ corresponds to the zero-section. Moreover, $T^*L \cong T^2 \times \R^2$, where we can identify $T^2 = \R^2/\Z^2 = q(\R^2)$ with coordinates $x_1, x_2$ and $\gamma = \R/\Z = q(\R)$ with co-orientation $\pdv{x_2}$.
+
+    Thus for $(y_1, y_2)$ the dual coordinates in the cotangent fibers, we have
+    \[ \xi: (N(L), \omega) \xrightarrow{\cong} (T^2 \times \R^2, dx_1
+    \wedge dy_1 + dx_2 \wedge dy_2) \] where $L \longleftrightarrow T^2
+    \times 0$. In fact, any $T^2 \times \mr{pt}$ is Lagrangian. We call
+    $\xi$ a \textit{Lagrangian framing}.
+
+    Let $r > 0$ such that $U_r = \R^2 \times \Z^2 \times [-r,r]^2 \subset \xi(N(L))$. Then let $\mc{X}: [-r,r] \to [0,1)$ be a $C^{\infty}$ step function such that $\mc{X}(t) = 0$ for all $t \leq -\frac{r}{2}$ and $\mc{X}(t) = 1$ for $t \geq \frac{r}{3}$ and $\mc{X}'(t) > 0$ in between. Finally, we want
+    \[ \int_{-r}^r t \mc{X}'(t) \dd{t} = 0. \]
+    For any $k \in \Z$, define $\phi_i: (U_r \setminus U_{r/2}) \to (U_r \setminus U_{r/2})$ by
+    \[ \phi_k(x_1,x_2,y_1,y_2) = \begin{cases}
+        (x_1 + k \mc{X}(y_1), x_2, y_1, y_2) & y_2 \geq \frac{r}{2} \\
+        (x_1,x_2,y_1,y_2) & \text{otherwise}
+    \end{cases}. \]
+    We can check that $\phi_k$ is a symplectomorphism.
+
+    Luttinger surgery replaces $(X, \omega)$ with $(X',\omega')$, where
+    \[ X' = (X \setminus \xi^{-1}(U_{r/2})) \cup U_r \]
+    and $\omega' = \omega$ on $X$ and $\omega_0$ on $U_r$. We will denote $X' = X(L, \gamma, k)$. Note that $(L, \gamma, k)$ determine $X$ up to orientation-preserving diffeomorphism:
+    \begin{itemize}
+        \item $L$ and the Lagrangian framing $\xi$ determine $N(L)$;
+        \item The co-oriented $\gamma$ determines the $x_1$ direction and the choice of $k$ determines $\phi_k$;
+        \item Different $\mc{X}$ determine isotopic $\phi_k$.
+    \end{itemize}
+
+    Under the Lagrangian framing, $\gamma$ can be pushed off to a curve $\gamma'$ in a neighborhood of $L$. The image of $\gamma'$ under regluing determines the diffeomorphism typd of $X'$ by handle theory.
+
+    \begin{thm}[Luttinger, Auroux-Donaldson-Katzarkov]
+        $(X',\omega') = (X(L, \gamma, k), \omega')$ is uniquely determined up to symplectomorphism.
+    \end{thm}
+
+    \begin{exm}
+        Let $\omega_{\Sigma}$ be a symplectic form on $\Sigma$ and $\phi$ be a symplectomorphism of $(\Sigma, \omega_{\Sigma})$.
+        \[ Y_{\phi} \coloneqq [0,1] \times \Sigma / (1,x) \cong (0,\phi(x)) \]
+        and 
+        \[ X \coloneqq (\R \times \R \times \Sigma) / G \cong S^1 \times Y_{\phi}, \]
+        where $G$ is generated by $g_1(s,t,x) = (s+1,t,x)$ and $g_2(s,t,x) = (s,t+1,\phi(x))$. Because both of these are symplectomorphisms, $X$ is a symplectic manifold. Observe that $X$ is a $\Sigma$-bundle over $T^2$ with has monodromy the identity in the $s$-direction and $\phi$ in the $t$-direction. 
+
+        Now let $\gamma$ be a loop in a fiber $F \cong \Sigma_g$ of this bundle. Then $L \coloneqq S^1 \times T_0 \times \gamma$ is a Lagrangian torus inside $(X, \omega)$. Therefore, we have an isomorphism
+        \[ X(L, \gamma, k) = S^1 \times Y_{T_{\gamma_0}^k \circ \phi}, \]
+        where $T_{\gamma_0}$ is a positive Dehn twist along $\gamma$ for the opposite co-orientation. This gives a new $\Sigma$-bundle over $\T^2$ with trivial monodromy $s$ in the $s$-direction and monodromy $T_{\gamma_0}^k \circ \phi$ in the $t$-direction.
+
+        In particular, for $X = T^4$ and $\gamma = (s_0,t_0) \times S^1 \times \mr{pt}$, we get $X(L, \gamma, 1)$ is the Kodaira-Thurston manifold.
+    \end{exm}
+
+    \begin{rmk}
+        By a result of Ho-Li, there exists an embedded surface $S \subset X \setminus N_1(L) = X_0$ such that for $\iota_X: X_0 \to X$, $(\iota_X)_* [S] = K_{\omega}$ and for $\iota_{X'}: X_0 \to X'$, $(\iota_{X'})_* [S] = K_{\omega'}$.\footnote{I am being deliberately sloppy with homology and cohomology here. Use Poincar\'e duality to correct the RHS of both equations.}
+
+        When $X, X'$ are minimal, we can compute the Kodaira dimensions:
+        \begin{align*}
+            K^2_{\omega} = \int_S K_{\omega} = \int_{S'} K_{\omega'} = K_{\omega'}^2; \\
+            K_{\omega} \cdot [\omega] = \int_S \omega = \int_S' \omega' = K_{\omega'} \cdot [\omega']. 
+        \end{align*}
+        Therefore, the Kodaira dimensions are the \textit{same!}.
+    \end{rmk}
+
+    \begin{thm}[Enriques-Kodaira]
+        There exist finitely many K\"ahler manifolds $C \supset T^4$ with Kodaira dimension $0$.
+    \end{thm}
+
+    Now, any $\Sigma_g$-bundle over $\Sigma_n$ with $g,h \geq 1$ is \textit{acyclic} ($\pi_2 = 0$). Therefore, it is minimal. Then for all $k \in \Z$, if we set $X_k \coloneqq T^4(L, \gamma, k)$ as above, then every $T^2$ bundle over $T^2$ is a minimal symplectic manifold with the same Kodaira dimension as $T^4$. We can show that $H_1(X_k) = \Z^3 \oplus \Z/k\Z$, so we get only symplectic manifolds, not K\"ahler manifolds.
+
+    \chapter{April 23 and 28}%
+    \label{cha:april_23_and_28}
+    
+    Note that \.Inan\c{c} posted both of these lectures in the same file.
+
+    \section{Fundamental Groups of Symplectic Manifolds}%
+    \label{sec:topology_of_symplectic_4_manifolds}
+    
+    \begin{thm}[Gompf]
+        Any finitely presentable group $G$ is the fundamental group of a closed symplectic $4$-manifold.
+    \end{thm}
+
+    \begin{rmk}
+        The analogous result is true in any larger dimension by taking products with $\C\P^1$.
+    \end{rmk}
+
+    Our proof of Theorem 25.1 will use the following trick due to Gompf of turning homologically essential Lagrangian submanifolds into symplectic submanifolds in dimension $4$.
+
+    \begin{prop}
+        Let $(X^4, \omega)$ be a closed symplectic $4$-manifold and $F_1, \ldots, F_r$ be closed, connected, oriented, disjoint embedded Lagrangian submanifolds of $(X, \omega)$. Suppose that $[F_1], \ldots, [F_r] \in H_2(X, \R)$ lie in an affine subspace that does not contain $0$. Then there exists an arbitrarily small perturbation $\omega'$ of $\omega$ such that $(X, \omega')$ is symplectic and the $F_i$ are symplectic submanifolds (respecting the given orientations and of equal area).
+    \end{prop}
+
+    \begin{proof}
+        The affine subspace hypothesis implies there exists a linear function on $H_2(X, \R)$ evaluating to $1$ on each $[F_i]$. Therefore, there exists a closed $2$-form $\eta$ such that
+        \[ \int_{F_i} \eta = 1 \] for all $i$. Then let $\omega_i$ be a symplectic form on $F_i$ with $\int_{F_i} \omega_i = 1$. Thus for $j_i: F_i \to X$ the inclusion map, we have
+        \[ \int_{F_i} \omega_i - j_i^* \eta = 0, \]
+        so $\omega_i - j^* \eta = d \alpha_i$ for some $1$-form $\alpha_i$ on $F_i$. Now extend $\alpha_i$ to a form on $X$ by first pulling it back over a small tubular neighborhood $N(F_i)$. Then we smoothly taper it to zero outside of $N(F_i)$. Therefore
+        \[ \eta' \coloneqq \eta + \sum_{i=1}^r d \alpha_i \]
+        is a closed $2$-form such that $j_i^* \eta' = \omega_i$ for all $i$. If we set $\omega' = \omega + t \eta'$ for a fixed $t > 0$, $\omega'$ is closed. Because nondegeneracy is an open condition, $\omega'$ is also nondegenerate for small enough $t$. Moreover, $j_i^* \omega' = 0 + t \omega_i$ is a symplectic form on $F_i$ with area equal to $t$ for all $i$.
+    \end{proof}
+
+    \begin{rmk}
+        Now suppose $\omega' = \omega + t \eta$ is degenerate at $x \in X$ for some $t > 0$. Then there exists some $0 \neq u \in T_x X$ such that $\omega(u,v) + t \eta(u,v) = 0$ for all $v \in T_x X$. If this is also true for $t/2$, then $\omega(u,v) = 0$ for all $v \in T_x X$. Thus for each $x \in X$, there exists $t_x > 0$ for which $\omega'$ is nondegenerate. Because $X$ is compact, we can find a global $t$.
+    \end{rmk}
+
+    \begin{proof}[Proof of Theorem 25.1]
+        Fix a finite presentation $\ip{g_1, \ldots, g_k}{r_1, \ldots, r_{\ell}} \cong G$. Then let $F = \Sigma_k$ and let $a_1, b_1, \ldots, a_k, b_k$ be a standard collection of oriented embedded circles on $F$. Here, $a_i \cdot b_j = \delta_{ij}$.When suitably attached to a base point, $a_1, b_1, \ldots, a_k, b_k$ are generators of $\pi_1 F$. Here,
+        \[ \pi_1 F \cong \ip{a_1,b_1,\ldots, a_k, b_k}{[a_1,b_1]=\cdots=[a_k,b_k]=1}. \]
+        Therefore, $\pi_1 F / N(b_1, \ldots, b_k) \cong \ev{a_1, \ldots, a_k}$, the free group in the $a_i$. Under the above isomorphism, each condition $r_i$ is a word in $a_i^{\pm 1}$. 
+
+        Let $\gamma_i$ be a smooth, immersed, oriented circle in $F$ with only double points representing this word. We can then add handles at self-intersection points of each $\gamma_i$, so each $\gamma_i$ is embedded in some $\Sigma_k \# M T^2$. We also add handles so each $\gamma_i$ is \textit{non-separating}.
+
+        Let $F = \Sigma_g$, where $g = k + M$ be this bigger surface, where we have additional $a_i,b_i$ for $i = k+1, \ldots, g$. For $S = \qty{b_1, \ldots, b_k, \gamma_1, \ldots, \gamma_k, a_{k+1}, b_{k+1}, \ldots, a_g, b_g}$, we have $\pi_1 F / N(S) \cong G$. 
+
+        For $F \cong \Sigma_g$ and $S$ a collection of circles as above, we can assume $g \geq 1$ by adding trivial relations if needed. To simplify the notation, label the circles in $S$ as $c_i$ for $i = 1, \ldots, m$.
+
+        Take $X = T^2 \times F$ with the product symplectic form. For $S^1 = [0,1]/0 \sim 1$, let $0 < t_1 < \cdots < t_m < 1$. Then the embedded tori $L_i \coloneqq S^1 \times t_i \times c_i$ are all Lagrangian in $(X, \omega)$. Moreover, since each $c_i$ is non-separating in $G$, there exists $d_i \subset F$ such that $\abs{c_i \cap d_i} = 1$. Therefore, the torus $D_i \coloneqq \mr{pt} \times S^1 \times d_i$ is dual to $L_i$.
+
+        Applying Proposition 25.3 repeatedly, we can perturb $\omega$ to $\omega'$ so that all $L_i$ are now symplectic. Clearly $L_i^2 = 0$, so each is a symplectic torus with trivial neighborhood.
+
+        Therefore, $\pi_1 X \cong \pi_1 T^2 \oplus \pi_1 F$. Let $p_0 \in F \setminus S$. Then $L_0 = T^2 \times p_0$ is also a symplectic torus with trivial neighborhood and disjoint from the $L_i$.
+
+        Let $(X_G, \omega_G)$ be the symplectic manifold we obtain by symplectic fiber sum along $L_0, \ldots, L_m$ with $m+1$ copies of $E(1)$ along a smooth fiber $F$. Because $\pi_1(E(1) \setminus F) = 1$, we apply Seifert-van Kampen to obtain
+        \[ \pi_1(X_G) = \pi_1(X) / N(\mathbf{x}, \mathbf{y}, c_1, \ldots, c_m) \cong G. \qedhere \]
+    \end{proof}
+
+    \begin{rmks}
+        \begin{enumerate}
+            \item We can get infinitely many many symplectic manifolds with the same fundamental group $G$ by connected sum with $E(n)$ instead of $E(1)$.
+            \item By a result of Usher, $X_G$ is minimal.
+            \item $\kappa (X_G) = 1$.
+            \item There are infinitely many non-K\"ahler symplectic manifolds, all on the ``$x$''-line,
+        \end{enumerate}
+    \end{rmks}
+
+    \begin{exm}
+        For example, there exists a closed symplectic $4$-manifold $X$ with $\pi_1 X = \Z * \Z$.
+    \end{exm}
+    
+
+
+    
     
     
 \end{document}

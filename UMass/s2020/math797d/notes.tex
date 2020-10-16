@@ -22,13 +22,15 @@
 \usepackage{listings}
 \usepackage{mdframed}
 \usepackage{verbatim}
-%\usepackage{/home/patrickl/homework/macaulay2}
+\usepackage{physics} 
+\usepackage{graphicx}
+\graphicspath{{./}}
 
 % font
 \usepackage{fontspec}
 \usepackage{unicode-math}
 \setmainfont[Ligatures={Common}, Numbers={OldStyle}]{Libertinus Serif}
-\setsansfont{Libertinus Sans}
+\setsansfont[Ligatures={Common}, Numbers={OldStyle}]{Libertinus Sans}
 \setmonofont{Inconsolata}
 %\usepackage{mathspec}
 \setmathfont{Libertinus Math}
@@ -63,9 +65,7 @@
 % delimiters
 \DeclarePairedDelimiter{\gen}{\langle}{\rangle}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
-\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
 
 % numbered theorems
@@ -145,7 +145,6 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
-\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\supp}{supp}
@@ -1210,6 +1209,594 @@ Let $f \in \C[x_1, \ldots, x_n]$ and suppose that $\nabla f = 0$ only at the ori
 \end{quest}
 
 We will discuss these question in more depth later.
+
+\chapter{March 31}%
+\label{cha:march_31}
+
+\section{More Examples of Isolated Singularities}%
+\label{sec:more_examples_of_isolated_singularities}
+
+We will continue our discussion of isolated singularities and links of complex hypersurfaces. Recall that we suppose $\nabla f = 0$ only at the origin and that $L = S^{2n-1} \cap V(f)$.
+
+\begin{exm}
+    Consider $f = x^2 + y^3 + z^5 \in \C[x,y,z]$. The link is a $3$-manifold inside $S^5$, which is known as the Poincare dodecahedral space. This is an interesting object in geometric topology which has the same integral homology as $S^3$.\footnote{Poincare's conjecture initially concerned integral homology, and this example shows that version is false.} The fundamental group of $L$ turns out to be a \textit{perfect group}, which means that it has trivial abelianization.
+
+    $L$ can be realized as the configuration space of the regular dodecahedron in $\R^3$. Thus $L$ can be realized as $L = SO(3)/A_5$, which is the same as $SU(2) / \widetilde{A}_5$, where $\widetilde{A}_5$ is the preimage of $A_5$ under the covering map $SU(2) \to SO(3)$.\footnote{We went into a discussion of regular polytopes in dimension 4: simplex, hypercube, cross-polytope, $24$-cell, $120$-cell, $600$-cell.} The fundamental domain for the action of the binary icosahedral group on $S^3$ is actually one of the facets of the $120$-cell.
+\end{exm}
+
+\begin{exm}
+    Consider $f = x_1^2 + x_2^2 + x_3^2 + x_4^2 + x_5^{6k-1}$. The link is a $7$-manifold in $S^4$. In fact, we actually get exotic spheres.
+\end{exm}
+
+\begin{defn}
+    An \textit{exotic sphere} is a manifold that is homeomorphic but not diffeomorphic to a sphere.
+\end{defn}
+
+\begin{rmk}
+    The first $14$ examples were due to Milnor. By a result of Kervaire-Milnor, there are $28$ different smooth structures on $S^7$. The examples are all obtained by setting $k = 1, \ldots, 28$.
+\end{rmk}
+
+\section{Links of Plane Curve Singularities}%
+\label{sec:algebraic_knots_and_links}
+
+We will study the links that appear in the two-dimensional case. First, $L$ is the trivial knot (isotopic to $S^1 \subset S^3$) if and only if $V(f)$ is smooth at the origin. For a proof of this, see Milnor's book.
+
+For example, if $f = x^3 - y^2$, we can rewrite this as $y = x^{3/2}$. Then we write $y = ae^{i\theta_1}, x = be^{i\theta_2}$, and we can obtain $\theta_1 = \frac{3}{2} \theta_2$. We want to generalize this to see similar information with more complicated polynomials. The technique we will use is Puiseaux series.
+
+Consider the field $\C((t))$ of Laurent series over $\C$. Then Puiseaux series are elements of the algebraic closure of $\C((t))$. It turns out adding all roots of $t$ is enough, so all Puiseaux series have the form
+\[ \sum_{k = k_0}^{\infty} a_k t^{k/N} \]
+for some fixed $N$. 
+
+Given $f \in \C[x,y]$, we can find solutions of the form $y = \sum a_{\mu} x^{\mu}$ in Puiseaux series. In fact, there is an algorithm to compute them due to Newton. We will use this expression to compute the type of the link.
+
+\begin{exm}
+    Consider $f = y^4 - 2x^3y^2 + x^6 - 4x^5y - x^7$. We want to solve for $y$. This is an iterative algorithm, but where do we begin? We use the Newton polygon, which is simply everything above the segment between $(0,4)$ and $(6,0)$. Then if we consider the equation $\alpha + \frac{3}{2} \beta = 6$, this gives us a notion of the weighted degree of $x^{\alpha}y^{\beta}$. Thus all monomials along the segment have weighted degree $6$, and others have higher weighted degree. 
+
+    Assume that $y$ has a solution that to first approximation is $y = tx^{3/2}$. Then we obtain
+    \[ f(x,y) = (t^4 - 2t^2 + 1)x^6 + (\text{other stuff}). \]
+    If $t$ is a root of $t^4-2t^2+1$, then this gives a good approximation. If we take $t=1$, then we see that $y=x^{3/2}$ is a good approximation to the solution.
+
+    We continue, setting $x_1 = x^{1/2}$, so $y = x_1^3(1 + y_1)$. Then we obtain
+    \[ f(x_1, y_1) = x_1^{12}(y_1^4 + 4y_1^3 + 4y_1^2 - 4x_1 - x_1^2). \]
+    Our new line segment is $\alpha + \frac{1}{2} \beta = 1$. We set $y_1 = tx_1^{1/2}$ and compute $t = 1$. Then we can see that $f(x_1, y_1) = 0$. Therefore we have 
+    \[ y = x_1^3(1+x_1^{1/2}) = x^{3/2}(1+x^{1/4}). \]
+\end{exm}
+
+Next time we will discuss the general process and how to interpret the result.
+
+\chapter{April 2}%
+\label{cha:april_2}
+
+\section{Puiseaux Series}%
+\label{sec:links_of_plane_curve_singularities}
+
+We will discuss the algorithm due to Newton to compute Puiseaux series. This is an iterative algorithm that starts with an initial approximation and then refines it. All of these intermediate steps are computed using Newton polygons.
+
+The steepest nonvertical edge of the Newton polygon will be $\alpha + \mu_0 \beta = \nu$. Then we can rewrite
+\[ f = \sum_{\alpha + \mu_0 \beta = \nu} a_{\alpha\beta}x^{\alpha}y^{\beta} + \sum_{\alpha+\mu_0\beta>\nu} a_{\alpha\beta}x^{\alpha}y^{\beta}. \]
+If we set $y = tx^{\mu_0}$, then the first terms become $x^{\nu} g(t)$. Choose a root $t_0$ of $g$. This kills the first terms, so write $\mu_0 = \frac{p_0}{q_0}$. Then we write $x = x_1^{q_0}$ and $y = x_1^{p_0}(t_0 + y_1)$. Then we substitute this into $f$ and obtain something of the form
+\[ f = x^{\nu q_0} f_1(x_1, y_1). \]
+Apply the method again to $f_1$ and continue. There are a few issues with this:
+\begin{enumerate}
+    \item The procedure may not terminate. Fortunately, this is why we have power series.
+    \item The denominators may not be bounded. This will be explained later, but apparently denominator growth is controlled by the geometry of the Newton polygon.
+\end{enumerate}
+To find the answer, we have something like
+\begin{align*}
+    y &= x^{\mu_0} (t_0 + x_1^{\mu_1}(t_1 + x_2^{\mu_2}(t_2 + \cdots))) \\
+      &= t_0 x^{\mu_0} + t_1 x^{\mu_0}x_1^{\mu_1} + t_2 x^{\mu_0} x_1^{\mu_1} x_2^{\mu_2} + \cdots \\
+      &= t_0 x^{\mu_0} + t_1 x^{\mu_0 + \mu_1/q_0} + t_2 x^{\mu_0 + \mu_1/q_1 + \mu_2/q_0q_1} + \cdots.
+\end{align*}
+
+We claim that the denominators are bounded, so we really get a Puiseaux series. If $u_i$ is the height of the lowest point of the Newton polygon on the $y$-axis, then $u_i \geq u_{i+1}$ and $u_i = u_{i+1}$ if and only if $\mu_{i+1} \in \Z$. By the well-ordering principle, we cannot have indefinite denominator growth. Suppose the solution looks like
+\[ y = \sum a_{\lambda} x^{\lambda} \]
+and assume that not all $\lambda$ are integers. 
+
+Let $\lambda_1$ be the smallest nonintegral exponent and write it as $\lambda_1 = \frac{n_1}{m_1}$. Then if $\lambda_2$ is the next exponent not of the form $\alpha/m_1$, write it as $\lambda_2 = \frac{n_2}{m_1m_2}$. We keep goiny and get a sequence of pairs $(m_1, n_1), (m_1, n_2), \ldots, (m_g, n_g)$. These are known as Puiseaux pairs and are uniquely determined by the series. A set of pairs gives rise to a standard Puiseaux series
+\[ y = x^{n_1/m_1} + x^{n_2/m_1m_2} + \cdots + x^{n_g/m_1\cdots m_g}. \]
+
+\section{Computing the Knots}%
+\label{sec:computing_the_knots}
+
+
+Consider the map $(x,y) \mapsto x$ from $\C^2 \to \C$. Then let $x(\theta)$ be the small circle $\delta e^{i\theta}$ about the origin and consider its inverse image.
+
+\begin{exm}
+    Consider $y = x^{3/2}$. The inverse image has two branches:
+    \begin{align*}
+        y_1 &= \delta^{3/2}e^{i\frac{3}{2} \theta} \\
+        y_1 &= - \delta^{3/2}e^{i\frac{3}{2} \theta}
+    \end{align*}
+    We can graph this on a cylinder as $\theta$ goes from $0$ to $2\pi$. The ends will join together to give us a knot.
+\end{exm}
+
+\begin{exm}
+    Consider $y = x^{3/2} + x^{7/4}$. We have four branches in our map $\C^2 \to \C$. If $\delta$ is very small, then the $\delta^{3/2}$ term will dominate.
+
+    The four branches will correspond to the two branches of the previous example (two new branches for each old one), but we will have a small perturbation and there is nontrivial motion as we move along the cylinder. Recall that the trefoil knot is the torus knot for $x^{3/2}$. Then if we thicken the trefoil to a torus, the new knot is simply a perturbation.
+\end{exm}
+
+\begin{exm}
+    Consider $y = x^{3/2} + x^{37/2}$. There is a single Puiseaux pair, so we get a perturbation but no new branches.
+\end{exm}
+
+In general, we get an iterated torus knot. The depth of the iteration is the number of Puiseaux pairs. Unfortunately, this description does not make clear what knot we actually obtain. We know that the torus knot $(p,q)$ is simply the the image of the line of slope $\frac{q}{p}$. We will understand the iterated torus know by an interative procedure:
+\begin{description}
+    \item[Order 0:]Standard $S^1 \subset S^3$.
+    \item[Order 1:]$T^2 \subset S^3$ the boundary of a tubular neighborhood of $S^1$.
+    \item[Order $k$:]Body of closure of tubular neighborhood of order $k-1$ torus.
+\end{description}
+\begin{defn}
+    A $K \subset S^3$ is \textit{admissable embedded} if 
+    \begin{enumerate}
+        \item $K \subset S^1 \times D^2$.
+        \item $\pi: K \to S^1$ is a covering map.
+    \end{enumerate}
+\end{defn}
+
+Let $T$ be a tubular neighborhood of $K$ such that for each $t \in S^1$ the intersection $T \cap \{t \} \times D^2$ is a union of disjoint discs around the points $K \cap (\{ t \} \times D^2)$. Let the first $S^1$ inside $T$ be the boundary of any one of these distinct discs. To get the other circle, choose a curve on $\partial T$ such that the direction from the curve to the knot is constant when measured in each disc.
+
+\chapter{April 7}%
+\label{cha:april_7}
+
+\section{Plane Curve Singularities}%
+\label{sec:plane_curve_singularities}
+
+Last time we discussed a way to generate Puiseaux pairs from a function $f \in \C[x,y]$.
+
+\begin{thm}
+    Suppose $V(f)$ is irreducible at $0$. Then let $(m_1, n_1), \ldots, (m_g, n_g)$ be the sequence of Puiseaux pairs. Then $L = L(0)$ is an iterated torus know of type given by the Puiseaux pairs.
+\end{thm}
+
+Recall from last time how we trivialized the tubular neighborhood of a torus knot. Now, it makes sense to discuss the $(m_2, n_2)$ cable on the $(m_1, n_2)$ torus knot. We can continually iterate this construction until we have exhausted all Puiseaux pairs. 
+
+\begin{rmk}
+    Now a natural question is to ask whether all sequences of relatively prime pairs arise from this process. Unfortunately, this is not true, and there are some conditions:
+    \begin{itemize}
+        \item $m_1 < n_1$;
+        \item $n_{j-1}m_j < n_j$.
+    \end{itemize}
+    For example, $(2,3), (2,5)$ cannot arise from this process.
+\end{rmk}
+
+When the singularity is not irreducible, we get a link, not just a knot. We can ask what kinds of links can appear. The invariant we consider is the \textit{linking number} $lk(J,K)$ of two components $J,K$ of a link.
+\begin{enumerate}
+    \item If the two knots are unlinked, then $lk(J,,K) = 0$;
+    \item Otherwise, we consider crossings where $J$ goes under $K$, signed by orientation, and then take the sum.
+\end{enumerate}
+
+\begin{rmk}
+    The definition of linking number is invariant under Reidemeister moves.\footnote{There are also many equivalent definitions.}
+\end{rmk}
+
+\begin{thm}
+    The topology of a curve singularity is determined by the Puiseaux pairs for each branch and the pairwise linking numbers.
+\end{thm}
+
+\begin{rmk}
+    Suppose we have two curves $C, C'$ in $\P^2$ of degrees $m, n$. Then the linking number of $C, C'$ at an intersection point is exactly their intersection multiplicity. In particular, there cannot be unlinked components or negative linking numbers.
+\end{rmk}
+
+\begin{rmk}
+    Linking numbers do not determine a link. For example, consider the Borromean rings compared to the trivial link. In fact, a similar configuration exists for any number of components.
+\end{rmk}
+
+\begin{rmk}
+    Some references are \textit{Plane Algebraic Curves} by Brieskorn and Kn\"orrer and Walter Neumann's survey paper.
+\end{rmk}
+
+\section{Higher-Dimensional Hypersurface Singularities}%
+\label{sec:higher_dimensional_hypersurface_singularities}
+
+The main reference for this is Milnor's book. While it is somewhat old-fashioned, it does a lot with very little technology and accomplishes a lot.
+
+Let $f \in \C[z_0, \ldots, z_n]$ and that $V(f)$ is singular at the origin. Then recall $L = V(f) \cap S^{2n+1}$.
+
+\begin{thm}[Milnor Fibration]
+    For $\ep$ sufficiently small, the map $p: S^{2n+1} \setminus {L} \to S^1$ given by
+    \[ z \mapsto \frac{f(z)}{\abs{f(z)}} \] 
+    is a locally trivial fibration.
+\end{thm}
+
+Now we want to study the fiber of this map. If the singularity is isolated, then each fiber is a manifold whose closure is a manifold with boundary $L$. If we go around the circle, we obtain a monodromy map $F_0 \to F_0$, and we have an induced automorphism of $H_*(F_0)$.
+
+\begin{exm}
+    Consider the case of a plane curve singularity. Then $L$ is a knot in $S^3$, and $p$ gives us a collection of surfaces (over $\R$) in $S^3$. These are called \textit{Seifert surfaces}.
+\end{exm}
+
+\begin{defn}
+    A \textit{Seifert surface} for a link $L$ is a bicollared surface with boundary $L$. Here, bicollared means the boundary has two collar neighborhoods.
+\end{defn}
+
+To construct a Seifert surface from a link, we can trivialize crossings, fill the circles into discs, and then untrivialize the crossings again.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{seifert}
+    \caption{Seifert surface of the trefoil knot.}%
+    \label{fig:seifert}
+\end{figure}
+
+Here are some more properties of Milnor fibers:
+\begin{enumerate}
+    \item Each fiber is parallelizable;
+    \item Each fiber has the homotopy type of a cell complex of dimension $n$.
+\end{enumerate}
+
+\chapter{April 9}%
+\label{cha:april_9}
+
+Paul used GP/Pari to force Zoom to record at a higher resolution.
+
+\section{More Milnor Fibration}%
+\label{sec:more_milnor_fibration}
+
+Recall the definition of the Milnor fibration from last time. Then recall that $F$ is parallelizable and has homotopy type of an $n$-dimensional cell complex.
+We give some more properties of the fibration:
+\begin{enumerate}
+    \item One can show that $\pi_1(L), \ldots, \pi_{n-2}(L)$ are all trivial.
+    \item Each fiber is diffeomorphic to an open (in the analytic topology) subset of a nonsingular complex hypersurface of the form $f = c$, where $c$ is a nonzero constant.
+    \item Suppose that $0$ is an isolated singularity. Then $F$ has the homotopy type of a \textit{bouquet of $n$-spheres}.
+\end{enumerate}
+Proof of these claims can be found in Milnor's book, but they are too long for Paul to give them in class.
+
+The key invariant of an isolated singularity is the \textit{Milnor number}.
+\begin{defn}[Milnor number]
+    Let $J_f$ be the ideal generated by the partial derivatives of $f$. Then the \textit{Milnor number} is simply
+    \[ \mu \coloneqq \dim \C[z_0, \ldots, z_n]/J_f. \]
+\end{defn}
+
+\begin{defn}[Milnor number, second definition]
+    Let $J: \C^{n+1} \to \C^{n+1}$ be given by the $\pdv{f}{z_i}$. This induces a map on a smapp sphere $S_{\ep}^{2n+1} \to S^{2n+1}$. The degree of the map is the induced map on $H_{2n+1}(S^{2n+1})$.
+\end{defn}
+
+\begin{thm}
+    The Milnor number $\mu$ is the number of spheres in the bouquet attached to the isolated singularity. In particular, $H_n(F) = \Z^{\mu}$.
+\end{thm}
+
+\begin{exm}
+    The Milnor number of $z_0^2 + x_1^3$ is $2$. From the explicit drawing of the surface, we can see a homotopy down to a graph with the same homotopy type as $S^1 \wedge S^1$.
+\end{exm}
+
+This is an example of something called a \textit{Brieskorn variety}, which is a variety of the form $x_0^{a_0} + \cdots + x_n^{a_n}$. In this case, we can simply compute
+\[ \mu = (a_0 - 1) \cdots (a_n - 1). \]
+Recall that we can consider the monodromy of the fibration. Then this gives an automorphism $h$ of $F$, and we can regard $h_*: H_n(F) \to H_n(F)$ as an element of $GL_{\mu}(\Z)$.
+
+\begin{thm}[Deligne-Griffiths]
+    $h_*$ is a unipotent matrix. This means here that $h_*$ is conjugate to an upper triangular matrix with eigenvalues roots of unity. Moreover, all Jordan blocks of $h_*$ have dimension at most $n+1$.
+\end{thm}
+
+\begin{exm}
+    Let $f = \sum_{i=0}^n z_i^{a_i}$. Then we can explicitly compute the eigenvalues of the monodromy map. In fact, they are all products of the form
+    \[ \omega_0 \cdots \omega_n, \]
+    where $\omega_i$ is a nontrivial $a_i$-th root of unity. For example, in the case $f = z_0^2 + z_1^3$, the two eigenvalues are the primitive sixth roots of unity.
+\end{exm}
+
+We will now sketch a proof of the formula. First, we can extend the fibration to all of $\C^{n+1} \setminus V(f)$. We can show that the fiber above $y \in S^1$ is $F \times \R$. We can now compute the monodromy of this fibration, which is simply
+\[ z \mapsto \qty(e^{it/a_0} z_0, \ldots, e^{it/a_n} a_n). \]
+Then the monodromy is simply $h_{2\pi}$. By a result of Pham, we see that
+the fiber above $1$ deformation retracts onto the \textit{iterated join} of the $\Omega_{a_i}$. For example, the join of $\Omega_p * \Omega_q$ is simply the complete bipartite graph $K_{p,q}$.
+
+\begin{exm}
+    If we label some vertices on the Seifert surface we drew last time, then we can see the graph.
+\end{exm}
+
+We can now compute the reduced homology of $F$, and we see that the top homology is simply 
+\[ \widetilde{H}_n(F) \cong \bigotimes \widetilde{H}_0(\Omega_{q_i}). \] 
+
+\begin{rmk}
+    Results extend to \textit{weighted homogeneous polynomials} $f$. Here, $f(x_1, \ldots, x_m)$ is weighted homogeneous of tope $a_1, \ldots, a_m$ if it is a linear combination of monomials $z_1^{i_1} \cdots z_m^{i_m}$ where
+    \[ \frac{i_1}{a_1} + \cdots + \frac{i_m}{a_m}. \]  
+\end{rmk}
+
+\chapter{April 14}%
+\label{cha:april_14}
+
+Paul calculated $e$ and $\pi$ in GP/Pari.
+
+\section{Globally Symmetric Spaces}%
+\label{sec:Globally_symmetric_spaces}
+
+\begin{exm}
+    Let $\mc{H}$ be the upper half plane and $\Gamma = SL_2(\Z)$ (or some finite-index subgroup), and then we can consider the space $\Gamma \backslash \mc{H}$. This is a locally symmetric space, which is simply a punctured Riemann surface. There are two obvious compactifications:
+    \begin{enumerate}
+        \item Fill in the missing points;
+        \item Fill in the missing points with a bounding circle.
+    \end{enumerate}
+    Why is this a locally symmetric space? It is a quotient of a global symmetric space. Here, if $G = SL_2(\R)$ and $K = SO(2)$, then $\mc{H} = G/K$.
+\end{exm}
+
+\begin{defn}
+    Let $M$ be a Riemannian manifold with an involution $s_p$ for each $p \in M$ that fixes $p$ but reverses every geodesic through $p$. Then we call $M$ a \textit{symmetric space}. Note that any such $M$ is complete because we can extend geodesics by flipping. Also note that $M$ has a transitive isometry group.
+\end{defn}
+
+\begin{exm}[Basic Examples]
+    \begin{enumerate}
+        \item $\R^n$ is always a symmetric space. Here the geodesics are straight lines and the involutions are reflections.
+        \item Any sphere is a symmetric space.
+        \item Any hyperbolic space $H_n$ is a symmetric space.
+    \end{enumerate}
+\end{exm}
+
+\subsection{Classification}%
+\label{sub:classification}
+
+These spaces were classified by Elie Cartan, which was one of the first major results in the classification of Lie groups and Lie algebras. Here, $M$ is a product of three types of symmetric spaces:
+\begin{itemize}
+    \item Euclidean type ($\R^n$);
+    \item Compact type;
+    \item Noncompact type;
+\end{itemize}
+These are characterized by conditions on their sectional curvature (identically zero, nonnegative, nonpositive).
+
+Next, any symmetric space can be factored into irreducible symmetric spaces. Therefore, we simply need to classify the irreducible symmetric spaces. These were classified using algebra, and are all $G/K$, where $G$ is a connected Lie group and $K$ is a maximal compact subgroup.
+
+First, we classify all possible Lie algebras, then see which Lie groups have a given Lie algebra. Finally, using the theory of root systems and weights, we obtain $8$ classical families ($A,B,C,D$) of symmetric spaces and $12$ exceptional examples ($E,F,G$). Each one comes in a compact version and a noncompact version. In fact, there is a duality between the compact spaces and noncompact spaces.
+
+\subsection{Basic Examples}%
+\label{sub:basic_examples}
+
+\begin{enumerate}
+    \item Let $G = SL_n(\R)$ and $K = SO(n)$. Then $M = G/K$ and has dimension $\frac{(n+2)(n-1)}{2}$. The symmetry comes from the involution $X \mapsto (X^{-1})^T$.
+    \item Let $G = Sp_{2n}(\R)$. Then $K = U(n)$ and $M = G/K$ has dimension $n(n+1)$ and is called the Siegel upper half-space. This space arises in the study of moduli spaces of abelian varieties. In fact, this is a Hermitian symmetric space, which means $M$ is a complex manifold.
+    \item Let $G = SL_2(\C)$ and $K = SU(2)$. Then $G/K = H_3$, which is hyperbolic $3$-space.
+    \item Now consider $G = SL_2(\R) \times SL_2(\R)$. Then $K = SO(2) \times SO(2)$ and $H/K = \mc{H} \times \mc{H}$. This example and the previous one arise when studying algebraic groups over number fields. The upper half-plane corresponds to $\Q$, $H_3$ corresponds to imaginary quadratic fields, and $\mc{H} \times \mc{H}$ corresponds to the real quadratic fields. Quotients of $H_3$ give Bianchi manifolds, quotients of $\mc{H} \times \mc{H}$ give Hilbert modular surfaces, and quotients of $\mc{H}$ give modular curves.
+\end{enumerate}
+
+\section{Locally Symmetric Space}%
+\label{sec:locally_symmetric_space}
+
+Here, we only require involutions that reflect geodesics in neighborhoods of points. However, every locally symmetric space arises as the quotient of a global symmetric space by a discrete subgroup of $G$.
+
+\begin{exm}
+    We can consider $G = SL_2(\R)$ and $\Gamma = SL_2(\Z)$. Alternatively, we can consider $G = SL_2(\C)$ and $\Gamma = SL_2(K)$ where $K$ is an imaginary quadratic field. If $G = SL_2(\R) \times SL_2(\R)$, then we can take $\Gamma = SL_2(K)$, where $K$ is a real quadratic field. Here, $\Gamma$ acts by $\gamma \cdot g = \gamma g$ on the first factor and by $\gamma \cdot g = \overline{\gamma} g$ on the second factor.
+\end{exm}
+
+We can understand the geometry of these space by interpreting them as configuration spaces. We will focus on the case where $G = SL_n(\R)$. Our goal is to understand compactifications of the locally symmetric spaces geometrically. Here, points in $\Gamma \backslash X$ correspond to lattices in $\R^n$ modulo equivalence relations and with some decorations.
+
+\chapter{April 16}%
+\label{cha:april_16}
+
+Paul computed some values of the Riemann Zeta function.
+
+\section{Compactifications of the Space of Lattices}%
+\label{sec:compactifications_of_the_space_of_lattices}
+
+Let $G = SL_n(\R), K = SO(n), \Gamma = SL_n(\Z)$. Then consider the global symmetric space $X = G/K$. note that any coset $gK$ is a basis of $g$ obtained by rotation. Therefore $G/K$ corresponds to the set of volume $1$ ordered bases of $\R^n$ up to rotation. 
+
+Next, consider the locally symmetric space $\Gamma \backslash X$. Here, $\Gamma g$ gives the lattice generated by the rows of $g$, and thus $\Gamma \backslash X$ can be identified by the space of lattices in $\R^n$ up to rotation and scaling.
+
+\begin{rmk}
+    Double coset spaces like $\Gamma \backslash G / K$ are ubiquitous in geometry. Any double coset space really corresponds to the set of $G$-orbits on pairs.
+\end{rmk}
+
+\begin{proof}
+    Let $X_1 = G/H_1$ and $X_2 = G/H_2$ for two subgroups $H_1,H_2$ of $G$. Then consider the diagonal action of $G$ by $G: X_1 \times X_2$ diagonally. Then we can show that $G$-orbits are in bijection with $H_1 \backslash G / H_2$.
+\end{proof}
+
+\begin{exm}
+    Let $G = SL_n(\C)$ and $B$ be the maximal Borel subgroup. Then $G/B$ is the flag variety, and $B \backslash G / B$ encodes the relative positions of two flags in $\C^n$. The Bruhat decomposition shows that this is actually a finite set, indexed by the Weyl group $W$.
+\end{exm}
+
+\begin{exm}
+    Consider $G = SL_n(\R)$ and $K = SO(n)$. Then we can encode $X = G/K$ as the set of volume $1$ ellipsoids in $\R^n$ and the points give metrics on $\R^n$. Then the space $K \backslash G / K$, which parameterizes ellipsoids of volume $1$ up to rotation. By a result of Euler, this is paramaterized by positive real numbers whose product is $1$.
+\end{exm}
+
+Therefore, we can consider $\Gamma \backslash G / K$ as the set of $G$ orbits in $G/\Gamma \times G/K = \{ \text{lattices} \} \times \{ \text{metrics} \}$. We can consider the space of lattices in the presence of a fixed metric or the space of metrics in the presence of a fixed lattice.
+
+\begin{rmks}
+    The space $\Gamma \backslash X$ is very close to being a manifold. It has singularities, but they are very mild (in fact just quotient singularities), so the space is an orbifold. The singularities come from lattices with nongeneric symmetry (with symmetry that is more than just $x \mapsto -x$).
+
+    \begin{enumerate}
+        \item We can give up and call this space an orbifold, stack, or some other new term, or we can incorporate decorations with the lattices. We will take the second approach later. This corresponds to replacing $SL_n(\Z)$ with a finite index subgroup.
+        \item This space is not compact. If we scale the $x$-axis up and the $y$-axis down, this sequence of lattices clearly does not converge. In fact, a theorem of Mahler says that a sequence of lattices diverges to infinity if and only if the length of the minimal nonzero vector converges to $0$.
+    \end{enumerate}
+\end{rmks}
+
+\subsection{Topology and Geometry for Small $n$}%
+\label{sub:topology_and_geometry_for_small_n_}
+
+Let $n = 2$. Then this gives lattices in $\R^2$ modulo rotation and scaling. We are looking for a fundamental domain for $\Gamma$ acting on $X$ together with an identification on its boundary. This is known as explicit reduction theory.\footnote{This supposedly has applications in the ``real world,'' whatever that is. There was a remark about how GPS is useless now because we're all sitting at home.}
+
+First, we will find a shortest nonzero vector $v \in L$. If we rotate and scale $v$ onto $e_1$, we can choose the minimal length vector $w$ from the row immediately above the $x$-axis. Then $\abs{w} \geq 1$ and lies in the strip between $-\frac{1}{2}$ and $\frac{1}{2}$. This gives the famous picture of the fundamental domain in the upper half plane. The two vertical lines are clearly identified, and then the arc the arc is folded in half. Therefore, the space $\Gamma \backslash X$ is topologically equivalently to a disc.
+
+
+\chapter{April 21}%
+\label{cha:april_21}
+
+Paul computed some values of $L$-functions of number fields in GP/Pari. He then mentioned the class number formula.
+
+Last time, we discussed the space of lattices modulo rotation and scaling. In addition, we computed the fundamental domain of the action of $SL_2(\Z)$ on the upper half-plane.
+
+\section{Geometry for $n=3$}%
+\label{sec:geometry_for_n_3_}
+
+
+We now consider the space of lattices in $\R^3$. We can rescale to make the shortest nonzero vector $(1,0,0)$. Then we can rotate the next shortest vector to lie in the $xy$-plane, and we can assume that $v_2$ is in the right half of the fundamental domain of $SL_2$. Finally, we choose a $v_3$ lying above the plane. To do this, consider the quotient of $\R^3$ by the plane, and we can choose $v_3$ in the inverse image of the shortest nonzero vector in the quotient lattice.
+
+\begin{rmk}
+    The image of a lattice in a quotient space is not necessarily a lattice.
+\end{rmk}
+
+Next, we consider where we can arrange $v_3$ to be. We can move along the lattice and move $v_3$ to lie over a polygon determined by $v_1,v_2$. In addition, $v_3$ cannot lie inside the unit hemisphere. Therefore, our configuration has dimension $5$ and should have a deformation retract onto a compact space of dimensnio $3$.
+
+First, let's ignore the noncompact dimensions and focus on the compact part. To see this object, we move $v_2$ to the top of the semicircle and look at the possible polygons. Here, the polygon is the set of points whose distance to the origin is smaller than the distance to any other lattice points. This is called the Dirichlet-Voronoi domain.\footnote{Paul discussed real-world applications of these things.} Then this three dimensional space is very complicated, and it is easier to describe a finite version. This is simply a cube with four of the vertices truncated. Note the center of the triangular face is the $A_1 \times A_1 \times A_1$ lattice while the center of a hexagonal face is the $A_2 \times A_1$ lattice.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{voronoi.png}
+    \caption{Soul\'e's cube. This was used to compute the cohomology of $SL_3(\Z)$.}%
+    \label{fig:name}
+\end{figure}
+
+\begin{exer}
+    Find the three remaining special lattices (names can be found in a crystollagraphy book).
+\end{exer}
+
+We will not consider the higher-dimensional analogues. The quotients are well-understood up to $n=7$, but the case $n=8$ is unknown. In $n=8$, we have the $E_8$ lattice, which makes the geometry of the polytope extremely complicated.\footnote{Paul said that $E_8$ is a legitimate excuse for not doing anything.} We have no idea how many faces there are, but we do have a few crude estimates. In addition, our algorithm for finding a nice basis of our lattices fails in dimension greater than $3$. It barely works for $n=4$, but fails for $n=5$.
+
+\begin{exm}
+    Consider the lattice $L \subset \R^5$ with basis $e_1, e_2, e_3, e_4, \frac{1}{2} (e_1 + \cdots + e_5)$. Note that $\Z^5$ is a strict subset of $L$. However, if we run our algorithm, we only obtain the $\Z^5$ lattice, which is not $L$.
+\end{exm}
+
+\begin{rmk}
+    Even worse, in high dimensions, there exist lattices such that \textbf{no} basis contains a minimal vector (Conway-Sloane).
+\end{rmk}
+
+\section{Singularities of the space of lattices}%
+\label{sec:singularities_in_gamma_backslash_x_}
+
+We can eliminate these singularities by introducing extra data. We will call these ``marked lattices'' and our extra data will kill these automorphisms.
+
+\begin{defn}
+    A \textit{marking} on a lattice is a surjective map $m:L \to S$ such that there exists a finite index sublattice $L'$ such that $m$ is fixed by translation by $L'$.
+\end{defn}
+
+\begin{exm}
+    We can mark $L = \Z^n$ using $S = (\Z/p\Z)^n$ by reduction mod $p$. Here, $L' = p\Z^n$.
+\end{exm}
+
+\begin{rmk}
+    We can think of markings as coming from coloring data on our lattices.
+\end{rmk}
+
+We can consider ``$\Gamma(p)$ markings.'' Then the space of marked lattices is
+\[ \bigsqcup_{i \text{ finite}} \Gamma_i \backslash X, \]
+where $\Gamma_i$ is a finite-index subgroup.
+
+\begin{thm}
+    For $p \geq 3$, all $\Gamma(p)$-marked lattices have the same automorphisms. Therefore, the moduli space of marked lattices is smooth. The analogous procedure for abelian varieties is taking a principal polarization.
+\end{thm}
+
+\chapter{April 23}%
+\label{cha:april_23}
+
+\section{Compactifications of Locally Symmetric Spaces}%
+\label{sec:compactifications_of_locally_symmetric_spaces}
+
+\begin{exm}
+    Consider $\R^n$. How do we compactify it? How do we add limit points for rays that go off to infinity? If the lines are parallel, do we want them to have the same limit point? This is one of the reasonable ideas, and we obtain a $S^{n-1}$ at infinity.
+
+    If we forget about rays and just consider lines, we obtain $\P^n(\R)$, with a $\P^{n-1}(\R)$ at infinity. In both these examples, we see that points at infinity can be recorded via equivalence relations on geodesics.
+\end{exm}
+
+\begin{exm}
+    Let $\Gamma = \Z/6\Z$ act on $\R^2$ by rotation. Then note that any cone with angle $\pi/3$ is a fundamental domain. How do we compactify this?
+    \begin{description}
+        \item[Method 1:] We use what we did for $\R^2$. We can extend the action to the compactification of $\R^2$ (say the $S^1$) at infinity, and we obtain an honest cone. 
+        \item[Method 2:] We now have $6$ distinguished rays. We can attempt to use the $1$-parameter family of parallel rays for each of these. Now we glue these $6$ lines onto $\R^2$. We will dictate that the two rays bounding one fundamental domain give lines that intersect at a single point. All rays between the two distinguished rays will converge to that single point. In some sense, this is dual to what we did before and we have a hexagon at infinity.
+    \end{description}
+
+    Why would we consider the second method?
+    \begin{enumerate}
+        \item We gain information that we lost in the first method.
+        \item This is what happens when we consider toric varieties.
+        \item When we consider $\Gamma \backslash X$, we need something more like this method.
+    \end{enumerate}
+\end{exm}
+
+Now we will consider the space of lattices up to rotation and scaling. Here, our points have a geometric interpretation, so we can try to leverage this. We have two tools to work with:
+\begin{enumerate}
+    \item Geodesics in $\Gamma \backslash X$. We can think of adding limit points for families of geodesics.
+    \item In configuration spaces and moduli problems, we want the points at infinity to have a geometric meaning.\footnote{\textbf{Note Taker:} See for example the space $\overline{M}_{g,n}$.} For us, this means that lattices should degenerate to something more general. There are other contexts:
+    \begin{enumerate}
+        \item Consider the moduli space of genus $g$ curves $M_g$. When we go to infinity, we pass to stable nodal curves with several components.
+        \item Consider the moduli space of abelian varieties. These degenerate to various geometric objects.
+    \end{enumerate}
+\end{enumerate}
+
+Now if we consider lattices in $\R^2$, consider the family of lattices $L(t) = \ev{2^{-t} v_1, 2^t v_2}$, this should converge to the $x$-axis at infinity and the $y$-axis at $-\infty$. The moral of the story is that lattices degenerate to subspaces. This may not seem too complicated for $n=2$, but it is very complex when $n=3$.
+
+\begin{rmk}
+    This approach does use geodesics! We are moving around in the upper half-plane.
+\end{rmk}
+
+Now we consider the space of lattices in $\R^3$. Recall this is isomorphic to a quotient of the Soul\'e cube times $(\R_{\geq 0})^2$. If we start with the standard basis vectors, we can consider the family 
+\[ L(t) = \gen{2^{-t} e_1, 2^{-t}e_2, 2^{2t}e_3}.\] 
+As $t \to \infty$, we simply obtain the $xy$-plane.
+
+For another example, consider 
+\[ L(t) = \ev{2^{-2t}e_1, 2^t e_2, 2^t e_3} .\] In the limit at infinity, we simply obtain the $x$-axis. We can also see ``in between'' phenomena. Consider the family 
+\[ L(t) = \ev{2^{-3t}e_1, 2^{-2t} e_2, 2^{5t} e_3}. \]
+We can see that the $x$-direction collapses faster than the $y$-direction, so if we rescale by $2^{2t}$, we see that the limit is a flag $0 \subset (y=z=0) \subset (z=0)$. 
+
+\begin{rmk}
+    We have seen all possible degeneration types. Now we can attempt to look for more refined degeneration data. We observe that the image of the diagonal matrices in $SL_3(\R) / SO(3)$ is a maximal flat geodesic submanifolds. Therefore, the points at infinity should be parameterized by flags with some extra data.
+\end{rmk}
+
+If we return to the first example $L(t) = \gen{2^{-t}e_1, 2^{-t}e_2, 2^{2t}e_3}$. Recall that we obtain the plane as the limit. However, for $t \gg 1$, the images of $e_1, e_2$ give a lattice in the plane. This gives a point in our space for $n=2$! If we change $e_1,e_2$ to different $v_1,v_2$ (say the basis for the $A_2$ lattice), then we obtain a different lattice in our intermediate stage.
+
+\chapter{April 28}%
+\label{cha:april_28}
+
+Last time we discussed limits of lattices in $\R^n$. We were able to obtain flags by degenerating lattices. Unfortunately, not every flag can arise as the degeneration of a lattice family.
+
+\begin{exm}
+    Consider $n=2$ with $X = \mc{H}$. Then suppose $\Gamma = SL_2(\Z)$. Suppose we head down to $\alpha \in \R$ along a geodesic. If $\alpha$ is rational, then we go off to infinity. However, if $\alpha$ is irrational, the picture is much more subtle.
+    \begin{itemize}
+        \item If $\alpha$ is contained in a real quadratic field, then the path approaches a periodic geodesic.
+        \item Otherwise, the path wanders around the quotient and does not escape to infinity. The behavior here is completely unknown.
+    \end{itemize}
+\end{exm}
+
+In terms of flags, only certain flags will arise as limit points, and in fact, we want \textit{rational flags}. These are flags whose subspaces are generated by lattice points. What about limiting shapes of lattices?
+
+When $n=3$, we have three types of limiting flags: a plane, a line, and a line inside a plane. When we have a plane, we have a shape inside the limiting plane. In the case of a line, we expect a shape inside the quotient of $\R^3$ by the line. Finally, in the case of a full flag, we expect no shape data. More generally, for a flag
+\[ 0 = F^1 \subsetneq F^2 \subsetneq \cdots \subsetneq F^k = \R^n, \]
+we can look at pairwise successive quotients and find lattice shapes there. Putting it all together, we obtain the reductive Borel-Serre compactification. Strata are induced by rational flags in $\R^n$ including the empty flag.
+
+For example, we can add three different types of strata when $n=3$. We can index them by partitions of $3$ where the order of the parts matters.
+\begin{table}[H]
+    \centering
+    \caption{Partitions and Strata}
+    \label{tab:label}
+    \begin{tabular}{ccc}
+    \toprule
+    Flag & Partition & Strata \\
+    \midrule
+    $\emptyset$ & $3$ & $5$-dimensional strata \\
+    $\R^2$ & $2+1$ & $2$-dimensional strata at infinity \\
+    $\R^1$ & $1+2$ & $2$-dimensional strata at infinity \\
+    $\R^1 \subset \R^2$ & $1+1+1$ & $0$-dimensional strata at infinity \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+In fact, the strata at infinity are lower-rank locally symmetric spaces that are being compactified themselves in this process. The space for $n=3$ looks something like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{space.png}
+    \caption{Simplified picture of strata for $n=3$}%
+    \label{fig:Simplifi}
+\end{figure}
+This space is singular. We have attached two-dimensional strata to a five-dimensional space. We can compte links by realizing the space as a quotient of a manifold with corners. The bigger space is called the Borel-Serre compactification.\footnote{Apparently this was part of one of only two papers jointly written by Borel and Serre.} There will be a five-dimensional stratum and two four-dimensional strata that meet in a three-dimensional corner. In fact, the four-dimensional strata are fiber bundles over the locally symmetric spaces for $n=2$.
+
+Consider the case when $n=2$. Suppose $\gamma_1, \gamma_2$ are parallel geodesics that go off to infinity. Should they go to different limiting points or the same point? Recall our discussion about compactifying $\R^n$. There are two answers here:
+\begin{enumerate}
+    \item We can send them to the same point because of the metric on the upper half plane. This is because the two geodesics get arbitrarily close together.
+    \item The geodesics hit different points on various parallel horocycles.\footnote{Apparently electrical engineers use geodesics and horocycles on the hyperbolic plane as graph paper on a disc.} Thus sending them to different points also makes sense.
+\end{enumerate}
+To add this data in our lattice/flag description, we add a \textit{real} transverse flag to the data. The transverse flag corresponds to adding an $S^1$ at infinity. This $S^1$ is really the matrices of the form
+\[ \begin{pmatrix}
+    1 & x \\ 0 & 1
+\end{pmatrix} \in SL_2(\R). \]
+In the quotient, this circle is collapsed down to a point.
+
+When $n=3$, we add flags to the strata corresponding to the compositions $21,12,111$. In the Lie groups picture, the three strata correspond to parabolic subgroups. Then the fiber above each point in the two dimensional strata is a torus. Then the three-dimensional stratum is the image of the matrices of the form
+\[ \begin{pmatrix}
+    1 & * & * \\
+    0 & 1 & * \\
+    0 & 0 & 1
+\end{pmatrix} \]
+and is called a nilmanifold of the Heisenberg manifold.
+
+\begin{exer}
+    Compute the links of points in the strata using the presentation as a space with thin singularities.
+\end{exer}
+
+\begin{rmk}
+    It is an open question to generalize these constructions to the nonarchimedean setting. Here, we want to replace real Lie groups with reductive groups over $\Q_p$ and $K$ with the same group over $\Z_p$. For example, we replace $SL_n(\R)$ with $SL_n(\Q_p)$ and $K = SO(n)$ with $K=SL_n(\Z_p)$. The analogue of $X$ in this setting is called a \textit{building}. Compactifications of $X$ in this setting have been studied, but locally summetric spaces have not been studied.
+\end{rmk}
+
 
 
 

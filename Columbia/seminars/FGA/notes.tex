@@ -1,0 +1,370 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape FGA Explained Learning Seminar \\ Fall 2020}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during the seminar using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\vspace*{1cm}
+
+\noindent\textbf{Seminar Website:}  \url{https://www.math.columbia.edu/~calebji/fga.html}
+\newpage
+
+
+\tableofcontents
+
+\chapter{Caleb (Oct 16): Representable Functors and Grothendieck Topologies}%
+\label{cha:caleb_oct_16_representable_functors_and_grothendieck_topologies}
+
+\section{Representable Functors}%
+\label{sec:representable_functors}
+
+We will always denote categories by $C$.
+\begin{defn}
+    Given an object $x \in C$, define the functor $h_X \colon C^{\mr{op}} \to \ms{Set}$ by $h_x = \Hom(-,X)$.
+\end{defn}
+
+Any morphism $f \colon x \to y$ induces a natural transformation $h_f \colon h_x \to h_y$. By the Yoneda lemma, this correspondence is bijective.
+
+\begin{lem}[Yoneda Lemma]
+    Let $x \in C$ and $F \colon C^{\mr{op}} \to \ms{Set}$ be a functor. Then $\Hom(h_x,F) \simeq F(x)$.
+\end{lem}
+
+\begin{proof}
+    Let $\theta \colon h_x \to F$. This gives a map $\theta_x \colon h_x(x) \to F(x)$, and we can consider $\mr{id} \to \theta_x(\mr{id})$. Now given $t \in F(x)$, we need $h_x(U) \to F(U)$. Given $U \to x$, then we have a map $F(x) \to F(U)$ and then $t \mapsto F_f(t)$. We can check that these are inverses.
+\end{proof}
+
+\begin{defn}
+    A functor $F \colon C^{\mf{op}} \to \ms{Set}$ is \textit{representable} if it is naturally isomorphic to $h_x$ for some $x$. 
+\end{defn}
+
+\begin{defn}
+    If $F$ is a presheaf, a \textit{universal object} for $F$ is a pair $(X, \xi)$ such that $\xi \in FX$ and for any $(U, \sigma)$ where $\sigma \in FU$, there exists a unique $f \colon U \to X$ such that $F_f(\xi) = \sigma$.
+\end{defn}
+
+Note that representability is equivalent to having a universal object.
+
+\begin{exm}
+    \begin{enumerate}
+        \item For the first example, consider $C = \ms{Sch}/R$ for some ring $R$. Then if $F = \Gamma(\mc{O})$, then clearly this is isomorphic to $h_{\A^1}$ and the universal object is $(\A^1, x)$.
+        \item Let $F(X) = \qty{\mc{L}, s_0, \ldots, s_n}$ where $\mc{L}$ is a line bundle and $s_0, \ldots, s_n$ generate $\mc{L}$, then $(\P^n, x_0, \ldots, x_n)$ is a universal object.
+    \end{enumerate}
+\end{exm}
+
+\section{Grothendieck Topologies}%
+\label{sec:grothendieck_topologies}
+
+According to Wikipedia, this is supposed to be a pun on ``Riemann surface.'' We want to generalize the idea of a topology because the Zariski topology is awful. Instead of open sets, we will consider suitable maps (coverings).
+
+\begin{defn}
+    A \textit{Grothendieck topology} on a category $C$ is a specification of \textit{coverings} $\qty{U_i \to U}$ of $U$ for each $U \in C$. Here are the axioms for coverings:
+    \begin{enumerate}
+        \item If $V \to U$ is an isomorphism, then $\qty{V \to U}$ is a covering.
+        \item If $\qty{U_i \to U}$ is a covering, for all $V \to U$, the fiber products $\qty{ U_i \times_U V \to V }$ and form a covering of $V$.
+        \item If $\qty{U_i \to U}$ is a covering and $\qty{V_{ij} \to U_i}$ are coverings, then $\qty{V_{ij} \to U}$ is a covering of $U$.
+    \end{enumerate}
+\end{defn}
+
+A category with a Grothendieck topology is called a \textit{site}.
+
+\begin{exm}
+    Here are some topological examples. Let $X$ be a topological space.
+    \begin{enumerate}
+        \item The site of $X$ is the poset category of open subsets of $X$. The fiber product is just the intersection, and a covering is a normal open covering.
+        \item (Global classical topology) Let $C = \ms{Top}$. Here, the coverings are sets of open embeddings such that the union of the images covers the whole space.
+        \item (Global \'etale topology) Here, $C = \ms{Top}$ and the coverings are now local homeomorphisms.
+    \end{enumerate}
+\end{exm}
+
+Returning to schemes, we have several examples of Grothendieck topologies.
+\begin{enumerate}
+    \item (Global Zariski Topology). Let $C = \ms{Sch}$. The coverings are jointly surjective open embeddings.
+    \item (Big \'etale site over $S$) The objects are schemes over $S$ and the morphisms are $S$-morphisms that are \'etale and locally of finite presentation.
+    \item (Small \'etale site) This the same as the big \'etale site, but with the added requirement that $U \to S$ is also \'etale.
+    \item (fppf topology) This stands for the French \textit{fid\`element plat et pr\'esentation finie}. The morphisms are $U_i \to U$ flat and locally of finite presentation. A covering is a set of jointly surjective morphisms such that the map $\bigsqcup U_i \to U$ is faithfully flat and of finite presentation. Note that flat and locally of finite presentation implies open.
+    \item (fpqc topology) This stands for the French \textit{Fid\`element plat et quasi-compacte}. An \textit{fpqc} morphism is a morphism $X \to Y$ that is faithfully flat and one of the following equivalent conditions:
+        \begin{enumerate}
+            \item Every quasicompact open subset of $Y$ is the image of a quasicompact open subset of $X$.
+            \item There exists an affine open cover $\qty{V_i}$ of $Y$ such that $V_i$ is the image of a quasicompact open subset of $X$.
+            \item Given $x \in X$, there exists a neighborhood $U \ni x$ such that $f(U)$ is open in $Y$ and $U \to f(U)$ is quasicompact.
+            \item Given $x \in X$, there exists a quasicompact open neighborhood $U \ni x$ such that $f(U)$ is open and affine in $Y$.
+        \end{enumerate}
+        The fpqc topology is given by maps $\qty{U_i \to U}$ such that $\bigsqcup U_i \to U$ is an fpqc morphism.
+\end{enumerate}
+
+To check that this is a topology, we have to do a lot of work. However, we will list some properties of fpqc morphisms and coverings.
+
+\begin{prop}
+    \begin{enumerate}
+        \item The composition of fpqc morphisms is fpqc.
+        \item Given $f \colon X \to Y$, if $f^{-1}(V_i) \to V_i$ is fpqc, then $f$ is fpqc.
+        \item Open and faithfully flat implies fpqc. Moreover, faithfully flat and locally of finite presentation implies fpqc. This means that fppf implies fpqc.
+        \item Base change preserves fpqc morphsisms.
+        \item All fpqc morphsism are submersive. Thus $f^{-1}(V)$ is open if and only if $V$ is open.
+    \end{enumerate}
+\end{prop}
+
+Note that Zariski is coarser than \'etale is coarser than fppf is coarser than fpqc.
+
+\section{Sheaves on Sites}%
+\label{sec:sheaves_on_sites}
+
+Recall that a presheaf on a space is a functor $X_{\mr{cl}}^{\mr{op}} \to \ms{Set}$. Similarly, if $C$ is a site, then a presheaf is a functor $C^{\mr{op}} \to \ms{Set}$.
+
+\begin{defn}
+    A presheaf on a site $C$ is a \textit{sheaf} if
+    \begin{enumerate}
+        \item Given a covering $\qty{U_i \to U}$ and $a,b \in FU$ such that $p_i^*a = p_i^*b$, then $a = b$.
+        \item Given a covering $\qty{U_i \to U}$ and $a_i \in FU_i$ such that $p_i^* a_j = p_j^* a_i$ (in the fiber product) for all $i,j$, there exists a unique $a \in FU$ such that $p_i^* a = a_i$.
+    \end{enumerate}
+\end{defn}
+
+An alternative definition of a sheaf is that $FU \to \prod F U_i \rightrightarrows F(U_i \times_U U_j)$ is an equalizer.
+
+\begin{thm}[Grothendieck]
+    A representable functor on $\ms{Sch}/S$ is a sheaf in the fpqc topology.
+\end{thm}
+
+This means that given any fpqc cover $\qty{U_i \to U}$, then applying $h_X$, if we have $f_i \colon U_i \to X$ that glue on $U_i \times_X U_j \to X$, then the sheaf condition says we can glue to a unique $f \colon U \to X$. In the Zariski topology, this is trivial. This also means that the fpqc topology is \textit{subcanonical}, which means that $h_X$ are all sheaves.
+
+    We will prove this result by reducing to the category of all schemes. Note that the topology on $\ms{Sch}/S$ comes from the topology on $\ms{Sch}$. Then we can show that if $C$ is subcanonical, then $C/S$ is subcanonical. Then we use the following lemma.
+
+\begin{lem}
+    Let $S$ be a scheme and $F \colon \ms{Sch}/S^{\mr{op}} \to \ms{Set}$ be a presheaf. If $F$ is a Zariski sheaf if $V \to U$ is a faithfully flat morphism of affine $S$-schemes, then $FU \to FV \rightrightarrows F(V \times_U V)$ is an equalizer, then $F$ is an fpqc sheaf.
+\end{lem}
+
+\begin{proof}
+    Given $\qty{U_i \to U}$ an fpqc covering, let $V = \bigsqcup U_i$. Then consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        FU \arrow{r} \arrow{d} & FV \arrow[shift left=1]{r} \arrow[shift right=1]{r} \arrow{d} & F(V \times_U V) \arrow{d} \\
+        FU \arrow{r} & \prod FU_i \arrow[shift left=1]{r} \arrow[shift right=1]{r} & F(U_i \times_U U_j),
+    \end{tikzcd}
+    \end{equation*}
+    the columns are bijective, so it suffices to check this for single coverings.   
+
+    Now if $\qty{U_i \to U}$ are finite and all affine and the second assumption holds, we have the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        FU \arrow{r} \arrow{d} & FV \arrow{d} \arrow[shift left=1]{r} \arrow[shift right = 1]{r} & F(V \times_U V) \\
+        \prod_i F(U_i) \arrow{r} \arrow[shift left=1]{d} \arrow[shift right = 1]{d} & \prod_i \prod_a FU_{ia} \arrow[shift left=1]{r} \arrow[shift right = 1]{r}\arrow[shift left=1]{d} \arrow[shift right = 1]{d} & \prod_i \prod_{ab} F(V_{ia} \times_U V_{ib}) \\
+        \prod_{ij} F(U_i \cap U_j) \arrow{r} & \prod_{ij} \prod_{ab} F(U_{ia} \cap U_{jb}).
+    \end{tikzcd}
+    \end{equation*}
+    Then the middle row is an equalizer. 
+\end{proof}
+
+\begin{proof}[Proof of Theorem 1.3.2]
+    If $X,U,V$ are affine, then we know that $\Hom(R,-)$ is left exact, so the result follows from commutative algebra. Now it suffices to check the general case for single covers. If $X = \bigcup X_i$ is a union of affines, then separatedness follows by restricting to the $X_i$ and using the affine case.
+
+    Please read the rest of this yourself.
+\end{proof}
+
+
+
+
+
+\end{document}
