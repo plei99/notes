@@ -110,6 +110,7 @@
 % shortcuts
 \newcommand{\Ima}{\mathrm{Im}}
 \newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
@@ -132,6 +133,7 @@
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\wt}[1]{\widetilde{#1}}
 \newcommand{\wh}[1]{\widehat{#1}}
 
@@ -893,6 +895,458 @@ Thus we have three cases: smooth (elliptic curve), nodal, and cuspidal. This giv
 \end{proof}
 
 There are three strictly semistable orbits: nodal cubics ($y^2 = x^3 + x^2$), union of conic and secant line, and three non-concurrent lines. It turns out that the first orbit contains both of the others in its orbit, and this corresponds to the point at infinity in the compactification of the quotient of the stable locus. It is known that the quotient of the stable locus by $SL_3$ is isomorphic to $\mc{H} / SL_2(\Z) \cong \A^1$, so the compactification is $\P^1$.
+
+\chapter{Nicolas (Oct 23): More Examples of Stability}%
+\label{cha:nicolas_oct_23_more_examples_of_stability}
+
+Let $G$ be a reductive algebraic group, $X$ a smooth projective variety, and $L$ an invertible sheaf over $X$ with a $G$-linearization. Throughout this talk we work over an algebraically closed field of characteristic zero.
+
+\begin{defn}
+    $x \in X$ is \textit{semistable} if there exists $s \in H^0(X, L^n)$ such that $s(x) \neq 0$. 
+\end{defn}
+
+Then we have a categorical quotient $(Y, \phi)$ of $X^{ss}(L)$. The semistable locus is dependent on the line bundle. Also, we can write $X^{ss}(L) \subset X = \operatorname{Proj} R$. Then $Y = \operatorname{Proj} R_0$. Here, we have
+\[ R = \bigoplus_{n=0}^{\infty}(X, L^n). \]
+To find $X^{ss}(L)$, it suffices to compute $R_0$.
+
+\section{Matrices and Conjugation}%
+\label{sec:matrices_and_conjugation}
+
+Let $X = \P(M_{n}(\C)) = \Proj \C[M_{n}(\C)]$. Consider the action of $GL_n$ on $X$ by conjugation. The action on functions is given by $Pf(A) = f(P^{-1}AP)$. To write the quotient $X \sslash GL_n$, we compute the ring of invariants. This is simply
+\[ \C[\sigma_1, \ldots, \sigma_n], \]
+where $\sigma_i$ is the $(n-i)$-th coefficient of the characteristic polynomial. 
+
+\begin{proof}
+    Let $f \in \C[M_n]^{GL_n}$ and let $A \in M_n(\C)$. We can replace $A$ by its Jordan canonical form
+    \[ f(A) = f \mqty(\lambda_1 & \delta_1 & & \\
+        & \lambda_2 & \delta_2 & \\
+        & & \ddots & \delta_{n-1} \\
+        & & & \lambda_n). \]
+        Then if we multiply all $\delta_i$ by some $\ep \neq 0$, we take $\ep \to 0$ to see that $f(A) = f(\lambda_1, \ldots, \lambda_n)$. But then
+        \[ f \in \C[\lambda_1, \ldots, \lambda_n]^{S_n} = \C[\sigma_1, \ldots, \sigma_n]. \qedhere \]
+\end{proof}
+
+Now to compute the stable locus, we note that if $\sigma_i(A) = 0$ for all $i$, then $A$ is nilpotent. Thus $A$ is unstable if and only if it is nilpotent.
+
+Recall the Hilbert-Mumford criterion and the following proposition from Patrick's lecture [\autoref{cha:patrick_oct_16_stability}]:
+
+\begin{prop}
+    Let $x^* \in \P^{n-1}$, $x \in \A^n$. Then $x \in X^{ss}$ if and only if $0 \notin \ol{G \cdot X}$.
+\end{prop}
+
+Now write $T = (\mathbb{G}_m)^k \subset G$. The following proposition is from the notes of Jenia Tevelev at \url{http://people.math.umass.edu/~tevelev/moduli797.pdf}.
+
+\begin{prop}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $x^*$ is unstable.
+        \item There exists $y = G \cdot x$ such that $0 \in \ol{T \cdot y}$.
+    \end{enumerate}
+\end{prop}
+
+This means that up to changing $x$ in its orbit, we may assume $G = T$. Then recall that
+\[ \A^n = \bigoplus_{m \in \Z^k} V_m,\ V_m = \qty{v \in \A^n \mid t \cdot v = t^m v}. \]
+If $v \in \A^n$, then we write $wt(v) = \qty{m \in \Z^k \mid v_m \neq 0}$. Then we will write $\ol{wt(v)}$ for the convex hull.
+
+\begin{thm}(\textbf{[D]}, Theorem 9.2)
+    $v$ is semistable if and only if $0 \in \ol{wt(v)}$.  
+\end{thm}
+
+We now return to the example of matrices and conjugation. Fix $T$ to be the standard maximal torus in $GL_n$. First, take the decomposition
+\[ M_n = \bigoplus_{1 \leq i,j \leq n} \ev{E_{ij}}. \]
+Then the conjugation is
+\[ \mqty(\dmat{z_1, \ddots, z_n}) \cdot E_{ij} = z_i z_j^{-1} E_{ij}. \]
+If $A \in M_{n}$, then there exists $P \in GL_n$ taking $A$ to its Jordan form. Then if $B = P \cdot A$, then
+\[ wt(B) \subset wt(E_{11}) \cup \cdots \cup wt(E_{nn}) \cup wt(E_{12}) \cup \cdots \cup wt(E_{n-1,n}). \]
+Then note that $wt(E_{ii}) = \qty{0}$ and $wt(E_{i,i+1}) = \qty{(0, \ldots, 0, 1, -1, 0, \ldots, 0)}$. If $\lambda_i \neq 0$ for some $i$, then $0 \in \ol{wt(B)}$. 
+
+\section{Subschemes of Projective Space}%
+\label{sec:hypersurfaces}
+
+Let $G = SL_{n+1}$ act on $\A^{n+1}$. This gives an action on $\C[z_0, \ldots, z_n]_d$, which is the same thing as an action on degree $d$ hypersurfaces in $\P^n$. Letting $T$ be the standard maximal torus, we obtain the following grid for the values of $wt(\text{monomial})$:
+
+% insert figure here
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.9]
+\foreach \x in {1, ..., 4} {
+\draw[dotted] (-4.5, \x) -- (4.5,\x);
+\draw[dotted] (-4.5, -\x) -- (4.5,-\x);
+\draw[dotted] (\x, -4.5) -- (\x, 4.5);
+\draw[dotted] (-\x, -4.5) -- (-\x, 4.5);
+}
+\draw (-4.5,0) -- (4.5,0);
+\draw (0,-4.5) -- (0,4.5);
+\filldraw (-4,0) circle [radius=0.075];
+\filldraw (-3,-1) circle [radius=0.075];
+\filldraw (-2,-2) circle [radius=0.075];
+\filldraw (-1,-3) circle [radius=0.075];
+\filldraw (0,-4) circle [radius=0.075];
+\filldraw (1,-2) circle [radius=0.075];
+\filldraw (2,0) circle [radius=0.075];
+\filldraw (3,2) circle [radius=0.075];
+\filldraw (4,4) circle [radius=0.075];
+\filldraw (-2,1) circle [radius=0.075];
+\filldraw (0,2) circle [radius=0.075];
+\filldraw (2,3) circle [radius=0.075];
+\filldraw (0,-1) circle [radius=0.075];
+\filldraw (-1,0) circle [radius=0.075];
+\filldraw (1,1) circle [radius=0.075];
+
+\begin{small}
+\draw (-3.7,0.35) node {$X^4$};
+\draw (-2.6,-0.65) node {$X^3Y$};
+\draw (-1.5,-1.65) node {$X^2Y^2$};
+\draw (-0.6,-2.65) node {$XY^3$};
+\draw (0.3,-3.65) node {$Y^4$};
+\draw (0.5,-0.65) node {$XY^2Z$};
+\draw (-0.5,0.35) node {$X^2YZ$};
+\draw (1.5,1.35) node {$XYZ^2$};
+\draw (1.4,-2.35) node {$Y^3Z$};
+\draw (-2.4,1.35) node {$X^3Z$};
+\draw (2.5,-0.35) node {$Y^2Z^2$};
+\draw (-0.5,2.35) node {$X^2Z^2$};
+\draw (3.4,1.65) node {$YZ^3$};
+\draw (1.6,3.35) node {$XZ^3$};
+\draw (3.7,3.65) node {$Z^4$};
+\end{small}
+\end{tikzpicture}
+\caption{Weights for plane quartics.}
+\end{figure}
+% continuing
+
+Then semistable monomials are given by sweeping out a line through the origin and seeing which monomials lie on one side. For example considering the line $y = -x$, the allowable monomials are $x^4, x^3 y, x^2 y^2, xy^3, y^4, x^3z, x^2yz, xy^2z,y^3z$. If we have such a curve $F$, then if we set $z=1$, the point $[0:0:1]$ has multiplicity at least $3$.
+
+The next option is to include $x^4$ but not $y^4$ or $z^4$. One of the choices gives us the monomials $x^4, x^3 y, x^2 y^2, xy^3, x^3 z, x^2yz, x^2z^2$, and thus the curve is reducible.
+
+Now we will consider points in projective space. We will construct $(\P^n)^m \sslash SL_{n+1}$. We will choose the line bundle $L = \mc{O}(k_1, \ldots, k_m)$. We know that $L$ is ample if and only if $k_i > 0$ for all $i$. We say that $k = (k_1, \ldots, k_m)$ is \textit{democratic} if $k_1 = \cdots = k_m$.\footnote{We would like to avoid Orwell's result that all points matter, but some points matter more than others.}
+
+Choosing a $1$-PS with weights $q_0 \geq \cdots \geq q_n$, fix $P = (p_1, \ldots, p_m) \in (\P^n)^m$. Writing $p_i = [a_{i0}, \ldots, a_{i1}, \ldots, a_{iv_i}, 0, \ldots, 0]$ with $v_i \neq 0$, we see that 
+\[ \mu^{L_k}(P, \lambda) = - \sum_{i=1}^m k_i qv_i. \]
+Using some basic manipulation, this becomes
+\[ \mu^{L_k}(P, \lambda) = -q_n \sum_{i=1}^m k_i + \sum_{j=0}^{n-1} \sum_{i=1}^m k_i \mathbb{1}_{\qty{p_i \in E_j}} ( q_{j+1} - q_j ). \]
+
+\begin{thm}(\textbf{D}, Theorem 11.1)
+    A point $P \in X^{ss}(L_k)$ if and only if for all $w \subseteq \P^n$,
+    \[ \sum_{i, P_i \in w} k_i \leq \frac{\dim W + 1}{n+1} \sum_{i=1}^m k_i. \]
+\end{thm}
+
+\begin{proof}
+    Suppose $q_0 = \cdots = q_s = n-s$ and $q_{s+1} = \cdots = q_n = -(s+1)$. The other direction is similar. We will neglect all of the explicit computations.
+\end{proof}
+
+\chapter{Morena (Oct 30): GIT and Moduli Problems}%
+\label{sec:morena_oct_30_git_and_moduli_problems}
+
+\section{Moduli Problems}%
+\label{sec:moduli_problems}
+
+One of the central problems in algebraic geometry is to classify various geometric objects: curves, schemes, sheaves. We want to find a space such that $M(K)$ is in bijection with isomorphism classes of our objects. However, this is trivially solved by taking a disjoint union of points, so we need a stronger notion of moduli problem. This is given by a functor
+\[ M \colon (\ms{Sch}/S)^{\mr{op}} \to \ms{Set} \]
+that sends a scheme $T$ to the set of families of objects over $T$.
+
+\begin{exm}
+    Consider the Hilbert functor $\mr{Hilb}_{M/R}$ that sends a scheme $S$ to 
+    \[ \qty{X \subset M_S \mid X \to S \text{ flat and finitely presented}}. \]
+\end{exm}
+
+\begin{thm}
+    The Hilbert functor is represented by a quasi-projected scheme.
+\end{thm}
+
+\begin{exm}
+    Consider the functor $\P^n_{\Z}$ that sends
+    \[ X \mapsto \qty{\mc{L}, s_1, \ldots, x_n \mid \mc{L} \in \Pic X, s_0, \ldots, s_n \in \mc{L}(X) \text{ generate X} }. \]
+    This functor is represented by the scheme $\P^n$.
+
+    Recall that there is a functor $\A^{n+1} \setminus 0 \to \P^n$. Then $X \to \A^{n+1} \setminus 0$ is the same thing as specifying $n+1$ sections of basepoint-free line bundle. For $U \subset X$ such that $\eval{\mc{L}}_U = \eval{\mc{O}}_U$, we obtain sections 
+    \[ \qty( \frac{s_0}{t}, \ldots, \frac{s_n}{t} ) \colon U \to \A^{n+1} \setminus 0 \to \P^n. \]
+    Because projective space does not see constants, we see that these maps glue and we obtain a global map.
+
+    Conversely, consider $X \xrightarrow{i} \P^n$ and take the sections $i^*x_1, \ldots, i^* x_n \in i^* \mc{O}(1)$. These do not simultaneously vanish, so we obtain an invertible sheaf with generating sections.
+\end{exm}
+
+An obstruction to the solution of a moduli problem is the existence of nontrivial automorphisms. Suppose we want to classify vector bundles with rank $r$ over an algebraically closed field $k$. Call this functor
+\[ B_r(X) = \qty{\text{vector bundles of rank $r$ over $X$}}. \]
+If $Y$ represents this functor, then a curve with nontrivial vector bundle is a map $C \to Y$. Then given a cover $\qty{U_i}$ of $C$ by affines, then any vector bundle $\mc{V}$ is trivial when restricted to $U_i$. But then the trivial bundle is a closed point $y \in Y(k)$, and so if we attempt to glue the maps $U_i \to y \to Y$, then we obtain the map $C \to y \in Y$ and thus $\mc{V}$ must have been trivial in the first place. Therefore, there is no fine moduli space.
+
+The next moduli problem we will consider is the moduli problem $M_{1,1}$ of elliptic curves over $k$. These are curves of genus $1$ with one marked point. To generalize this to families, we will take
+\[ S \mapsto \qty{(f \colon E \to S, e \colon S \to E) \mid \text{$f$ smooth proper, $e$ section of $f$, $E_{\ol{s}}$ is an elliptic curve over $k(\ol{s})$}}. \]
+Then a morphism $(a,b) \colon (S,E,e) \to (S',E',e')$ is a cartesian diagram
+\begin{equation*}
+\begin{tikzcd}
+    E \arrow{r} \arrow{d} & E' \arrow{d} \\
+    S \arrow{r} & S'
+\end{tikzcd}
+\end{equation*}
+that commutes with the sections $e,e'$. Here, the criterion of being Cartesian means that defining the functor on morphisms is well-defined, because pullbacks are unique.
+
+\section{Dealing with Nontrivial Automorphisms}%
+\label{sec:dealing_with_nontrivial_automorphisms}
+
+
+Unfortunately, there are nontrivial automorphisms of elliptic curves. Over $\C$ (or any algebraically closed of characterstic $p \neq 2,3$), we can write elliptic curves with the equation $y^2 = x(x-1)(x-\lambda)$. We then have an action of $S_3$ on $\Spec \C[t]_{(t(1-t))}$, where we have
+\[ (\alpha, \lambda) \mapsto \frac{\alpha(\lambda) - \alpha(0)}{\alpha(1) - \alpha(0)}. \]
+Then the orbit of $\lambda$ is the set 
+\[ \qty{ \lambda, \frac{1}{\lambda}, \frac{1}{1-\lambda}, \frac{\lambda}{1-\lambda}, 1-\lambda, \frac{1- \lambda}{\lambda} }. \]
+Generically, this has six points, but sometimes there are fewer (for example $\lambda = -1)$. Then we have the $j$-invariant
+\[ j(\lambda) = 2^8 \frac{(\lambda^2 - \lambda + 1)^3}{\lambda^2(\lambda - 1)^2}, \]
+and when $\lambda, \lambda'$ are in the same orbit, we have $j(\lambda) = j(\lambda')$. If we solve for $j(x) = j(\lambda)$, we obtain a polynomial of degree $6$, and thus generically there are six roots. Then we can see that all solutions belong to the orbit of $\lambda$. Therefore, we have
+\[ \Spec (\C[t]_{(t(1-t))})^{S_3} = \Spec \C[j] \simeq \A^1_{\C}. \]
+This discussion can be found in more detail in Hartshorne, Chapter 3, Section 4. We then see that $E \simeq E'$ if and only if $j(E) = j(E')$. Therefore, we have a bijection $M_{1,1}(\C) \simeq \A^1(\C)$. In fact, Silverman proves this identity for all fields.
+
+However, we can show that $M_{1,1}$ has no fine moduli space. Consider the elliptic curves $Y^2Z = X^3 + tZ^3$ and $Y^2Z = X^3+tZ^3$ over $\C(t)$. We see that $E$ and $E'$ are not isomorphic at the level of $\C(t)$-points because $\C(t)$ contains no roots of $t$. However, if we base change to $\C(t^{1/6})$, then we obtain an isomorphism of the two curves by
+\[ (X,Y,Z) \mapsto (t^{1/3}X, t^{1/2}Y, z). \]
+This gives us a contradiction because for any field extension $L/K$ and scheme $X$, we have $X(K) \subset X(L)$.
+
+There are two ways to resolve this problem of nontrivial isomorphisms:
+
+\subsection{Stacks}%
+\label{sub:stacks}
+
+    We will in some sense, allow automorphisms. We can enlarge the category of schemes to algebraic spaces or stacks, in which we can restate the same problem. However, if we work with stacks, we will have to consider functors valued in the $2$-category of groupoids. For a functor $M \colon \ms{Sch}/S^{\mr{op}} \to \ms{Set}$, we will consider the functor
+        \[ \mc{M} \colon \ms{Sch}/S^{\mr{op}} \to \ms{Gpd}, (T \to S ) \mapsto \mc{C}, \]
+        where $\mc{C}$ is the category with objects the geometric objects over $T$ and morphisms the $T$-morphisms of such objects. The study of such things often becomes very topological. For elliptic curves, we can also rigidify our elliptic curves, we obtain a functor $R_{\mr{ell}} \colon \ms{Sch}/S^{\mr{op}} \to \ms{Set}$. This can then be represented by a scheme.
+
+        In this case, a rigidified elliptic curve is an elliptic curve with nowhere vanishing section $\alpha \in H^0(E, \Omega_{E/S})$. Then automorphisms of rigidified elliptic curves are always trivial. Then writing $E$ in Weierstrass form, any map $E \to E'$ over $\Spec R$ extends to a map $\P^2 \to \P^2$. This is represented by a matrix 
+        \[ A = \mqty(\dmat{u^2, u^3, 1}), \]
+        where $u \in R^{\times}$. Then we can find a global nowhere vanishing section $\omega = \frac{Z}{2Y} d\qty(\frac{X}{Z})$. If $A$ preserves $\omega$, we see that
+        \[ \omega = \frac{Z}{2u^3Y} d\qty(\frac{u^2X}{Z}) \]
+        and thus $u = 1$. Thus we have killed all automorphisms. In fact, $R_{\mr{ell}}$ is represented by an affine scheme $\Spec \Z[a_4, A_6]_{\Delta}$, where $\Delta$ is the discriminant. Note here that $a_4, a_6$ are here because under $A$ an automorphism, we make the substitution $X = u^2 X, Y = u^3Y$, and $a_4, a_6$ become $u^4 a_4, u^6 a_6$. 
+        
+        Now consider the action of $\G_m$ on $R_{\mr{ell}}$ that scales the holomorphic $1$-form by $\frac{1}{\mu}$ (weight $-1$). Then we can define the morphism $R_{\mr{ell}} \xrightarrow{\pi} M_{1,1}$ that simply forgets $\omega$. Then we can define a quotient $R_{\mr{ell}} / \G_m$ and this gives a map to $M_{1,1}$. In this case, this is not a scheme, so we should really write the quotient \textbf{stack} $[R_{\mr{ell}} / \G_m]$.
+
+    \subsection{Coarse Moduli}%
+    \label{sub:coarse_moduli}
+    
+    
+    Some of us are plebs who can only think about schemes.\footnote{This comment was added by the note-taker.} We will loosen our requirement for representability and find a scheme which approximates the problem as well as possible. We say a scheme $X$ \textit{coarsely represents} $M$ if 
+    \begin{enumerate}
+        \item $\psi \colon M \to h_X$ is a bijection over algebraically closed fields.
+        \item For all $\phi \colon M \to h_Y$ such that the first item holds, there exists a unique morphism $h_X \to h_Y$ that makes the diagram commute.
+    \end{enumerate}
+
+    There are several problems that may arise: either $X$ may be non-separated or it may have infinitely many components. In addition, even if $X$ is separated with finitely many components, it may not be a scheme. Here are some more problems:
+    \begin{enumerate}
+        \item If we take varieties with no extra data, we run into the problem of having many automorphisms. This can be fixed by adding the datum of a polarization, which rigidifies the problem. For $X/k$ proper, we can consider $\Pic^{\tau}(X) \subset \Pic X$ composed of line bundles such that $\mc{L}^m \in \Pic^0(X)$ for some $m$. Then an \textit{inhomogeneous polarization} is a coset formed by ample line bundles. For example, for $C \to k$ of genus at least $2$, the dualizing sheaf $\omega_C$ is ample, and then $\omega_C^3$ is very ample.  
+    \end{enumerate}
+In Mumford, if we follow references [29] and [135], we see that requiring smoothness makes the the coarse moduli space $X$ is separated and has finitely many components. However, smoothness is an open condition, so our moduli space will not be compact and thus will not have a good intersection theory. For example, take the intersection of two lines in the plane. Two parallel lines do not intersect in $\A^2$, but they do intersect at infinity in $\P^2$. Thus, we will define the space $\ol{M}_g$, which is the moduli space of \textit{stable curves}, where we allow nodes. In stack form, this becomes a proper Deligne-Mumford stack.. 
+
+\chapter{Morena (Nov 6): GIT and Coarse Moduli Problems (Part 2)}%
+\label{cha:morena_nov_6_git_and_coarse_moduli_problems_part_2_}
+
+\section{Moduli of Curves}%
+\label{sec:moduli_of_curves}
+
+Recall that the functor $M_g$ sends a scheme $S$ to the set of isomorphism classes of smooth curves of genus $g$ over $S$. More precisely, these are flat and proper morphisms $f \colon C \to S$ such that geometric fibers are curves of genus $g$. Then recall that morphisms are given by cartesian diagrams. We will now rigidify this problem to find a coarse moduli space. 
+
+\begin{thm}[Olsson, Lemma 8.4.6]
+    Let $f \colon C \to S$ be a curve of genus $g \\geq 2$. Then consider $\omega_f = \Omega^1_{C/S}$. 
+    \begin{enumerate}
+        \item $f_* \omega_f^3$ is locally free of rank $5g-5$.
+        \item The map $f^* f_* \omega_f^{\otimes 3} \to \omega_f^{\otimes 3}$ is surjective and $C \hookrightarrow \P(f_* \omega_f^{\otimes 3})$ is a closed embedding. Here, $\P(\text{vector bundle})$ is simply the relative Proj of the sheaf over $S$.
+    \end{enumerate}
+\end{thm}
+
+\begin{defn}
+    Define the functor $H_3 \colon \ms{Sch}/\Z^{\mr{op}} \to \ms{Set}$ of rigidified smooth curves by
+    \[ H_3(S) = \qty{ f \colon C \to S, \P(\sigma) \colon \P(f_* \omega_f^{\otimes 3}) \to \P_S^{5g-6} ) } / \sim, \]
+    where the map of projective spaces is an $S$-isomorphism. Here, morphisms are cartesian squares
+    \begin{equation*}
+    \begin{tikzcd}
+        C \arrow{r}{b} \arrow{d}{f} & C' \arrow{d}{f'} \\
+        S \arrow{r}{a} & S'
+    \end{tikzcd}
+    \end{equation*}
+    such that
+    \begin{equation}
+        \label{eqn:largerect}
+    \begin{tikzcd}
+        C \arrow{d}{b} \arrow[hookrightarrow]{r} & \P(f_* \omega_f^{\otimes 3}) \arrow{r}{\P(\sigma)} \arrow{d}{\ol{b}} & \P_S^{5g-6} \arrow{r} \arrow{d}{\ol{a}} & S \arrow{d}{a} \\
+        C' \arrow[hookrightarrow]{r} & \P(f'_* \omega_{f'}^{\otimes 3}) \arrow{r}{\P(\sigma')} & \P_S^{5g-6} \arrow{r} & S
+    \end{tikzcd}
+    \end{equation}
+    commutes and the right square is commutative.
+\end{defn}
+
+Fortunately, there are no nontrivial automorphisms, so there is hope that this functor is represented by a scheme.
+
+\begin{thm}
+    The functor $H_3$ is represented by a locally closed subscheme of $\ul{\mr{Hilb}}_{\P^{5g-6}}^{p(t)}$, where 
+    \[ p(t) = \chi(\omega_f^{\otimes 3t}) = \deg(\omega_f^{\otimes 3t}) + 1 - g = (6g-6)t + 1-g\]  
+    by the Riemann-Roch theorem. The embedding $H_3 \to \ul{\mr{Hilb}}^p$ is given by
+    \[ (f \colon C \to S, \P(\sigma)) \mapsto C \hookrightarrow \P(f_* \omega_f^{\otimes 3}) \xrightarrow{\P(\sigma)} \P_S^{5g-6}. \]
+\end{thm}
+
+Now note that $\mr{Hilb}^{p(t)}$ is a projective scheme. Then the identity map corresponds to the universal closed subscheme $\mf{Z} \hookrightarrow \P^{5g-6}_{\mr{Hilb}}$. However, $\mc{Z} \to \mr{Hilb}$ is not smooth (but it is flat and proper), so we can take $W \subset \mc{Z}$ the non-smooth locus, so then we can take $\mr{Hilb} \setminus f(W)$ parameterizing smooth subschemes.
+
+Now to impose geometrically connected fibers, we use Stein factorization (Stacks Project, 37.48.5). This says many things, but what we need is that if we have $f \colon X \to S$ proper, then we can find $S' \to S$ such that $f'\colon X \to S'$ is proper and has geometrically connected fibers and such that $S' \to S$ is integral and is an isomorphism over an open subscheme of $S'$. This implies using the Hilbert polynomial that $\dim = 1$ and that the genus is $g$. Thus we have an open subscheme $H' \subset \mr{Hilb}$ parameterizing smooth curves.
+
+Now the identity $H' \to H'$ gives a universal smooth curve
+\begin{equation*}
+\begin{tikzcd}
+    C' \arrow[hookrightarrow]{r} \arrow{dr} & \P_{H'}^{5g-6} \arrow{d} \\
+                                            & H'.
+\end{tikzcd}
+\end{equation*}
+To recover $\P(\sigma)$, we need this to factor through $\P(f_* \omega_f^{\otimes 3})$. Therefore, we need the pushforwards of $\Omega_{C'/H'}^{\otimes 3}$ and $i^*(\mc{O}_{\P^{5g-5}}(1))$ to pushforward to the same sheaf under $f'_*$. Here, the two sheaves give morphisms $H' \rightrightarrows \Pic_{C'/H'}$ and the square
+\begin{equation*}
+\begin{tikzcd}
+    H_2 \arrow{r} \arrow{d} & H' \arrow{d} \\
+    \Pic_{C'/H/} \arrow{r}{\Delta} & \Pic_{C'/H'} \times_{H'} \Pic_{C'/H'}
+\end{tikzcd}
+\end{equation*}
+is cartesian. Then $\Pic$ is separated, so $\Delta$ is a closed embedding. Thus we have a closed subscheme $H_2 \subset H'$. Now we ask for a surjective map
+\[ H^0(H', f'_* i^* \mc{O}(1)) \otimes \mc{O}_{H'} \to f_* \omega_f^{\otimes 3}. \]
+This is the same as the cokernel vanishing, so now we have $H_3 \subset H_2$ an open subscheme. This is also Proposition 5.1 in Mumford.
+
+Now we have shown that the rigidified moduli problem $H_3$ is representable. Then we consider the map $\pi \colon H_3 \to M_g$ that forgets $\P(\sigma)$, and so we have an action of $PGL_{5g-5}$ on $H_3$ by postcomposition with $\P(\sigma)$. Now we define $M_g' = H_3 / PGL = (S \mapsto H_3(S) / PGL(S))$. Then we have a map $H_3 / PGL \xrightarrow{I} M_g$ compatible with $\pi$. Here $I$ is a ``principal bundle'' and so $I$ is injective and locally surjective, which means that for all $S$ there exists $\alpha \in M_g(S)$ and Zariski cover $\qty{S_i \to S}$ such that $\alpha|_{S_i} \in \Im(I)$.
+
+Then checking $\pi([f, \P(\sigma)]) = \pi([f', \P(\sigma')])$, we use the large commutative diagram (\ref{eqn:largerect}) to see that $f,f'$ are related by some element of $PGL$. Then there exists a geometric quotient $H_3 / PGL$ and this is a coarse modulu space for $M_g$. Thus we have a bijection between maps $M_g \to N$ and $PGL$-invariant maps $H_3 \to N$. This is equivalent to the orbits of $H_3(\Omega)$ to be bijective with $N(\Omega)$, where $N = H_3 / PGL$.
+
+Now recall from Theorem 3.4.5 that if $X/k$ is of finite and $G$ is a reductive group with $\mc{L} \in \Pic^G(X)$, then there is a universal categorical quotient of $X^{\mr{ss}}(\mc{L})$ and a uniform geometric quotient of $X^s(\mc{L})$ (in characteristic $0$, uniform is upgraded to universal). Now we want to express $H_3$ as the locus of stable points of something, and in particular as $X^s_{(0)}(\mc{L})$.
+
+To do this, we will introduce the Chow scheme. The Chow variety $\mc{C}_{n, r, d}$ parameterizes subvarieties of $\P^n$ of dimension $r$ and degree $d$. This is defined by
+\[ X \mapsto \Gamma = \qty{(x, \mu_0, \ldots, \mu_r) \mid x \in \mu_i \text{ for all }i = 0, \ldots, r} \subset X \times (\P^n)^{r+1}. \]
+Then projecting $\Gamma$ down to $(\P^n)^{r+1}$, we obtain a hypersurface defined by the \textit{Cayley form} $F_X$. Then the coefficients of $F_X$ map to $\mc{C}(X) \in \P^{\nu}$. 
+
+Now we have a map $\phi \colon H_3 \to \mc{C}_{5g-6, 1, 6g-6}$. Over $k$, we use a push-pull with respect to 
+\begin{equation*}
+\begin{tikzcd}
+    & \mc{X} \arrow{dl}{p_1} \arrow{dr}{p_2} \\
+    \P^n & & \P^n \times \P^n
+\end{tikzcd}
+\end{equation*}
+where $\mc{X}$ is defined by first defining $H = \sum x_i \otimes U_i \subset \P^n \times \P^m$, then pulling considering the maps $p_{12}, p_{13} \colon \P^n \times \P^n \times \P^n \to \P^n \times \P^n$, and taking $\mc{X} = p_{12}^{-1}(H) \times p_{13}^{-1}(H)$.
+
+Now recall from Proposition 1.14 of Mumford that $\ol{X}^{ss}(\ol{\mc{L}}) = \ol{X^{ss}(\mc{L})}$ and similarly for the stable locus. Thus we can reduce to the case where $k$ is algebraically closed, and by Proposition 1.18 in Mumford, if $f \colon X \to Y$ is $G$-equivariant, then $f$ is quasi-affine. Thus $f^{-1}(Y_{(0)}^s(\mc{L})) \subseteq X_{(0)}^s(f^* \mc{L})$. Then by Theorem 6.2 in SGA 8, an injective morphism of finite type is quasi-affine. If we require that $f$ is finite, $X$ is proper, and $\mc{L}$ is ample, the inclusion becomes an equality by Proposition 1.19 in Mumford.
+
+Now recall that we have $\phi \colon H_3 \to \mc{C}_{5g-6, 1, 6g-6}$. Then $\phi$ is quasi-affine and $\phi^{-1}(\mc{C}_{(0)}^s ( \mc{O}_{\mc{C}}(1) )) \subset (H_3^s)_{(0)}(\phi^* \mc{O}_{\mc{C}}(1))$. Then by Theorem 4.5 of Mumford, we use the Hilbert-Mumford stability criterion to see that for any smooth curve $\gamma$, the point $\mc{C}(\gamma)$ is stable if
+\begin{enumerate}
+    \item $\gamma$ is not contained in a hyperplane.
+    \item $\gamma$ is defined by a complete linear system.
+    \item $g \geq 1$ and $\deg \gamma \geq 3g$. This is equivalent to $g \geq 2$.
+\end{enumerate}
+Thus the image of $\phi$ is contained in the properly stable locus and thus we have $H_3$ is equal to the properly stable locus. Thus we obtain a geometric quotient.
+
+\chapter{Kuan-Wen (Nov 13): GIT and the moment map}%
+\label{cha:kuan_wen_nov_13_git_and_the_moment_map}
+
+\section{Moment maps}%
+\label{sec:moment_maps}
+
+Let $(X, \omega)$ be a symplectic manifold. Here, this means that $X$ is a smooth manifold and $\omega$ is a closed nondegenerate $2$-form on $X$. Now Let $K$ be a compact Lie group acting on $X$ symplectically, which means $k^* \omega = \omega$ for all $k \in K$. Define the Lie algebra of $K$ to be $\mf{k}$.
+
+\begin{defn}
+    The \textit{moment map} $\mu \colon X \to \mf{k}^*$ is a map which is
+    \begin{enumerate}
+        \item Equivariant. Here, we use the coadjoint action on $\mf{k}^*$.
+        \item The map $\dd{\mu} \colon T X \to \mf{k}^*$ satisfies the identity
+            \[ \dd{\mu}(x)(\xi) . a = \omega_x(\xi, a_x) \]
+            for any $x \in X, a \in \mf{k}$ and $a_x = \eval{\dv{x} \exp(ta)x}_{t=0}$.
+    \end{enumerate}
+\end{defn}
+
+Now we will discuss existence and uniqueness of the moment map. For uniqueness, we know that
+\begin{enumerate}
+    \item $\mu$ is unique up to addition of a constant in $\mf{k}^*$.
+    \item If $K$ is semisimple, then the only fixed point of the coadjoint action is $0$, and thus $\mu$ is in fact unique.
+    \item If we require $\int_X \mu \omega^n = 0$ for $X$ compact, then we obtain a unique moment map.
+\end{enumerate}
+
+Now we will discuss existence. The following result is from reference [723] of Mumford's book.
+
+\begin{thm}[Marsden-Weinstein]
+    If $K$ is semisimple, then the moment map $\mu$ exists.
+\end{thm}
+
+Next, it is known that if $H^1(X,\Q) = 0$ and $K$ is connected, then the moment map exists. If $K$ is a torus, this comes from a differential equation, but the obstruction comes from $H^1(X, \Q)$ and so we are fine here. In general, we have an exact sequence
+\[ 0 \to \qty{\text{finite central}} \to \prod \qty{\text{semisimples}} \times \text{torus} \to K \to 0 \]
+so by the previous discussion, we now have the existence of a moment map.
+
+\begin{exm}
+    Consider the standard action of $U(n+1)$ on $\P^n$. Then the mment map $\mu \colon \P^n \to \mf{u}(n+1)^*$ is given by
+    \[ x \mapsto \mu(x) .a = \frac{\ol{x^*}^t a x^*}{2 \pi i \norm{x^*}^2} \]
+    where $x^*$ is any lift of $x$ in $\C^{n+1}$. This is unique up the the addition of the trace map $\tr(-)$, which is the nontrivial fixed point of the coadjoint action. This follows from the fact that all characters of $U(n+1)$ are powers $\det^m \colon U(n+1) \to S^1$ of the determinant map. To see invariance, note that
+    \[ \mu(kx).a = \frac{\ol{x^*}^t \ol{k}^t a k x^*}{2 \pi i \norm{x^*}^2} = \mr{Ad}^*(k) \mu(x).a. \]
+    Using the Fubini-Study metric on $\P^n$ and the fact tha tthe action is transitive, we will compute at the point $[ 1:0:\cdots :0 ]$ with coordinates $[1:x^1:\cdots :x^n]$. Recall that the Fubini-Study form is given by
+    \[ \omega_{\mr{FS}} = \frac{i}{2\pi} \sum_j \dd{x}^j \wedge \dd{\ol{x}}^j. \]
+    Now we can directly compute
+    \begin{align*}
+        \dd{\mu} &= \dd{\qty(\frac{\ol{x^*}^t a x^*}{2 \pi i \norm{x^*}^2})} \\
+                 &= \frac{i}{2\pi} \sum \ol{a}_j \dd{x^j} - a_j \dd{\ol{x}}^j \\
+                 &= \omega_{\mr{FS}}(-,a).
+    \end{align*}
+    This gives the desired result.
+\end{exm}
+
+Now suppose $X \subset \P^n$ and $K$ acts on $X$ with an action induced from a linear action on $\P^n$. Then we can assume that $K$ acts unitarily, so then se can write the moment map as
+\[ X \hookrightarrow \P^n \xrightarrow{\mu} \mf{u}(n+1)^* \to \mf{k}^*. \]
+This can be written explicitly as
+\[ \ol{\mu}(x).a = \frac{\ol{x^*}^t \rho_*(a)x^*}{2\pi i \norm{x^*}^2} \]
+where $\rho \colon K \to U(n+1)$ is the linear action.
+
+
+We will now discuss quotients in the symplectic category.
+\begin{thm}[Marsden-Weinstein]
+    Let $K$ act on $(X, \omega)$ and $\mu \colon X \to \mf{k}^*$ be the moment map. Let $\eta \in \mf{k}^*$ be a fixed point of the coadjoint action. If $K$ acts freely and properly on $\mu^{-1}(\eta)$, then the quotient $\mu^{-1}(\eta)/K$ is a symplectic manifold of dimension $\dim X - 2 \dim K$. If $\iota \colon \mu^{-1}(\eta)$ is the inclusion and $\pi$ is the projection, then we have the identity $\pi^*\omega^{\mr{red}}  = \iota^*\omega$. If $\eta$ is not fixed, we can replace $K$ by the stabilizer of $\eta$.
+\end{thm}
+
+\begin{proof}
+    We have the equality
+    \[ \ker \dd_x{\mu} = T_x(K \cdot x)^{\omega_X} \coloneqq \qty{v \in T_x X \mid \omega_x(\eta, v) = 0 \text{ for all } \eta \in T_(K \cdot x)}. \]
+    This comes from the differential equation in the definition of the moment map, and then we also have
+    \[ \Im \dd_x {\mu} = \mr{Ann}(\mf{k}^*) = \qty{\eta \in \mf{k}^* \mid \eta \cdot A = 0 \text{ for all }A \in \mf{k}_x}. \]
+    To get the dimension equality, we have a short exact sequence for any $W \subseteq T_x X$ given by
+    \[ 0 \to W^{\omega_x} \to T_x X \to W^* \to 0 \]
+    and thus $\dim T_x X = \dim W + \dim W^{\omega_x}$. Now we replace $W$ with $T_x(K\cdot x)$ to obtain the desired result. On the other hand, we also have
+    \[ \dim \mr{Ann}(\mf{k}_x) = \dim \mf{k} - \dim \mf{k}_x = \dim T_x X - \dim T_x(K \cdot x)^{\omega_x} = \dim \Im \dd{x} \mu. \]
+    By these computations, we know that $\eta$ is a regular value if and only if the action of $K$ on $\mu^{-1}(\eta)$ is locally free.
+
+    Now $T_x(K \cdot x)$ is an isotropic subspace of $T_x X$ because we have
+    \[ T_x(K \cdot x) \subset T_x \mu^{-1}(\eta) = T_x(K \cdot x)^{\omega_x}. \]
+    Next, for isotropic subspaces $I$ of $(V, \omega)$, there is a symplectic form induced by $\omega$ on $I^{\omega} / I$. This gives a symplectic form on $T_x(K \cdot x)^{\omega_x} / T_x(K \cdot x) = T_x \mu^{-1}(\eta) / T_x(K \cdot x)$, and so we have a symplectic form on the quotient.
+
+    Finally, to prove closedness of this form, this follows from the fact that 
+    \[ \pi^* \dd{\omega^{\mr{red}}} = \dd{(\pi^* \omega^{\mr{red}})} = \dd{(\iota^* \omega)} = \iota^* \dd{\omega} = 0 \]
+    and the fact that $\pi^*$ is injective.
+\end{proof}
+
+\section{Comparison of symplectic quotients and GIT quotients}%
+\label{sec:comparison_of_symplectic_quotients_and_git_quotients}
+
+Now let $G$ is reductive with a linear action $\rho \colon G \to GL(n+1)$ such that $G$ acts on some projective variety $X \subseteq \P^n$. Now let $K \subset G$ be a maximal compact subgroup. 
+
+\begin{thm}
+    \begin{enumerate}
+        \item A point $x \in X$ is semistable if and only if $\ol{O_G(x)} \cap \mu^{-1}(0) \neq \emptyset$.
+        \item There is an inclusion $\mu^{-1}(0) \hookrightarrow X^{\mr{ss}}$ (by Proposition 2.2 in Mumford). This induces a homeomorphism $\mu^{-1}(0)/K \simeq X \sslash G$ with the GIT quotient.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    First, for all $v \in \C^{n+1}$, define $p_v(g) = \norm{gv}^2$. Then from Kempf-Ness (reference [175] in Mumford), we have
+    \begin{enumerate}[label=(\roman*)]
+        \item All critical points of $p_v$ are minima.
+        \item If $p_v$ attains a minimum, it does so on exactly one double coset in $K \backslash G / G_v$.
+        \item $p_v$ attains a minimum if and only if the orbit of $v$ is closed in $\C^{n+1}$.
+    \end{enumerate}
+    Also, because we can write the moment map explicitly, we have $\dd{p}_{x^*}(g) = 0$ if and only if $\mu(gx) = 0$. Finally, we know that if $O_G(x^*)$ is closed in $\C^{n+1}$, then $x$ is semistable and $O_G(x)$ is closed in $X^{\mr{ss}}$. To prove the second part, if $y \in \ol{O_G(x)} \cap X^{ss}$, then there exists $f$ invariant such that $y \in X_f$. This means $x \in X_f$, so we can choose $x^*, y^*$ such that $f(x^*) = f(y^*) = 1$. Multiplying by roots of unity, we may assume that $y^* \in \ol{O_G(x^*)} = O_G(x^*)$. Projecting down, we have $y \in O_G(x)$.
+
+    Using all of these observations, we can prove the two parts of the theorem.
+    \begin{enumerate}
+        \item If $x \in X^{\mr{ss}}$, then $\ol{O_G(x)} \subset \C^{n+1} \setminus \qty{0}$ contains some closed orbit $O_G(y)$. This implies that $\ol{O_G(x)} \cap \mu^{-1}(0) \neq \emptyset$. The converse simply follows from the observations and Proposition 2.2 in Mumford.
+        \item We know $\mu^{-1}(0)/K \to X \sslash G$ is a continuous map from a compact space to a Hausdorff space. It suffices to show taht this is a bijection. Then recall that $X^{\mr{ss}} \xrightarrow{\phi} X \sslash G$ satisfies the condition that $\phi(x) = \phi(y)$ if and only if their orbit closures intersect, so by the first part of this theorem, we have surjectivity.
+
+            For injectivity, if $\mu(x) = 0 = \mu(y)$ but $x \notin O_K(y)$, then we know that $x \notin O_G(y)$ by the previous discussion, but also $O_G(x), O_G(y)$ are closed in $X^{\mr{ss}}$, which gives a contradiction. \qedhere
+    \end{enumerate}
+\end{proof}
+
+We conclude with some remarks. It is easier to compute the cohomology of $\mu^{-1}(0) / K$ than it is to compute the cohomology of $X \sslash G$. To do this, if we consider the Morse function $f(x) = \norm{\mu(x)}^2$, where the norm comes from the Killing form, then we have a Morse stratification $\qty{C_{\beta, m}}$ and then we define the functions 
+\[ p_t^K(X) = \sum t^i \dim H_K^i(X,\Q) = \sum_{\beta, m} t^{d(\beta, m)} p_t^K(C_{\beta, m}). \]
+This allows us to compute the cohomology.
+
+
 
 
 

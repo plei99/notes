@@ -135,6 +135,7 @@
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\colim}{colim}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
 \DeclareMathOperator{\Aut}{Aut}
@@ -828,7 +829,7 @@ What does hold is Blakers-Massey. Assume that $Y = Y_1 \cup Y_2$, where the $Y_i
     \[ \pi_1(Y_2, Y_0) \to \pi_i(Y, Y_1) \]
     called the \textit{excision}. 
 
-\begin{thm}
+\begin{thm}[Blakers-Massey]
     Assume that $(Y_1, Y_0)$ is $p$-connected and $(Y_2, Y_0)$ is $q$-connected. Then excision is an isomorphism in degree $i < p+q$ and surjective in degree $i = p+q$. This means that excision is $(p+q)$-connected as a map of pairs.
 \end{thm}
 
@@ -840,7 +841,490 @@ and we see that $\pi_2(D^2, S^1) \cong \Z$. We now apply excision for $\pi_2(D^2
 
 In the next dimension, we use the same computation to see that $\pi_3(D^3, S^2) \cong \Z$ and the pairs $(D^3_+, S^2), (D^3_-, S^2)$ are $2$-connected. Then the map $(D^3_+, S^2) \to (S^3, D^3_-)$ is $4$-connected, so $\pi_3(S^3) \cong \pi_3(S^3, D^3_-) \cong \pi_3(D^3, S^2) \cong \Z$.
 
+\begin{thm}
+    If $Y_1 \to Y$ and $Y_2 \to Y$ are $p$ and $q$-connected, then $F(Y_1, Y_1, Y_0) \subset F(Y_1, Y, Y_2)$ is $p + q - 1$ connected. Here, $F(Y_1, Y_1, Y_0)$ are paths $w \colon I \to Y$ such that $w(0) \in Y$, $w(1) \in Y_0$.
+\end{thm}
 
+This implies Blakers-Massey by taking the fiber over $0$. Note that the homotopy fiber of $Y_0 \to Y_1$ is 
+\begin{equation*}
+\begin{tikzcd}
+    F(*, Y_1, Y_0) \arrow{d} \arrow{r} & F(*, Y, Y_2) \arrow{d} \\
+    F(Y_1, Y_2, Y_0) \arrow{r} \arrow{d}{ev_0} & F(Y_1, Y, Y_2) \arrow{d}{ev_0} \\
+    Y_1 \arrow{r}{=} & Y_1.
+\end{tikzcd}
+\end{equation*}
+Then using the long exact sequence of homotopy groups, we obtain the desired result.
+
+Now consider the special case $Y = D^{q+1} \cup_{S^q} Y_0 \cup_{S^p} D^{p+1}$. This is the pushout
+\begin{equation*}
+\begin{tikzcd}
+    S^q \sqcup S^p \arrow{d} \arrow{r} & D^{q+1} \cup D^{p+1} \arrow{d} \\
+    Y_0 \arrow{r} & Y.
+\end{tikzcd}
+\end{equation*}
+and looks something like
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{attachcell.png}
+    \caption{Attaching two cells to $Y_0$}%
+    \label{fig:attachcell}
+\end{figure}
+The key idea is that if $I^n \xrightarrow{\sigma} F(Y)$ is a family of paths, then generically, the subfamily $Q \subset  I^n$ of paths which intersect the origin in $D^{q+1}$ has dimension $n-q$. To see this, appeal to the fact that locally $D^{q+1}$ is a manifold and then use Sard's theorem. If a path is not in $Q$, then we can retract it to $F(Y_1, Y_1, Y_0)$ ``radially'' in $D^{q+1}$. Such a path lies in $D^{p+1} \cup Y_0 \cup D^{q+1} \setminus 0$.
+
+If our path lies in $Q$, then we have a dimension $n-q-p$ locus passing through $0 \in D^{p+1}$. If $n < q+p$, then the dimension is negative, so it is empty. Thus generically, every path misses either $0 \in D^{p+1}$ or $0 \in D^{q+1}$. Then we can retract $Q$ to $F(Y_0, Y_2, Y_2)$. But then we can move the basepoint along $Y_2$ back to $Y_0$, so we retract to
+\[ Y_0 \to F(Y_0, Y_0, Y_0) \subset F(Y_1, Y_1, Y_0). \]
+We will ignore the details needed to make this precise. To handle the general case, we simply need to consider the case where an arbitrary number of cells are attached and then use CW approximation.
+
+Here are some applications of Blakers-Massey:
+\begin{cor}
+    Say $A \subset X$ is a cofibration. Then suppose $A$ is $m$-connected and $(X,A)$ is $n-1$ connected. Then $(X,A) \to (X/A, *)$ is $n+m-1$ connected.
+\end{cor}
+
+\begin{proof}
+    Take the mapping cylinder $Z(f)$. Cover this by $C(A) \cup_A X$. Then $A$ is $m$-connected if and only if $A \to CA$ is $m$-connected. Using the fact that $(X,A)$ is $n-1$ connected, we use Blakers-Massey to obtain the desired result.
+\end{proof}
+
+\begin{cor}[Freudenthal]
+    Assume $X$ is well-pointed and $n-1$ connected. Then $\pi_i(X) \to \pi_{i+1}(\Sigma X)$ is an isomorphism for $i \leq 2n-2$ and is surjective for $i = 2n-1$.
+\end{cor}
+
+\begin{proof}
+    Note that $\Sigma X = C_+X \cup_X C_-X$. The only thing we need to check is that the map from Blakers-Massey is the same as the suspension map.
+\end{proof}
+
+\begin{cor}
+    If $X$ is $n$-connected and $Y$ is $m$-connected, then $X \wedge Y$ is $n+m+1$ connected.
+\end{cor}
+
+\begin{proof}
+    Note that $X \wedge Y = X \times Y / X \vee Y$. We need to understand $\pi_{i+1}(X \times Y, X \vee Y)$. But then $\pi_i(X \times Y) = \pi_i(X) \oplus \pi_i(Y)$, so 
+    \[ \pi_i(X \vee Y) \cong \pi_i(X) \oplus \pi_i(Y) \oplus \pi_{i+1}(X \times Y, X \vee Y). \]
+    Then using excision to compute $\pi_i(X \vee Y) = \pi_i(X) \oplus \pi_1(Y)$ in the range, we obtained the desired result.
+\end{proof}
+
+In the text, there is more discussion of the homotopy groups of $\R\P^n$, which has $S^n$ as its universal cover. Then if we take the colimit of
+\[ \R\P^1 \subset \R\P^2 \subset \cdots \]
+and obtain $\R\P^{\infty}$, this has trivial homotopy. We can prove this by noting that $S^{\infty}$ is contractible.
+
+We can also consider the action of $O(n)$ on $S^{n-1}$. We then obtain a fiber sequence $O(n-1) \to O(n) \to S^{n-1}$. Then we can use induction to compute the difference between $\pi_i(O(n-1))$ and $\pi_i(O(n))$. For $i \leq n-2$, the groups are isomorphic. Then we consider the colimit
+\[ O(n-1) \hookrightarrow O(n) \hookrightarrow O(n+1) \hookrightarrow \cdots \]
+to obtain the group $O(\infty)$ with periodic homotopy groups $\Z_2, \Z_2, 0, \Z, 0, 0, 0, \Z$ by Bott periodicity. We can do the same computation for the unitary group.
+
+\chapter{CW Complexes and Homology}%
+\label{cha:changing_spaces}
+
+\section{$K$-Spaces}%
+\label{sec:_k_spaces}
+
+Recall that whenever $X,Y$ are locally compact, then we have the adjunction
+\[ F(X \times Y, Z) \to F(X, F(Y, Z)). \]
+We want this to always hold, so we will need to study infinite complexes. For example, an infinite wedge of circles is not locally compact. Our solution will be to change the topology on $F$ and on $X$.
+
+\begin{defn}
+    $X$ is a \textit{$K$-space} if, for all $A \subset X$, if $f^{-1}(A)$ is closed for all $f \colon K \to X$ with $K$ compact Hausdorff, then $A$ is closed.
+\end{defn}
+
+Now we define a functor $K \colon \ms{Top} \to \ms{Top}$. Here, $KX$ is $X$ as a set with closed sets those such that $f^{-1}(A)$ closed for all $f \colon K \to X$ continuous in the original topology. Because $KX$ has more closed sets than $X$, then we have a natural transformation between $K$ and the identity.
+
+\begin{prop}
+    $X$ is a $K$-space if and only if the following hold: Any map $f \colon X \to Y$ is continuous if and only if $K \to X \to Y$ is continuous for all $K \to X$ with $K$ compact Hausdorff.
+\end{prop}
+
+Let $\ms{kTop} \subset \ms{Top}$ be the full subcategory of $K$-spaces.
+
+\begin{thm}
+    Products exists in $\ms{kTop}$.
+\end{thm}
+
+\begin{thm}
+    We have the adjunction
+    \[ kF(X \times Y, Z) \cong kF(X, kF(Y, Z)). \]
+\end{thm}
+
+We did all of this because non locally compact spaces show up relative naturally. 
+
+\section{Simplicial Complexes}%
+\label{sec:simplicial_complexes}
+
+A \textit{simplicial complex} is a set $V$ with a collection $S$ of finite subsets $\sigma \subset V$ such that $\sigma \setminus \{v \} \in X$ for all $v \in \sigma$.
+
+Letting $\Delta(\sigma) = \qty{\sum_{v \in \sigma} i_V = 1} \subset I^{v}$, then we have natural maps $\Delta(\sigma \setminus \{v\}) \subset \Delta(\sigma)$.
+
+\begin{defn}
+    The \textit{geometric realization} $\abs{K}$ of a simplicial compex $K$ is the space
+    \[ \bigsqcup_{\sigma \in S} \Delta(\sigma) / \sim \subset I^V \]
+    where $\sim$ is the equivalence defined by the maps above.
+\end{defn}
+
+If we have a homeomorphism $\abs{K} \cong X$, then this is said to be a \textit{trianglation} of $X$. All smooth manifolds can be triangulated.
+
+This is very rigid, which is bad for homotopy theory, so we give an alternative viewpoint. Let $K^n = (V, S^n)$, where $S^n$ is the subsets of size at most $n+1$. This is called the \textit{$n$-skeleton}, so the geometric realization $\abs{K^n}$ induces the simplices of dimension at most $n$. Then we have a pushout
+\begin{equation*}
+\begin{tikzcd}
+    \bigsqcup_{\sigma \in S^{n+1} \setminus S^n} \partial \Delta(\sigma) \arrow{r} \arrow{d} & \abs{K^n} \arrow{d} \\
+    \bigsqcup \Delta(\sigma) \arrow{r} & \abs{K}^{n+1}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{lem}
+    $\abs{K} = \operatorname{colim}_n \abs{K}^n$.
+\end{lem}
+To prove this, we check that the topology agrees. Unfortunately, the maps from simplices are too rigid, so to derigidify, we will relax the notion of the attaching maps.
+
+\section{CW complexes}%
+\label{sec:cw_complexes}
+
+\begin{defn}
+    A CW decomposition of a space $X$ is a filtration $X = \operatorname{colim} X_i \ni X_0 = \mr{pt}$ such that we have pushouts
+    \begin{equation*}
+    \begin{tikzcd}
+        \bigsqcup_{i \in C_n} S_i^{n-1} \arrow{r}{\phi} \arrow{d} & X_{n-1} \arrow{d} \\
+        \bigsqcup_{i \in C_n} D_i^n \arrow{r} & X_n.
+    \end{tikzcd}
+    \end{equation*}    
+\end{defn}
+
+\begin{rmk}
+    Let $E^n = D^n \setminus S^n$. We obtain a decomposition as a set
+    \[ X = \bigsqcup_{\lambda \in \bigcup_n C_n} e_{\lambda} \]
+    where $e_{\lambda}$ is the image of $E_i^n$ in $X$.
+\end{rmk}
+
+A key property is that if $K \subset X$ is compact, then $K$ intersects only finitely many cells. To see this, note that $K \subset X^n$ for some $n$. Then $K$ lies in an infinite union of disks, so it must intersect finitely many of them.
+
+\begin{rmk}
+    The abbreviation CW stands for closure-finite (C) and weak topology (W).
+\end{rmk}
+
+\begin{defn}
+    A \textit{CW decomposition} of a pair $(X,A)$ is a filtration $X = \mr{colim} X_i$ where $X_{-1} = A$ and $X_n$ is given as a pushout
+    \begin{equation*}
+    \begin{tikzcd}
+        \bigsqcup_{i \in C_n} S_i^{n-1} \arrow{r} \arrow{d} & X_{n-1} \arrow{d} \\
+        \bigsqcup_{i \in C_n} D_i^n \arrow{r} & X_n.
+    \end{tikzcd}
+    \end{equation*}
+    Here, the cell attachment happens in dimension $n$.
+\end{defn}
+
+If $A = \emptyset$, we have a CW decomposition of $X$. Then we say that $\dim X \leq n$ if all cells have at most that dimension. Now there are two ideas for working with CW-complexes.
+
+\begin{enumerate}
+    \item Suppose $A \xrightarrow{f} Y$ is a map. If $(X,A)$ is a relative CW complex, we want to extend $f$ to $F \colon X \to Y$. The obstruction is as follows. Say we only have one cell. Then $S^{n-1} \to A \to Y$ defines an element of $\pi_{n-1}(Y)$, and this vanishes if and only if an extension exists. If $X$ has more cells, then proceed by induction (we have a sequence of obstructions, and we need them all to vanish).
+    \item (Cellularity) Say that $(Y,B)$ is $n$-connected. If $X$ is a CW complex and $f \colon X \to Y$ is a map with $\dim X < n$, then $f$ is homotopic to some $f'$ with $f'(X) \subset B$.
+
+        To prove this, use induction. We know that $Y,B$ have the same components, so we may deform $f$ so that $X^0$ maps to $B$ (use the transport with $X^0 \subset X$ a cofibration). Then each $1$-cell of $X$ determines an element of $\pi_1(Y,B) = 0$, so we can make $X^1$ map to $B$.
+\end{enumerate}
+
+Here are some consequences:
+\begin{enumerate}
+    \item If $\pi_i(Y) = 0$ for all $i \geq n$ and $(X,A)$ is a relative CW complex which is $(n+1)$-connected, then $[X,Y] \simeq [A,Y]$. Note all obstructions to the extension vanish.
+    \item Say $f \colon B \to Y$ is an $n$-connected map. If $X$ is a CW complex, then $[X,B] \to [X,Y]$ is an isomorphism if $\dim X < n$ and a surjection if $\dim X = n$. Here, use the mapping cylinder to reduce to the case of an inclusion and then note that obstructions vanish.
+\end{enumerate}
+
+\begin{rmk}
+    Conditions on $\pi_i$ of the target are in some sense dual to the source having no cell in a given dimension (replace this by vanishing cohomology).
+\end{rmk}
+
+We can now let $n = \infty$ (i.e.~a weak homotopy equivaence).
+
+\begin{prop}
+    A map $f \colon X \to Y$ of CW complexes is a homotopy equivalence if and only if $f_* \colon \pi_i(X) \to \pi_i(Y)$ is an isomorphism for all $i$.
+\end{prop}
+
+\begin{proof}
+    For any $n$-connected $Z$, we have an isomorphism $f_* \colon [Z,X] \to [Z,Y]$. Then if we let $Z = Y$, note that $[Y,X] \to [Y,Y]$ and choose an inverse fo $\mr{id}_Y$. Alternatively, this is just the Yoneda Lemma.
+\end{proof}
+
+\begin{rmk}
+    If $\dim X = \dim Y \leq k$, then we only need to check $\pi_i$ for $i \leq k$.
+\end{rmk}
+
+\begin{rmk}
+    If it \textbf{not true} that CW complexes are determined up to homotopy equivalence by their homotopy groups. The counterexample is $X = BU$ and $Y = \bigvee K(\Z, 2i)$, but to prove this, we need to use cohomology. 
+\end{rmk}
+
+\begin{prop}
+    For any space $Y$ there exists a CW complex $X$ and a map $X \to Y$ which is a weak homotopy equivalence. This is not a homotopy equivalence in general (see the pseudocircle from the homework), but for $Y$ a manifold, it is a homotopy equivalence.
+\end{prop}
+
+\begin{proof}
+    By induction on $n$, we want $X^n \to $ which is $n$-connected. Using the mapping cylinder, we can assume that $X^n \hookrightarrow Y$. Consider $\pi_{n+1}(Y, X^n)$. Define $X^{n+1}$ as the result of attaching $n+1$ discs to $X^n$ indexed by a basis of this group. Extend the map to $X^{n+1}$ and use the long exact sequence to see that $X^{n+1} \to Y$ is $n+1$ connected. To see that we can extend, note that we have the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        S^n \arrow{r} \arrow{d} & X^n \arrow{r} \arrow{d} & Y \\
+        D^{n+1} \arrow{r} & X^{n+1}. \arrow[dashrightarrow]{ur}
+    \end{tikzcd}
+    \end{equation*}
+    Then we can extend from the disk by using the associated element of $\pi_{n+1}(Y,X)$. Now we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \pi_{n+1}(X^n) \arrow{r} \arrow{d}{=} & \pi_{n+1}(X^{n+1}) \arrow{d} \arrow{r} & \pi_{n+1}(X^{n+1},X^n) \arrow{r} \arrow{d} & \pi_n(X^n) \arrow{d}{=} \\
+        \pi_{n+1}(X^n) \arrow{r} & \pi_{n+1}(Y) \arrow{r} & \pi_{n+1}(Y, X^n) \arrow{r} & \pi_n(X^n).
+    \end{tikzcd}
+    \end{equation*}
+    Then we can show that the left middle arrow is surjective, and then by surjectivity of the whole diagram, we see that the desired arrow is surjective.
+\end{proof}
+
+Now we give a useful computation. Suppose that $\pi_i(Y) = 0$ for all $i > n \geq 2$ and that $X$ is a $(n-1)$-connected CW complex. Then $[X,Y] \cong \Hom(\pi_n(X), \pi_n(Y))$.
+
+Surjectivity is easy (use lemma about $[X,Y] \cong [A,Y] \ldots$). To prove injectivity, we sill reduce to $X$ being the cone of $\bigvee S^n \to \bigvee S^n$, by assumption, $n \geq 2$, so $X$ is a suspension. Then we have a sequence of groups
+\begin{equation*}
+\begin{tikzcd}
+    { [A,Y] }^0 \arrow{d}{\sim} & { [B,Y] }^0 \arrow{l}{\phi^*} \arrow{d}{\sim} & { [X,Y] }^0 \arrow{d} \arrow{l} & { [\Sigma A, Y] }^0 \arrow{l} \arrow{d} \\
+    \Hom(\pi_n(A), \pi_n(Y)) & \Hom(\pi_n(B), \pi_n(Y)) \arrow{l} & \Hom(\pi_n(X), \pi_n(Y)) \arrow{l} & 0. \arrow{l}
+\end{tikzcd}
+\end{equation*}
+Then we use Blakers-Massey to prove exactness and then obtain the desired result.
+
+\section{Eilenberg-Maclane Spaces}%
+\label{sec:killing_homotopy_groups}
+
+Now recall that the universal cover $\wt{Y} \to Y$ satisfies 
+\begin{enumerate}
+    \item $\pi_1(\wt{Y}) = 0$
+    \item $\pi_i(\wt{Y}) \cong \pi_1(Y)$ if $i > 1$.
+\end{enumerate}
+We want to generalize this to a general procedure ($n$-connected cover), which will be a fibration, but not a covering space.
+
+Given a space $Y$ and integer $n$, let $Y[n]$ be the result of attaching cells to kill $\pi_i$ for $i \geq n$. This means that $\pi_i(Y_m) = 0$ for $i \geq n$ and $\pi_i(Y_m) = \pi_i(Y)$ otherwise.
+
+\begin{exm}
+    There exists a space $S^n[n+1]$ with $\pi_i = \begin{cases}
+        \Z & i = n \\
+        0 & \text{otherwise}
+    \end{cases}$.
+\end{exm}
+
+Let $\pi$ be a group and $n \in \N$. 
+\begin{defn}
+    A CW complex $X$ is a $K(\pi, n)$ if
+    \[ \pi_i(X) = \begin{cases}
+        0 & i \neq n \\
+        \pi & i = n
+    \end{cases}. \]
+\end{defn}
+
+The key fact is that $K(\pi, n)$ is unique up to homotopy equivalence by a previous lemma. To show existence, we will present $\pi$ as a quotient of $F^I \to F^J$ (free if $n=1$, free abelian if $n \geq 2$). Then consider the cone of $\bigvee_I S^n \to \bigvee_J S^n$. The $\pi_n$ is correct by Blakers-Massey, so we simply kill the higher homotopy groups.
+
+Now there is an additive structure on the $K(\pi,n)$. If $\pi$ is abelian, then addition is a homomorphism $\pi \oplus \pi \to \pi$. This gives a natural map $K(\pi \oplus \pi, n) \to K(\pi,n)$, but $K(\pi,n) \times K[\pi, n] \cong K(\pi \oplus \pi, n)$, so we see that $K(\pi,n)$ is a commutative $H$-space. We have a diagram
+\begin{equation*}
+\begin{tikzcd}
+    K(\pi,n) \times K(\pi, n) \arrow{d}{\text{swap}} \arrow{r} & K(\pi \oplus \pi, n) \arrow{r} \arrow{d}{\text{swap}} &  K(\pi,n) \\
+    K(\pi, n) \times K(\pi, n) \arrow{r} & K(\pi \oplus \pi, n). \arrow{ur}
+\end{tikzcd}
+\end{equation*}
+Then because the two rightmost arrows come from the same map $\pi \oplus \pi \to \pi$, we see that this diagram homotopy commutes.
+
+\begin{rmk}
+    In fact, we can make $K(\pi, n)$ into a commutative \textbf{group}. It is also possible to show that these are the only abelian groups in $\ms{hTop}$. 
+\end{rmk}
+
+Now we will consider multiplicative structure. By excision, note that $K(\pi_1, n) \wedge K(\pi_2, m)$ is $n+m-1$ connected. To compute $\pi_{n+m}$, look at the $n+1$ and $m+1$ skeleta. We get that
+\[\mr{Cone}(A_{n+1} \to A_n) \wedge \mr{Cone}(B_{m+1} \to B_m) \cong \mr{Cone}((A_{n+1} \wedge B_m) \vee (A_n \wedge B_{m+1}) \to A_n \wedge B_m) \]
+where the wedge of smashes comes from the relations of $\pi_1 \otimes \pi_2$ and $A_n \wedge B_m$ comes from the generators. This gives us a map to $K(\pi_1 \otimes \pi_2, m+n)$.
+
+If $\pi$ is a ring, then we obtain a map $K(\pi, n) \wedge K(\pi, m) \to K(\pi, n+m)$, which makes $\bigvee_N K(\pi, N)$ a graded ring.
+
+\section{Eilenberg-Steenrod Axioms}%
+\label{sec:eilenberg_steenrod_axioms}
+
+\begin{defn}
+    A \textit{homology theory} is a functor $\qty{h_n}_{n \in \Z}$ 
+    \[ h_n \colon \ms{Top}(2) \to R\text{-}\ms{mod} \]
+    and natural transformation $\partial_n \colon h_n \implies h_{n-1} \circ K$ such that
+    \begin{enumerate}
+        \item $h_n$ is homotopy invariant.
+        \item There is a long exact sequence
+            \[ \cdots \to h_n(X, A) \to h_{n-1}(A, \emptyset) \to h_{n-1}(X, \emptyset) \to h_{n-1}(X,A) \to h_{n-2}(A, \emptyset) \to \cdots \]
+        \item (Excision) If $\ol{U} \subset A$, then $h_n(X \setminus U, A \setminus U) \to h_n(X, A)$ is an isomorphism.
+    \end{enumerate}
+\end{defn}
+
+To produce such $h$, we can let $Y$ be a based space. Then set $h_n(X, A) = \pi_n(X^+ \wedge Y, A^+ \wedge Y)$. Then both of the first two axioms are clear, and the long exact sequence comes from the cofiber sequence. Unfortunately, excision is false because Blakers-Masset does not hold in general. However, it does hold in some range, and so we can extend this range by suspending everything. Thus the groups $\pi_{n+k} (X^+ \wedge \Sigma^k Y, A^+ \wedge \Sigma^k Y)$ stabilize, and are stably isomorphic to $\pi_{n+k}(X/A \wedge \Sigma^k Y)$.
+
+\begin{defn}
+    For any space $Y$, the homology theory $h_n^Y$ is 
+    \[ (X,A) \mapsto \operatorname{colim}_k [S^{n+k}, X/A \wedge \Sigma^k Y] \equiv \pi_n^S(X/A \wedge Y). \]
+\end{defn}
+
+
+\begin{rmk}
+    The connecting map is just the boundary map for the pair $(X^+ \wedge Y, A^+ \wedge Y)$. Alternatively, we can produce a boundary map $\pi_n(X/A) \to \pi_{n-1}(A)$ that commutes with the arrows to $\pi_n(\Sigma A)$. However, we have a sequence $A \to X \to X/A \to \Sigma A$. If $Y = S^0$, then we obtain \textit{stable homotopy}. This is easier to compute than ordinary homotopy, but is still mysterious. 
+\end{rmk}
+
+Unfortunately, ordinary homology is not an $h_n^Y$ for some $Y$. Instead, we have spaces $E(n)$ and map4 $\Sigma E(n) \to E(n+1)$, which form a \textit{prespectrum}. In this setting, define
+\[ h_n^E(X) = \operatornamewithlimits{colim}_k \pi_{n+k}(X \wedge E(K)). \]
+Then we have $h_n^E(X,A) = h_n^E(X/A)$, so we only need to do this for spaces. Unfortunately, these homotopy groups do not stabilize in general, and thus we need additional assumptions to get excision.
+
+\begin{exm}
+    Let $G$ be an abelian group. Recall we have $\Omega K(G, n+1) \to \mc{P} K(G, n+1) \to K(G, n+1)$. Thus we have $\Omega K(G, n+1) \cong K(G, n)$. This is now adjoint to a map $\Sigma K(G, n) \to K(G, n+1)$. 
+
+    For example, if $G = \Z$, we have $K(\Z, 0) = \Z$, $K(\Z, 1) \cong S^1$, and $K(\Z, 2) \cong \C\P^{\infty}$. Next, for $G = \Z/2$, we have $K(\Z/2, 0) = \Z/2$ and $K(\Z/2, 1)$ is obtained from $S^1$ by attaching a $2$-cell that is twice the generator of $\pi_1$ and then attaching $n$-cells to kill higher homotopy, and thus we have $K(\Z/2, 1) \cong \R\P^{\infty}$. 
+
+    Thus for every abelian group $G$ we have a homology theory 
+    \[ h_n^G(X, A) \cong H_n(X,A;G) \equiv \operatorname{colim} \pi_{n+k}(X/A \wedge K(G, k)) \]
+    where $A \subset X$ is a cofibration.
+\end{exm}
+
+To construct the boundary map, we use the map $X/A \to \Sigma A$, where $X/A \simeq C(X,A)$ and thus we have the boundary map
+% replace with tikzcd later.
+\[ \pi_{n+k}(X/A \wedge K(G, k)) \to \pi_{n+k}(\Sigma A \wedge K(G, k)) \to \pi_{n+k}(A \wedge K(G, k+1)) \]
+and maps $\pi_{n+k}(\Sigma A \wedge K(G, k)) \to H_n(\Sigma A, G) \cong H_{n-1}(A;G) \gets \pi_{n+k}(A \wedge K(G, k+1))$.
+To see the middle isomorphism is really an isomorphism, we know that $K(G, k)$ is $k$-connected and thus the homotopy groups stabilize. To establish excision, we simply use Blakers-Massey. Then the homology theories associated to prespectra satisfy additional properties:
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item (Additivity) Homology preserves coproducts, that is, 
+        \[ h_n\qty(\bigvee_i X_i) \cong \bigoplus_i h_n(X_i). \]
+        This follows from additivity of stable homotopy groups.
+    \item Weak homotopy equivalences induce isomorphisms on homology. This follows from the homework problem we were unable to solve (smash of weak equivalences is a weak equivalence).
+    \item (Dimension) $H_n(\mr{pt}, G) = G$ if $n=0$ and vanishes otherwise.
+\end{enumerate}
+
+\begin{rmk}
+    Cohomology satisfies the additivity axiom with the direct sum replaced by a direct product. If we take the ``dual'' to cohomology, then we should obtain the dual to the product, and this is clearly not a direct sum. To see failure of weak homotopy equivalence, this fails because spaces can be nasty (like the topologist's sine curve circle).
+\end{rmk}
+
+Our long term goal is to show that any homology theory satisfying all six axioms is represented by $K(\pi, n)$. Our first computation is that 
+\[ H_d(S^n, \mr{pt}; G) = \colim_{d+k} \pi_{d+k}(S^n \wedge K(G, k)) \cong \begin{cases}
+    G & d = 0,n \\
+    0 & \text{otherwise}
+\end{cases}. \]
+Now from the axioms, we consider $D^1$. Because this is contractible, we see that $H_*(D^1) \cong H_*(\mr{pt}) = G$ and that we have a long exact sequence
+\[ 0 \to H_1(D^1, \partial D^1) \to H_0(\partial D^1) \to H_0(D^1) \to H_0(D^1, \partial D^1) = 0. \]
+Then we have $H_1(D^1, \partial D^1) \cong H_0(D^1) = G$ and then the map on the left is given by $\alpha \mapsto (\alpha, -\alpha)$ and the map on the right is the sum of the two projections. Thus we have $H_2(S^2, \mr{pt}) \cong H_2(D^2, S^1) \cong H_1(S^1, \mr{pt}) \cong G$ proceeding by induction. 
+
+Next, we will define the reduced homology groups by $\wt{h}_n(X) = \ker (h_n(X) \to h_n(\mr{pt}))$. Then looking at the diagram
+\begin{equation*}
+\begin{tikzcd}
+    h_n(\mr{pt}) \arrow{r} & h_n(\mr{pt}) \arrow{r} & h_n(\mr{pt}, \mr{pt}) \arrow{r} & h_{n-1}(\mr{pt}) \arrow{r} & \cdots \\
+    h_n(A) \arrow{r} \arrow{u} & h_n(X) \arrow{r} \arrow{u} & h_n(X,A) \arrow{r} \arrow{u} & h_{n-1}(A) \arrow{r} \arrow{u} & h_{n-1}(X) \arrow{u} \\ 
+    \wt{h}_n(A) \arrow{r} \arrow{u} & \wt{h}_n(X) \arrow{r} \arrow{u} & \wt{h}_n(X,A) \arrow{r} \arrow{u} & \wt{h}_{n-1}(A) \arrow{r} \arrow{u} & \wt{h}_{n-1}(X) \arrow{r} \arrow{u} & \cdots \\ 
+\end{tikzcd}
+\end{equation*}
+we get that the bottom row is exact. Then if $A \subset X$ is a cofibration, then we can write $h(X,A) \simeq \wt{h}(X,A)$. This follows from the long exact sequence on $C(X,A)$ for 
+\[ \wt{h}_n(CA) \to \wt{h}_n(C(X,A)) \to h_n(C(X,A), CA) \to 0. \]
+
+\begin{cor}
+    Suppose $(X,A,B)$ is a triple. Then the sequence
+    \[ \cdots h_n(A,B) \to h_n(X,B) \to h_n(X,A) \to h_{n-1}(A,B) \to \cdots \]
+    is exact.
+\end{cor}
+
+\begin{proof}
+    If we take the quotient by $B$ and then use reduced homology. If the inclusion of $B$ is not a cofibration, then replace everything with the mapping cone.
+\end{proof}
+
+This is a key ingredient in the proof of Mayer-Vietoris. In fact, we can go further with homology. We have a natural map $\pi_n(S^n)\to \End(\wt{h}_n(S^n))$ that sends $f \colon S^n \to S^n$ to the map induced by $f$. This is clearly a homomorphism, so first we recall that addition in $\pi_n$ is induced by $S^n \vee S^n \to S^n$. But then we have $\wt{h}_n(S^n \vee S^n) \cong \wt{h}_n(S^n) \oplus \wt{h}_n(S^n)$ and so the map is addition. Now, er know that $[\mr{id}] \in \pi_n(S^n)$ maps to $\mr{id} \in \End(\wt{h}_n(S^n))$, so by linearity, $k \in \Z = \pi_n(S^n)$ goes to multiplication by $k$.
+
+\begin{cor}
+    If $h_*(\mr{pt}) \cong \Z$, then the map $\pi_n(S^n) \to h_n(S^n)$ is an isomorphism.
+\end{cor}
+
+We should caution that $\pi_k(S^n) \to h_k^{\Z}(S^n)$ is \textbf{not} an isomorphism.
+
+Now assume that $X = A \cup B$. We want to compute $h_* X$ given $h_* A, h_* B, h_*(A \cap B)$. We do this if $A$ and $B$ are open. Here, $h_*(X,A) \cong h_*(B, A \cap B)$ by excision on $U = A \setminus B$, and so we have a long exact sequence
+\[ h_*(A) \to h_*(X) \to h_*(X,A) \cong h_*(B, A \cap B) \to h_{*-1}(A \cap B). \]
+
+\begin{thm}[Mayer-Vietoris]
+    The sequence $h_*(A) \oplus h_*(B) \to h_*(X) \to h_*(A \cap B)$ is exact.
+\end{thm}
+
+\begin{proof}
+    Let $N(A,B) = A \times 0 \cup (A \cap B) \times I \cup B \times 1 \subset I \times I$. Then we have $h_*(N(A,B), A \cup B) \cong h_*((I, \partial I) \times A \cap B) \cong h_{*-1}(A \cap B)$ using excision. Now we have homotopy equivalences $X \to N(A,B) \to X \times I$, so $h_*(X) \cong h_*(N(A,B))$, and thus the long-exact sequence
+    \[ h_*(A \cup B) \to h_*(N) \to h_*(N, A \cup B) \]
+    for relative groups gives us the desired result.
+\end{proof}
+
+Now note that for unbased spaces, additivity tells us that 
+\[ h_*\qty(\bigsqcup_i X_i) \cong \bigoplus_i h_*(X_i) \]
+for arbitrary indexing sets. If the indexing set is finite, then this is a consequence of excision, because in the long exact sequence
+\[ h_*(B) \to h_*(A \sqcup B) \to h_*(A \sqcup B, B) \to h_{*-1}(B), \]
+we have $h_*(A \sqcup B, B) \cong h_*(A)$ and the sequence splits because we have the map $A \to A \sqcup B$. Thus Mayer-Vietoris does not depend on additivity.
+
+\begin{rmk}
+    There is a relative version of this. For $C \subset A \cap B$, we have a long exact sequence
+    \[ \cdots \to h_*(A,C) \oplus h_*(B,C) \to h_*(X,C) \to h_{*-1}(A \cap B, C) \to \cdots \]
+    To prove this, we can collapse $C$ when it is a cofibration and then replace it by a cofibration when it is not.
+\end{rmk}
+
+\begin{exm}
+    Now we will compute the homology of lens spaces. Recall that 
+    \[ L(p;q) = S^3/(z,w) \sim (\zeta_p z, \zeta_p^q w) \]
+    is the quotient of the sphere by the action of $\mu_p$ with weights $1,q$. Note that if $q=0$, then this action is not free and has fixed points $(0,w)$ for $w \in S^1$. Freeness is needed to ensure the quotient is a manifold.
+
+    Now we decompose $S^3$ as a neighborhood of $S^1_z = (z,0)$ and $S^1_w = (0,w)$, where our neighborhoods look like $D^2 \times S^1$. We can choose this to be invariant under $\mu_p$ by taking invariant tubular neighborhoods. Then the intersection is a copy of $S^1 \times S^1$, which is explicitly the set of points $\qty{(z,w) \mid \abs{z} = \abs{w}}$ with equal norm.
+
+    This gives us a decomposition of the quotient $L(p;q)$ as $A \simeq D^2 \times S^1 \cong D^2 \times S^1 / \mu_p$ and $B \simeq S^1 \times D^2$. Now the $S^1$ factor of $A$ is a $(1,0)$ curve in $S^1 \times S^1$ and the $S^1$ factor of $B$ is a $(p,q)$ curve in $S^1 \times S^1$. Here, a $(p,q)$ curve is simply a line of slope $q/p$ in the square. The asymmetry comes from the choice of identification of $A \cap B$ with $S^1 \times S^2$.
+
+    Finally, we compute $H_1(T^2) = \Z^{\oplus 2}$ and $H_2(T^2) = \Z$ by covering the torus with two halves, and now we can use Mayer-Vietoris to compute
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \arrow{r} & H_3(L(p,q)) \arrow[out=0, in=180, looseness=1]{dl} \\
+        H_2(S^1 \times S^1) \arrow{r} & H_2(S^1) \oplus H_2(S^1) \arrow{r} & H_2(L(p,q)) \arrow[out=0, in=180, looseness=1]{dll} \\
+        H_1(S^1 \times S^1) \arrow{r} & H_1(S^1) \oplus H_2(S^1) \arrow{r} & H_1(L(p,q)) \arrow[out=0, in=180, looseness=1]{dll} \\
+        H_1(S^1 \times S^1) \arrow{r} & H_1(S^1) \oplus H_2(S^1) \arrow{r} & H_0(L(p,q)) \arrow{r}  & 0
+    \end{tikzcd}
+    \end{equation*}
+    and then this becomes
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \arrow{r} & \Z \arrow[out=0, in=180, looseness=2]{dl}{\sim} \\
+        \Z \arrow{r} & 0 \arrow{r} & H_2(L(p,q)) \arrow[out=0, in=180, looseness=2]{dll} \\
+        \Z^2 \arrow{r} & \Z \oplus \Z \arrow{r} & H_1(L(p,q)) \arrow[out=0, in=180, looseness=2]{dll} \\
+        \Z \arrow{r}{(1,-1)} & \Z \oplus \Z \arrow{r} & H_0(L(p,q)) \arrow{r}  & 0
+    \end{tikzcd}
+    \end{equation*}
+    This tells us that $H_0(L(p,q)) = \Z$, so we now have the exact sequence
+    \[ 0 \to H_2(L(p,q)) \to \Z^2 \to \Z \oplus \Z \to H_1(L(p,q)) \to 0. \]
+    We simply need to compute the middle map, coming from $S^1 \xleftarrow{(1,0)} S^1 \times S^1 \xrightarrow{(p,q)}$. This is injective, so $H_2(L(p,q)) = 0$ and $H_1(L(p,q)) = \Z/p\Z$.
+
+    This leads us to the following question: All of these spaces for a fixed $p$ have the same homology. Are they homeomorphic? In fact, they are homotopy equivalent, but they are not homeomorphic (although proving they are not diffeomorphic is easier).
+\end{exm}
+
+Now we want to compute homology for colimits. Consider a sequence of space $X_0 \to X_1 \to \cdots$. We now have a map $\colim h_*(X_i) \to h_*(\colim X_i)$. If we assume $X_k \subset X_{k+1}$ is a cofibration, we can consider the mapping cylinder. The inclusion of the mapping cylinder in $[0,1] \times X_{k+1}$ is a homotopy equivalence relative to $X_{k+1}$. Iterating this, we can simply stack all of the mapping cylinders on top of each other to form the \textit{mapping telescope} $T(i) \subset X \times [0, \infty)$. The key fact is that this is a homotopy equivalence. More generally, if we consider any sequence of maps
+\[ X_0 \xrightarrow{f_0} X_1 \xrightarrow{f_1} \cdots, \]
+we can similarly define the mapping telescope $T(f)$. Then we have a map $T(f) \to \colim_i X_i$, where we send $(x_i, t) \mapsto [x_i]$.
+
+\begin{thm}
+    The map $\colim_k h(X_k) \to h_*(Tf_{\bullet})$ is an isomorphism.
+\end{thm}
+
+The idea is that the diagram
+\begin{equation*}
+\begin{tikzcd}
+    X_i \arrow{d} \arrow{r} & T(f) \\
+    X_{i+1} \arrow{ur}
+\end{tikzcd}
+\end{equation*}
+commutes up to homotopy. 
+
+\begin{rmk}
+    We should think of $T(f)$ as the ``homotopy colimit'' of the diagram $f$, and thus we obtain the slogan that homology commutes with (homotopy) colimits.
+\end{rmk}
+
+If additivity fails, then this is false for the sequence
+\[ Y_0 \to Y_0 \sqcup Y_1 \to Y_0 \sqcup Y_1 \sqcup Y_2 \to \cdots \]
+where $Y = \bigsqcup_i Y_i$. In fact, additivity is equivalent to commuting with homotopy colimits.
+
+\begin{proof}
+    Consider the decomposition given by
+    \[ A = T \setminus \bigcup_i X_{2i} \setminus \qty{2i + \frac{1}{2}} \qquad B = T \setminus \bigcup_i X_{2i-1} \setminus \qty{2i - \frac{1}{2}}. \]
+    Then additivity tells us that
+    \[ h_*(A) \cong \bigoplus_i h_*(A_i) \qquad h_*(B) \cong \bigoplus_i h_*(B_i), \]
+    but analyzing the pieces tells us that this becomes
+    \[ h_*(A) \cong \bigoplus_i h_*(X_{2i}) \qquad h_*(B) \cong \bigoplus_i h_*(X_{2i+1}). \]
+    Finally, we obtain $h_*(A \cap B) = \bigoplus_i h_*(X_i)$. Now by Mayer-Vietoris, we have an exact sequence
+    \[ \cdots \to h_*(A \cap B) \xrightarrow{1-f_*} h_*(A) \oplus h_*(B) \to h_*(TX) \to \cdots \]
+    and then we obtain that $h_*(TX)$ is the cokernel of $\bigoplus_i h_*(X_i) \to \bigoplus_i h_*(X_i)$.
+\end{proof}
+
+Going back to the case of cofibrations, we obtain
+\begin{cor}
+    If $X = \bigcup_i X_i$ and $X_i \to X_{i+1}$ is a cofibration, then $h_*(X) = \colim h_*(X_i)$.
+\end{cor}
+
+This can be used to compute the homology of $\C\P^{\infty}$.
 
 
 

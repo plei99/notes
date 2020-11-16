@@ -135,11 +135,13 @@
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\supp}{supp}
@@ -799,8 +801,431 @@ This gives a correspondence between our linear local data and nonlinear global d
         Then we can write $G$ as the paths in the Lie algebra modulo solutions to the equation. Fortunately, the analysis reduces to first-order deformations.
     \item As a ``submanifold'' of something simpler. Write $\mf{g} \hookrightarrow \mf{gl}(n, \R)$. Then we have a map $G \to GL(n, \R)$ with some kernel $\Gamma$. Thus $G$ is the universal cover of $G/\Gamma \subset GL(n, \R)$. Therefore, at least locally, every element of the Lie group is a matrix.
 
-        A problem with this approach is that $G/\Gamma$ need not be a submanifold. If we have the map $\R \to \R^2 / \Z^2$ with dense image, we obtain a foliation, so individual leaves are (locally) submanifolds, but we do not globally obtain a submanifold. In particular, if $H \to G$ is an injective Lie algebra homomorphism, we have a foliation with leaves corresponding to the cosets of $H$ in $G$.
+        A problem with this approach is that $G/\Gamma$ need not be a submanifold. If we have the map $\R \to \R^2 / \Z^2$ with dense image, we obtain a foliation, so individual leaves are (locally) submanifolds, but we do not globally obtain a submanifold. In particular, if $H \to G$ is an injective Lie algebra homomorphism, we have a foliation with leaves corresponding to the cosets of $H$ in $G$. In particular, we have the field of tangent planes $f(\Lie H) \cdot g$. Thus the cosets may be reconstructed either as leaves of the foliation or as integral manifolds for this field of tangent $(k=\dim H)$-planes (a section of a bundle of Grassmannians over $M$).
 \end{enumerate}
+
+Note that an \textit{integral manifold} for a field of tangent $k$-planes is a $k$-dimensional manifold $L \xrightarrow{\iota} M$ which is locally a submanifold such that $T_xL$ is precisely the value of the field of $k$-planes at every point $x \in L$. The idea to construct this in our situation is to start by finding an embedding $\mf{g} \hookrightarrow \mf{gl}(N, \C)$. The main obstacle to this plan is that a field of $k$-planes may not have any integral manifolds for $k > 1$. 
+
+A connection is a special case of a field of $k$-planes. Here, a connection on a locally trivial bundle $\Pi$ gives a field of tangent planes that are transverse to the fibers of $\Pi$. Then the existence of integral manifolds is equivalence to flatness. There is a classical criterion for the existence of integral manifolds.
+
+\begin{thm}[Frobenius]
+    A field $V$ of tangent $k$-planes in $M$ has integral manifolds if and only if for all $m \in M$ the set of vector fields tangent to $V$ forms a Lie subalgebra of $\Gamma(M, TM)$.
+\end{thm}
+
+\begin{proof}
+Suppose we have integral manifolds $f_1 = c_1, \cdots, f_{n-k} = c_{n-k}$. Then a vector field $v$ is tangent to the integral manifolds if and only if $\dv{v} f_i = 0$, which implies that $\qty[ \dv{v_1}, \dv{v_2} ] f_i = 0$.
+
+Conversely, suppose that $\mc{V}$ is our field of $k$-planes. Then denote $\Gamma_{\mc{V}}(M)$ to be the set of vector fields tangent to $\mc{V}$. Then we have this following picture:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{frob}
+    \caption{Projection of tangent planes}%
+    \label{fig:frob}
+\end{figure}
+Thus we have
+\[ v = \sum_{i=1}^k c_i(x) \dv{x_i} + \sum_{i=k+1}^n c_j(x) \dv{x_i}. \]
+Here the first $c_i$ are arbitrary and the last $c_j$ are uniquely determined. In particular, we have a basis of the form 
+\[ v_i = \dv{x_i} + \sum_{j > k} c_j(x) \dv{x_j}. \] Then we see that
+\[ [v_i, v_j] = 0 + \sum_{j>k} c_j \dv{x_j} \]
+and so $[v_i, v_j] = 0$. This means that locally, the connection has curvature zero, and thus there are integral manifolds.
+\end{proof}
+
+Returning to our case, consider $GL(N, \C)$ and consider the tangent field $\mf{g} g$, where $\mf{g} \subset \mf{gl}(N, \C)$ is a Lie subalgebra. Then 
+\[ \Gamma_{\mc{V}} = C^{\infty}(G \otimes) \qty{ \xi g \mid \xi \in \mf{g} }. \] 
+The right-hand factor is already closed under the commutator. By the Leibniz rule, we see that $\Gamma_{\mc{V}}$ is also closed under $[-,-]$ and hence has integral manifolds.
+
+Choosing the integral manifold that contains $1 \in GL(N, \C)$, this is a subgroup of $GL(N, \C)$. However, it is not a Lie subgroup in general. For any integral manifold $L$ and $h \in GL(N, \C)$, then $Lh$ is also an integral manifold because the field was right invariant. If $h \in G$, then $Gh^{-1} = G$ because $Gh^{-1}$ is integral and contains $1$, so for all $g_1, g_2 \in G$, then $g_1 g_2^{-1} \in G$. Hence $G$ is a connected Lie group. If $G$ is not $1$-connected, then we can take the universal cover. Thus we have proved
+
+\begin{thm}[Lie]
+    For any Lie algebra $\mf{g}$ over $\R$, there exists a unique simply-connected Lie group $G$ with $\Lie(G) = \mf{g}$.
+\end{thm}
+
+\begin{rmk}
+    When is $G \subset GL(N, \C)$ algebraic? Not every Lie algebra over $\C$ is a Lie algebra of an algebraic group. Most differential equations with algebraic coefficients do not have algebraic solutions.
+
+    For example, the irrational winding of the torus corresponds to $\qty{ \frac{\log z}{\log w} = \mr{const} } \subset \C^* \times \C^*$.
+\end{rmk}
+
+\chapter{Representations}%
+\label{cha:representations}
+
+Let $G$ be a group. Then a \textit{representation} of $G$ over a field $\F$ is a map $G \to GL(n, \F)$. Here, we will take $\F = \R, \C$ and strongly prefer $\F = \C$. We will call a representation of $G$ a $G$-module. These form an abelian category, which is not something we will dwell on too much. A map between two representations is an ``intertwining operator'' which is something that makes
+\begin{equation*}
+\begin{tikzcd}
+    V_1 \arrow{r}{f} \arrow{d}{g} & V_2 \arrow{d}{g} \\
+    V_1 \arrow{r}{f} & V_2
+\end{tikzcd}
+\end{equation*}
+commute. Then both $\ker f, \Im f$ are submodules. If $V$ has a nontrivial submodule, then it is \textit{reducible}. Otherwise, we call it irreducible. If we have an exact sequence
+\[ 0 \to V_1 \to V \to V_2 \to 0, \]
+then $V_1$ is a submodule of $V$ and $V_2$ is a quotient.
+
+\begin{defn}
+    A representation $V$ is called \textit{semisimple} (or completely reducible), if $V = \bigoplus V_i$, where $V_i$ is irreducible. 
+\end{defn}
+
+If $V_1, V_2$ are representations, then $G$ acts on $V_1 \otimes V_2$ by $\pi_1(g) \otimes \pi_2(g)$. This comes from the map $\Delta \colon G \to G \times G$.
+
+We have a notion of \textit{characters} that send a representation $V$ to the conjugation-invariant function $\chi_V(g) = \tr_V g$. Then it is easy to see that $\chi_{V_1 \oplus V_2} = \chi_{V_1} + \chi_{V_2}$ and that $\chi_{V_1 \otimes V_2} = \chi_{V_1} \cdot \chi_{V_2}$. This is a semiring homomorphism, so we can form the \textit{representation ring} $\mr{Rep}_G$. This is the $K$-group of the category $\ms{Mod}_G$. Also, note that if
+\[ 0 \to V_1 \to V \to V_2 \to 0 \]
+is exact, then we see that $\chi_V = \chi_{V_1} + \chi_{V_2}$. Thus we can impose the relation $[V] = [V_1] + [V_2]$.
+
+At first sight, it seems that taking the character loses a lot of information. However, if we have all of the traces, this means we can compute all of the eigenvalues. Thus, we can reconstruct $V$ up to conjugation from its character.
+
+Next, if $V$ is a $G$-module, then $G$ also acts on $V^*$ by $(g\ell)(v) = \ell(g^{-1} v)$. Also, $(V^*)^* = V$ as a $G$-module.
+
+\section{Finite Dimensional Representations}%
+\label{sec:finite_dimensional_representations}
+
+Consider the simplest groups we know: $SU(2), SL(2, \R), SL(2, \C)$. First, all of these groups have the same finite-dimensional representations given by
+\begin{equation*}
+\begin{tikzcd}
+    SU(2) \arrow{dr} \arrow{drr} \\
+    & SL(2, \C) \arrow{r} & GL(V) \\
+    SL(2, \R) \arrow{ur} \arrow{urr}
+\end{tikzcd}
+\end{equation*}
+and in the other direction, we can complexity $\mf{su}(2)$ to $\mf{sl}(2, \C)$, and then $SL(2, \C)$ is simply-connected. However, note that $GL(1, \C)$ is not simply-connected, so we cannot use the same argument for $U(1)$. Also, representations of $S^1$ and $GL(1, \C)$ are semisimple, but $\R$ has the representation
+\[ z \mapsto \begin{pmatrix}
+    1 & z \\
+    0 & 1
+\end{pmatrix}, \]
+which is a nontrivial representation in two dimensions that is not semisimple.
+
+Second, we note that all representations are semisimple because $SU(2)$ is compact. To see this, note that $SU(2)$ is compact and thus every representation has an invariant Hermitian form (by averaging). Then for $V_1 \subset V$, we can write $V = V_1 \oplus V_1^{\perp}$.
+
+Then all irreducible representations of $SL(2, \C)$ can be described as symmetric powers $S^k \C^2 \cong \C[(C^2)^*]_k$. This has basis $v_1^{k_1} v_2^{k_2}$, where $k_1 + k_2 = k$. Here, the maximal torus acts by
+\[ \mqty(\dmat{z,z^{-1}}) \mapsto \mqty(\dmat{z^k, z^{k-2}, \ddots, z^{-k}}). \]
+
+    We will find this structure in the representation of $\mf{g} = \mf{sl}(2, \C)$. We know $\mf{g}$ has a basis 
+    \[ h = \mqty(\dmat{1,-1}), e = \begin{pmatrix}
+            0 & 1 \\ 0 & 0
+        \end{pmatrix}, f = \begin{pmatrix}
+            0 & 0 \\ 1 & 0
+        \end{pmatrix}. \]
+    Then we see that
+    \[ h \mapsto \mqty(\dmat{k, k-2, \ldots, -k}) \]
+    and $e = v_1 \pdv{v_2}, f = v_2 \pdv{v_1}$. Also, note that $[h,e] = 2e, [h,f] = -2f, [e,f] = h$. Then $e$ shifts the weight by $+2$ and $f$ by $-2$.
+
+\begin{lem}
+    If $v$ is an eigenvector of $h$ with eigenvalue $\lambda$, then $h(ev) = (\lambda + 2) ev$ and $h(fv) =(\lambda -2) fv$.
+\end{lem}
+
+\begin{proof}
+    Note that $h(ev) = [h,e]v + ehv = 2ev + e \lambda v = (\lambda + 2)ev$. A similar argument gives the result for $f$.
+\end{proof}
+
+\begin{proof}[Classification of irreps of $\mf{sl}(2)$]
+    Let $V$ be irreducible and $v$ be an eigenvector of $h$ with eigenvalue $\lambda$. If $ev \neq 0$, then replace $v$ by $ev$. The eigenvalue cannot grow forever, so eventually we reach $v$ such that $hv = \lambda v$ and $ev = 0$. This is called the highest weight vector.
+
+    Now we will show that $V$ is the span of $v, fv, f^2 v, \ldots$. This is clearly invariant under $h,f$ by construction. Then note that
+    \[ ef^m v = [e, f^m]v + f^m ev = [e,f^m]v. \]
+    Because $[e,f^m]v$ is a combination of $h,f$ by the commutation relations, we see that the span of $v, fv, \ldots$ is a subrepresentation, so it must be everything. Then because $h \cdot f^m v = (\lambda - 2m) f^m v$, then there exists a minimal $m$ such that $f^m v = 0$. This implies that $\lambda = m-1$, but to show this, consider $ef^m v$, which is a multiple of $f^{m-1}v$.
+
+    The rest of this proof is left as an exercise.
+\end{proof}
+
+\begin{rmk}
+    Representations of $GL(n, \C)$ correspond to integers $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$.
+\end{rmk}
+
+\section{Harmonic Analysis on Compact Groups}%
+\label{sec:harmonic_analysis}
+
+Let $G$ be a compact Lie group and consider representations $G \to GL(V)$. We would like to do harmonic analysis on $G$. Our prototype will be $G = \R/\Z$. If $\dd{x}$ is the Haar measure, then we can write
+\[ L^2(G, \dd{x}) = \wh{\bigoplus_{n \in \Z}} \C \cdot e^{2\pi i n x} \]
+as a \textbf{Hilbert Space}. Recall that a Hilbert space is a complete inner product space, and the inner product on $L^2$ is
+\[ (f,g) = \int_{X} f \ol{g} \dd{x}. \]
+We can write $\norm{f}^2 = (f,f)$. Then recall that $x \mapsto e^{2 \pi i n x}$ are precisely the irreducible representations of $G$. Here, $\wh{\bigoplus}$ is the closure of the algebraic direct sum. Next, for any $f(x) \in L^2$, we can take the Fourier transform
+\[ f(x) = \sum_{n \in \Z} \wh{f}(n) e^{2 \pi i n x}, \]
+where $\wh{f}(n) = (f, e^{2 \pi i n x})$. We will generalize this to an arbitrary compact group.
+
+Our main issue is that for non-abelian groups, not all irreducible representations have dimension $1$. However, we will have a correspondence
+\[ \binom{\text{matrix elements of}}{\text{irreducible representations}} \longrightarrow L^2(G, \dd{\mu}), \]
+where $\mu$ is the Haar measure. These matrix elements of irreducible representations are in fact analytic. When we pass to $G_{\C}$, they become holomorphic.
+
+Then if $V$ is a complex representation of $G$, then its matrix elements are a map $V^* \otimes V \to C^{\infty}(G)$, where
+\[ ( \ell \otimes v )(g) = \ell(gv). \]
+These satisfy the following orthogonality relation which compares the inner product in $L^2(G)$ and on $\bigoplus V_i^* \otimes V_i$. 
+
+\begin{prop}
+    Every irreducible representation $V$ has a unique $G$-invariant Hermitian inner product up to multiple.
+\end{prop}
+
+\begin{proof}
+    To show existence, take any Hermitian inner product and average over the group $G$. Then if $(-,-), \ev{-,-}$ are different invariant inner products, we can write
+    \[ \ev{v_1, v_2} = (Bv_1, v_2) \]
+    for some Hermitian matrix $B$. But then this commutes with $G$, so by Schur's Lemma, $B$ is a constant.
+\end{proof}
+
+\begin{lem}[Schur]
+    Let $V_1, V_2$ be irreducible $G$-modules. Then
+    \[ \Hom_G(V_1, V_2) = \begin{cases}
+        0 & v_1 \not\simeq V_2 \\
+        \C & V_1 \simeq V_2
+    \end{cases}. \]
+\end{lem}
+
+\begin{proof}
+    If $f \in \Hom_G(V_1, V_2)$, then $\ker f \subset V_1$ and $\Im f \subset V_2$. Thus either the kernel is everything and the image is zero, or the image is everything and the kernel is zero, so either $f$ is zero or an isomorphism.
+
+    Now assume $V_1 \simeq V_2$ and consider $\Hom_G(V,V)$. Then $\Hom_G(V,V)$ is a division algebra over $\C$. But over $\C$, this must be $\C$ because for $\lambda$ an eigenvalue, then $f-\lambda$ has nontrivial kernel and thus must be the zero map.
+\end{proof}
+
+Now for the irrep $V$, take the unique inner product $(-,-)$. This gives $V^* \otimes V$ a canonical inner product. To write this concretely, write $V^* \otimes V = \End V$, and then write $(A,B) = \tr AB^{\dag}$. For matrices $E_{ij}, E_{k\ell}$, we have
+\[ (E_{ij}, E_{k\ell}) = \delta_{ik} \delta_{j\ell}. \]
+
+\begin{thm}[Orthogonality]
+    Let $V_1, V_2, \ldots$ be a collection of ditinct irreducible representations. Then consider the space $\bigoplus_i V_i^* \otimes V_i$ with inner product $(A,B) = \frac{1}{\dim V_i} \tr AB^{\dag}$. Then the embedding
+    \[ \bigoplus_i V_i^* \otimes V_i \xrightarrow{\text{matrix elements}} L^2(G) \]
+    is an isometry.
+\end{thm}
+
+\begin{proof}
+    Denote $g \xrightarrow{\pi_i} GL(V_i)$. Then take an arbitrary $f \colon V_i \to V_j$ and make it $G$-invariant by averaging
+    \[ \ol{f} = \int_G \dd{g} \pi_j(G) f \pi_i{ (g) }^{-1}. \]
+    By Schur, we see that
+    \[ \ol{f} = \begin{cases}
+        0 & i \neq j \\
+        \frac{\tr f}{\dim V_i} & i = j
+    \end{cases}. \]
+    Because the inner product on each $V_i$ is $G$-invariant, then $G \to U(V_i) \subset GL(V_i)$. Therefore, for all $f \in \Hom(V_i, V_j)$, 
+    \[ \int_G \dd{g} \pi_j(g) f \pi_i(g)^* = \begin{cases}
+        0 & i \neq j \\
+        \frac{\tr f}{\dim V_i} & i = j
+    \end{cases}. \]
+    This equality of matrices is equivalent to the desired result.
+\end{proof}
+
+\begin{thm}[Peter-Weyl]
+    Let $G$ be compact. Then if $\mu$ is the Haar measure, we have
+    \[ L^2(G, \dd{\mu}) = \wh{\bigoplus_{{\text{irreps } V}}} V^* \otimes V \]
+    as modules over $G \times G$.
+\end{thm}
+
+The key statement is that $\bigoplus V^* \otimes V$ is dense in $L^2(G)$. For the second part, note that $G \times G$ acts on $L^2(G)$ by
+\[ [(g_1, g_2) \cdot f](h) = f(g_1^{-1} h g_2). \]
+Then $\varphi_{\ell v}(h) = \ell(h \cdot v)$, and under $(g_1, g_2)$, this becomes $\ell(g_1^{-1}h g_2 v) = \varphi_{g_1 \ell, g_2 v}(h)$, so $\bigoplus V_i^* \otimes V_i \to L^2(G)$ is a map of $G \times G$ modules. 
+
+Conversely, the subspace of $L^2(G)$ that transforms in $V$ under the right regular action of $G$ is $V^* \otimes V$. Indeed, suppose $f_k(h)$ are such that
+\[ f_k(hg) = \sum_j \pi_{k \ell}(g) f_{\ell}(h). \]
+In particular, if we take $h = 1$, we get $f_k \in V^* \otimes V$.
+
+Here are some reformulations of Peter-Weyl: 
+\begin{enumerate}
+    \item The unitary representation
+        \[ \qty( \bigoplus V^* \boxtimes V )^{\perp} \]
+        cannot have finite dimensional submodules, so we have a matrix element of an infinite-dimensional unitary representation of $G$. Thus Peter-Wel is equivalent to every irreducible representation of $G$ being finite-dimensional.
+    \item Every compact group has a faithful finite-dimensional representation $G \hookrightarrow GL(n, \C)$ for some $n$. To see this, suppose $G \subset GL(V)$. Then $G \subset U(V)$. We can now consider the algebra generated by matrix elements $g_{ij}$, where $g_{ij} g_{k\ell}$ is a matrix element of $V \otimes V$. Then we see that
+        \[ \bigoplus_{k} (V^{\otimes k})^* \otimes V^{\otimes k} \longrightarrow  \binom{\text{matrix elements of}}{V \otimes \cdots \otimes V}  \subset L^2(G). \]
+        This is an algebra of complex valued functions stable under complex conjugation, which separates points of $G$. By Stone-Weierstrass, this is dense in $C(G)$ and thus in $L^2(G)$.
+\end{enumerate}
+
+\begin{rmk}
+    Let $V$ be a faithful finite-dimensional representation of a compact group $G$. Then any irreducible representation of $G$ is contained in the decomposition of $V^k \otimes (V^*)^{\ell}$. However, for $U(n)$, the defining representation is not in the decomposition of $(\C^n)^{\otimes k}$.
+\end{rmk}
+
+\begin{rmk}
+    This proves Peter-Weyl for all compact groups because they are all matrix groups. Also, we showed that $L^2(G)$ is separable, which means that compact groups have only countable many irreps.
+\end{rmk}
+
+Continuing the proof of the second item, we have an exact sequence
+\[ 1 \to G_N \to G \to GL \qty(\bigoplus_{i \leq N} V_i). \]
+Then $G_1 \supset G_2 \supset \cdots $ has to eventually stabilize and write $G_{\infty}$ for the colimit. Then if $G_{\infty} = 1$, we are done. Otherwise, we have a contradiction because all functions take the same value on $G_{\infty}$-cosets.
+
+Now we will continue our proof of Peter-Weyl. Our strategy is to break $L^2(G)$ into finite-dimensional $G$-invariant pieces. We can consider the $G \times G$ invariant metric on $G$ and consider the corresponding Laplace operator and its eigenspaces. Note that $\mf{g}$ has a positive-definite invariant metric and an invariant tensor in $S^2 \mf{g}^* \to S^2 \mf{g}$. Then if $\xi_i$ is an orthonormal basis of $\mf{g}$, then $\mf{\xi}_i$ is a first-order differential operator of $G$, and we define the Laplacian to be
+\[ \Delta = \sum \xi_i^2, \]
+which is also called the ``Casimir\footnote{Andrei had no idea how this name came to be, so we looked at Wikipedia in real time and found that he was a Dutch physicist. We still have no idea why the name was given.} element.'' Because this is invariant, it acts by a scalar in $V$, which is the eigenvalue of the Laplacian in $V^* \boxtimes V$.
+
+Instead of doing this, we will use integral operators because they are easier to work with. We have an action of $G$ on $L^2(G)$ on the right, which yields $f(h) \mapsto f(hg)$, so we will smear out our operators following the philosophy of functional analysis. Then we will have
+\[ f(h) \mapsto \int_G c(g) f(hg) \dd{g}, \]
+where $c$ is an arbitrary function. The key point will be to show that this operator is \textbf{compact} and self-adjoint if $c(g^{-1}) = \ol{c(g)}$. Here a compact operator $A$ is compact if the closure of the image of the unit ball is compact. Here are some basic properties:
+\begin{enumerate}
+    \item Compact operators form a two-sided closed ideal in all bounded operators.
+    \item $A$ is compact if and only if there exist a sequence $A_n$ of finite-rank operators such that $\norm{A - A_n} \to 0$. Each $A_n$ is given by choosing finitely many dimensions and projecting there.
+    \item If $A$ is compact and self-adjoint, then $\mc{H} = \bigoplus \mc{H}_{\lambda_i}$, where $\lambda_i$ are real eigenvalues, $\lambda_i \to 0$ as $i \to \infty$, and $\dim \mc{H}_{\lambda_i} < \infty$.
+    \item If $A$ is compact and general, then
+        \[ A = \sum \lambda_i (\psi_n, -) \varphi_n, \]
+        where $(\psi_n, \psi_m) = (\varphi_n, \varphi_m) =  \delta_{nm}$.
+\end{enumerate}
+The main point is that integral operators are typically compact. Modulo this, we have proved Peter-Weyl.
+
+Now we need to show that $\qty( \wh{\bigoplus} V^* \boxtimes V )^{\perp} = 0$. To do this, we will use spectral decomposition for operators that come from the right action of $G$. These are compact and self-adjoint operators. Recall that for Hilbert space $\mc{H}$ and compact and self-adjoint operator $K$, then we can write 
+\[ \mc{H} = \bigoplus_{\lambda} \mc{H}^{\lambda}, \] 
+where $\lambda \neq 0$ and $\dim \mc{H}^{\lambda} < \infty$. Here, we will write
+\[ [K(f)](g) = \int_G f(gh) c(h) \dd{h} \]
+where $c(h)$ is a kernel function. Then recall that if $[M(i,j)]$ is a matrix, then we have
+\[ M \cdot v(i) = \sum_j M(i,j) v(j). \]
+Given two spaces $X,Y$, then for some kernel function $K \in L^2(X \times Y)$, we can define an integral operator
+\[ [K(f)](x) = \int_Y \dd{y} K(x,y) f(y). \]
+Now we have the inequality
+\begin{align*}
+    \norm{K(f)}^2_{L^2(X)} &= \int_X \abs{K(f)}^2 \dd{x} \\ 
+                           &\leq \int_X \dd{x} \qty[ \qty(\int_Y \dd{y} \abs{f(y)}^2) \qty(\int_Y \dd{y} \abs{K(x,y)}^2) ] \\
+                           &\leq \norm{f}^2_{L^2(Y)} \norm{K}^2_{L^2(X \times Y)},
+\end{align*}
+and thus $K$ defines a bounded operator on $X$.
+
+\begin{rmk}
+    Recall that if $V$ is a finite-dimensional vector space, we have
+    \[ V^* \otimes V \xrightarrow{\simeq} \End(V). \]
+    More generally, for finite dimensional vector spaces, we have 
+    \[ V_1^* \otimes V_2 \xrightarrow{\simeq} \Hom(V_1, V_2). \]
+    If $\mc{H}_1, \mc{H}_2$ are Hilbert spaces, then we have a map
+    \[ \mc{H}_1^* \wh{\otimes} \mc{H}_2 \to B(\mc{H}_1, \mc{H}_2),\ v_1 \otimes v_2 \mapsto (-,v_1)v_2. \]
+    This is not surjective and goes into an ideal of Hilbert-Schmidt operators, which are those that have finite $L^2$ norm under the norm $\sum \abs{M_{ij}}^2$. Then we can write 
+    \[ K(x,y) = \sum_{ij} \varphi_i(x) \psi_j(y) \]
+    and see that $\norm{K}^2 = \sum \abs{K_{ij}}^2$.
+\end{rmk}
+
+\begin{rmk}
+    Consider the two kernels $X_1 \xrightarrow{K_{21}(x_2, x_1)} X_2 \xrightarrow{K_{32}(x_3, x_2)} X_3$. Then the composition has kernel
+    \[ \int_{X_2} \dd{x_2} K_{32}(x_3, x_2) K_{21}(x_2, x_1). \]
+    This is analogous to matrix multiplication.
+\end{rmk}
+
+\begin{rmk}
+    Consider a measure space $(X,\dd{x})$. Then the assignment
+    \[ (X,\dd{x}) \longrightarrow \text{Functions} \]
+    is a functor. We have the pullback as usually defined, but we also have pushforwards defined by integration with respect to $\dd{x}$. Here, analytic issues with this integration process are ignored. This generalizes to the structure
+    \begin{equation*}
+    \begin{tikzcd}
+        & F(X_1 \times X_2) \arrow{dr}{{(p_2)}_*} \\
+        F(X_1) \arrow{ur}{p_1^*} & & F(X_2)
+    \end{tikzcd}
+    \end{equation*}
+    where we have $Kf = {(p_2)}_* (p_1^*(f) \otimes K)$. In the context of sheaves on algebraic varieties, this gives a Fourier-Mukai transform.
+\end{rmk}
+
+We now return to our compact operator $K$. We know that $\sum K_{ij} \psi_i(x) \varphi_j(y)$ converges. Then we can write
+\[ K \cdot f = \sum_{i,j} K_{ij} \psi_i(x) \int_Y f(y) \varpi_j(y) \dd{y}. \]
+Thus $K$ is a limit in the operator norm of operators of finite rank and thus $K$ is compact. The particular operator we want is
+\[ f \mapsto \int_G f(gh) c(h) \dd{h} = \int_G f(h) c(g^{-1}h) \dd{h}. \]
+This is self-adjoint if $c(g^{-1}) = \ol{c(g)}$. However, we don't need to worry about this because if $K$ is compact and commutes with left translation then $K^*K$ is compact and self-adjoint. Now we use the fact that because the sum of the nonzero eigenspaces of operators like $K^* K$ are dense in $L^2(G)$ and thus the image of operators of this form are dense. Thus if $c(g) \to \delta(e)$, then
+\[ \int f(gh) c(h) \dd{h} \to f(g), \]
+where $\delta$ is the Dirac delta distribution. Thus any function is in the closure of the image. Here, convergence here is convergence in the weak sense in the space of ditributions $C^{\infty}{(G)}^{\vee}$. This concludes the proof of Peter-Weyl.
+
+\begin{rmk}
+    Recall that we have the inclusion
+    \[ \bigoplus_V V^* \boxtimes V \subset \wh{\bigoplus_V} V^* \boxtimes V = L^2(G). \]
+    Then note that the finite direct sum is an \textbf{algebra}. Here, we simply note that matrix elements of $V_1$ times matrix elements of $V_2$ are matrix elements of $V_1 \otimes V_2$. This is finitely generated (by matrix elements of any faithful representation and its dual). Therefore, the space of functions has a finitely generated dense subset that is an algebra.
+
+    In our Lie group $G \subset G_{\C}$ with Lie algebra $\ms{Lie}(G) \otimes \C$, recall that $G_{\C}$ is a complex Lie group and is thus analytic. In fact, we will see that $G_{\C}$ is an affine algebraic group, and thus $\bigoplus_V V^* \boxtimes V$ is the algebra of functions on $G_{\C}$. This tells us that every compact Lie group is the real form of a complex algebraic group.
+\end{rmk}
+
+\section{Representation Theory of Unitary Groups}%
+\label{sec:representation_theory_of_unitary_groups}
+
+We have been discussing the Peter-Weyl theorem, and now we will apply this to study the representation theory of compact Lie groups, and in particular, the most important such group $U(n)$. Recalling that 
+\[ L^2(G) = \wh{\bigoplus_{V\ \text{irrep}}} \End(V), \]
+there is a distinguished element of each factor: the identity $1_V$. This is invariant under $G \subset G \times G$ and corresponds to the character $\tr_V g \in C^{\infty}(G)$ of $V$. Recalling that the metric on $\End(V)$ was
+\[ (A_1, A_2) = \frac{1}{\dim V} \tr A_1 A_2^{\dag}, \]
+we see that characters of irreducible representations are orthonormal. Taking invariants, we now see
+\[ L^2(G/\text{conjugation}) = \wh{\bigoplus_{\text{irreps}\ V}} \C \cdot \chi_V(g). \]
+For $U(n)$, we will describe this space of functions and the lattice $\bigoplus_V \Z \cdot \chi_V(g)$ explicitly. Then we will find an orthonormal basis of this lattice. We will use the basic fact that $O(n, \Z)$ is generated by $S_n$ and $\pm 1$.
+
+Now recall that by the spectral theorem, all unitary matrices can be diagonalized. Thus we have
+\[ U(n) / \text{conj} = \qty{ \mqty(\dmat{t_1, \ldots, t_n}) } / S_n. \]
+This set of diagonal matrices is usually denoted by $T$ and is isomorphic to $U(1)^n$. This is a maximal torus. In general this $S_n$ is replaced by the Weyl group. To draw an explicit picture in the case of $SU(2)$, we have
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{su2conj.png}
+    \caption{Conjugation action of $SU(2)$ on itself}%
+    \label{fig:su2conj}
+\end{figure}
+and then we see that
+\[ N(T) = \qty{g \mid gTg^{-1} \subset T} = \qty{ \mqty( \dmat{*.*} ), \mqty( 0 & * \\ * & 0 ) } \]
+and then the Weyl group is 
+\[ N(T) / T = \qty{ \mqty( \dmat{1,1} ), \mqty(0 & 1 \\ -1 & 0) }. \]
+For $U(n)$, $N(T)$ is the monomial matrices (or rook placements) and $N(T)/T$ is the set of permutations, or $S_n$.
+
+Returning to $SU(2)$, we then see that all orbits are parameterized by the eigenvalue $z = e^{i \varphi}$, and each orbit is an $S^2$ with radius $\sin \varphi$. Thus we have
+\[ L^2(U(n))^{\Delta} = L^2(T, \text{interesting measure})^{S_n}. \]
+This measure is some constant multiple of $\sin^2 \varphi \dd{\varphi}$, which is the same as
+\[ \frac{1}{\abs{W}} (1-z^2)(1- \ol{z}^2) \frac{\dd{z}}{2 \pi i z}. \]
+Among all functions on the torus, we may consider the functions given by the coordinates, so we then have a lattice $\Z[t_i^{\pm}]^{S_n}$. Then we note that this contains $\chi_V(g)$ for all $V$ because as a representation of $T$, we can split $V$ into $1$-dimensional representations $t^{\mu} = \prod t_i^{\mu_i}$, where $\mu_i \in \Z$. These $\mu$ are called the \textit{weights} and the number of times a weight $\mu$ appears is the \textit{multiplicity}. Now all unitary matrices are diagonalizable, and thus it suffices to compute characters on $T$. Therefore we have
+\[ \chi_V(t) = \sum_{\mu} \text{mult}_V(\mu) \cdot t^{\mu}. \]
+We see each multiplicity is a $W$-invariant and nonnegative. For $SU(3)$, we have $\mu \in \Z^3 / \Z(1,1,1)$. In general, the set $\mu_1 \geq \mu_2 \geq \cdots \geq \mu_n$ is a fundamental domain for $S_n$.
+
+\begin{thm}
+    For any dominant $\mu$, there exists $V^{\mu}$ such that 
+    \[ \chi_{V^{\mu}}(t) = t^{\mu} + \text{lower order terms} \]
+    with respect to a certain ordering on monomials.
+\end{thm}
+
+\begin{exm}
+    For $SU(2)$, we have
+    \[ \chi_{S^m \C^2} \qty( \mqty(\dmat{z, z^{-1}}) ) = z^m + z^{m-2} + \cdots + z^{-m}. \]
+\end{exm}
+
+Then if we consider the adjoint action of $\mqty(\dmat{t_1, \ddots, t_n})$ on $\mf{gl}(n, \C)$, and the weights for this action are called \textit{roots}. Differentiating this, we can consider roots on $\ms{Lie}(T)$ and the pairing
+\[ \ev{\mqty(\dmat{\xi_1, \ldots, \xi_n}), \delta_i - \delta_j} = \xi_i - \xi_j. \]
+Then the weight lattice contains the root lattice, which contains the cone spanned by positive roots ($i < j$). 
+
+\begin{thm}
+    For a dominant weight $\mu = (\mu_1 \geq \cdots \geq \mu_n) \in \Z^n / S_n$, there exists $V^{\mu}$ such that 
+    \[ \chi_{V^{\mu}}(t) = t^{\mu} + \sum_{\eta\ \text{negative}} * t^{\mu + \eta}. \]
+    Here, we write $\mu > \nu$ if $\mu - \nu$ is in the cone spanned by the positive roots $(0, \ldots, 0, 1, 0, \ldots, 0, -1, 0 \ldots, 0)$. In particular, this means that $t^{\mu} > t^{\nu}$ if and only if $t^{\mu - \nu} < 1$, which is the same thing as $t^{\mu-\nu} \to 0$.
+\end{thm}
+
+\begin{proof}
+    We will first consider a certain infinite-dimensional representation of $\mf{gl}(n) \supset \mf{u}(n) = \ms{Lie}(U(n))$. It has to have a vector $v_{\mu}$ such that $t \cdot v_{\mu} = t^{\mu} v_{\mu}$. Then for $i < j$, we know that $E_{ii} v_{\mu} = \mu_i v_{\mu}$ and $E_{ij} v_{\mu} = 0$ because this is a vector of weight strictly greater than $\mu$. Now we define $M(\mu)$ to be the free module generated by these relations.
+
+    Note that a ``free module'' for $\mf{gl}(n)$ behaves like the universal enveloping algebra\footnote{This is also the algebra of right-invariant differential operators on $GL(n)$.} $\mc{U} {\mf{gl(n)}}$, which is simply $C \ev{E_{ij}} / (xy-yx = [x,y])$ by the Poincar\'e-Birkhoff-Witt theorem. As a linear space, these are monomials in $E_{ij}$ ordered arbitrarily. In this point of view, we now have
+    \[ M(\mu) = \mc{U} \mf{gl}(n) \otimes_{\mc{U}(\mf{b})} \C \cdot v_{\mu}, \]
+    where $\mf{b}$ is the Lie algebra of upper-triangular matrices and 
+    $\C v_{\mu}$ is a one-dimensional representation of $\mf{b}$ given by $E_{ii} v_{\mu} = \mu_i v_{\mu}$ and $E_{ij} v_{\mu} = 0$ for $i < j$. 
+    As a linear space, $M(\mu)$ is spanned by things like $E_{53} E_{74} \cdots v_{\mu}$, which are arbitrary products of $E_{ij}$ for $i > 1$. Then if $i \leq j$, we can write
+    \[ E_{ij} \cdot E_{53} E_{74} E_{21} v_{\mu} = E_{53} E_{74} E_{21} E_{ij} v_{\mu} \]
+    using the commutation relations, so for this mildly noncommutative algebra, we have a Gr\"obner basis.
+
+    Thus the Verma module $M(\mu)$ has the form $t^{\mu} + \sum_{v < \mu} m(\mu-\nu) t^{\nu}$, where $m(\mu - \nu)$ is the number of ways to write $\mu - \nu$ as a sum of positive roots. As a generating function, this becomes 
+    \begin{align*}
+        \chi_{M(\mu)}(t) &= \frac{t^{\mu}}{\prod_{\alpha > 0} (1-t^{-\alpha})} \\
+                         &= \frac{t^{\mu}}{\prod_{i>j} (1- t_i / t_j)}. 
+    \end{align*}
+
+    Now consider the following remarks:
+    \begin{enumerate}
+        \item We can define $M(\mu)$ for any $\mu \in \C^n$ by $E_{ii} v_{\mu} = \mu_i v_{\mu}$. For generic $\mu$, this is irreducible.
+        \item For positive dominant weights $\mu$, this is always reducible. If $M' \subset M(\mu)$ is a submodule, then the weights of $M'$ contain $\mu$ if and only if $M' = M$. Thus $M(\mu)$ contains a maximal proper submodule $M'$, and we call $L(\mu) = M(\mu) / M'$ to be the irreducible module with \textit{highest weight}  $\mu$. Then we can write $\chi_{(L(\mu))}(t) = t^{\mu} + \text{lower order terms}$.
+    \end{enumerate}
+    We now need to show that $\dim L(\mu) < \infty$ by relating it to the group. The most direct way is through matrix elements. Write $\varphi(g)$ to be the coefficient of $v_{\mu}$ in $g \cdot v_{\mu}$. For diagonal matrices $t \in T$, we have $\varphi(t) = t^{\mu}$. For the upper-triangular matrices, we have $\varphi(gu_+) = \varphi(g)$. Then for any lower-triangular $u_-$, we have $\varphi(u_-) = 0$. Finally, because generic matrices have a Gauss decomposition, the set $U_- T U_+$ is dense in $GL(n)$. Thus the function is determined uniquely by the values we already have.
+
+    Now because the minor of the $i \times i$ submatrix given by the first $i$ rows and first $i$ columns is invariant under $U_i$ and $U_+$, we see that 
+    \[ \varphi = \Delta_i^{\mu_1 - \mu_2} \Delta_2^{\mu_2 - \mu_3} \cdots \in (V^{\mu})^* \boxtimes V^{\mu} \subset L^2(U(n)). \]
+    Considering the span under the right regular representation, we obtain $V^{\mu}$. This span is finite dimensional because it is contained in the space of polynomials.
+\end{proof}
+
+\begin{cor}
+    \begin{enumerate}
+        \item We have the identity
+            \[ \bigoplus_V \Z \chi_V(t) = {\Z[t_1^{\pm}, \ldots, t_n^{\pm}]}^{S_n}. \]
+        \item We can compute $\chi_V^{\mu}(t)$ by Gram-Schmidt because only finitely many weights are smaller. This will follow from orthogonality of $\chi_{V^{\mu}}, \chi_{V^{\nu}}$ whenever $\nu < \mu$.
+        \item There is a formula for this inner product, and orthogonality can be done explicitly in one step.
+    \end{enumerate}
+\end{cor}
+
+Now we want to prove the \textit{Weyl integration formula}. Let $f$ be a conjugation-invariant function on $G = U(n)$. Then we have
+\[ \int_G f(g) \dd{g} = \frac{1}{n!} \int_T f(t) \prod_{i < j} \abs{t_i - t_j}^2 \dd{t}, \]
+where $\dd{t} = \prod_k \frac{\dd{t}_k}{2 \pi i t_k}$ is the Haar measure on $T$.
+
+\begin{rmk}
+    For $SU(2)$, recall that for $t = e^{i \varphi}$, we have $\sin^2 \varphi \propto \abs{t-t^{-1}}^2$.
+\end{rmk}
+
+Consider the map $G/T \times T \to G$ given by $(g,t) \mapsto gtg^{-1}$. This is an $n!$-to-$1$ map, and so we can write
+\[ \int_G f(g) \dd{g} = \frac{1}{n!} \int_{G/T \times T} f(t) \dd{t} \dd{g/t} \cdot \mc{J}(t), \]
+where $\mc{J}$ is some Jacobian. Because the Haar measure is invariant under conjugation, this Jacobian is independent of $g$. Now computing at the point $g = 1$, we need to compute
+\begin{align*}
+    (1+\delta x)(t + t \delta t)(1+\delta x)^{-1} &= 1 + (t \delta t + \delta x t - t \delta x) + \cdots \\
+                                                  &= 1 + t(\delta t + t^{-1} \delta x t - \delta x) + \cdots.
+\end{align*}
+The linear term is $\delta t + (\Ad(t^{-1}) - 1) \delta x$, so we need to compute $\det (\Ad(t^{-1}) - 1)$, but this operator has eigenvalues $t^{-\alpha} - 1$, where $\alpha$ is a root. Therefore, we have
+\[ \mc{J} = \prod_{\alpha}(t^{-\alpha} - 1) = \prod_{\alpha > 0} (t^{\alpha}-1)(t^{-\alpha}-1) = \prod_{\alpha > 0} \abs{t^{\alpha}-1}^2. \]
+
+
+
 
 
 \end{document}

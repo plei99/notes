@@ -21,6 +21,7 @@
 \usepackage{verbatim}
 \usepackage{physics}
 \usepackage{stmaryrd}
+\usepackage{stackengine}
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
@@ -140,6 +141,7 @@
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
 \DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Gal}{Gal}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\Pic}{Pic}
 \DeclareMathOperator{\supp}{supp}
@@ -362,6 +364,509 @@ This means that given any fpqc cover $\qty{U_i \to U}$, then applying $h_X$, if 
 
     Please read the rest of this yourself.
 \end{proof}
+
+\chapter{Caleb (Oct 23): Sieves and Fibered Categories}%
+\label{cha:caleb_oct_23_sieves_and_fibered_categories}
+
+Recall that a Grothendieck topology on a site $C$ is a collection of coverings $\qty{U_i \to U}$ such that isomorphisms are coverings, pullbacks preserve coverings, and if $\qty{U_i \to U}$ and $\qty{U_{ij} \to U_i}$ are coverings, then $\qty{U_{ij} \to U_i}$ is a covering.
+
+Also recall from last time that two important examples of Grothendieck topologiyes are the global Zariski topology and the fpqc topology. We also defined a sheaf and proved that representable functors are sheaves in the fpqc topology.
+
+\section{Sieves}%
+\label{sec:sieves}
+
+A sieve is a way to have ``your barrel full and your wife drunk.'' The motivating question is:
+
+\begin{quest}
+    When do two Grothendieck topologies give rise to the same sheaves?
+\end{quest}
+
+\begin{defn}
+    A \textit{subfunctor} $G$ of $F \colon C^{\mr{op}} \to \ms{Set}$ has $G(u) \subset F(u)$ and the morphisms are just restrictions. 
+\end{defn}
+
+\begin{defn}
+    A \textit{sieve} on $U \in \mr{Ob}(C)$ is a subfunctor of $h_U$. 
+\end{defn}
+
+\begin{exm}
+    Given a cover $\mc{U} = \qty{U_i \to U}$, then $h_{\mc{U}}(T)$ are arrows that factor through the covering.
+\end{exm}
+
+\begin{defn}
+    A sieve $S \subset h_U$ \textit{belongs to a topology $T$} if $h_{\mc{U}} \subset S$ for some covering $\mc{U}$ in the topology $T$. 
+\end{defn}
+
+\begin{defn}
+    A covering $\mc{V}$ is a \textit{refinement} of $\mc{U}$ if $h_{\mc{V}} \subset h_{\mc{U}}$. 
+\end{defn}
+
+This gives a poset structure on Grothendieck topologies, where $T \prec T'$ if every covering in $T$ has a refinement that is a covering in $T'$. For schemes, we have
+\[ \text{Zariski} \prec \text{\'etale} \prec \text{fppf} \prec \text{fpqc}. \]
+Then we know that $T_1, T_2$ are equivalent if $T_1 \prec T_2 \prec T_1$.
+
+\begin{prop}
+    Equivalent topologies have the same sheaves.
+\end{prop}
+
+\begin{proof}
+    Note that $F \colon C^{\mr{op}} \to \ms{Set}$ is a sheaf if and only for $S$ belonging to $T$, the map $FU \simeq \Hom(h_U,F) \to \Hom(S,F)$ is bijective.
+\end{proof}
+
+A real world application of this is that we can construct the sheafification of a functor $F \colon C^{\mr{op}} \to \ms{Set}$ by
+\[ F^a U = \lim_{\to} \Hom(S_i, F^s), \]
+where $S_i$ ranges over sieves belonging to $T$.
+
+\section{Fibered Categories}%
+\label{sec:fibered_categories}
+
+We will consider functors $p_F \colon F \to C$. Our notation will be
+\begin{equation*}
+\begin{tikzcd}
+    \xi \arrow{r} \arrow[mapsto]{d}{p_F} & \eta \arrow[mapsto]{d}{p_F} \\
+    U \arrow{r} & V.
+\end{tikzcd}
+\end{equation*}
+
+\begin{defn}
+    A morphism $\phi \colon \xi \to \eta$ in $F$ is \textit{Cartesian} if for all $\psi \colon \zeta \to \eta$ and $h \colon p_F \zeta \to p_F \xi$ in $C$ with $p_F \circ h = p_F \psi$, then there exists a unique $\theta \colon \zeta \to \xi$ such that $p_f \theta = h$ and $\phi \circ \theta = \psi$. 
+\end{defn}
+
+If $\phi$ is a Cartesian arrow, then we say that $\xi$ is a \textit{pullback} of $\eta$. Pullbacks (with a fixed map in $C$) are unique up to isomorphism.
+
+\begin{defn}
+    A \textit{fibered category} is a functor $F \to C$ such that for any $f \colon U \to V$ in $C$ and $\eta \in \mr{Ob}(F)$ with $p_F \eta = V$, then we have a cartesian arrow $\phi \colon \xi \to \eta$ with $p_F \phi = f$.
+\end{defn}
+
+\begin{defn}
+    Note that the fiber $F(U)$ is a category. The objects are $\xi$ such that $p_F(\xi) = U$ and morphisms are arrows $h$ that map to the identity of $U$ (i.e. $p_F h = \mr{id}_U$).
+\end{defn}
+
+\begin{defn}
+    A morphism of fibered categories over $C$ is a functor $H \colon F \to G$ such that $H_U \colon F(U) \to G(U)$ is a functor.
+\end{defn}
+
+\begin{defn}
+    A \textit{cleavage} of $F \to C$ is a class $K$ of cartesian arrows such that for all $f \colon U \to V$ and $\eta \in F(U)$, there exists a unique morphism in $K$ mapping to $f$.
+\end{defn}
+
+\begin{quest}
+    Does a cleavage give a functor from $C$ to the category of categories?
+\end{quest}
+
+Unfortunately, the answer is no. This is not a functor, but it does give a pseudofunctor, which is the same as a lax $2$-functor. The idea is that $\mr{id}_U^*$ may not be the identity and $f^* g^*$ may not be $(g \circ f)^*$. However, they are canonically isomorphic.
+
+\begin{defn}
+    A \textit{pseudofunctor} $\Phi$ on $C$ (from $C^{\mr{op}}$ to $\ms{Cat}$) is an assignment such that
+    \begin{enumerate}
+        \item For all objects $U$ of $C$, $\Phi U$ is a category.
+        \item For each $f \colon U \to V$, $f^* \colon \Phi V \to \Phi U$ is a functor.
+        \item For all $U$ of $C$, we have an isomorphism $\epsilon_U \colon \mr{id}^*_U \simeq \mr{id}_{\Phi U}$.
+        \item For all $U \to V \to W$ we have an isomorphism $\alpha_{f,g} \colon f^* g^* \simeq (gf)^*$ such that given $f \colon U \to V$ and $\eta \in \Phi U$, we have $\alpha_{\mr{id}_U, f}(\eta) = \epsilon_U(f^* \eta)$, and $\alpha_{f, \mr{id}_V}(\eta) = f^* \epsilon_U(\eta)$. In addition, we require that for all morphisms $U \xrightarrow{f} V \xrightarrow{g} W \xrightarrow{h} T$ and $\theta \in F(T)$, the diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                f^* g^* h^* \theta \arrow{r}{\alpha_{f,g}(h^* \theta)} \arrow{d}{f^* \alpha_{g,h}(\theta)} & (gf)^* h^* \theta \arrow{d}{\alpha_{gh,f}(\theta)} \\
+                f^*(hg)^* \theta \arrow{r}{\alpha_{f,hg}(\theta)} & (hgf)^* \theta
+            \end{tikzcd}
+            \end{equation*}
+            commutes.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    A \textit{cleavage} is a \textit{splitting} if it gives an honest functor.  
+\end{defn}
+
+Apparently every fibered category is equivalent to a split fibered category.
+
+\section{Examples}%
+\label{sec:examples}
+
+\begin{enumerate}
+    \item If a category $C$ has fiber products, then the category of arrows is a fibered category over $C$, and the Cartesian arrows are the Cartesian diagrams.
+    \item If $G$ is a topological group, then there is a ``classifying stack'' given by principal $G$-bundles.
+    \item Consider the category of sheaves on a site $C$. Given $X$ an object, denote sheaves on $X$ as sheaves in $C / X$. Then given $f \colon X \to Y$, we have $f^* \colon \ms{Sh}Y \to \ms{Sh}X$.
+    \item Let $C = \ms{Sch}/S$. Then given $f \colon U \to V$, we have $f^* \colon \ms{QCoh} \to \ms{QCoh}(U)$. However, $(gh)^* \simeq f^* g^*$ is not an equality. In the affine case, if $f \colon A \to B$ is a morphism of rings, then recall that quasicoherent sheaves are modules. Then $f^*M = M \otimes_A B$. The problem is that $M \otimes_B B \simeq M$ but they are not the same object. However, note that $f_* g_* = (fg)_*$ and that $f^*,f_*$ are adjoint.
+\end{enumerate}
+
+\chapter{Caleb (Oct 30): \'Etale morphisms and the \'etale fundamental group}%
+\label{cha:caleb_oct_30_'etale_morphisms_and_the_'etale_fundamental_group}
+
+Today we will take a break from the abstract nonsense.
+
+\section{Flat Morphisms}%
+\label{sec:flat_morphisms}
+
+\begin{defn}
+    Let $f \colon X \to Y$ be a map of schemes. Then $f \colon X \to Y$ is \textit{flat} at $x \in X$ if the map $f^{\sharp} \colon \mc{O}_{Y, f(x)} \to \mc{O}_{X,x}$ is flat. Then $f$ is flat globally if it is flat at all $x$.
+\end{defn}
+
+Note if $f \colon \Spec B \to \Spec A$ is flat if and only if $A \to B$ is flat. The geometric intuition behind flatness is that the fibers form a continuous family.
+
+\begin{exm}
+    Consider the map $\Spec k[t] \to \Spec k[x,y] / (y^2 - x^3 - x^2)$ given by $x \mapsto t^2-1, y \mapsto t^3-t$. This is the normalization of the nodal cubic, and we see that the integral closure of the second ring is given by adjoining the element $\frac{y}{x}$.
+
+    Outside $t = \pm 1$, the map of stalks is an isomorphism, but at $0$, we see that
+    \[ (x,y) k[t]_{(t)} = (t^2 - 1, t^3-t) k[t]_{(t)} = k[t]_{(t)} \]
+    and thus the map is not flat.
+\end{exm}
+
+\begin{exm}
+    Let $A \subset B$ be integral domains with the same fraction field. Then $\Spec B \to \Spec A$ is faithfully flat if and only if $A = B$.
+\end{exm}
+
+\begin{proof}
+    The idea is to use that for any ideal $I$ of $A$, we have $IB \cap A = I$. Then go read your commutative algebra homework (or your favorite commutative algebra text).
+\end{proof}
+
+\begin{rmk}
+    Normalization is flat if and only if it is an isomorphism.
+\end{rmk}
+
+\begin{exm}
+    A closed embedding is flat if and only if it is also open. In particular, closed embeddings are generically not flat.
+\end{exm}
+
+\begin{prop}
+    If $f \colon X \to Y$ is a flat map between irreducibles, then $f(U)$ is dense in $Y$ for all nonempty $U \subset X$.
+\end{prop}
+
+\begin{proof}
+    Reduce to the case $\Spec B \to \Spec A$. We simply need $\eta = \sqrt{0}$ to be in the image of $f$. Writing the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        U_{\eta} \arrow{r} \arrow{d} & U \arrow{d} \\
+        \Spec k(\eta) \arrow{r} & \Spec A
+    \end{tikzcd}
+    \end{equation*}
+    we see that $U_{\eta} = \Spec B \otimes_A k(\eta)$. This contains the ring $B / \eta B$ by flatness. If $B = \eta B$, then $B$ is nilpotent and this implies $U = \emptyset$.
+\end{proof}
+
+\begin{thm}
+    Let $f \colon X \to Y$ be a morphism of locally Noetherian schemes. Then
+    \[ \dim \mc{O}_{X_y, x} \geq \dim \mc{O}_{X,x} - \dim \mc{O}_{Y,y} \]
+    with equality if $f$ is flat.
+\end{thm}
+
+\begin{proof}[Sketch of Proof]
+    By schematic nonsense, replace $Y$ by $A = \Spec \mc{O}_{Y,n}$, so $Y$ is Noetherian local. We can also assume $Y$ is reduced. We will induct on $\dim Y$. Recall that if $t \in A$, then $\dim (A/tA) = \dim A - 1$ for $t$ not a zero divisor or a unit.
+\end{proof}
+
+\begin{cor}
+    If $f \colon X \to Y$ be a faithful flat map of algebraic varieties, then $X_y$ is equidimensional and $\dim X_y = \dim X - \dim Y$.
+\end{cor}
+
+\section{\'Etale morphisms}%
+\label{sec:'etale_morphisms}
+
+From now on we will assume $f \colon X \to Y$ is finite type and locally Noetherian. 
+
+\begin{defn}
+    A morphism $f$ of schemes is \textit{unramified} at $x$ if $\mc{O}_{Y,y} \to \mc{O}_{X,x}$ satisfies $\mf{m}_y \mc{O}_{X,x} = \mf{m}_x$ and $k(x) / k(y)$ is separable.
+\end{defn}
+
+\begin{defn}
+    A morphism is \textit{\'etale} if it is flat and unramified.
+\end{defn}
+
+\begin{exm}
+    Let $L/K$ be an extension of fields. Then $\Spec L \to \Spec K$ is \'etale if and only if $L/K$ is separable.
+\end{exm}
+
+\begin{exm}
+    Let $L/K$ be a field extension. Then $f \colon \Spec \mc{O}_L \to \Spec \mc{O}_K$ is flat and the separability condition holds. Then $f$ is unramified (and hence \'etale) if and only if it is unramified in the sense of number theory. Here, we consider the product
+    \[ \mf{p} \mc{O}_L = \prod_{i=1}^m \mf{q}_i^{e_i}, \]
+    and $f$ is unramified if all $e_i = 1$. For example, for the extension $\Z \to \Z[i]$, we see that $(2) = (1+i)^2$ and thus this map is not unramified.
+\end{exm}
+
+\begin{exm}
+    Consider $\Spec k[t]/(P) \to \Spec k$. Then prime ideals are irreducibles $Q$ dividing $P$. Then $f$ is \'etale at $Q$ if and only if $Q$ is separable and is a simple factor of $P$.
+
+    More generally, a \textit{standard \'etale morphism} for a monic $P(T) \in A[T]$ and $b \in B = A[T]/P(T)$ such that $P'(T)$ is a is a unit in $B_b$, then $\phi_b \colon \Spec B_b \to \Spec A$ is standard \'etale.
+\end{exm}
+
+\begin{exm}
+    Consider $\Spec k[x,y]/(x^2-y) \to \Spec k[y]$. This map is not \'etale at $0$. To be explicit, note that $2x$ is not a unit in $k[x,y]/(x^2-y)$, but it is a unit after localization at $x$, and thus $\Spec B_x \to \Spec k[y]$ is \'etale.
+\end{exm}
+
+\begin{thm}
+    Every \'etale morphism is locally standard \'etale.
+\end{thm}
+
+The proof uses the following theorem:
+
+\begin{thm}[Zariski's Main Theorem]
+    Let $\phi \colon X \to Y$ be a quasi-finite morphism of finite type between Noetherian schemes. Then $\phi$ can be factored into $X \xrightarrow{f} X' \xrightarrow{g} Y$, where $f$ is an open embedding and $g$ is finite.
+\end{thm}
+
+\begin{defn}
+    A \textit{quasi-finite} morphism is a morphism with finite fibers.
+\end{defn}
+
+\begin{rmk}
+    If $\phi \colon X \to Y$ is a finite-type morphism of schemes of finite type over $l$, then $\phi$ is \'etale if and only if $\wh{\phi}_x \colon \wh{\mc{O}}_{Y,y} \to \wh{\mc{O}}_{X,x}$ is an isomorphism. Geometrically, this means that the formal neighborhoods are isomorphic.
+\end{rmk}
+
+\section{\'Etale fundamental group}%
+\label{sec:'etale_fundamental_group}
+
+Recall that if $X$ is a nice topological space, there is an equivalence of categories
+\[ F \colon \qty{ \text{Covering spaces of $X$} } \longrightarrow \qty{ \pi_1(X,x)\text{-sets} }. \]
+This functor is represented by the universal covering space $\wt{X} \to X$, and we have $\pi_1(X,x) = \Aut (\wt{X}, \wt{X})$.
+
+Now we want to make this work for schemes, so we take finite \'etale morphisms to be the covers. Then we define a functor
+\[ F \colon \qty{F \text{ \'etale over }X} \to \ms{Set} \]
+by $F(Y) = \Hom_X(\ol{x}, Y)$, where $\ol{X}$ is a geometric point of $X$. We see that $F$ is not representable, but it is a projective limit of representables, so we define the \'etale fundamental group 
+\[ \pi_1^{\mr{et}}(X,\ol{x}) = \lim_{\gets} \Aut_X(X_i). \]
+
+\begin{exm}
+    Let $X = \Spec k$. Then $\pi_1(\Spec k, \ol{z}) = \mr{Gal}(k^{\mr{sep}} / k)$. Similarly, $\pi_1(\Spec \Z) = \pi_1(\A^1_{\C}) = 1$.
+
+    If $X$ is a variety over $\C$, then $\pi_1^{\mr{et}}(X) = \wh{\pi_1(X^{\mr{an}})}$, where $\wh{G}$ is the profinite completion. In particular, $\pi_1^{\mr{et}}(\P^1_{\C} \setminus \qty{0,1,\infty}) = \wh{F}_2$. If $X = \P^1_{\Q} \setminus \qty{0,1, \infty}$, then we have an exact sequence
+    \[ 1 \to \wh{F}_2 \to \pi_1(X) \to \mr{Gal}(\ol{\Q}/\Q) \to 1. \]
+\end{exm}
+
+\chapter{Caleb (Nov 6): More on the \'etale fundamental group and fibered categories}%
+\label{cha:caleb_nov_6_more_on_the_'etale_fundamental_group_and_fibered_categories}
+
+Recall that \'etale is the same as flat and unramified. Consider the category of finite \'etale morphisms over $X$ and choose a geometric point $\ol{x} \in X(\ol{k})$. Then consider the functor $F(Y) = \Hom_X(\ol{x}, Y)$. Unfortunately, the morphism $\Spec \ol{k} \to X$ is not \'etale, so this functor is not representable. If it was representable, it would be represented by the universal cover, which does not necessarily exist. We will now construct a Galois theory for schemes.
+
+\begin{defn}
+    For a finite \'etale morphism $Y \to X$, define the \textit{degree} $[Y:X] \coloneqq \abs{F(Y)}$. This is invariant of the choice of basepoint.
+\end{defn}
+
+\begin{prop}
+    If $Y$ is connected and we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        Y \arrow{r}{\theta} \arrow{dr}{\phi} & Z \arrow{d} \\
+                                             & X
+    \end{tikzcd}
+    \end{equation*}
+    then $\theta$ is determined by where it sends a single geometric point of $Y$. In particular, $\abs{\Aut_X Y} \leq [Y:X]$.
+\end{prop}
+
+\begin{cor}
+    There is a faithful action of $\Aut_X Y$ on $F(Y)$.
+\end{cor}
+
+\begin{defn}
+    A \textit{Galois cover} $Y \to X$ is a finite \'etale morphism such that $Y$ is connected and $\abs{\Aut_X Y} = [Y:X]$. Equivalently, the action of $\Aut_Y X$ on $F(Y)$ is transitive.  
+\end{defn}
+
+\begin{rmk}
+    A transitive action is the same as normality in both Galois theory and topological covering spaces.
+\end{rmk}
+
+\begin{exm}
+    Let $X = \Spec K$. Then finite \'etale morphisms to $X$ are schemes of the form $\bigcup \Spec L_i$ where $L_i/K$ is finite separable. Then $\Spec L_i$ is Galois if and only if $L_i / K$ is Galois. For a degree $n$ extension, the action of $\Aut(L/K)$ on $F(\Spec L)$ is simply the action on the $n$ embeddings $K \subset L \subset \ol{K}$.
+\end{exm}
+
+\begin{lem}
+    For connected $Y \in \ms{F\acute{E}t}/X$, there exists $Z$ Galois over $X$ such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        Z \arrow[twoheadrightarrow]{r}  \arrow{dr} & Y \arrow{d} \\
+                                                   & X
+    \end{tikzcd}
+    \end{equation*}
+    commutes. In fact, for any pair $Y,Z$, there exists a Galois $W$ surjecting onto both.
+\end{lem}
+
+\section{Universal Cover}%
+\label{sec:universal_cover}
+
+This universal cover is not a scheme, but is a projective limit of schemes. We will define the \textit{universal cover} $\wt{X}$ of $X$ with the following:
+\begin{enumerate}
+    \item A poset $I$ indexing Galois covers $X_i \to X$.
+    \item For any $X_i, X_j \in I$, there $k \in I$ such that $k > i$ and $k > j$.
+    \item If $i < j$, then we have $\phi_{ij} \colon X_j \to X_i$ compactible with geometric points and composition.
+\end{enumerate}
+
+\begin{exm}
+    Take all Galois covers and set $i < j$ if and only if there exists $X_j \to X_i$. To make everything work, we can adjust the map by an automorphism of $X_i$ because the action of the Galois group is transitive.
+\end{exm}
+
+\begin{prop}
+    Suppose $Y$ is Galois over $X$ and there is a finite \'etale map $Y \to Z$ over $X$. Then $\Aut_Z Y \subset \Aut_X Y$ is a subgroup and $Z$ is Galois if and only if $\Aut_Z Y$ is a normal subgroup. In this case, $\Aut_X Z \simeq \Aut_X Y / \Aut_Z Y$.
+\end{prop}
+
+In particular, if $Y,Z$ are both Galois, then we have a map $\Aut_X Y \to \Aut_X Z$.
+
+\begin{defn}
+    Take $\wt{X}$ to be the universal cover of $X$. Then define the \textit{\'etale fundamental group} by
+    \[ \pi_1^{\text{\'et}}(X,\ol{x}) \coloneqq \lim_{\longleftarrow} \Aut_X X_i. \]
+\end{defn}
+
+Aternatively, recall the action of $\Aut_X(Y)$ on $F(Y)$. Then we obtain an action of $\pi_1(X, \ol{x})$ on 
+\[ \Hom_X(\wt{X}, Y) \coloneqq \lim_{\longrightarrow} \Hom_X(X_i, Y) \simeq F(Y). \]
+
+\begin{prop}
+    $F$ is the direct limit of the functors $\Hom_X(X_i, -)$.
+\end{prop}
+
+\begin{thm}
+The functor 
+\[ F \colon \ms{F\acute{E}t}/X \to \qty{ \Centerstack{{finite discrete} {$\pi_1(X,\ol{x})$-sets}}} \]
+is an equivalence of categories.
+\end{thm}
+
+By Yoneda, we may define $\pi_1(X,\ol{x}) = \Aut(F)$. Here $F$ is the ``fiber functor.''
+
+\begin{enumerate}
+    \item Let $X = \Spec k$. Then if we take Galois coverings $L_i / K$ whose union is $k^{\mr{sep}}$. Then we have
+        \[ \pi_1^{\text{\'et}}(\Spec k) = \lim_{\longleftarrow} \Gal(L_i/K) = \Gal(k^{\mr{sep}} / k). \] 
+    \item Now consider a normal scheme $X$ with function field $K(X)$. Then $K(X)^{\mr{un}}$ is the composition of all finite extensions $K(Y)$ such that $Y \to X$ unramified. Then we have
+        \[ \pi_1^{\text{\'et}}(X) \cong \Gal(K(X)^{\mr{un}} / K(X)). \]
+    \item Because $\Q$ has no unramified extensions, we have $\pi_1^{\text{\'et}}(\Spec \Z) = 1$. By local class field theory, for any number field $K$, we have
+        \[ \pi_1^{\mr{ab}}(\Spec \mc{O}_K) \simeq \Gal(H^{\dag}/K) \simeq \Gal(H/K) \simeq I_K, \]
+        where $I_K$ is the ideal class group, $H^{\dag}$ is the maximum abelian extension unramified at finite primes (narrow Hilbert class field), and $H$ is the Hilbert class field, which is unramified at all primes.
+    \item If $X = \A^1_{\C}$, then we can prove using some differential form that $\pi_1^{\text{\'et}}(X) = 1$. In fact, all finite \'etale covers are isomorphisms. However, this is \textbf{not true} in positive characteristic.
+    \item Consider the nodal cubic $\Spec k[x,y]/(y^2-x^3-x^2)$. Then finite \'etale morphisms over $X$ are of the form $\Spec R_n$ with $\Aut_X R_n \simeq \Z/n\Z$ and thus $\pi_1^{\text{\'et}}(X) = \wh{\Z}$. 
+    \item Let $X_k$ be finite over $k$ with $X_{\ol{k}}$ connected. Then we have an exact sequence
+        \[ 1 \to \pi_1(X_{\ol{k}}) \xrightarrow{i} \pi_1(X_k) \xrightarrow{j} \Gal(k^{\mr{sep}}/k) \to 1. \]
+        To prove this, first note that the composition of the two middle maps is trivial because the map $X_{\ol{k}} \to \Spec k$ factors through $\Spec \ol{k}$ (by definition of base change). Then because $X_{\ol{k}}$ is connected, we see that $j$ is surjective by using the fact that for
+        \begin{equation*}
+        \begin{tikzcd}
+            X_L \arrow{r} \arrow{d} & X_k \arrow{d} \\
+            \Spec L \arrow{r} & \Spec k
+        \end{tikzcd}
+        \end{equation*}
+        we have $\Aut_{X_k}(X_L) \simeq \Gal(L/k)$. Finally, we use some magic to show that $i$ is injective.
+\end{enumerate}
+
+\chapter{Caleb (Nov 13): Toproll and fibered categories}%
+\label{cha:caleb_nov_13_toproll_and_fibered_categories}
+
+We take a break from our regularly scheduled Grothendieck programming for a sponsored message about armwrestling.
+
+\section{Toproll Basics}%
+\label{sec:toproll_basics}
+
+The main goal of Toproll is to crack your opponent's wrist back and pull through their fingers. This comes with an abligatory safety precaution to always look at your hand because things can break if you get pulled back and start looking away.
+
+\begin{defn}
+    The \textit{Toproll} is a move in which you pronate your wrist to break open your opponent's wrist, then pull down while dropping your body down. 
+\end{defn}
+
+Before we get into the specifics, here are some general principles of armwrestling:
+\begin{enumerate}
+    \item Keep your hand and fingers high. The higher your hand is, the more leverage you will have. You should do this starting from when you set up with your opponent.
+    \item Keep your wrist cupped as much as possible. You want to continually pull in and should try to do this before the match starts, even if it is cheating.
+    \item Stay close to your arm so that your body moves as one unit.
+    \item Pull towards yourself and pull your body back.
+\end{enumerate}
+
+There are many varieties of Toproll, which was invented in the 1980s. Before, everyone would push their shoulder forward. The basic procedure is as follows:
+\begin{enumerate}
+    \item (Setup) Get your fingers as high as possible and put your body close to the table. Stand up tall so you can come crashing down when the referee says ``go.'' Squeeze your hand and load up your arm so you start faster.
+    \item (Beginning of match) Simultaneously cup and pronate your wrists. Pull back\footnote{There is also a notion of pushforward, but it does not apply here.} using your opposite shoulder as hard as possible and drop your body down.
+    \item (Finishing) Usually your aim is to finish in one move, but this does not always happen. In this case, you need to maintain your advantage by turning your opponent's hand upwards. Climb with your fingers and finish either with the same motion or with a press.\footnote{This is a pushforward.}
+\end{enumerate}
+
+If you look at professional armwrestling, most people have a toproll. Some famous toprollers are Travis Bogent, Vitaly Laletin, Matt Mask, and Dimitry Trubin.
+
+What we have described so far is an offensive move, but it can be used as a defensive move. We will not be covering this today as it is an extremely advanced technique, but it is called the ``King's move'' and has been used by Michael Todd and Devon Lurratt. This is very controversial as it involves dropping your entire body below the table and is only possible because professional armwrestlers cannot straighten their arms.
+
+In the toproll, you will deal with opponents who have a strong hand whose writs you cannot bend back. In this case, you should continue to hit and climb. The idea is to push your elbow forward to gain leverage and then pull your elbow back to climb. Another thing to try is to use side pressure, which can throw your opponent off guard.
+
+The main method to defend is to pull your arm back towards yourself and pronate your wrist. To come back back, you hit with pronation and the let up the side pressure to gain height, and vice versa. As for actually defending the toproll, here are some strategies:
+\begin{itemize}
+    \item Clamp your fingers down. 
+    \item Supinate your wrist and push your body forward to set a hook.
+    \item Apply side and down pressure.
+\end{itemize}
+
+\begin{rmk}
+    It is very difficult to toproll people with long arms and large hands. Conversely, if you have long arms and large hands, the toproll is a good move to use.
+\end{rmk}
+
+A way to train\footnote{Besides contacting Caleb to be your trainer} is to attach a weight to a strap and practice the motion. For left-handed people, everything should be symmetric. Thank you for tuning in to our sponsored programming about armwrestling.
+
+\section{Review of Fibered Categories}%
+\label{sec:more_on_fibered_categories}
+
+Here is a motivating example for fibered categories. Recall that $F \colon \ms{Sch}/S^{\mr{op}} \to \ms{Set}$ sending a scheme $X$ to the set of isomorphism classes of elliptic curves over $X$ is not representable. Instead, we will replace this by a fibered category
+\[ p \colon M_{1,1} \to \ms{Sch}/S \]
+with objects $(X, (E,e))$ being a scheme and an elliptic curve over it and morphisms are $(f,g)$ such that
+\begin{equation*}
+\begin{tikzcd}
+    E' \arrow{r} \arrow{d} & E \arrow{d} \\
+    X' \arrow{r} & X
+\end{tikzcd}
+\end{equation*}
+is a Cartesian diagram. This means that $E' \simeq E \times_X X'$. In particular, when $X = X'$, the morphisms are the automorphisms.
+
+Recall the definition of a Cartesian arrow and a fibered category from the second lecture. 
+
+\begin{exm}
+    Suppose a category $C$ has fiber products. Then the arrow category of $C$ is fibered over $C$ under $(X \to Y) \mapsto Y$.
+\end{exm}
+
+\begin{defn}
+    In a fibered category $F \to U$, the fiber $F(U)$ is the subcategory mapping down to $U$.
+\end{defn}
+
+Recall that a cleavage is a class of Cartesian arrows such that there is one for every $U \to V$ and $\eta \in F(U)$. This does not give a functor from $C$ to $\ms{Cat}$, but it does give a pseudofunctor. 
+
+\begin{exm}
+    Recall that a group is a category with one object. If $G \to H$ is a surjective morphism, then we can think about $G$ as being fibered over $H$. Then the sequence $G \to H \to 1$ being split is equivalent to the existence of a split cleavage.
+\end{exm}
+
+\section{$2$-Yoneda Lemma}%
+\label{sec:_2_yoneda_lemma}
+
+Recall that if $F \colon C^{\mr{op}} \to \ms{Set}$ is a functor, then $\Hom(h_X, F) \simeq F(X)$. This is the ordinary Yoneda lemma, and it tells us that we have an embedding $C \to \Hom(C^{\mr{op}}, \ms{Set})$. Now the $2$-Yoneda lemma embeds $\Hom(C^{\mr{op}}, \ms{Set})$ into the $2$-category of fibered categories over $C$.
+
+Given $\Phi \colon C^{\mr{op}} \to \ms{Set}$, we will construct a fibered category $F_{\Phi} \to C$. The objects are pairs $(U, \xi)$ where $U \in C$ and $\xi \in \Phi(U)$. This maps down to $U$. The morphisms $(U, \xi) \to (V, \eta)$ are maps $U \to V$ such that $\Phi_f(\eta) = \xi$.
+
+If $X \in C$ is an object, then $h_X$ is sent to the category $C/X$ over $X$.
+
+\begin{lem}[Weak $2$-Yoneda]
+    For $X,Y \in C$, we have $\Hom(X,Y) \simeq \Hom(C/X, C/Y) \simeq \Hom(h_Y, h_X)$.
+\end{lem}
+
+\begin{lem}[$2$-Yoneda lemma]
+    Let $F \to C$ be a fibered category. Then $\Hom(C/X, F) \simeq F(X)$.
+\end{lem}
+
+\section{Categories fibered in sets and groupoids}%
+\label{sec:categories_fibered_in_sets_and_groupoids}
+
+All moduli problems will be fibered in groupoids, and when they are representable by schemes, this is when the functor is fibered in sets.
+
+\begin{defn}
+    A category is fibered in sets if $F(U)$ is a set, which means there are only identity morphisms.
+\end{defn}
+
+Now recall that we have embeddings
+\[ C \hookrightarrow \Hom(C^{\mr{op}}, \ms{Set}) \hookrightarrow \qty{\text{Fibered categories over } C} \qquad X \mapsto h_X \mapsto C/X. \]
+
+\begin{thm}
+    The functor from presheaves to categories fibered in sets is an equivalence. 
+\end{thm}
+
+\begin{defn}
+    A category is fibered in groupoids if $F(U)$ is a groupoid.
+\end{defn}
+
+\begin{defn}
+    Recall the Grassmannian $\mr{Gr}(n,k)$ represents the functor given by 
+    \[ X \mapsto \qty{(X/S, q \colon \ms{O}_S^n \to f_* Q)}\] 
+    where $Q$ is a quotient bundle over $X$ that is free of rank $n-k$.
+\end{defn}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
