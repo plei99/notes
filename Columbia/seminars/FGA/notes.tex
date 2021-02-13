@@ -144,6 +144,8 @@
 \DeclareMathOperator{\Gal}{Gal}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Cl}{Cl}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\spec}{Spec}
@@ -855,6 +857,282 @@ Now recall that we have embeddings
     \[ X \mapsto \qty{(X/S, q \colon \ms{O}_S^n \to f_* Q)}\] 
     where $Q$ is a quotient bundle over $X$ that is free of rank $n-k$.
 \end{defn}
+
+\chapter{Caleb (Nov 20): Stacks and Hooks}%
+\label{cha:caleb_nov_20_stacks_and_hooks}
+
+\section{Pursuing Stacks}%
+\label{sec:pursuing_stacks}
+
+We have been discussing fibered categories, and now we will be discussing fibered categories over a site. Our slogan to keep in mind is that a stack is a fibered category over a site with descent. Alternatively, a stack is a $2$-sheaf, or a sheaf taking values in categories.
+
+\begin{rmk}
+    Algebraic stacks are very special kinds of stacks and we have the following analogy: algebraic stacks are to stacks as schemes are to sheaves.
+\end{rmk}
+
+\begin{exm}
+    The basic prototype of a stack is the arrow category of $\ms{Top}$. Here, this is a fibered category with fiber $F(U) = \ms{Top}/U$. Next, it is easy to see that we can glue functions locally, and formally, this means that $\Hom_S(X,Y)$ is a sheaf. We can also construct spaces locally, and this is a cocycle condition. Given an open cover $\qty{U_i}$ of $U$ and maps $f_i \colon X_i \to U_i$ with transition maps $\phi_{ij} \colon f_j^{-1} U_{ij} \to f_i^{-1} U_{ij}$ with $\phi_{ik} = \phi_{ij} \circ \phi_{jk}$, then there exists a space $f \colon X \to U$ such that there exist isomorphisms $f_i^{-1}(U_i) \simeq X_i$ and $\phi_{ij} = \phi_i \circ \phi_j^{-1}$.
+\end{exm}
+
+\begin{defn}
+    We now define an \textit{object with descent data}. This is a collection $(\qty{\ep_i}, \qty{\phi_{ij}})$ for a cover $\qty{U_i \to U}$ such that $\ep_i \in F(U_i)$ and $\phi_{ij} \colon \mr{pr}_2^*(\ep_j) \sim \mr{pr}_1^* \ep_i$.
+\end{defn}
+
+\begin{rmk}
+    The choices of $\mr{pr}_1^*, \mr{pr}_2^*$ depend on the cleavage chosen. This can also be phrased in terms of sieves, where
+    \[ \mr{pr}_{13}^* \phi_{ik} = \mr{pr}_{12}^* \phi_{ij} \circ \mr{pr}_{23}^* \phi_{jk}. \]
+    Here, we have the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & U_{ijk} \arrow[near end]{dd}{\mr{pr}_{13}} \arrow[swap]{dl}{\mr{pr}_{12}} \arrow{rr}{\mr{pr}_{23}} & & U_{jk} \arrow{dl} \arrow{dd} \\
+        U_{ij} \arrow{rr} \arrow{dd} & & U_j \arrow{dd} \\
+                                     & U_{ik} \arrow{rr} \arrow{dl} & & U_k \arrow{dl} \\
+        U_i \arrow{rr} & & U
+    \end{tikzcd}
+    \end{equation*}
+\end{rmk}
+
+Given a covering $\qty{U_i \to U}$, define the category $F(\qty{U_i \to U})$ with the following data:
+\begin{description}
+    \item[Objects:] These are simply objects with descent data.
+    \item[Morphisms:] These are morphisms $\alpha_i \colon \ep_i \to \eta_i$ such that the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            \mr{pr}_2^* \ep_j \arrow{d}{\phi_{ij}} \arrow{r}{\mr{pr}_2^* \alpha_j} & \mr{pr}_2^* \eta_j \arrow{d}{\psi_{ij}} \\
+            \mr{pr}_1^* \ep_i \arrow{r}{\mr{pr}_1^* \alpha_1} & \mr{pr}_1^* \eta_i
+        \end{tikzcd}
+        \end{equation*}
+        commutes.
+\end{description}
+
+\begin{defn}
+    A functor $F$ is a \textit{prestack} if for each covering  $\qty{U_i \to U}$ the functor $F(U) \to F(\qty{U_i \to U})$ is fully faithful. If this functor is an equivalence, then $F$ is a \textit{stack}. 
+\end{defn}
+
+Note that this is a sheaf-like condition.
+
+\begin{defn}
+    An object with descent data is \textit{effective} if it is isomorphic to the image of an object in $F(U)$. 
+\end{defn}
+
+Thus by definition, stacks are prestacks such that all objects with descent data are effective.
+
+\begin{exm}
+    Let $C$ be a site and $F \colon C^{\mr{op}} \to \ms{Set}$ a presheaf. Recall that $F$ is a fibered category in $\ms{Set}$. Then $F$ is a sheaf if and only if $F$ is a stack.
+\end{exm}
+
+We now give some examples of stacks.
+
+\begin{enumerate}
+    \item Let $C$ be a site. Then $\ms{Sh}/C \to C$ is a stack. This example is called a \textit{topos}. This was apparently one of Grothendieck's most profound ideas.
+    \item Let $S$ be a scheme. Then the category $\ms{QCoh}/S \to \ms{Sch}/S$ is a stack in the fpqc topology. Apparently this is important.
+    \item The category $\ms{Aff}/S \to \ms{Sch}/S$ of affine arrows over $S$ is a stack in the fpqc topology.
+    \item Because the speaker has been traumatized by combinatorics, we give the following: Let $T$ be the category of trees with morphisms the embeddings and coverings the jointly surjective ones.\footnote{I'm sure that Doron Zeilberger will love this.} Then fiber products are just intersections. We will define $F(T)$ to be the category of proper colorings of $T$.
+
+        At risk of further infecting these notes with combinatorics, consider the chromatic symmetric function
+        \[ X_T = \sum_{\substack{\text{proper} \\ \text{colorings}}} x_i^{\#(i\text{ appears})}. \]
+        Then the conjecture is that $X_T$ defines $T$. It is easy to see that the category defined above is a stack.
+\end{enumerate}
+
+\section{Hooks}%
+\label{sec:hooks}
+
+There is a spectrum of styles in armwrestling from inside pulling to outside pulling: press, hook, high hook, toproll, and king's move. Recall the discussion of the toproll last time. 
+
+\begin{defn}
+    A hook is a move where you cup your hand, supinate your wrist, bring your shoulder forward, and pull down and in. Usually this is accomplished by the following procedure:
+    \begin{enumerate}
+        \item Cup your wrist and bring your shoulder in.
+        \item Pull in to yourself and to the side, getting close to your arm.
+        \item Supinate your wrist and finish with a shoulder press.
+    \end{enumerate}
+\end{defn}
+
+Unlike a toproll, expect a long match with a hook. Also, having a high hand in a hook is less important than in a toproll. The hook is a power game, but hand position is still important. It is important to do the following:
+\begin{itemize}
+    \item Keep carving your wrist and getting tight.
+    \item Make micro-adjustments with your hand and elbow to cut your opponent off from their power.
+\end{itemize}
+
+\begin{rmk}
+    If you get pulled down in a hook, try to keep your shoulder close to your arm and keep looking at your arm.
+\end{rmk}
+
+Some exceptional hookers are John Brzenk (who is the greatest armwrestler of all time), Devon Larratt, Todd Hutchings, Farid Usmanov, Dave Chaffee, Denis Cyplenkov, and Levan Sagnisashvilli (the current World \#1).
+
+Now we discuss the high hook. This was popularized by and is the namesake of the Ottowa High Hookers, which is a club run by Devon Larratt. This uses the same principles of the hook with a higher hand. If executed well, this leads to the \textit{can opener} move which is essentially a transition between hook and toproll. 
+
+\chapter{Caleb (Dec 04): Jacobians I and Shoulder Press}%
+\label{cha:caleb_dec_04_jacobians_i_and_shoulder_press}
+
+\section{Divisors and Picard Groups}%
+\label{sec:divisors_and_picard_groups}
+
+Let $X$ be Noetherian, integral, separated, and regular in codimension $1$.
+
+\begin{defn}
+    The group $\operatorname{Div} X$ of \textit{WEil Divisors} is the group generated by codimension $1$ closed integral subschemes. 
+\end{defn}
+
+Because $X$ is integral, it has a function field $K$. If we choose $f \in K^*$, we can choose $Y \subset X$ of codimension $1$. Then at $\eta_Y$, the stalk $\mc{O}_{\eta_Y}$ is a DVR with fraction field $K$. Then we can write $(f) = \sum_Y v_Y(f) Y$. This is a finite sum by the Noetherian condition. Divisors of this form are called \textit{principal}. 
+
+\begin{exm}
+    Let $X =\P^1$. Then Weil divisors of $\P^1$ are sums $\sum n_i P_i$, where $P_i$ is a point. If $P_i = [2:1]$, then $V_{P_i}(f)$ is the order of the zero (or pole) at $2$.
+\end{exm}
+
+\begin{defn}
+    The \textit{Class group} $\operatorname{Cl} X$ is the group $\operatorname{Div} X / K^*$, where we identify $K^*$ with the principal divisors. 
+\end{defn}
+
+\begin{defn}
+    The principal divisors of $\P^1$ is all sums $\sum n_i P_i$ where $\sum n_i = 0$. Thus $\operatorname{Cl} \P^1 \simeq \Z$.
+\end{defn}
+
+Now let $X/k$ be a projective curve over an algebraically closed field $k$.
+
+\begin{defn}
+    We define the \textit{degree} of $\sum n_i P_i$ to be $\sum n_i [k(P_i):k] = \sum n_i$.
+\end{defn}
+
+Now if $f \in K(X)^*$, we know that $(f) = \varphi^*(\qty{0} - \qty{\infty})$ and thus $\deg (f) = 0$. Therefore we have a map $\operatorname{Cl} X \twoheadrightarrow \Z$, and the kernel is $\operatorname{Cl}^0 X$.
+
+\begin{exm}
+    Define $X = \Proj k[x,y,z] / (y^2 z - x^3 + zx^2)$. We will show that $\Cl^0 X$ is in bijection with the set of closed points. In one direction, let $p_0 = [0:1:0]$. Then $f(p) = p - p_0$. Then the line $(z=0)$ intersects $C$ with multiplicity $3$ at $p_0$. Thus if $L \cap C = \qty{P,Q,R}$, then $\qty(L/Z) = P + Q + R - 3 P_0$. On the other hand, if $D$ is a degree $0$ divisor, we can eventually replace it by $P_i - P_0$ because $C$ is not rational.
+\end{exm}
+
+\begin{defn}
+    The \textit{Picard group} $\Pic X$ is defined to be the set of isomorphism classes of line bundles on $X$ with group operation the tensor product.
+\end{defn}
+
+If $X$ is locally factorial, then $\Cl X \simeq \Pic X$.
+
+\begin{exm}
+    Let $X = \Spec \Z[\sqrt{-5}]$. This is not a UFD, so its class group is nontrivial. The line bundles are fractional ideals and we have $\Pic X \simeq C_2$ with generator $I \coloneqq (2, 1 + \sqrt{5})$. Over $D(2)$, we have $I = 1$ and over $D(3)$, $I$ becomes generated by $1 + \sqrt{-5}$.
+\end{exm}
+
+\section{Jacobian Functor}%
+\label{sec:jacobian_functor}
+
+Now we will always assume $X$ is a smooth curve. Then we can define the \textit{degree} of an invertible sheaf $L = \sum n_i [k(p_i) : k]$ by translation to Weil divisor language. Next, $\chi(C, L^n) = n \deg L + 1 - g$.
+
+\begin{defn}
+    Define the functor $F(T)$ by
+    \[ T \mapsto \qty{\text{line bundles on }C \times_k T \mid \text{deg $0$ fiberwise}}. \]
+    However, we don't want line bundles on $T$ interfering, so we now define
+    \[ P_C^0(T) = F(T) / q^* \Pic T. \]
+    Unfortunately, this is still not necessarily representable.
+\end{defn}
+
+\begin{thm}
+    There exists an abelian variety $J$ over $k$ and a morphism of functors $f \colon P_C^0 \to J$ that is an isomorphism if $C(T)$ is nonempty. In particular, if $T = \Spec k$ and $C$ has a rational point, then $J$ represents $P_C^0$.
+\end{thm}
+
+Now let $G = \mr{Gal}(K'/K)$. We need the map $P_C^0(\Spec k) \to P_C^0(\Spec K')^G$ to be bijective for $P_C^0$ to be representable.
+
+\begin{prop}
+    There exists an exact sequence
+    \[ 0 \to \Pic(X) \to \Pic(X_{K'})^G \to \mr{Br}(k'/k) = H^2(G, k^*) \]
+    where $\mr{Br}(k'/k)$ is the Brauer group.
+\end{prop}
+
+The idea of the proof is that to show injectivity, let $L, L' \in \Pic C$. If they become isomorphisc over $k'$, we show the isomorphism descends to $\Pic X$. Choose $\sigma \in G$. If $i \colon L_{k'} \to L'_{k'}$ is an isomorphism, then we can apply $\sigma$ to get another isomorphism between the two. This differs from $i$ by $c_{\sigma} \in \Aut(L_{k'}) = (k')^{\times}$, and then $c_{\sigma} \in H^1(G, (k')^{\times}) = 0$ is a coboundary by Hilbert Theorem 90. Thus $c_0 = \frac{\sigma(\alpha)}{\alpha}$ for some $\alpha \in k'$. The upshow now is that $\alpha^{-1} i$ is Galois invariant, so this descends to an isomorphism $L \to L'$ over $k$.
+
+Now suppose $L \in \Pic {(X_{k'})}^G$ that does not come from $\Pic X$. Here, for $\sigma, \tau \in G$, we have $i_{\tau\sigma} = c_{\tau\sigma} (\sigma^*i_{\tau} \circ i_{\sigma})$, and thus $c_{\sigma \tau} \in H^2(G, {(k')}^{\times})$.
+
+\begin{prop}
+    Suppose $X(k) \neq \emptyset$, or equivalently $X$ has a rational point. Then $P_C^0$ is an \'etale sheaf and it is representable.
+\end{prop}
+
+\section{Relation to Complex Analysis}%
+\label{sec:relation_to_complex_analysis}
+
+Consider $H^0(C, \Omega^1)$, which has dimension $g$. We have an integration pairing $H_1(C, \Z) \to {H^0(C, \Omega^1)}^{\vee}$. The quotient of this map is $J^{\mr{an}} = {H^0(C, \Omega^1)}^{\vee} / H_1(C, \Z)$ is a torus. Via Poincare duality, we have a pairing $H_1(C, \Z) \otimes H_1(C, \Z) \to \Z$ satisfying the Riemann bilinear equations. These conditions are called a Riemann form on $J^{\mr{an}}$ and give it the structure of an abelian variety. Now we have a map $f \colon H^0(J, \Omega^1_J) \to H^0(C, \Omega^1_C)$. This gives a map
+\[ {H^0(C, \Omega^1)}^{\vee} \to {H^0(J, \Omega^1)}^{\vee} \simeq T_0 J \xrightarrow{\mr{exp}} J^{\mr{an}} \]
+with kernel $H_1(C, \Z)$ by Abel's theorem and Jacobi inversion. This gives an isomorphism between the algebraic and analytic constructions.
+
+\section{Shoulder Press}%
+\label{sec:shoulder_press}
+
+This is an inside move where you move your shoulder forward.
+
+\begin{defn}
+    The \textit{flop wrist press} move is a move where you bring your shoulder forward, push down with your palm, and allow your wrist to get bent back.
+\end{defn}
+
+The most well known flop wrist presser is Jerry Cadorette. This move can also be used defensively. Here are some examples of this move:
+
+\begin{enumerate}
+    \item Flop wrist press by Jerry Cadorette: \url{https://www.youtube.com/watch?v=A2VgWQNiKGg}
+    \item Defensive shoulder press by Marcio Barboza: \url{https://www.youtube.com/watch?v=pBKwuXQfOzc}
+    \item Defensive shoulder press by Devon Larratt: \url{https://www.youtube.com/watch?v=PDbmiSpFajg}
+\end{enumerate}
+
+\chapter{Caleb (Dec 11): Jacobians II and the History of Armwrestling}%
+\label{cha:caleb_dec_11_jacobians_ii_and_the_history_of_armwrestling}
+
+\section{Construction of the Jacobian}%
+\label{sec:construction_of_the_jacobian}
+
+Let $X$ be a curve over $k$. Recall the functor
+\[ G(T) = \qty{L \in \Pic(X \times T) \mid \deg L_t = 0} / q^* \Pic T. \]
+If $X$ has a $k$-point, then it is representable. Assume $x \in X(k)$. We will now construct the Jacobian representing the functor $G$. Recall that for an elliptic curve over $\C$, we have $\mr{Jac}(X) \cong X$. For a higher genus curve $X$, the Jacobian is birational to $X^{(g)} = X^g / S_g$.
+
+We will use the correspondence between $k'$-points of $X^{(g)}$ and effective Cartier divisors of $X_{k'}$ of degree $g$. Here, a \textit{Cartier divisor} is an element $\alpha \in \Gamma(X, K_x^* / \mc{O}_X)$ and a Cartier divisor is effective if we have charts $U_i$ such that $\alpha_{u_i} \in \mc{O}_{U_i}$. For example, if we consider the Weil divisor $n[0]$, this is the Cartier divisor $(\A^1, x^n)$.
+
+Recalling the Riemann-Roch formula $\ell(D) - \ell(K - D) = \deg D - g + 1$, chose effective divisors $D, D'$ of degree $g$. Then $\ell(D+D' - g[x]) \geq 1$ and semicontinuity and an instruction gives that the set $U \subset X^{(g)} \times X^{(g)}$ such that equality holds is open and nonempty. Up to scaling, there exists a unique $f$ such that $D'' = (f) + D + D' - g[x]$ is effective.
+
+Now we may define the map $U \to X^{(g)}$ by $(D, D') \to D''$. This gives a rational map $X^{(g)} \times X^{(g)} \dashrightarrow X^{(g)}$. By general results of Weil, we can upgrade this to an abelian variety $X^{(g)} \to J$.
+
+\begin{thm}
+    For any birational group $V$ over $k$, there exists a unique group variety $G$ over $k$ and a birational $f \colon V \to G$ such that $f(ab) = f(a) f(b)$.
+\end{thm}
+
+In our case, we have $V = X^{(g)}$ and $J$ is proper (or complete), so $X^{(g)} \to J$ is an honest morphism. 
+
+\begin{thm}
+    $J$ represents the functor $G$.
+\end{thm}
+
+The idea of the proof is to define a map $f \colon \Pic^0(X) \to J$. Let $D \in \Pic^0(X)$ and suppose $D + g[x]$ is effective. Then if we consider the diagonal map $X \xrightarrow{\Delta} X^{(g)} \xrightarrow{h} J$, then we define $f(D) = h \circ \Delta (D + g[x])$. Otherwise, we can take $D'$ such that $D + D' + g[x]$ and $D' + g[x]$ are effective, and we set $f(D) = f(D + D') - f(D')$.
+
+\section{Some results about the Jacobian}%
+\label{sec:some_results_about_the_jacobian}
+
+Here are some results about Jacobians. We are very far away from proving any of them.
+
+\begin{thm}
+    For any abelian variety $A$ over an infinitely field $k$, there exists a Jacobian $J$ such that $J \twoheadrightarrow A$.
+\end{thm}
+
+\begin{thm}[Torelli]
+    Let $k$ be an algebraically closed field. Then a curve $C$ over $k$ is uniquely determined by its canonically polarized Jacobian $(J, \lambda)$, where $\lambda$ is a certain ample line bundle giving a map $J \to \wh{J}$. Over $\C$, $\lambda$ is given by the image of 
+    \[ C^{g-1} \to J(C) \qquad (x_1, \ldots, x_{g-1}) \mapsto (\omega \mapsto \sum_i \int_q^{x_i} \omega). \]
+\end{thm}
+
+The proof allegedly involves complicated combinatorial arguments. For arithmetic geometers, there is the Shafarevich conjecture:
+
+\begin{conj}[Shafarevich]
+    Let $K$ be a number field and $S$ be a finite set of primes of $K$. Then there are finitely many isomorphism classes $C/k$ of genus $g$ with good reduction outside of $S$.
+\end{conj}
+
+Using various facts about Jacobians, this implies Faltings's theorem.
+
+\begin{thm}[Faltings]
+    Let $X$ be a curve of genus $g \geq 2$ over $\Q$. Then $X$ has finitely many rational points.
+\end{thm}
+
+Finally, there is a very roundabout way to prove the Riemann Hypothesis for curves. We can prove it for abelian varieties and then deduce it for a curve using the Jacobian.
+
+\section{History of Armwrestling}%
+\label{sec:history_of_armwrestling}
+
+The first definitive instances of armwrestling appear to be from 18th century Japan. Around the 1850s, Japan began having armwrestling competitions. The first major armwrestler was Tetsu Yamamoto, known as the \textit{God of armwrestling}. In the US, armwrestling was born in a California bar in the 1950s and there was a World championship in the 1960s. Broadcasts began in the 1970s.
+
+The first major event came in the 1985 movie (with attached armwrestling competition) \textit{Over the Top}, which introduced the world to John Brzenk, who is the greatest armwrestler ever. He was dominant from 1985 to 2010. In 2008, he was supplanted by Devon Larratt. 
+
+
+
+
 
 
 

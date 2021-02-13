@@ -1,0 +1,1372 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stackengine} 
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mscr}[1]{\mathscr{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\dpth}{depth}
+\DeclareMathOperator{\pdim}{proj.dim}
+\DeclareMathOperator{\idim}{inj.dim}
+\DeclareMathOperator{\gdim}{gl.dim}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Mod}{\mathsf{Mod}}
+\DeclareMathOperator{\Ind}{Ind}
+\DeclareMathOperator{\Inf}{Inf}
+\DeclareMathOperator{\Cor}{Cor}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Algebraic Number Theory \\ Spring 2021}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Chao Li}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during lecture using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the instructor's. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the instructor.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\newpage
+
+\tableofcontents
+
+
+\chapter{Motivation}%
+\label{cha:motivation}
+
+Here is a very classical question (that the ancients were interested in):
+
+\begin{quest}
+    Which prime numbers $p$ can be written as $p = x^2 + y^2$ for integers $x,y$?
+\end{quest}
+
+We can try to answer this by experiment. Clearly, $2=1+1,5=1+4,13=4+9,17=1+16$ and the other primes below $20$ cannot be written as a sum of two squares. Then, because any square is congruent to $0$ or $1$ modulo $4$, we see that if $p$ is an odd prime, then
+
+\begin{thm}[Fermat, Christmas Day, 1640]
+    An odd prime $p$ can be written as a sum of two squares if and only if $p \equiv 1 \pmod 4$.\footnote{Of course, Fermat never actually proved anything, and this statement was proved by Euler in the 1740s.} Similarly, we have:
+\begin{itemize}
+    \item $2 \neq p = x^2 + 2y^2$ if and only if $p \equiv 1,3 \pmod 8$.
+    \item $3 \neq p = x^2 + 3y^2$ if and only if $p \equiv 1 \pmod 3$.
+\end{itemize}
+\end{thm}
+
+In the modern day, we should reinterpret $p = x^2 + y^2$ as a factorization problem in the number field $k = \Q(i)$. Now we write our problem as $p = (x+iy)(x-iy)$. Similarly, the second problem can be written as $p = (x + \sqrt{-2} y)(x - \sqrt{-2} y)$ in $\Q(\sqrt{-2})$ and the third problem can be expressed in the field $\Q(\sqrt{-3})$. More generally, we can consider $k = \Q(\sqrt{d})$ for an arbitrary $d$, called the \textit{discriminant} of $k$. For a general quadratic extension, the ring of integers is not a UFD, but it is Dedekind, so we have unique factorization of prime ideals. Therefore we can write
+\[ (p) = \begin{cases}
+    \mf{p}_1 \mf{p}_2 & \qty(\frac{d}{p}) = 1 \\
+    \mf{p} & \qty(\frac{d}{p}) = -1 \\
+    \mf{p}^2 & \qty(\frac{d}{p}) = 0 (\text{ or } p \mid d).
+\end{cases} \]
+What we want to know is when the ideal $(p)$ splits, and this behavior is governed by the Legendre symbol. This symbol satisfies the miraculous identity (due to Gauss)
+
+\begin{thm}[Quadratic Reciprocity]
+    Let $p,q$ be odd primes. Then we have the identity
+    \[ \qty(\frac{q}{p}) \qty(\frac{p}{q}) = {(-1)}^{\frac{p-1}{2} \frac{q-1}{2}}. \]
+\end{thm}
+
+Recall that if $p$ is odd and $p \nmid d$, then $\qty(\frac{d}{p}) = 1$ if and only if $x^2 \equiv d \pmod p$ has solutions. Quadratic reciprocity tells us that the equation $x^2 \equiv q \pmod p$ is highly related to the equation $x^2 \equiv p \pmod q$. This ability to change the modulus is very helpful in solving these classical problems.
+
+\begin{exm}
+    A prime $p$ splits in $\Q(\sqrt{-3})$ if and only if $\qty(\frac{-3}{p}) = 1$ if and only if $\qty(\frac{p}{3}) = 1$ if and only if $p \equiv 1 \pmod 3$.
+\end{exm}
+
+Now we can generalize our question about splitting in quadratic fields to more general fields:
+
+\begin{quest}
+    Is there a criterion of the form $p$ splits in $k$ if and only if $p \equiv * \pmod N$ for some $N$? If so, we can generalize quadratic reciprocity. This is one of the main questions of class field theory.
+\end{quest}
+
+\begin{exm}
+    We have some examples of splitting behavior:
+    \begin{itemize}
+        \item $p$ splits in $k = \Q(\sqrt{-5})$ if and only if $p \equiv 1,3,7,9 \pmod 20$.
+        \item $p$ splits in $k = \Q(\sqrt{-5}, i)$ if and only if $p \equiv 1,9 \pmod 20$.
+        \item $p$ splits in $k = \Q(\zeta_5)$ if and only if $p \equiv 1 \pmod 5$.
+    \end{itemize}
+    However, there is no congruence condition for splitting in $k = \Q(\sqrt[3]{2})$ for any modulus $N$. The question is what is different about the last example. First, the fields $\Q(\sqrt{-5}), \Q(\sqrt{-5}, i), \Q(\zeta_5)$ are all Galois extensions of $\Q$ with Galois groups $\Z/2, \Z/2 \times \Z/2, \Z/4$. On the other hand, $k = \Q(\sqrt[3]{2})$ is not Galois and its Galois closure $\Q(\sqrt[3]{2}, \zeta_3)$ has Galois group $S_3$. 
+\end{exm}
+
+\begin{defn}
+    A field extension $L/K$ is called \textit{abelian} if $L/K$ is Galois and $\Gal(L/K)$ is abelian.
+\end{defn}
+
+This gives us the following slogan: given a number field $k$, class field theory
+\begin{enumerate}
+    \item classifies all abelian extensions $L/K$ in an accessible way;
+    \item describes factorization of primes of $K$ in $L$ in terms of groups intrinsic to $K$ (for example the class group of $K$).
+\end{enumerate}
+
+\section{A Special Case of CFT}%
+\label{sec:a_special_case_of_cft}
+
+Here, we will classify all \textit{unramified} abelian extensions $L/K$. Recall that the \textit{class group} $\Cl(K)$ of a number field $K$ is
+\[ \Cl(K) \coloneqq \qty{\text{fractional ideals of $K$}} / \qty{\text{principal ideals of $K$}}. \]
+This is always a finite abelian group.
+
+\begin{defn}
+    Let $H \subset \Cl(K)$ be a subgroup. Then a finite unramified abelian extension $L/K$ is a \textit{class field} for a subgroup $H \subset \Cl(K)$ if $\mf{p}$ splits in $L/K$ if and only if $[\mf{p}] \in H \subset \Cl(K)$.
+\end{defn}
+
+\begin{thm}[Unramified CFT]
+    Given $H \subset \Cl(K)$, the class field for $H$ exists and is unique. Moreover, each finite unramified abelian extension arises as a class field. This gives us a bijection
+    \[ \qty{\text{finite unramified abelian extensions}} \longleftrightarrow \qty{\text{subgroups of $\Cl(K)$}}. \]
+    Moreover, $\Gal(L/K) \cong \Cl(K) / H$.
+\end{thm}
+
+\begin{defn}
+    Note that the class field for $H = 0$ is the maximal unramified abelian extension $H_K$ of $K$, called the \textit{Hilbert class field}. This gives a canonical isomorphism $\Gal(H_K/K) \cong \Cl(K)$. Also, we see that $\mf{p}$ splits in $H_K$ if and only if $\mf{p}$ is a principal ideal.
+\end{defn}
+
+\begin{exm}
+    For the fields $K = \Q, \Q(i), \Q(\sqrt{-2}), \Q(\sqrt{-3})$, we have $\Cl(K) = 0$ and thus $H_K = K$.
+\end{exm}
+
+\begin{exm}
+    The simplest example of a number field with nontrivial class group is $K = \Q(\sqrt{-5})$. Here, $\Cl(K) = \Z/2$ and $H_K = \Q(\sqrt{-5}, i)$.
+\end{exm}
+
+\begin{rmk}
+    More generally, class field theory will add ramification on both sides of the correspondence to obtain a correspondence
+    \[ \qty{\text{finite abelian extensions}} \longleftrightarrow \qty{\text{subgroups of $\mscr{C}_K = \A_K^{\times}/K^{\times}$}}. \]
+\end{rmk}
+
+\section{Back to Fermat}%
+\label{sec:back_to_fermat}
+
+Consider the equation $p = x^2 + 5y^2$. Recall that we have $2,5 \neq p = x^2 + 5y^2$ if and only if $p \equiv 1,9 \pmod 20$. Note that this is \textbf{different} from the splitting behavior in $K = \Q(\sqrt{-5})$. This happens because $\Cl(\Q(\sqrt{-5})) = \Z/2$ is not trivial, and so we need both the condition that $(p) = \mf{p}_1 \mf{p}_2$ \textbf{and} that the $\mf{p} _i$ are principal. By unramified CFT, we know that $\mf{p}_i$ are principal if and only if they split in $H_K = \Q(\sqrt{-5}, i)$, and therefore $p = x^2 + 5y^2$ if and only if $p$ splits in $\Q(\sqrt{-5}, i)$. In this case, $H_K/\Q$ is abelian, so we have a nice answer.
+
+\begin{exm}
+    The primes of the form $p = x^2 + 14 y^2$ \textbf{cannot} be described in terms of a congruence condition. The field $K = \Q(\sqrt{-14})$ has $\Cl(K) = \Z/4$ and $\Gal(H_K/\Q) \cong D_4$ is \textbf{non-abelian}. 
+\end{exm}
+
+\begin{rmk}
+    We can study non-abelian extensions to get some nice answers that involve modular forms, and this is called the \textit{Langlands program}, which is beyond the scope of this course. 
+\end{rmk}
+
+Our outline for the semester is to prove local CFT, then prove global CFT, then do applications if time permits. This will be done using group cohomology.
+
+\chapter{Local Fields}%
+\label{cha:local_fields}
+
+Recall that it is very difficult to detect whether a polynomial equation over a global field like $\Q$ has solutions. However, we can embed $\Q$ into the local field $\R$ and then checking whether the polynomial has real solutions is very easy because we can do analysis. To try to recover all information about $\Q$, we can embed $\Q \hookrightarrow \Q_p$ for a prime $p$. We then have the following slogan, known as the local-to-global principle:
+
+\begin{quotation}
+\itshape We will study problems in $\Q$ by studying problems in all the local fields $\R$ and $\Q_p$.
+\end{quotation}
+
+\section{Absolute Values}%
+\label{sec:absolute_values}
+
+\begin{defn}
+    Let $K$ be a field. An \textit{absolute value} on $K$ is a function $\abs{-} \colon K \to \R$ such that
+    \begin{enumerate}
+        \item $\abs{-}$ sends $K^{\times}$ to $\R_{>0}$ and $0$ to $0$.
+        \item We have $\abs{xy} = \abs{x} \cdot \abs{y}$ for all $x,y \in K$.
+        \item For all $x,y \in K$, we have $\abs{x+y} \leq \abs{x} + \abs{y}$.
+    \end{enumerate}
+\end{defn}
+
+\begin{exm}
+    The usual absolute value on $\R$ defines an absolute value in this semse. This induces an absolute value on $\Q \subseteq \R$ usually denoted by $\abs{-}_{\infty}$. This is known as the archimedean absolute value on $\Q$.
+
+    Similarly, any embedding $K \xhookrightarrow{\sigma} \R$ or $K \xhookrightarrow{\sigma} \C$ induces an absolute value on $K$ defined by $\abs{x}_{\sigma} \coloneqq \abs{\sigma(x)}$.
+\end{exm}
+
+There is a different kind of absolute value that is not archimedian. Here, we will strengthen the triangle inequality.
+
+\begin{defn}
+    If $\abs{-}$ satisfies the ultrametric inequality
+    \[ \abs{x+y} \leq \max \qty{\abs{x}, \abs{y}} \]
+    then we say $\abs{-}$ is \textit{nonarchimedean}. 
+\end{defn}
+
+\begin{rmk}
+    Recall that $\R$ satisfies the archimedean property: If $0 \neq x \in \R$ there exists $n \in \Z$ such that $\abs{nx} > 1$. This property fails for nonarchimedean absolute values because $\abs{nx} \leq \abs{x}$ for all $n \in \Z$. In fact, $\abs{-}$ is nonarchimedean if and only if the set $\qty{\abs{n \cdot 1}}_{n \in \Z}$ is bounded.
+\end{rmk}
+
+\begin{exm}
+    Let $a \in \Q^{\times}$ and $p$ be a prime. Then define $\mr{ord}_p(a) \in \Z$ such that
+    \[ a = \pm \prod_{p} p^{\mr{ord}_p(a)}. \]
+    Now for any $c < 1$, we define 
+    \[ \abs{a}_p \coloneqq c^{\mr{ord}_p(a)}. \]
+    Then we simply need to check that $\abs{-}_p$ is a nonarchimedean absolute value on $\Q$. Here, it is easy to check the ultrametric inequality, and this absolute value is called the \textit{$p$-adic absolute value}. By convention, we will choose $c = p^{-1}$ and this is the \textit{normalized $p$-adic absolute value} on $\Q$.  
+\end{exm}
+
+\begin{exm}
+    For any number field $K$ and prime ideal $\mf{p} \subseteq \mc{O}_K$. Then we have a normalized $\mf{p}$-adic absolute value
+    \[ \abs{a}_{\mf{p}} \coloneqq \qty(\frac{1}{N\mf{p}})^{\mr{ord}_{\mf{p}}(a)} \]
+    where $N\mf{p} = \# \mc{O}_K / \mf{p}$.
+\end{exm}
+
+\begin{defn}
+    An absolute value $\abs{-}$ is \textit{discrete} if $\abs{K^{\times}} \subset \R$ is discrete under the usual topology on $\R$. 
+\end{defn}
+
+\begin{exm}
+    For a number field $K$ and prime $\mf{p}$, the $p$-adic absolute value $\abs{-}_{\mf{p}}$ is discrete. On the other hand, $\abs{-}_{\infty}$ is not discrete.
+\end{exm}
+
+\begin{defn}
+    Suppose $\abs{-}$ be nonarchimedean. Then define 
+    \begin{enumerate}
+        \item $A \coloneqq \qty{a \in K \mid \abs{a} \leq 1}$. This is a subring of $K$.
+        \item Now define $A^{\times} = \qty{a \in K \mid \abs{a} = 1}$. This is a subgroup of $A$ of invertible elements.
+        \item Set $\mf{m} = \qty{a \in K \mid \abs{a} < 1}$. This is the unique maximal ideal of $A$.
+    \end{enumerate}
+    Then $\abs{-}$ is discrete if and only if $\mf{m}$ is principal. In this case, a generator $\pi$ of $\mf{m}$ is called a \textit{uniformizer}. Then every $a \in K$ can be uniquely written as $a = \pi^r \cdot u$ for some $r \in \Z, u \in A^{\times}$.
+\end{defn}
+
+\begin{exm}(Non-example)
+    Consider the field $\Q(\qty{p^{1/n}}, n \in \Z)$ with $p$-adic absolute value. This is not a discrete absolute value.
+\end{exm}
+
+\begin{defn}
+    An absolute value defines a \textit{metric} on $K$ by $d(a,b) = \abs{a-b}$ for all $a,b \in K$. This induces a topology on $K$ where a basis of open neighborhoods of $a \in K$ is given by open balls 
+    \[ B(a,r) \coloneqq \qty{x \in K \mid \abs{x-a} < r}. \]
+\end{defn}
+
+\begin{exm}
+    In the $p$-adic topology, we see that $a,b \in \Q$ are closer under $\abs{-}_p$ if and only if $\abs{a-b}_{p}$ is smaller, which is equivalent to $\mr{ord}_p(a-b)$ being larger, which is equivalent to $a-b$ being divisible by a large power of $p$. In other words, $a \equiv b \pmod p^N$ for $N$ large.
+\end{exm}
+
+\begin{defn}
+    We say two absolute values on $K$ are \textit{equivalent}, or $\abs{-} \sin \abs{-}'$ if they induce the same topology on $K$.
+\end{defn}
+
+\begin{thm}[Ostrowski, 1916]
+    Let $\abs{-}$ be an absolute value on $\Q$.
+    \begin{enumerate}
+        \item If $\abs{-}$ is archimedean, then $\abs{-} \sim \abs{-}_{\infty}$.
+        \item If $\abs{-}$ is nonarchimedean, then $\abs{-} \sim \abs{-}_p$ for a unique $p$.
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    Similarly, absolute values on a number field $K$ are given by 
+    \begin{enumerate}
+        \item $\abs{-}_{\mf{p}}$ for a prime ideal $\mf{p} \subseteq \mc{O}_K$ ($\mf{p}$-adic place);
+        \item $\abs{-}_{\sigma}$ for some $\sigma \colon K \hookrightarrow \R$ (real place);
+        \item $\abs{-}_{\sigma}$ for some complex embeddings $\sigma \colon K \hookrightarrow \C$ (complex place). Here, note that complex embeddings come in conjugate pairs.
+    \end{enumerate}
+\end{rmk}
+
+\begin{defn}
+    An equivalence class of absolute values on $K$ is called a \textit{place (or prime)} of $K$.
+\end{defn}
+
+\begin{rmk}
+    When $v$ is a complex place it corresponds to a pair of complex embeddings $\sigma, \ol{\sigma}$, so we define 
+    \[ \abs{x}_v \coloneqq \abs{\sigma(x)}^2 \]
+    and this is the \textit{normalized absolute value for $v$}. 
+\end{rmk}
+
+One reason for this normalization is
+
+\begin{thm}[Product Formula]
+    Let $K$ be a number field. Then for all $a \in K^{\times}$, we have
+    \[ \prod_{v \text{ place of }K} \abs{a}_v = 1. \]
+\end{thm}
+
+\begin{rmk}
+    When $K = \Q$, let $a = \frac{m}{n}$ for $m,n \in \Z$. Then all but finitely many terms in the product are finite. Now it suffices to check this formula for $a = p$ and $a = -1$.
+
+    When $a = p$, we see that $\abs{a}_p = p^{-1}$ and for primes $\ell \neq p$, we have $\abs{a}_{\ell} = 1$. Finally, we see that $\abs{a}_{\infty} = p$, so the formula holds. When $a = -1$, all absolute values are $1$, so the product of all absolute values is trivial.
+
+    For a general number field, we can simply take the norm map $N_{K/\Q}$ to $\Q$ and check that it behaves well with respect to the places.
+\end{rmk}
+
+\begin{thm}[Weak Approximation]
+    Let $\abs{-}_1, \ldots, \abs{-}_n$ be inequivalent absolute values on a field $K$. Let $a_1, \ldots, a_n \in K$. Then for all $\ep > 0$, there exists $a \in K$ such that $\abs{a-a_i}_i < \ep$ for all $i = 1, \ldots, n$.
+\end{thm}
+
+\begin{rmk}
+    This allows us to approximate any finite collection $a_i \in K$ for inequivalent $\abs{-}_i$.
+\end{rmk}
+
+\begin{rmk}
+    As a sanity check, consider $K = \Q$ and suppose $\abs{-}_i = \abs{-}_{p_i}$. Then given $a_1, \ldots, a_n$, we simply find $a \in \Q$ such that $a_i \equiv a \pmod p_i^N$, which is possible by the Chinese remainder theorem.
+\end{rmk}
+
+\begin{rmk}
+    More generally, if $\abs{-}_1 \nsim \abs{-}_2$ then one can choose $a \in K$ such that $\abs{a}_1 > 1$ and $\abs{a}_2 < 1$. Then if we consider $\frac{a^r}{1+a^r}$ as $r \to \infty$, the absolute value under $\abs{-}_1$ approaches $1$ and under $\abs{-}_2$ it approaches $0$.
+\end{rmk}
+
+\section{Completions}%
+\label{sec:completions}
+
+Consider the field $\Q$ equipped with the the absolute value $\abs{-}_{\infty}$. Then we can complete $\Q$ as a metric space to obtain the field $\R$. More generally, if $(K, \abs{-})$ is a field equipped with an absolute value (a \textit{valued field}), then we will produce a general completion $\wh{K}$. Our aim is to produce a field that contains the original field and whose arithmetic is easier to understand.
+
+\begin{defn}
+    Let $(K, \abs{-})$ be a valued field. Then a sequence $\qty{a_n}$ of elements in $K$ is called \textit{Cauchy} if for all $\ep > 0$, there exists $N \geq 1$ such that $\abs{a_n - a_m} < \ep$ for all $n,m > N$. We say that $K$ is \textit{complete} if any Cauchy sequence in $K$ has a limit in $K$.
+\end{defn}
+
+\begin{exm}
+    Consider the sequence of integers $\qty{a_n = 2^n} = 2, 4, 8, 16, 32, \ldots$. Clearly, this is not Cauchy under the usual absolute value on $\Q$, but then if $m > n$, we see that 
+    \[ \abs{a_n - a_m}_2 = \qty(\frac{1}{2})^n, \] 
+    so $\qty{a_n}$ is Cauchy in $(\Q, \abs{-}_2)$. We then see that $\abs{a_n - 0}_2 = \qty(\frac{1}{2})^n \to 0$ and thus the limit of the sequence is $0$.
+\end{exm}
+
+\begin{exm}
+    Consider $\qty{a_n} = \qty{4, 34, 334, 3334, \ldots}$. Then if $m > n$, we have
+    \[ \abs{a_n - a_m}_5 = {\qty(\frac{1}{5})}^n \]
+    and therefore $\qty{a_n}$ is Cauchy in $(\Q,\abs{-}_2)$. We then see that 
+    \[ \abs{3 a_n - 2}_5 = \frac{1}{5^n} \xrightarrow{n \to \infty} 0 \]
+    and therefore $a_n \to \frac{2}{3}$.
+\end{exm}
+
+\begin{rmk}
+    In general, the limit of a Cauchy sequence may not exist.
+\end{rmk}
+
+\begin{thm}
+    Let $(K, \abs{-})$ be a valued field. Then there exists a complete valued field $(\wh{K}, \abs{-})$ and an embedding $K \hookrightarrow \wh{K}$ of valued fields such that any other embedding $K \hookrightarrow L$ of $K$ into a complete valued field factors uniquely through $\wh{K}$. In particular, $\wh{K}$ is unique up to isomorphism and is called the \textit{completion} of $(K, \abs{-})$. 
+\end{thm}
+
+\begin{proof}
+    Let $\wh{K}$ be the set of all Cauchy sequences in $K$ under the equivalence relation where $\qty{a_n} \sim \qty{b_n}$ where $\lim_{n \to \infty} \abs{a_n - b_n} = 0$. Then $\wh{K}$ is equipped with termwise addition and multiplication and absolute value $\abs{\qty{a_n}} = \lim_{n \to \infty} \abs{a_n}$. Thus $\wh{K}$ is a complete valued field.
+
+    To verify the universal property, we see that $x \mapsto (x, x, \ldots, x)$ embeds $K \hookrightarrow \wh{K}$ and this satisfies the desired universal property.
+\end{proof}
+
+\begin{defn}
+    Let $K$ be a number field and $v$ a place of $K$. Denote by $K_v \coloneqq (K, \abs{-}_v)$. When $v$ is a finite place, denote by $\mc{O}_{K_v} = \mc{O}_{K,v} = \mc{O}_v$ the valuation ring $\qty{x \in K_v \colon \abs{x} \leq 1} \subseteq K_v$. When $v$ is an infinite place, we see that $K_v \cong \R, \C$.
+\end{defn}
+
+\begin{exm}
+    Let $K = \Z$. Then we see that $\Q_{\infty} = \R$ and $\Q_p$ has a subring $\Z_p$, which is a discrete valuation ring. Here, elements of $\Z_p$ have a nonnegative lowest power of $p$.
+\end{exm}
+
+\begin{exm}
+    If $K = \Q(i)$, then $K_{\infty} = \C$ and $K_{\mf{p}}$ for $\mf{p} \subset \mc{O}_K = \Z[i]$ prime ideals are the completions of $K$.
+\end{exm}
+
+\begin{rmk}
+    Let $K$ be a nonarchimedean discrete valued field. Then $\wh{K}$ is a complete discrete valued field and the valuation ring $\wh{A} \subset \wh{K}$ is the closure of $A \subseteq K$ in $\wh{K}$. Also, the maximal ideal $\wh{\mf{m}} \subseteq \wh{A}$ is the closure of $\mf{m} \subseteq A$ in $\wh{K}$. Finally, a uniformizer $\pi$ of $K$ is also a uniformizer of $\wh{K}$.
+
+    We also see that the natural map $A / \mf{m}^n \to \wh{A} / \wh{\mf{m}}^n$ is an isomorphism. This tells us that we can approximate elements in $\wh{A}$ up to $\pi^n A$ using elements in $A$.
+\end{rmk}
+
+\begin{prop}
+    Let $K$ be a discrete valued field. Let $S$ be a complete set of representatives of $A/\mf{m}$ and $\pi$ be a uniformizer of $K$. Then any element of $\wh{K}$ can be uniquely written as $a_k \pi^k + a_{k+1} \pi^{k+1} + \cdots$ where $a_i \in S$ and $k \in \Z$.
+\end{prop}
+
+\begin{cor}
+    Let $x \in \Q_p$. Then $x$ has a \textit{$p$-adic expansion} $x = \sum_{i \geq k} a_i p^i$, where $a_i \in S = \Z/p\Z = \qty{0, 1, \ldots, p-1}$ and $k \in \Z$. 
+\end{cor}
+
+\begin{rmk}
+    The main term of the $p$-adic expansion is the lowest term $p^k$. This is completely unlike the situation with the decimal digits of $x \in \R$, where the highest power of $10$ is the main term.
+\end{rmk}
+
+\begin{rmk}
+    $\Q_p$ resembles $\F_p((T))$ but is more complicated arithmetically. When we add two power series, we simply add the coefficients, but addition in $\Q_p$ requires carrying. In addition, we see that $\F_p [[T]] / T^n \hookrightarrow \F_p[[T]]$ but $\Z_p / p^n$ does \textbf{not} embed in $\Z_p$. 
+\end{rmk}
+
+\begin{cor}
+    We have an isomorphism
+    \[ \wh{A} = \lim_{\longleftarrow} \wh{A} / \wh{\mf{m}}^n \cong \lim_{\longleftarrow} A/\mf{m}^n. \]
+    For example, we have
+    \[ \Z_p = \lim_{\longleftarrow} \Z/p^n \Z. \]
+\end{cor}
+
+\begin{proof}[Proof of Proposition 2.2.10]
+    Let $x \in \wh{K}^{\times}$. Then $x = \pi^k \cdot y$ for some $k \in \Z$ and $y \in \wh{A}^{\times}$. Then we find the first digit $a_0$ by considering $y \equiv a_0$ in $A/\mf{m} = S$. Then we replace $\pi^{-1} (y-a_0) = a_1 + a_2 \pi^2 + \cdots$ and repeat the process. Repeating this, we simply use the completeness of $\wh{K}$ to obtain the desired expansion.
+\end{proof}
+
+The advantage of completeness is that it is much easier to solve equations. Here, we take solutions modulo a high power of $p$ and then take the limit.
+
+\begin{thm}[Hensel's Lemma]
+    Let $K$ be a complete discrete valued field and $k = A/\mf{m}$ be the residue field. Now let $f(x) \in A[x]$ be a monic polynomial and let $\ol{f}(x) \coloneqq f(x) \mod \mf{m} \in k[x]$. Assume that $\ol{f}(x) = g_0(x) h_0(x)$ in $k[x]$ where $g_0, h_0$ are monic and coprime. Then there exist unique $g,h \in A[x]$ such that $f(x) = g(x) h(x)$ and $\ol{g} \equiv g_0, \ol{h} = h_0$.
+\end{thm}
+
+\begin{cor}
+    Suppose $\ol{f}$ has a simple root $\alpha_0 \in k$. Then $f(x)$ has a unique zero $\alpha \in A$ such that $\ol{\alpha} = \alpha_0$.
+\end{cor}
+
+\begin{cor}
+    If $k = \F_q$ for $q = p^t$, then $f(x) = x^q - x$ has $q$ distinct roots in $k = \F_q$ and hence $q$ distinct roots in $K$. In particular, $K^{\times}$ contains all $(q-1)$-th roots of unity, so we have a map $\F_q^{\times }\hookrightarrow K^{\times}$, called the \textit{Teichmuller lift}. 
+\end{cor}
+
+\begin{proof}[Proof of Hensel's lemma]
+    Let $g_0, g_0 \in A[x]$ be arbitrary monic lifts. Then $f - g_0 h_0 \in \pi A[x]$. Now inductiely we assume that there exist $g_n, h_n \in A[x]$ monic such that $f - g_n h_n \in \pi^{n+1} A[n]$. We simply write $g_{n+1} = g_n + \pi^{n+1} u$ for some $u \in A[x]$ such that $\deg u < \deg g_n$ and $h_{n+1} = h_n + \pi^{n+1} v$ where $\deg v < \deg h_n$. Then $f - g_{n+1} h_{n+1} \in \pi^{n+2} A$ if and only if 
+    \[ u h_n - v g_n \equiv \frac{f - g_n h_n}{\pi^{n+1}} \pmod \pi \]
+    but we can find such $u,v$ by Bezout's lemma. Thus the desired $g_{n+1}, h_{n+1}$ exist, and we obtain $g,h$ by taking the limit.
+\end{proof}
+
+\section{Extension of Absolute Values and Unramified Extensions}%
+\label{sec:extension_of_absolute_values_and_unramified_extensions}
+
+Let $K$ be a complete discrete valued field and $L$ be a finite separable extension of $K$. Suppose $[L:K] = n$. The main result is
+
+\begin{thm}
+    Let $K,L$ be as above. Then
+    \begin{enumerate}
+        \item $\abs{-}_K$ extends uniquely to a discrete absolute value $\abs{-}_L$ on $L$;
+        \item $L$ is complete with respect to $\abs{-}_L$;
+        \item For all $\beta \in L$, we have 
+            \[ \abs{\beta}_L = \abs{N_{L/K}(\beta)}_K^{1/n}. \]
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    To perform a sanity check, if $\beta \in K$, we have $\abs{\beta}_L = \abs{N_{L/K}(\beta)}_K^{1/n} = \abs{\beta^n}_K^{1/n} = \abs{\beta}_K$.
+\end{rmk}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item We first need to prove that a unique extension exists. We know that $\abs{-}_K$ comes from a discrete valuation (hence is nonarchimedean), so let $A \subseteq K$ be the valuation ring. Then $A$ is a Dedekind domain. Then let $B$ be the integral closure of $A$ in $L$. Then $B$ is also a Dedekind domain. But then any absolute value on $L$ extending $\abs{-}_K$ comes from a maximal iddeal of $B$ lying above the unique maximal ideal $\mf{p} \subseteq A$. Therefore, we need to show that $B$ is a local ring.
+
+            To see this, assume not. Suppose there exist two prime ideals $\mf{P}_1, \mf{P}_2 \subseteq B$ lying above $\mf{p}$. Let $\beta \in \mf{P}$ but $\beta \notin \mf{P}_2$. This implies that $A[\beta] \cap \mf{P}_1 \neq A[\beta] \cap \mf{P}_2$. Let $f(x) \in A[x]$ be the minimal polynomial of $\beta$. Then $\ol{f}(x) = f(x) \mod \mf{p} \in A/\mf{p}[x] = k[x]$ must satisfy $\ol{f}(x) = {h(x)}^m$ for an irreducible $h(x) \in k[x]$ (otherwise it has two distinct irreducible factors and Hensel tells us that the factorization can be lifted to $A[x]$). This implies that
+            \[ A[\beta] / \mf{p} A[\beta] = A[x]/(\mf{p}, f(x)) = k[x] / (\ol{f}(x)) = k[x]/(h(x))^m \]
+            has a unique prime ideal, generated by $h(x)$, which contradicts our original assumption that $A[\beta] \cap \mf{P}_1, A[\beta] \cap \mf{P}_2$ were distinct prime ideals.
+        \item Now we show that $L$ is complete. Let $\qty{a_k}$ be a Cauchy sequence in $L$. Choose a $K$-basis $\qty{e_1, \ldots, e_n}$ of $L$ and write
+            \[ a_k = a_{1,k} e_1 + \cdots + a_{n,k} e_n \qquad a_{i,k} \in K. \]
+            But then each sequence $\qty{a_{i,k}}_k$ forms a Cauchy sequence in $K$. By completeness of $K$, we can take $a_i \coloneqq \lim_{k \to \infty} a_{i.k} \in K$ and so we have
+            \[ \lim_{k \to \infty} a_k = a_1 e_1 + \cdots + a_n e_n \in L, \]
+            and thus $L$ is complete.
+        \item Let $\wt{L}$ be the Galois closure of $L/K$. Then we know that $\abs{-}_K$ also extends uniquely to $\wt{L}$. For any $\sigma \in \Gal(\wt{L}/K)$, the map $L \in \beta \mapsto \abs{\sigma(\beta)}_{\wt{L}}$ is also an absolute value on $L$ extending $\abs{-}_K$. Therefore, by the uniqueness of the extension, we see that $\abs{\beta}_L = \abs{\sigma(\beta)}_{\wt{L}}$. This implies that 
+            \[ \abs{N_{L/K}(\beta)}_K = \abs{N_{L/K}}_{\wt{L}} = \prod_{\sigma \colon L \to \wt{L}} \abs{\sigma(\beta)}_{\wt{L}} = \prod_{\sigma \colon L \to \wt{L}} \abs{\beta}_L = \abs{\beta}_L^n, \]
+            as desired. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    If $L/K$ is merely an algebraic and separable extension, then $\abs{-}_K$ also extends uniquely to an absolute value on $L$, but $\abs{-}_L$ may fail to be discrete or complete.
+\end{cor}
+
+\begin{proof}
+    Note that $L$ is the union of all of its finite subextensions.
+\end{proof}
+
+\begin{defn}
+    Let $K$ be a complete discrete valued field and $L$ be a finite separable extension. Let $\mc{O}_K \subseteq K$ and $\mc{O}_L \subseteq L$ be the valuation rings and $\mf{p} \subseteq \mc{O}_K, \mf{P} \subseteq \mf{O}_L$ be the maximal ideals. Next, let $k = \mc{O}_K/\mf{p}, \ell = \mf{O}_L / \mf{P}$ be the residue fields. 
+
+    Define the \textit{ramification index} $e(L/K)$ to be the $e \geq 1$ such that $\mf{p} \mc{O}_L = \mf{P}^e$. Next, define the \textit{residual degree} $f(L/K)$ to be $f \geq 1$ such that $f = [\ell : k]$. Then $n = ef$.  
+\end{defn}
+
+\begin{defn}
+    The extension $L/K$ is called
+    \begin{enumerate}
+        \item \textit{Unramified} if $e(L/K) = 1$ (which implies $f(L/K) = n$ and $\mf{p} = \mf{P}$);
+        \item \textit{Totally ramified} if $e(L/K) = n$ (which implies $\ell = k$ and $\mf{p} = \mf{P}^n$).
+    \end{enumerate}
+\end{defn}
+
+\section{Unramified Extensions}%
+\label{sec:unramified_extensions}
+
+We will study unramified extensions. Here, we will try to understand $L/K$ via $\ell / k$.
+
+\begin{prop}
+    If $L/K$ is unramified, write $\ell = k(\alpha_0), \alpha_0 \in \ell$. Then for any $\alpha \in \mc{O}_L$ such that $\ol{\alpha} = \alpha_0$ we have $L = K(\alpha)$.
+\end{prop}
+
+\begin{proof}
+    Let $f(x) \in \mc{O}_K[x]$ be the minimal polynomial of $\alpha$. Then $\deg \ol{f} = \deg f = [K(\alpha) : K] \leq [L:K]$. But then we know that $\deg \ol{f} \geq [k(\alpha_0) : k] = [\ell : k] = [L:K]$. But this implies that $\deg f = [L:K]$, so $K(\alpha) = L$.
+\end{proof}
+
+\begin{prop}
+    If $L = K(\alpha)$ with minimal polynomial of $\alpha$ given by $f(x)$ such that $\ol{f}(x)$ has no repeated roots over $\ol{k}$, then $L/K$ is unramified.
+\end{prop}
+
+\begin{proof}
+    If $f(x)$ is irreducible, then by Hensel's lemma, we have $\ol{f}(x) = h(x)^m$ where $h(x) \in k[x]$ is irreducible. But then because $\ol{f}(x)$ has no repeated roots, we see that $m = 1$. But then we see that $[\ell : k] = [L:K]$ and thus $L/K$ is unramified.
+\end{proof}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item Let $K \subset L \subset M$ be a tower of field extensions. Then $M/K$ is unramified if and only if $M/L$ and $L/K$ are unramified.
+        \item Assume $k$ is perfect. If $L/K$ is unramified and $L'/K$ is finite, then $LL'/L'$ is unramified.
+        \item Assume $k$ is perfect. Then if $L/K$ and $L'/K$ are unramified, then $LL'/K$ is unramified.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item Note that $M/K$ is unramified if and only if $e(M/K) = 1$, which is equivalent to $e(M/L) = e(L/K) = 1$ by multiplicativity of the ramification index.
+        \item Suppose $L/K$ is unramified. Then let $L = K(\alpha)$ and let $f(x) \in \mc{O}_K[x]$ be the minimal polynomial of $\alpha$. Then the reduction $\ol{f}(x) \in k[x]$ is irreducible and $\ell = k(\ol{\alpha})$. Because $k$ is perfect, $\ol{f}(x)$ has no repeated roots.
+
+            Because $LL'/L' = L'(\alpha)/L'$, let $g(x) \in \mc{O}_{L'}[x]$ be the minimal polynomial of $\alpha$. Then $\ol{g}(x) \mid \ol{f}(x)$ and thus $\ol{g}(x)$ has no repeated roots, so $LL'/L'$ is unramified.
+        \item Consider the tower $K \subseteq L' \subseteq LL'$. Because $L/K, L'/K$ are unramified, we know $LL'/L$ is unramified. This implies that $LL'/K$ is unramified. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}
+    Assume that $k$ is perfect. Then there is an inclusion-preserving bijection
+    \[ \qty{L/K\ \text{finite unramified}} \xleftrightarrow{\simeq} \qty{\ell / k\ \text{finite}} \qquad L \mapsto \ell. \]
+    Moreover, $L/K$ is Galois if and only if $\ell/k$ is Galois and $\Gal(L/K) \simeq \Gal(\ell/k)$ in this case.
+\end{thm}
+
+\begin{proof}
+    We prove surjectivity. Let $\ell / k$ be a finite extension. Write $\ell = k(\alpha_0)$ and let $\ol{f}(x) = k[x]$ be the minimal polynomial of $\alpha_0$. Then any monic lift $f(x) \in \mc{O}_K[x]$ of $\ol{f}(x)$ has a root $\alpha$ such that $\ol{\alpha} = \alpha_0$ by Hensel's Lemma. Then $L = K(\alpha)$ has residue field $\ell = k(\alpha_0)$. Because $\ol{f}$ is irreducible and $k$ is perfect, we know $L/K$ is unramified.
+
+    Now we will prove injectivity. Let $L/K, L'/K$ be unramified with the same residue field $\ell$. Then $LL'/K$ is also unramified with residue field $\ell$. But this implies that
+    \[ [LL' : K] = [\ell : k] = [L : K] = [L' : K], \]
+    so we must have $L = LL' = L'$.
+    
+    Now we will show the statements about Galois extensions. If $L/K$ is Galois, then $\Gal(L/K)$ preserves $\mc{O}_L$ and $\mf{p}_L \subseteq \mc{O}_L$ and acts trivially on $\mc{O}_K$ and $\mf{p}_K \subseteq \mc{O}_K$. This implies that any $\sigma \in \Gal(L/K)$ induces $\ol{\sigma} \in \Aut(\ell/k)$. If $L = K(\alpha)$ and $\alpha_0 = \ol{\alpha}$, then $L/K$ is Galois if and only if it contains $\alpha$, but this is equivalent to $\ell$ containing all conjugates of $\alpha_0$, which is equivalent to $\ell/k$ being Galois. Then the natural map $\Gal(L/K) \to \Gal(\ell / k)$ is an isomorphism because the permutation on conjugates of $\alpha$ induces the same permutation on the conjuages of $\alpha_0$.
+\end{proof}
+
+\begin{cor}
+    If $L/K$ is an algebraic extension (possibly infinite), then there exists a largest unramified subextension $K_0 / K$ of $L/K$. Moreover, $L/K_0$ is totally ramified.
+\end{cor}
+
+\begin{proof}
+    Let $K_0$ be the compositum of all finite unramified subextensions of $L/K$. Then the residue field of $K_0$ is equal to the residue field of $L$ (otherwise, we can create an even larger unramified extension). This implies $L/K_0$ is totally ramified.
+\end{proof}
+
+\begin{cor}
+    Assume $k = \F_q$. Then for all $n \geq 1$ there is a unique unramified extension $L/K$ of degree $n$ and $\Gal(L/K) = \Gal(\F_{q^n} / \F_q) \cong \Z/n\Z$.
+\end{cor}
+
+\begin{proof}
+    There is a unique degree $n$ extension of $\F_q$.
+\end{proof}
+
+\begin{defn}
+    Define the \textit{Frobenius element} $\sigma \in \Gal(L/K)$ when $k = \F_q$ to be the generator of $\Gal(L/K)$ corresponding to the Frobenius map under $\Gal(L/K) \xrightarrow{\simeq} \Gal(\F_{q^n} / \F_q)$. We will call this element $\mr{Frob}_{L/K}$, and $\mr{Frob}_{L/K}(\alpha) \equiv \alpha^q \pmod \mf{p}_L$ for all $\alpha \in \mc{O}_L$.
+\end{defn}
+
+\begin{cor}
+    When $k = \F_q$, the maximal unramified extension of $K$ is
+    \[ K^{\mr{ur}} = \bigcup_{(n,q) = 0} K(\zeta_n). \]
+    In particular, we have
+    \[ \Q_p^{\mr{ur}} = \bigcup_{(n,p) = 1} \Q_p(\zeta_n). \]
+\end{cor}
+
+\begin{proof}
+    We know $\F_{q^n} = \F_q(\zeta_{q^n-1})$, so $\ol{\F}_q$ is given by adjoining all coprime-to-$p$ roots of unity.
+\end{proof}
+
+\section{Totally Ramified Extensions}%
+\label{sec:totally_ramified_extensions}
+
+\begin{defn}
+    A polynomial $f(x) \in K[x]$ is \textit{Eisenstein} if 
+    \[ f(x) = a_n x^n + \cdots + a_1 x + a_0 \]
+    such that $\abs{a_n} = 1, \abs{a_i} < 1, \abs{a_0} = \abs{\pi}$.
+\end{defn}
+
+\begin{exm}
+    The polynomial $x^n - \pi$ is Eisenstein. Note that $K[x] / f(x) = K(\sqrt[n]{\pi})$ is totally ramified.
+\end{exm}
+
+\begin{prop}
+    A finite extension $L/K$ is totally ramified if and only if $L = K(\alpha)$ where $\alpha$ is a root of an Eisenstein polynomial.
+\end{prop}
+
+\begin{proof}
+    Let $\alpha$ be the root of an Eisenstein polynomial. Then $\abs{\alpha^n} = \prod_{\sigma \colon L \hookrightarrow \wt{L}} \abs{\sigma(\alpha)} = \abs{a_0} = \abs{\pi}$. Therefore $e(L/K) \geq n$ and thus $L/K$ is totally ramified.
+
+    Now suppose $L/K$ is totally ramified. Let $\alpha$ be a uniformizer of $L$. Therefore $(\alpha^n) = (\pi)$ and thus $\abs{\alpha}_L = \abs{\pi}_L^{1/n}$. Then $1, \alpha, \ldots, \alpha^{n-1}$ have absolute values representing different cosets in $\abs{L^{\times}} / \abs{K^{\times}}$. Thus the minimal polynomial of $\alpha$ has degree $n$. Moreover, if we write the minimal polynomial as
+
+    \[ \alpha^n + a_{n-1} \alpha^{n-1} + \cdots + a_1 \alpha + a_0 = 0, \]
+    then $\abs{\alpha}^n = \abs{a_0} = \abs{\pi}$ and $\abs{a_i} < 1$ so that the required cancellation happens. But this implies that $\alpha$ is a root of an Eisenstein polynomial.
+\end{proof}
+
+\begin{prop}
+    Assume $k = \F_q$. Then there are only finitely many totally ramified extensions of $K$.
+\end{prop}
+
+\begin{proof}
+    Recall \textbf{Krasner's lemma}: Let $f(x) = \sum_{i=0}^n a_i x^i, g(x) = \sum_{i=0}^n b_i x^i \in K[x]$ and assume $\abs{a_i - b_i}$ is sufficiently small for all $i$. If $f(x)$ is irreducible, then so is $g(x)$, and 
+    \[ \qty{K(\alpha) \mid f(\alpha) = 0} = \qty{K(\beta) \colon g(\beta) = 0}. \]
+    Therefore a totally ramified extension depends only on a small neighborhood of $(a_0, \ldots, a_{n-1})$ in the set
+    \[ \qty{\abs{a_0} = \abs{\pi}} \times \qty{\abs{a_1} < 1} \times \cdots \times \qty{\abs{a_{n-1}} < 1}, \]
+    which is compact, so it can be covered by finitely many such small neighborhoods.
+\end{proof}
+
+Recall that if $K$ is a complete discrete valued field with residue field $k = \F_q$, there exists a unique unramified extension $L/K$ of degree $n$. Together with the proposition, there exist finitely many totally unramified extensions $L/K$ of degree $n$. This is of course false for number fields; for example, $\Q$ has infinitely many quadratic extensions.
+
+\begin{rmk}
+    Krasner (1966) gave an explicit formula for the number of extensions of $p$-adic fields of degree $n$ and an algorithm to construct the set of generating polynomials of degree $n$. More desirable is a way to organize all these extensions, and local class field theory achieves this for abelian extensions of all local fields.
+\end{rmk}
+
+\begin{defn}
+    A \textit{local field} is a valued field $K$ that is locally compact under the topology induced by the absolute value.
+\end{defn}
+
+\begin{rmk}
+    Recall that
+    \begin{enumerate}
+        \item A topological space is compact if and only if open cover has a finite subcover.
+        \item A topological space is locally compact if every point has compact neighborhood.
+        \item A metric space is compact if and only if it is complete and totally bounded.
+        \item A metric space is compact if and only if all closed balls are compact.
+        \item This tells us that local fields are always complete. To find a limit for a Cauchy sequence, everything is contained in a closed ball, which is complete and thus has a limit.
+    \end{enumerate}
+\end{rmk}
+
+\begin{exm}\leavevmode
+    \begin{enumerate}
+        \item The easiest examples of local fields are $\R, \C$.
+        \item If $K$ is archimedean and complete, then $K \simeq \R$ or $\C$.
+    \end{enumerate}
+\end{exm}
+
+\begin{lem}
+    Let $K$ be a complete discrete valued field. Then $K$ is locally compact if and only if the residue field $k$ is finite.
+\end{lem}
+
+\begin{proof}
+    Let $K$ be locally compact. Then $\mc{O}_K = \qty{x \in K \mid \abs{x} \leq 1}$ is a closed ball. This means that $\mc{O}_K$ is compact. If we consider an open cover
+    \[ \mc{O}_K = \bigcup_{x \in k} (x + \mf{p}_K), \]
+    this has a finite subcover. But all of the $x + \mf{p}_K$ are disjoint, so $k$ is finite.
+
+    Now suppose $k$ is finite. We show that every $x \in K$ has a compact neighborhood. In particular, we will show that $x + \mc{O}_K$ is compact and therefore that $\mc{O}_K$ is compact. To do this, we need to show that $\mc{O}_K$ is totally bounded. Choose $r > 0$ and consider the open balls $B_{a,r}$ give a cover of $\mc{O}_K$ as long as $a \in \mc{O}_K / \mf{p}_K^n$ and $n$ is sufficiently large. By finiteness of $k$, we know that $\mc{O}_K /\mf{p}_K^n$ is finite, as desired.
+\end{proof}
+
+\begin{thm}
+    Every local field is one of the following:
+    \begin{enumerate}
+        \item $\R$ or $\C$;
+        \item A finite extension of $\Q_p$;
+        \item $\F_q((t))$ for a prime power $q$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    Suppose $\operatorname{char} K = 0$. Then $\Q \subseteq K$. If $K$ is archimedean, then $K = \R$ or $\C$. Otherwise, $\Q_p \subseteq K$ and by local compactness, $K/\Q_p$ must be finite.
+
+    If $\operatorname{char} K = 0$, then $\F_p \subseteq K$. Let $k = \F_q$ be the residue field. Then 
+    \[ K = \qty{\sum_{n \geq k} a_n \pi^n \mid k \in \Z, a_n \in S = \mc{O}_K / \mf{p}_K}. \]
+    By Hensel's lemma, we have $\F_q^{\times} \hookrightarrow K^{\times}$ and we thus have $\F_q \subseteq K$. Therefore $K \cong \F_q((\pi))$, as desired.
+\end{proof}
+
+\section{Statement of Local Class Field Theory}%
+\label{cha:local_class_field_theory}
+
+Recall that a field extension $L/K$ is \textit{abelian} if it is Galois and $\Gal(L/K)$ is abelian.
+
+\begin{exer}
+    If $L_1/K, L_2/K$ are abelian, then $L_1 L_2 / K$ is also abelian.
+\end{exer}
+
+Define $K^{\mr{ab}}$ to be the maximal abelian extension of $K$. Equivalently, this is the compositum of all finite extensions of $K$. Then $K^{\mr{ab}}/K$ has infinite degree, and classifying abelian extensions of $K$ is equivalent to understanding $\Gal(K^{\mr{ab}}/K)$.
+
+\begin{defn}
+    Let $\Omega /K$ be a possible infinite extension. We call $\Omega/K$ \textit{Galois} if it is algebraic, separable, and normal. Equivalently, $\Omega$ is the union of all its finite Galois subextensions. In particular, we have
+    \[ \Gal(\Omega/K) = \lim_{\substack{\longleftarrow \\ L/K \text{ finite Galois}}} \Gal(L/K) \]
+    is an inverse limit of finite groups, known as a \textit{profinite} group. Then $\Gal(\Omega / K)$ has a \textit{profinite topology} with a basis of open neighborhoods of $1$ given by $\Gal(\Omega / L) \subseteq \Gal(\Omega / K)$ for finite subextensions $L/K$.  
+\end{defn}
+
+\begin{exm}
+    Consider $\Omega / K = \ol{F}_q / \F_q$. Then 
+    \[ \Gal(\ol{F}_q, \F_q) = \lim_{\substack{\longleftarrow \\ n}} \Gal(\F_{q^n} / \F_q) = \lim_{\substack{\longleftarrow \\ n}} \Z/n\Z \eqqcolon \wh{\Z}. \]
+    The open neighborhoods of $1$ are given by $\Gal(\ol{F}_q / \F_{q^n}) \cong n \wh{\Z} \subseteq \wh{\Z}$.
+\end{exm}
+
+\begin{rmk}
+    If $L/K$ is finite, then $\Gal(\Omega / L)$ is an open subgroup. In addition, $\Gal(\Omega / L)$ is also closed, so it is clopen.
+
+    If $L/K$ is any extension, then 
+    \[ \Gal(\Omega / L) = \bigcap_{\substack{L_i \subseteq L \\ L_i/K \text{ finite}}} \Gal(\Omega / L_i) \]
+    is a closed subgroup.
+\end{rmk}
+
+\begin{thm}[Galois correspondence]
+    Let $\Omega / K$ be Galois. Then there is a Galois correspondence
+    \[ \qty{L/K \text{ subextension of }\Omega /K} \longleftrightarrow \qty{\text{closed subgroups of } \Gal(\Omega/K)}. \]
+    Moreover, $L/K$ is Galois if and only if the corresponding closed subgroup $H \subseteq \Gal(\Omega /K)$ is normal.
+\end{thm}
+
+\begin{rmk}
+    If $H \subseteq \Gal(\Omega /K)$ is not necessarily closed (for example, $\Z \subset \wh{\Z}$ is not closed and its closure is $\wh{\Z}$), then $\Omega^H$ corresponds to $\ol{H}$ under the Galois correspondence. In particular, $\Gal(K^{\mr{ab}}/K) = G/\ol{[G,G]} \eqqcolon G^{\mr{ab}}$, where $G = \Gal(\ol{K} / K)$.
+
+    This gives us the slogan, that when $K$ is a local field, $\Gal(K^{\mr{ab}}/K)$ can be understood in terms of $K^{\times}$.
+\end{rmk}
+
+\begin{thm}[Local Artin reciprocity]
+    There exists a unique $\phi_K \colon K^{\times} \to \Gal(K^{\mr{ab}}/K)$ (local Artin reciprocity map) such that
+    \begin{enumerate}
+        \item For any finite abelian $L/K$, there is a commutative diagram 
+            \begin{equation*}
+            \begin{tikzcd}
+                K^{\times} \arrow{r}{\phi_K} \arrow[twoheadrightarrow]{d} & \Gal(K^{\mr{ab}}/K) \arrow[twoheadrightarrow]{d} \\
+                K^{\times} / N(L^{\times}) \arrow{r}{\sim}[swap]{\phi_{L/K}} & \Gal(L/K).
+            \end{tikzcd}
+            \end{equation*}
+        \item For any finite unramified $L/K$ and uniformizer $\pi$ of $K$, we have $\phi_{L/K}(\pi) = \mr{Frob}_{L/K} \in \Gal(L/K)$.
+    \end{enumerate}
+\end{thm}
+
+\section{Norm Subgroups}%
+\label{sec:norm_subgroups}
+
+Let $K$ be a nonarchimedean local field.
+
+\begin{defn}
+    A subgroup of $K^{\times}$ is a \textit{norm subgroup} if it is of the form $N(L^{\times})$ for some finite abelian extension $L/K$.
+\end{defn}
+
+\begin{prop}
+    Assume local CFT I. 
+    \begin{enumerate}
+        \item $N(L_1^{\times}) \cap N(L_2^{\times}) = N({(L_1 L_2)}^{\times})$.
+        \item $N(L_1^{\times}) \subseteq N(L_2^{\times})$ if and only if $L_1 \supseteq L_2$.
+        \item A subgroup of $K^{\times}$ containing a norm subgroup is also a norm subgroup.
+        \item $N(L_1^{\times}) N(L_2^{\times}) = N({(L_1 \cap L_2)}^{\times})$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    Recall that there exists a unique local Artin reciprocity map $K^{\times} \xrightarrow{\phi_K} \Gal(K^{\mr{ab}}/K)$.
+    \begin{enumerate}
+        \item Note that if $K \subseteq L_2 \subseteq L_1$, then $N(L_1^{\times}) \subseteq N(L_2^{\times})$, so clearly for $L_1, L_2$, we see that $N({(L_1L_2)}^{\times}) \subseteq N(L_1^{\times}) \cap N(L_2^{\times})$. Conversely, if $a \in N(L_1^{\times}) \cap N(L_2^{\times})$, then by local Artin reciprocity, we see that $a \in \ker \phi_{L_1/K} \cap \ker \phi_{L_2/K}$. But this means that $\eval{\phi_K(a)}_{L_1} = \eval{\phi_K(a)}_{L_2} = 1$, and thus $\eval{\phi_K(a)}_{L_1L_2} = 1$. But this implies that $a \in \ker \phi_{L_1L_2/K} = N({(L_1L_2)}^{\times})$.
+        \item One direction is obvious. Assume that $N(L_1^{\times}) \subseteq N(L_2^{\times})$. Therefore 
+            \[ N(L_1^{\times}) = N(L_1^{\times}) \cap N(L_2^{\times}) = N({(L_1L_2)}^{\times}). \]
+            However, we know that 
+            \[ [L_1L_2:K] = [K^{\times}:N({(L_1L_2)}^{\times})] = [K^{\times}:N(L_1^{\times})] = [L_1:K], \]
+            which implies that $L_1 = L_1L_2$, so $L_1 \supseteq L_2$.
+        \item Assume $H \supseteq N(L^{\times})$. Let $M = L^{\phi_{L/K}(H) \subseteq \Gal(L/K)}$. Then by local Artin reciprocity, we have a commutative diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                H/N(L^{\times}) \arrow{r}{\simeq} \arrow[hookrightarrow]{d} & \Gal(L/M) \arrow[hookrightarrow]{d} \\
+                K^{\times}/N(L^{\times}) \arrow{r}{\substack{\phi_{L/K}\\ \sim}}  \arrow[twoheadrightarrow]{d} & \Gal(L/K) \arrow[twoheadrightarrow]{d} \\
+                K^{\times}/H = K^{\times/N(M^{\times})} \arrow{r}{\substack{\phi_{M/K}\\ \sim}} & \Gal(M/K).
+            \end{tikzcd}
+            \end{equation*}
+            This tells us that $H = N(M^{\times})$ is also a norm subgroup.
+        \item Note that $L_1 \cap L_2$ is the largest subextension contained in both $L_1, L_2$. On the other hand, $N({(L_1\cap L_2)}^{\times})$ is the smallest subgroup containing both $N(L_1^{\times}), N(L_2^{\times})$, and the desired result follows. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    The map $L \mapsto N(L^{\times})$ defines a bijection
+    \[ \qty{L/K\ \text{finite abelian}} \longleftrightarrow \qty{\text{norm subgroups of } K^{\times}}. \]
+\end{cor}
+
+The idea of local Artin reciprocity was to understand extrinsic data about extensions using intrinsic data about the group $K^{\times}$. However, the notion of a norm subgroup still still extrinsic, so we want a more intrinsic characterization of norm subgroups.
+
+\begin{lem}
+    Let $L/K$ be a finite extension. If $N(L^{\times})$ has finite index in $K^{\times}$, it must be open.
+\end{lem}
+
+\begin{proof}
+    Note that $N \colon L^{\times} \to K^{\times}$ is continuous and $\mc{O}_L^{\times}$ is compact. Then $N(\mc{O}_L^{\times}) \subseteq K^{\times}$ ic compact and hence closed. But then $\mc{O}_K^{\times} / N(\mc{O}_L^{\times}) \to K^{\times}/N(L^{\times})$, and thus $N(\mc{O}_L^{\times}) \subseteq \mc{O}_K^{\times}$ is open (and closed). But this implies that $N(\mc{O}_L^{\times}) \subseteq K^{\times}$ is open (because $\mc{O}_K^{\times} \subseteq K^{\times}$ is open), and thus $N(L^{\times})$ must be open.
+\end{proof}
+
+\begin{cor}
+    If $L/K$ is finite abelian, then $N(L^{\times}) \subseteq K^{\times}$ is a finite index open subgroup.
+\end{cor}
+
+\begin{thm}[Local CFT II: local existence]
+    Every finite index open subgroup of $K^{\times}$ is a norm subgroup.
+\end{thm}
+
+\begin{cor}
+    We have a bijection
+    \[ \qty{L/K\ \text{finite abelian}} \longleftrightarrow \qty{\text{finite index open subgroups of } K^{\times}}. \]
+\end{cor}
+
+\begin{rmks}\leavevmode
+    \begin{enumerate}
+        \item This bijection also holds for archimedean local fields. For $K = \R$, the two extensions $\R, \C$ correspond to $\R^{\times}, \R_{>0}$, while $\C$ is algebraically closed and $\C^{\times}$ is the only finite-index open subgroup of itself.
+        \item If $K$ is a finite extension of $\Q_p$, then any finite index subgroup of $K^{\times}$ is automatically open. However, this is not true for $K = \F_q((t))$. In fact, if $H \subseteq K^{\times}$ has finite index $n$, then ${(K^{\times})}^n \subseteq H$. Therefore, it suffices to show that ${(K^{\times})}^n$ is open. It is easy to see that ${(K^{\times})}^n \supseteq 1 + \mf{p}_K^m$ for some $m \gg 0$. Therefore the equation $x^n - a = 0$ has solutions in $K$ for $a \in 1 + \mf{p}_K^m$ by Hensel for $p \nmid n$ and a stronger version for $p \mid n$ (that does not always hold).
+    \end{enumerate}
+\end{rmks}
+
+Now we want a reformulation of local CFT using the norm topology.
+
+\begin{defn}
+    The \textit{norm topology} on $K^{\times}$ is given by declaring a basis of open neighborhoods of $1$ to be the norm subgroups of $K^{\times}$, which are the same as finite index open subgroups in the usual topology.
+\end{defn}
+
+\begin{exm}
+    Note that $\mc{O}_K^{\times}$ is open under the usual topology, but is not open under the norm topology.
+\end{exm}
+
+\begin{rmk}
+    The norm topology has fewer open sets and is therefore coarses than the usual topology.
+\end{rmk}
+
+\begin{defn}
+    Define $\wh{K}^{\times}$ to be the completion of $K^{\times}$ under the norm topology:
+    \[ \wh{K}^{\times} \coloneqq \varprojlim_{L/K\ \text{finite abelian}} K^{\times}/N(L^{\times}). \]
+    Then the Artin reciprocity map induces an isomorphism $\wh{K}^{\times} \simeq \Gal(K^{\mr{ab}}/K)$.
+\end{defn}
+
+\begin{prop}
+    We have an isomorphism $\wh{K}^{\times} \cong \mc{O}_K^{\times} \times \wh{Z}$ as topological groups.
+\end{prop}
+
+\begin{proof}
+    Choose a uniformizer $\pi$ of $K$. Then $K^{\times} \cong \mc{O}_K^{\times} \times \pi^{\Z}$. Then a basis of finite index open subgroups is given by $(q+\mf{p}_k^m) \times \pi^{n\Z}$ for some $m,n \geq 1$. This implies that
+    \[ \wh{K}^{\times} \cong \varprojlim_m \mc{O}_K^{\times} / (1+\mf{p}_K^m) \times \varprojlim_n \Z/n\Z = \mc{O}_K^{\times} \times \wh{\Z}. \qedhere \]
+\end{proof}
+
+\begin{cor}
+    There is an isomorphism $\Gal(K^{\mr{ab}}/K) \cong \mc{O}_K^{\times} \times \wh{\Z}$ as topological groups for any choice of uniformizer $\pi$. Therefore, we have a decomposition $K^{\mr{ab}} = K_{\pi} \cdot K^{\mr{ur}}$, where $K_{\pi} = {(K^{\mr{ab}})}^{\phi_K(\pi)}$ and $K^{\mr{ur}} = {(K^{\mr{ab}})}^{\phi_K(\mc{O}_K^{\times})}$ is the maximal unramified extension. This means that $K_{\pi}$ is the totally ramified part of $K^{\mr{ab}}$.
+\end{cor}
+
+\begin{rmk}
+    More canonically, consider the short exact sequence
+    \[ 0 \to \mc{O}_K^{\times} \to K^{\times} \to \Z \to 0. \]
+    If we consider the profinite completion of this, we obtain an exact sequence
+    \[ 0 \to \mc{O}_K^{\times} \to \wh{K}^{\times} \to \wh{\Z} \to 0. \]
+    Because $\Z \hookrightarrow \wh{\Z}$ is dense, so is $K^{\times} \hookrightarrow \wh{K}^{\times}$.
+\end{rmk}
+
+
+Now, it remains to prove local class field theory. First, we will construct the local Artin reciprocity map $\phi_K$ using Galois cohomology. After we prove that $\phi_K$ has the desired property, we will prove the local existence theorem by constructing enough norm subgroups using cyclic extensions.
+
+\chapter{Group Cohomology}%
+\label{sec:group_cohomology}
+
+\begin{defn}
+    Let $G$ be a group. Then a \textit{$G$-module} is a (left) module over the ring $\Z[G]$, or in other words, an abelian group with a linear (left) $G$-action.
+\end{defn}
+
+\begin{exm}
+    Let $L/K$ be a finite Galois extension of fields and $G = \Gal(L/K)$. Then $M = L$ and $M = L^{\times}$ are both $G$-modules.
+\end{exm}
+
+\begin{exm}
+    Any abelian group $M$ can be regarded as a $G$-module under the trivial action.
+\end{exm}
+
+\begin{defn}
+    A \textit{homomorphism of $G$-modules} $\alpha \colon M \to N$ is a $G$-equivariant group homomorphism, or equivalently a morphism of $\Z[G]$-modules. The set of such morphisms is denoted $\Hom_G(M,N)$.
+\end{defn}
+
+We will denote the category of $G$-modules with $G$-linear maps by $\ms{Mod}_G$. Because $\ms{Mod}_G = \ms{Mod}_{\Z[G]}$, it is an abelian category with enough injectives and projectives. This allows us to develop the full theory of homological algebra in a concrete way.
+
+\begin{defn}
+    $M \in \Mod_G$ is \textit{injective} if the functor $\Hom_G(-,M)$ is exact. Dually, $M \in \Mod_G$ is \textit{projective} if $\Hom_G(M,-)$ is exact.
+\end{defn}
+
+\begin{defn}
+    An abelian category has \textit{enough injectives} if any object can be embedded in an injective object. Similarly, an abelian category has \textit{enough projectives} if any object has a surjection from a projective object.
+\end{defn}
+
+\begin{exm}
+    The free $\Z[G]$-module $M = \Z[G]$ is projective. In fact, $\Hom_G(\Z[G], M) = M$.
+\end{exm}
+
+\section{Definition of Cohomology}%
+\label{sec:definition_of_cohomology}
+
+\begin{defn}
+    Let $M \in \Mod_G$. Define its \textit{$G$-invariants} by 
+    \[ M^G \coloneqq \qty{ x \in M \mid gx = x\ \text{for all}\ g \in G } \subseteq M \]
+    to be the largest submodule with trivial $G$-action.
+\end{defn}
+
+\begin{exm}
+    Let $G = \Gal(L/K)$. Then if $M = L$, Galois theory tells us that $M^G = K$. Similarly, if $M = L^{\times}$, then $M^G = K^{\times}$.
+\end{exm}
+
+\begin{rmk}
+    In other words, we have $M^G = \Hom_{\Z[G]}(\Z, M)$, where $\Z$ has the trivial action. This implies that the functor $M \mapsto M^G$ is always left-exact. Therefore, for a short exact sequence
+    \[ 0 \to A \to B \to C, \]
+    we have an exact sequence
+    \[ 0 \to A^G \to B^G \to C^G. \]
+    However, this may fail to be right-exact.
+\end{rmk}
+
+We may resolve this failure of right-exactness by constructing the derived functor of ${(-)}^G$. This will give us a long exact sequence.
+
+\begin{defn}
+    The \textit{group cohomology} $H^r(G, M)$ for any $r \geq 0$ is defined by be the functor $\Ext^r(G, M)$. This is the right derived functor of $\Hom_{\Z[G]}(\Z, M)$. It is characterized by
+    \begin{enumerate}
+        \item $H^0(G, M) = M^G$.
+        \item A short exact sequence $0 \to A \to B \to C \to 0$ induces a long exact sequence in group cohomology
+            \begin{equation*}
+            \begin{tikzcd}
+                0 \arrow{r} & A^G \ar{r} & B^G \ar{r} & C^G \ar[out=-20,in=160]{dll} \\
+                            & H^1(G,A) \ar{r} & H^1(G,B) \ar{r} & H^1(C,G) \ar{r} & \cdots
+            \end{tikzcd}
+            \end{equation*}
+        \item If $I \in \Mod_G$ is injective, then $H^r(G, I) = 0$ for all $r \geq 1$.
+    \end{enumerate}
+\end{defn}
+
+\begin{rmk}
+    More concretely, we can compute $H^r(G, M)$ using an injective resolution of $M$. If we consider an injective resolution
+    \[ 0 \to M \to I^0 \to I^1 \to I^2 \to \cdots, \]
+    then we apply ${(-)}^G$ to obtain a complex
+    \[ {(I^0)}^G \to {(I^1)}^G \to {(I^2)}^G \to \cdots \]
+    and then we have $H^r(G, M) = H^r({(I^{\bullet})}^G)$.
+\end{rmk}
+
+\begin{rmk}
+    We can also compute $H^r(G, M)$ using a projective resolution of $\Z$. If we consider a projective resolution
+    \[ \cdots \to P_2 \to P_1 \to P_0 \to \Z \to 0, \]
+    then we apply $\Hom_G(-,M)$ to this and obtain a complex
+    \[ \Hom_G(P_0, M) \to \Hom_G(P_1, M) \to \Hom_G(P_2, M) \to \cdots \]
+    and then $H^{\bullet}(G, M)$ is just the cohomology of this complex.
+\end{rmk}
+
+Now we will give a description of the cohomology in low degree. In particular, what we will do is use an explicit free resolution of $\Z$.
+
+\begin{defn}
+    Define $P_r = \Z[\underbrace{G \times \cdots G}_{r+1}]$ where $G$ acts on $P_r$ by
+    \[ g \cdot (g_0, \ldots, g_r) = (gg_0, \ldots, gg_r). \]
+    Note that $P_r$ is a free $\Z[G]$-module with basis $\qty{(1, g_1, \ldots, g_r)}$. Now we define the morphism $P_r \to P_{r-1}$ by
+    \[ (g_0, \ldots, g_r) \mapsto \sum_{i=0}^r {(-1)}^i (g_0, \ldots, \wh{g}_i, \ldots, g_r). \]
+\end{defn}
+
+\begin{lem}
+    The previous definition gives a free resolution of $\Z$ in $\Mod_G$.
+\end{lem}
+
+\begin{defn}
+    This is clearly a complex. To prove exactness, let 
+    \[ k_r \colon P_r \to P_{r+1} \qquad (g_0, \ldots, g_r) \mapsto (1, g_0, \ldots, g_r). \]
+    Then we can check that $\dd_r \circ k_r + k_{r-1} \circ \dd_{r-1} = \mr{id}$. Then taking the image of both sides of $\ker \dd_{r-1}$, we obtain $\dd_r \circ k_r (\ker \dd_{r-1}) = \ker \dd_{r-1}$ and thus $\ker \dd_{r-1} \subseteq \Im \dd_r$.
+\end{defn}
+
+\begin{cor}
+    We can compute $H^r(G, M) = H^r(\Hom_G(P_{\bullet}, M))$.
+\end{cor}
+
+\begin{defn}
+    We have an identification 
+    \[ \Hom_G(P_r, M) = \qty{\varphi \colon G^{r+1} \to M \mid \varphi(g g_0, \ldots, g g_r) = g \varphi(g_0, \ldots, g_r)}. \]
+    These are called the \textit{homogeneous $r$-cochains of $G$ with values in $M$} and are denoted by $\wt{C}^r(G, M)$. Then the differentials are given by
+    \[ \wt{C}^r(G,M) \xrightarrow{\wt{\dd}^r} \wt{C}^{r+1}(G,M) \qquad (\wt{\dd}^r \varphi) (g_0, \ldots, g_{r+1}) = \sum_{i=0}^{r+1} {(-1)}^i \varphi (g_0, \ldots, \wh{g}_i, \ldots, r+1). \]
+    Then we have an explicit cochain description
+    \[ H^r(G, M) = \frac{\ker \wt{\dd}^r}{\Im \wt{\dd}^{r-1}} = \frac{\qty{\text{homogeneous $r$-cocycles}}}{\qty{\text{homogeneous $r$-coboundaries}}}. \]
+\end{defn}
+
+Note that homogeneous $r$-cocycles $\varphi \colon G^{r+1} \to M$ are determined by their values on elements of the form $(1, g_1, \ldots, g_r)$ for $g_i \in G$, or equivalently on elements of the form $(1, g_1, g_1g_2, \ldots, g_1 \cdots g_r)$. Therefore we may eliminate one degree of freedom. 
+
+\begin{defn}
+    Define the group of \textit{inhomogeneous $r$-cochains} to be the group
+    \[ C^r(G, M) \coloneqq \qty{\varphi \colon G^r \to M\ \text{arbitrary function}}. \]
+    Now we have an isomorphism $\wt{C}^r(G, M) \simeq C^r(G, M)$ given by
+    \[ \wt{\varphi} \mapsto \varphi(g_1, \ldots, g_r) \coloneqq \wt{\varphi}(1, g_1, g_1g_2, \ldots, g_1 \cdots g_r). \]
+    The differentials $C^r(G, M) \xrightarrow{\dd^{r+1}} C^{r+1}(G, M)$ are given by
+    \begin{align*} 
+        (\dd^r \varphi)(g_1, \ldots, g_{r+1}) &= g_1 \varphi(g_2, g_3, \ldots, g_r) \\
+                                              &\ \ + \sum_{i=1}^r {(-1)}^i \varphi(g_1, g_2, \ldots, g_{i-1}, g_i g_{i+1}, g_{i+2}, \ldots, g_r) \\
+                                              &\ \ + {(-1)}^r \varphi(g_1, g_2, \ldots, g_r). 
+    \end{align*}
+    Now we can define the \textit{$r$-cocycles} $Z^r(G, M)$ and \textit{$r$-coboundaries} $B^r(G, M)$ and the corresponding cohomology groups $H^r(G, M)$.
+\end{defn}
+
+\begin{exm}
+    Suppose $r = 1$. Then we have 
+    \begin{align*}
+        Z^1(G, M) &= \qty{\varphi \colon G \to M \mid \dd \varphi = 0} \\
+                  &= \qty{\varphi \colon G \to M \mid g_1 \varphi(g_2) - \varphi(g_1g_2) + \varphi(g_1) = 0} \\
+                  &= \qty{\varphi \colon G \to M \mid \varphi(g_1g_2) = g_1 \varphi(g_2) + \varphi(g_1)}.
+    \end{align*}
+    Such functions are usually called \textit{crossed homomorphisms}. 
+
+    On the other hand, we have
+    \begin{align*}
+        B^1(G, M) &= \qty{\dd^0 \varphi \mid \varphi \colon \qty{1} \to M} \\
+                  &= \qty{(\dd^0\varphi)(g) = gm - m \mid m \in M} \\
+                  &= \qty{\varphi \colon G \to M \mid \varphi(g) = gm - m\ \text{for some $m \in M$}}. 
+    \end{align*}
+    These functions are called \textit{principal crossed homomorphisms}. Therefore, we have
+    \[ H^1(G, M) = \frac{\qty{\text{crossed homomorphisms}}}{\qty{\text{principal crossed homomorphisms}}}. \]
+\end{exm}
+
+\begin{exm}
+    If $M$ acts trivially on $G$, then $Z^1(G, M) = \Hom_{\ms{Grp}}(G, M)$ and $B^1(G, M)$ is trivial. Thus $H^1(G, M) = \Hom_{\ms{Grp}}(G, M)$.
+\end{exm}
+
+\begin{rmk}
+    There is an explicit cochain description for $H^r(G, M)$, but computing using this definition is extremely tedious. Instead, we will try to break $G$ and $M$ into smaller pieces and then piece them back together.
+\end{rmk}
+
+\begin{defn}
+    Let $H \subseteq G$ be a subgroup and let $M \in \Mod_H$. Define the \textit{induced module}
+    \[ \Ind_H^G M \coloneqq \Hom_{\Z[H]} (\Z[G], M) = \qty{\varphi \colon G \to M \mid \varphi(hg) = h \varphi(g)} \]
+    with the action of $G$ given by
+    \[ (g \varphi)(x) \coloneqq \varphi(xg). \]
+\end{defn}
+
+\begin{exm}
+    For any $M \in \Mod_G$, we have $\Ind_G^G M = M$.
+\end{exm}
+
+\begin{defn}
+    Let $M \in \Mod_G$. Then define the \textit{restriction} $\Res_H^G M$ to be the same $M$ but viewed as an $H$-module. 
+\end{defn}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item (Frobenius reciprocity) For any $M \in \Mod_G, N \in \Mod_H$, we have
+            \[ \Hom_G(M, \Ind_H^G N) \cong \Hom_H(\Res_H^G M, N). \]
+        \item The functor $\Ind_H^G$ is an exact functor.
+        \item The functor $\Ind_H^G$ preserves injections.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item We will construct explicit mutual inverses. We will define
+            \begin{align*} 
+                \Hom_G(M, \Ind_H^G N) &\xleftrightarrow{\sim} \Hom_H(\Res_H^G M, N) \\
+                            \alpha &\mapsto \beta(m) \coloneqq \alpha(m)(1_G) \\
+                            \alpha(m)(g) \coloneqq \beta(gm) &\mapsfrom \beta
+            \end{align*}
+            It is easy to check that these are inverse to each other.
+        \item Now we need to show that induction is right exact. Suppose $M \twoheadrightarrow N$ is a surjective map of $H$-modules. Now let $\varphi \in \Ind_H^G N$. Note that $\varphi$ is uniquely determined by its values on a complete set of representatives $s \in H \backslash G$. Then we lift $\varphi(s) \in N$ to $\wt{\varphi(s)} \in M$ using the surjection $M \twoheadrightarrow N$. Now define $\wt{\varphi}(hs) = h \wt{\varphi}(s)$ for all $h \in H$, and now we obtain an element $\wt{\varphi} \in \Ind_H^G M$ mapping to $\varphi$.
+        \item Let $I \in \Mod_H$ be injective. Then $\Ind_H^G I$ is injective if and only if $\Hom_G(-, \Ind_H^G I)$ is exact. By Frobenius reciprocity, this is equivalent to exactness of $\Hom_H(\Res_H^G -, I)$, which is obvious. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{prop}[Shapiro's lemma]
+    Let $N \in \Mod_H$. Then $H^r(G, \Ind_H^G N) \simeq H^r(H, N)$ for all $r \geq 0$.
+\end{prop}
+
+\begin{proof}
+    Choose an injective resolution $N \to I^{\bullet}$ in $\Mod_H$. But then exactness of induction and preservation of injectives imply that $\Ind_H^G \to \Ind_H^G I^{\bullet}$ is an injective resolution in $\Mod_G$. But now we see that
+    \[ H^r(G, \Ind_H^G N) = H^r(\Hom_G (\Z, \Ind_H^G I^{\bullet})) = H^r(\Hom_H(\Z, I^{\bullet})) = H^r(H, N). \qedhere \]
+\end{proof}
+
+\begin{defn}
+    A module $M \in \Mod_G$ is called \textit{induced} if $M = \Ind_1^G M_0$ for some abelian group $M_0$.
+\end{defn}
+
+\begin{cor}
+    If $M$ is induced, then for all $r \geq 1$, $H^r(G, M) = 0$.
+\end{cor}
+
+\begin{proof}
+    By Shapiro, this reduces to computing cohomology $H^r(1, M_0)$, but then we know that $\Hom(\Z, -) = (-)$ is exact, so all higher derived functors vanish.
+\end{proof}
+
+Now we will consider functorial properties of group cohomology with respect to change of groups. Given $H \subseteq G$ and $M \in \Mod_G$, we will define
+\begin{enumerate}
+    \item The \textit{restriction} functor $\Res \colon H^r(G, M) \to H^r(H, M)$.
+    \item The \textit{corestriction} functor $\Cor \colon H^r(H, M) \to H^r(G, M)$ whenever $[G:H] < \infty$.
+    \item The \textit{inflation} functor $\Inf \colon H^r(G/H, M^H) \to H^r(G, M)$ when $H$ is a normal subgroup of $G$.
+\end{enumerate}
+
+Suppose we are given $\alpha \colon G' \to G$ and $\Mod_G \ni M \xrightarrow{\beta} M' \in \Mod_{G'}$ that are compatible in the sense that
+\[ \beta(\alpha(g')m) = g' \beta (m) \]
+for all $g' \in G', m \in M$. Then we obtain a morphism of cochain complexes 
+\[ C^r(G, M) \to C^r(G', M') \qquad (\varphi \colon G^r \to M) \to \beta \circ \varphi \circ \alpha^r \colon {(G')}^r \to G^r \to M \to M'. \]
+This is compatible with the differentials, so we obtain a morphism $H^r(G, M) \to H^r(G', M')$. Now using this generality, we can define the three functors.
+
+\begin{enumerate}
+    \item (Restriction) We will set $\alpha \colon H \hookrightarrow G$ and $\beta \colon M \xrightarrow{\mr{id}} M$.
+    \item (Corestriction) We will set $\alpha \colon G \xrightarrow{\mr{id}} G$ and 
+        \[ \beta \colon \Ind_H^G M \to M \qquad \varphi \mapsto \sum_{g \in G/H} g \varphi(g^{-1}). \]
+        This gives us the corestriction map by Shapiro.
+    \item (Inflation) We take $\alpha \colon G \twoheadrightarrow G/H$ and $\beta \colon M^H \hookrightarrow M$.
+\end{enumerate}
+
+\begin{rmk}
+    Suppose $r = 0$. Then the functors are
+    \begin{align*}
+        \Res \colon M^G &\hookrightarrow M^H \\
+        \Cor \colon M^H &\xrightarrow{N_{G/H}} M^G \\
+                      m &\mapsto \sum_{g \in G/H} gm.
+    \end{align*}
+\end{rmk}
+
+\begin{prop}
+    The map $\Cor \circ \Res \colon H^r(G, M) \to H^r(H, M) \to H^r(G, M)$ is given by multiplication by $[G:H]$.
+\end{prop}
+
+\begin{proof}
+    Consider $M \to \Ind_H^G M \to M$. Then this map is given by
+    \[ m \mapsto \varphi(g) = gm \mapsto \sum_{g \in G/H} g \varphi(g^{-1}) = \sum_{g \in G/H} m = [G:H]m. \qedhere \]
+\end{proof}
+
+\begin{cor}
+    If $G$ is finite, then $H^r(G, M)$ is killed by $\abs{G}$.
+\end{cor}
+
+\begin{proof}
+    Take $H = 1$ and apply the previous proposition together with the fact that all higher cohomology vanishes for $H = 1$.
+\end{proof}
+
+\begin{cor}
+    If $G$ is finite and $M$ is a finitely generated abelian group, then $H^r(G, M)$ is finite.
+\end{cor}
+
+\begin{proof}
+    If $M$ is finitely generated, then so is $H^r(G, M)$ because the cochain complex is finitely generated. But then $H^r(G, M)$ is torsion, so it must be finite.
+\end{proof}
+
+\begin{thm}[Inflation-restriction exact sequence]
+    There is an exact sequence
+    \[ 0 \to H^1(G/H, M^H) \xrightarrow{\Inf} H^1(G, M) \xrightarrow{\Res} H^1(H, M). \]
+\end{thm}
+
+\begin{proof}
+    We will check this by hand.
+    \begin{description}
+        \item[First map is injective:] Let $\varphi \in Z^1(G/H, M^H)$. Now assume that 
+            \[ \Inf(\varphi) \colon G \twoheadrightarrow G/H \xrightarrow{\varphi} M^H \hookrightarrow M \in Z^1(G, M)\]  
+            is a coboundary. Thus there exists $m \in M$ such that $\Inf(\varphi) (g) = gm - m$ for all $g \in G$. But then $\varphi(\ol{g}) = gm - m$, but then for all $h \in H$, we see that $\varphi(\ol{h}) = hm-m = 0$ because $h$ fixes $M^H$. Therefore $\varphi$ is a coboundary.
+        \item[Composition is zero:] Clearly we have $\Res \circ \Inf = 0$ because the composition
+            \[ H \hookrightarrow G \twoheadrightarrow{G/H} \xrightarrow{\varphi} M^H \hookrightarrow M \]
+            is trivial because it passes through $G/H$.
+        \item[Exactness on right:] Assume that $\Res(\varphi) \in B^1(H, M)$. Then there exists $m \in M$ such that $\varphi(h) = hm - m$ for all $h \in H$. Now define 
+            \[ \varphi' \in Z^1(G, M) \qquad \varphi'(g) \coloneqq \varphi(g) - (gm-m). \]
+            Now $\varphi', \varphi$ are cohomologous. We will now write $\varphi'$ as an inflation. Because $\varphi'(h) = \varphi(h) - (hm-m) = 0$, we know that $\varphi'$ factors through $G/H$. Moreover, we see that
+            \begin{align*}
+                \varphi'(hg) &= h \varphi'(g) + \varphi'(h) = h \varphi'(g) \\
+                             &= \varphi'(gh') = g \varphi'(h') + \varphi'(g) = \varphi'(g).
+            \end{align*}
+            This implies that $\varphi'$ is valued in $M^H$, so it must have been an inflation. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{thm}[Inflation-restriction, general case]
+    Let $r \geq 1$. Assume $H^i(H, M) = 0$ for all $1 \leq i < r$. Then we have an exact sequence
+    \[ 0 \to H^r(G/H, M^H) \xrightarrow{\Inf} H^r(G, M) \xrightarrow{\Res} H^r(H, M). \]
+\end{thm}
+
+\begin{proof}
+    We will proceed by induction on $r$ using a dimension-shifting argument. Consider the induced $G$-module $M_* = \Ind_1^G M$. Then look at the exact sequence
+    \[ 0 \to M \to M_* \to M' \to 0, \]
+    where we have the map $m \mapsto (g \mapsto gm)$. But then the higher cohomology of $M_*$ vanishes, so we have isomorphisms $H^i(G, M') \simeq H^{i+1}(G, M)$ for all $i \geq 1$. But then $M_* = \Ind_H^G \Ind_1^H M$, so we have isomorphisms $H^i(H, M') \simeq H^{i+1}(H, M)$ for all $i \geq 1$. Similarly, because $H^1(H, M) = 0$, we have an exact sequence
+    \[ 0 \to M^H \to H_*^H \to {(M')}^H \to 0, \]
+    and therefore $M_*^H$ is also an induced $G/H$-module. Therefore $H^i(G/H, {(M')}^H) \simeq H^{i+1}(G/H, M^H)$ for all $i \geq 1$.
+
+    Now, by assumption, we have $H^i(H, M) = 0$ for all $1 \leq i \leq r-1$. Therefore, $H^i(H, M') = 0$ for all $1 \leq i \leq r-2$ and now we can apply the inductive hypothesis to obtain an exact sequence
+    \[ 0 \to H^{r-1}(G/H, {(M')}^H) \xrightarrow{\Inf} H^{r-1}(G, M') \xrightarrow{\Res} H^{r-1}(H, M'). \]
+    This implies that
+    \[ 0 \to H^r(G/H, M^H) \xrightarrow{\Inf} H^r(G, M') \xrightarrow{\Res} H^r(H, M) \]
+    is also exact.
+\end{proof}
+
+\begin{rmk}
+    We have a more general version of the dimension shift. Given an exact sequence
+    \[ 0 \to M \to A^1 \to \cdots \to A^k \to N \to 0, \]
+    where each $A^i$ is induced, then $H^r(G, M) \simeq H^{r+1}(G, N)$ for all $r \geq 1$.
+\end{rmk}
+
+\begin{rmk}
+    The inflation-restriction exact sequence is a special case of the \textit{Hochschild-Serre spectral sequence.} We have
+    \[ E_2^{p,q} = H^p(G/H, H^q(H, M)) \Rightarrow H^{p+q}(G, M). \]
+    In our case, only the rows $q = 0, q = r$ are nontrivial.
+\end{rmk}
+
+\section{Group Homology}%
+\label{sec:group_homology}
+
+\begin{defn}
+    Define the \textit{$G$-coinvariants} of $M$ by 
+    \[ M_G \coloneqq M / \ev{gm - m \mid g \in G, m \in M}. \]
+    This is the largest quotient module of $M$ where $G$ acts trivially.
+\end{defn}
+
+\begin{defn}
+    The \textit{augmentation ideal} is defined to be
+    \[ I_G \coloneqq \ker (\Z[G] \xrightarrow{\ep} \Z) = \Z[g-1 \mid g \neq 1]. \]
+\end{defn}
+
+Then we see that $M_G = M/I_G M = M \otimes_{\Z[G]} \Z[G]/I_G = M \otimes_{\Z[G]} \Z$. In particular, the coinvariants functor is right-exact. Applying the derived functor package, we obtain
+
+\begin{defn}
+    Define the \textit{group homology} by 
+    \[ H_r(G, M) \coloneqq \Tor_r^{\Z[G]} (\Z, M) \]
+    to be the left derived functor of $M \mapsto M_G$.
+\end{defn}
+
+
+
+
+
+
+
+
+
+\end{document}

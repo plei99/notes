@@ -1,0 +1,823 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{ytableau}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{dynkin-diagrams}
+\usepackage{rank-2-roots}
+\usepackage{stmaryrd}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\G}{\mathbb{G}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\wtl}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\Lie}{\mathsf{Lie}}
+\DeclareMathOperator{\chr}{char}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Lie Groups and Representations \\ Spring 2021}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Andrei Okounkov}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during lecture using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the instructor's. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the instructor.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+\newpage
+
+\tableofcontents
+
+\chapter{Lie Algebras}%
+\label{cha:semisimple_lie_algebras}
+
+If $G$ is a compact Lie group, then $\mf{g} = \ms{Lie}(G)$ has an invariant metric $(-,-)$. If $\mf{g}_1 \subset \mf{g}$ is an ideal, then $\mf{g}_1^{\perp}$ is also an ideal and we have $\mf{g} = \mf{g}_1 \oplus \mf{g}_2$. In particular, we have 
+\[ \mf{g} = \bigoplus \mf{g}_i \qquad \mf{g}_i = \begin{cases}
+    \R \\
+    \text{simple nonabelian Lie algebra}
+\end{cases}. \]
+
+The simple nonabelian Lie algebras are very interesting and very special, and there are only countably many of them. Recall that they are classified by root systems. 
+
+\section{Solvable and Nilpotent Lie Algebras}%
+\label{sec:solvable_and_nilpotent_lie_algebras}
+
+These are built out of abelian Lie algebras. They are not very interesting, but it is easy to find them. In some sense, if we consider the moduli space of Lie algebras, most Lie algebras will be nilpotent.
+
+\begin{defn}
+    Define the \textit{commutant} $\mf{g}'$ of a Lie algebra to be the span of $[\mf{g}, \mf{g}]$. Here, we have an exact sequence
+    \[ 0 \to \mf{g}' \to \mf{g} \to \text{abelian} \to 0. \]
+\end{defn}
+
+By analogy, we may define $G'$ to be the commutator subgroup of a Lie group $G$.
+
+\begin{thm}
+    If $G$ is simply connected, then $G'$ is a Lie subgroup.
+\end{thm}
+
+\begin{exm}
+    The commutant of the group of all matrices of the form
+    \[ \mqty( 1 & * & * \\ & 1 & * \\ & & 1 ) \]
+    is the set of all matrices of the form 
+    \[ \mqty( 1 & 0 & * \\ & 1 & 0 \\ & & 1 ). \]
+    Now if we take 
+    \[ G = \mqty( 1 & * & * \\ & 1 & * \\ & & 1 ) \times \R / \Lambda, \]
+    where $\Lambda$ is a lattice in the center $\R^2$, then $G'$ is the image of 
+    \[ \mqty( 1 & 0 & * \\ & 1 & 0 \\ & & 1 ), \]
+    which is not necessarily a Lie subgroup.
+\end{exm}
+
+\begin{proof}
+    Consider the exact sequence $0 \to \mf{g}' \to \mf{g} \to \R^k \to 0$. Because $G$ is simply connected, we can lift to an exact sequence
+    \[ 1 \to G'' \to G \to \R^k \to 0. \]
+    We know that $G' \subseteq G''$ but then $\ms{Lie}(G'') = \mf{g}'$ and therefore we must have $G'' = G'$.
+\end{proof}
+
+\begin{defn}
+    A Lie algebra is called \textit{solvable} if $(\mf{g}')'\cdots = 0$. In other words, repeatedly taking the commutant eventually reaches $0$. Alternatively, one should think about $\mf{g}$ as an iterated extension by abelian Lie algebras.
+\end{defn}
+
+Similarly, a group $G$ is called \textit{solvable} if $(G')' \ldots = 1$. 
+
+\begin{cor}
+    A connected Lie group $G$ is solvable if and only if $\ms{Lie}(G)$ is solvable.
+\end{cor}
+
+\begin{exm}
+    The group $B \subset GL_n$ of upper-triangular matrices is solvable. In some sense, this is an universal example.
+\end{exm}
+
+Note that if $G_1 \subset G$ and $G$ is solvable, then $G_1$ is solvable. Conversely, if $G \hookrightarrow G_2$ and $G$ is solvable, then so is $G_2$. Next, if
+\[ 1 \to G_1 \to G \to G_2 \to 1 \]
+is an exact sequence and $G_1, G_2$ are solvable, then so is $G$.
+
+A stronger condition than being solvable is being \textit{nilpotent}.
+
+\begin{defn}
+    A Lie algebra $\mf{g}$ is \textit{nilpotent} if $[[[\mf{g}, \mf{g}], \mf{g}], \ldots] = 0$.
+\end{defn}
+
+There is a similar definition for Lie groups, and we have
+
+\begin{cor}
+    A connected Lie group is \textit{nilpotent} if and only if $\ms{Lie}(G)$ is nilpotent. 
+\end{cor}
+
+\begin{exm}
+    The group of unitriangular matrices (equivalently the Lie algebra of strictly upper-triangular matrices) is nilpotent. Again, this is in some sense a universal example.
+\end{exm}
+
+\begin{thm}[Lie]
+    If $\mf{g}$ is a solvable Lie algebra over $\C$ and $\mf{g} \to \mf{gl}(V)$ is a representation, then $\mf{g}$ maps into the set of upper-triangular matrices in some basis.
+\end{thm}
+
+\begin{rmk}
+    $\C$ or any algebraically closed field of characteristic $0$ is important because we need to ensure that every operator actually has an eigenvalue and therefore can be upper-triangularized. Having characteristic $0$ is also important because $\mf{sl}_2(\Z/2\Z)$ is solvable. Here, we have $[h,e] = [h,f] = 0$, and in particular, the defining representation cannot be upper-triangularized.
+\end{rmk}
+
+\begin{proof}
+    The usual proof is induction. We simply need to find one common eigenvector, and first we find an eigenvector in $\mf{g}'$ and then extend to $\mf{g}$. We will prove the result more globally. If $G$ has a common eigenvector $v_1$, then the line $\C v_1 \in \P(V)$ is fixed by $G$. Therefore, if $G$ is triangular in the basis $v_1, \ldots, v_n$, this is equivalent to fixing a flag $\C v_1 \subset \C v_1 + \C v_2 \subset \cdots \subset V$. Then by Borel-Morozov, a fixed flag exists because the flag variety is projective.
+\end{proof}
+
+\begin{thm}[Borel-Morozov]
+    If $G$ is a connected solvable affine algebraic group over an arbitrary algebraically closed field acting on a proper variety $X$, then $X^G$ is nonempty.
+\end{thm}
+
+If we apply this discussion to the adjoint representation, we see that over a field of characteristic $0$, $\mf{g}$ is solvable if and only if $\mf{g}'$ is nilpotent.
+
+\begin{thm}[Engel]
+    Suppose $\mf{g} \subset \mf{gl}(V)$ consists of nilpotent operators. Then $\mf{g}$ is contained in the set of strictly upper-triangular matrices for some basis.
+\end{thm}
+
+The usual proof of this is by induction, so we skip it.
+
+\begin{cor}
+    If we apply this to the adjoint representation, then $\mf{g}$ is nilpotent is nilpotent if and only if $\ad x = [x,-]$ is nilpotent for every $x$.
+\end{cor}
+
+This result has a global analog, due to Kolchin (who incidentally was once a professor at Columbia).
+
+\begin{thm}[Kolchin]
+    Let $G \subset GL(V)$ be any group consistent of unipotent operators. Then $G$ is contained in the set of unitriangular matrices for some basis of $V$.
+\end{thm}
+
+\begin{proof}
+    By induction, it is enough to find one common fixed vector $v_1$. We will assume that $V$ is irreducible. Then we consider $\mr{Span}(G) \subset \End(V)$. On $\End(V)$, we have a nondegenerate pairing $(a,b) = \tr(ab)$, and thus if we consider 
+    \[ \tr (g_1-1) \sum c_i g_i = \sum c_i \tr(g_1g_i - g_i) = 0 \]
+    we see that for all $g$, $g=1$. Therefore $\dim V = 1$ and every element is fixed.
+\end{proof}
+
+\begin{proof}[Proof of Borel-Morozov]
+    Consider the exact sequence $1 \to G' \to G \to \text{abelian} \to 1$. By induction on the dimension of $G'$ we see that $X^{G'} \neq \empty$ is closed and thus proper. Now rename $X = X^{G'}$, so we only need to prove the result for abelian $G$.
+
+    Any algebraic group action on an algebraic variety has a closed orbit $\mc{O}$, which in this case is proper. On the other hand, $\mc{O} = G/\text{stabilizer}$ is an affine algebraic group and therefore must be a point.
+
+    For another proof, every affine abelian group is built out of $\mathbb{G}_a, \mathbb{G}_m$, so we simply prove the result for these two groups. For $\mathbb{G}_m$, let $x \in X$. Then we simply consider the limit as $t \to 0$ of $t \cdot x$, which exists by the valuative criterion of properness. This must be a fixed point. For $\mathbb{G}_a = \A^1$, we run the same argument except we consider the limit at $\infty$.
+\end{proof}
+
+In the Lie theorem, $G \subset GL(n, \C)$ is an arbitrary connected solvable Lie group. We need to see that the Zariski closure of $G$ is still solvable. If we write $\ol{\mf{g}} = \ms{Lie}(\ol{G})$, then we have
+
+\begin{lem}
+    $[\ol{\mf{g}}, \ol{\mf{g}}] = [\mf{g}, \mf{g}]$. 
+\end{lem}
+
+\begin{proof}
+    We show that $[\ol{\mf{g}}, \mf{g}] = [\mf{g}, \mf{g}]$. Consider 
+    \[ \wtl{G} = \qty{h \mid \Ad h (\mf{g}) = \mf{g}, \eval{\Ad h}_{\mf{g} / [\mf{g}, \mf{g}]} = 1}. \] 
+    In particular, we have $G \subset \ol{G} \subset \wtl{G}$ because $\wtl{G}$ is closed, and therefore $[\ol{\mf{g}}, \mf{g}] \subset [\mf{g}, \mf{g}]$.
+
+    Now consider the same construction but with $\mf{g}$ replaced by $\ol{\mf{g}}$. This implies that $[\ol{\mf{g}}, \ol{\mf{g}}] \subset [\mf{g}, \mf{g}]$.
+\end{proof}
+
+\chapter{Algebraic Groups}%
+\label{cha:algebraic_group}
+
+\begin{cor}[Borel]
+    All maximal connected solvable subgroups $B \subset G$ are conjugate for any connected linear algebraic group $G$.
+\end{cor}
+
+\begin{proof}
+    The idea is that if $B_0 \subseteq G$ is connected solvable of maximal dimension, then $X = G/B_0$ is projective. Then any other $B$ will have a fixed point $g B_0 \in X$, and so $g^{-1} B g$ fixes $B_0$. This implies that $g^{-1}Bg \subset B_0$ and so they must be equal (by maximality).
+
+    Really, we will prove that $G \subseteq GL(n, k)$. Therefore we will consider the action of $G$ on the flag variety $\mr{Fl}(n)$, and the stabilizer of any point is solvable. Then stabilizers of maximal dimension correspond to orbits of smallest dimension, which are closed and thus projective. Choose some maximal $B_0$, which stabilizes a point in a closed orbit. Then $B_0$ is solvable and $X = G/B_0$ is projective, so the argument above works.
+\end{proof}
+
+Now consider the variety $X = G/B$. This is called the \textit{flag variety} for $G$.
+
+\begin{exm}
+    \begin{enumerate}
+        \item If $G = GL(n, k)$, then $G/B$ is the usual flag variety. Here, $B$ is all upper-triangular matrices.
+        \item Let $G$ be one of the classical groups. Suppose $g$ preserves a flag $0 \subset V_1 \subset V_2 \subset \cdots \subset V_n = k^n$. Then $g$ also preserves $V_i^{\perp}$ and intersections of the $V_i$ and their orthogonal complements, so we impose $V_i^{\perp} = V_{n-i}$. Thus we take the space of flags to be
+            \[ X = \qty{0 \subset V_1 \subset \cdots \subset V_n = k^n \mid V_i^{\perp} = V_{n-i}}. \]
+            We need to check that $G$ acts on $X$ transitively, so we check it up to $V_{\floor{n/2}}$, which is a maximal isotropic subspace.
+    \end{enumerate}
+\end{exm}
+
+\begin{thm}
+    For all $v_1, \ldots, v_m \in k^n$, invariants of $G = SO$ or $G = Sp$ are generated by $(v_i, v_j)$ and minors like $v_{i_1} \wedge \cdots \wedge v_{i_m}$. But all of these vanish because the $v_i$ are all orthogonal, so there are no invariants.
+\end{thm}
+
+\begin{defn}
+    A \textit{linear algebraic group} $G$ is an affine algebraic variety over $k$ which is also a group. 
+\end{defn}
+
+\begin{thm}[Chevalley]
+    Over any field of characteristic $0$, any group scheme is reduced and hence smooth.
+\end{thm}
+
+\begin{exm}
+    Consider the group $\A^1 = \mathbb{G}_a$, the additive group of $k$. Then $k[G] = k[t]$, and so the addition map $(t_1, t_2) \mapsto t_1 + t_2$ corresponds to the map $f(t) \mapsto f(t_1 + t_2)$.
+
+    If $\operatorname{char} k = p$, then $t \mapsto t^p$ is a group homomorphism. This gives us an exact sequence
+    \[ 0 \to \Spec k[t]/t^p \to \mathbb{G}_a \to \mathbb{G}_a \to 0. \]
+    Here, the first term is an affine group scheme because $\Delta t^p = t^p \otimes 1 + 1 \otimes t^p$ and therefore $k[t] / t^p$ has a well-defined coproduct.
+\end{exm}
+
+Therefore in characteristic $0$, we can simply consider algebraic varieties. Then $G$ is smooth, and we note that the maps $m \colon G \times G \to G, i \colon G \to G, 1 \to G$ induce maps $\Delta \colon A \to A \otimes A$ (comultiplication), $S \colon A \to A$ (antipode), and $\ep \colon A \to k$ (counit). Here, the comultiplication is required to be \textit{coassociative}, and the antipode is required to satisfy the identity
+\[ \mu \circ (1 \otimes S) \circ \Delta = \iota \circ \ep. \]
+In other words, the diagram
+\begin{equation*}
+\begin{tikzcd}
+    A \arrow{r}{\Delta} \arrow{d}{\ep} & A \otimes A \arrow{r}{1 \otimes S} & A \otimes A \arrow{d}{\mu} \\
+    k \arrow{rr}{\iota} & & A
+\end{tikzcd}
+\end{equation*}
+commutes.
+
+Now $A$ has two sets of tensors:
+\begin{enumerate}
+    \item As a commutative algebra over $k$, it has $\mu \colon A \otimes A \to A$, which is dual to $\Delta \colon G \to G \times G$ and the unit $\iota \colon k \to A$. In principle, the multiplication does not need to be commutative.
+    \item As functions on a group, it gets $\Delta \colon A \to A \otimes A, \ep \colon A \to k, S \colon A \to A$. Note that the comultiplication may not be cocommutative.
+\end{enumerate}
+
+\begin{defn}
+    A \textit{Hopf algebra} $A$ over a field $k$ is a bialgebra over $k$ such that the axioms listed above for $k[G]$ are satisfied. 
+\end{defn}
+
+Note that there is no need for $A$ to be commutative and that the set of axioms is symmetric. Therefore we can consider the dual of a Hopf algebra, where all vector spaces are replaced with their duals and all maps are replaced by the dual maps. Now we see that linear algebraic group schemes over $k$ are equivalent to finitely generated commutative Hopf algebras over $k$.
+
+Now let $f \in A$. We see that $(\Delta f)(g,h) = f(gh) = \sum c_i(g) f_i(h)$, so if $g = 1$, then $f$ is in the span of the $f_i$. Also, 
+\[ f(g_1g_2h) = \sum c_i (g_1g_2)f_i(h) = \sum c_i(g_1) f_i(g_2 h) \]
+so every $f \in A$ belongs to a finite-dimensional subspace that is invariant under the left regular representation. This implies that every affine algebraic group $G$ is contained in $GL(N, k)$
+
+Now note that if $G \xrightarrow{\varphi} H$ is a homomorphism of algebraic groups, then $\Im \varphi \subset H$ is closed.
+
+\begin{thm}
+    For all subgroups $H \subseteq G$, there exists a morphism $G \to GL(V)$ such that $\Im(H)$ is contained in the stabilizer of a line. 
+\end{thm}
+
+\begin{proof}
+Let $I_H$ be the ideal of $H$ in $k[G]$. Then $H$ is the stabilizer of $I_H \subset k[G]$ under the natural $G$-action. Here, note that $L_{h^{-1}} f(g) = f(gh)$, so if we set $g = 1$, then $f(h) = 0$ for all $h \in \mr{stab}(I_H)$.
+
+Note that a tangent vector to an algebraic variety is an map in $\Hom(\Spec k[\ep]/\ep^2, X)$ that sends the closed point of $\Spec k[\ep]/\ep^2$ to $x \in X$. Therefore, we have 
+\[ \ms{Lie}(G) = \qty{1 + \ep \xi \in G, \ep^2 = 0}. \]
+
+Next, from last time, we know that $\dim \mr{Span} \qty{f(g^{-1})} < \infty$, s $I_H = (f_1, \ldots, f_k)$, where $f_i \in L$, a finite-dimensional $G$-invariant subspace. Let $L_H = I_H \cap L$. Then $H$ is the stabilizer of $L_H$, so $H$ stabilizes a point in $\mr{G}(\dim L_H, \dim L)$. Now we note that $\bigwedge^k L_H \subseteq \bigwedge^k L$ is a line, as desired.
+\end{proof}
+
+\begin{defn}
+    We define $G/H$ to be the orbit of the line that is stabilized in $\P(V)$.
+\end{defn}
+
+Note that this definition is not necessarily independent of $V$ and we also need to know what properties it satisfies. From now, we will assume $H$ is smooth and $\dim \ms{Lie}(H) = \dim H$. Then we have an exact sequence
+\[ 0 \to \ms{Lie}(H) \to \ms{Lie}(G) \to T_H G/H \to 0, \]
+and therefore $G \to \mr{Orbit}$ is \textit{separable}. 
+
+\begin{thm}
+    If $X \to Y$ is dominant, separable, and generically one-to-one, then it is birational.
+\end{thm}
+
+\begin{prop}
+Let $x \in P(V)$ be as above and let $y \in Y$, where $Y$ is any variety with a $G$-action such that $H \subset G_y$. Then there exists a unique $G$-invariant map $G \cdot x \to G \cdot y$ such that $x \mapsto y$.
+\end{prop}
+
+\begin{proof}
+    Consider the map $g \mapsto (g \cdot x, g \cdot y)$ that sends $G \to G \cdot x \times G \cdot y$. Then the map $p_1 \colon G \cdot x \times G \cdot y \to G \cdot x$ must be separable. But then $G_y \subset G_x = H$ implies $p_1$ is one-to-one. This implies that $p_1$ is birational when restricted to the image of $g \mapsto (g \cdot x, g \cdot y)$. But this means that $p_1$ is an isomorphism, so we can take $p_2 \circ p_1^{-1}$ as the required map.
+\end{proof}
+
+Now we will study what the space $G/H$ looks like. In the case where $G$ is connected and $B$ is a maximal solvable groups, then the flag variety $G/B$ is projective. The space $G/H$ could also be an affine variety.
+
+\begin{defn}
+    A group $G$ is reductive if for any $G \subset GL(V)$, we can write $V = \bigoplus V_i$, where the $V_i$ are irreducible $G$-modules.
+\end{defn}
+
+\begin{rmk}
+    Over $\C$, this definition is equivalent to being the complexificaiton of a compact group.
+\end{rmk}
+
+\begin{thm}[Matsushita-Onishchik]
+    If $G$ is reductive, then $G/H$ is affine if and only if $H$ is reductive.
+\end{thm}
+
+Note that for most $H$, $G/H$ is neither projective nor affine. For example, if we consider $GL(2)$ and let 
+\[ H = \mqty(1 & * \\ 0 & *), \]
+then $G/H$ is the orbit of a single vector, which is $\A^2 \setminus 0$. However, $G/H$ is always quasiprojective, so it can be embedded in projective space.
+
+\begin{prop}
+    The space $G/H$ is quasiaffine if and only if $H$ is the stabilizer of a point in an affine algebraic variety with a $G$-action. Such subgroups are called \textit{observable}. 
+\end{prop}
+
+\begin{prop}
+    Ths space $G/H$ is projective if and only if $B \subset H$. Such subgroups are called \textit{parabolic}. 
+\end{prop}
+
+\begin{proof}
+    First, if $G/H$ is projective, then ${(G/H)}^B \neq \emptyset$ and thus $B$ is conjugate to a subgroup of $H$. On the other hand, 
+\end{proof}
+
+\section{Invariant Theory}%
+\label{sec:invariant_theory}
+
+Now note that if $G$ acts on $X$, then $G \times X \to X$ is a morphism of algebraic varieties. Now we want to study the space $X/G$. We can consider this in some world more general than algebraic varieties (namely stacks), but this is beyond the scope of this course. Instead, we will consider the best possible approximation in the category of schemes. Here, we will consider $Y = X / G$ if for all $Z$ (with the trivial action), $G$-equivariant maps $X \to Z$ factor uniquely through $Y$.
+
+Our goal is to show that the GIT quotient $X/G$ exists if $X$ is affine and $G$ is reductive.
+
+\begin{exm}
+    Consider the action of $GL(V)$ on $V, V \otimes V, V^*, V^* \otimes V, \ldots$. Then the first (second?) fundamental theorem of invariant theory says that all invariants of these actions come from contracting tensors. For example, if we consider $V^* \otimes V = \Hom(V,V)$, the invariants are generated by the coefficients of the characteristic polynomial. This means that $\Hom(V,V) / GL(V) = \A^{\dim V}$.
+\end{exm}
+
+\begin{rmk}
+    Note there are several notions of being reductive. The first is structural. The second is being linearly reductive, which means that we need something like $k \to k[G] \to k$, where the last map is some sort of invariant integration. Finally, there is the notion of being geometrically reductive. If $k$ has characteristic $0$, then all of these notions are equivalent.
+\end{rmk}
+
+\begin{lem}
+    Suppose we can split every module with an invariant element as $k \to M \to k$. Then all representations are linearly reductive.
+\end{lem}
+
+\begin{proof}
+    Let $M_1 \subset M$ be some submodule. We want a $G$-invariant map $M \to M_1$, which requires a $G$-equivariant map $\Hom(M, M_1) \to \Hom(M_1, M_1)$ that maps onto $1_{M_1}$. But this problem is resolved by taking the transpose of a matrix acting on $M$ that preserves $M_1$.
+\end{proof}
+
+Note that $GL(V)$ is not linearly reductive if $\operatorname{char} k = p$. In this case, consider the action of $GL(2)$ on the polynomials of degree $d$ in $x_1, x_2$. Then the span of $x_1^p, x_2^p$ does not split off.
+
+\begin{defn}
+    A group $G$ is \textit{reductive} if the radical of $G$ is a torus. Equivalently, the unipotent radical of $G$ is trivial. Here, the radical of $G$ is defined to be 
+    \[ {\qty(\bigcap_g g B g^{-1})}_0 \]
+    and is the largest normal connected solvable subgroup. The unipotent radical is defined to be the largest normal unipotent connected subgroup, and is
+    \[ {\qty(\bigcap_g g U g^{-1})}_0 \qquad U = \qty{ \mqty(1 & * & * \\ & \ddots & * \\ & & 1) }. \]
+\end{defn}
+
+\begin{defn}
+    A group $G$ is \textit{geometrically reductive} if for any $G$-module $M$ and line of $G$-fixed points, there exists a complementary divisor given by a $G$-invariant polynomial $f(m)$ that does not vanish on the line.
+\end{defn}
+
+\begin{exm}
+    Finite groups fail to be linearly reductive in positive characteristic. For example, the representation of $\Z/p\Z$ given by 
+    \[ \Z/p\Z \ni m \mapsto \mqty(1 & m \\ & 1) \]
+    is not completely reducible. On the other hand, they are geometrically reductive.
+\end{exm}
+
+\begin{proof}
+    Take any $f_0$ such that $f_0(0) = 0$ and $f_0(x) = 1$, where $x$ is a fixed point. Then take
+    \[ f(m) = \prod_g f(g^{-1}m) \qquad f(x) = 1, f(0) = 0. \]
+    Now we can choose the Taylor series of $f(x)$ to be homogeneous of degree $p$.
+\end{proof}
+
+\begin{thm}[Haboush]
+    Group-theoretic reductivity is equivalent to geometric reductivity.
+\end{thm}
+
+\begin{cor}
+    Let $A$ be an algebra with a $G$-action and suppose $A \twoheadrightarrow B$, which also has a $G$-action. Then linear reductivity means the natural map $A^G \twoheadrightarrow B^G$ is surjective. Geometric reductivity means that for all $f \in B^G$, there exists $m = p^k$ such that $b^m \in \Im(A^G)$. In particular, $B^G$ is integral over $A^G$.
+\end{cor}
+
+\begin{thm}[Nagata, Popov,\ldots]
+    A group $G$ is reductive if and only if for all finitely generated (commutative) algebras $A$, the algebra $A^G$ of invariants is finitely generated.
+\end{thm}
+
+This result is extremely hard. Instead, we will prove
+\begin{thm}[Hilbert]
+    Let $X$ be an affine variety over a field $k$ of characteristic $0$ and $G$ a reductive group. Then ${k[X]}^G$ is finitely generated.
+\end{thm}
+
+\begin{proof}
+    Let $X \subseteq V$ and $G \hookrightarrow GL(V)$. Now ${k[V]}^G \twoheadrightarrow {k[X]}^G$ by linear reductivity. Consider the ideal $I = ({k[V]}_+^G)$. This is finitely generated by another theorem of Hilbert (from the same paper). If $f_1, \ldots, f_k$ are generators, then we will show that they also generate ${k[V]}^G$.
+
+    Let $F \in {k[V]}_d^G$ for some $d > 0$. Then $F \in I$ and we can write $F = \sum c_i f_i$. Now we will take the average over $G$, which is linear over invariants. Now we obtain $F = \sum \ol{c}_i f_i$, where the $\ol{c}_i$ are all invariants of degree less than $d$. By induction on $d$, we are done.
+\end{proof}
+
+For the proof in arbitrary characteristic, there is a book on invariant theory by T. Springer.
+
+Now consider a map $X \xrightarrow[\pi]{(f_1, \ldots, f_k)} \A^k$, where $X$ is an affine variety with an action of a reductive group $G$. Then we will show that
+\begin{enumerate}
+    \item The map $\pi$ takes $G$-invariant $X' \subseteq X$ to closed subsets.
+    \item If $X', X''$ are disjoint $G$-invariant closed subsets, then $\pi(X') \cap \pi(X'') = \emptyset$.
+    \item For any open $U \subseteq \pi(X)$, $\pi^* \mc{O}_U = \mc{O}_{\pi^{-1}(U)}^G$.
+\end{enumerate}
+
+In particular, we will show that if $G$ is reductive and $X', X'' \subseteq X$ are closed and disjoint, then there exists $f \in {k[X]}^G$ such that $f(X') = 0, f(X'') = 1$. To see this, we know that $I_{X'} + I_{X''} = k[X]$, so we can find $f_0 \in I_{X'}, f_1 \in I_{X''}$ such that $f_0 + f_1 = 1$. Thus $f_0(X') = 0, f_0(X'') = 1$. Then if $f_0, \ldots, f_m$ span $f_0(g^{-1}-)$, then the map $X \xrightarrow{(f_0, \ldots, f_m)} \A^{m+1}$ sends $X'$ to $(0, \ldots, 0)$ and $X''$ to $(1, \ldots, 1)$.By geometric reductivity, there exists a polynomial $P(f_0, \ldots, f_m)$ which is invariant and takes values $0$ on $X'$ and $1$ on $X''$.
+
+Note that if $G$ is not reductive, then closed subsets cannot be separated by invariants. For an example, consider the action of $\mathbb{G}_a$ on $\A^2$ by translating the second coordinate. Then $(x,0), (y,0)$ cannot be separated by invariants.
+
+Now we need to show that $\pi(X)$ is closed. If not, then if $p \in \ol{\pi(X')} \setminus \pi(X')$, then $\pi^{-1}(p)$ is closed and disjoint from $X'$. But this implies there exists $f$ such that $f(X'') = f(p) = 1$ and $f(X') = f(\pi(X')) = 0$, a contradiction.
+
+Finally, let $U \subseteq \pi(X)$ be given by $\qty{F_1 \neq 0 , F_2 \neq 0}$. Then 
+\[ \mc{O}_U = \k[f_1, \ldots, f_k][1/F_i] = {\k[X]}^G[1/F_i] = {\qty(\k[X][1/F_i])}^G = \mc{O}_{\pi^{-1}(U)}^G. \]
+
+This all implies that $\pi(X) = X/G$ is the categorical quotient of $X$ under the action of $G$. To see this, observe that if $U_i$ is an affine open cover of $Z$, then $p^{-1}(U_i)$ cover $X$, so $X_i = X \setminus p^{-1}(U_i)$ is closed and $\bigcap X_i = \emptyset$. Now let $V_i = Y \setminus \pi(X_i)$. These form an open cover of $Y$, so now write $\ol{p} \colon V_i \to U_i$. Then we have 
+\[ \mc{O}_{U_i} \xrightarrow{p^*} \mc{O}_{X\setminus X_i}^G \hookrightarrow \mc{O}_{\pi^{-1}(V_i)}^G = \pi^* \mc{O}_{V_i} \subset \mc{O}_{\pi^{-1}(V_i)}, \]
+and this must be unique, so $\pi^* \ol{p}^* = p^*$, so $\ol{p} \colon V_i \to U_i$.
+
+Therefore we have proved that if $X$ is affine and $G$ is reductive, then $Y = \Spec {\k[X]}^G$ is the categorical quotient. Note that this is surjective, and for $p \in Y$, $\pi^{-1}(p)$ is nonempty and contains a unique closed orbit.
+
+Now we will discuss quotients of general varieties by algebraic groups. This is very complicated because $x \in X$ may not have a $G$-invariant affine neighborhood (consider the example of Hironaka). Now if we consider $X \subset \P(V)$ for a $G$-module $V$ with $V^* = \mc{O}(1)$, then $\mc{O}(1)$ is a very ample line bundle on $X$ with a linearzation by $G$. Similarly to $Y = \Spec {\k[X]}^G$, we may consider the affine cone $\wh{X}$ over $X$ and then take $Y = \Proj {\k[\wh{X}]}^G$. This is covered by open sets where $\qty{F_i(x) \neq 0}$, and then $\P(V) \setminus \qty{F(x) =0}$ is an affine $G$-invariant set.
+
+Not all points have an invariant polynomial $F_i$ such that $F_i \neq 0$. The points that do are called \textit{semistable}.
+
+\begin{defn}
+    The \textit{GIT quotient} $X \sslash G$ is defined to be $\Proj {\k[\wh{X}]}^G = X^s/G$, where $X^s$ is the stable locus.
+\end{defn}
+
+The unstable points are those such that there is no invariable $F_d$ such that $F_d(x) \neq 0$. But this implies that the closure of the orbit of $x$ in $V$ contains $0 \in V$.
+
+Note that if $\chi \colon G \to \mathbb{G}_m$ is a character, then $V \mapsto V \otimes \chi$ does not change the action on $\P(V)$ because $S^d V^* \mapsto S^d V^* \otimes \chi^{-d}$ sends $\chi$-covariants to invariants. Therefore, even in the affine situation, it makes sense to consider $X \sslash G = \Proj \text{covariants}$. For the most basic example, consider $\P(V) = \Proj \bigoplus S^d V^*$. Then $V/\G_m$ is a point, and $V \sslash \G_m = \P(V)$. On the other hand, we have $V \sslash_{\chi = t} \G_m = \Proj \C = \emptyset$, so in both cases the map $X \sslash G \to X/G$ is uninteresting.
+
+Now we want to find generators of the algebra ${\k[X]}^G = \k[f_1, \ldots, f_N]$. Then the affine scheme $X/G$ is cut out by the relations among the $f_i$. Finding the relations is incredibly hard, so we can try to find the generators. Results of this form go under the form of the \textit{first fundamental theorem of invariant theory}. Here, we will assume $G = GL(n), SL(n)$. These fit into the exact sequence
+\[ 1 \to SL(V) \to GL(V) \xrightarrow{\det} GL(1) \to 1. \]
+Therefore $SL(V)$-invariants are the same as $GL(V)$-covariants with respect to the determinant character. We know that $\k[X]$ contains a finite-dimensional $G$-invariant module $M$, which can be included in ${\k[G]}^{\oplus m}$. This implies that any $X$ can be emdedded in some $V^{\oplus m_1} \oplus {(V^*)}^{\oplus m_2} \eqqcolon M_{m_1, m_2}$ because there is a natural map $\k[\End(V)] \to \k[G]$. This gives us a map $\k[M_{m_1, m_2}] \to \k[X]$ that restricts to invariants, so we have reduced the problem of finding invariants to vector spaces.
+
+\begin{thm}[First fundamental theorem of invariant theory]
+    The invariants of $SL(V)$ acting on $V^{\oplus m_1} \oplus {(V^*)}^{\oplus m_2}$ are generated by 
+    \begin{enumerate}
+        \item Contracting tensors: $(v_1, \ldots, v_{m_1}, \ell_1, \ldots, \ell_{m_2}) \mapsto \ev{v_i, \ell_j}$;
+        \item Determinants of the form $\det \mqty(v_{i_1} & \ldots & v_{i_n})$ with weight $\det$ and dually for the $\ell_{j}$ with weight $\det^{-1}$ (weights are under the action of $GL$).
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    Note that $M_{m_1, m_2} = \Hom(\k^{m_1}, V) \oplus \Hom(V, \k^{m_2})$. Now the two parts parts have actions by the groups $GL(m_1), GL(m_2)$ and maximal tori $T_{m_1}, T_{m_2}$. THen the weights record how many times we use a particular vector or covector. Now it suffices to consider functions of weight $(1^{\ell}, 0^k)$.
+
+    To see this, we use a polarization trick. If $\deg_{v_i} f(v_1, \ldots) = d$, then we can write $v_i = \sum \lambda_i u_i$ and now we have a function of $m_1 + d-1$ vectors $u_1, \ldots, u_d, v_2, \ldots, v_{m_1}$. Expanding this, we obtain a new polynomial $\wtl{f}$ that is linear in each of the $u_1, \ldots, u_d$. Then considering the polynomial $\wtl{f}(v_1, \ldots, v_1, v_2, \ldots, v_m)$ gives us the desired reduction.
+
+    But now functions on $M_{m_1, m_2}$ linear in each of the $v_1, \ldots, v_m, \ell_1, \ldots, \ell_{m_2}$ are just the space ${(V^*)}^{\otimes m_1} \otimes V^{\otimes m_2}$. We will show that
+    \[ {({(V^*)}^{\otimes m_1} \otimes V^{\otimes m_2})}^{GL(V)} = \begin{cases}
+        0 & m_1 \neq m_2 \\
+        \operatorname{Span} \qty{\prod_{i=1}^m \ev{v_i, \ell_{\sigma(i)}}}_{\sigma \in S_m} & m_1 = m_2 = m.
+    \end{cases} \]
+    The scalars $t\cdot I$ act with weights $t^{-m_1 + m_2}$ so there are no invariants unless $m_1 = m_2$. Now if $m_1 = m_2$, we are looking for
+    \[ {\Hom(V^{\otimes m}, V^{\otimes m})}^{GL(V)} \cong \k S_m. \] 
+    This result is known as \textit{Schur-Weyl duality}. If we consider the natural map $GL(V) \times S_m \to \End(V^{\otimes m})$. In fact, each piece of the product generates the commutant of the other. We see that both images are semisimple subalgebras in $\End(V^{\otimes m})$. Now the desired result is equivalent to proving that ${\End(V^{\otimes m})}^{S_m}$ is the image of $GL(V)$. Then polynomials on $\End(V)$ of degree $m$ are the same as $S^m {\End(V)}^* = {\End(V^{\otimes m})}^{S_m}$. Suppose that ${\End(V^{\otimes m})}^{S_m} \supsetneq GL(V)$. But then we can consider ${GL(V)}^{\perp}$ in the set of polynomials of degree $m$. Let $P$ be such a polynomial. Then $P(g, \ldots, g) = 0$ for all $g \in GL(V)$. But then by Zariski density of $GL(V)$ in $\End(V)$, we see that $P = 0$. This now tells us that 
+    \[ { \k[V^{\oplus m_1} \otimes {(V^*)}^{\oplus m_2}] }^{GL(V)} = \k[\ev{v_i, \ell_j}]. \]
+
+    Now we need to compute the additional $SL(V)$-invariants, which are given by
+    \[ {\qty( \k[V^{\oplus m_1} \oplus {(V^*)}^{\oplus m_2}] \otimes {\det}^{-1} )}^{GL(V)} = \k[\ev{v_i, \ell_j}] \otimes \operatorname{Span} \det \mqty(v_{i_1} & \cdots & v_{i_n}). \]
+    We will introduce new covectors $\ol{\ell}_1, \ldots, \ol{\ell}_n$ and consider the functions
+    \[ f \cdot \det \mqty(\ol{\ell}_1 \\ \vdots \\ \ol{\ell}_n), \]
+    which is an invariant and thus contained in $\k[\ev{v_i, \ell_j}, \ev{v_i, \ol{\ell}_j}]$. Now $\det$ is multilinear and skew-symmetric, so each $\ol{\ell}_j$ has to be used exactly once. But now $f$ is a product $f_1, f_2$ where $f_1 \in \k[\ev{v_i, \ell_j}]$ and $f_2$ is contained in the antisymmetrization of $\prod \ev{v_{i_k}, \ol{\ell}_k}$, so $f_2 = \det (v_{ik}) \cdot \det (\ol{\ell}_k)$.
+\end{proof}
+
+\subsection{Finite Subgroups of $SL(2, \C)$}%
+\label{sub:finite_subgroups_of_sl_2_c_}
+
+
+
+Now consider a finite group $G \subset SL(2, \C)$. For example, $G$ is cyclic, dihedral, etc. Now we have an exact sequence
+\[ 1 \to \qty{\pm 1} \to SL(2) \to SO(3) \to 1. \]
+and now we can find in $SO(3)$ symmetries of the Platonic solids $A_4, D_4, A_5$ corresponding to tetrahedron, cube, and dodecahedron. Now if $\gamma \in SO(3)$ has order $3$ with eigenvalues $1, \zeta_3, \zeta_3^2$, then we know $\wtl{\gamma} \in SL(2)$ has eigenvalues $\zeta_6, \zeta_6^{-1}$. Now for $G \in \wtl{A}_4, \wtl{S}_4, \wtl{A}_5$ and $V = \C^2$, we know that $SL(2) = Sp(2)$ preserves the skew pairing. We know
+\[ V/G = \Spec { ( S^* V^* ) }^G, \]
+so now consider the Hilbert/Poincar\'e series
+\[ H(t) = \sum_d t^d \dim {(S^d V)}^G. \]
+By an observation of Hilbert, this is a rational function for any finitely generated graded module over a finitely generated algebra. But now we know that $\C[a_1, \ldots, a_m] \twoheadrightarrow A$. If $a_i$ has degree $d_i$, then the free module has Hilbert series
+\[ H_{\mr{free}}(t) = \frac{1}{\prod_i 1 - t^{d_i}}. \]
+In general, a module $M$ has a finite gree resolution
+\[ \cdots \to \bigoplus A_i r_i \to \bigoplus A \cdot m_i \to M \to 0. \]
+This gives us
+\[ H_M(t) = \frac{\sum t^{m_i} - \sum t^{r_i} + \cdots}{\prod (1-t^{d_i})}. \]
+
+\begin{thm}[Molien]
+    Let $G$ be a reductive group over $\C$ acting on a vector space $V$. Then
+    \[ H_{{(S^{\bullet} V)}^G}(t) = \int_{\text{maximal compact}} \dd_{\mr{Haar}}g \frac{1}{\det_V(1-tg)} \qquad, \abs{t} < \ep. \]
+\end{thm}
+
+To do the actual computation, we can use the Weyl character formula. This is simply
+\[ H_{S^{\bullet V}}(t) = \frac{1}{\abs{W}} \int_T \dd_{\mr{Haar}}(s) \frac{\prod_{\alpha \neq 0} (1-s^{\alpha})}{\prod_{\text{weights}\ \mu} (1 - ts^{\mu})}, \]
+and this can be computed using residues. Of course, if $G$ is finite, then we just sum over conjugacy classes. For example, if $G = A_4$, then these are cycles of signature either $(3,1)$ or $(2,2)$, and therefore
+\[ \wtl{A}_4 = \qty{\pm 1, \pm i, \pm j, \pm k} \cup \qty{\frac{1}{2}(\pm 1 \pm i \pm j \pm j)} \]
+is a group of order $24$. Now the conjugacy classes are given by
+\begin{align*}
+    1 &\longrightarrow \frac{1}{{(1-t)}^2} \\
+    -1 &\longrightarrow \frac{1}{{(1+t)}^2} \\
+    i &\longrightarrow \frac{1}{(1+it)(1-it)} = \frac{1}{1+t^2} \\
+    \zeta_3 &\longrightarrow \frac{1}{(1-\zeta_3 t)(1-\zeta_3^{-1}t)} = \frac{1}{1+t+t^2} \\
+    \zeta_6 &\longrightarrow \frac{1}{1-t+t^2}.
+\end{align*}
+
+\begin{rmk}
+    Andrei admires the mathematicians of the past who were able to compute things by hand. Now he cannot imagine performing these computations without a computer. It is important to note that we should always use a free and open-source program to perform such computations and not something proprietary like some programs that shall not be named.\footnote{See \url{https://www.gnu.org/proprietary/proprietary.en.html} or \url{https://www.gnu.org/philosophy/why-free.en.html}}
+\end{rmk}
+
+This tells us that 
+\[ H(t) = \frac{(1-t^{24})}{(1-t^6)(1-t^8)(1-t^{12})} = \frac{(1+t^{12})}{(1-t^6)(1-t^8)}. \]
+This suggests generators of degree $6,8,12$ and a relation in degree $24$.
+
+\begin{thm}[E. Noether]
+    The ring ${(S^{\bullet}V)}^G$ is generated in degree at most $\abs{G}$.
+\end{thm}
+
+\begin{proof}
+    By polarization, we know $S^d V$ is spanned by $v^d$. But then we know that ${(S^d V)}^G$ is spanned by polynomials of the form 
+    \[ \sum g \cdot v^d = \sum {(gv)}^d = p_d(\underbrace{v, g_1 v, g_2 v, \ldots}_{\abs{G}}), \]
+    and this can be expressed in elementary symmetric functions of degree at most $\abs{G}$.
+\end{proof}
+
+Now we can rewrite
+\[ H(t) = 1 + t^6 + t^8 + 2t^{12} + t^{14} + t^{16} + 2t^{18} + \cdots \]
+Let $x,y,z$ be the generators of degree $6,8,12$, and then in degree $24$, we have some relation
+\[ Ax^4 + By^3 + Cz^2 = 0. \]
+There are no further relations because $\dim V/\wtl{A_4} = 2$, so we have a map
+\[ V \xrightarrow{(x,y,z)} V/G \subset \C^3. \]
+
+\begin{rmk}
+    This classification of finite subgroups of $SL(2)$ also gives us Du Val singularities, the classification of simple Lie algebras, the McKay correspondence, and many other interesting objects in mathematics.
+\end{rmk}
+
+Now consider the action of $SL(2, \Z)$ on the upper half-plane $\mc{H}$. Then we have an exact sequence
+\[ 1 \to \Gamma(m) \to SL(2, \Z) \to SL(2, \Z/m) \to 1 \]
+and we have an action of $SL(2, \Z/m)$ on $\mc{H}/\Gamma(m)$.
+
+But now $\Gamma(m)$ has no torsion, so we have finitely many cusps, corresponding to the action of $\Gamma(m)$ on $\Q$, and $\mc{H}/\Gamma(m)$ is a curve of genus $g = g(\Gamma(m))$. For $m = 3,4,5$, we have $g = 0$ and thus $SL(2, \Z/m)$ acts on $\P^1$.
+
+Now the tetrahedron corresponds to the standard fundamental domain for $SL(2, \Z)$. The cube corresponds to the below:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{squarefd}
+    \caption{Fundamental domain subdivided}%
+    \label{fig:squarefd}
+\end{figure}
+The dodecahedron and icosahedron correspond to the following:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{icosafd}
+    \caption{Fundamental domain for icosahedron}%
+    \label{fig:icosafd}
+\end{figure}
+The cusps correspond to points of $5$-fold symmetry, and correspond to $0, 1, 2, \infty, \varphi, 1/\varphi, \ldots$, and the points converging to $1/\varphi$ are given by ratios $F_n/F_{n-1}$ of Fibonacci numbers.
+
+\begin{rmk}
+    Instead of just considering the icosahedron, we should consider an infinite strip with the given pattern in the picture.
+\end{rmk}
+
+\section{Jordan Decomposition}%
+\label{sec:jordan_decomposition}
+
+Let $\k = \ol{\k}$. Then for all $g \in G = GL(V)$, we can decompose $g$ into Jordan blocks. In particular, we can write $g = g_s g_n$, where $g_s$ is semisimple and $g_n$ is strictly upper triangular (in some basis). The analogous decomposition for $\xi \in \mf{g}$ is $\xi = \xi_s + \xi_n$. Now if $V \subseteq \k^n$ is invariant under $g$, it is invariant under both $g_s, g_n$.
+
+Consider the regular representation $\rho$ of $G = GL(n, \k)$ on $\k[G]$.
+
+\begin{lem}
+    For any $g \in G$, we have ${\rho(g)}_s = \rho(g_s)$. 
+\end{lem}
+
+\begin{cor}
+    If $G$ is an algebraic group, then $g_s, g_n \in G$ for all $g \in G$. Moreover, if $\varphi \colon G_1 \to G_2$ is a homomorphism, then ${ \varphi(g) }_s = \varphi(g_s)$ and ${\varphi(g)}_n = \varphi(g_n)$.
+\end{cor}
+
+\begin{proof}
+    By Chevalley, $G$ is the stabilizer of a subspace on $\k[GL(n)]$ and therefore because $g$ stabilizes the subspace, so do $g_s, g_n$.
+
+    For the second part, we can pull back $\varphi^* \colon \k[G_2] \to \k[G_1]$ and then the desired result is obvious.
+\end{proof}
+
+\chapter{More on Lie Algebras}%
+\label{cha:more_on_lie_algebras}
+
+\section{More Solvable Lie Algebras}%
+\label{sec:more_solvable_lie_algebras}
+
+We will return to solvable Lie algebras. Assume $\chr \k = 0$.
+
+\begin{thm}
+    Let $\mf{g} \subset \mf{gl}(V)$ be a Lie subalgebra. Then $\mf{g}$ is solvable if and only if $\trace x[y,z] = 0$ for all $x,y,z \in \mf{g}$.
+\end{thm}
+
+\begin{proof}
+    One direction is clear by Borel. Here, $\mf{g} \subset \mf{b}$ is contained in the subalgebra of upper-triangular matrices. In the other direction, the form $\trace x[y,z] \in { ( \Omega^3 \mf{g} ) }^{\mf{g}}$. In particular, we see that if $\mf{g} = \Lie(G)$, then this becomes a bi-invariant $3$-form on $G$. This gives a class in ${H^3_{\mr{dR}}(G)}^{G \times G}$. Now we have an exact sequence
+    \[ 1 \to \text{unipotent radical} \to G \to G_{\text{reductive}} \to 1, \]
+    and here the unipotent radical is homeomorphic to $\R^n$, while $G_{\text{reductive}}$ is a product of simple nonabelian $G_i$ and a torus up to a finite cover. Then $\operatorname{rk} \pi_3$ is the number of simple nonabelians, and so the morphisms $SU(2) \simeq S^3 \hookrightarrow {(G_i)}_{\text{compact}}$ generate $\pi_3 \otimes \Q$.
+
+    Now suppose that $\trace x[y,z] = 0$. Now we will show that $\mf{g}$ is solvable. It suffices to show that $\mf{g}' = [\mf{g}, \mf{g}]$ is nilpotent. By Engel, it suffices to show that any $x \in \mf{g}'$ is nilpotent. Consider the subalgebra
+    \[ \mf{gl}(V) \supset \wtl{\mf{g}} = \qty{ \xi \mid [\xi, \mf{g}] \subset [\mf{g}, \mf{g}] } \supset \mf{g}. \]
+    This is the Lie algebra of an algebraic group 
+    \[ \wtl{G} = \qty{h \mid \Ad (h) (\mf{g}) = \mf{g}, \Ad (h) \equiv 1 \mod [\mf{g}, \mf{g}]}. \]
+    But then $\tr x \xi = 0$ for all $x \in \mf{g}', \xi \in \wtl{\mf{g}}$. Now if $x = \sum [y_i, z_i]$, then we have
+    \[ \tr x \xi = \sum \tr y_i [z_i, \xi] = 0, \]
+    so if $x \in \mf{g} \subset \wtl{\mf{g}}$, then $x_s \in \wtl{\mf{g}}$. Now considering $f(x_s) \in \wtl{\mf{g}}$, we will obtain some condition on $\ad f(x_s)$. These will have the same eigenvectors as $\ad x_s$. If $E_{ij}$ is an eigenvector of $\ad x_s$ with eigenvalue $\lambda_i - \lambda_j$, then it has eigenvalue $f(\lambda_i) - f(\lambda_j)$ under $\ad f(x_s)$. If there exists $\psi$ such that $f(\lambda_i) - f(\lambda_j)$, then $\ad f(x_s) = \psi(\ad x_s)$ and thus $f(x_s) \in \wtl{\mf{g}}$.
+
+    Now if $f$ is linear over $\Q$, then $f(x_s) \in \wtl{\mf{g}}$ and $\ad f(x_s) = f(\ad x_s)$. Next we see that $\tr x_s f(x_s) = 0$ because we can embed $\qty{\lambda_i} \subset \C$ and then take $f(\lambda_i) = \ol{\lambda}_i$. Then we see that $\tr x_s f(x_s) = \sum \abs{\lambda_i}^2 = 0$, and then we see that all $\lambda_i = 0$. Alternatively, if $\dim_{\Q} \bigoplus \Q \lambda_i > 0$, then there exists a nonzero $f \colon \bigoplus \Q \lambda_i \to \Q$, but then $f \qty(\sum \lambda_i f(\lambda_i)) = \sum {f_i(\lambda)}^2$.
+\end{proof}
+
+\begin{defn}
+    Define the \textit{Killing form} by
+    \[ (x,y) \coloneqq \tr \ad(x) \ad(y). \]
+\end{defn}
+
+\begin{rmk}
+    Killing apparently lived a very sad life and did not get the recognition he deserved. Unfortunately, Andrei (and I) do not know more about him.
+\end{rmk}
+
+\begin{thm}
+    A Lie algebra $\mf{g}$ is solvable if and only if $(x, [y,z]) = 0$.
+\end{thm}
+
+\begin{proof}
+    Consider the exact sequence
+    \[ 0 \to Z(\mf{g}) \to \mf{g} \to \ad \mf{g} \to 0. \]
+    Then solvability of $\mf{g}$ is equivalent to solvability of $\ad \mf{g}$.
+\end{proof}
+
+\begin{thm}[Cartan Criterion]
+    A Lie algebra $\mf{g}$ is semisimple if and only if the Killing form is nondegenerate.
+\end{thm}
+
+\begin{proof}
+    Suppose $(-,-)$ is degenerate. Then $\mf{g}^{\perp}$ is a solvable ideal in $\mf{g}$. But then if $\mc{I}$ is a solvable ideal with $\mc{I}^{n+1} = 0$, then $\mf{a} = \mc{I}^n$ is an abelian ideal. Therefore, for all $x,y$, we see that
+    \[ [\mf{a}, [y,[\mf{a}, x]]] = 0, \]
+    and therefore for all $a \in \mf{a}, y \in \mf{g}$, we have $\ad (a) \ad(y) \ad(a) = 0$, so ${(\ad(a) \ad(y))}^2 = 0$, and thus $\tr \ad(a) \ad(y) = 0$. But then $a \in \mf{g}^{\perp}$.
+\end{proof}
+
+\begin{cor}
+    If $\mf{g}$ is semisimple, then $\mf{g} = \bigoplus \mf{g}_i$ is a sum of simple nonabelians.
+\end{cor}
+
+\begin{proof}
+    Suppose $\mf{h} \subset \mf{g}$ is an ideal. Then $\mf{h} \cap \mf{h}^{\perp} = 0$ (because it is a solvable ideal). Note that if $\mf{h} \subset \mf{g}$ is an ideal, then ${(h_1, h_2)}_{\mf{h}} = {(h_1, h_2)}_{\mf{g}}$.
+\end{proof}
+
+
+
+
+
+
+
+\end{document}

@@ -152,6 +152,9 @@
 \DeclareMathOperator{\Ann}{Ann}
 \DeclareMathOperator{\Ass}{Ass}
 \DeclareMathOperator{\dpth}{depth}
+\DeclareMathOperator{\pdim}{proj.dim}
+\DeclareMathOperator{\idim}{inj.dim}
+\DeclareMathOperator{\gdim}{gl.dim}
 
 % Section formatting
 \titleformat{\section}
@@ -211,6 +214,14 @@ These notes were taken during lecture using the \texttt{vimtex} package of the e
 Any errors are mine and not the instructor's. 
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the instructor.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+Any similarties to Matsumura's \textit{Commutative Algebra} are due to the instructor.
+
+\section*{Acknowledgements}%
+\label{sec:acknowledgements}
+
+I would like to thank Caleb Ji, Nicol\'as Vilches, and Alex Xu for pointing out typos in these notes.
+
 \newpage
 
 
@@ -678,8 +689,8 @@ Suppose $A \subset B$ is an inclusion of rings. Then we say that $x \in B$ is
 
 \begin{rmk}
     In general, if $0 \to M \to N \to P \to 0$ is exact, then
-    \[ 0 \to \Hom(P,Q) \to \Hom(N,Q) \to \Hom(M,Q) \\
-    0 \to  \Hom(Q,M) \to \Hom(Q,N) \to \Hom(Q,P) \]
+    \begin{align*} 0 \to \Hom(P,Q) \to \Hom(N,Q) \to \Hom(M,Q) \\
+    0 \to  \Hom(Q,M) \to \Hom(Q,N) \to \Hom(Q,P) \end{align*}
     are exact but the last morphism is not necessarily surjective.
 \end{rmk}
 
@@ -1153,7 +1164,7 @@ We can refine this into going-up and going-down. Let $\phi: A \to B$ be a morphi
 \begin{defn}[Going-up]
     A ring homomorphism $\phi$ satisfies the \textit{Going-up property} if the following holds:
 
-    Let $\mf{p} \subset \mf{p}'$ be prime ideals of $A$ and suppose that $\phi^*(\mf{P}) = \mf{p}$. Then there exists $\mf{P}' \subset \mf{P}$ such that $\phi^*(\mf{P}') = \mf{p}'$.
+    Let $\mf{p} \subset \mf{p}'$ be prime ideals of $A$ and suppose that $\phi^*(\mf{P}) = \mf{p}$. Then there exists $\mf{P}' \supset \mf{P}$ such that $\phi^*(\mf{P}') = \mf{p}'$.
 \end{defn}
 
 \begin{defn}[Going-down]
@@ -1866,7 +1877,7 @@ Consider a morphism $A \xrightarrow{\varphi} B$. We have the pullback $\varphi^*
 \end{proof}
 
 \begin{cor}
-    Let $B \supset A$ be Noetherian rings such that $B$ is inegral over $A$.
+    Let $B \supset A$ be Noetherian rings such that $B$ is integral over $A$.
     \begin{enumerate}
         \item $\dim A = \dim B$;
         \item For all $\mf{P} \in \Spec B$, $\mr{ht}(\mf{P}) \leq \mr{ht}(\mf{P} \cap A)$.
@@ -1875,7 +1886,7 @@ Consider a morphism $A \xrightarrow{\varphi} B$. We have the pullback $\varphi^*
 \end{cor}
 
 \begin{proof}
-    THe proof of this is left as an exercise to the reader.
+    The proof of this is left as an exercise to the reader.
 \end{proof}
 
 \begin{exer}
@@ -2205,7 +2216,7 @@ Let $A$ be a ring and $M$ be an $A$-module. Then for $a_1, \ldots, a_r \in A$, w
         \item For all $F(x_1, \ldots, x_r) \in M[x_1, \ldots, x_r] = A[x_1, \ldots, x_r] \otimes_A M$ homogeneous of degree $n$ such that $F(a_1, \ldots, a_r) \in I^{n+1}M$, this implies that $F(x_1, \ldots, x_r) \in IM[x_1, \ldots, x_r]$, where $I = (a_1, \ldots, a_r)$.
         \item If $F(x_1, \ldots, x_r) \in M[x_1, \ldots, x_r]$ is homogeneous and such that $F(a_1, \ldots, a_r) = 0$, then $F \in IM[x_1, \ldots, x_r]$ 
             \item The map
-            \[ M/IM[x_1, \ldots, x_r] \to \mr{gr}^I M = \bigoplus_{n=0}^{\infty} I^n M / I^{n-1}M,\ F \mapsto F(a_1, \ldots, a_r) \]
+            \[ M/IM[x_1, \ldots, x_r] \to \mr{gr}^I M = \bigoplus_{n=0}^{\infty} I^n M / I^{n+1}M,\ F \mapsto F(a_1, \ldots, a_r) \]
             is an isomorphism.
     \end{itemize}
 \end{defn}
@@ -2352,6 +2363,9 @@ In general, this inequality is strict, so we will later study the rings for whic
     and therefore $M_{\mf{p}} \otimes k_{\mf{p}} N_{\mf{p}} = (M \otimes_A N)_{\mf{p}} \neq 0$. Thus $\supp(M) \cap \supp(N) \subset \supp(M \otimes N)$. Note that for $N = A/xA$, we have $\supp(M/xM) = \supp(M) \cap V(x)$ because $M \otimes N = M/xM$.
 \end{proof}
 
+\chapter{Geometric Aspects of Commutative Algebra}%
+\label{cha:normal_and_regular_rings}
+
 \section{Cohen-Macaulay Rings and Modules}%
 \label{sec:cohen_macaulay_rings_and_modules}
 
@@ -2380,7 +2394,650 @@ Let $A$ be a local Noetherian ring and $M$ be a finitely-generated $A$-module.
     \end{enumerate}
 \end{proof}
 
+\begin{thm}
+    Let $A$ be local Noetherian and Cohen-Macaulay. Then
+    \begin{enumerate}
+        \item For all proper ideals $I \subsetneq A$, we have $\mr{ht}(I) + \dim A/I = \dim A$.
+        \item For all $P \supset Q$ prime ideals, then $\mr{ht}(P) - \mr{ht}(Q) = \mr{ht}(P/Q)$, where the last height is taken in $A/Q$.
+        \item Let $x_1, \ldots, x_r \in \mf{m}$. Then the following are equivalent:
+            \begin{enumerate}
+                \item $x_1, \ldots, x_r$ are $A$-regular.
+                \item $\mr{ht}(x_1, \ldots, x_i) = i$ for all $i \leq r$.
+                \item $\mr{ht}(x_1, \ldots, x_r) = r$.
+                \item There exists $x_{r+1}, \ldots, x_n \in \mf{m}$ with $n = \dim A$ such that $x_1, \ldots, x_n$ is a system of parameters for $A$.
+            \end{enumerate}
+    \end{enumerate}
+\end{thm}
 
+\begin{proof}
+    We will first prove \textbf{3} and then use this to prove \textbf{1} and \textbf{2}.
+    \begin{description}
+        \item[a implies b:] We already know that $\mr{ht}(x_1, \ldots, x_i) \leq i$. First, we know that $x_1$ does not belong to any minimal prime ideal of $A$ because $x_1$ is $A$-regular. Thus $\mr{ht}(x_1) = 1$. Then in $A/x_1$, the sequence $\ol{x}_1, \ldots, \ol{x}_r$ is $A/x_1$-regular, and thus $\mr{ht}(\ol{x}_2, \ldots, \ol{x}_i) = i-1$. Thus we can find 
+            \[ \mf{p}_i \supsetneq \mf{p}_{i-1} \subsetneq \cdots \supsetneq \mf{p}_1 \supset (x_1) \]
+            such that $\ol{\mf{p}}_i \supsetneq \cdots \supsetneq \ol{\mf{p}}_1 \supsetneq 0$. This implies that $\mr{ht}(\mf{p}_i) \geq 1$ and thus $\mr{ht}(x_1, \ldots, x_r) \geq i$.
+        \item[b implies c:] This is trivial.
+        \item[c implies d:] Assume $r < \dim A$. Then there exists $x_{r+1} \in \mf{m}$ that does not belong to any minimal prime ideal containing $(x_1, \ldots, x_r)$. Therefore $\mr{ht}(x_1, \ldots, x_{r+1}) = r+1$ and then we can find $x_{r+2}, \ldots, x_n$ such that $\mr{ht}(x_1, \ldots, x_n) = n$. But this implies that $I = (x_1, \ldots, x_n)$ is an ideal of definition for $A$ and so $(x_1, \ldots, x_n)$ is a system of parameters.
+        \item[d implies a:] Note that so far we have not used the fact that $A$ is Cohen-Macaulay. We show that a system of parameters is $A$-regular. Let $\mf{p} \in \Ass(A)$. Then $\dim A/\mf{p} = n$. This implies that $\mf{p}$ is minimal and therefore $\ol{x}_1 \neq 0$ in $A/\mf{p}$ because otherwise $\ol{x}_1, \ldots, \ol{x}_n$ would be a system of parameters in $A/\mf{p}$. But then this means $x_1 \notin \mf{p}$ for all $\mf{p} \in \Ass(A)$. This implies that $x_1$ is $A$-regular, and thus $A/x_1 A$ is Cohen-Macaulay of dimension $n-1$. On the other hand, $\ol{x}_2, \ldots, \ol{x}_n$ is a system of parameters for $A/x_1 A$ and the desired result follows by induction.
+    \end{description}
+    Now we will prove \textbf{1} and \textbf{2}.
+    \begin{enumerate}
+        \item Let $I \subsetneq A$ be an ideal with height $\mr{ht}(I) = r$. Then we can choose $a_1 \ldots, a_r \in I$ such that $\mr{ht}(a_1, \ldots, a_r) = r$. By \textbf{3a}, this means that $a_1, \ldots, a_r$ is $A$-regular and thus $r \leq \dpth_I (A)$. On the other hand, if we have $b_1, \ldots, b_s \in I$ an $A$-regular sequence, we see that $s \leq \mr{ht}(I)$. This tells us that $\mr{ht}(I) = \dpth_I A$. But then recall that 
+            \[ \mr{ht}(I) = \inf \qty{\mr{ht}(\mr{p}) \mid \mr{p} \supset I} \]
+            and that
+            \[ \dim A/I = \sup \qty{ \dim A/\mf{p}, \mf{p} \supset I }. \]
+            This means we can assume that $I = \mr{p}$ is a prime ideal with $\mf{p} = r$. In this case, we know that $A_{\mf{p}}$ is Cohen-Macaulay and 
+            \[ \mr{ht}(\mr{p}) = \dim A_{\mf{p}} = \dpth_{\mf{p}} (A) \]
+            so there exists $x_1, \ldots, x_r \in I$ an $A$-regular sequence such that $A/(x_1, \ldots, x_r)$ is Cohen-Macaulay of dimension $n-r$. Then $\ol{\mf{p}}$ is minimal in $A/(x_1, \ldots, x_r)$ because otherwise we would be able to fine $x_{r+1} \in \mf{p}$ which is not a zero divisor in $A/(x_1, \ldots, x_r)$ and then $\dpth(\mf{p}) \geq r+1$. This implies 
+            \[ \dim A/\mf{p} = \dim A/(x_1, \ldots, x_r) = n-r \]
+            and thus $\dim A/\mf{p} + \mr{ht}(\mf{p}) = n-r+r = n = \dim A$.
+        \item Suppose $P \supset Q$ are prime ideals. We know $A_P$ is Cohen-Macaulay. Then we know that $\dim A_P = \mr{ht}(QA_P) + \dim (A_P / QA_P)$ by \textbf{1} for $A_P$. But then we have the desired result because $\dim A_P = \mr{ht}(P)$, $\mr{ht}(Q A_P) = \mr{ht}(Q)$, and $\dim (A_P / QA_P) = \mr{ht}(P/Q)$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+
+\section{Normal and Regular Rings}%
+\label{sec:normal_rings}
+
+Let $A$ be a domain and $K = \mr{Frac}(A)$. If $x \in K$, we say that it is \textit{almost integral} if there exists $a \in A$ such that $ax^m \in A$ for all $n \geq 1$.
+
+\begin{rmk}
+    Clearly if $x$ is integral, then $x$ is almost integral. Also, if $x$ is almost integral and $A$ is Noetherian, $x$ is integral.
+
+    To prove the first part, write
+    \[ x^N = a_0 + a_1 x + \cdots + a_{N-1}x^{N-1}. \]
+    Then choose $a$ such that $a x^i \in A$ for $i \leq N-1$ and then by induction we have $ax^i \in A$ for $i \geq n$.
+
+    To prove the second part, note that if $ax^i \in A$ for all $a \geq 1$, then $A[x] \subset a^{-1}A$. Because $A$ is noetherian, then $A[x]$ is a finitely-generated $A$-module and then use the characterization of integral elements over a ring.
+\end{rmk}
+
+\begin{defn}
+    We say that $A$ is a \textit{normal domain (rep. completely normal domain)} if every integral element (resp. almost integral element) of $K$ over $A$ belongs to $A$. 
+\end{defn}
+
+\begin{rmk}
+    Thering $A$ is normal if and only if $A_{\mf{p}}$ is normal for all prime ideals $\mf{p}$. Additionally, for any normal ring $A$, all localizations $S^{-1}A$ are normal.
+\end{rmk}
+
+We also note that if $A$ is normal (resp.~completely normal) then so is $A[x]$ when $A$ is Noetherian. The proof is easy and uses the fact that $K[x]$ is a UFD and is thus completely normal. Then for $f \in K(x)$ is almost integral, it belongs to $K[x]$ and then we write
+\[ f = a_r x^r + \cdots + a_0 \]
+where $a_i \in K$. Then there exists $Q \in A[x]$ such that $Q f^n \in A[x]$ for all $n \geq 1$ and thus $\alpha_d a_r^n \in A$ for all $n \geq 1$, where $Q = \alpha_d x^d + \cdots + \alpha_0$. This means that $a_r$ is almost integral and therefore $a_r \in A$. Then $f - a_r x^r$ is almost integral and finally we proceed by induction to see that $f \in A[x]$.
+
+Now we consider the normal rings of dimension $1$.
+\begin{prop}
+    Let $A$ be a local Noetherian ring. Then the following are equivalent:
+    \begin{enumerate}
+        \item $A$ is a discrete valuation ring.
+        \item $A$ is normal and $\dim A = 1$.
+        \item $A$ is normal and there exists $0 \neq a \in \mf{m}$ such that $(a)$ is $\mf{m}$-primary.
+        \item The maximal ideal $\mf{m}$ of $A$ is principal.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    We will proceed quickly.
+    \begin{description}
+        \item[1 implies 2:] This was done previously.
+        \item[2 implies 3:] Note that $\mf{m}$ is the only prime ideal containing $(a)$ because $A$ has dimension $1$ and is a local domain. This means that $(a)$ is $\mf{m}$-primary.
+        \item[3 implies 4:] We know that $\mf{m} \in \Ass(A/(a))$ and thus $\mf{m} = \Ann_A(\ol{x})$ for some $0 \neq \ol{x} \in A/aA$. If $x \in A$ is a lift of $\ol{x}$, then $xa^{-1} \notin A$. However, we know that $\mf{m} \cdot x \subseteq (a)$, so $\mf{m}xa^{-1} \subset A$. This tells us that $\mf{m} \subsetneq \mf{m} xa^{-1}$ is a strict inclusion because otherwise $xa^{-1}$ is integral over $A$ and thus $xa^{-1} \in A$. Therefore $\mf{m} xa^{-1} = A$, so there exists $t \in \mf{m}$ such that $txa^{-1} = 1$ and thus $tA \subset \mf{m} \ni y$ and thus $y = txa^{-1}y = t(xa^{-1}y)$, where $xa^{-1}y \in A$, and thus $y \in tA$, so $\mf{m} = tA$ is principal.
+        \item[4 implies 1:] If $\mf{m} = (t)$, then we know that 
+            \[ \bigcap_{n \geq 0} \mf{m}^n = 0 \]
+            and so for all $x \neq 0$ there exists $m$ such that $x = u t^m$ where $u \in A^{\times}$, and thus $A$ is a DVR. \qedhere
+    \end{description}
+\end{proof}
+
+Now let $A$ be a ring and $I \subset A$ such that $\bigcap_n I^n = (0)$ and $A$ is $I$-separated. Then for all $0 \neq a \in A$, there exists $n$ such that $a \in I^n \setminus I^{n+1}$. Then define $a^*$ to be the class of $a$ in $I^n / I^{n+1}$ and 
+\[ A^* = \mr{gr}^I(A) = \bigoplus_{n=0}^{\infty} I^n / I^{n+1}. \]
+
+\begin{thm}
+    Let $A, I$ be as before. Then
+    \begin{enumerate}
+        \item If $A^*$ is a domain, then so is $A$.
+        \item If $A$ is Noetherian and $I \subset \mr{rad}(A)$, then if $A^*$ is a normal domain, so is $A$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Choose $a,b \in A$ nonzero. Then $a^*, b^* \neq 0$ and so $a^* b^* \neq 0$ because $A^*$ is a domain. This means that if $a \in I^n \setminus I^{n+1}, b \in I^q \setminus I^{q+1}$, we know that $ab \in I^{n+q} \setminus I^{n+q+1}$ and thus $ab \neq 0$.
+        \item Let $x \in K$ be integral over $A$. Write $x = \frac{a}{b}$ where $a,b \in A$. Then $A/bA$ is Noetherian and therefore by the Krull intersection theorem this is the same thing as
+            \[ \bigcap_{n \geq 0} I^n + bA = bA. \]
+            To show that $x \in A$, we will prove that $a \in bA$ or that $a \in I^n + bA$ for all $n \geq 0$. If $a \in I^{n-1} + bA$, then we know that $a = a' + bs$, where $a' \in I^{n-1}$ and $s \in A$. Then we know that because $\frac{a}{b}$ is integral, so is $\frac{a'}{b}$. Then we may assume that $a \in I^{n-1}$ and $\frac{a}{b}$ is almost integral. Then there exists $c \in A$ such that $ca^m \in b^m A$ for all $m \geq 1$ and thus because $a^* \neq 0$, we know that $(a^*)^m = (a^m)^* \neq 0$ and thus $c^* (a^*)^m \in (b^*)^m A$. Because $A^*$ is Noetherian and normal, it is completely normal, and thus $\frac{a^*}{b^*} \in A^*$ and thus $a^* = b^* d^*$ for some $0 \neq d \in A$. This means that $a-bd \in I^{N+1}$ for $N$ such that $a \in I^N \setminus I^{N+1}$. But we know this for $N = n-1$, and thus $a-bd \in I^n$, so $a \in I^n + bA$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+Recall that if $A$ is local Noetherian, we say that $A$ is \textit{regular} if there exists a system of parameters that generates the maximal idea $\mf{m}$ of $A$.
+
+\begin{thm}
+    Let $A$ be local Noetherian, $\mf{m}$ be its maximal ideal, and $k$ be the residue field. Then $A$ is regular if and only if
+    \[ \mr{gr}^{\mf{m}}(A) \cong k[x_1, \ldots, x_d], \]
+    where $d = \dim A$.
+\end{thm}
+
+\begin{proof}
+    Assume that $A$ is regular. Then $\mf{m} = (x_1, \ldots, x_d)$ is a system of parameters because $\dim_k \mf{m} / \mf{m}^2 = \dim A = d$. Therefore we have a map
+    \[ k[x_1, \ldots, x_d] \longrightarrow \mr{gr}^{\mf{m}}(A) \qquad Q(X_1, \ldots, X_n) \mapsto Q(x_1, \ldots, x_d). \]
+    This map is clearly surjective, so we need to show that it is injective. If $Q \neq 0$ is in the kernel, then let $q = \deg Q$. Then $(Q) \subset \ker$. We know that
+    \[ \ell(A / \mf{m}^{n+1}) \leq \binom{n+d}{d} - \binom{n-q+d}{d} \]
+    and thus $\dim A = d(A) \leq d-1$, a contradiction.
+
+    Now assume that $\mr{gr}^{\mf{m}}(A) \cong k[x_1, \ldots, x_d]$. By definition, this means that $d(A) = d$. Also $\dim \mf{m} / \mf{m}^2$ is the dimension of the space of homogeneous polynomials of degree $1$, so $\dim \mf{m} / \mf{m}^2 = d$. Thus $A$ is regular.
+\end{proof}
+
+\begin{cor}
+    Let $A$ be a local Noetherian ring. Then the following are equivalent:
+    \begin{enumerate}
+        \item $A$ is a discrete valuation ring.
+        \item $A$ is a normal ring of dimension $1$.
+        \item $A$ is regular of dimension $1$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    We have seen before that \textbf{1} is equivalent to \textbf{2} which implies \textbf{3}. To prove that \textbf{3} implies \textbf{1}, we need to show that $A$ is a domain. But then $\mr{gr}^{\mf{m}}(A) \cong k[X]$ is a domain and thus $A$ is a domain.    
+\end{proof}
+
+\begin{cor}
+    If $A$ is regular, then $A$ is a normal domain.
+\end{cor}
+
+\begin{thm}
+    Let $A$ be a regular local Noetherian ring and $(x_1, \ldots, x_d)$ be a regular system of parameters. Then
+    \begin{enumerate}
+        \item $A$ is a normal domain.
+        \item $x_1, \ldots, x_d$ is an $A$-regular sequence and $A$ is Cohen-Macaulay.
+        \item The ideal $\mf{p}_i = (x_1, \ldots, x_i)$ is a prime ideal of height $i$ and $A/ \mf{p}_i$ is regular of dimension $d-i$.
+        \item If $\mf{p} \in \Spec(A)$ and $A/ \mf{p}$ is regular, then there exists a system of parameters $y_1, \ldots, y_d$ such that $\mf{p} = (y_1, \ldots, y_i)$ and $\dim A/\mf{p} = d-i$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    We prove each part.
+    \begin{enumerate}
+        \item We already proved that the graded ring $\mr{gr}^{\mf{m}}(A)$ is a normal domain.
+        \item  Use the previous theorem. Recall that $k[x_1, \ldots, x_d] \simeq \mr{gr}^{\mf{m}}(A)$. This means that $x_1, \ldots, x_d$ is an $A$-quasi-regular sequence. Because $A$ is Noetherian, then $x_1, \ldots, x_d$ is an $A$-regular sequence. This implies that
+            \[ d \leq \dpth(A) \leq d \]
+            and thus $A$ is Cohen-Macaulay.
+        \item The previous implies that $\dim A / (x_1, \ldots, x_i) = d-i$. Then the ideal $\ol{\mf{m}} = \mf{m} / \mf{p}_i$ is generated by the $d-i$ elements $\ol{x}_{i+1}, \ldots, \ol{x}_d$ and these form a system of parameters. By definition, $A/ \mf{p}_i$ is regular.
+        \item Write $\ol{\mf{m}} = \mf{m} / \mf{p}$. Then let $i \leq d$ such that $\dim \ol{\mf{m}} / \ol{\mf{m}}^2 = d-i$. This means that $i = \dim ( \mf{p}+\mf{m}^2  )/ \mf{m^2}$, so we can choose $y_1, \ldots, y_i \in \mf{p}$ such that $\ol{y}_1, \ldots, \ol{y}_i$ is a basis of $(\mf{p} + \mf{m}^2 / \mf{m}^2)$. We then complete this to a basis of $\mf{m} / \mf{m}^2$. Thus $y_1, \ldots, y_d$ is a regular system of parameters for $A$, and is thus is regular sequence. Then $\mf{p}' = (y_1, \ldots, y_i) \subset \mf{p}$ is a prime ideal and $\dim A/\mf{p}' = d-i$. But then $\dim A/\mf{p} = p-i$ because $A/\mf{p}$ is regular by assumption, so we must have $\mf{p} = \mf{p}'$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+We now return to some definitions.
+
+\begin{defn}
+    Let $M$ be an $A$-module. Then $\mf{p} \in \Ass(M)$ is called an \textit{embedded prime} if it is not minimal in the support. 
+\end{defn}
+
+Recall that if $M$ is Cohen-Macaulay, then for any $\mf{p} \in \Ass(M)$, then $\dim A/\mf{p} = \dim M$. Therefore $M$ has no embedded primes.
+
+\begin{defn}
+    Let $I$ be an ideal of $A$. We say that $I$ is \textit{unmixed} if for all $\mf{p} \in \Ass(A/I)$ we have $\mr{ht}(\mf{p}) = \mr{ht}(I)$. Note this implies that $A/I$ has no embedded primes. 
+\end{defn}
+
+\begin{defn}
+    We say that the \textit{unmixed theorem holds for $A$} if for all $I = (a_1, \ldots, a_r)$ with $r = \mr{ht}(I)$, then $I$ is unmixed. 
+\end{defn}
+
+\begin{rmk}
+    This is equivalent to saying that for all $I = (x_1, \ldots, x_r)$ of height $\mr{ht}(I) = r$, $A/I$ has no embedded primes.
+
+    To see this, note that if $A/I$ has no embedded primes, choose a minimal $Q \in \Ass(A/I)$. We know that $\mr{ht}(Q) \leq r$ because $Q$ is minimal containing $I$. However, this is at least
+    \[ \inf \qty{ \mr{ht}(\mf{p}) \mid \mr{p} \supset I } = \mr{ht}(I) = r. \]
+\end{rmk}
+
+\begin{thm}
+    Let $A$ be Noetherian. Then $A$ is Cohen-Macaulay if and only if the unmixed theorem holds for $A$.
+\end{thm}
+
+\begin{proof}
+    Suppose that the unmixed theorem holds for $A$. Let $\mf{p}$ be a prime ideal. Then we know $r = \mr{ht}(\mf{p}) = \dim A_{\mr{p}}$, so we can choose $a_1, \ldots, a_r \in \mf{p}$ such that $\mr{ht}((a_1, \ldots, a_i)) = i$. However, if $A$ satisfies the unmixed theorem, then $a_{i+1}$ is not in any prime ideal of $\Ass(A/(a_1, \ldots, a_i))$. Here, we use the fact that $A/(a_1, \ldots, a_i)$ has no embedded primes because $(a_1, \ldots, a_i)$ is unmixed. Thus $a_1, \ldots, a_r$ is an $A$-regular sequence and is also $A_{\mf{p}}$-regular. This implies that $r \leq \dpth(A_{\mf{p}}) \leq \dim A_{\mr{p}} = \mr{ht}(\mr{p}) = r$ and thus $A_{\mf{p}}$ is Cohen-Macaulay.
+
+    Now assume that $A$ is Cohen-Macaulay. Then if $I = (a_1, \ldots, a_r)$ has height $r$, then $a_1, \ldots, a_r$ is an $A$-regular sequence. Thus $A/(a_1, \ldots, a_r)$ is Cohen-Macaulay and thus has no embedded primes, so $(a_1, \ldots, a_r)$ is unmixed.
+\end{proof}
+
+Returning to normal domains, we have the following result:
+\begin{thm}
+    Let $A$ be a Noetherian normal domain. Then any nonzero principal ideal is unmixed and
+    \[ A = \bigcap_{\mr{ht}(\mr{p}) = 1} A_{\mf{p}}. \]
+    In particular, $A$ is Cohen-Macaulay if $\dim A \leq 2$.
+\end{thm}
+
+\begin{proof}
+    Let $0 \neq a \in A$. To show that $(a)$ is unmixed, we need to show that $\mr{ht}((a)) = 1$. Let $\mf{p} \in \Ass(A/(a))$. Then $\mf{p} = \Ann_A(\ol{b})$ for some $b \neq 0$. This means that
+    \begin{align*}
+        \mf{p} &= \qty{x \in K \mid xb \subset (a)} \\
+               &= \qty{x \in K \mid \frac{xb}{a} \in A}.
+    \end{align*}
+    This means that
+    \[ \mf{p}^{-1} = \qty{y \in K \mid y \mf{p} \subset A} \]
+    and thus we can replace $A$ by $A_{\mf{p}}$. This implies that $\mf{p}^{-1} A_{\mf{p}} \neq A_{\mf{p}}$, so
+    \[ \mf{p} A_{\mf{p}} \subset \mf{p}^{-1} A_{\mf{p}} \cdot \mf{p} A_{\mf{p}} \subset A_{\mf{p}}. \]
+    Then one of these two inclusions is an equality, so if the first inclusion is an equality, we know that elements of $\mf{p}^{-1}A_{\mf{p}}$ are integral over $A_{\mf{p}}$ and thus $\mf{p}^{-1}A_{\mf{p}} \subset A_{\mf{p}}$ because $A$ is a normal domain. This is impossible, so $\mf{p}^{-1}A_{\mf{p}} \cdot \mf{p}A_{\mf{p}} = A_{\mf{p}}$ and thus $\mf{p}A_{\mf{p}}$ is a principal ideal. Therefore $A_{\mf{p}}$ is a DVR, so $\mr{ht}(\mf{p}) = 1$. Thus $(a)$ is unmixed.
+
+    Now we will prove that $A$ is the intersection of the localizations at the height $1$ prime ideals. One direction is obvious, so now let $\frac{b}{a} \in \bigcap_{\mr{ht}(\mf{p})=1} A_{\mf{p}}$. Then if $\frac{b}{a} \notin A$, we know that $A/(a) \neq 0$ and thus there exists $\mf{p}$ such that $\Ass(A/(a)) \neq \emptyset$. We know that $\mr{ht}(\mf{p}) = 1$, so $A_{\mf{p}} \neq \mf{p} = \Ann(b)$, a contradiction with the fact that $\frac{b}{a} \in A_{\mf{p}}$.
+\end{proof}
+
+\section{Homological Theory}%
+\label{sec:homological_theory}
+
+\begin{lem}
+    Let $A$ be a ring and $M$ be an $A$-module. Then
+    \begin{enumerate}
+        \item $M$ is projective if and only if $\Ext_A^1(M,N) = 0$ for all $A$-modules $N$.
+        \item $M$ is injective if and only if $\Ext_A^1(A/I, M) = 0$ for all ideals $I \subset A$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    We only need to prove the second part. One direction follows from the direction, so now suppose we have $0 \to N \to N'$ injective. We need to show that $\Hom(N',M) \to \Hom(N,M)$ is surjective. Consider the set 
+    \[ \mc{S} = \qty{N \subset Q \subset N' \mid \Hom(Q,M) \twoheadrightarrow \Hom(N,M)}. \]
+    We will show that $N' \in \mc{S}$. First, $\mc{S}$ contains a maximal element $N_1$ by an application of Zorn's lemma. If $N_{\alpha}$ is a chain, then $\bigcup_{\alpha} N_{\alpha} \in \mc{S}$. Now we show that $N_1 = N'$. Otherwise, there exists $x \in N' \setminus N_1$ and set $N_2 = N_1 + Ax \subset N'$. This gives an exact sequence
+    \[ 0 \to N_1 \to N_2 \to A/I \to 0. \]
+    Now we apply the functor $\Hom(-,M)$ and we see that $\Hom(N_2, M) \twoheadrightarrow \Hom(N_1, M)$ because $\Ext^1(A/I, M) = 0$. But this implies that $N_2 \in \mc{S}$ and this contradicts maximality of $N_1$.
+\end{proof}
+
+\begin{defn}
+    Let $A$ be a ring and $M$ an $A$-module. Then we define the \textit{projective dimension} $\operatorname{proj.dim} M$ to be the length of the shortest projective resolution of $M$. Equivalently, we define the \textit{injective dimension} $\operatorname{inj.dim} M$ to be the length of the shortest injective resolution of $M$. 
+\end{defn}
+
+\begin{lem}
+    Let $n$ be a positive integer. Then the following are equivalent:
+    \begin{enumerate}
+        \item All $A$-modules $M$ have projective dimension at most $n$;
+        \item All $A$-modules $M$ of finite type have projective dimension at most $n$;
+        \item All $A$-modules $M$ have injective dimension at most $n$;
+        \item $\Ext_A^{n+1}(M,N) = 0$ for all $A$-modules $M,N$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    Clearly \textbf{1} implies \textbf{2}.
+    \begin{description}
+        \item[2 implies 3:] Consider 
+            \[ 0 \to M \to U_0 \to U_1 \to \cdots \to U_{n-1} \to C \to 0 \]
+            such that $U_0, \ldots, U_{n-1}$ are injective. Now we have an exact sequence
+            \[ 0 \to M \to U_0 \to V_0 \to 0 \]
+            where $V_0$ is the kernel of $U_1 \to U_2$. For any ideal $I$, we know that $\Ext^{n+1}(A/I, M) = \Ext^n(A/I, V_0)$ because $U_0$ is injective. Now we obtain that $\Ext^n(A/I, V_0) = \Ext^{n-1}(A/I, V_1)$ where $V_1 = \ker (U_2 \to U_3)$. This implies that
+            \[ \Ext_A^{n+1}(A/I, M) = \Ext_A^1(A/I, C). \]
+            By \textbf{2}, we know that $\Ext^{n+1}(A/I, M) = 0$ and therefore $C$ is injective. Thus there is an injective resolution of $M$ of length $n$.
+        \item[3 implies 4:] This is trivial.
+        \item[4 implies 1:] The proof is similar to the proof that \textbf{2} implies \textbf{3}. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{cor}
+    The two numbers
+    \[ \sup_M( \operatorname{proj.dim} M ) = \sup_M (\operatorname{inj.dim} M) \]
+    are equal and are called the \textit{global homological dimension} of $A$. 
+\end{cor}
+
+\begin{lem}
+    Suppose $A$ is Noetherian and $M$ is an $A$-module of finite type. Then $M$ is projective if and only if $\Ext^1(M,N) = 0$ for all $N$ of finite type.
+\end{lem}
+
+\begin{proof}
+    Because $M$ is finite type, we can write
+    \[ 0 \to K \xrightarrow{\psi} A^n \to M \to 0 \]
+    where $K$ is finite type. Then if we apply $\Ext_A(-,K)$, we see that $\Ext^1(M, K) = 0$ and thus $\Hom(A^n,K) \to \Hom(K,K)$ is surjective. Thus there exists $\phi \colon A^n \to K$ such that $\phi \circ \psi = \mr{id}_K$ and thus the exact sequence is split. Thus $M$ is a direct factor of a free module and is thus projective.
+\end{proof}
+
+\begin{lem}
+    Let $A$ be a local Noetherian ring and $M$ be a finite $A$-module. Then $\operatorname{proj.dim} M \leq n$ if and only if $\Tor_{n+1}^A(M, k) = 0$.
+\end{lem}
+
+\begin{proof}
+    Let $P_{\bullet} \to M \to 0$ be a projective resolution of length at most $n$. Then using this resolution, we compute $\Tor_{n+1}(M,k) = 0$. 
+
+    In the other direction, first assume that $n=0$. If $\Tor_1^A(M,k) = 0$, we want to show that $M$ is projective. Because $M$ is finite type, then there exists $A^r \twoheadrightarrow M$ such that $A^r \otimes k \to M \otimes k$ is an isomorphism. Applying the $- \otimes k$ functor to
+    \[ 0 \to N \to A^r \to M \to 0, \]
+    we obtain the exact sequence
+    \[ 0 \to \Tor_1^A(M,k) \to N \otimes k \to k^r \to M \otimes k \to 0 \]
+    and this implies $N \otimes k = 0$. By Nakayama's lemma, we see that $N = 0$ and thus $M$ is free. The general case is similar. We construct
+    \[ 0 \to C \to F_n \to \cdots \to F_0 \to M \to 0 \]
+    where each $F_i$ is projective, and then we see that $\Tor_0(C,k) = \cdots = \Tor_{n+1}(M,k) = 0$. This implies $C \otimes k = 0$, so $C = 0$ and thus we have a projective resolution of length $n$.
+\end{proof}
+
+\begin{cor}
+    Let $A$ be Noetherian and $M$ be a finite $A$-module. Then
+    \begin{enumerate}
+        \item The projective dimension of $M$ is the supremum of the projective dimensions of $M_{\mf{m}}$ for all maximal ideals $\mf{m}$ of $A$.
+        \item $\pdim M \leq n$ if and only if $\Tor_{n+1}(M, A/\mf{m}) = 0$ for all maximal ideals $\mf{m}$ of $A$.
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}
+    \begin{enumerate}
+        \item This follows from the fact that $\Ext_A^i(M,N)_{\mf{m}} = \Ext_{A_{\mf{m}}}^i(M_{\mf{m}}, N_{\mf{m}})$ and the fact that for an $A$-module $M$ we have $M = 0$ if and only if $M_{\mf{m}} = 0$ for all $\mf{m}$ maximal.
+        \item This follows from \textbf{1}, the previous lemma, and the fact that $\Tor$ commutes with localization. \qedhere 
+    \end{enumerate}
+\end{proof}
+
+\begin{lem}
+    Let $A$ be noetherian. The following are equivalent:
+    \begin{enumerate}
+        \item $\gdim A \leq n$.
+        \item $\pdim M \leq n$ for all finite $A$-modules $M$.
+        \item $\idim M \leq n$ for all finite $A$-modules $M$.
+        \item $\Ext_A^{n+1}(M,N) = 0$ for all finite $A$-modules $M,N$.
+        \item $\Tor_{n+1}^A(M, N) = 0$ for all finite $A$-modules $M,N$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    We know that \textbf{1} is equivalent to \textbf{2}, which implies \textbf{3}. We know that \textbf{3} implies \textbf{4} and \textbf{2} implies \textbf{5} are trivial. The previous corollary gives us \textbf{5} implies \textbf{2}, so we need to prove that \textbf{4} implies \textbf{2}. Let
+    \[ 0 \to C \to F_{n-1} \to \cdots \to F_0 \to M \to 0 \]
+    such that $F_i$ are free of finite type. Then we know that
+    \[ \Ext^1(C, N) = \cdots = \Ext_A^{n+1}(M,N) = 0. \]
+    This implies that $C$ is projective and thus $\pdim M \leq n$.
+\end{proof}
+
+\begin{cor}
+    We have the local-global identity
+    \[ \gdim A = \sup_{\mf{m} \text{ maximal}} \gdim A_{\mf{m}}. \]
+\end{cor}
+
+\begin{thm}
+    Let $A$ be local Noetherian with residue field $k$. Then $\gdim A \leq n$ if and only if $\Tor_{n+1}^A(k,k) = 0$. In particular, $\gdim A = \pdim_A k$.
+\end{thm}
+
+\begin{proof}
+    Suppose that $\Tor_{n+1}(k,k) = 0$. Thus $\pdim k \leq n$, and thus $\Tor_{n+1}(M, k) = 0$ for all $M$ of finite type. This implies that $\pdim M \leq n$ for all finite $A$-modules $M$. Thus $\gdim A \leq n$.
+\end{proof}
+
+\begin{lem}
+    Let $(A, \mf{m}, k)$ be local Noetherian and $M$ a finite $A$-module. Let $x \in A$ be an $M$-regular element. Then if $\pdim M \leq \infty$, so is $\pdim M/xM$ and $\pdim M/xM = \pdim M + 1$.
+\end{lem}
+
+\begin{proof}
+    Let $r = \pdim M < \infty$. Then we have the long exact sequence
+    \[ 0 \to M \to M \to M/xM \to 0, \]
+    so after applying the functor $- \otimes k$, we know that $\Tor_i(M,k) = 0$ if $i > r$. Thus if $i > r+1$, then $\Tor_i(M/xM, k) = 0$. For $i = r+1$, we have an exact sequence
+    \[ 0 \to \Tor_{r+1}(M/xM, k) \to \Tor_r(M,k) \to \Tor_r(M,k) \]
+    but $x \in M$ annihlates $k$ and thus $\Tor_{r+1}(M/xM, k) \simeq \Tor_r(M,k) \neq 0$, so $\pdim(M/xM) = r+1$.
+\end{proof}
+
+\begin{thm}
+    Let $(A,\mf{m}, k)$ be a regular local ring of dimension $n$. Then $\gdim A = n$.
+\end{thm}
+
+\begin{proof}
+    Let $x_1, \ldots, x_n$ be a regular system of parameters. Then we know $k = A/(x_1, \ldots, x_n)$. This implies that
+    \[ \pdim k = n + \pdim A = n \]
+    and thus $\gdim A = n$.
+\end{proof}
+
+\begin{cor}
+    Let $k$ be a field. Then $\gdim k[x_1, \ldots, x_n] = n$.
+\end{cor}
+
+\begin{proof}
+    Let $A = k[x_1, \ldots, x_n]$. Then $A_{\mf{m}} \cong k'[T_1, \ldots, T_n]$ for some other field $k'$ and is thus regular of dimension $n$. Thus $\gdim A_{\mf{m}} = n$ for all maximal ideals $\mf{m}$, and thus $\gdim A = n$.
+\end{proof}
+
+\section{Koszul Complex}%
+\label{sec:koszul_complex}
+
+Our goal is to prove the following result:
+\begin{thm}[Serre]
+    \label{thm:rlrgd}
+A local Noetherian ring is regular if and only if its global dimension is finite.
+\end{thm}
+
+To do this, we will introduce the \textit{Koszul complex}. First, recall that if $L_{\bullet}, M_{\bullet}$ are two complexes, $(L_{\bullet} \otimes M_{\bullet})_n = \bigoplus_{i+j = n} L_i \otimes M_j$ and the differential satisfies the graded Leibniz rule
+\[ \dd(a \otimes b) = \dd{a} \otimes b + (-1)^{\abs{a}} a \otimes \dd{b}. \]
+For $x \in A$, define $K(x) = \to 0 \to A \xrightarrow{\times x} A \to 0 \to  \cdots$. We can treat any $A$-module $M$ as a complex by putting it in degree $0$. Now for $x_1, \ldots, x_r \in A$ and $M$ an $A$-module, define
+\[ K(x_1, \ldots, x_r, M) = K(x_1) \otimes K(x_2) \otimes \cdots \otimes K(x_r) \otimes M. \]
+Then for an integer $p$, we have
+\[ K_p(x_1, \ldots, x_r, M) = \bigoplus_{1 \leq i_1 \leq \cdots \leq i_p \leq r} M e_{i_1, \dots, i_p} \cong M^{\binom{r}{p}}. \]
+This satisfies
+\[ \dd{(m e_{i_1, \ldots, r_p})} = \sum_{j=1}^p (-1)^{j-1} x_{i_j} m e_{i_1, \ldots, \wh{i}_j, \ldots, i_p}. \]
+Now consider the exact sequence
+\[ 0 \to A \to K(x) \to A[-1] \to 0 \]
+Now if $C$ is a complex, write $C_{\bullet}(x) = C_{\bullet} \otimes K(x)$, so we have a short exact sequence
+\[ 0 \to C_{\bullet} \to C_{\bullet}(x) \to C_{\bullet}[-1] \to 0. \]
+This gives us a long exact sequence of modules
+\[ \cdots \to H_{p+1}(C) \to H_{p+1}(C(x)) \to H_p(C) \xrightarrow{\delta} H_p(C) \to \cdots \]
+By definition of $K(x)$ it is easy to see that $\delta_p = (-1)^p x$. As a consequence, if $H_p(C_{\bullet})$ is trivial, then so is $H_p(C_{\bullet}(x))$ for $p > 1$. In addition, we have
+\[ 0 \to H_1(C(x)) \to H_0(C) \xrightarrow{x} H_0(C) \to H_0(C(x)) \to 0. \]
+Thus if $x$ is $H_0(C)$-regular, then $H_1(C(x)) = 0$ and $H_0(C(x)) = H_0(C) / x H_0(C)$. If we iterate this, we have now proven the following result:
+
+\begin{thm}
+    Let $M$ be an $A$-module and $x_1, \ldots, x_r$ an $M$-regular sequence. Then 
+    \[ H_p(\ul{x}, M) \coloneqq H_p(K(x_1, \ldots, x_r, M)) = 0 \]
+    for all $p > 0$ and $H_0(\ul{x}, M) = M/(x_1, \ldots, x_r)M$.
+\end{thm}
+
+\begin{cor}
+    If $x_1, \ldots, x_r$ is an $A$-regular sequence, then $K(x_1, \ldots, x_r, A)$ is a finite free resolution of $A/(x_1, \ldots, x_r) A$.
+\end{cor}
+
+Now we will discuss minimal resolutions. Suppose $(A, \mc{m}, k)$ is a local ring. Then recall from the homework that $u \colon L \to M$ is called \textit{minimal} when $u \otimes 1_k$ is an isomorphism. When $M$ is finite, this is equivalent to $u$ surjective and $\ker(u) \subset \mf{m} L$. We now say that a \textbf{resolution} $L_{\bullet} \to M$ is \textit{minimal} if $L_i \otimes k \simeq \ker (\dd{i}) \otimes k$, where $L_i \xrightarrow{\dd{i}} L_{i-1}$. In particular, writing $\ol{L}_i = L_i \otimes k$, then the complex
+\[ \ol{L}_i \to \ol{L}_{i-1} \to \cdots \]
+satisfies $d = 0$, so $\Tor_i(M, k) = H_i(\ol{L}_{\bullet}) = \ol{L}_i$. Therefore if $L_{\bullet}$ is a minimal resolution of $M$, then $\mr{rk}(L_i) = \dim_k \Tor_i(M, k)$.
+
+\begin{prop}
+    Now assume $A$ is local Noetherian and $M$ is a finite $A$-module. Then there exists a minimal free resolution of $M$ and any two such resolutions are isomorphic.
+\end{prop}
+
+\begin{proof}
+    To prove existence, begin with $\ol{M}$. Choose a basis $e_1, \ldots, e_{n_0} \in M$ of $M \otimes k = \ol{M}$. This gives us a morphism $0 \to K_0 \to A^{n_0} \to M \to 0$ that gives an isomorphism $k^n \simeq \ol{M}$. Now $K_0$ is a finite $A$-module, so we can construct a minimal $A^{n_1} \to K_0$ with kernel $K_1$. Iterating this procedure, we have a minimal resolution.
+
+    To prove uniqueness, if $L_{\bullet}, L'_{\bullet}$ are minimal free resolutions, we will construct a map
+    \begin{equation*}
+    \begin{tikzcd}
+        L_{\bullet} \arrow{r} \arrow{d} & M \arrow{d}{\mr{id}} \\
+        L'_{\bullet} \arrow{r} & M
+    \end{tikzcd}
+    \end{equation*}
+    that makes this diagram commute. In degree zero, we have $f_0 \colon L_0 \to L_0'$ where $\ol{f}_0$ is an isomorphism, so $L_0 \cong L_0' = A^n$. Thus $\det f_0 \in A^{\times}$, so $f_0$ is an isomorphism. The rest follows by iterating this procedure.
+\end{proof}
+
+\begin{lem}
+    Let $F_{\bullet} \to M$ be a complex such that
+    \begin{enumerate}
+        \item $F_p$ is a finite free $A$-module for all $p$;
+        \item $\ol{F}_0 \to \ol{M}$ is surjective.
+        \item $\dd{(F_i)} \subset \mf{m} F_{i-1}$ for all $i > 0$ and induces a surjection $\ol{F}_i \hookrightarrow \mf{m} / \mf{m}^2 \otimes \ol{F}_{i-1} = \mf{m} \otimes \ol{F}_{i-1}$.
+    \end{enumerate}
+    Then $\mr{rk}_A(F_i) \leq \dim_k \Tor_i(M, k)$.
+\end{lem}
+
+\begin{proof}
+    Consider a minimal free resolution $L_{\bullet} \to M$ of $M$. Because free implies projective, we can find a map
+    \begin{equation*}
+    \begin{tikzcd}
+        F_{\bullet} \arrow{r} \arrow{d} & M \arrow{d}{\mr{id}} \\
+        L_{\bullet} \arrow{r} & M.
+    \end{tikzcd}
+    \end{equation*}
+    Then the map $\ol{F}_0 \to \ol{L}_0$ must be injective because $\ol{F}_0 \hookrightarrow \ol{M}$ and $\ol{L}_0 \simeq \ol{M}$. Therefore, we can split $L_0 \cong F_0 \oplus F_0'$. In particular, this means that $\mr{rk}_A(F_0) \leq \mr{rk}_A(L_0)$.
+
+    Now we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        F_1 \arrow{r} \arrow{d} & \mf{m} F_0 \arrow{d} \\
+        L_1 \arrow{r} & \mf{m} L_0
+    \end{tikzcd}
+    \end{equation*}
+    where we have $\mf{m}L_0 = \mf{m} F_0 \oplus \mf{m} F_0'$, so downstairs we now have
+    \begin{equation*}
+    \begin{tikzcd}
+        \ol{F}_1 \arrow[hookrightarrow]{r} \arrow{d} & \ol{\mf{m}} \otimes F_0 \arrow{d} \\
+        \ol{L}_1 \arrow{r} & \ol{\mf{m}} \otimes L_0
+    \end{tikzcd}
+    \end{equation*}
+    and therefore $\ol{F}_1 \to \ol{L}_1$ is surjective. This gives us a splitting $L_1 = F_1 \oplus F_1'$ and thus iterating this, we obtain the desired result.
+\end{proof}
+
+\begin{thm}
+    Let $(A, \mf{m}, k)$ be a local Noetherian ring and let $s = \dim \mf{m} / \mf{m}^2$. Then 
+    \[ \operatorname{rk} \Tor_i(k,k) \geq \binom{s}{i}. \]
+    In particular, $\Tor_i(k, k) \neq 0$.
+\end{thm}
+
+\begin{proof}
+    Write $F_i \coloneqq K_i(x_1, \ldots, x_s; A)$ where $x_1, \ldots, x_s \in \mf{m}$ is a basis for $\mf{m} / \mf{m}^2$. Thus we have $F_0 = A \to H_0(\ul{x}, A) = A/(x_1, \ldots, x_s) = k$. Thus the $F_{\bullet}$ satisfies the first two hypotheses of the previous lemma, so we check the third one. Here, we have
+    \[ \dd \qty(\sum \lambda_{i_1, \ldots, i_p} e_{i_1, \ldots, i_p}) = \sum_{j=1}^s (-1)^j x_j \qty(\sum) \lambda_{i_1, \ldots, \wh{i}_j, \ldots, i_p} e_{i_1, \ldots, \wh{i}_j, \ldots, i_p}. \]
+    Reducing modulo $\mf{m}$, because $\ol{x}_1, \ldots, \ol{x}_s$ is a basis of $\mf{m} = \mf{m} / \mf{m}/\mf{m}^2$, we see that this differential is injective. Now we can apply the previous lemma to obtain the desired result.
+\end{proof}
+
+We are now ready to prove the theorem of Serre.
+
+\begin{proof}[Proof of Theorem~\ref{thm:rlrgd}]
+    We proved one direction last time. Now set $s = \dim \mf{m} / \mf{m}^2$. We know that $\Tor_s(k,k) \neq 0$ and thus $s \leq \mr{gl.dim} A = \mr{proj.dim}_A(k)$. On the other hand, by the Auslander-Buchsbaum formula, we have
+    \[ \mr{proj.dim}_A(k) + \dpth k = \dpth A \]
+    and because $\dpth k = 0$, we see that $\dim A \geq \dpth A \geq s$. However, we know that $s \geq \dim A$, and thus $s = \dim A = \dpth A$, so $A$ is regular.
+\end{proof}
+
+\begin{cor}
+    Let $A$ be a regular local ring and choose $\mf{p} \in \Spec A$. Then $A_{\mf{p}}$ is regular.
+\end{cor}
+
+\begin{proof}
+    This requires showing that $A_{\mf{p}}$ has finite global dimension. If $M$ is an $A_{\mf{p}}$-module, then $M$ is an $A$-module. Then if $F_{\bullet} \to M$ is a projective resolution of $M$ of length at most $\dim A$, exactness of localization tells us that $(F_{\bullet})_{A_{\mf{p}}} \to M$ is an $A_{\mf{p}}$-projective resolution of $M$. Thus $\mr{proj.dim}_{A_{\mf{p}}}(M) < \dim A$, so $A_{\mf{p}}$ has finite global dimension.
+\end{proof}
+
+\section{Unique Factorization}%
+\label{sec:unique_factorization}
+
+Recall that a \textit{unique factorization domain}, or a UFD, is a domain $A$ such that every element has a unique factorization into irreducibles (up to multiplication of irreducibles by units). Here, $\pi \neq 0$ is irreducible if $\pi = ab$ implies $a$ or $b$ is a unit. For example, when $A = \Z$, the irreducibles are precisely the prime numbers.
+
+\begin{exer}
+    If $A$ is Noetherian, then any element can be written as a product of irreducibles.
+\end{exer}
+
+We say that two irreducibles $\pi, \pi'$ are \textit{equivalent} if $(\pi) = (\pi')$. Then for each equivalence class, we can choose one representative, and the unique factorization means that if 
+\[ u' \pi_1^{n_1'} \cdots \pi_r^{n_r'} = u \pi_1^{n_1} \cdots \pi_r^{n_r}, \]
+then $u = u'$ and $n_i = n_i'$.
+
+\begin{lem}
+    A Noetherian domain is a UFD if and only if $(\pi)$ is a prime ideal for all irreducibles $\pi$.
+\end{lem}
+
+\begin{proof}
+    Suppose $ab \in (\pi)$. Then if $a = u \prod_i \pi_i^{n_i}, b = v \prod_i \pi_i^{n_i}$ where $\pi = \pi_1$, we know that $n_1 + m_1 \geq 1$, so at least one of them is at least $1$, and thus either $a \in (\pi)$ or $b \in (\pi)$.
+
+    In the other direction, we will prove that Gauss's lemma is satisfied. This says that if $\pi \mid ab$ and $\pi \nmid a$, then $\pi \mid b$. This implies that our domain is a UFD, and is equivalent to $(\pi)$ being a prime ideal for all units.
+\end{proof}
+
+\begin{lem}
+    Let $A$ be a Noetherian domain. Then $A$ is a UFD if and only if every prime ideal of height $1$ is principal.
+\end{lem}
+
+\begin{proof}
+    Suppose $A$ is a unique factorization domain. Then let $\mf{p}$ be a prime ideal of height $1$. Because $p \neq 0$, there exists $a = u \pi_1^{n_1} \cdots \pi_r^{n_r}$. Thus there exists an irreducible $\pi$ such that $\pi \in \mf{p}$, and thus because $0 \subsetneq (\pi) \subset \mf{p}$ and $\mr{ht}(\mf{p}) = 1$, we see that $(\pi) = \mf{p}$.
+
+    In the other direction, we will show that for any irreducible $\pi \in A$, the ideal $(\pi)$ is prime. Let $\mf{p}$ be a minimal prime ideal containing $(\pi)$. We know that $\mr{ht}(\mf{p}) \leq 1$, and thus $\mr{ht}(\mf{p}) = 1$. But then we know that $\mf{p} = (\alpha)$, so $\pi = \alpha \beta$ for some $\beta \in A$. But because $\pi$ is irreducible, this means that $\alpha$ or $\beta$ is a unit, and we know $\alpha$ is not a unit, so $\beta$ is a unit and thus $(\pi) = (\alpha) = \mf{p}$.
+\end{proof}
+
+\begin{lem}
+    Let $A$ be Noetherian and $x \neq 0$ such that $(x)$ is a prime ideal. Then $A_x = A[x^{-1}]$ is a UFD if and only if $A$ is.
+\end{lem}
+
+\begin{proof}
+    Suppose $A$ is a UFD. Clearly $A_x$ us a UFD. In the other direction, Then if 
+    \[ a = u x^n \pi_1^{n_1} \cdots \pi_r^{n_r} = u_x \pi_1^{n_1} \cdots \pi_r^{n_r} = u' x^{n'} \pi_1^{n_1'} \cdots \pi_r^{n_r'} = u_x' \pi_1^{n_1'} \cdots \pi_r^{n_r'}, \]
+    we must have $u_x = u x^n, u'_x = u' x^{n'}$, then we obtain $u = u', n = n'$.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be a local Noetherian regular ring. Then $A$ is a UFD.
+\end{thm}
+
+\begin{proof}
+    We induct on $\dim A$. If $\dim A = 0$, then $A$ is a field. If $\dim A = 1$, then $A$ is a DVR and the result is clear.
+
+    For the inductive step, choose $x \in \mf{m} \setminus \mf{m}^2$. Then $(x)$ is a prime ideal, and we want to show that $A_x$ is a UFD.\@ Choose a prime ideal $\mf{p}'$ of height $1$ in $A_x$. We will show that $\mf{p}'$ is principal. Write $\mf{p} = \mf{p}' \cap A$, so $\mf{p}' = \mf{p} A_x$. Then because $A$ is regular, it has finite global dimension, and thus $\mf{p}$ has a finite projective resolution
+    \[ 0 \to F_n \to F_{n-1} \to \cdots \to F_0 \to \mf{p} \to 0, \]
+    where $F_i = A^{m_i}$. Now for any prime ideal $\ul{\mf{p}} \subset A_x$, we have ${(A_x)}_{\ul{\mf{p}}} = A_{\ul{\mf{p}} \cap A}$. This implies that if $x \notin \ul{\mf{p}} \cap A$, then $\mf{m} \neq \ul{\mf{p}} \cap A$ and thus $\mr{ht}(\ul{\mf{p}} \cap A) < \dim A$. Then we know that $A_{\ul{\mf{p}} \cap A}$ is regular, so we can apply the inductive hypothesis and it is thus a UFD. Then we know that
+    \[ \pdim_{A_x}(\mf{p}') = \sup_{\ul{\mf{p}} \subset A_x} (\pdim_{{(A_x)}_{\ul{\mf{p}}}} \mf{p}_{\ul{\mf{p}}}') \]
+    and so because $\mf{p}'_{\ul{\mf{p}}}$ is principal, it is free of rank $1$ and thus has projective dimension $0$. Thus $\mf{p}'$ is a projective $A_x$-module, and so we have an exact sequence
+    \[ 0 \to F_n' \to  \cdots \to F_1' \to F_0' \to \mf{p}' \to 0 \]
+    where $F_i' = A_x^{m_i}$. Then we decompose this into short exact sequences
+    \begin{align*}
+        0 \to K_0' \to &\ F_0' \to \mf{p}' \to 0 \\
+        0 \to K_1' \to &\ F_1' \to K_0' \to 0 \\
+                       &\ \ \vdots \\
+        0 \to F_n' \to &\ F_{n-1}' \to K_{n-2}' \to 0.
+    \end{align*}
+    Because $\mf{p}'$ is projective, the exact sequences split and all $K_i'$ are projective. Therefore
+    \[ \bigoplus_{i \text{ even}} F_i' = \bigoplus_{i \text{ odd}} \oplus \mf{p}'. \]
+    Writing the first direct sum as $F$ and the second as $G$, we have $F = G \oplus \mf{p}'$. Thus $F,G$ are free $A_x$-modules, and $\rank F = \rank G + 1$. Write $\rank G = r$. Now we have $\bigwedge^{r+1} F = \bigwedge^r G \otimes \mf{p}'$ because $\bigwedge^i \mf{p}' = 0$ if $i > 1$ (after localization, we obtain a free module of rank $1$). In particular, we have $A_x \cong \bigwedge^{r+1} F = \mf{p}'$ and thus $\mf{p}'$ is free of rank $1$ as an $A_x$-module, so it is a principal ideal.
+\end{proof}
+
+\begin{defn}
+    Let $A$ be a Noetherian ring. We say that $A$ is \textit{regular} if for all $\mf{p} \in \Spec A$, $A_{\mf{p}}$ is a local Noetherian regular ring. 
+\end{defn}
+
+\section{Criterion for Normality}%
+\label{sec:criterion_for_normality}
+
+Let $A$ be a ring, $k \geq 0$ an integer, and consider the conditions
+\begin{description}
+    \item[$(R_k)$:] For all $\mf{p} \in \Spec A$ such that $\mr{ht}(\mf{p}) \leq k$, then $A_{\mf{p}}$ is regular.
+    \item[$(S_k)$:] For all $\mf{p} \in \Spec A$, $\dpth(A_{\mf{p}}) \geq \inf (k, \mr{ht}(\mf{p}))$.
+\end{description}
+
+\begin{thm}\label{thm:normalcrit}
+    Let $A$ be a Noetherian ring. Then $A$ is normal if and only if $(S_2)$ and $(R_1)$ hold.
+\end{thm}
+
+Before we prove this, we will prove several lemmas.
+
+\begin{lem}
+    The ideal $(0)$ is unmixed if and only if $(S_1)$ holds. In other words, for all $\mf{p} \in \Spec A$, we have $\dpth(A_{\mf{p}}) \geq \inf(1, \mr{ht}(\mf{p}))$.
+\end{lem}
+
+\begin{proof}
+    Assume that $(0)$ is unmixed and let $\mf{p} \in \Spec A$ with $\mr{ht}(\mf{p}) \geq 1$. Then $(0)$ is also unmixed in $A_{\mf{p}}$, so $\Ass(A_{\mf{p}}) \cong \qty{\mf{q} \subsetneq \mf{p} \mid \mf{q} \text{ minimal}}$. Therefore there exists $x \in \mf{p} A_{\mf{p}} \setminus \bigcup_{\mf{q}} \mf{q} A_{\mf{p}}$. Thus $x$ is not a zero divisor of $A_{\mf{p}}$, so it must be $A_{\mf{p}}$-regular, and thus $\dpth(A_{\mf{p}}) \geq 1$.
+
+    Conversely, suppose $(0)$ is not unmixed. Let $\mf{p} \in \Ass(A)$ with $\mr{ht}(\mf{p}) \geq 1$. But then $\mf{p} A_{\mf{p}} \in \Ass(A_{\mf{p}})$, and thus $\mf{p} A_{\mf{p}}$ is contained in the set of zero-divisors. Thus $\dpth(A_{\mf{p}}) = 0$.
+\end{proof}
+
+\begin{cor}
+    The property $(S_k)$ holds if and only if for all $i < k$, any $A$-regular sequence $(a_1, \ldots, a_i)$ is unmixed. For $i = 0$, this is saying that $(0)$ is unmixed.
+\end{cor}
+
+\begin{proof}
+    Use the previous lemma and an induction argument. Also use the fact that $\dpth(A_{\mf{p}} / a A_{\mf{p}}) = \dpth(A_{\mf{p}}) - 1$ and the same for dimension.
+\end{proof}
+
+Recall that a domain $A$ is normal if it is integrally closed. Also, $A = \bigcap_{\mf{m}} A_{\mf{m}}$, so $A$ is a normal domain if and only if all localizations at maximal ideals are normal domains.
+
+\begin{defn}
+    A ring $A$ is called \textit{normal} if and only if for all $\mf{p} \in \Spec A$, $A_{\mf{p}}$ is a normal domain. 
+\end{defn}
+
+It is not hard to see that it suffices to check this condition for maximal ideals. 
+
+\begin{cor}
+    Assume that $A$ is reduced and that $(S_2)$ holds. Then
+    \[ A = \bigcap_{\substack{\mf{p} \in \Spec A \\ \mr{ht}(\mf{p}) = 1}} A_{\mf{p}}. \]
+    Here, the intersection is well-defined because the intersection of all minimal prime ideals is $\qty{0}$.
+\end{cor}
+
+\begin{proof}
+    Assume that $(S_2)$ holds. Then consider $\frac{\alpha}{\beta} \in \bigcap_{\mf{ht}(\mf{p}) = 1} A_{\mf{p}}$. We will consider the ideal $I = \qty{x \in A \mid x \frac{\alpha}{\beta} \in A} = \Ann (\ol{\alpha} \in A/\beta A)$. Therefore we have an embedding $A/I \hookrightarrow A/\beta A$ given by $x \mapsto x \ol{\alpha}$. Assume $I \neq A$, so $A/I \neq 0$. Then if $Q \in \Ass(A/I)$, $Q$ must be of height $1$. Also, because $I \subset Q$, then $I_Q \subset Q A_Q$. However, we know that $\frac{\alpha}{\beta} \in A_Q$. But then this implies that $I_Q = A_Q$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+    Assumes that $A$ satisfies $(S_1)$ and $(R_0)$. Then $A$ is reduced.
+\end{lem}
+
+\begin{proof}
+    Choose $x \in A$ be nilpotent, so $x^n = 0$ for some $n \geq 1$. We will show that $x = 0$. If $\mf{p} \in \Spec A$ with $\mr{ht}(\mf{p}) = 0$, then by $(R_0)$ we know that $A_{\mf{p}}$ is a field. This implies that $x_{\mf{p}} = 0$, so there exists $s \notin \mf{p}$ such that $sx = 0$. This implies that $\Ann(x) \not\subseteq \mf{p}$ for any minimal prime $\mf{p}$.
+
+    Now assume that $x \neq 0$ and let $\mf{q}$ be a maximal element of the set of ideals $\qty{\Ann(ax) \mid a \in A}$. Then we know that $\mf{q}$ is a non-minimal prime ideal, so by $(S_1)$, we have $\dpth(A_{\mf{q}}) \geq 1$. Also, $\mf{q} = \Ann(y)$ for some $y = ax$. Therefore $A/\mf{q} \hookrightarrow A$. But this implies that $\Ext^{\bullet}(A_{\mf{q}} / \mf{q} A_{\mf{q}}, A_{\mf{q}}) \neq 0$ and thus $\dpth(A_{\mf{q}}) = 0$, which is a contradiction.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:normalcrit}]
+    First assume that $A$ is normal and choose $\mf{p} \in \Spec A$. Then if $\mr{ht}(\mf{p}) = 0$, we know $A_{\mf{p}}$ is a field. If $\mr{ht}(\mf{p}) = 1$, then $A_{\mf{p}}$ has dimension $1$ and is integrally closed, so it must be a DVRaand is thus regular. Thus $(R_1)$ is satisfied. Now if $\mr{ht}(\mf{p}) = 2$, then $A_{\mf{p}}$ is normal of dimension $2$ and is thus Cohen-Macaulay. Therefore, $\dpth(A_{\mf{p}}) = 2$. If $\mr{ht}(\mf{p}) > 2$, we can choose $\mf{q} \subset \mf{p}$ of height $2$ and then $\dpth(A_{\mf{p}}) \geq \dpth(A_{\mf{q}}) = 2$, so $(S_2)$ is satisfied.
+
+    Now assume that $(R_1)$ and $(S_2)$ hold. By the previous lemma, we know that $A$ is reduced. This embeds $A \hookrightarrow \mr{Tot}(A) = \prod_i K_i$, where $K_i = \mr{Frac}(A/\mf{p}_i)$ with $\mf{p}_1, \ldots, \mf{p}_r$ the minimal primes of $A$. It suffices to prove that $A$ is integrally closed in $\mr{Tot}(A)$. This is because if $\ep_i = (0, \ldots, 0, 1, 0, \ldots, 0)$, then $\ep_i^2 = \ep_i$ and thus $\ep_i = A$ and thus $A = \prod_{i=1}^r A/\mf{p}_i$ and then each $A/\mf{p}_i$ is a normal domain. 
+
+    Let $x \in \mr{Tot}(A)$ be integral over $A$. Then $x_{\mf{p}} \in {\mr{Tot}(A)}_{\mf{p}} = \mr{Tot}(A)$. Then we know $x_{\mf{p}}$ is integral over $A_{\mf{p}}$, so if $\mr{ht}(\mf{p}) = 1$, then $A_{\mf{p}}$ is regular, so it is a DVR and is thus integrally closed. Therefore $x_{\mf{p}} \in A_{\mf{p}}$ for all $\mf{p}$ of height $1$. This implies that
+    \[ x \in \bigcap_{\mr{ht}(\mf{p}) = 1} A_{\mf{p}} = A. \qedhere \]
+\end{proof}
 
 
 

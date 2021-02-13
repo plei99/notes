@@ -1,0 +1,339 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+
+\title{Cones: because not every coherent sheaf is locally free}
+\author{Patrick Lei}
+\date{February 12, 2021}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    We will discuss what a cone is, then define the Segre class of a cone, then define Segre classe of subvarieties and consider their properties, and then discuss deformation to the normal cone following Chapters 4 and 5 of~\cite{fulton}. Classical examples will be used to illustrate the theory.
+\end{abstract}
+
+
+\section{Cones and Segre Classes}%
+\label{sec:cones_and_segre_classes}
+
+Our goal is to define a Segre class $s(X,Y)$ of a subvariety $X \subsetneq Y$ and study its properties.
+
+\subsection{Cones}%
+\label{sub:cones}
+
+\begin{defn}
+    Let $S^{\bullet}$ be a sheaf of graded $\msc{O}_X$-algebras such that $\msc{O}_X \to S^0$ is surjective, $S^1$ is coherent, and $S^{\bullet}$ is generated by $S^1$. Then any scheme of the form $C = \Spec_{\msc{O}_X}(S^{\bullet})$ is called a \textit{cone}. 
+\end{defn}
+
+If $C$ is a cone, then $\P(C \oplus 1) = \Proj (S^{\bullet}[z])$ is the projective completion with projection $q \colon \P(C \oplus 1 \to X)$. Let $\msc{O}(1)$ be the canonical line bundle on $\P(C \oplus 1)$.
+
+\begin{defn}
+    The \textit{Segre class} $s(C) \in A_* X$ of $C$ is defined as
+    \[ s(C) \coloneqq q_* \qty( \sum_{i \geq 0} {c_1(\msc{O}(1))}^i \cap [\P(C \oplus 1)] ). \]
+\end{defn}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item If $E$ is a vector bundle on $X$, then $s(E) = {c(E)}^{-1} \cap [X]$, where $c = 1 + c_1 + \cdots$ is the total Chern class.
+        \item Let $_1, \ldots, c_t$ by the irreducible components of $C$ with geometric multiplicity $m_i$. Then
+            \[ s(C) = \sum_{i = 1}^t m_i s(C_i). \]
+    \end{enumerate}
+\end{prop}
+
+\begin{exm}
+    Let $\msc{F}, \msc{F'}$ be coherent sheaves and let $\msc{E}$ be locally free. Then we may define $C(\msc{F}) = \Spec ( \operatorname{Sym} \msc{F} )$. We may define $s(\msc{F}) = s(C(\msc{F}))$. Now if 
+    \[ 0 \to \msc{F}' \to \msc{F} \to \msc{E} \to 0 \]
+    is exact, then $s(\msc{F'}) = c(E) \cap s(\msc{F})$.
+\end{exm}
+
+\subsection{Segre Class of a Subvariety}%
+\label{sub:segre_class_of_a_subvariety}
+
+Let $X$ be a closed subscheme of $Y$ defined by the ideal sheaf $\msc{I}$ and let
+\[ C = C_X Y = \Spec \qty( \sum_{n=0}^{\infty} \msc{I}^n / \msc{I}^{n+1} ) \]
+be the normal cone. Note that if $X$ is regularly embedded in $Y$, then $C_X Y$ is a vector bundle.
+
+\begin{defn}
+    The \textit{Segre class} of $X$ in $Y$ is defined by
+    \[ s(X,Y) \coloneqq s(C_X Y) \in A_* X. \]
+\end{defn}
+
+\begin{lem}
+    Let $Y$ be a scheme of pure dimension $m$ and let $Y_1, \ldots, Y_r$ be the irreducible components of $Y$ with multiplicity $m_i$. If $X$ is a closed subscheme of $Y$ and $X_i = X \cap Y_i$, then
+    \[ s(X,Y) = \sum m_i s(X_i, Y_i). \]
+\end{lem}
+
+\begin{prop}
+    Let $f \colon Y' \to Y$ be a morphism of pure-dimensional schemes, $X \subseteq Y$ a closed subscheme, and $g \colon X' = f^{-1}(X) \to X$ be the induced morphism.
+    \begin{enumerate}
+        \item If $f$ is proper, $Y$ is irreducible, and $f$ maps each irreducible component of $Y'$ onto $Y$, then
+            \[ g_* (s(X', Y')) = \deg (Y'/Y) \cdot s(X,Y). \]
+        \item If $f$ is flat, then $g^*(s(X,Y)) = s(X',Y')$.
+    \end{enumerate}
+\end{prop}
+
+\begin{rmk}
+    If $f$ is birational, then $f_* (s(X', Y')) = s(X,Y)$. This says that Segre classes are unchanged by pushforward along birational modifications.
+\end{rmk}
+
+\begin{cor}
+    Let $Y$ be a variety and $X \subseteq Y$ be a proper closed subsecheme. Then let $\wt{Y} = \operatorname{Bl}_X Y$ and $\wt{X} = \P(C)$ be the exceptional divisor with projection $\eta \colon \wt{X} \to X$. Then
+    \[ s(X,Y) = \sum_{k \geq 1} {(-1)}^{k-1} \eta_* (\wt{X}^k) = \sum_{i \geq 0} \eta_* ({c_1(\msc{O}(1))}^i \cap [\P(C)]). \]
+\end{cor}
+
+\begin{exm}
+    Let $A, B, D$ be effective Cartier divisors on a surface $Y$. Then let $A' = A + D, B' = B + D$, and let $X = A' \cap B'$. Suppose that $A, B$ meet transversally at a single smooth point $P \in Y$. Then if $\wt{Y} = \Bl_P Y$ and $f \colon \wt{Y} \to Y$ is the blowup with exceptional divisor $E$, we see that $\wt{X} = f^{-1}(X) = f^* D + E$, so we have
+    \begin{align*}
+        s(X,Y) &= f_* [\wt{X}] - f_* (\wt{X} \cdot [\wt{X}]) \\
+               &= [D] - f_* (f^* D \cdot [f^* D] + 2 f^* D \cdot [E] + E \cdot [E]) \\
+               &= [D] - D \cdot [D] + [P]. 
+    \end{align*}
+    If $A,B$ both have multiplicity $m$ at $P$ and no common tangents at $P$, then
+    \[ s(X,Y) = [D] + (m^2[P] - D \cdot [D]). \]
+    In general, the answer is more complicated.
+\end{exm}
+
+\subsection{Multiplicity}%
+\label{sub:multiplicity}
+
+Let $X \subseteq Y$ be an (irreducible) subvariety. Then the coefficient of $[X]$ in the class $s(X,Y)$ is called the \textit{algebraic multiplicity} of $X$ on $Y$ and is denoted $e_X Y$. 
+
+Suppose $X$ has positive codimension $n$, $p \colon \P(C_X Y) \to X$ and $q \colon \P(C_X Y \oplus 1) \to X$ are the projections to $X$, and $\wt{Y} = \operatorname{Bl}_X Y$ with exceptional divisor $\wt{X} = \P(C)$. Then we have
+\begin{align*}
+    e_X Y [X] &= q_* ( {c_1 ( \msc{O}(1) )}^n \cap [\P[C \oplus 1]] ) \\
+              &= p_* ({c_1 (\msc{O}(1))}^{n-1} \cap [\P(C)]) \\
+              &= {(-1)}^{n-1} p_* (\wt{X}^n). 
+\end{align*}
+For example, if $X$ is a point, then we have
+\[ e_P Y = \int_{\P(C)} {c_1(\msc{O}(1))}^{n-1} \cap [\P(C)] = \deg [P(C)]. \]
+
+\begin{exm}
+    Let $C$ be a smooth curve of genus $g$ and $C^{(d)}$ be the $d$-th symmetric power of $C$. Then let $P_0 \in C$, $J = J(C)$ be the Jacobian, and $u_d \colon C^{(d)} \to J$ be given by $D \mapsto D - d P_0$. We know that the fibers of $u_d$ are the linear systems $\abs{D} \cong \P^r$; if $d > 2g-2$, then $u_d \colon C^{(d)} \to J$ is a projective bundle; and if $1 \leq d \leq g$, then $\mu_d$ is birational onto its image $W_d$.
+    Now if $\deg D = d$ and $\dim \abs{D} = r$, we have
+    \[ s(D, C^{(d)}) = {(1 + K)}^{g-d+r} \cap [\abs{D}], \]
+    where $K = c_1(K_{\abs{D}})$. When $d$ is large, this follows from the second bullet, but if $d$ is small, then we may embed 
+    \[ C^{(d)} \subset C^{(d+s)} \qquad E \mapsto E + s P_0 \]
+    and then consider the normal bundle to this embedding restricted to $\abs{D}$. Combined with Proposition 4.1.7, this gives us the \textit{Riemann-Kempf formula}, which says that the multiplicity of $W_d$ at $u_d(D)$ is given by $e_{\mu_d(D)} W_d = \binom{g - d+r}{r}$.
+\end{exm}
+
+\begin{rmk}
+    The previous example can be generalized to the Fano varieties of lines on a cubic threefold $X$. In particular if $F$ is the Fano variety of lines on $X$, then there is a morphism of degree $6$ from $F \times F$ to the theta divisor, and we can calculate (following Clemens-Griffiths) that
+    \[ \int_F s_2(T_F) = \int_F {c_1(T_F)}^2 - c_2(T_f) = 45 - 27 = 18, \]
+    and then the theta divisor has a singular point of multiplicity $3$.
+\end{rmk}
+
+\subsection{Linear Systems}%
+\label{sub:linear_systems}
+
+Let $L$ be a line bundle on a variety $X$ (of dimension $n$) and let $V \subseteq \abs{L}$ be a partial linear system of dimension $r+1$. Then let $B$ be the base locus of $V$. Then if $\wt{X} = \Bl_B X$, we obtain a morphism $f \colon \wt{X} \to \P^r$ resolving the rational map $X \dashrightarrow \P^r$. By definition, we have $f^* \msc{O}(1) = \pi^*(L) \otimes \msc{O}(-E)$. Define $\deg_f \wt{X}$ to be the degree of $f_* [\wt{X}] \in A_n \P^r$.
+
+\begin{prop}
+    We have the identity
+    \[ \deg_f \wt{X} = \int_X {c_1(L)}^n - \int_B {c_1(L)}^n \cap s(B,X). \]
+\end{prop}
+
+\begin{exm}
+    Let $B \subset \P^n$ be the rational normal curve. Then let $V \subset \abs{\msc{O}(2)}$ be the linear system of quadrics containing $B$. If $\wt{P}^n = \Bl_B \P^n$, we see that 
+    \[ \deg_f \wt{\P}^n = 2^n - (n^2-n+2). \]
+    If $n = 4$, then $f(\wt{\P}^4) = \mr{Gr}(2,4) \subset \P^5$.
+\end{exm}
+
+\section{Deformation to the Normal Cone}%
+\label{sec:deformation_to_the_normal_cone}
+
+Let $X \subseteq Y$ be a closed subscheme and $C = C_X Y$ be the normal cone. We will construct a scheme $M = M_X Y$ and a closed embedding $X \times \P^1 \subseteq M$ such that
+\begin{equation*}
+\begin{tikzcd}
+    X \times \P^1 \ar[hookrightarrow]{rr} \ar{dr}{p_2} & & M \ar{dl}{q} \\
+                                                       & \P^1
+\end{tikzcd}
+\end{equation*}
+comutes and such that
+\begin{enumerate}
+    \item Away from $\infty$, we have $q^{-1}(\A^1) = Y \times \A^1$ and the embedding is the trivial embedding $X \times \A^1 \subseteq Y \times \A^1$.
+    \item Over $\infty$, $M_{\infty} = \P(C \oplus 1) + \wt{Y}$ is a sum of two Cartier divisors, where $\wt{Y} = \Bl_X Y$. The embedding of $X$ is given by $X \hookrightarrow C \hookrightarrow \P(C \oplus 1)$. We also have $\P(C \oplus 1) \cap \wt{Y} = \P(C)$, which is embedded as the hyperplane at $\infty$ in $\P(C \oplus 1)$ and as the exceptional divisor in $\wt{Y}$.
+\end{enumerate}
+
+We will now construct this deformation. Let $M = \Bl_{X \times \infty} Y \times \P^1$. Clearly we have $C_{X \times \infty} Y \times \P^1 = C \oplus 1$. But now we can embed $X \times \P^1 \subseteq M$. The first property is obvious by the blowup construction, so now we need to show the second property.
+
+We may assume $Y = \Spec A$ is affine and $X$ is defined by the ideal $I$. Identify $\P^1 \setminus 0 = \A^1 = \Spec k[t]$. Then if we write $S^n = {I,T}^n$, then we see that $\Bl_{X \times 0} Y \times \A^1 = \Proj S^{\bullet}$. But now this is covered by affines 
+\[ \qty{\Spec S^{\bullet}_{(a)}}_{a \in (I, T)\ \text{generator}}. \]
+Now for $a \in I$, we see that $\P(C \oplus 1) \subseteq \Spec S^{\bullet}_{(a)}$ is defined by the equation $a/1$, while $\wt{Y}$ is defined by $T/a$, and now we see that 
+\[ M_{\infty} = V(T) = V\qty(\frac{a}{1} \cdot \frac{t}{a}) = V(a) \cup V(T/a) = \P(C \oplus 1) + \wt{Y}, \]
+as desired.
+
+Now this allows us to define a \textit{specialization} morphism
+\[ \sigma \colon Z_k Y \to Z_k C \qquad [V] \mapsto [C_{V \cap X} V]. \]
+\begin{prop}
+    Specialization preserves rational equivalence. Therefore we have a specialization morphism
+    \[ \sigma \colon A_k Y \to A_k C. \]
+\end{prop}
+
+\begin{rmk}
+    Supposing that $X, Y$ are smooth, then the embedding of $X \subset \P(N \oplus 1)$ is nicer than $X \subset Y$ in several ways:
+    \begin{enumerate}
+        \item There is a retraction $\P(N \oplus 1) \to X$.
+        \item There is a vector bundle $\xi$ on $\P(N \oplus 1)$ or rank $\operatorname{codim}_Y X$ and a section $s \in \Gamma(\xi)$ such that $V(s) = X$. Therefore $X$ is represented by the top Chern class of $\xi$.
+    \end{enumerate}
+\end{rmk}
+
+\begin{thebibliography}{9}
+    \bibitem{fulton} William Fulton, \textit{Intersection Theory}, 2 ed., Ergebnisse der Mathematik und ihrer Grenzgebiete, 3. Folge, vol. 2, Springer-Verlag, 1998. 
+\end{thebibliography}
+
+
+
+\end{document}

@@ -113,6 +113,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
 \newcommand{\Q}{\mathbb{Q}}
 \renewcommand{\k}{\Bbbk}
 \renewcommand{\P}{\mathbb{P}}
@@ -132,6 +133,7 @@
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
@@ -1325,6 +1327,468 @@ Going back to the case of cofibrations, we obtain
 \end{cor}
 
 This can be used to compute the homology of $\C\P^{\infty}$.
+
+\section{Cellular Homology}%
+\label{sec:cellular_homology}
+
+Let $h$ be a homology and $X$ a CW complex. We will consider the relative homology groups $h(X^n, X^{n-1})$. We have a diagram
+\begin{equation*}
+\begin{tikzcd}
+    h(X^n, X^{n-1}) \arrow{d} \arrow{r}{\partial_n} & h(X^{n-1}, X^{n-2}) \\
+    h(X^{n-1}) \arrow{ur}
+\end{tikzcd}
+\end{equation*}
+of degree $-1$ and thus we can attempt to form a chain complex.
+
+\begin{prop}
+    $\partial_{n-1} \circ \partial_n = 0$.
+\end{prop}
+
+\begin{proof}
+    If we paste two such diagrams together to obtain
+    \begin{equation*}
+    \begin{tikzcd}
+        h(X^n, X^{n-1}) \arrow{r}{\partial_n} \arrow{d} & h(X^{n-1}, X^{n-2}) \arrow{r}{\partial_{n-1}} \arrow{d} & h(X^{n-2}, X^{n-3}) \\
+        h(X^{n-1}) \arrow{ur} & h(X^{n-2}) \arrow{ur}
+    \end{tikzcd}
+    \end{equation*}
+    then the sequence $h(X^{n-1}) \to h(X^{n-1}, X^{n-2}) \to h(X^{n-2})$ is the long exact sequence of the pair $(X^{n-1}, X^{n-2})$ and thus we obtain a chain complex. This is a bounded complex if and only if $X$ has cells in only finitely many dimensions.
+\end{proof}
+
+This gives us a chain complex
+\[ \cdots \to h(X^2, X^1) \to h(X^1, X^0) \to h(X^0, \emptyset). \]
+
+As for how this is related to $h(X)$, this is simply the ``first page of the spectral sequence'' which computes such homology. Also, this makes sense for any filtered space $X$ because we have not used any information about CW complexes. Now consider the case when $h$ satisfies the dimension axiom, which says that $h_*(\mr{pt})$ is supported in degree $0$.
+
+\begin{thm}
+    If $h$ satisfies the dimension axiom, then the complex defined in the previous proposition computes $h(X)$. This means $h_n(X) = \ker(\partial_n) / \Im(\partial_{n+1})$.
+\end{thm}
+
+\begin{proof}
+    We prove this by inducting on the dimension of $X$. Note this requires additivity, which is the same thing as homology commuting with homotopy colimits. The base case is simple:
+    \[ h(X^0) \cong \bigoplus_{X^0} h_*(\mr{pt}). \]
+    Now assume that the complex
+    \[ 0 \to h(X^n, X^{n-1}) \to h(X^{n-1}, X^{n-2}) \to \cdots \to h(X^1, X^0) \to h(X^0) \to 0 \]
+    computes $h(X^n)$. Now recall that we have the long exact sequence
+    \begin{equation*}
+    \begin{tikzcd}
+        h(X^n) \arrow{rr} & & h(X^{n+1}) \arrow{dl} \\
+                          & h(X^{n+1}, X^n) \arrow{ul}
+    \end{tikzcd}
+    \end{equation*}
+    and so now we need to understand the connecting map $h(X^{n+1}, X^n) \to h(X^n)$. In the cell complex, this only interacts with $h(X^n, X^{n-1})$. Thus we need to know that the long exact sequence only changes in two degrees. We use the isomorphism
+    \[ h_*(X^{n+1}, X^n) \cong \bigoplus_{e \in E} h_*(D_e^{n+1}, S_e^n) \cong 0 \]
+    unless $* = n+1$, where $E$ is the set of $(n+1)$-cells. Here, the final isomorphism comes from the dimension axiom. Thus $h_*(X^n) \cong h_*(X^{n+1})$ if $* < n$ and $* > n+1$.
+
+    For $* = n+1$, we simply see that
+    \begin{align*}
+        h_{n+1}(X^{n+1}) &= \ker(h(X^{n+1}, X^n) \to h(X^n)) \\
+                         &\cong \ker(h(X^{n+1}, X^n) \to h(X^n) \hookrightarrow h(X^n, X^{n-1})) \\
+                         &= \ker(\partial^{n+1})
+    \end{align*}
+    because $h_n(X^n) = \ker(h_n(X^n, X^{n-1}) \to h_{n-1}(X^{n-1}))$ by the inductive hypothesis. For $* = n$, we have the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        h_{n+1}(X^{n+1}, X^n) \arrow{d} \arrow{r} & h_n(X^n) \arrow{r} \arrow[equal]{d} & h_n(X^{n+1}) \arrow{r} & h_n(X^{n+1}, X^n) = 0 \\
+        \Im \partial_{n+1} \arrow{r} & \ker \partial_n
+    \end{tikzcd}
+    \end{equation*}
+    Then we have $h_n(X^{n+1}) = h_n(X^n) / \Im(h_{n+1})(X^{n+1}, X^n)$. This is clearly isomorphic to $\ker \partial_n / \Im \partial_{n+1}$.
+\end{proof}
+
+In order to compute this, we need to understand the map $h(X^{n+1}, X^n) \to h(X^n, X^{n-1})$. Denote the set of $(n+1)$-cells by $E$ and the set of $n$-cells by $F$. Then we have
+\[ h(X^{n+1}, X^n) \cong \bigoplus_{e \in E} h(D_e^{n+1}, S_e^n) \cong \bigoplus_e h_n(S^n_e) \cong \bigoplus_e \Z_e [n]. \]
+Here, if $A$ is an abelian group, $A[n]$ is the chain complex $A$ shifted in degree by $n$. In addition, we have
+\[ h(X^n, X^{n-1}) \cong \wt{h}(X^n / X^{n-1}) \cong \bigoplus_f h_n(D_f^n / D_f^{n-1}) \cong \bigoplus_f \Z_f [n]. \]
+The attaching map gives rise to $S_e^n \to D_f^n / S_f^{n-1}$ of degree $d(e,f)$. Note this choice relies on orienting all of the cells. Then the matrix $M = (d(e,f))$ computes the map $h(X^{n+1}, X^n) \to h(X^n, X^{n-1})$, which is really
+\[ \bigoplus \Z_e [n+1] \xrightarrow{M} \bigoplus \Z_f [n]. \]
+This formula also arises from the study of the compatibility of homology with suspension. Now we define the chain complex $C_n^{\mr{CW}}(X; R)$ to be the free $R$-module given by the $n$-cells of $X$. The differential is simply the degrees of all attaching maps.
+
+\begin{exer}
+    Directly prove that $d^2 = 0$ by analyzing $X^{n-2} \hookrightarrow X^{n-1} \hookrightarrow X^n$.
+\end{exer}
+
+In fact, the differential is always given by the matrix $M$ defined above, and this implies uniqueness of homology theories on spaces which are homotopy equivalent to CW complexes.
+
+Now if $X \to Y$ is a cellular map, then we obtain maps $h_n(X^n, X^{n-1}) \to h_n(Y^n, Y^{n-1})$ and these are maps of complexes. These are again given by the degree. (Note that all maps $X \to Y$ are homotopic to cellular maps). Now the problem is to compute the maps $h_*(X) \to h_*(Y)$ from the cellular point of view. If we consider the commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    X_n \arrow{r} & Y_n \\
+    X_{n-1} \arrow{r} \arrow{u} & Y_{n-1} \arrow{u}
+\end{tikzcd}
+\end{equation*}
+then we see that the map $h_*(X_n / X_{n-1}) \to h_*(Y_n / Y_{n+1})$ is given by the degrees of the maps of cells and thus all maps $h_*(X) \to h_*(Y)$ are axiomatically determined. Thus $h_*(X)$ is determined axiomatically as a \textbf{functor}, not just as a group.
+
+\begin{exm}
+    Consider $X = T^2$. Then all differentials vanish because the attaching map to $S^1 \vee S^1$ is the element $\alpha \beta \alpha^{-1} \beta^{-1}$ and thus the map is $\Z \to \Z \oplus \Z \xrightarrow{(+1-1, +1-1) = 0} \Z$. In degree $1$, the loop in the fundamental square is still $\alpha \beta \alpha^{-1} \beta^{-1}$ and thus we have the same map. Thus, we have
+    \[ H_2(T^2) = \Z \qquad H_1(T^2) = \Z \oplus \Z \qquad H_0(T^2) = \Z. \]
+\end{exm}
+
+The same analysis works for both $S^n \times S^n$ and for higher genus surfaces $\Sigma_g$.
+
+\section{Simplicial Homology}%
+\label{sec:simplicial_homology}
+
+Simplicial homology is one of the original versions of homology. Let $E$ be a partially ordered set and $S$ be a subset of $2^E$ such that for all $s \in S$ and $v \in s$, then $s \setminus v \in S$ and all $s \in S$ are totally ordered. Thus we can write $s = [v_0, \ldots, v_n]$ as an $n$-simplex. Then let $\abs{K}$ be its geometric realization. Now define $C(K; R) = C_n^{\mr{simp}}(\abs{K}; R)$ to be the free $R$-module generated by $n$-simplices. Note that attaching maps in this case all have degree $\pm 1$ because they are linear, and this is why we choose orientations using a partial order. The differential is given by
+\[ \partial [v_0, \ldots, v_n] = \sum_{i=1}^n {(-1)}^i [v_0, \ldots, \wh{v}_i, \ldots, v_n]. \]
+This is a very old and famous formula. The $(-1)^i$ is simply here to keep track of orientations. Also, we can consider $\abs{K}$ as a CW complex and then the CW and simplicial chain complexes are the same. Then we can collapse the $n-2$ skeleton to obtain a wedge of spheres, and then we have maps of degree $\pm 1$. The sign is determined by the orientation, where we will consider clockwise to be the standard orientation. For example, consider a single $2$-simplex:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{simporient.png}
+    \caption{Simplicial orientations.}%
+    \label{fig:simporient}
+\end{figure}
+Now if $K \to L$ is a map of ``simplicial sets,'' then we get maps $\abs{K} \to \abs{L}$. We can try to compute $h_*\abs{K} \to h_*\abs{L}$, and this is determined by the cell complex, which is the same as the simplicial complex. Suppose $s \in S_n$. Then if $s = [v_0, \ldots, v_n]$, either all $f(v_i)$ are distinct, in which $f(s) = [f(v_0), \ldots, f(v_n)]$, or we have $f(v_i) = f(v_j)$ and then we set $s \to 0$.
+
+(Here, $K^n / K^{n-1} \to L^n / L^{n-1}$ commutes with $\Delta^n / \partial \Delta^n \to \Delta^n / \partial \Delta^n$ or the map from $\Delta^n \to K^n \to L^n$ factors through $L^{n-1}$ and hence the quotient factors through a point.) 
+
+Now if $X$ is a simplicial complex, we can consider the groups $h(X), C^{\mr{cell}}(X), C^{\mr{simp}}(X)$. The first is small, the second is medium, and the last is large. Then there is no differential for $h(X)$ and the cellular differentials are hard to compute, but the simplicial differentials are very easy to compute.\footnote{This is a common tradeoff in mathematics, where making one aspect of our computation easier tends to make something else much harder. Later, we will define singular homology, which has massive chain groups but is useful for proving various exactness results.}
+
+Now we can define a very weak invariant from homology: the \textit{Euler characteristic}
+\[ \chi(X; R) = \sum (-1)^i \mr{Rk}(H_i(X, R)). \]
+If $\chi$ is defined, it is in fact independent of $R$. It is very easy to compute this for Riemann surfaces. For finite CW complexes, $\chi$ is given by the alternating sum of the number of $n$-cells.
+
+\section{Singular Homology}%
+\label{sec:singular_homology}
+
+We will define the complex $S_{\bullet}(X)$ of singular chains for any space $X$. We will see that this is functorial and that $X \to H_{\bullet}(S_{\bullet})$ is a homology theory. If $X$ has the homotopy type of a CW complex, we get the same result as for cellular homology. This satisfies the dimension axiom and is ordinary homology.
+
+Let $S_n(X)$ be the free abelian group generated by maps $\Delta^n \xrightarrow{\sigma} X$. First, we identify 
+\[ \Delta^n = \qty{(t_0, \ldots, t_n) \mid \sum t_i = 1, 0 \leq t_i } \subset \R^{n+1}. \]
+We can now think of this as a convex polytope in Euclidean space, and it is thus the convex hull of the vertices $v_i = (0, \ldots, 1, \ldots, 0)$. Next, we define $\delta_i \colon \Delta^{n-1} \hookrightarrow \Delta^n$ given by $\mr{Span}(v_j \mid i \neq j)$ induced by $\R^{n} \to \R^{n+1}$ skipping the $i$-th component. Now we define
+\[ \partial \colon S_n(X) \to S_{n-1}(X) \qquad \sigma \mapsto \sum (-1)^i \sigma \circ \delta_i. \]
+Like in the simplicial case, the sign comes from the transposition. We can avoid explicit signs by assigning to $\Delta^n$ its orientation line $o_{\Delta^n}$. Now from an orientation on $\Delta^n$, we induce an orientation on the boundary, so we can set
+\[ S_n(X) \cong \bigoplus_{\sigma} o_{\sigma} \]
+and define the map by simply restricting orientation to the boundary. The advantage of this secondary approach is that we can see that $\partial^2 = 0$ topologically instead of combinatorially. On a manifold with corners, when we consider the intersection of two facets, the two restrictions are clearly opposite to each other:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{orientsimp.png}
+    \caption{Tracking orientations}%
+    \label{fig:orientsimp}
+\end{figure}
+
+Now for $A \subset X$, we clearly have an inclusion $S_n(A) \hookrightarrow S_n(X)$. Then define $S_n(X,A)$ to be the quotient $S_n(X) / S_n(A)$. Note that this is different from $S_n(X/A)$. If two maps agree away from $A$ but are different in $A$, then they correspond to different elements of $S_n(X,A)$.
+
+\begin{cor}
+    There exists a long exact sequence
+    \[ H_n(A) \to H_n(X) \to H_n(X,A) \to H_n(X,A)[1]. \]
+    This comes from the definition of the singular chain complex as a quotient complex.
+\end{cor}
+
+Functoriality is clear at the chain level. For $f \colon (X,A) \to (Y,B)$, the map of chains is simply $\sigma \to f \circ \sigma$, and checking that everything is well-defined is easy.
+
+Now we check the dimension axiom. First, note that $H_0(S_{\bullet}(\mr{pt})) \simeq \Z$ and $H_i(S_{\bullet}(\mr{pt})) = 0$ otherwise. Then in the chain complex 
+\[ \cdots \to \Z \to \Z \to \Z, \]
+we see that 
+\[ \partial \sigma = \sum (-1)^i \sigma \circ \delta_i = \sum_{i=0}^n (-1)^i \]
+and thus when we pass to homology, we see that everything vanishes except in degree $0$.
+
+To check additivity, we simply see that 
+\[ S_{\bullet}\qty(\bigsqcup X_i) \cong \bigoplus_i S_{\bullet} (X_i) \]
+because $\Delta$ is connected. Then we pass to homology. 
+
+This leaves homotopy invariance, excision, and weak homotopy. Homotopy invariance will be proved by using the acyclic model theorem or by using prisms. Excision follows from barycentric subdivision, and weak homotopy is proved using cellular approximation.
+
+First we will prove that the homology of a contractible space is trivial. If $X$ is contractible to $x \in X$, then there exists $h \colon X \times I \to X$ such that $h(x', 0) = x'$ and $h(x',1) = x$. We want to associate to this a homotopy between $\mr{id}_S$ and 
+\[ S_{\bullet}(X) \to S_{\bullet}(\mr{pt}) \to S_{\bullet}(X). \]
+Here a homotopy between $f,g \colon C_{\bullet} \to D_{\bullet}$ is a map $H \colon C_{\bullet} \to D_{\bullet + 1}$ such that $dH - Hd = f-g$.
+This $H$ is given by the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \Delta^n \times I \arrow{r}{\sigma \times \mr{id}_I} \arrow{dr} & X \times I \arrow{r}{h} & X \\
+                                                                    & \Delta^{n+1} \arrow{ur}{H\sigma}.
+\end{tikzcd}
+\end{equation*}
+Here, the map $\Delta^n \times I \to \Delta^{n+1}$ is simply given by collapsing one of the interval segments. Now we note that $\partial H(\sigma) = H \partial(\sigma) + \sigma - x$, where the last $x$ is the constant $0$-simplex at $x$. Now we obtain that $\partial H \sigma - H \partial \sigma = \sigma - x$ and thus they are homotopic. As a corollary, this gives an isomorphism in homology.
+
+\begin{cor}
+    If $X$ is contractible, then $H_{\bullet}(S_{\bullet}(X))$ is isomorphic to $\Z$.
+\end{cor}
+
+Now consider the two inclusions $i_0, i_1 \colon X \rightrightarrows X \times I$.
+
+\begin{lem}
+    The two maps $S(i_0), S(i_1)$ are homotopic.
+\end{lem}
+
+\begin{proof}
+    This is easy to see on $H_0$ by sending every $\sigma$ to the component of its image. Then the isomorphism on homology is clear. Now consider the functors $X \xrightarrow{G} S(X \times I), X \xrightarrow{F} S(X)$. We see that $F$ is free and $G$ is acyclic, so by the acyclic model theorem, any natural transformations $F \Rightarrow G$ are chain homotopic.
+\end{proof}
+
+Note that a direct proof of this uses the subdivision of the prism into simplices. The idea is that the map $\sigma \times I \colon \Delta^n \times I \to X \times I$ has domain not a simplex, but there are maps $p_{\alpha} \colon \Delta^{n+1} \to \Delta^n \times I$. Then we send
+\[ \sigma \mapsto \sum_{\alpha} (\sigma \times \mr{id}_I) \circ p_{\alpha}. \]
+Next, we use the fact that $\partial(\Delta^n \times I) = \Delta^n \times \partial I \cup \partial \Delta^n \times I$ to give the fact that $\partial \circ H = S(i_0) - S(i_1) + H \circ \partial$.
+
+To prove excision, let $X = X_1 \cup X_2$ and suppose their interiors cover $X$. We will show that $H_{\bullet}(X_2, X_1 \cap X_2) \simeq H_{\bullet}(X, X_1)$. Then consider the subcomplex $S^k(X) \subset S(X)$ given by $\sigma$ such that $\Im(\sigma) \subset X_1^{\circ}$ or $X_2^{\circ}$. We have
+the diagram
+\begin{equation*}
+\begin{tikzcd}
+    S(X_1) \arrow{d} \arrow{r} & S^k(X) \arrow{d} \arrow{r} & S^k(X, X_1) \arrow{d} \\
+    S(X_1) \arrow{r} & S(X) \arrow{r} & S(X, X_1).
+\end{tikzcd}
+\end{equation*}
+By definition, we see that $S^k(X, X_1) = S(X_2, X_1 \cap X_2)$. Now we need to prove that $S^k(X) \to S(X)$ is a quasi-isomorphism, and we will do this using barycentric subdivision. This defines a chain map $B \colon S(X) \to S(X)$, and so we obtain a map $S(X) \to S^k(X)$ given by iterating $B$ until all $B(\sigma)$ are excisive.
+
+We will now fill in some details about the acyclic model theorem. This generalizes the idea that if $M$ is a free module over a ring $R$ with basis $\qty{b_i}$, then any map $M \to N$ is specified by the values $f(b_i)$. For chain complexes, we need additionally $f(\dd b_i) = \dd{f(b_i)}$.
+
+\begin{defn}
+    A functor $F \colon \mc{C} \to \ms{Ch}_R$ is \textit{free} if there exist models $\qty{b_i}_{i=0}^{\infty} \in \mc{C}$ such that $F(X)$ is free (as a graded $R$-module) with basis $F(f) (b_i)$ indexed over all models and maps $f \colon b_i \to X$.
+\end{defn}
+
+\begin{exm}
+    The singular chain functor $X \mapsto S_{\bullet}(X)$ is free with models $\qty{\Delta^i}$.
+\end{exm}
+
+\begin{defn}
+    A functor $G \colon \mc{C} \to \ms{Ch}_R$ is \textit{acyclic} if $H^{\bullet} (G(b_i)) = 0$ for all $\alpha \neq 0$. This means the homology of the models is supported in degree $0$.
+\end{defn}
+
+Here, for the singular chain functor, we know that all $\Delta^n$ are contractible, and thus $S_{\bullet}(\Delta^n)$ is acyclic. However, we need to prove this explicitly without appealing to homotopy invariance.
+
+\begin{thm}
+    If $F$ is free and $G$ is acyclic, then every natural transformation $H^0 F \Rightarrow H^0(G)$ lifts uniquely up to chain homotopy. In other words, we can find a natural transformation $F \Rightarrow G$ and any two such choices are chain homotopic.
+\end{thm}
+
+This arises in our proof of homotopy invariance, where if we consider the map $S(X \times I) \xrightarrow{\mr{pr}} S(X) \xrightarrow{\iota_0} S(X \times I)$, we can see that this is the same on homology as the identity.
+
+Now we will prove that if $X \to Y$ is a weak homotopy equivalence, then the induced map on $H_{\bullet}$ is an isomorphism. By the use of the mapping cylinder, it suffices to consider an inclusion, so if $(X, A)$ is $n$-connected, then $H_{\bullet}(A) \to H_{\bullet}(X)$ is an isomorphism for $\bullet < n$.
+
+For each $\sigma \colon \Delta^i \to X$, choose a homotopy $P_{\sigma} \colon \Delta^i \times I \to X$ from the identity to a simplex in $A$. In fact, if $\pi_0(A) \to \pi_0(X)$ is surjective, we can always take a homotopy to make $\sigma$ lie in $A$.
+
+Inductively, we will get $\partial P_{\sigma} = P_{\partial \sigma}$. Starting with $0$-simlices, the union of $\sigma$ with $P_{\partial \sigma}$ defines an element of $\pi_i(X, A) = 0$. Now we can proceed by induction, and therefore we have $H_i(A) \to H_i(X)$ is an isomorphism for $i < n$. Letting $n \to \infty$, the we see that $H_{\bullet}(X)$ depends only on the weak homotopy type.
+
+\section{Comparison of Homology and Homotopy}%
+\label{sec:comparison_of_homology_and_homotopy}
+
+Now going back to cellular homology, we know that if $X$ is $n$-connected, then $H_n(X) \cong \pi_n(X)$. To prove this, use the fact that the Moore space $M(\pi_n(X), n)$ is an $n$-connected approximation of $X$.
+
+For example, if $X \cong K(\pi, n)$, then we get $H_n(K(\pi, n); \Z) \cong \pi$ and $H_i(K(\pi, n); 0)$ for $0 < i < n$. For $i > n$, the homology is actually nonzero! This is related to Steenrod operations.
+
+To fix this, we will show that if $X,Y$ are simply connected, then $f \colon X \to Y$ is a weak homotopy equivalence if and only if it induces an isomorphism on homology. Combining this with the Whitehead theorem, we obtain
+
+\begin{cor}
+    If $X,Y$ are simply connected CW-complexes, then $f \colon X \to Y$ is a homotopy equivalence if and only if it induces an isomorphism on homology.
+\end{cor}
+
+Note that the simple connectivity assumption is essential because there exist groups $G$ with $H_{\bullet}(BG) = 0$ but $G$ is nontrivial. This can be resolved by generalizing homology to homology with local coefficients, where the input is a local system. Also note that this result does \textbf{not} say that if $H_{\bullet}(X) \cong H_{\bullet}(Y)$ then $X \sim Y$. We can find $X,Y$ with isomorphic homology, but this is not induced by any map. An example of such spaces is $X = S^2 \vee S^4, Y = \C\P^2$.
+
+\section{Homology with Coefficients}%
+\label{sec:homology_with_coefficients}
+
+Consider $S_{\bullet}(X;G) = S_{\bullet}(X) \otimes G$. Then the homology of this is $H_{\bullet}(X;G)$. One reason to consider this is to obtain better structure than when we use $\Z$-coefficients. For example, $H_{\bullet}(\R\P^n, \Z/2\Z)$ is much nicer than $H_{\bullet}(\R\P^n, \Z)$. The same is true for the lens space with $\Z/p\Z$-coefficients.
+
+A natural problem is to compute $H_{\bullet}(X;G)$ given $H_{\bullet}(X,\Z)$. The answer is purely algebraic. If we consider the chain complex $\Z \xrightarrow{2} \Z$, the homologies are $0, \Z/2\Z$. However, if we tensor with $\Z/2\Z$, we obtain $\Z/2\Z \xrightarrow{0} \Z/2\Z$. The first $\Z/2\Z$ comes from $H_{\bullet}(X, \Z) \otimes G$ and the other one comes from the derived functor. In fact, there is only one derived functor $\mr{Tor}$ because all abelian groups have a two-step free resolution. Now we define
+\[ A \otimes^L B \cong H_{\bullet}(P_A \otimes P_B) \cong H_{\bullet}(A \otimes P_B) \cong H_{\bullet}(P_A \otimes B) \]
+where $P_A$ is a projective resolution $0 \to F_1 \to F_2 \to A \to 0$ of $A$. The key facts are $(A \otimes^L B)_0 \cong A \otimes B$ and $(A \otimes^L B)_i \cong 0$ if $i \neq 0,1$.
+
+Now all of this is the same for graded abelian groups, but instead of resolving each component, we can instead pick a free chain complex with $A$ as its homology. If $C_{\bullet}$ is a chain complex of free abelian groups, then 
+\[ H_{\bullet}(C_{\bullet} \otimes G) = H_{\bullet}(C_{\bullet}) \otimes^L G. \] 
+Now if $X$ is a topological space, we have
+\[ H_{\bullet}(X) \otimes G \to H_{\bullet}(X, G) \to \mr{Tor}(H_{\bullet - 1}(X), G) \]
+and in fact this exact sequence splits. Note that this splitting is not natural in $X$. This means that we can compute all torsion in $H_{\bullet}(X, \Z)$ from $H_{\bullet}(X, \Z/p\Z)$. The idea is that every two copies of $\Z/p^i\Z$ in consecutive degrees give rise to one copy in the higher degree if they don't come from the $\Z/p^n\Z$ homology for arbitrary $n$. Now we can consider $H_{\bullet}(X, \Z/p^n\Z) \to H_{\bullet}(X, \Z/p^{n-1}\Z)$. The free part of $H_{\bullet}(X, \Z)$ contributes a copy of $\Z/p^n\Z$ on the left and $\Z/p^{n-1}\Z$ on the right, and so these will stabilize for arbitrary $n$. (Here we assume $X$ is a finite CW complex). 
+
+\begin{rmk}
+    This reconstruction is not canonical.
+\end{rmk}
+
+\chapter{Cohomology}%
+\label{cha:cohomology}
+
+A \textit{cohomology theory} is a functor $h^* \colon \ms{hTop}_2^{\mr{op}} \to \ms{Mod}_R^{\Z}$ together with natural transformations $h^{n-1} \circ \kappa \xRightarrow{\delta^n} h^n$ such that
+\begin{enumerate}
+    \item The sequence
+        \[ \cdots \to h^n(X,A) \to h^n(X) \to h^n(A) \xrightarrow{\delta}^{n+1} h^{n+1}(X,A) \to \cdots \]
+        is exact.
+    \item If $\ol{U} \subset \mr{Int}(A)$, then the map $h^*(X,A) \to h^*(X \setminus U, A \setminus U)$ is an isomorphism.
+\end{enumerate}
+Just like with homology, we can add two axioms:
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item (Additivity) $h^*\qty(\bigsqcup_i X_i) \cong \prod_i h^*(X_i)$.
+    \item (Dimension) $h^*(\mr{pt})$ vanishes when $* > 0$.
+\end{enumerate}
+If all of these hold, then $h^*(X)$ is determined by its value on CW complexes and agrees with ordinary cohomology. A key difference with $h_*$ is that the map 
+\[ h^*(\operatorname{colim}_i X_i) \to \lim_i h^*(X_i) \]
+is not always an isomorphism when $X_i \to X_{i+1}$ are cofibrations. The error term is $\lim^1 h^*(X_i)$, which is the derived functor. Here, the sequence
+\[ 0 \to \lim^1 h^*(X_i) \to h^*(\operatorname{colim}_i X_i) \to \lim_i h^*(X_i) \to 0 \]
+is exact.
+
+Now we will discuss constructions of cohomology theories. Recall that we have prespectra, which are sequences of spaces $Y_n$ with maps $\Sigma Y_n \to Y_{n+1}$. Now the prespectrum is an \textit{$\Omega$-spectrum} if the induced map $\Omega Y_n \simeq Y_{n-1}$ is a homotopy equivalence. For example, $\Omega K(G,n) \cong K(G, n-1)$. Now let $Y$ be an $\Omega$-spectrum. Then we can define $h_Y^n(X) \cong [X_+, Y_n]$. Because we assumed $Y$ is an $\Omega$-spectrum, we have
+\[ h_Y^n(X) \cong [X_+, Y_n] \cong [\Sigma X_+, Y_{n+1}] \cong [\Sigma^2 X_+, Y_{n+1}] \cong \cdots \]
+
+Another approach is to use singular homology with coefficients in an abelian group $G$. Define $\mc{S}^{\bullet}(X; G) \cong \Hom(\mc{S}_{\bullet}(X), G)$ with differential $\delta \varphi = {(-1)}^{n+1} \varphi \circ \partial$. Then the cohomology of this complex is denoted by $H_{\mc{S}}^{\bullet}(X,G)$ and is called \textit{singular cohomology}. This agrees with $h_{K(G)}$ for spaces homotopy equivalent to CW complexes by the same argument as for CW complexes.
+
+Now for $X$ a CW complex, we can take $C_{\mr{CW}}^*(X, G) = \Hom(C_*^{\mr{CW}}(X), G)$ and take the cohomology. This is called cellular homology, so in some sense $h^*$ is the ``derived dual'' of $h_*$.
+
+\section{Multiplicativity}%
+\label{sec:multiplicativity}
+
+For singular chains, define
+\[ \varphi^p \smile \psi^q (\sigma) = {(-1)}^{pq} \varphi\qty(\eval{\sigma}_{[0, \ldots, p]}) \cdot \psi\qty(\eval{\sigma}_{[p, \ldots, p+q]}). \]
+This defines a product on the set of singular chains. The meaning is that given a choice of an approximation of the diagonal, $\varphi \smile \psi (\sigma)$ should be $\varphi \times \psi (\Delta \circ \sigma)$. Intuitively, we want to make the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \Delta^{p+q} \arrow{r} \arrow{drr} & X \arrow{r}{\Delta} & X \times X \\
+                                       & & \Delta^p \times \Delta^q \arrow{u}
+\end{tikzcd}
+\end{equation*}
+work in a simplicial manner. Now we can check that the cup product makes $\mc{S}^{\bullet}(X)$ a \textit{differential graded algebra}. To do this, we check the graded Leibniz rule
+\[ \dd{\psi \smile \varphi} = \dd{\psi} \smile \varphi + {(-1)}^{\abs{\psi}} \psi \smile \dd{\varphi}. \]
+Passing to cohomology, we see that $H^*(X)$ is a graded algebra. In fact, we have graded-commutativity, which says
+\[ [\varphi] \smile [\psi] = {(-1)}^{\abs{\varphi}\abs{\psi}} [\psi] \smile [\varphi]. \]
+\textbf{Warning:} this equality is not true at the chain level. In fact, there is no way to construct the cup product that makes the chain a commutative dg-algebra, which leads to the theory of Steenrod operations. We can actually derive all of this from the homotopical point of view by noting that if $\mathbb{k}$ is a ring, then 
+\[ K(\k, n) \wedge K(\k, m) \to K(\k, n+m) \]
+induces a map
+\[ [X_+, K(\k, n)] \times [X_+, K(\k, m)] \to [X_+ \wedge X_+, K(\k, n+m)] \to [X_+, K(\k, n+m)]. \]
+If we want an algebraic structure on homology, recall that we have a natural map $C_{\bullet}(X) \otimes C_{\bullet}(Y) \to C_{\bullet}(X \times Y)$. Now we consider the diagonal map $C_*(X) \to C_*(X \times X)$, which gives a map $H_*(X) \to H_*(X \times X)$. Unfortunately, there is no way to obtain a coproduct because the Kunneth formula has an extra $\mr{Tor}$ term. However, if the homology of $X$ is free, then there is a coproduct. The other problem here is that coproducts are unintuitive (even if they are probably the same for a computer). 
+
+Next, we will show that $h_*$ is a module over $h^*$. In the setting of spectra, a homology class is a map $S^i \to X \wedge K(\k, n)$ and a cohomology class is a map $S^j \to \ms{Map}(X, K(\k, m))$. The only way to do this is
+\[ S^{i+j} \cong S^i \wedge S^j \to X_+ \wedge K(\k, n) \wedge \mr{Map}(X_+, K(\k, m)) \to X_+ \wedge K(\k, n) \wedge K(\k, m) \to X \wedge K(\k, n+m). \]
+In fact, there are other products, like the \textit{slant product}. In the singular theory, the formula for $\mc{S}^k(X) \otimes \mc{S}_n(X) \to \mc{S}_{n-k}(X)(X)$ is given by
+\[ \varphi \otimes \sigma \mapsto {(-1)}^{k(n-k)} \varphi(\sigma([v_{n-k}, \ldots, v_n])) \cdot \sigma([v_0, \ldots, v_{n-k}]). \]
+This defines a chain map, so it descende to homology, and we obtain a map $H^k(X) \otimes H_n(X) \to H_{n-k}(X)$ satisfying
+\[ (\varphi \smile \psi) \frown \sigma = \varphi \frown (\psi \frown \sigma). \]
+Now we can axiomatize this setting as a \textit{(co)-homology theory equipped with cap products}. If $(h^*, h_*, \frown)$ are such that $h^*, h_*$ are ordinary, then this is determined by $h^0(\mr{pt}) \otimes h_0(\mr{pt}) \to h_0(\mr{pt})$. Now we are ready to state Poincar\'e duality.
+
+\begin{thm}
+    If $M$ is a closed manifold of dimension $n$, then there exists a class $[M] \in H_n(M; \F_2)$, then the map
+    \[ H^k(M; \F_2) \xrightarrow{\frown [M]} H_{n-k}(M; \F_2) \]
+    is an isomorphism. 
+\end{thm}
+
+\begin{rmk}
+    We can remove the compactness assumption using compactly supported homology (or the one-point compactification) and we can allow boundaries by using relative homology.
+\end{rmk}
+
+To state the result for general homology theories, we need the local system of orientations. Recall that $h_*(M, M \setminus \mr{pt}) \cong h_*(\R^n, \R^n \setminus 0) \cong h_*(\R^n, \R^n \setminus D^n) \cong h_*(S^n)$. Then we have suspension isomorphisms $h_{*-n}(\mr{pt}) = \wt{h}_*(S^n)$. Suppose $h_0(\mr{pt})$ has a distinguished element $e$.
+
+\begin{defn}
+    An \textit{$h$-orientation} of $M$ is a class $[M] \in h_n(M)$ (called the \textit{fundamental class}) whose restriction to $h_*(M, M \setminus \mr{pt})$ is $e$ for all points in $M$. 
+\end{defn}
+
+\begin{prop}[Poincar\'e Duality]
+    If $[M]$ is an $h$-orientation of a closed manifold $M$, then the cap product $h^*(M) \xrightarrow{\frown [M]} h_{n-*}(M)$ is an isomorphism.
+\end{prop}
+
+Now, we can use Mayer-Vietoris to analyze the problem of the existence of orientations.
+Orientations restrict along open inclusions. First, if $A \subset M$, then we can define a notion of an \textit{orientation of $M$ along $A$} to be a class $[M] \in h_*(M, M \setminus A)$ such that the image of $[M]$ in $h_*(M, M \setminus \mr{pt})$ is $e \in h_*(\R^n, \R^n \setminus \mr{pt})$ for all points in $A$.
+
+Next, this is functorial for inclusions, as in if $B \subset A$, then an orientation along $A$ induces one along $B$. Every point has an open neighborhood along which $M$ has an $h$-orientation, which is just a coordinate chart. 
+
+We will now use Mayer-Vietoris to produce
+\[ \cdots \to h_*(M, M \setminus (A \cup B)) \to h_*(M, M \setminus A) \oplus h_*(M, M \setminus B) \to h_*(M, M \setminus (A \cap B)) \to \cdots \]
+and so we need $[M]_A$ and $[M]_B$ to agree.
+
+\begin{lem}
+    Every $M$ has a $\Z/2\Z$ orientation. Moreover, $H_i(M, \Z/2\Z) = 0$ for $i > n$.
+\end{lem}
+
+Proof of this is by taking a cover $U_{\alpha}$ and running the above argument noting that $1 = -1$ in characteristic $2$. However, there is not always a $\Z$-orientation, where the classic example is the M\"obius strip.
+
+\section{Proof of Poincar\'e duality}%
+\label{sec:proof_of_poincar'e_duality}
+
+Let $M$ be a compact manifold with fundamental class $[M] \in h_n(M)$. First, if we have $x \in U$ an open neighborhood, we can cap with the image of $[M]$ in $h_*(U, U \setminus X)$ to get $h^*(\mr{pt}) \cong h^*(U) \to h_{*-n}(U, U \setminus X)$. Now we will consider compact subsets $K$ of $M$. Define
+\[ \check{h}(K) = \operatorname{colim}_{K \subset U} h^*(U). \]
+If we take a represented cohomology theory, then this is isomorphic to $h^*(K)$. Unfortunately, this is false for singular cohomology, where the counterexample is the pseudocircle.
+
+Now capping with the image of $[M]$ gives $\check{h}^*(K) \to h_{*-n}(M, M \setminus K)$. Here, we use the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \check{h}^*(K) \arrow{r}{{[M]}} & h_{*-n}(M, M \setminus K) \\
+    h^*(U) \arrow{r} \arrow{r}{{[M]}} & h_*(M, M \setminus U). 
+\end{tikzcd}
+\end{equation*}
+
+
+\begin{thm}[Alexander Duality]
+    If $K$ is compact, the above map is an isomorphism.
+\end{thm}
+
+\begin{proof}
+    First, we will establish that if Alexander duality holds for $K, L, K \cap L$, then it holds for $K \cup L$. To see this, we use the Mayer-Vietoris sequences
+    \begin{equation*}
+    \begin{tikzcd}
+        \check{h}^*(K \cup L) \arrow{r} \arrow{d}{{[M]}} & \check{h}^*(K) \oplus \check{h}^*(L) \arrow{r} \arrow{d}{{[M]}} & \check{h}^*(K \cap L) \arrow{d}{{[M]}} \\
+        h_*(M, M \setminus (K \cup L)) \arrow{r} & h_*(M, M \setminus K) \oplus h_*(M, M \setminus L) \arrow{r} & h_*(M, M \setminus (K \cap L)),
+    \end{tikzcd}
+    \end{equation*}
+    note that two of the vertical arrows are isomorphisms, and then use the five lemma.
+
+    The next step is to prove continuity. If Alexander duality holds for compact sets $K_i$, we will prove that it holds for $\bigcap K_i$. To see this, we note that $h_*$ commutes with colimits, so that $h_*(M, M \setminus K) = \operatorname{colim} h_i(M, M \setminus K_i)$. Also, we use the definition of Cech cohomology.
+
+    Finally, we have reduced to subsets of $\R^n$, and the result clearly holds for convex subsets of $\R^n$, so to complete the argument, we use the fact that any compact set can be written
+    \[ K = \bigcap_{k \in K} B_{1/i}(K). \]
+    Thus we write $B_{1/i}(K) = \bigcup_{k \in K} B_{1/i}(K)$, and this can be handled by compactness (reduce to a finite cover), so now we have a reduction to $B_{1/i}(0) \subset \R^n$. But then we have $h^n(\R^n, \R^n \setminus 0) \cong h^n(\R^n, \R^n \setminus B_{1/i}(0))$.
+\end{proof}
+
+\begin{cor}
+    For compact $M$, we have $h^*(M) \simeq h_{*-n}(M)$.
+\end{cor}
+
+\begin{proof}
+    Set $K = M$ and use Alexander duality.
+\end{proof}
+
+Here are some consequences of Poincare duality:
+\begin{enumerate}
+    \item If $M$ is an odd-dimensional manifold, then $\chi(M) = 0$. If we use field coefficients, we know that $\dim H_i(M) = \dim H^i(M) = \dim H_{n-i}(M)$, and when $n$ is odd then $i, n-i$ have different parity, so they cancel in the alternating sum.
+    \item Assume $M$ is an orientable manifold. If we consider the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            H^n(M) \otimes H^{n-k}(M) \arrow{rr}{\smile} \arrow{d}{\frown{[M]}} & & H^n(M) \arrow{d}{\frown {[M]}} \\
+            H^k(M) \otimes H_k(M) \arrow{dr} & & H_0(M) \arrow{dl} \\
+                                             & \mathbb{K}.
+        \end{tikzcd}
+        \end{equation*}
+        For ordinary cohomology, commutativity follows from either the actual cup and cap product formulas or from Eilenberg-Maclane spaces. This tells us that the cup product gives us a perfect pairing $H^k(M) \otimes H^{n-k}(M) \to H^n(M) \simeq \mathbb{K}$. This tells us that cohomology is a graded algebra $A$ with a map $A \xrightarrow{\tr} \mathbb{K}$ such that $A^k \otimes A^{n-i} \to A^n \to \mathbb{K}$ is a perfect pairing. This is sometimes called a \textit{Frobenius algebra} or a \textit{Calabi-Yau algebra}.  
+
+    It is better to do this at the chain level for singular cohomology. Here, we consider the map
+    \[ C^k(M) \otimes C^{n-k}(M) \xrightarrow{\smile} C^n(M) \xrightarrow{\frown{{[M]}}} C_0(M) \to C_0(\mr{pt}) \simeq \Z. \]
+\item Consider the case when $M$ has dimension $2n = 4k+2 = 2(2k+1)$. Then we get a map $H^n(M) \otimes H^n(M) \otimes \mathbb{K}$. For $n$ odd, we see that $\alpha \cup \beta = - \beta \cup \alpha$, and thus we have an even antisymmetric pairing, which is a \textit{symplectic form}. This can be decomposed into pieces that look like $\mqty(0 & 1 \\ -1 & 0)$. This implies that the Euler characteristic is even.
+
+    If $\dim = 4k$, then $\chi(M)$ can be arbitrary. For example, $\chi(\C\P^2) = 3$ and $\chi(S^4) = 2$. We can also produce $4$-manifolds of arbitrary Euler characteristic from this process by taking linear combinations of $2$ and $3$.
+\end{enumerate}
+
+Now consider manifolds with boundary $\partial B^{n+1} = M^n$. The statement of Poincar\'e duality for manifolds with boundary is that the fundamental class lives in $[B] \in H_{n+1}(B, M)$ and capping gives us an isomorphism $H^k(B) \to H_{n-k+1}(B, M)$. Also, $M$ is orientable and $[M]$ is the image of $[B]$ under the boundary homomorphism. Now capping with $[B]$ gives a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    H^i(B) \arrow{r}{\frown {[B]}} \arrow{d} & H_{n+1-i}(B,M) \arrow{d} \\
+    H^i(M) \arrow{r}{\frown {[M]}} & H_{n-i}(M).
+\end{tikzcd}
+\end{equation*}
+If we consider the middle dimension cohomology where $\dim M = n = 4k$, we have a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    H^{2k}(B) \arrow{r}{i^*} \arrow{d}{\sim} & H^{2k}(M) \arrow{d}{\sim} \arrow{r}{\delta} & H^{2k+1}(B,M) \arrow{d}{\sim} H_{2k}(B) \\
+    H_{2k+1}(B,M) \arrow{r}{\partial} & H_{2k}(M) \arrow{r}{i_*} & H_{2k}(B).
+\end{tikzcd}
+\end{equation*}
+Note that $\rank (\Im i^*) = \rank (\Im \partial) = \rank (\Im \delta)$. Also, $\rank(H^{2k}(M)) = \rank(\Im i^*) + \rank (\Im \delta)$, so $\rank (\Im H^{2k}(B)) = \frac{1}{2} \rank (H^{2k}(M))$. Moreover, the map
+\[ H^i(B) \to H^i(M) \xrightarrow{{[M]}} H_{n-i}(M) \to H_{n-i}(B) \]
+is zero by exactness. Dualizing, we see that the pairing
+\[ H^i(B) \otimes H^{n-i}(B) \to H^n(B) \to H^n(M) \xrightarrow{{[M]}} \Z \]
+vanishes, so the intersection pairing vanishes on $\Im (H^{2k}(B))$ and thus the pairing is isotropic. If we do the same thing for $n = 4k+2$, we obtain a Lagrangian subspace.
+
+Now consider a Riemann surface embedded in $\R^3$. This bounds some manifold $B$. There are some curves bounding discs and some curves bounding ``holes'' of the surface, and these are the symplectic basis for the intersection pairing. In summary, the map $H^n(B) \to H^n(M)$ has half-dimensional image. Unfortunately, we can make the homology of $B$ more complicated by adding stuff, so we cannot say anything about the entire homology of $B$.
+
+Finally, suppose that $\dim (M) = 4k$. Over $\R$, a nondegenerate form splits into positive and negative-definite parts $V_+, V_-$.
+
+\begin{defn}
+    Define the \textit{sign} of a manifold $M$ as $\mr{sign}(M) = \dim V_+ - \dim V_-$. 
+\end{defn}
+
+\begin{thm}
+    If $M = \partial B$, then $\mr{sign}(M) = 0$.
+\end{thm}
+
+\begin{proof}
+    The image of $H^{2k}(B) \to H^{2k}(M)$ is half-dimensional, but the pairing vanishes on it (because $[B]$ lives in degree $4k+1$), and then by linear algebra the only way this can happen is when $\dim V_+ = \dim V_-$.
+\end{proof}
+
+This means there are manifolds which cannot be boundaries (all $3$-manifolds are boundaries of $4$-manifolds), such as $M = \C\P^2$. Here, the form is $\Z \otimes \Z \to \Z$ and is positive definite.
+
+
 
 
 

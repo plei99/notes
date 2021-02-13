@@ -1346,7 +1346,350 @@ We conclude with some remarks. It is easier to compute the cohomology of $\mu^{-
 \[ p_t^K(X) = \sum t^i \dim H_K^i(X,\Q) = \sum_{\beta, m} t^{d(\beta, m)} p_t^K(C_{\beta, m}). \]
 This allows us to compute the cohomology.
 
+\chapter{Alex (Nov 20): GIT quotients of symplectic manifolds}%
+\label{cha:alex_nov_20_git_quotients_of_symplectic_manifolds}
 
+\section{K\"ahler and Hyperk\"ahler quotients}%
+\label{sec:k"ahler_and_hyperk"ahler_quotients}
+
+Let $(X, \omega)$ be a compact K\"ahler manifold and $G$ be a complex reductive group. Then $K \subseteq G$ is a maximal compact subgroup and suppose that the action of $K$ on $X$ preserves $\omega$. Let $\mu \colon X \to \mf{k}^*$ be the moment map. Recall the Marsden-Weinstein theorem from last time. Define 
+\[ \mu_{\mr{reg}}^{-1}(0) = \qty{x \in \mu^{-1}(0) \mid \dd{\mu}(x) \text{ is surjective}}. \]
+This should be thought of as the stable locus in the symplectic quotient.
+
+\begin{thm}
+    There exist a K\"ahler structure on
+    \[ \mu_{\mr{reg}}^{-1}(0) / K \cong X_{(0)}^{\mr{min}} / G, \]
+    where the equivalence here is diffeomorphism and $X_{(0)}^{\mr{min}} \subseteq X$ is open.
+\end{thm}
+
+To sketch a proof of this, we first note that if $x \in \mu_{\mr{reg}}^{-1}(0)$, then if we call the quotient $Y$, we have 
+\[ T_{\ol{x}} Y \cong T_x \mu^{-1}_{\mr{reg}}(0) / T_x O_K(x) \cong T_x X / T_x O_G(x). \]
+This gives us an almost complex structure on the quotient, and by reference [624] of Mumford, this is integrable and compatible with the symplectic structure. Here, the second isomorphism comes from the identity
+\[ \ker \dd{\mu(x)} = (J \cdot T_x O_K(x))^{\perp}. \]
+Now we also need to define this mysterious $X^{\mr{min}}$. Define the function $f(x) = \norm{\mu(x)}^2$, where we fix an invariant inner product on $\mf{k}^*$. Then define
+\[ X^{\mr{min}} = \qty{ x \in X \mid \text{gradient flow} \to \mu^{-1}(0) }. \]
+This should be thought of as the normal bundle of $\mu^{-1}(0)$. In fact, we have $X^{\mr{min}} = X^{\mr{ss}}$ and then we have $X_{(0)}^{\mr{min}} = X_{(0)}^{s}$.
+
+We now discuss the hyperk\"ahler case.
+
+\begin{defn}
+    A manifold $(X, I, J, K, g)$ is \textit{hyperk\"ahler} if $I, J, K$ are complex structures and $IJ = K = -JI$. This gives us an entire $S^2$ of complex structures.\footnote{The prototype example of a hyperk\"ahler manifold is a K3 surface.}
+\end{defn}
+
+The standard picture for a hyperk\"ahler manifold is the space $\mathbb{H}^n$. Note that a hyperk\"ahler structure gives three K\"ahler structures. Now if we have the corresponding moment maps $\mu_1, \mu_2, \mu_3$, the \textit{hyperk\"ahler} quotient is 
+\[ X \sslash_{\mr{hk}} K = (\mu_1^{-1}(0) \cap \mu_2^{-1}(0) \cap \mu_3^{-1}(0)) / K. \]
+
+\begin{exm}
+    An interesting hyperk\"ahler quotient is the space of anti-self-dual instantons, or principal $SU(\ell)$ bundles over $S^4$. Alternatively, this is the space of holomorphic $SL(\ell)$-bundles over $\P^2$ with $c_2 = k$. There is a construction of Atiyah, Drinfeld, Hitchin, and Manin (ADHM). 
+
+    This is a hyperk\"ahler quotient of $\mathbb{H}^{k(k+\ell)}$. We consider elements of $\mathbb{H}^{k(k+\ell)}$ as complex matrices $\alpha_1, \alpha_2, a, b$ complex matrices of size $k \times k, k \times k, \ell \times k, k \times \ell$ satisfying
+    \begin{enumerate}
+        \item $[\alpha_1, \alpha_2] + ba = 0$.
+        \item $[\alpha_1, \alpha_1^*] + [\alpha_2, \alpha_2^*] + bb^* - aa^* = 0$.
+        \item The matrix
+            \[ \mqty( \alpha_1 + \lambda I_k \\ \alpha_2 + \mu I_k \\ a ) \] is injective and the matrix $\mqty(\lambda I_k - \alpha_1 & \alpha_2 - \mu I_k & b)$ is surjective.
+    \end{enumerate}
+    Then define the action of $U(k)$ on $\mathbb{H}^{k(k+\ell)}$ by
+    \[ p \cdot (\alpha_1, \alpha_2, a, b) = (p \alpha_1 p^{-1}, p \alpha_2 p^{-1}, a p^{-1}, pb). \]
+    All of this is in a paper by Donaldson.
+\end{exm}
+
+\section{Desingularization}%
+\label{sec:desingularization}
+
+There are two reasons that $\mu^{-1}(0)/K$ can have singularities:
+\begin{enumerate}
+    \item $x \in \mu^{-1}(0)$ is not a regular point.
+    \item The action of $K$ on $\mu^{-1}(0)$ is not a free action.
+\end{enumerate}
+
+\begin{rmk}
+    If $\dd{\mu}(x)$ is surjective for all $x$, then $X_{(0)}^s = X^{\mr{ss}}$.
+\end{rmk}
+
+Note that not all finite quotient singularities cannot be resolved by equivariant blowups.
+
+\begin{thm}
+    If $X_{(0)}^s \neq \emptyset$, then there exists $\wt{X}$ which is a blowup of $X$ along $G$-invariant nonsingular subvarieties with a suitable $G$-linearization such that $\wt{X}^{\mr{ss}} = \wt{X}_{(0)}^s$ and such that $\wt{X} \sslash G \to X \sslash G$ is a birational morphism and $\wt{X} \sslash G$ only has finite quotient singularities.
+\end{thm}
+
+To prove this, if we let $R \subseteq G$ be a reductive subgroup, then we define $Z_R^{\mr{ss}} = (X^{\mr{ss}})^R$. Now if we define $r = \max \qty{ \dim R \mid Z_R^{\mr{ss}} \neq \emptyset }$, we define $R(r)$ to be a choice of representatives of conjugacy classes of reductive subgroups such that $Z_R^{\mr{ss}} \neq \emptyset$ and $\dim R = r$. Then we outsource the fact that the set
+\[ \bigcup_{R \in R(r)} G \cdot Z_R^{\mr{ss}} \]
+is a disjoint union of $G$-invariant subvarieties and thus we can set $Y$ to be the blowup of $X$ along these subvarieties. Now this procedure decreases $r$, and so by a finite process we end up with only finite stabilizers.
+
+\begin{rmk}
+    This quotient is sometimes quite nice for algebraic geometry but not for symplectic geometry. Let $G = GL_1 = \C^*$ act on $\P^2$ by
+    \[ \rho \colon G \to GL(3) \qquad t \mapsto \mqty(\dmat{t^2, t, t^{-1}}). \]
+    Then we know that $\P^2 \sslash G \cong \P^1$ because the ring of invariant functions is generated by $xz^2, yz$.
+
+    However, if we take the symplectic quotient, we have the moment map
+    \[ \mu(x,y,z) \cdot t = t \cdot \frac{2 \abs{x}^2 + \abs{y}^2 - \abs{z}^2}{2 \pi i (\abs{x}^2 + \abs{y}^2 + \abs{z}^2)} \]
+    and thus we have 
+    \[ \mu^{-1}(0) = \qty{ [x,y,z] \mid 2 \abs{x}^2 + \abs{y}^2 = \abs{z}^2 }. \]
+    Thus we have nontrivial stabilizers, where for example the point $(1, 0, \sqrt{2})$ is fixed by $\Z/3\Z$ and the point $(0,1,1)$ is fixed by $\pm 1$. Therefore the symplectic quotient is an orbifold, and it can be resolved by using a Poisson bracket. To do this, the space $\mu^{-1}(0)/K$ has a stratification given by conjugacy classes of stabilizers such that each stratum is a symplectic manifold.
+\end{rmk}
+
+\section{Yang-Mills functional}%
+\label{sec:yang_mills_functional}
+
+In some sense this is an infinite-dimensional version of what we were doing before. Here, $(M, \omega)$ is a compact K\"ahler manifold and $E \to M$ is a holomorphic vector bundle with a Hermitian metric.
+
+\begin{defn}
+    A \textit{connection} $A$ on $E$ is a map $d_A \colon \Omega^0(E) \to \Omega^1(E)$ satisfying the Leibniz rule:
+    \[ d_A(f s) = f d_A s + \dd{f} \otimes s. \]
+    Note that by extending the Leibniz rule, we can define $d_A \colon \Omega^p \to \Omega^{p+1}$ by
+    \[ d_A(\alpha \wedge \beta) = d_A \alpha \wedge \beta + (-1)^p \alpha \wedge d_A \beta. \]
+\end{defn}
+
+Note that if $A, A'$ are connections, then $d_A(fs) - d_{A'}(fs) = f(d_A s - d_{A'} s)$ and thus we have $d_A - d_A' \in \Omega^1(\End E)$. Also note that $d_A \circ d_A = F_A \in \Omega^2(\End E)$. This is called the \textit{curvature form}. Now if $A$ is a unitary connection, then everything lives in $\Omega^*(\mf{g}_E)$, where $\mf{g} = \mf{u}(n)$. Furthermore, the space of connections is an affine space $\mc{A}$. Now we define the \textit{Yang-Mills functional} to be
+\[ \mr{YM}(A) = \int_M \abs{F_A}^2 \dd{\mr{(vol)}}. \]
+Then the Yang-Mills equation is $d_A(* F_A) = 0$, where $* \colon \Omega^*(\mf{g}) \to \Omega^{2n-*}(\mf{g})$ is the Hodge star. The gauge group is the group $\mc{G} = \Aut(E)$ of unitary automorphisms of $E$, and the corresponding Lie algebra is $\ms{Lie}(\mc{G}) = \Omega^0(\mf{g}_E)$.
+
+Now a complex structure on $E$ gives us an operator $\ol{\partial}_E \colon \Omega^{p,q}(E) \to \Omega^{p,q+1}(E)$ with kernel the holomorphic sections. Then there exists a unique unitary connection $A$ such that $d_A^{(0,1)} = \ol{\partial}_E$. Because $\ol{\partial}_E^2 = 0$, this implies that $F_A \in \Omega^{1,1}(E)$. We have no identified holomorphic structures on $E$ with the space $\mc{A}^{1,1}$ of unitary connections with $(1,1)$ curvature. Finally, there exists a $\mc{G}_{\C}$ action such that holomorphic structures are biholomorphic if and only if they are in the same orbit. Finally, the Hermitian Yang-Mills connections are those that minimize the Y-M functional and those exist if and only if the bundle is slope-stable.
+
+\chapter{Patrick (Dec 04): Everything you need to know about Morena's lectures}%
+\label{cha:patrick_dec_04_}
+
+\textit{Note: These are the speaker's notes.} Throughout this lecture, we work over an algebraically closed field $k$ of characteristic $0$.
+
+\section{Chow Varieties}%
+\label{sec:chow_varieties}
+
+Recall that the \textit{Chow variety} $\mc{C}_{n, r, d}$ parameterizes algebraic cycles of $\P^n$ of dimension $r$ and degree $d$. Denote the dual projective space by $\widehat{\P}^n$. Now points of $\widehat{\P}^n$ are hyperplanes in $\P^n$, and so we define
+\[ \Gamma_X = \qty{ (x, \mu_0, \ldots, \mu_r) \mid x \in \mu_i \text{ for all } i = 0, \ldots, r } \subset X \times {(\widehat{\P}^n)}^{r+1}. \]
+Now projecting $\Gamma_X \to {(\wh{\P}^n)}^{r+1}$, obtain a hypersurface defined by a \textit{Cayley Form} $F_X$. Now the coefficients of $F_X$ give us a point $\mc{C}(X) \in \P^{\nu}$.
+
+Now we will discuss the stability of the Chow point of a nonsingular space curve. There are two key things we need to know:
+\begin{enumerate}
+    \item The Chow form is compatible with specialization.
+    \item How to compute the Chow form of a cycle of linear subspaces.
+\end{enumerate}
+For the second, we will do this explicitly. Let $X_0, \ldots, X_n$ be coordinates on $\P^n$ and $Y_0, \ldots, Y_n$ be coordinates on $\wh{\P}^n$. Now if $L_I$ is the linear subspace defined by $X_i = 0, i \in I$, we can compute
+\begin{align*}
+    \binom{\text{Chow form of}}{\sum a_k L_{I_k}} &= \prod_k \binom{\text{Chow form}}{\text{of }L_{I_k}}^{a_k} \\
+                                                  &= \prod_k \qty(\bigwedge_{i \notin I_k} Y_i)^{a_k} \\
+                                                  &= \prod_k \qty(\det_{\substack{0 \leq j \leq r \\ i \notin I_k}} Y_i^{(j)})^{a_k}.
+\end{align*}
+Then if $\lambda$ is the $1$-PS of $SL(n+1)$ given by diagonal matrices with weights $r_0, \ldots, r_n$, we have
+\[ \mu(\sum_k a_k L_{I_k}, \lambda) = - \sum_k \sum_{i \notin I_k} a_k r_i. \]
+
+Now for a smooth curve $C$ in $\P^n$, we will find the cycle $Z$ that is the specialization of $C$ by $\lambda(\alpha)$ as $\alpha \to 0$. This will typically be a sum of lines and then we can compute $\mu(C, \lambda)$ easily. Assume that the weights of $\lambda$ are $r_0 > \cdots > r_n$. We will assume that $C$ is not contained in any hyperplane. Now recall that points on $(x_i = \cdots = x_n = 0)$ but not on $(x_{i-1} = \cdots = x_{n}=0)$ specialize to $[0, \ldots, 1, \ldots, 0]$, where we have $x_{i-1} = 1$ and $x_j = 0$ for $j \neq i-1$. Thus almost all points of $C$ specialize to $[0, \ldots, 0, 1]$ and therefore the specialization of $C$ is determined by $C \cap (x_n = 0)$.
+
+Now consider the composition $G_m \times C \to SL(n) \times \P^n \xrightarrow{\sigma} \P^n$, which now defines a rational map $\A^1 \times C \dashrightarrow \P^n$ with basepoints $\qty{0} \times (C \cap (x_n = 0))$. Suppose this map is given at the point $p_i \in C \cap (x_n = 0)$ by $(f_0, \ldots, f_n) \eqqcolon \mc{I}_i$ (abusing notation and treating this list as an ideal). Then if $V$ is the normalization of the blowup of $\A^1 \times C$ at the ideals $\mc{I}_i$. Now on $V$, the divisors $\qty{\alpha} \times C$ specialize to the divisor given by the zeroes of the function $\alpha$ on $\A^1$. Thus $Z$ is the image of the union of the proper transform of  $\qty{0} \times C$ an the exceptional divisors $\xi_i$. Because $0 \times C$ is taken to a point, we have $Z = \sum_i F'(\xi_i)$, where $F' \colon C \to \P^n$ is the replacement of the rational map $\A^1 \times C \dashrightarrow \P^n$.
+
+Now we need to describe $F'(\xi_i)$. To do this, we will represent $\iota \colon C \to \P^n$ by a power series. If $t_i$ is a local coordinate at $p_i$, then suppose that $\iota$ is given by
+\[ \iota = (a_{0,i} t_i^{s_{0,i}} + \cdots, \ldots, a_{n,i} t_i^{s_{n,i}} + \cdots). \]
+Now at least one $s_{k,i} = 0$ and thus the rational map is given by
+\[ (a_{k,i} \alpha^{r_k} \cdot (t_i^{s_{k,i}} + \cdots) )_k \]
+where $\alpha$ is the coordiante on $\A^1$.
+
+\begin{lem}
+    Let $V_0$ be a smooth surface and $p \in V_0$. Let $x,y$ are local coordinates and 
+    \[ \mf{U} = (x^{r_0} y^{s_0}, \ldots, x^{r_n} y^{s_n}) \]
+    for integers $r_i, s_i$. Let $V$ be the normalization of the blowup of $V_0$ at $\mf{U}$. If we plot the points $(r_i, s_{i})$ on $\R^2$ and construct the Newton polygon, then there is one exceptional divisor for each edge of the Newton polygon.
+\end{lem}
+
+Now if we compute the Newton polygon of the $(r_k, s_{k,i})$, then the divisors correspond to slopes $a = p/q$ such that for some $e,f$, 
+\begin{equation}
+    (p r_e + q s_{e,i}) = (p r_f + q s_{f,i}) < (p r_k + q s_{k,i}) \qquad k \neq e,f
+\end{equation}
+
+This allows us to compute
+\[ Z = \sum_{i=1}^v \qty{\sum_{\substack{(e,f)}} \abs{s_{e,i} - s_{f,i}} \cdot l_{e,f}} \]
+where $l_{e,f}$ joins the two points $(x_i =0, i \neq e)$ and $(x_j = 0, j \neq f)$. WE are now able to compute
+\[ \mu(C, \lambda) = - \sum_{i=1}^{\nu} \sum_{(e,f)} (s_{e,i} - s_{f,i}) (r_e + r_f). \]
+By combinatorial magic, can be rewritten as 
+\begin{align*}
+    \mu(C, \lambda) &= - \sum_{i=1}^{\nu} \min_{0 = k(1) < \cdots < k(\mu) = n} \sum_{j=2}^{\mu} (s'_{k(j), i} - s'_{k(j-1), i}) (r_{k(j)} + r_{k(j-1)}) \\
+                    &\geq \max_{0 = k(1) < \cdots < k(\mu) = n} - \sum_{j=2}^{\mu} \qty(\sum_{i=1}^{\nu} s'_{k(j), i} - \sum_{i=1}^{\nu} s'_{k(j-1), i} ) (r_{k(j)} + r_{k(j-1)}),
+\end{align*}
+where $s'_{j,i} = \min_{e \geq k} s_{e,i}$. Here is some more magic:
+
+\begin{lem}
+    The number $\mu(C, \lambda) > 0$ if the $e_j = \sum_{i=1}^{\nu} s'_{k(j), i}$ satisfy
+    \begin{enumerate}
+        \item $e_0 = 0, e_n = n+g, e_0 \leq \cdots \leq e_n$;
+        \item $e_i \leq i$ for $i = 0, \ldots, n-g$;
+        \item $e_i \leq i + g$ for $i = n-g+1, \ldots, n$;
+    \end{enumerate}
+    and if $n \geq 2g$ and $g\geq 1$ and $r_0 \geq \cdots \geq r_n$, $\sum r_i = 0$, and not all $r_i = 0$.
+\end{lem}
+
+This then tells us that
+
+\begin{thm}
+    Let $C$ be a smooth curve in $\P^n$. Then $C$ is stable with respect to $PGL(n+1)$ if
+    \begin{enumerate}
+        \item $C$ is not contained in any hyperplane;
+        \item $C \hookrightarrow \P^n$ is defined by a complete linear system;
+        \item $g(C) \geq 1$ and $\deg C \geq 3g$.
+    \end{enumerate}
+\end{thm}
+
+The proof of this result relies on Riemann-Roch and the Weierstrass Gap Theorem (about linear systems associated to points).
+
+\begin{rmk}
+    If $g \geq 1$ and $n = 2,3$, then any smooth curve spanning $\P^n$ is stable. However, there are elliptic curves in $\P^4$ that are unstable.
+\end{rmk}
+
+\section{Construction of $M_g$}%
+\label{sec:connection_to_m_g_}
+
+Recall that Chow points are divisors in $(\wh{\P}^n)^{r+1}$ that come from sections of the sheaf $\bigotimes_i p_i^*(\mc{O}(d))$. Denote the projective space of such divisors by $\mr{Div}_{d, \ldots, d}^n$. 
+
+First we will construct a morphism $\phi \colon \mr{Hilb}_{\P^n}^{P(x)} \to \mr{Div}^n_{d, \ldots, d}$ for any Hilbert polynomial of the form $P(x) = d \frac{x^r}{r!} + O(x^{r-1})$. This morphism will send a subscheme to its Chow point and will be $PGL(n+1)$-equivariant. The construction will define a \textit{functor} from the Hilbert functor to the functor represented by $\mr{Div}$. Essentially, to a flat subscheme $\Z \subset \P^n \times S \to S$ with Hilbert polynomial $P(x)$, we will assign a flat effective Cartier divisor $D \subset (\P^n)^2 \times S \to S$ which induces divisors of degree $(d,d)$ on the fibers over $S$.
+
+Define $H \subseteq \P^n_{x_0, \ldots, x_n} \times \P^n_{y_0, \ldots, y_n}$ be the hypersurface given by the vanishing of the polynomial $x_0 y_0 + x_1 y_1 + \cdots + x_n y_n \in H^0(p_1^*(\mc{O}(1)) \otimes p_2^*(\mc{O}(1)))$. Now consider the variety $\P^n \times \wh{\P}^n \times \wh{\P}^n$ and the morphisms
+\[ p_{12}, p_{13} \colon \P^n \times \wh{\P}^n \times \wh{\P}^n \rightrightarrows \P^n \times \wh{\P}^n. \]
+We will define $\mc{H} \coloneqq p_{12}^*(H) \cap p_{13}(H)$. We now have the following facts:
+\begin{enumerate}
+    \item Points of $\mc{H}$ are triples $(x, h_1, h_2)$, where $x \in h_1, h_2$.
+    \item $p_1 \colon \mc{H} \to \P^n$ is a fiber bundle with fiber $\P^{n-1} \times \P^{n-1}$.
+\end{enumerate}
+Now consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \mc{H} \times S \arrow{dl}{p_1} \arrow{dr}{p_{23}} \\
+    \P^n \times S & & \wh{\P}^n \times \wh{\P}^n \times S.
+\end{tikzcd}
+\end{equation*}
+Now given a closed subscheme $Z \subset \P^n \times S$ flat over $S$, we will compute a Cartier divisor. To do this, let $Z^*$ be the fiber product of the following diagram:
+\begin{equation*}
+\begin{tikzcd}
+    & Z^* \arrow{dl}{p_1} \arrow[hookrightarrow]{dr} \arrow[bend left=30, dashrightarrow]{ddrr}{q} \\
+    Z \arrow[hookrightarrow]{dr} & & \mc{H} \times S \arrow{dl}{p_1} \arrow{dr}{p_{23}} \\
+                                 & \P^n \times S \arrow{dr} & & \wh{\P}^n \times \wh{\P}^n \times S \arrow{dl} \\
+                                 & & S.
+\end{tikzcd}
+\end{equation*}
+Now we write $D = \mr{Div}(q)$, where the Div of a morphism was defined in Section 5.3 of Mumford. Here if $f \colon X \to Y$ is a projective morphism of Noetherian schemes such that
+\begin{enumerate}
+    \item $f$ is of finite Tor-dimension. This means that for all $x \in X$, the ring $\mc{O}_{x,X}$ is a $\mc{O}_{f(x), Y}$-module of finite Tor-dimension, and this dimension is bounded over all $x$;
+    \item $f^{-1}(x)$ is empty if $x$ has depth $0$ and finite if $x$ has depth $1$;
+\end{enumerate}
+then there is a canonical effective Cartier divisor $\mr{Div}(f)$ whose support is contained in $f(X)$.
+
+Therefore, we need to check that
+\begin{enumerate}
+    \item $q$ is of finite Tor-dimension;
+    \item $\mr{Div}(q)$ is a relative divisor over $S$.
+    \item When $S = \Spec \Omega$ for an algebraically closed field $\Omega$, $q$ has empty fibers over points of depth $0$ and finite fibers over points of depth $1$.
+    \item When $S = \Spec \Omega$, the divisor $\mr{Div}(q)$ has degree $(d,d)$.
+\end{enumerate}
+The first item follows from
+\begin{lem}[Fogarty]
+    Let 
+    \begin{equation*}
+    \begin{tikzcd}
+        X \arrow{rr}{f} \arrow{dr}{p} & & Y \arrow{dl}{q} \\
+                                      & S
+    \end{tikzcd}
+    \end{equation*}
+    be morphisms of finite type between Noetherian schemes. Suppose $q$ is a smooth morphism with fibers of dimension $n$ and that $p$ is flat. Then $f$ has Tor-dimension at most $n$.
+\end{lem}
+Proof of this follows from SGA 2, Theorem 4.15. Next, \textbf{2} follows from \textbf{3}. The proof of \textbf{3} and \textbf{4} is apparently the ``classical theory of Chow forms.'' Because $\dim Z = 1$, we know that there exists some set of hyperplanes $h_1, h_2$ such that $h_1 \cap h_2 \cap Z = \emptyset$. Thus $q^{-1}(y)$ is empty when $y$ is the generic point. If $y$ is the generic point of a divisor, then the set of hyperplanes $h_1, h_2$ such that $h_1 \cap h_2 \cap Z = 1$ is the set of closed points on a subset $W \subset \P^n \times \P^n$ of codimension at least $2$, and this is also classical.
+
+Finally, to show that $\mr{Div}(q)$ is of degree $(d,d)$, we will show that it is the Chow form of the cycle of $1$-dimensional components of $Z$.
+\begin{defn}
+    Let $X$ be of finite type of dimension $r$ over $\Spec \Omega$. Let $X_1, \ldots, X_k$ be the components of $X$ and $Z_i$ the underlying set of $X_i$. Write $x_i$ be the generic point of $X_i$ and $\mc{O}_i = \mc{O}_{x_i, X_i}$. This is an Artinian local ring of length $r_i$. Now define
+    \[ [X] = \sum_{\substack{1 \leq i \leq k \\ \dim X_i = r}} r_i \cdot Z_i. \]
+    If $X$ is an effective Cartier divisor, then this construction recovers the corresponding Weil divisor.
+\end{defn}
+
+Now recalling the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \mc{H} \arrow{dl}{p_1} \arrow{dr}{p_{23}} \\
+    \P^n & & \wh{\P}^n \times \wh{\P}^n,
+\end{tikzcd}
+\end{equation*}
+we define the Chow divisor $\mc{C}_Z$ of $Z$ by $\mc{C}_Z = {(p_{23})}_* p_1^* [Z]$. The following lemma will complete the construction of our morphism $\phi$.
+
+\begin{lem}
+    Let $X, Y$ be smooth varieties and $f \colon X \to Y$ be a projective morphism. Let $Z \subset X$ be a closed subscheme such that $\dim Z = \dim Y - 1$. Let $g = \eval{f}_Z$. Then $f_* [Z] = [\mr{Div}(g)]$.
+\end{lem}
+
+The rest of the construction of $M_g$ can be found in Morena's second lecture.
+
+\chapter{Nicol\'as (Dec 11): The moduli space of stable curves}%
+\label{cha:nicol'as_dec_11_the_moduli_space_of_stable_curves}
+
+\section{Introductions}%
+\label{sec:introductions}
+
+Recall the functor $\mc{M}_g(S) = \qty{f \colon C \to S \mid \text{flat, proper, fibers smooth curves of genus $g$}}$. We constructed a coarse moduli space $M_g$, which is a smooth quasiprojective variety contained in some $\P^N \sslash PGL(n+1)$. This allows us to compactify our moduli space in a natural way. We want our compactification to have a geometric meaning, which means some meaning in terms of moduli problems.
+
+\begin{exm}
+    Let us consider the moduli problem $\mc{M}_{0,4}$ of distinct points $(p_1, p_2, p_3, p_4) \in { ( \P^1 ) }^4$ up to projective isomorphism. Then we can embed $M_{0,4} \subset {(\P^1)}^4 \sslash PGL(2)$. Recall that $(P_1, P_2, P_3, P_4)$ are semistable as long as no three points are equal. Thus we can consider the semistable orbits in the GIT quotient as paramerizing tuples with repeated points.
+\end{exm}
+
+\section{Stable Curves}%
+\label{sec:stable_curves}
+
+From here, we will follow the book \textit{Moduli of Curves} by Harris and Morrison.
+
+\begin{defn}
+    A \textit{stable curve} $C$ is a complete connected curve with only finitely many nodal singularities and finitely many automorphisms.
+\end{defn}
+
+Recall that if $\Gamma \subseteq C$ is a component and $g(\Gamma) \geq 2$, then we know $\Aut(\Gamma) \leq 84(g-1)$. When $g(\Gamma) = 1$, then $\Gamma$ has infinitely many automorphisms, but if we choose a marked point, then $\Gamma$ has finitely many automorphisms. When $g(\Gamma) = 0$, we need to fix three points. In the smooth case, this kills all automorphisms.
+
+\begin{thm}[Deligne-Mumford-Knudsen]
+    There exists a coarse moduli space $\ol{M}_g$ of stable curves for $g \geq 2$ that is a projective variety. Here, $g$ is the arithmetic genus of the curve.
+\end{thm}
+
+We may alternative define $g$ as follows. If $C = C_1 \cup C_2 \cup \cdots \cup C_r$ and there are $\delta$ nodes, we can define
+\[ g(C) = \sum_i g(C_i) + \delta - r + 1. \]
+The previous theorem is one of the most important results in the history of the algebraic geometry of curves.\footnote{And in algebraic geometry in general, mathematics in general, and life.} By the valuative criterion of properness, we can fill in families of curves with missing fibers.
+
+\begin{prop}[HM, Prop 3.49]
+    Let $B$ be a smooth curve and fix $0 \in B$. Let $\mc{X} \to B^* = B \setminus 0$ be a family of stable curves. Then there exists $B' \to B$ totally ramified at $0$ and a family $\mc{X}' \to B'$ which extends $\mc{X} \times_{B} B^*$ such that all fibers are stable curves. If two such coverings exist, they are dominated by a third, so the central fiber is unique.
+\end{prop}
+
+\begin{rmk}
+    A reason this theory is well-known is because the theory of surfaces is well-understood. If we want to perform analogous constructions for the moduli of surfaces, we need to understand the minimal model program for threefolds.
+\end{rmk}
+
+\section{Some Examples}%
+\label{sec:some_examples}
+
+In our setup, we may have some non-allowed singularities. Alternatively, we may have multiple fibers. In the first scenario, we can resolve the problem by blowing up. If we have multiple fibers, we need to remove the multiplicity by taking a base change. There is an explicit algorithm for this, described in [HM, p.124--126].
+
+\begin{enumerate}
+    \item Begin with $X \to B$, and let $D = \sum a_i D_i$ be the fiber at $0$.
+    \item Fix some prime $m$ such that $m \mid a_i$ for some $i$.
+    \item Let $B' \to B$ be locally given by $t \mapsto t^m$ and consider the fiber product $X \times_B B'$. Take the normalization $X' \to X \times_B B'$.
+    \item The map $X' \to X$ ramifies $D_{\equiv M} = \sum \ol{a}_i D_i$, where $\ol{a}_i \equiv a_i \mod m$ with $0 \leq \ol{a_i} < m$. The new fiber can be computed as follows:
+        \begin{itemize}
+            \item Take the preimage of $D$.
+            \item Multiply by $m$ all components contained in the branch locus.
+            \item Divide all components by $m$.
+        \end{itemize}
+\end{enumerate}
+
+\begin{exm}
+    Consider a family of curves $\mc{X} \to \A^1$ with smooth fibers for $t \neq 0$ but a triple point over $0$. Define $\mc{X} \subset \A^1 \times \P^2$ by the equation (locally)
+    \[ \mc{X} = \qty{(t,x,y) \mid x^3 + y^3 + g(x,y) + t = 0} \]
+    where $g$ vanishes to degree at least $4$ at $(0,0)$. Let $C$ be the singular fiber over $0$. We now blow up at the singular point, and the new fiber is $D = \wt{C} + 3E$. To remove the multiplicity, we choose $m = 3$. Then $X' \to X$ is ramified over $\wt{C}$ and the fiber of $E$ is a generically $3$ to $1$ cover $E'$ of $E$ ramified at the intersection points with $\wt{C}$. By Riemann-Hurwitz, we have
+    \[ 2g(E') - 2 = 3(2g(E)-2) + 3 \cdot 2 = 0 \]
+    and thus $g(E') = 1$. Finally, we see that the fiber is $\frac{1}{3} (3 \wt{C} + 3E') = \wt{C} + E'$.
+\end{exm}
+
+\begin{rmk}
+    There are not many curves with automorphisms of order $3$, and so we have $j(E') = 0$. This uniquely determines $E'$.
+\end{rmk}
+
+\begin{exm}
+    Let $Q$ be a smooth conic and $F$ a general smooth quartic. Consider the family $\qty{Q^2 + tF}$. When $t \neq 0$, this is a generic quartic, but when $t = 0$, the fiber is a double conic. Assume that $Q \cap F$ has $8$ points (so all intersections are transverse). Then the total space $\mc{X}$ is not smooth because around each intersection, we have an intersection that is locally $x^2 + ty$, which is an $A_1$ singularity. 
+
+    Now we have the fiber $2Q$ over $0$ with $8$ marked points. We blow up each of the $A_1$ singularities and obtain the new fiber $2Q + E_1 + \cdots + E_8$ (here, each $E_i$ is a $(-2)$-curve). Now choose $m = 2$ and follow the procedure, and we obtain a new family $\mc{X}' \to B'$ ramified at $E_1 + \cdots + E_8$. Now the fiber above $Q$ is a $2:1$ cover $\wt{Q}$ with $8$ ramification points. By Riemann-Hurwitz, we compute $g(\wt{Q}) = 3$. The new fiber is $\wt{Q} + E_1 + \cdots + E_8$. Then the $E_i$ are now $(-1)$-curves because $0 = E_i \cdot (\wt{Q} + E_1 + \cdots + E_8) = 1 + E_i^2$, so we can contract them to resolve the instability of the $E_i$ by Castelnuovo's criterion. Once we contract the $E_i$, the new fiber is $\wt{Q}$.
+
+    Thus the central fiber of the family is a genus $3$ hyperelliptic curve ramified over the intersection points $Q \cap F$.
+\end{exm}
+
+\begin{rmk}
+    We know that a generic quartic curve has $28$ bitangents. Under the limit $t \to 0$, the lines become the $28$ lines joining two points in $Q \cap F$.
+\end{rmk}
 
 
 
