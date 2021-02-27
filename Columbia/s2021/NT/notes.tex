@@ -160,10 +160,14 @@
 \DeclareMathOperator{\idim}{inj.dim}
 \DeclareMathOperator{\gdim}{gl.dim}
 \DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Pic}{Pic}
 \DeclareMathOperator{\Mod}{\mathsf{Mod}}
 \DeclareMathOperator{\Ind}{Ind}
 \DeclareMathOperator{\Inf}{Inf}
 \DeclareMathOperator{\Cor}{Cor}
+\DeclareMathOperator{\Nm}{Nm}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Frob}{Frob}
 
 % Section formatting
 \titleformat{\section}
@@ -1169,6 +1173,9 @@ Note that homogeneous $r$-cocycles $\varphi \colon G^{r+1} \to M$ are determined
     There is an explicit cochain description for $H^r(G, M)$, but computing using this definition is extremely tedious. Instead, we will try to break $G$ and $M$ into smaller pieces and then piece them back together.
 \end{rmk}
 
+\section{Change of Groups}%
+\label{sec:change_of_groups}
+
 \begin{defn}
     Let $H \subseteq G$ be a subgroup and let $M \in \Mod_H$. Define the \textit{induced module}
     \[ \Ind_H^G M \coloneqq \Hom_{\Z[H]} (\Z[G], M) = \qty{\varphi \colon G \to M \mid \varphi(hg) = h \varphi(g)} \]
@@ -1358,8 +1365,463 @@ Then we see that $M_G = M/I_G M = M \otimes_{\Z[G]} \Z[G]/I_G = M \otimes_{\Z[G]
 \begin{defn}
     Define the \textit{group homology} by 
     \[ H_r(G, M) \coloneqq \Tor_r^{\Z[G]} (\Z, M) \]
-    to be the left derived functor of $M \mapsto M_G$.
+    to be the left derived functor $\Tor_r^{\Z[G]}(\Z, M)$ of $M \mapsto M_G$.
 \end{defn}
+
+\begin{rmks}
+    Group homology is characterized by
+    \begin{enumerate}
+        \item $H_0(G, M) = M_G$;
+        \item A short exact sequence $0 \to A \to B \to C \to 0$ in $\Mod_G$ gives a long exact sequence
+            \begin{equation*}
+            \begin{tikzcd}
+                \cdots \arrow{r} & H_r(G, A) \ar{r} & H_r(G, B) \ar{r} & H_r(G, C) \ar[out=-20,in=160]{dll} \\
+                                 & H^{r-1}(G,A) \ar{r} & H^{r-1}(G,B) \ar{r} & H^{r-1}(C,G) \ar{r} & \cdots
+            \end{tikzcd}
+            \end{equation*}
+        \item If $P \in \Mod_G$ is projective, then $H_r(G, P) = 0$ for all $r \geq 1$.
+    \end{enumerate}
+\end{rmks}
+
+\begin{rmk}
+    Let $P_{\bullet} \to M$ be a projective resolution. Then $H_r(G, M) = H^r({(P_{\bullet})}_G)$.
+\end{rmk}
+
+\begin{prop}
+    For any $G$, we have $H_1(G, \Z) \simeq G^{\mr{ab}} = G/[G,G]$.
+\end{prop}
+
+\begin{proof}
+    Consider the short exact sequence 
+    \[ 0 \to I_G \to \Z[G] \xrightarrow{\ep} \to \Z \to 0. \]
+    This gives a long exact sequence 
+    \[ H_1(G, \Z[G]) \to H_1(G, \Z) \to H_0(G, I_G) \to H_0(G, \Z[G]) \to H_0(G, \Z) \to 0. \]
+    This becomes
+    \[ 0 \to H_1(G, \Z) \to I_G / I_G^2 \to \Z \xrightarrow{\sim} \Z \to 0. \]
+    But this tells us that $H_1(G, \Z) \simeq I_G / I_G^2$. Now define the map
+    \[ G \to I_G / I_G^2 \qquad g \mapsto g-1. \]
+    By the identity
+    \[ g_1 g_2 - 1 = (g_1 - 1) + (g_2 - 1) + (g_1 - 1)(g_2 - 1), \]
+    we see that this is a group homomorphism. Because $I_G/I_G^2$ is abelian, the group homomorphism factors through $G^{\mr{ab}} \to I_G / I_G^2$. One can easily check that have an inverse $I_G / I_G^2 \to G^{\mr{ab}}$ given by $g-1 \mapsto g$.
+\end{proof}
+
+\begin{rmk}
+    This gives a homological interpretation of ${\Gal(L/K)}^{\mr{ab}}$ as $H_1(\Gal(L/K), \Z)$.
+\end{rmk}
+
+\begin{rmk}
+    This is analogous to the topological fact that if $X$ is path-connected, then $H_1(X, \Z) = {\pi_1(X)}^{\mr{ab}}$. In fact, for any group $G$, we can define a space $BG = K(G, 1)$ such that $\pi_1(BG) = G$ and $\pi_i(BG) = 0$ for $i \neq 1$. We have $H_r(BG, \Z) = H_r(G, \Z)$, where the LHS is singular homology and the RHS is group homology. If we choose $r = 1$, we recover $H_1(G, \Z) = G^{\mr{ab}}$.
+\end{rmk}
+
+\begin{exm}\leavevmode
+    \begin{enumerate}
+        \item If $G = \Z$, then we have $B\Z = \R / \Z = S^1$. 
+        \item If $G = \underbrace{\Z * \Z * \cdots * \Z}_n$, then $BG = \underbrace{S^1 \vee \cdots \vee S^1}_n$.
+    \end{enumerate}
+\end{exm}
+
+\section{Tate Cohomology}%
+\label{sec:tate_cohomology}
+
+The idea is that for a finite group $G$, we will patch both group cohomology and group homology into a single theory.
+
+\begin{defn}
+    Let $G$ be a finite group and $M \in \Mod_G$. Define the \textit{norm map} 
+    \[ \Nm_G \colon M \to M \qquad m \mapsto \sum_{g \in G} gm. \]
+\end{defn}
+
+By definition, the image of the norm map lies in the invariants and $\Nm_G (gm - m) = 0$, so the kernel always contains $I_G M$. This gives us a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    M \ar{r}{\Nm_G} \ar[twoheadrightarrow]{d} & M \\
+    M_G \ar{r}{\Nm_G} & M^G \ar[hookrightarrow]{u}
+\end{tikzcd}
+\end{equation*}
+and an exact sequence
+\[ 0 \to \frac{\ker \Nm_G}{I_G} \to M_G \xrightarrow{\Nm_G} M^G \to \frac{M^G}{\Im \Nm_G} \to 0. \]
+In particular, this gives us
+\[ 0 \to \wh{H}^{-1}(G, M) \to H_0(G, M) \to H^0(G, M) \to \wh{H}^0(G, M) \to 0, \]
+where $\wh{H}$ just means a modified version of cohomology.
+
+\begin{defn}
+    For $r \in \Z$, define the \textit{Tate cohomology groups}
+    \[ \wh{H}^r(G, M) \coloneqq \begin{cases}
+        H^r(G, M) & r \geq 1 \\
+        \frac{M^G}{\Im \Nm_G} & r = 0 \\
+        \frac{\ker \Nm_G}{I_G M} & r = -1 \\
+        H_{-(r+1)}(G, M) & r \leq -2.
+    \end{cases} \]
+\end{defn}
+
+\begin{exm}
+    Given a short exact sequence
+    \[ 0 \to A \to B \to C \to 0 \]
+    in $\Mod_G$, we obtain a long exact sequence
+    \begin{equation*}
+    \begin{tikzcd}
+        \cdots \ar{r} & H_1(G, C) \ar{d} \ar{r} & H_0(G, A) \ar{r} \ar{d}{\Nm_G} & H_0(G, B) \ar{r} \ar{d}{\Nm_G} & H_0(G, C) \ar{r} \ar{d}{\Nm_G} & 0 \ar{d} \\
+                      & 0 \ar{r} & H^0(G, A) \ar{r} & H^0(G, B) \ar{r} & H^0(G, C) \ar{r} & H^1(G, A) \ar{r} & \cdots
+    \end{tikzcd}
+    \end{equation*}
+    and by the snake lemma, these can be patched to form a very long exact sequence
+    \[ \cdots \to \wh{H}^{-1}(G, C) \to \wh{H}^{-1}(G, A) \to \wh{H}^{-1}(G, B) \to \wh{H}^{-1}(G, C) \to \wh{H}^0(G, A) \to \cdots \]
+\end{exm}
+
+\begin{rmk}\leavevmode
+    \begin{enumerate}
+        \item If $M \in \Mod_G$ is induced, then $\wh{H}^r(G, M) = 0$ for all $r \in \Z$.
+        \item The dimension shift argument works for $\wh{H}^r$ in both directions. If $M \hookrightarrow \Ind_1^G M$, then $\wh{H}^r(M^1) = \wh{H}^{r+1}(M)$, where $M^1$ is the cokernel. Similarly, if $\Ind_1^G M \twoheadrightarrow M$, then $\wh{H}^r(M) = \wh{H}^{r+1}(M^1)$, where $M^1$ is the kernel.
+        \item Shapiro's lemma still holds for $\wh{H}^r$.
+        \item The property that $\Cor_H^G \circ \Res_H^G$ is multiplication by $[G:H]$ holds for $\wh{H}^r$.
+    \end{enumerate}
+\end{rmk}
+
+\begin{rmk}
+    Take $P_{\bullet} \to \Z$ to be a free resolution in $\Mod_G$. Taking the dual $M \mapsto M^* = \Hom_{\Z}(M, \Z)$ where $(g \varphi)(m) = \varphi(g^{-1}m)$. This gives a resolution $\Z \to P^{\bullet}$. If we take $P_{-n} \coloneqq P_{n-1}^*$, we obtain
+    \[ \cdots \to P_2 \to P_1 \to P_1 \to P_{-1} = P_0^* \to P_{-2} \to \cdots \]
+    Then we can compute $\wh{H}^r(G, M) = H^r(\Hom_G({(P_{\bullet})}, M))$.
+\end{rmk}
+
+Now we will compute Tate cohomology explicitly for finite cyclic groups $G = \ev{\sigma}$. We can very explicitly write down the norm map, invariants, and coinvariants:
+\begin{align*}
+    \Nm_G(m) &= \sum_{g \in G} g m = (1 + \sigma + \sigma^2 + \cdots + \sigma^{n-1}) m \\
+    M^G &= M^{\sigma = 1} = \ker (\sigma - 1) \\
+    I_G M &= \Im (\sigma - 1) \\
+    M_G &= \coker (\sigma - 1).
+\end{align*}
+This implies that 
+\begin{align*}
+    \wh{H}^0(G, M) &= \frac{M^G}{\Im (\Nm_G)} = \frac{\ker (\sigma - 1)}{\Im (1 + \sigma + \cdots + \sigma^{n-1})} \\
+    \wh{H}^{-1}(G, M) &= \frac{\ker (\Nm_G)}{I_G M} = \frac{\ker (1+ \sigma + \cdots + \sigma^{n-1})}{\Im (\sigma - 1)}.
+\end{align*}
+
+\begin{rmk}
+    All remaining $\wh{H}^r(G, M)$ are determined by $\wh{H}^0, \wh{H}^{-1}$.
+\end{rmk}
+
+\begin{thm}[Period $2$]
+    Let $G = \ev{\sigma}$. Then we have isomorphisms $\wh{H}^r(G, M) \simeq \wh{H}^{r+2}(G, M)$.
+\end{thm}
+
+\begin{proof}
+    Note that we have a free resolution of $\Z$ in $\Mod_G$ given by
+    \[ \cdots \to \Z[G] \xrightarrow{\sigma - 1} \Z[G] \xrightarrow{1 + \sigma + \cdots + \sigma^{n-1}} \Z[G] \xrightarrow{\sigma - 1} \Z[G] \xrightarrow{\ep} \Z. \]
+    This computes the Tate cohomology and has period $2$, so the Tate cohomology also must have period $2$.
+\end{proof}
+
+\begin{defn}
+    Define the \textit{Herbrand quotient} 
+    \[ h(M) \coloneqq \frac{\abs{\wh{H}^0(G, M)}}{\abs{\wh{H}^1(G, M)}} \]
+    if both $\wh{H}^0, \wh{H}^1$ are finite.
+\end{defn}
+
+\begin{prop}
+    If $0 \to A \to B \to C \to 0$ is an exact sequence, then $h(B) = h(A) \cdot h(C)$.
+\end{prop}
+
+\begin{proof}
+    Consider the long exact sequence
+    \[ 0 \to K \to \wh{H^0}(G, A) \to \wh{H}^0(G, B) \to \wh{H}^-(G, C) \to \wh{H}^1(G, A) \to \wh{H}^1(G, B) \to \wh{H}^1(G, C) \to Q \to 0. \]
+    This implies that 
+    \[ \abs{K} \cdot \abs{\wh{H}^0(A)}^{-1} \cdot \abs{\wh{H}^0(B)} \cdot \abs{\wh{H}^0(C)}^{-1} \cdot \abs{\wh{H}^1(A)} \cdot \abs{\wh{H}^1(B)}^{-1} \cdot \abs{\wh{H}^1(C)} \cdot \abs{Q}^{-1} = 1. \]
+    From this, we obtain
+    \[ \frac{h(B)}{h(A)h(C)} = \frac{\abs{Q}}{\abs{K}}, \]
+    so it suffices to show that $\abs{Q} = \abs{K}$. But here, we see that
+    \[ Q = \coker (\wh{H}^1(B) \to \wh{H}^1(C)) = \coker (\wh{H}^{-1}(B) \to \wh{H}^{-1}(C)) = K \]
+    because Tate cohomology has period $2$.
+\end{proof}
+
+\begin{prop}
+    If $M$ is finite, then $h(M) = 1$.
+\end{prop}
+
+\begin{proof}
+    Note that we have the exact sequence
+    \[ 0 \to M^G \to M \xrightarrow{\sigma - 1} M \to M_G \to 0. \]
+    This tells us that $\abs{M^G} = \abs{M_G}$. Next, we note that
+    \[ 0 \to \wh{H}^{-1}(G, M) \to M_G \xrightarrow{\Nm_G} M^G \to \wh{H}^0(G, M) \to 0 \]
+    is exact, so $\abs{\wh{H}^{-1}(G, M)} = \abs{\wh{H}^0(G, M)}$.
+\end{proof}
+
+\begin{cor}
+    If $\alpha \colon M \to N$ has finite kernel and cokernel, then $h(M) = h(N)$.
+\end{cor}
+
+\begin{proof}
+    Consider the exact sequence
+    \[ 0 \to \ker \alpha \to M \to N \to \coker \alpha \to 0. \]
+    This tells us that 
+    \[ h(\ker \alpha) \cdot { h(M) }^{-1} \cdot h(N) \cdot { h(\coker \alpha) }^{-1} = 1. \]
+    Because $\alpha$ has finite kernel and cokernel, $h(\ker \alpha) = h(\coker \alpha) = 1$, so $h(M) = h(N)$.
+\end{proof}
+
+Now we want to compute Tate cohomology for more general $G$.
+
+\begin{thm}
+    Let $G$ be a finite group. If for any subgroup $H \subseteq G$ we have $H^1(H, M) = H^2(H, M) = 0$, then $\wh{H}^r(G, M) = 0$ for all $r \in \Z$.
+\end{thm}
+
+\begin{proof}
+    If $G$ is cyclic, then it follows from the period $2$ isomorphism. In the general case, if $G$ is solvable, we can induct on $\abs{G}$. If $H \triangleleft G$ is normal such that $G/H$ is cyclic. By the induction hypothesis, we know $\wh{H}^r(H, M) = 0$ for all $r \in \Z$. Applying inflation-restriction, we have an exact sequence
+    \[ 0 \to H^r(G/H, M^H) \to H^r(G, M) \to H^r(H, M). \]
+    By assumption, $H^r(G, M) = 0$ for $r = 1,2$. By exactness, we know $H^r(G/H, M^H) = 0$ for $r = 1,2$, so $\wh{H}^r(G/H, M^H) = 0$ for all $r \in \Z$ because $G/H$ is cyclic. By exactness and the inductive hypothesis, we know $\wh{H}^r(G, M) = 0$ for all $r \geq 1$. But now the hypotheses are invariant under dimension shift, so we obtain the desired result.
+
+    Finally, if $G$ is an arbitrary finite group, reduce to the solvable case. If we consider the Sylow subgroups $G_p \subseteq G$, we know $G_p$ is solvable. Therefore $\wh{H}^r(G_p, M) = 0$ for all $r \in \Z$. By an exercise from the homework, we see $\wh{H}^r(G, M) = 0$ for all $r \in \Z$.
+\end{proof}
+
+Unfortunately, $H^2$ generally does not vanish, but we can still gain insight about the behavior of Tate cohomology in this case.
+
+\begin{thm}[Tate]
+    Let $G$ be a finite group. If for any subgroup $H \subseteq G$ we have
+    \begin{enumerate}
+        \item $H^1(H, M) = 0$;
+        \item $H^2(H, M) = \Z/\abs{H} \Z$,
+    \end{enumerate}
+    then $\wh{H}^r(G, \Z) \simeq \wh{H}^{r+2}(G, M)$ for all $r \in \Z$.
+\end{thm}
+
+\begin{exm}
+    We will apply Tate's theorem to construct the local Artin map. Let $G = \Gal(L/K)$ and $M = L^{\times}$ and set $r = -2$. Then both conditions of the theorem are satisfied, and so 
+    \[ {\Gal(L/K)}^{\mr{ab}} = H_1(G, \Z) = \wh{H}^{-1}(G, \Z) \simeq \wh{H}^0(G, M) = M^G / \Im (Nm_G) = K^{\times} / N_{L/K}(L^{\times}). \]
+    Now we have defined the inverse of the local Artin map!
+\end{exm}
+
+\begin{rmk}
+    Chao says that Tate was very brave to go from the object $\wh{H}^0(G, M)$ that we want to understand to an object that did not exist at the time!
+\end{rmk}
+
+Before we prove Tate's theorem, we will give an explicit description of $H^2(G, M)$. Recall that
+\[ Z^2(G, M) = \qty{\varphi \colon G^2 \to M \mid g_1 \varphi(g_2, g_3) - \varphi(g_1g_2, g_3) + \varphi(g_1, g_2g_3) - \varphi(g_1, g_2) = 0}. \]
+We also know that
+\[ B^2(G, M) = \qty{\varphi \colon G^2 \to M \mid \varphi(g_1, g_2) = g_1 \psi(g_2) - \psi(g_1g_2) + \psi(g_1), \psi \colon G \to M}. \]
+\begin{prop}
+    The cohomology group $H^2(G, M) = \frac{Z^2(G, M)}{B^2(G, M)}$ parameterizes extensions 
+    \[ 0 \to M \to E \to G \to 0 \]
+    such that the conjugation action of $E/M \cong G$ on $M$ agrees with the $G$-module structure. Moreover, $0 \in H^2(G, M)$ corresponds to the split extension.
+\end{prop}
+
+\begin{proof}
+    Given such an extension, choose a splitting of $E = G \times M$ as \textbf{sets}. This gives us a section $s \colon E \to G$ Then for all $g_1, g_2 \in G$, we have $s(g_1) \cdot s(g_2) = \varphi(g_1,g_2) s(g_1g_2)$ for some $\varphi \colon G^2 \to M$.
+
+    We check that $\varphi$ is actually a cocycle. To see this, note that
+    \[ (s(g_1) s(g_2))s(g_3) = s(g_1) (s(g_2) s(g_3)) \]
+    by associativity, which gives us
+    \[ ( \varphi(g_1,g_2) + \varphi(g_1g_2, g_3) ) s(g_1g_2g_3) = (g_1 \varphi(g_2,g_3) + \varphi(g_1,g_2g_3)) s(g_1g_2g_3), \]
+    and therefore $\varphi$ is a cocycle. We can check that any $\varphi$ gives such an extension together with a section $s$ and that different choices of the section $s$ give coboundary relations.
+\end{proof}
+
+\begin{defn}
+    For any $\varphi \in Z^2(G, M)$, define its \textit{splitting module} to be
+    \[ M(\varphi) \coloneqq M \oplus \qty(\bigoplus_{g \neq 1} \Z X_g) \]
+    with the action of $G$ given by
+    \[ g_1 \cdot X_{g_2} \coloneqq X_{g_1g_2} - X_{g_1} + \varphi(g_1,g_2) \]
+    for any choice of $g_1, g_2 \in G$. By convention, we write $X_1 \coloneqq \varphi(1,1) \in M$.
+\end{defn}
+
+\begin{rmk}
+    By construction, we have an exact sequence
+    \[ 0 \to M \to M(\varphi) \to I_G \to 0, \]
+    where $X_g \mapsto g-1$.
+\end{rmk}
+
+\begin{lem}
+    The image of $\varphi$ under $H^2(G, M) \to H^2(G, M(\varphi))$ is $0$.
+\end{lem}
+
+\begin{proof}
+    Note that $\varphi(g_1,g_2) = g_1 X_{g_2} - X_{g_1g_2} + X_{g_1}$ is the coboundary of $g \mapsto X_g$.
+\end{proof}
+
+\begin{rmk}
+    The extension $E'$ associated to $\varphi$
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & M \ar{r} \ar{d} & E \ar{r} \ar{d} & G \ar{r} \ar[equals]{d} & 0 \\
+        0 \ar{r} & M(\varphi) \ar{r} & E' \ar{r} & G \ar{r} & 0
+    \end{tikzcd}
+    \end{equation*}
+    of $M(\varphi)$ is a split extension.
+\end{rmk}
+
+\begin{proof}[Proof of Tate's theorem]
+    There are two steps to the proof.
+    \begin{enumerate}
+        \item We know that $H^2(G, M) = \Z/\abs{G}\Z = \ev{\varphi}$ with splitting module $M(\varphi)$. We also know that $H^1(H, M) = 0$. We will show that $H^1(H, M(\varphi)) = 0$ and $H^2(H, M(\varphi)) = 0$. Consider the short exact sequence
+            \[ 0 \to M \to M(\varphi) \to I_G \to 0. \]
+            This gives a long exact sequence
+            \[ H^1(H, M) \to H^1(H, M(\varphi)) \to H^1(H, I_G) \to H^2(H, M) \to H^2(H, M(\varphi)) \to H^2(H, I_G). \]
+            However, we know that $H^1(H_1, M) = 0, H^1(H, I_G) = \Z/\abs{H} \Z$, and $H^2(H, I_G) = 0$. We also know that $H^2(H, M) \to H^2(H, M(\varphi))$ is the zero map (the restriction of $\varphi$ to $H^2(H, M)$ is a generator), so the map $H^1(H, I_G) \to H^2(H, M)$ must be an isomorphism and therefore $H^1(H, M(\varphi)) = H^2(H, M(\varphi)) = 0$.
+        \item Now we know that all Tate cohomology $\wh{H}^r(G, M(\varphi)) = 0$ for all $r \in \Z$. Now we use the four term exact sequence
+            \[ 0 \to M \to M(\varphi) \to \Z[G] \xrightarrow{\ep} \Z \to 0. \]
+            Because $\wh{H}^r(G, M(\varphi)) = 0$ and $\wh{H}^r(G, \Z[G]) = 0$ for all $r \in \Z$, By dimension shift, we have $\wh{H}^r(G, \Z) \cong \wh{H}^{r+2}(G, M)$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{rmk}
+    There is an alternative description of $\wh{H}^r(G, \Z) \simeq \wh{H}^{r+2}(G, M)$ as a cup product with some generator $\varphi \in H^2(G, M)$. Here, if $M, N \in \Mod_G$, we can consider the tensor product $M \otimes N$ as a $G$-module with the action $g(m \otimes n) = gm \otimes gn$.
+
+    Now a \textit{cup product} is a family of $\Z$-bilinear maps 
+    \[ H^r(G, M) \otimes H^s(G, N) \to H^{r+s}(G, M \otimes N) \]
+    given by the following properties:
+    \begin{enumerate}
+        \item The cup product is functorial in both $M, N$.
+        \item For $r = s = 0$, it is given by the natural map $M^G \otimes N^G \to {(M \otimes N)}^G$.
+        \item If $0 \to M' \to M \to M'' \to 0$ is a short exact sequence such that
+            \[ 0 \to M' \otimes N \to M \otimes N \to M'' \otimes N \to 0 \]
+            is also exact, then for all $m'' \in H^r(G, M'')$ and $n \in H^s(G, N)$, we have $\delta m'' \cup n = \delta (m'' \cup n) \in H^{r+s+1}(G, M' \otimes N)$.
+        \item If $0 \to N' \to N \to N'' \to 0$ is a short exact sequence such that
+            \[ 0 \to M \otimes N' \to M \otimes N \to M \otimes N'' \to 0 \]
+            is also exact, then for all $m \in H^r(G, M), n'' \in H^s(G, N'')$, we have $m \cup \delta n'' = {(-1)}^r \delta(m \cup n'')$.
+    \end{enumerate}
+    The cup product exists and is unique. Given cocycles $\varphi, \psi$, we write
+    \[ (\varphi \cup \psi) (g_1, \ldots, g_{r+s}) = \varphi(g_1, \ldots, g_r) \otimes g_1 \cdots g_r \psi(g_{r+1}, \ldots, g_{r+s}) \]
+    and this is unique by dimension shift. If $G$ is finite, then the cup product extends to Tate cohomology.
+\end{rmk}
+
+\chapter{Local Class Field Theory}%
+\label{cha:local_class_field_theory}
+
+Now our goal is to understand $H^i(\Gal(L/K), L^{\times})$ for $i = 1,2$. This will allow us to construct the local Artin reciprocity map.
+
+\section{Vanishing of first cohomology}%
+\label{sec:vanishing_of_first_cohomology}
+
+This result was proved by Hilbert in 1894 Zahlbericht for cyclic extensions and then by Noether for general extensions.
+
+\begin{thm}[Hilbert Theorem 90]
+    Let $L/K$ be a finite Galois extension of fields. Then
+    \[ H^1(\Gal(L/K), L^{\times}) = 0. \]
+\end{thm}
+
+\begin{rmk}
+    Note that this applies to extensions of arbitrary fields, not just local fields.
+\end{rmk}
+
+\begin{proof}
+    Choose $\varphi \in Z^1 (\Gal(L/K), L^{\times})$. We want $\varphi(g) = \frac{gm}{m}$ for some $m \in L^{\times}$. For any $a \in L^{\times}$, construct
+    \[ m \coloneqq \sum_{g \in \Gal(L/K)} \varphi(g) \cdot ga. \]
+    Because $g \colon L^{\times} \to L^{\times}$ are distinct characters of $L^{\times}$ for $g \in G \coloneqq \Gal(L/K)$, we know that they are $L$-linearly independent, so the map
+    \[ \sum_{g \in G} \varphi(g) \cdot g \]
+    is not the zero map and thus there exists $a \in L^{\times}$ such that $m \neq 0$. But now we compute
+    \begin{align*} 
+        gm &= g \sum_{h \in G} \varphi(h) \cdot ha \\
+           &= \sum_{h \in G} g \varphi(h) \cdot gha \\
+           &= \sum_{h \in G} \frac{\varphi(gh)}{\varphi(g)} \cdot gha \\ 
+           &= \frac{1}{\varphi(g)} \sum_{h \in G} \varphi(gh) \cdot gha \\
+           &= \frac{1}{\varphi(g)} \sum_{h \in G} \varphi(h) \cdot ha \\
+           &= \frac{m}{\varphi(g)},
+    \end{align*}
+    and thus $\varphi(g) = \frac{n}{gm} = \frac{gm^{-1}}{m^{-1}}$, so $\varphi \in B^1(G, L^{\times})$.
+\end{proof}
+
+\begin{exm}
+    In the case where $L/K$ is a cyclic extension and $G = \ev{\sigma}$, then $\wh{H}^{-1}(G, L^{\times}) = H^1(G, L^{\times}) = 0$, and thus $\ker \Nm_G = \Im (\sigma - 1)$, which means that if $a \in L^{\times}$ satisfies $\Nm_{L/K}(a) = 1$, then $a = \frac{\sigma b}{b}$ for some $b \in L^{\times}$.
+\end{exm}
+
+\begin{exm}
+    Let $L/K = \Q(i)/\Q$ be the simplest quadratic extension. Let $a = x+iy \in L^{\times}$ with $x,y = \Q$. Then we know $\Nm_{L/K}(a) = x^2 + y^2$. If $b = m + in \in L^{\times}$ for $m,n \in \Q$, we see that
+    \[ \frac{\sigma b}{b} = \frac{m-in}{m+in} = \frac{m^2-n^2}{m^2+n^2} + \frac{2mn}{m^2+n^2} \cdot i. \]
+    By Hilbert 90, if $x^2 + y^2 = 1$, then there exist $m,n \in \Z$ such that 
+    \[ x = \frac{m^2 - n^2}{m^2 + n^2} \qquad y = \frac{2mn}{m^2 + n^2}. \]
+    In particular, this tells us how to classify all Pythagorean triples.
+\end{exm}
+
+\begin{rmk}
+    We may also consider infinite Galois extensions $L/K$, for example $L = K^{\mr{sep}}, K^{\mr{ab}}$. Then we know
+    \[ \Gal(L/K) = \varprojlim_{\substack{L' \subseteq L \\ \text{$L'/K$ finite Galois}}} \Gal(L'/K). \]
+    This allows us to define \textit{continuous Galois cohomology}
+    \[ H^r_{\mr{cts}}(\Gal(L/K), L^{\times}) \coloneqq \varinjlim_{L'} H^r(\Gal(L'/K), {(L')}^{\times}). \]
+    The $H^r_{\mr{cts}}$ can be computed using continuous cochains.
+\end{rmk}
+
+\begin{rmk}
+    More generally, if $G = \varprojlim_{H} G/H$ is a profinite group and $M$ is a \textbf{discrete} $G$-module (which means $G \times M \to M$ is continuous with respect to the profinite topology on $G$ and the discrete topology on $M$), we may consider the continuous group cohomology
+    \[ H^r_{\mr{cts}}(G, M) \coloneqq \varinjlim_H H^r(G/H, M^H), \]
+    where the maps in the directed system are inflation.
+\end{rmk}
+
+\begin{notn}
+    Let $G = \Gal(L/K)$. We will simply write 
+    \[ H^r(L/K, M) \coloneqq H^r_{\mr{cts}}(\Gal(L/K), M) \qquad H^r(K, M) \coloneqq H^r_{\mr{cts}}(\Gal(K^{\mr{sep}}/L), M) \]
+    for the continuous Galois cohomology.
+\end{notn}
+
+\begin{exm}
+    Hilbert Theorem 90 implies that $H^1(K, {(K^{\mr{sep}})}^{\times}) = 0$. Equivalently, we have $H^1_{\text{\'et}}(\Spec K, \mathbb{G}_m) \cong \Pic \Spec K = 0$. In other words, all line bundles on a point are trivial.
+\end{exm}
+
+\section{Second Cohomology}%
+\label{sec:second_cohomology}
+
+Let $L/K$ be a finite unramified extension of local fields. Recall that 
+\[ G = \Gal(L/K) \simeq \Gal(\ell / k) = \ev{\Frob_{L/K}}, \] 
+where $\ell/k$ is the extension of residue fields. Our goal is to compute $H^2(L/K, L^{\times}) \cong \Z/n\Z$, where $n = [L:K]$. The idea is to break $L^{\times}$ into pieces, so choose a uniformizer $\pi_L$. Then we have $L^{\times} \cong \mc{O}_L^{\times} \times \pi_L^{\Z}$. Because $L/K$ is unramified, we may choose $\pi_L = \pi_K \in K^{\times}$. Therefore, as a Galois module, we have $L^{\times} \cong \mc{O}_L^{\times} \oplus \Z$.
+
+\begin{defn}
+    Let $U_K = \mc{O}_K^{\times}$. Then write $U_K^{(i)} \coloneqq 1 + \mf{m}_K^i$ for all $i \geq 1$. 
+\end{defn}
+This gives us a natural filtration
+\[ U_K \supseteq U_K^{(i)} \supseteq U_K^{(2)} \supseteq U_K^{(3)} \supseteq \cdots \]
+with short exact sequences
+\[ 1 \to U_K^{(1)} \to U_K \to k^{\times} \to 1 \]
+and similarly
+\[ 1 \to U_K^{(i+1)} \to U_K^{(i)} \to k \to 1 \]
+for $i \geq 1$.
+
+\begin{lem}
+    We have $\wh{H}^r(G, \ell^{\times}) = \wh{H}^r(G, \ell) = 0$ for all $r \in \Z$.
+\end{lem}
+
+\begin{proof}
+    By Hilbert Theorem 90, we know $H^1(G, \ell^{\times}) = 0$. Because $G$ is cyclic and $\ell^{\times}$ is finite, we can understand the Herbrand quotient. Therefore $h(\ell^{\times}) = 1$, so $H^2(G, \ell^{\times}) = 0$. Because $G$ is cyclic, we may apply period $2$ to obtain the desired result.
+
+    Now we consider $\ell$. We know that $\ell$ is actually an induced module by the homework, so all Tate cohomology vanishes by period $2$.
+\end{proof}
+
+\begin{cor}
+    The norm map $\Nm_{\ell/k} \colon \ell^{\times} \to k^{\times}$ and the trace map $\Tr_{\ell/k} \colon \ell \to k$ are surjective.
+\end{cor}
+
+\begin{proof}
+    We know that $\wh{H}^0(G, \ell^{\times}) = \frac{k^{\times}}{\Nm_{\ell/k}(\ell^{\times})} = 0$, so the norm map is surjective. Similarly, we know $\wh{H}^0(G, \ell) = \frac{k}{\Tr_{\ell/k}(\ell)} = 0$, so the trace is surjective.
+\end{proof}
+
+\begin{lem}
+    The norm map $\Nm_{L/K} \colon U_L \to U_K$ is surjective.
+\end{lem}
+
+\begin{proof}
+    Consider the commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        U_L \ar{r}{\Nm} \ar{d} & U_K \ar{d} & U_L^{(i)} \ar{r}{\Nm} \ar{d} & U_K^{(i)} \ar{d} \\
+        \ell^{\times} \ar{r}{\Nm} & k^{\times} & \ell \ar{r}{\Tr} & k.
+    \end{tikzcd}
+    \end{equation*}
+    Given any $a \in U_K$, we want $b \in U_L$ such that $\Nm(b) = a$. Because $\Nm \colon \ell^{\times} \to k^{\times}$, we may find $b_0 \in U_L$ such that $\Nm(b_0) \equiv a \pmod {\pi_K}$. Now let $a_1 \coloneqq \frac{a}{\Nm(b_0)} \in U_K^{(1)}$. Because $\Tr \colon \ell \to k$ is surjective, we may find $b_1 \in U_L^{(1)}$ such that $a_2 \coloneqq \frac{a_1}{\Nm(b_1)} \in U_K^{(2)}$. Repeating this to infinity, we can find $b_i \in U_L^{(i)}$ such that $a_{i+1} \coloneqq \frac{a_i}{\Nm(b_i)} \in U_K^{(i+1)}$. Setting 
+    \[ b \coloneqq \prod_{i=1}^{\infty} b_i, \] 
+    we know 
+    \[ \frac{a}{\Nm(b)} \in \bigcap_{i=0}^{\infty}U_K^{(i)} = \qty{1}, \] 
+    so $a = \Nm(b)$.
+\end{proof}
+
+\begin{cor}
+    For all $r \in \Z$, we have $\wh{H}^r(G, U_L) = 0$.
+\end{cor}
+
+\begin{proof}
+    By the Lemma, we know that $\Nm \colon U_L \to U_K$ is surjective, so $\wh{H}^0(G, U_L) = 0$. But then we know $H^1(G, U_L) \subseteq H^1(G, L^{\times}) = 0$ is a direct factor, so $H^1(G, U_L) = 0$. The desired result is simply an application of period $2$.
+\end{proof}
+
+\begin{thm}
+    If $L/K$ is an unramified extension, then $H^2(G, L^{\times}) \cong \Hom(G, \Q/\Z) \cong \frac{1}{n} \Z / \Z$.
+\end{thm}
+
+\begin{proof}
+    We know $H^2(G, L^{\times}) \cong H^2(G, U_L) \oplus H^2(G, \Z) = H^2(G, \Z) = \Hom(G, \Q/\Z)$ by the homework. The final isomorphism is obvious.
+\end{proof}
+
+
 
 
 

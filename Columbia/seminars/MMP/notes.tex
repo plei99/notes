@@ -587,6 +587,228 @@ If $H^1(X, \msc{O}_X(K_X)) = 0$, then $H^0(K_X + D) \twoheadrightarrow H^0(K_D)$
     This philosophy fails for log canonical singularities.
 \end{rmk}
 
+\section{Cone Theorems}%
+\label{sec:cone_theorems}
+
+Note that Kollar-Mori use outdated notation. What they call klt is actually sub-klt and what they call klt with $\Delta \geq 0$ we call klt. This still confuses people today, so let's blame the person with the Fields medal.
+
+\begin{thm}[Non-vanishing]
+    Let $X$ be proper with $(X, \Delta)$ sub-klt\footnote{The incorrect term was used initially} and $D$ be a nef Cartier divisor. Assume $aD - (K_X + \Delta)$ is big and nef for some $a \geq 0$. Then for $m \gg 0$, we have
+    \[ H^0(X, mD - \floor{\Delta}) \neq 0. \]
+\end{thm}
+
+\begin{thm}[Basepoint-freeness]
+    Let $X$ be proper and $(X, \Delta)$ be klt. Suppose $D$ is a nef Cartier divisor. Assume $aD - (K_X + \Delta)$ is big and nef for some $a \geq 0$. Then for $m \gg 0$, the linear sustem $\abs{mD}$ is basepoint-free.
+\end{thm}
+
+\begin{thm}[Rationality]
+    Let $X$ be proper and $(X, \Delta)$ be klt. Suppose that $K_X + \Delta$ is not nef, $a(K_X + \Delta)$ is Cartier, and $H$ is a nef and big Cartier. Define
+    \[ r \coloneqq r(H) = \max \qty{t \in \R \mid H + t(K_X + \Delta)\ \text{is nef}}. \]
+    Then $r$ is rational and its denominator is at most $a(\dim X + 1)$.
+\end{thm}
+
+\begin{thm}[Cone Theorem]
+    Let $(X, \Delta)$ be a projective klt pair. 
+    \begin{enumerate}
+        \item There are countably many $C_i \subseteq X$ such that $0 < - (K_X + \Delta) . C_i \leq 2 \dim X$ and
+            \[ \ol{NE}(X) = \ol{NE}_{(K_X + \Delta) \geq 0} + \sum \R_{\geq 0} [C_i]. \]
+        \item For any $H$ ample and $\ep > 0$, we have
+            \[ \ol{NE}(X) = \ol{NE}_{(K_X + \Delta + \ep H) \geq 0} + \sum_{\text{finite}} \R_{\geq 0} [C_i]. \]
+        \item If $F \subseteq \ol{NE}(X)$ is extremal and $(K_X + \Delta)$-negative, then there exists a contraction morphism $\mr{cont}_F \colon X \to Z$ such that $C \subseteq X$ is mapped to a point if and only if $[C] \in F$.
+        \item Let $\mr{cont}_F \colon X \to Z$ be as above and $\msc{L}$ be a line bundle on $X$ such that $\msc{L}.F = 0$. Then there exists $\msc{L}_Z$ on $Z$ such that $\msc{L} \simeq \mr{cont}_F^* \msc{L}_Z$.
+    \end{enumerate}
+\end{thm}
+
+The logical structure is this: We use non-vanishing to find sections, then use various techniques (Kodaira vanishing) to lift enough sections to get basepoint-freeness, then we prove rationality by studying linear systems of the form $\abs{pH + q K_X}$, and finally we get the cone theorem as a formal consequence of convex geometry. However, we will follow the order of Kollar-Mori.
+
+\begin{rmk}
+    The entire discussion will be carried out using klt singularities. However, these results hold when $(X, \Delta)$ is log canonical at the cost of replacing nef and big with ample and at the cost of using significantly more machinery that was developed in the last 15 years.
+\end{rmk}
+
+\begin{proof}[Proof of basepoint-freeness]
+    By non-vanishing, we know that $H^0(X, mD) \neq 0$ for $m \gg 0$. If $B(s)$ is the base locus of $\abs{sD}$, it suffices to prove that for $B_s = B(m) \neq 0$. Next, we may consider a log resolution
+    \[ f \colon Y \to X \qquad K_Y = f^* (K_X + \Delta) + \sum a_j F_j \qquad a_j > -1. \]
+    Now we may perturb $K_Y$ such that
+    \[ f^* (aD - (K_X + \Delta)) - \sum p_j F_j \qquad 0 < p_j \ll 1, \]
+    is ample. Therefore $f^* \abs{mD} = \abs{\mu} + \sum r_j F_j$, so $\sum r_j F_j$ is the fixed part. Therefore $B_s = \bigcup \qty{f(F_j) \mid r_j > 0}$ and $f^{-1} B_s \abs{mD} = B_s \abs{mf^* D}$. 
+
+    We want to prove that there exists $F_j$ with $r_j \geq 0$ such that for all $b \gg 0$, $F_j$ is not contained in $B_s \abs{bf^* D}$. Let $b > 0$ be an integer, $c > 0$ be rational, and $b > cm + a$. Then we define
+    \begin{align*} 
+        N(b, c) &= b f^* D - K_Y + \sum_j (-c r_j + a_j - p_j) F_j \\
+                &= (b - cm - a) f^* D + c(mf^* D - \sum r_j F_j) + f^*(aD - (K_X+\Delta)) - \sum p_j F_j.
+    \end{align*}
+    But now we see that the first term is is nef, the second term is basepoint-free, and the final two terms form an ample divisor. Therefore $N(b,c)$is ample. By Kodaira vanishing, we see that $H^1(Y, \ceil{N(b, c)} + K_Y) = 0$ and $\ceil{N(b, c)} = bf^* D + \sum \ceil{- c r_j + a_j - p_j} F_j - K_Y$. Now
+    \[ \sum \ceil{- c r_j + a_j - p_j} F_j = \ceil{A} - F, \]
+    where $A \geq 0$ is effective and $F = F_k'$ is prime. Therefore
+    \[ K_Y + \ceil{N(b,c)} = b f^* D + \ceil{A} - F \]
+    and we have the exact sequence
+    \[ 0 \to \msc{O}_Y(bf^*D + \ceil{A} - F) \xrightarrow{\times F} \msc{O}_Y(bf^* D + \ceil{A}) \to \msc{O}_F(bf^* D + \ceil{A}) \to 0. \]
+    Therefore we have a surjection $H^0(Y, bf^* D + \ceil{A}) \twoheadrightarrow H^0\qty(F, \eval{( bf^* D + \ceil{A} )}_F)$ for $b \geq cm + a$. Now $\ceil{A}$ is $f$-exceptional, so
+    \[ \eval{N(b, c)}_F = \eval{( bf^* D + A - F - K_Y )}_F = \eval{(bf^* D + A)}_F - K_F. \]
+    Now by non-vanishing, $H^0\qty(F, \eval{ (bf^* D + \ceil{A}) }_F) \neq 0$, so $H^0(Y, bf^* D + \ceil{A})$ has a section not vanishing on $F$. Because $\ceil{A}$ is $f$-exceptional, 
+    \[ H^0(Y, bf^* D + \ceil{A}) = H^0(Y, bf^* D) = H^0(X, bD) \]
+    by the negativity lemma. Here, if $0 \leq E \sim bf^* D + \ceil{A}$, then $E - \ceil{A} \sim bf^* D \sim_{\Q, X} 0$, so if $E - \ceil{A} \geq 0$, then $f_* (E - \ceil{A}) = f_* E = 0$. However, $F$ must be disjoint from $E$, so we have found a section $E$ of $bf^* D$ disjoint from $F$. Therefore $f_* E$ is a section of $bD$ disjoint from $W$.
+\end{proof}
+
+\begin{lem}[Negativity lemma]
+    Let $h \colon Z \to Y$ be birational and proper between normal varieties and $-B$ be $h$-nef. Then $B$ is effective if and only if $h_* B \geq 0$. If $B$ is effective, either $h^{-1}(Y) \subseteq \operatorname{supp} B$ or $h^{-1}(Y) \cap \operatorname{supp} B = \emptyset$.
+\end{lem}
+
+\begin{thm}
+    Let $(X, \Delta)$ be a proper klt pair and $K_X + \Delta$ be big and nef. Then the graded ring
+    \[ \bigoplus_{m \geq 0}^{\infty} H^0(\msc{O}_X (m K_X + \floor{m \Delta})) \]
+    is finitely-generated over $\C$.
+\end{thm}
+
+This result holds even after dropping the big and nef assumption and was proved by Birkar, Cascini, Hacon, and McKernan in 2006.
+
+\begin{conj}[Abundance]
+    Let $(X, \Delta)$ be projective and klt. If $K_X + \Delta$ is nef, then it is semiample.
+\end{conj}
+
+\begin{conj}[Effectivity, folklore]
+    Let $(X, \Delta)$ be projective klt. If $K_X + \Delta$ is pseudoeffective (in the closure of the effective cone), then $K_X + \Delta$ is effective.
+\end{conj}
+
+\subsection{Proof of the Cone Theorem}%
+\label{sub:proof_of_the_cone_theorem}
+
+We will now prove the cone theorem. This relies on the following result from convex geometry.
+
+\begin{thm}
+    Let $N_{\Z} \subseteq N_{\Q} \subseteq N_{\R}$ and $\ol{NE} \subseteq N_{\R}$ be a closed strictly convex clone. Let $K \in N_{\Q}^*$ such that $(K.C) < 0$ for some $C \in \ol{NE}$. Assume there exists $\alpha(K) \in \Z_{\geq 0}$ such that for all $H \in N_{\Z}^*$ with $H > 0$ on $\ol{NE} \setminus \qty{0}$ and that
+    \[ r \coloneqq \max \qty{b \in \R \mid H + tK \geq 0\ \text{on}\ \ol{NE}} \]
+    is rational of the form $U/\alpha(K)$. Then
+    \[ \ol{NE} = \ol{NE}_{K \geq 0} + \sum_{\text{countable}} \R_{\geq 0} [\xi_i] \]
+    with $\xi_i \in N_{\Z}$ with $(\xi_i.K) < 0$ and such that $\R_{\geq 0} [\xi_i]$ do not accumulate in $K_X < 0$.
+\end{thm}
+
+Let $H$ be ample and Cartier. Suppose $L$ is nef and define $F_L = L^{\perp} \cap \ol{NE}$. Then for $n \in \Z_{\geq 0}$, we can set
+\[ r_L(n, H) = \max \qty{t \in \R \mid nL + H + \frac{t}{\alpha(K)} K\ \text{is nef}}. \]
+Then $r_K(n, H) \in \Z_{>0}$ is non-decreasing with respect to $n$. Now if $\xi \in F_L \setminus \ol{NE}_{K \geq 0}$, then 
+\[ H \cdot \xi + \frac{r_L (n, H)}{\alpha(K)} \cdot K \cdot \xi \geq 0 \qquad r_L(n, H) \leq \alpha(K) \cdot \frac{H \cdot \xi}{- K \cdot \xi}. \]
+Therefore $r_L(n, H)$ is bounded above, integral, and non-decreasing, so this sequences stabilizes for $n$ large enough to $r_L(H)$. Now define the divisor 
+\[ D(nL, H) = ( n \alpha(K) L + \alpha(K) H + r_L(H) L ) \cdot \xi = 0, \] 
+so $F_{D(nL . H)} \subseteq \ol{NE}_{K < 0} \cup \qty{0}$. 
+To prove this, let $\xi \in F_{D(nL, H)}$ with $\xi \notin F_L$. Then we know
+\[ \xi.L > 0 \qquad \xi. (n \alpha(K)L + \alpha(K)H + r_L(H)L) = 0. \]
+For $n' \gg n$, we have
+\[ \xi . (n' \alpha(K)L + \alpha(K)H + r_L(H)K) > 0, \]
+so $\xi \notin F_{D(n'L, H)}$. Because $L$ is nef, $F_{D(n'L, H)} \subsetneq F_{D(nL, H)}$. If $F_{D(n'L, H)} \subseteq F_L$, then we stop. If not, we can iterate the above process to decrease $\dim F_D(n'L, H)$ again, so the desired result eventually holds.
+Now $0 \neq F_D(nL.H) \subseteq F_L$ holds up to replacing $n$ with a large multiple.
+
+Now we will show that for some $H$, $\dim F_{D(nL.H)} < \dim F_L$. If $H_i$ is a basis for $F_L^*$, the linear functions
+\[ \eval{\qty(nL + H_i + \frac{r_L(H_i)}{\alpha(K)} K)}_{F_L} \]
+cannot all vanish, so $\dim F_{D(nL, H_i)} < \dim F_L$ for some $i$. Now we can reduce to $F_{L'} \subseteq F_L$ of dimension $1$. This implies that $\ol{NE}$ and $\ol{NE}_{K \geq 0} + \sum_{\dim F_L = 1} F_L$ have the same closure.
+
+Now we need to show that the $F_L$ do not accumulate in $K_{< 0}$. This is a formal argument in linear algebra, so we skip it. Next, we need to prove that
+\[ \ol{NE}(X) = { \ol{NE}(X) }_{K + \ep H} > 0 + \sum_{\text{finite}} F_L. \]
+In the limit as $\ep \to 0$, we produce countably many $F_L$ (with a formal argument that is omitted here). 
+
+The next step is to prove that if $F \subseteq \ol{NE}(X)$ is a $(K_X + \Delta)$-negative face, then there exists a nef Cartier divisor $D$ such that $F_D = F$. Let $\ev{F}$ be the linear span of $F$ and $V \subseteq {N(X)}^*$ be the set of linear functions vanishing on $\ev{F}$. Because the generators of $F$ are defined over $\Q$, then $V$ is also defined over $\Q$. Take $\ep > 0$ small enough such that $K_X + \Delta + \ep H$ is negative on $F$. Because $F$ is extremal, we know $\ev{F} \cap \ol{NE}(X) = F$. Therefore, 
+\[ W_F \coloneqq { \ol{NE}(X) }_{K_X + \Delta + \ep H \geq 0} + \sum_{\substack{\dim F_L = 1 \\ F_L \not\subseteq F}} F_L \]
+is a closed strictly convex cone intersecting $\ev{F}$ at the origin. We also note that $\ol{NE} = W_F + F$, so we can find a lattice point $p \in V$ such that $(p = 0) \supseteq \ev{F}$ and $(p=1) \cap W_F = 0$. Therefore we can find a Cartier divisor $D$ which gives a supporting function of $F \subseteq NE(X)$.
+
+Now by assumption, $-(K_X + \Delta)$ is positive on $F$. This means that $mD - (K_X + \Delta)$ is strictly positive on $\ol{NE}(X) \setminus \qty{0}$ for $m \gg 0$, so $\abs{mD}$ is basepoint-free. Now let $g_F \colon x \to Z$ be the contraction associated by the Stein factorization to the linear system $\abs{mD}$. Because $g_F$ is not an isomorphism, it constracts some curve $C$. Similarly to teh smooth case, we may assume that
+\[ 0 < -(K_X + \Delta).C \leq 2 \dim X. \]
+
+Finally, we prove that any line bundle $\msc{L}$ on $X$ such that $\msc{L}.F = 0$ descends to $Z$, which means there exists a line bundle $\msc{L}_Z$ on $Z$ such that $\msc{L} = g_F^* \msc{L}_Z$. Now let $D$ be a Cartier divisor supporting $F$. We know $W_F \subseteq \ol{NE}(X)$ and that $g_F$ is defined by $\ol{mD}$. Therefore, both $mD$ and $(m+1)D$ are pullbacks of Cartier divisors on $Z$. Write $mD = g_F^* D_1, (m+1)D = g_F^*(D_2)$, and therefore we see that $D = (m+1)D - mD = g_F^* (D_2 - D_1)$. This implies that $D$ is the pullback of a Cartier divisor on $Z$. If $\msc{L}.F = 0$, then $\msc{L} + mD$ also supports $F$, so $\msc{L} + mD = g_F^* M_Z$ for some Cartier divisor $M_Z$ of $Z$. We simply set $\msc{L}_Z = \msc{O}_Z(M_Z - D_1)$. \qed
+
+\subsection{Nonvanishing and Rationality}%
+\label{sub:nonvanishing_and_rationality}
+
+First we will prove rationality assuming non-vanishing and basepoint-freeness and then we will prove rationality.
+
+\begin{lem}
+    Let $Y$ be a smooth projective variety and $D_1, \ldots, D_n$ be Cartier divisors. Then let $A$ be a normal crossing divisor with $\ceil{A} \geq 0$. Define
+    \[ P(u_1, \ldots, u_n) \coloneqq \chi \qty(\sum u_i D_i + \ceil{A}). \]
+    Assume that for certain $u_i$, $\sum u_i D_i$ is nef and $\sum u_i D_i + A - K_Y$ is ample. Then $P(u_1, \ldots, u_n)$ is a nonzero polynomial of degree at most $\dim Y$.
+\end{lem}
+
+\begin{proof}
+    For $m \gg 0$, the sub $\sum m u_i D_i + A - K_Y$ is still ample. Then we know $H^i\qty(\sum m u_i D_i + \ceil{A}) = 0$ for $i > 0$ by KV vanishing. By non-vanishing, we know $h^0\qty(\sum m u_i D_i + \ceil{A}) \neq 0$ and thus $\chi\qty(\sum mu_i D_i + \ceil{A}) \neq 0$ and thus $P(mu_1, \ldots, mu_n) \neq 0$.
+\end{proof}
+
+\begin{lem}
+    Let $P(x,y) \neq 0$ be a polynomial of degree at most $n$. Assume $P$ vanishes for all sufficiently large integral solutions of $0 < ay - rx < \ep$ for $a \in \Z_{>0}$ and $\ep \in \R_{>0}$. Then $r$ is rational and in reduced form it has denominator at most $a(n+1)/\ep$.
+\end{lem}
+
+This is a purely arithmetic fact, so proof is omitted.
+
+\begin{proof}[Proof of Rationality]
+    First, we reduce to the case in which $H$ is basepoint-free. Define
+    \[ H' = m (vH + da (K_X + \Delta)). \]
+    By basepoint-freeness, we know that $\abs{H'}$ is basepoint-free. For $m \gg c \gg d > 0$, we know $r(H) = \frac{r(H') + mda}{mc}$ and thus rationality of $r(H)$ is equivalent to $r(H')$. If the denominator of $r(H')$ divides $v$, then the denominator of $r(H)$ divides $mcv$. Replacing $H$ with $H'$, now $H$ is basepoint-free.
+
+    Now we need to study the base locus $L(p,q)$, which is the base locus of $\abs{pH + qa (K_X + \Delta)}$. Then we know $L(p,q) = X$ if and only if $\abs{pH + qa(K_X + \Delta)} = \emptyset$. If $p,q$ are large enough to be in the strip between $ay - rx = 0, ay - rx = \ep$, then $L(p,q)$ stabilizes. To see this, the $xH$ direction is semiample and then the base locus stabilizes by Noetherian induction to some $L_0$. Now define $I \subseteq \Z \times \Z$ to be the set of $(p,q)$ such that $0 < aq-rp < \ep$ and $L(p,q) = L_0$. Now $I$ contains arbitrary large lattice points.
+
+    Next, we will define the polynomial $P(x,y)$ and prove that it does not vanish. Define $p \colon Y \to X$ to be a log resolution of $(X, \Delta)$. Then if $D_1 = p^*H, D_2 = p^* (a(K_X + \Delta)), K_Y = p^*(K_X + \Delta) + A$ where $\ceil{A} \geq 0$ is $p$-exceptional, then $P(x,y) \coloneqq \chi(x D_1 + y D_2 + \ceil{A})$ is a polynomial of degree at most $\dim Y = \dim X = n$. Then note that if $y = 0, x \gg 0$, $D_1$ is big and nef, so $P \neq 0$. Furthermore, we know that 
+    \[ H^0(Y, pD_1 + q D_2 + \ceil{A}) = H^0(X, pH + qa(K_X + \Delta)). \]
+    From now on we will assume that $r$ is not rational.
+
+    Now we show that $L_0 \neq X$. If $0 < ay-rx < 1$, then
+    \[ x D_1 + yD_2 + A - K_X \equiv p^* (xH + (ay-1)(K_X + \Delta)) \]
+    is big and nef. Thus $H^i(Y, xD_1 + yD_2 + \ceil{A}) = 0$ for $i > 9$. For $(p,q)$ large enough we know $P(p,q) \neq 0$ by the first lemma, so $h^0(Y, pD_1 + qD_2 + \ceil{A}) \neq 0$. But this implies that $\abs{pH + qa(K_X + \Delta)} \neq \emptyset$, so $L_0 \neq \emptyset$.
+
+    We show that $L(p', q') \subsetneq L_0$ for $(p', q')$ large in the strip. This will lead to a contradiction. Fixing $(p,q) \in I$, let $f \colon Y \to (X, \Delta)$ be a log resolution satisfying:
+    \begin{enumerate}
+        \item The divisor $f^* (pH + (qa-1)(K_X + \Delta)) - \sum p_j F_j$ is ample;
+        \item $K_Y \equiv f^*(K_X + \Delta) + \sum a_j F_j$ for $a_j > -1$.
+        \item $f^* \abs{pH + qa (K_X + \Delta)} = \abs{L} + \sum r_j F_j$, where $\abs{L}$ is the movable part and $\sum r_j F_j$ is the fixed part.
+    \end{enumerate}
+    Then we can choose $c > 0$ and $p_j > 0$ such that 
+    \[ \sum (-c r_j + a_j - p_j) F_j = A' - F, \]
+    where $F$ is prime and $\ceil{A'} \geq 0$ and $A'$ does not contain $F$ in its support. Now $F$ maps to a component $B$ of $L(p,q) = f\qty(\bigcup_{r_j > 0} F_j)$. Now define
+    \begin{align*} 
+        N(p', q') ={} &f^*(p' H + q' a (K_X + \Delta)) + A' - F - K_Y \\  
+        \equiv{} &cL + f^*(pH + (qa-1)(K_X + \Delta))  \\
+                 &- \sum p_j F_j + f^*((p' - (1+c)p)H + (q'-(1+c)q)a(K_X + \Delta)). 
+    \end{align*}
+    We can choose $(p', q')$ with $aq' - rp' < aq-rp$. Then $(q' - (1+c)q)a < r(p' - (1+c)p)$, so
+    \[ (p' - (1+c)p)H + (q' - (1+c)q)a (K_X + \Delta) \]
+    is nef. We conclude that $N(p',q')$ is ample because $cL$ is nef and the second term in the sum is ample. Therefore, 
+    \[ H^0(Y, f^*(p'H + q'a(K_X + \Delta)) + \ceil{A}) \twoheadrightarrow H^0\qty(F, \eval{ ( f^*(p'H + q'a(K_X + \Delta)) ) }_F). \]
+    By the adjunction formula, we know
+    \[ \eval{ ( f^*(p'H + q'a(K_X + \Delta)) ) }_F = \eval{(f^*(p'H + q'a(K_X + \Delta)) + A')}_F - K_F. \]
+    Applying the lemmas, we conclude that
+    \[ H^0\qty(F, \eval{(f^*(p'H + q'a(K_X + \Delta)) + \ceil{A})}_F) \neq 0 \]
+    and thus $H^0(Y, f^*(p'H + q'a(K_X + \Delta)))$ contains a section $\Gamma \geq 0$ not vanishing at $F$. Running the same argument using the negativity lemma implies that $\Gamma$ actually is disjoint from $F$ and thus $0 \leq f_* \Gamma \sim \abs{p'H + q'a(K_X + \Delta)}$ is a section disjoint from $B = f(F) \subseteq L_0$. Therefore $L(p', q') \subsetneq L_0$ and thus $r$ is rational.
+
+    Now we need to control the denominator of $r$. Assume the denominator is larger than the constant given by the second lemma. Setting $\ep = 1$, we choose $(p,q)$ large with $0 < aq - rp < 1$. Then we have $P(p,q) = h^0(Y, pD_1 + qD_2 + \ceil{A}) \neq 0$, so $\abs{pH + qa(K_X + \Delta)} \neq \emptyset$ for all $(p,q) \in I$. Now choose $(p,q)$ such that $aq-rp$ is the maximum, equal to $\frac{d}{v}$. Then we can show that $\chi = h^0 \neq 0$ for $\eval{(f_*(p'H + q'a(K_X + \Delta)) + \ceil{A'})}_F$. Then there exist $(p',q')$ large enough in $0 < aq' - rp' < 1$ with $\ep = 1$ and $aq' - rp' < \frac{d}{v} = aq-rp$. Running the same argument from the previous paragraph gives us the desired conclusion.
+\end{proof}
+
+\begin{proof}[Proof of non-vanishing]
+    First we will reduce to the case where $X$ is smooth and $aD - (K_X + \Delta)$ is ample. Choose $f \colon X' \to X$ be a projective resolution and suppose $f^*(K_X + \Delta) - K_{X'} + \Delta'$ and $(X', \Delta')$ is a sub-klt pair. Then we know $af^*D - (K_{X'}+\Delta') = f^*(aD - (K_X + \Delta))$ is nef and big, so $af^*D - (K_{X'}+\Delta')-F$ is ample, so $(X', \Delta' + F)$ is sub-klt. Writing $\Delta'' = \Delta' + F$, we see that $f_* (\Delta'') \leq \Delta$ and
+    \[ h^0(X', mf^* D - \floor{\Delta''}) \leq h^0(X, mD - \floor{\Delta}). \]
+    Replacing $X, \Delta$ with $(X', \Delta'')$, we have the desired reduction.
+
+    Next, we need to rule out the case that $D$ is numerically trivial. By KV vanishing, we know
+    \[ h^0(X, mD - \floor{\Delta}) = \chi(X, mD - \floor{\Delta}) = \chi(X, -\floor{\Delta}) = h^0(X, -\floor{\Delta}) \geq 1. \]
+    Thus we may assume that $D$ is not numerically trivial.
+
+    Now we show that there exists $q_0$ such that if $x \in X$ is not in the support of $\Delta$, then for $q \geq q_0$ we can find $M(q) \equiv (qD - (K_X + \Delta))$ with multiplicity greater than $2 \dim X$. For $A$ ample and $e > 0$, we have $D^e A^{d-e} \geq 0$, so we conclude that 
+    \[ {(qD - (K_X + \Delta))}^d = { ((q-a)D + aD - (K_X + \Delta)) }^d \geq d(q-a) (D \cdot {(aD - (K_X + \Delta))}^{d-1}). \]
+    Because $aD - (K_X + \Delta)$ is ample, then ${(aD - (K_X + \Delta))}^{d-1} = C + \text{eff}$, where $C$ is a curve satisfying $C\cdot D > 0$. Therefore, ${(qD - (K_X + \Delta))}^d \to \infty$ as $q \to \infty$. Now
+    \[ h^0(e(qD - (K_X + \Delta))) \geq \frac{e^d}{d!} {(qD - (K_X + \Delta))}^d + O(e^{d-1}). \]
+    Thus if $M(q,e) \in \abs{e(qD - (K_X + \Delta))}$, imposing that $M(q,e)$ has multiplicity greater than $2de$ at $x$ imposes at most $\frac{e^d}{d!} {(2d)}^d + O(e^{d-1})$ conditions. As $q \to \infty$, then we know ${(qD + (K_X + \Delta))}^d > {(2d)}^d$, so for $q$ large enough, some section satisfies the condition. Now we define $M(q) \coloneqq M(q,e)/e$, so $M(q) \in \abs{qD - (K_X + \Delta)}$ has multiplicity at least $2d$ at $x$.
+
+    Next, consider a log resolution of $(X, \Delta + M(q))$ that dominates $\Bl_x X$. Then
+    \begin{enumerate}
+        \item $K_Y \equiv f^*(K_X + \Delta) + \sum b_j F_j$, $b_j > -1$;
+        \item $f^*(aD - (K_X + \Delta)) - \sum p_j F_j$ is ample for $0 < p_j \ll 1$;
+        \item $f^*(M(q)) = \sum r_j F_j$ where $F_0$ corresponds to the exceptional divisor of the blowup at $x$.
+    \end{enumerate}
+
+    Now we will perturb the coefficients and lift from lower dimension. Set
+    \[ N(b,c) \coloneqq b f^* D + \sum (-c r_j + b_j - p_j) F_j - K_Y. \]
+    This is ample as long as $c \leq \frac{1}{2}$ and $b \geq a + c(q-a)$. Because we can choose $b$ arbitrarily large, the second condition is always achievable. But now because $x \notin \mr{Supp}(\Delta)$, we know $b_0 = d-1$ and $r_0 > 2d$, so $c < \frac{1+(d-1)-p_1}{2d} < \frac{1}{2}$. Therefore we can write $N(b,c) = bf^* D + A - F - K_Y$, so 
+    \[ H^0(Y, bf^*D + \ceil{A} - F) = H^0(Y, bf^*D - f^* \floor{\Delta}) = H^0(X, bD - \floor{\Delta}). \]
+    Because $N(b,c)$ is ample, then
+    \[ H^1(Y, bf^*D + \ceil{A} - F) = H^1(Y, bf^*D + \ceil{A-F}) = 0,\] 
+    so $H^0(X, bD - \floor{\Delta}) \neq 0$ as long as $H^0\qty(F, \eval{(bf^*D + \ceil{A})}_F) \neq 0$. But by the non-vanishing theorem in lower dimension, this is true.
+\end{proof}
+
+
 
 
 

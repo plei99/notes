@@ -1311,6 +1311,293 @@ We will use this to study closed points of schemes $X/k$ of finite type over a f
     Let $S \subseteq X$ be closed. It suffices to show that for all open $U \subseteq X$, $U \cap S$ contains a closed point. Assuming $U = \Spec R$ is affine, then $S \cap U = V(I)$ for some ideal $I \subseteq R$, and the desired result follows from the existence of maximal ideals.
 \end{proof}
 
+\section{More on Varieties}%
+\label{sec:more_on_varieties}
+
+\textit{Note: Notes were not taken in great detail for this section.} 
+
+Let $k$ be an algebraically closed field. We know $\A^n(k) = k^n$. Then we will define affine algebraic sets to be the common zero set of a set of polynomials. Of course, we can declare the Zariski topology on $\A^n(k)$. Of course there is a natural correspondence between radical ideals of $k[x_1, \ldots, x_n]$ and closed subsets of $\A^n(k)$ giving a correspondence between maximal ideals and points.
+
+\begin{rmk}
+    With the Zariski topology, $\A^n(k)$ is a Noetherian topological space.
+\end{rmk}
+
+A morphism of algebraic sets is a map $\A^n \supseteq X \to Y \subseteq \A^m$ that is expressible in terms of polynomials $f = (f_1, \ldots, f_m) \in { k[x_1,\ldots, x_n] }^n$. Dually, this defines a map 
+\[ k[y_1, \ldots, y_m]/I(Y) \to k[x_1, \ldots, x_n] \qquad y_i \mapsto f_i(x). \]
+References that use the language of varieties are Chapter 1 of Hartshorne, Shafarevich, Griffiths-Harris, etc.
+
+Now if $X = V(I) \subseteq \A^n(k)$ for a radical ideal $I$, then we can define
+\begin{defn}
+    The \textit{affine coordinate ring} of $X$ is $k[X] = \Hom(X, \A^1(k)) = k[x_1, \ldots, x_n] / I$.
+\end{defn}
+
+\begin{prop}
+    If $X$ is an affine algebraic set, then $k[X]$ is a reduced finitely-generated $k$-algebra. In addition, $X$ is irreducible if and only if $k[X]$ is a domain.
+\end{prop}
+
+For any $x \in X$, we define the maximal ideal $\mf{m}_x = \ker (k[X] \xrightarrow{\mr{ev}_x} k)$. More generally, if $Z \subseteq X$ is closed, then $I(Z) = \qty{f \mid f(x) = 0} = \bigcap_{x \in Z} \mf{m}_x$. For an ideal $I \subseteq K[X]$, we can define the closed set $V(I)$. For example, if $I = (f)$, we can define the principal open subsets $X_f$.
+
+Note that there is an equivalence of categories between irreducible affine algebraic sets and finitely-generated $k$-algebras that are domains.
+
+\subsection{Rational Functions}%
+\label{sub:rational_functions}
+
+Let $X$ be an irreducible algebraic set in $\A^n$. We may consider the field of fractions $k(X)$ of $k[X]$, and this will be called the field of rational functions on $X$. If $\frac{f}{g} \in k(X)$, we have a map
+\[ [f,g] \colon X \to \P^1(k), \]
+whatever $\P^1$ means. Really, we have a map $X \dashrightarrow \A^1(k)$. This is of course regular on $X_g$.
+
+\begin{rmk}
+    If $f' = fh, g' = gh$, then $\frac{f}{g} = \frac{f'}{g'}$ in $k(X)$. We see that $X_g \supseteq X_{g'}$ and for all $x \in X_{g'}$, the fractions $\frac{f(x)}{g(x)} = \frac{f'(x)}{g'(x)}$ agree.
+\end{rmk}
+
+\begin{lem}
+    If there exists $\frac{f}{g}, \frac{f'}{g'} \in k(X)$ such that there exists $U \subseteq X$ where $\frac{f(x)}{g(x)} = \frac{f'(x)}{g'(x)}$ for all $x \in U$, then $\frac{f}{g} = \frac{f'}{g'}$.
+\end{lem}
+
+\begin{proof}
+    Up to multiplying by something in $k[X]$, we may assume $g = g'$. But this means that $f'(x) = f(x)$ for all $x \in U$, which means $V(f-f') \supseteq U$. By irreducibility of $X$, we have $X = V(f-f')$, so $f = f'$.
+\end{proof}
+
+We now define a sheaf of regular functions, and we can upgrade affine algebraic sets to ringed spaces.
+
+\begin{defn}
+    Define the sheaf $\msc{O}_X$ by
+    \[ \msc{O}_X(U) = \bigcap_{x \in X} {k[X]}_{\mf{m}_x}. \]
+\end{defn}
+It should be obvious what the restriction maps are, and they are injective.
+
+\begin{lem}
+    If $f \in k[X]$, then $\Gamma(X_f, \msc{O}_X) = {k[X]}_f$.
+\end{lem}
+
+\begin{proof}
+    One direction is obvious. In the other direction, if we define $\mf{a} = \qty{h \mid h g \in k[X]} \subseteq k[X]$, then we want to show that $f \in \sqrt{\mf{a}}$. If we choose representatives $\mf{g} = g_1 / g_2 \in \msc{O}_X(X_f)$, we see that $\mf{g}_2 \in \mf{a}$. Thus $g_2 \notin \mf{m}_X$ for $x \in X_f$, so if $x \in X_f$, then $x \notin V(\mf{a})$.
+\end{proof}
+
+\begin{prop}
+    A map $f \colon X \to Y$ is a morphism of irreducible affine algebraic sets if and only if for all $g \in k[Y]$, then $g \circ f \in k[X]$. Equivalently, $f$ is continuous and induces a morphism of sheaves.
+\end{prop}
+
+\begin{defn}
+    A locally ringed space $(X, \msc{O}_X)$ is called a \textit{prevariety} if $X$ is connected and there exists a finite covering of $X$ by irreducible affine algebraic sets.
+\end{defn}
+
+\begin{rmk}
+    Any prevariety $X$ is Noetherian and irreducible.
+\end{rmk}
+
+\begin{defn}
+    We define the \textit{function field} of a prevariety $(X, \msc{O}_X)$ to be the fraction field of $\msc{O}_X(U)$ for any open affine $U \subseteq X$.
+\end{defn}
+
+In particular, $K(U)$ is independent of the affine open subset $U \subseteq X$. In particular, all restrictions are injective and $\msc{O}_X(U) \cap \msc{O}_X(V) = \msc{O}_X(U \cap V)$.
+
+\begin{defn}
+    If $X, Y$ are prevarieties, then a morphism $f \colon X \to Y$ is a morphism of locally ringed spaces.
+\end{defn}
+
+\begin{rmk}
+    If $f \colon X \to Y$ is a morphism of prevarieties, then we do not have a pullback of rational functions in general.
+\end{rmk}
+
+\begin{exm}
+    Projective varieties are prevarieties.
+\end{exm}
+
+\begin{thm}
+    Let $k$ be algebraically closed. Then there is an equivalence of categories between integral schemes of finite type over $k$ and prevarieties over $k$. 
+\end{thm}
+
+\begin{proof}
+    Given a scheme $(X, \msc{O}_X)$, we will consider the prevariety $(X(k), \msc{O}_{X(k)})$, where $X(k) = \Hom_k(\Spec k, X)$ is the set of closed points. Of course, if $\Spec A = U \subseteq X$ is open affine, then $U(k)$ is an affine algebraic set. Now, we simply define $\msc{O}_{X(k)} (U(k)) = \msc{O}_X(U)$, and this is a sheaf. We can view this as functions to $k$. Equivalently, we see that $\alpha^{-1}(\msc{O}_X)$ coincides locally with the sheaf of regular functions because $X$ is quasi-compact. Therefore we have defined a prevariety. To see that this is functorial, note that morphisms of schemes of finite type send closed points to closed points.
+
+    Now in the other direction, given $X(k)$, we will simply aff a generic point $\eta_Z$ for every irreducible $Z \subseteq X(k)$. In fact, this defines a functor on topological spaces, called soberification. It is obvious what the topology should be. Of course, the inclusion $\alpha(X(k)) \to t(X(k))$ is continuous and induces a bijection of open subsets. But now we note that if $X(k) \subseteq \A^n$ is an affine algebraic set with $A = k[X(k)]$, we note that $t(X(k)) = \Spec A$. Therefore $t(X(k))$ is covered by finitely many open affines. Now it remains to check that $\alpha_* \msc{O}_{X(k)}$ makes $t(X(k))$ a scheme. But this can be checked on affines. It is enough to show that if $U(k)$ is an affine algebraic set with $A = k(U(k))$, then $\Spec A = U \subseteq X$. But now, by definition, we have
+    \[ \msc{O}_X(U) = \msc{O}_{X(k)}(U(k)), \]
+    so when $U = \Spec A$, we have $\msc{O}_X(U) = A$. In addition, we have $\msc{O}_X(U_f) = \msc{O}_{U(k)}({U(k)}_f) = A_f$ for all $f \in k[U(k)]$, so we are done. To check functoriality, we note that soberification is functorial and then check that we obtain a map $\msc{O}_Y \to f_* \msc{O}_X$ from the map on $k$-points.
+\end{proof}
+
+\begin{rmk}
+    Note that this means that a morphism of (integral) schemes of finite type over $k$ is determined by its value on closed points.
+\end{rmk}
+
+\begin{rmk}
+    Let $X$ be an integral scheme of finite type over $k$ and $X(k)$ be the corresponding prevariety. Then we have $K(X) = \msc{O}_{X, \eta}$ and the field $k(X(k)) = \mr{Frac}(k[U(k)])$ for any affine open $k(U(k))$, and these are the same field.
+\end{rmk}
+
+\subsection{Comparison with GAGA}%
+\label{sub:comparison_with_gaga}
+
+Let $X$ be a projective scheme of finite type over $\C$. We may consider $X(\C) \subseteq \P^n(\C)$. But now we may consider the analytic topology on $\P^n(\C)$, and so we may consider the analytic space $X^{\mr{an}}(\C)$ with a sheaf of holomorphic functions $\msc{O}_{X^{\mr{an}}}$. Of course, we may still consider the continuous map 
+\[ \gamma \colon X^{\mr{an}}(\C) \hookrightarrow X. \]
+Next, to a coherent sheaf $\msc{F}$, we may consider a coherent analytic sheaf $\msc{F}^{\mr{an}} = \gamma^{-1} \msc{F} \otimes_{\gamma^{-1} \msc{O}_X} \msc{O}_X^{\mr{an}}$. Now Serre's GAGA tells us that this is an equivalence of categories.
+
+\subsection{Non-algebraically closed fields}%
+\label{sub:non_algebraically_closed_fields}
+
+We will now consider what happens if $k \subsetneq \ol{k}$. The most basic example is $\A^1_k = \Spec k[t]$, and the closed points are given by $(p(t))$ for irreducible polynomials $p(t)$. Then any finite extension of $k$ that is generated by a single element is the residue field of a closed point. In particular, for any such field $k'$ we obtain a point in $\A^1_k(k')$. For another example, consider a field extension $k \subsetneq k'$ with induced morphism $X = \Spec k' \to \Spec k$. Then $X$ has no $k$-points. Returning to affine space, any commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    \Spec k' \ar{r} \ar{dr} & \A^n_k \ar{d} \\
+                            & \Spec k
+\end{tikzcd}
+\end{equation*}
+gives us a $k'$-rational point of $\A^n_k \times_{\Spec k} \Spec k' = \A^n_{k'}$. In particular, if $X = V(f_1, \ldots, f_m) \subseteq \A^n_k$, then $X(k') = \qty{x \in {(k')}^n \mid f_i(x) = 0, i = 1, \ldots, m}$. We have a similar statement for $\P^n_k$ and closed subschemes.
+
+\begin{rmk}
+    If $X = \bigcup U_i$ is a union of open affines, then $X(k') = \bigcup U_i(k')$. 
+\end{rmk}
+
+\begin{rmk}
+    A $k'$-point $x \in X_k(X')$ determines a field extension $k \subseteq k(x) \subseteq k'$. If $\sigma \in \Aut(k'/k)$, then we can precompose $\Spec k' \xrightarrow{\sigma} \Spec k' \to X$ to get another $k'$-point. In addition, we have ${X_k(k')^{\sigma} = X_k(k^{\sigma})}$.
+\end{rmk}
+
+\begin{exm}
+    Let $X$ be (locally) of finite type and $\ol{k}$ be the algebraic closure of $k$. Then we have the map
+    \[ X_k(\ol{k}) \xrightarrow{\Sigma} X \qquad (\Spec \ol{k} \xrightarrow{i} X) \mapsto i(\Spec \ol{k}). \]
+    From the characterization of the closed points, the image of $\ol{\Sigma}$ consists of all closed points. Then we know that the absolute Galois group $G = \Aut(\ol{k} / k)$ of $\ol{k}$ acts on $X_k(\ol{k})$. But then the $G$-orbits of this action are contained in the fibers of $\Sigma$ and $G$ acts transitively on the orbits, so the fibers are the $G$-orbits. 
+\end{exm}
+
+\subsection{Classical projective geometry}%
+\label{sub:classical_projective_geometry}
+
+We will now consider open and closed prevarieties.
+\begin{enumerate}
+    \item An open subprevariety is simply an open subset with the structure sheaf restricted.
+    \item If $X$ is a prevariety and $Z \subseteq X$ is an irreducible closed subset, we can give $Z$ the structure of a prevariety. Then if $V \subseteq Z$ is open, we can define
+        \[ \msc{O}_Z(V) = \qty{f \colon V \to k \mid \text{locally a restriction of a function on $X$}}. \]
+        Note that if $Z \subseteq X \subseteq \A^n$, the structure of $Z$ as a subprevariety of $X$ is the same as the one of $Z \subseteq \A^n(k)$.
+\end{enumerate}
+
+Now we will define projective varieties over algebraically closed fields. If we consider the scheme $\P^n_k$, then $\P^n(k) = (k^{n+1} \setminus \qty{0}) / k^{\times}$. Then the open affine charts give us the structure of a prevariety. Now we define the sheaf of functions to be $\msc{O}_{\P^n}(U) = \msc{O}_{U_i}(U)$ when $U \subseteq U_i$ and in particular if we homogeneize, we have
+\[ \msc{O}_{\P^n}(U) = \qty{\varphi \colon U \to k \mid \varphi = \frac{F(x_0, \ldots, x_n)}{G(x_0, \ldots, x_n)}, \deg F = \deg G}. \]
+As a consequence, we have $k(\P^n(k)) = k(U_i) = k(x_0, \ldots, x_n)$. Now we need to consider the global regular functions on $\P^n$. NOte that for a prevariety $X$ and $U,V$ open subsets, then $\msc{O}_X(U \cup V) = \msc{O}_X(U) \cap \msc{O}_X(V)$, so
+\[ \msc{O}_{\P^n}(\P^n) = \msc{O}_{\P^n} \qty(\bigcup U_i) = \bigcap \msc{O}_{\P^n}(U_i) = \bigcap k\qty[ \frac{x_0}{x_i}, \ldots, \frac{x_n}{x_i} ] = k. \]
+
+\begin{rmk}
+    Note that if $\P^n(\C)$ is considered as a complex manifold, then $\Gamma(\P^n(\C), \msc{O}_{X^{\mr{an}}}) = \C$. More generally, there are no nonconstant global holomorphic functions on any compact complex manifold.
+\end{rmk}
+
+Now closed subsets of projective space are given by the vanishing of homogeneous polynomials $F_i$. This gives us the definition
+\begin{defn}
+    A prevariety is called a \textit{projective variety}\footnote{Note that these are separated. Also consider that if $\text{variety} = \text{separated prevariety}$, then $\text{separated} = \text{pre}^{-1}$ and thus we may consider $\text{pre}^{-1}$schemes.} to a closed subprevariety of $\P^n(k)$.
+\end{defn}
+
+\begin{defn}
+    A prevariety is called \textit{quasiprojective} if it is isomorphic to an open subset of a projective variety.
+\end{defn}
+
+\begin{rmk}
+    The structure of a prevariety does not depend on the embedding in some ambient space.
+\end{rmk}
+
+We will now consider morphisms between (quasi)-projective varieties.
+
+\begin{prop}
+    Let $Y \subseteq \P^n(k)$ be a quasi-projective variety. 
+    \begin{enumerate}
+        \item Given $f_0, \ldots, f_m \in k[x_0, \ldots, x_n]$ homogeneous polynomials of the same degree such that $V_+(f_0, \ldots, f_m) \cap Y = \emptyset$, then the map
+            \[ Y \to \P^m(k) \qquad y \mapsto [f_0(y), \ldots, f_m(y)] \]
+            is a morphism of prevariety. Moreover, if $g_0, \ldots, g_m$ are homogeneous polynomails of the same degree with $V_+(g_0, \ldots, g_m) \cap Y = \emptyset$, they define the same morphism if and only if $g_i f_j = g_j f_i$ for all $i,j$.
+        \item Conversely, given $\varphi \colon Y \to \P^m(k)$ a morphism of prevarieties, then $\varphi$ is locally defined as above.
+    \end{enumerate}
+\end{prop}
+
+To prove this result, simply consider the affine open subsets of $\P^m$ and the sets $Y \cap \qty{f_i \neq 0}$.
+
+\begin{rmk}
+    Compare this to the statement that $\P^n_k$ represents the functor taking a scheme $X$ to the set of isomorphism classes of line bundles $\msc{L}$ with linearly independent sections $s_0, \ldots, s_n$.
+\end{rmk}
+
+\begin{prop}
+    If $\emptyset \neq V_+(f_0, \ldots, f_m) = Z \subsetneq Y$, then there exists a morphism $\varphi \colon U \to \P^m(k)$, where $U = Y \setminus Z$. This gives us a \textit{rational map} $Y \dashrightarrow \P^n(k)$.
+\end{prop}
+
+\begin{exm}
+    The map 
+    \[ \A^{n+1}(k) \setminus \qty{0} \xrightarrow{\pi} \P^n(k) \qquad (x_0, \ldots, x_n) \mapsto [x_0, \ldots, x_n] \]
+    is a morphism of prevarieties. Given $Z = V_+(I) \subseteq \P^n(k)$, define the \textit{cone} over $Z$ to be $C(Z) = \ol{\pi^{-1}(Z)} = V(I) \subseteq \A^{n+1}(k)$. On the other hand, if $I \subseteq k[x_0, \ldots, x_n]$ is a homogeneous ideal, then $V(I) = C(V_+(I))$.
+\end{exm}
+
+\begin{rmk}
+    The cone over $Z$ depends both on $Z$ and on the embedding in projective space. On the cone over $Z$, the origin is usually a singular point. Sometimes (for example when $Z$ is a point) it is not, but in general, the properties of the singularity depend on the properties of the embedding.
+\end{rmk}
+
+\begin{exm}
+    Consider the map $\P^1 \to \P^2$ given by $[x,y] \mapsto [x,y,0]$ with image $W_1 = \qty{z = 0}$ and $C(W_1) = \A^2 \subset \A^3$. Consider the other map $\P^1 \to \P^2$ given by $[x,y] \mapsto [x^2, xy, y^2]$ with image $W_2 = \qty{xz = y^2}$ and cone $C(W_2)$. But then $W_1 \cong W_2 \cong \P^1$, but $W_2$ has an $A_1$ singularity at the origin while $W_1$ is smooth.
+\end{exm}
+
+Suppose $g \in GL(n+1)$. Then the action of $g$ on $\A^{n+1}(k) \setminus \qty{0}$ is scaling-invariant, so it descends to $\P^n(k)$. Of course, we have an exact sequence
+\[ 1 \to k^{\times} \to GL(n+1) \to \Aut(\P^n(k)). \]
+In fact, we will see that $\Aut(\P^n) = PGL(n+1)$.
+
+\begin{rmk}
+    The \textit{Cremona group} of birational transformations of $\P^n$ is massive.
+\end{rmk}
+
+If $I = (L_0, \ldots, L_m)$, then $V_+(I) \subset \P^n$ is isomorphic to some $\P^{n-m}$. Therefore, $PGL(n+1)$ acts transitively on the set of $m$-dimensional linear subspaces in $\P^n$. Of course, this has the structure of an algebraic variety, the \textit{Grassmannian}. This represents a functor $\msc{O}^{n+1} \twoheadrightarrow \msc{L}$, where $\msc{L}$ has rank $m$. 
+
+A linear subspace is a \textit{hyperplane} when it is defined by a single equation $V_+(L)$, and is a line if it is isomorphic to $\P^1$. We can also define the \textit{linear} span of $Z \subseteq \P^n$ to be
+\[ \ev{Z} = \bigcap_{Z \subseteq L} L. \]
+For two points $p,q$, the line containing $p,q$ is denoted $\ol{pq}$.
+
+\begin{defn}
+    Points $p_1, \ldots, p_m \in \P^n$ are said to be in \textit{general position} if no $(k+1)$ of them lie on a $(k-1)$-plane.
+\end{defn}
+
+\begin{exm}
+    Three points in $\P^2$ are in general position if and only if they are not collinear.
+\end{exm}
+
+Let $H = \qty{x_0 = 0} \subseteq \P^n$ be a hyperplane and suppose $p = [1,0,\ldots,0] \notin H$. For any closed subset $Z \subseteq H$, we can write $\ol{pZ} = \bigcup_{z \in Z} \ol{pz} \subseteq \P^n$. This is a closed subset. Thus if $Z = V_+(I)$ for some ideal in $k[x_1, \ldots, x_n]$, then $\ol{pZ} = V_+(I \cdot K[X_0, \ldots, X_n])$.
+
+\begin{rmk}
+    Let $L_1, L_2 \subseteq \P^n$ be linear subspaces. Then $\ev{L_1, L_2} = \P^3$ if and only if $L_1 \cap L_2 = \emptyset$.
+\end{rmk}
+
+\begin{exm}
+    With the same assumptions as the remark, let $Z \subseteq L_1$. Then $\ol{L_2 Z} = \bigcup_{z \in Z} \ev{L_2, Z} \subseteq \P^n$ is a closed subset.
+\end{exm}
+
+\begin{defn}
+    Let $F$ be a homogeneous polynomial of degree $e$ in $k[x_0, \ldots, x_n]$. Then $V_+(F) = X \subseteq \P^n$ is called a \textit{hypersurface of degree $d$}. If $d=2$, then it is called a \textit{quadric}. 
+\end{defn}
+
+\begin{exm}
+    In $\P^2$, the quadrics are either conics ($x^2+y^2+z^2$), a pair of lines ($x^2+y^2$), or a double line ($x^2$).
+\end{exm}
+
+In characteristic not equal to $2$, we know that if $Q = V_+(q)$ is a quadric, then $q$ is given by a symmetric matrix. But then we know that $PGL(n+1)$ acts on ${k[x_0, \ldots, x_n]}_d$ and thus on quadrics in $\P^n$ in a way that preserves the rank. This tells us that $Q$ is irreducible if and only if $q$ has rank different from $2$. If $r = \operatorname{rk}(q) < n$, then $Q$ is an (iterated) cone over a rank $r$ quadric in $\P^r$.
+
+Consider the map $\P^1 \xrightarrow{v_3} \P^3$ given by $[x,y] \mapsto [x^3, x^2y, xy^2, y^3]$. Clearly the image of $v_2$ satisfies the equations $AD = BC, AC = B^2, C^2 = BD$. On the other hand, we can explicitly construct $x,y$ from the equations in $A,B,C,D$, so on the open chart $W \cap U_A$, we have the map $[A,B,C,D] \mapsto [A,B]$. Similarly, on $W \cap U_D$, we have the inverse $[A,B,C,D] \mapsto [C,D]$. The image of $v_3$ is called a \textit{twisted cubic}. It is easy to see that $\ev{v_2(\P^1)} = \P^3$.\footnote{In fact, there is something even stronger than this, but I can't remember it right now.} 
+
+More generally, the degree $d$ \textit{Veronese embedding} $\P^n \to \P^{\binom{n+d}{d}-1}$ is given by
+\[ {[x_0, \ldots, x_n] \mapsto [x_0^{i_0}x_1^{i_1}\cdots x_n^{i_n}]}_{\sum i_k = d}. \]
+Up to $PGL(n+1)$, replacing $x_0, \ldots, x_d$ with a different basis of ${k[x_0, \ldots, x_n]}_d$. In fact, the image is closed, and if we write $v_d(\P^n) = V_+(\mf{a})$, then we know that $\mf{a}$ is a homogeneous prime ideal.
+
+\begin{exm}
+    Consider the degree $2$ Veronese embedding $v_2 \colon \P^2 \to \P^5$. Then if $H$ is a hyperplane, $H \cap v_2(\P^2)$ is the image of a conic in $\P^2$.
+\end{exm}
+
+\begin{exm}
+    Let $F \in {K[x_0, \ldots, x_1]}_d$ and let $X = V_+(F)$. Then there exists a hyperplane in $\P^{\binom{n+d}{d}-1}$ such that $H \cap v_d(\P^n) = V_+(F)$. This tells us that $\P^n \setminus X$ is affine.
+\end{exm}
+
+Note the following facts:
+\begin{enumerate}
+    \item If $k$ is a field and $X,Y$ are $k$-schemes (locally) of finite type over $k$, then $X \times_k Y$ is (locally) of finite type over $k$.
+    \item If $k = \ol{k}$, then $X,Y$ are integral if and only if $X \times_k Y$ are integral. At the level of closed points, we note that $X(k) \times Y(k) = (X \times_k Y)(k)$.
+\end{enumerate}
+
+Now observe that the product of projective spaces is a projective variety. Define the map
+\[ \P^n \times \P^m \to \P^{(n+1)(m+1)-1} \qquad [\ldots, x_i,\ldots], [\ldots, y_j, \ldots] \mapsto [\ldots, x_i y_j, \ldots]. \]
+This is called the \textit{Segre embedding}. If the $(n+1) \times (m+1)$ matrix of coordinates is given by $Z_{ij}$, then the image of the Segre embedding is given by the vanishing of the $2 \times 2$ minors. For example, we note that the Segre embedding
+\[ \P^1 \times \P^3 \to \P^3 \qquad [x,y], [u,v] \mapsto [xu,xv,yu,yv] \]
+has image $\qty{AD = BC}$, which is a smooth quadric. In fact, the images of $\P^1 \times \qty{p}, \qty{p} \times \P^1$ give us two families of lines on $\Q$.
+
+
+
+
+
 
 
 
