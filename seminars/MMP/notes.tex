@@ -43,7 +43,7 @@
 % other formatting packages
 \usepackage{float}
 \usepackage{booktabs}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 \usepackage{csquotes}
 \usepackage{titlesec}
 \usepackage{titling}
@@ -217,6 +217,11 @@ These notes were taken during the seminar using the \texttt{vimtex} package of t
 Any errors are mine and not the speakers'. 
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\section*{Acknowledgements}%
+\label{sec:acknowledgements}
+
+I would like to thank Joaqu\'{\i}n Moraga for organizing the seminar, finding mistakes in the notes, and more.
 
 \vspace*{1cm}
 
@@ -807,6 +812,219 @@ This is a purely arithmetic fact, so proof is omitted.
     \[ H^1(Y, bf^*D + \ceil{A} - F) = H^1(Y, bf^*D + \ceil{A-F}) = 0,\] 
     so $H^0(X, bD - \floor{\Delta}) \neq 0$ as long as $H^0\qty(F, \eval{(bf^*D + \ceil{A})}_F) \neq 0$. But by the non-vanishing theorem in lower dimension, this is true.
 \end{proof}
+
+\subsection{The Relative Case}%
+\label{sub:the_relative_case}
+
+We will state a relative version of the cone theorem. The proof is essentially the same as in the absolute case.
+
+\begin{thm}[Relative Cone Theorem]
+    Let $X \xrightarrow{\varphi} Z$ be a projective contraction of varieties over an algebraically closed field $\k$ of characteristic $0$. Let $(X, \Delta)$ be a klt pair.
+    \begin{enumerate}
+        \item There are countably many curves $C_j \subseteq X$ such that $\varphi(C_j) = \mr{pt}$, $0 < -(K_X + \Delta). C_j < 2 \dim X$, and 
+            \[\ol{NE}(X/Z) = { \ol{NE}(X/Z) }_{(K_X + \Delta)\geq 0} + \sum \R_{\geq 0} [C_j]. \]
+        \item For any $\ep > 0$ and $\varphi$-ample $H$, we have
+            \[ \ol{NE}(X/Z) = { \ol{NE}(X/Z) }_{(K_X + \Delta + \ep H) \geq 0} + \sum_{\text{finite}} \R_{\geq 0} [C_j]. \]
+        \item Let $F \subseteq \ol{NE}(X/Z)$ be a $(K_X + \Delta)$-negative extremal face. Then there is a unique contraction $X \xrightarrow{\mr{cont}_F} Y$ commuting with the structure morphisms to $Z$ such that $C \subseteq X$ is mapped to a point if and only if $[C] \in F$.
+        \item Let $\msc{L}$ be a line bundle on $X$ such that $\msc{L}.C = 0$ for every curve $C$ with $[C] \in F$. Then there exists a line bundle $\msc{L}_Y$ on $Y$ such that $\msc{L} = \mr{cont}_F^* \msc{L}_Y$.
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    So far everything is a ``formal'' consequence of Kodaira vanishing and resolution of singularities (along with various classical arguments).
+\end{rmk}
+
+\begin{rmk}
+    Bhatt and Lurie proved a version of the Riemann-Hilbert correspondence in positive characteristic. Bhatt proved the Cohen-Macaulayness of the integral closure of an excellent Noetherian domain. Using these techniques and results, the Minimal Model Program has recently been generalized in two different directions:
+    \begin{enumerate}
+        \item In dimension $3$ in mixed characteristic (essentially over $\Spec \Z$) by Bhatt-Ma-Patakfalvi-Schwede-Tucker-Waldron-Witaszek.
+        \item In characteristic $0$, most of the MMP works over an excellent $\Q$-scheme by Murayama-Lyu.
+    \end{enumerate}
+\end{rmk}
+
+Of course one may wonder why we need to run the MMP relative over a base. Consider a smooth projective family $\msc{X} \to \C^*$ such that $K_{\msc{X}}$ is ample over $\C^*$. We want a good compactification, but naively compactifying gives us an arbitrary central fiber that may not even be normal. Using the resolution of singularities, we may consider a log resolution. This has many components and $K_{\msc{X}}$ is not ample over $\C$ in general. Then we can try to run the MMP over the base, and we expect a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    \msc{X} \ar[hookrightarrow]{r} \ar{d} & \ol{\msc{X}} \ar{d} \\
+    \C^* \ar[hookrightarrow]{r} & \C
+\end{tikzcd}
+\end{equation*}
+such that $K_{\ol{\msc{X}}}$ is nef over the base and the singularities of $\ol{\msc{X}}_0$ are slc. Here, slc means that the normalization is log canonical and has nodal singularities at codimension $1$ points.
+
+We may also use the relative MMP to study singularities. Here, let $z \in Z$ and consider a log resolution $X \xrightarrow{\varphi} Z$. Then we write $\varphi^*(K_Z) = K_X + \Delta$. We may then perturb the coefficients of $\Delta$:
+\begin{itemize}
+    \item If $c > 1$, we may decrease to $c = 1$;
+    \item If $c < 0$, we can increase to $c = \ep > 0$;
+\end{itemize}
+This obtains a new boundary $B$ with the same support as $\Delta$. If we run the MMP for $K_X + B$ over $Z$, we obtain a partial resolution of singularities which has the singularities of the minimal model program. Therefore, by studying the exceptional divisors of the previous partial resolution and the singularities of the MMP, we can understand the singularities of $Z \ni z$.
+
+\section{Running the Minimal Model Program}%
+\label{sec:running_the_minimal_model_program}
+
+\subsection{Flipping Contractions and Flips}%
+\label{sub:flipping_contractions_and_flips}
+
+\begin{defn}
+    A map $X \xrightarrow{\varphi} W$ is a \textit{flipping contraction} if $X$ is $klt$ and $\Q$-factorial, $\rho(X/W) = 1$, and $\varphi$ is a small birational contraction, and $-K_X$ is ample over $W$.
+\end{defn}
+
+\begin{rmk}
+    When we work with log pairs we assume $-(K_X + \Delta)$ is ample over $W$.
+\end{rmk}
+
+\begin{rmk}
+    $W$ is never $\Q$-factorial. Even worse, $K_W$ is not $\Q$-Cartier.
+\end{rmk}
+
+\begin{defn}
+    Let $X \xrightarrow{\varphi} X$ be a flipping contraction. We say that $X \overset{\pi}{\dashrightarrow} X^+$ is a \textit{flip} if it is a small birational map, $K_{X^+} + \Delta^+$ is $\Q$-Cartier, and there is a projective morphism $\varphi^+ \colon X^+ \to W$ such that $K_{X^+} + \Delta^+$ is ample over $W$.
+\end{defn}
+
+\begin{lem}
+    Let $f \colon X \dashrightarrow Y$ be a small birational map between normal varieties and let $D$ be a Weil divisor on $X$. Then $H^0(\msc{O}_X(D)) \simeq H^0(\msc{O}_Y(f_* D))$.
+\end{lem}
+
+\begin{lem}
+    Let $X \xrightarrow{\varphi} W$ be a flipping contraction and let $X \overset{\pi}{\dashrightarrow} X^+$ be a flip. Then $\rho(X) = \rho(X^+)$ and $X^+$ is $\Q$-factorial.
+\end{lem}
+
+\begin{proof}
+    Let $D^+$ be a divisor on $X^+$ and $D$ on $X$ be the pushforward. We will find $r$ such that $R \cdot (D + r(K_X + \Delta)) = 0$, where $R$ is the extremal ray defining the flipping contraction. We know $X$ is $\Q$-factorial, so $m(D + r(K_X + \Delta))$ is Cartier for $m \gg 0$. Then we see that
+    \[ m(D + r(K_X + \Delta)) \sim \varphi^*(D_W) \]
+    for some Cartier divisor $D_W$ on $W$. Then 
+    \[ mD^+ = m \pi_* D \sim {(\varphi^+)}^* D_W - (mr)(K_{X^+} + \Delta^+) \]
+    is Cartier, so $D^+$ is $\Q$-Cartier. For equality of $\rho$, we prove that $\pi_*$ induces an isomorphism between Weil divisors modulo linear equivalence.
+\end{proof}
+
+\begin{lem}
+    Let $X \xrightarrow{\varphi} Y$ be a projective contraction between normal varieties with $\rho(X/Y) = 1$. Assume that the exceptional locus of $\varphi$ contains a divisor. Then $\varphi$ is the contraction of a unique irreducible divisor.
+\end{lem}
+
+\begin{proof}
+    Suppose there are two divisors $E_1, E_2$. We can find $C_i$ covering $E_i$ with $C_i.E_i < 0$. Then we can find $a$ such that $E_1 + a E_2 \equiv_Y 0$. We will show that $a$ is positive. Assume that $C_1$ does not intersect $E_2$. Then $C_1.(E_1 + aE_2) = C_1.E_1 < 0$. Choosing a general $C_1$ inside $E_1$, we may assume $E_2.C_1 > 0$. Therefore $C_1.E_1 + aE_2.C_1 = 0$, so $a = \frac{-C_1.E_1}{E_2.C_1} > 0$. But $E = E_1 + aE_2 \eqqcolon E$ is an effective divisor which is contracted, so it must be covered by $E$-negative curves, which gives a contradiction. We conclude that $E_1$ must be the only component.
+\end{proof}
+
+\begin{prop}
+    Let $\varphi \colon X \to W$ be a flipping contraction for $(X, \Delta)$ klt. Then the flip exists if and only if
+    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \]
+    is a finitely-generated $\msc{O}_Z$-algebra. If this is the case, then
+    \[ X^+ \coloneqq \Proj_Z \qty(\bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta))). \]
+\end{prop}
+
+\begin{proof}
+    Assume the flip
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar[dashrightarrow]{rr}{\pi} \ar{dr}{\varphi} & & X^+ \ar{dl}{\varphi^+} \\
+                                                        & Z
+    \end{tikzcd}
+    \end{equation*}
+    exists. We know that $\pi$ is small, so
+    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \simeq \bigoplus_{m \geq 0} \varphi^+_* \msc{O}_X(m(K_{X^+} + \Delta^+)). \]
+    Moreover, $K_{X^+} + \Delta^+$ is ample over $W$, so 
+    \[ \Proj_W \qty(\bigoplus_{m \geq 0} \varphi^+_* \msc{O}_X(m(K_{X^+} + \Delta^+))) \simeq X^+. \]
+
+    Now assume that $A \coloneqq \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta))$ is a finitely-generated $\msc{O}_W$-algebra and define $X^+ = \Proj A$. Then $X \overset{\pi}{\dashrightarrow}$ is an isomorphism in codimension $1$. It could happen that the indeterminancy locus is a divisor. We know $\varphi$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$. Then $A$ is just a sum of copies of the structure sheaf on $X \setminus \mr{Ex}(\varphi)$. Therefore, $X^+ \overset{\pi^{-1}}{\dashrightarrow} X$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$ and suppose $D$ is mapped to a higher codimension cycle by $\varphi^+$. Then
+    \[ \varphi_*^+ \msc{O}_{X^+}(1) \simeq \varphi_* \msc{O}_X(m(K_X + \Delta)) \simeq \msc{O}_W(m(K_W + \varphi_* \Delta)) \]
+    for some $m > 0$. Because $E$ is exceptional over $W$, we have 
+    \[ \msc{O}_W(tm(K_X + \varphi_* \Delta)) = \varphi_*^+ \msc{O}_{X^+}(t) \subsetneq \varphi_*^+ \msc{O}_{X^+}(t)(E). \]
+    We have a natural inclusion $\varphi_*^+ \msc{O}_X^+(t)(E) \hookrightarrow \msc{O}_W(tm(K_X + \varphi_* \Delta))$, so there are no contracted divisors. Thus $\pi$ is small. Then the property that $\rho(X/W) = \rho(X^+/W) = 1$ is by Lemma 2.5.6.
+\end{proof}
+
+\subsection{Finite generation of the canonical ring}%
+\label{sub:finite_generation_of_the_canonical_ring}
+
+\begin{conj}
+    Let $X \to Z$ be a projective morphism and $(X, \Delta)$ be a klt pair. Then
+    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \]
+    is a finitely-generated $\msc{O}_Z$-algebra.
+\end{conj}
+
+\begin{rmk}
+    If $X$ is a smooth projective variety, then $\bigoplus_{m \geq 0} H^0(X, \msc{O}_X(mK_X))$ is finitely generated over the base field $k$.
+\end{rmk}
+
+\subsection{Running the MMP}%
+\label{sub:running_the_mmp}
+
+Now we may finally discuss the process of actually running the Minimal Model Program.
+
+\begin{enumerate}
+    \item Let $(X_i, \Delta_i)$ be a klt pair and $X_i \to Z$ be a projective morphism. If $K_{X_i} + \Delta_i$ is nef over $Z$, then we stop and call this a \textit{minimal model over $Z$}. If $K_{X_i} + \Delta_i$ is not nef over $Z$, we consider an extremal ray $R$ in $\ol{NE}(X_i / Z)$ which is $(K_{X_i} + \Delta_i)$-negative.
+    \item Let $X_i \to W$ be the contraction define by $R$.
+        \begin{enumerate}[(a)]
+            \item We have $\dim W < \dim X_i$, $-K_{X_i}$ is ample over $W$, and the general fiber is klt. Hence the general fiber is klt Fano. In this case, we stop the algorithm and call this a \textit{Mori fiber space}.
+            \item We have $\dim W = \dim X_i$ and $X_i \to W$ contains a divisor in its exceptional locus. This is a divisorial contraction. Then $W$ is $\Q$-factorial and $\rho(W/Z) = \rho(X/Z) - 1$. Write $X_{i+1} \coloneqq W$ and $\Delta_{i+1} \coloneqq f_*(\Delta_i)$. Return to step \textbf{1}.
+            \item We have $\dim X_i = \dim W$ and $X_i \to W$ is a small birational map. We find the flip $X \overset{\pi}{X^+}$ and define $X_{i+1} = X^+$ and $\Delta_{i+1} = \pi_* \Delta_i$. We know that $X_{i+1}$ is $\Q$-factorial provided that $X_i$ is $\Q$-factorial and $\rho(X_i/Z) = \rho(X_{i+1}/Z)$. Return to step \textbf{1}.
+        \end{enumerate}
+\end{enumerate}
+
+\begin{rmk}
+    Using the negativity lemma, we can prove that $(X_{i+1}, \Delta_{i+1})$ is klt in step \textbf{2b}.
+\end{rmk}
+
+The possible outcomes for the MMP are either a \textit{minimal model}, which assuming abundance maps to the canonical model, or a Mori fiber space.
+
+\section{Surface Singularities of the MMP}%
+\label{sec:surface_singularities_of_the_mmp}
+
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item A point $x \in X$ is a surface klt singularity if and only if is the quotient of $0 \in \C^2$ be a finite subgroup of $GL_2(\C)$.
+        \item A point $x \in X$ is a canonical surface singularity if and only if it is the quotient of $0 \in \C^2$ by a finite subgroup of $SL_2(\C)$.
+        \item A point $x \in X$ is a terminal surface singularity if and only if it is a smooth point.
+    \end{enumerate}
+\end{thm}
+
+The idea of the proof is as follows: If $K_X$ is $\Q$-Cartier, we can take its index one cover. This is a finite Galois morphism $Y \xrightarrow{\pi} X$ that is quasi-\'etale (\'etale in codimension $1$) such that $K_Y$ is a Cartier divisor. Then we can write $X = Y/G$. Because $Y$ is klt and $K_Y$ is Cartier, its log discrepancies are positive integers, so it is canonical. Therefore it suffices to study canonical singularities.
+
+For canonical singularities, we obtain the following:
+\begin{thm}
+    Let $x \in X$ be a canonical surface singularity. Then $x \in X$ has embedding dimension $3$. Moreover, up to analytic change of coordinates, the following is a complete list of possible singularities:
+    \begin{description}
+        \item[Type A:] For $n > 0$, the $A_n$ singularity has equation $x^2 + y^2 + z^{n+1} = 0$ and dual graph
+            \begin{equation*}
+            \begin{tikzcd}
+                \circ \ar[-]{r} & \circ \ar[-]{r} & \ldots \ar[-]{r} & \circ
+            \end{tikzcd}
+            \end{equation*}
+        \item[Type D:] For $n \geq 4$, the $D_n$ singularity has equation $x^2 + y^2z + z^{n-1} = 0$ and dual graph
+            \begin{equation*}
+            \begin{tikzcd}
+                & & & \circ \ar[-]{d} \\
+                \circ \ar[-]{r} & \circ \ar[-]{r} & \ldots \ar[-]{r} & \circ \ar[-]{r} & \circ
+            \end{tikzcd}
+            \end{equation*}
+        \item[Type E:] The $E_6$ singularity has equation $x^2 + y^3 + z^4 = 0$ and dual graph
+            \begin{equation*}
+            \begin{tikzcd}
+                & & \circ \ar[-]{d} \\
+                \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ
+            \end{tikzcd}
+            \end{equation*}
+            The $E_7$ singularity has equation $x^3 + y^3 + yz^3 = 0$ and dual graph
+            \begin{equation*}
+            \begin{tikzcd}
+                & & \circ \ar[-]{d} \\
+                \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ
+            \end{tikzcd}
+            \end{equation*}
+            The $E_8$ singularity has equation $x^2 + y^3 + z^5$ and dual graph
+            \begin{equation*}
+            \begin{tikzcd}
+                & & \circ \ar[-]{d} \\
+                \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ \ar[-]{r} & \circ
+            \end{tikzcd}
+            \end{equation*}
+    \end{description}
+\end{thm}
+
+The idea of the proof is to study the dual graph of the resolution and use the Weierstrass preparation theorem to write down the equations.
+
+
+
+
+
 
 
 

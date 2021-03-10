@@ -1821,6 +1821,122 @@ for $i \geq 1$.
     We know $H^2(G, L^{\times}) \cong H^2(G, U_L) \oplus H^2(G, \Z) = H^2(G, \Z) = \Hom(G, \Q/\Z)$ by the homework. The final isomorphism is obvious.
 \end{proof}
 
+\begin{defn}
+    Define the \textit{invariant map} 
+    \[ \mr{inv}_{L/K} \colon H^2(L /K, L^{\times}) \simeq H^2(L/K, \Z) \simeq \Hom(G, \Q/\Z) \simeq \frac{1}{n} \Z / \Z \subseteq \Q/\Z. \]
+    Taking the limit over all unramified extensions, we obtain a map
+    \[ H^2(K^{\mr{ur}}/K, {(K^{\mr{ur}})}^{\times}) \xrightarrow{\sim} \bigcup_n \frac{1}{n} \Z / \Z = \Q/\Z. \]
+\end{defn}
+
+To simplify our notation, we will write $H^2(L/K) \coloneqq H^2(L/K, L^{\times})$, so we have 
+\[ \mr{inv}_K \colon H^2(K^{\mr{ur}}/K) \simeq \Q/\Z. \] 
+Our goal now will be to extend this to $H^2(K^{\mr{sep}}/K) \simeq \Q/\Z$.
+
+\begin{rmk}
+    We always have an injective inflation map $H^2(K^{\mr{ur}}/K) \xrightarrow{\Inf} H^2(K^{\mr{sep}}/K)$. The map exists, and injectivity is by Hilbert 90 and inflation-restriction. We want to prove that this is indeed an isomorphism.
+\end{rmk}
+
+\begin{lem}
+    Let $L/K$ be a finite extension of degree $n$. Then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        H^2(K^{\mr{ur}}/K) \ar{d}{\mr{inv}_K} \ar{r}{\Res} & H^2(L^{\mr{ur}}/L) \ar{d}{\mr{inv}_L} \\
+        \Q/\Z \ar{r}{\times n} & \Q/\Z
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{lem}
+
+\begin{rmk}
+    Because $L^{\mr{ur}} = L \cdot K^{\mr{ur}}$, we may view $\Gal(L^{\mr{ur}}/L)$ as a subgroup of $\Gal(K^{\mr{ur}}/K)$, and the inclusion is comparible with ${(K^{\mr{ur}})}^{\times} \to {(L^{\mr{ur}})}^{\times}$, so restriction makes sense.
+\end{rmk}
+
+\begin{proof}
+    Recall that $\mr{inv}_K$ is computed by $H^2(K^{\mr{ur}}/K) \simeq H^2(K^{\mr{ur}}/K, \Z) \simeq H^1(K^{\mr{ur}}/K, \Q/\Z) \simeq \Q/\Z$. Now we need to see the effect of restriction on the groups on the right of the chain of isomorphisms. Note that if $e = e(L/K)$ and $f = f(L/K)$, then $\pi_L^e = \pi_K$, so the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        {(K^{\mr{ur}})}^{\times} \ar{d} \ar{r}{\mr{ord}_K} & \Z \ar{d}{\times e} \\
+        {(L^{\mr{ur}})}^{\times} \ar{r}{\mr{ord}_L} & \Z
+    \end{tikzcd}
+    \end{equation*}
+    commutes. Therefore, the maps on $H^2(K^{\mr{ur}}/K, \Z) \to H^2(L^{\mr{ur}}/L, \Z)$ are given by multiplication by $e$. Finally, for $\varphi \in H^1(K^{\mr{ur}}/K, \Q/\Z) = \Hom(\Gal(K^{\mr{ur}}/K), \Q/\Z)$, we see that $\varphi \mapsto \varphi(\Frob_K)$. Because $\Frob_L = \Frob_K^f$, we see that $\Res(\varphi)(\Frob_L) = f \varphi(\Frob_K)$. Therefore, the final map is simply $f \cdot e \cdot \Res = n \cdot \Res$.
+\end{proof}
+
+\begin{cor}
+    Let $L/K$ be a finite Galois extension of degree $n$. Then $H^2(L/K)$ contains a subgroup of $\frac{1}{n} \Z/\Z$.
+\end{cor}
+
+\begin{proof}
+    By Hilbert 90 and inflation-restriction, we have a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & H^2(L/K) \ar{r}{\Inf} & H^2(K^{\mr{sep}}/K) \ar{r}{\Res} & H^2(L^{\mr{sep}}/L) \\
+        0 \ar{r} & \frac{1}{n}\Z/\Z \ar{r} & H^2(K^{\mr{ur}}/K) \ar{r}{\Res} \ar[hookrightarrow]{u} & H^2(L^{\mr{ur}}/L) \ar[hookrightarrow]{u} \\
+                 & & \Q/\Z \ar{r}{\times n} \ar{u}{\cong} & \Q/\Z \ar{u}{\cong}.
+    \end{tikzcd}
+    \end{equation*}
+    Therefore, $\frac{1}{n}\Z/\Z$ injects into $H^2(L/K)$.
+\end{proof}
+
+\begin{prop}
+    We have $\abs{H^2(L/K)} = n$. In particular, $H^2(L/K) \cong \frac{1}{n} \Z/\Z$.
+\end{prop}
+
+\begin{proof}
+    We know this is true with $L/K$ is cyclic. We know $h(L^{\times}) = n$ and $H^1(L/K) = 0$, so $\abs{H^2(L/K)} = n$. In general, we will reduce to the cyclic case because $L/K$ is always solvable (because $K$ is a local field). We will induct on $[L:K]$. Choose a tower of fields $K \subset K' \subset L$ such that $K'/K$ is cyclic. Applying inflation-restriction, we have an exact sequence
+    \[ 0 \to H^2(K'/K) \xrightarrow{\Inf} H^2(L/K) \xrightarrow{\Res} H^2(L/K'). \]
+    We know that $\abs{H^2(K'/K)} = [K':K]$ because it is cyclic. We also know that $\abs{H^2(L/K')} = [L:K']$ by the inductive hypothesis, so $\abs{H^2(L/K)} \leq [K':K] \cdot [L:K'] = [L:K] = n$. But we know that $H^2(L/K)$ contains a subgroup of order $n$, so $\abs{H^2(L/K)} = n$.
+\end{proof}
+
+\begin{cor}
+    We have a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & H^2(L/K) \ar{r}{\Inf} & H^2(K^{\mr{sep}}/K) \ar{r}{\Res} & H^2(L^{\mr{sep}}/L) \\
+        0 \ar{r} & \frac{1}{n}\Z/\Z \ar[equal]{u} \ar{r} & H^2(K^{\mr{ur}}/K) \ar{r}{\Res} \ar[hookrightarrow]{u} & H^2(L^{\mr{ur}}/L). \ar[hookrightarrow]{u} 
+    \end{tikzcd}
+    \end{equation*}
+    In particular, we may view $H^2(L/K) \xrightarrow{\Inf} H^2(K^{\mr{ur}}/K)$.
+\end{cor}
+
+\begin{thm}
+    There is an isomorphism $H^2(K^{\mr{ur}}/K) \xrightarrow{\Inf} H^2(K^{\mr{sep}}/K)$.
+\end{thm}
+
+\begin{proof}
+    Recall that $H^2(L/K) \hookrightarrow H^2(K^{\mr{ur}}/K) \hookrightarrow H^2(K^{\mr{sep}}/K)$. Taking the limit over finite Galois extensions $L/K$, we have an injection $H^2(K^{\mr{sep}}/K) \hookrightarrow H^2(K^{\mr{ur}}/K) \hookrightarrow H^2(K^{\mr{sep}}/K)$, but the composition is the identity, so all inclusions are equalities.
+\end{proof}
+
+\begin{defn}
+    We can extend the \textit{invariant map} to $\mr{inv}_K \colon H^2(K^{\mr{sep}}/K) \simeq \Q/\Z$. 
+\end{defn}
+
+\begin{rmk}
+    For any field $K$, define the \textit{Brauer group} $\mr{Br}(K) \coloneqq H^2(K^{\mr{sep}}/K, {(K^{\mr{sep}})}^{\times})$. This is in fact $H^2_{\text{\'et}}(\Spec K, \mathbb{G}_m)$. The goal of local class field theory is to compute $\mr{Br}(K) \simeq \Q/\Z$ for a local field $K$.
+\end{rmk}
+
+\begin{rmk}
+    Classically, the group $\mr{Br}(K)$ classifies \textit{central simple algebras} over $K$. In fact, it classifies central simple algebras up to the relation $A \sim B$ if and only if $A \otimes_K M_n(K) \simeq B \otimes M_m(K)$ for some $n, m$. The group structure is defined by $[A] \otimes [B] = [A \otimes_K B]$ with identity $0 = [M_n(k)]$.
+\end{rmk}
+
+\begin{thm}[Wedderburn]
+    Each class of $\mr{Br}(K)$ is represented by a central division algebra over $K$.
+\end{thm}
+
+\begin{exm}
+    If $K$ is a local field, then we may define the invariant $\mr{inv}_K(B)$ for any central division algebra $B$ over $K$. If $B = K$, then $\mr{inv}_K(K) = 0$. Now if $B$ is the quaternion algebra over $K$, we have $\mr{inv}_K(B) = \frac{1}{2}$. In fact there is an explicit construction of a central division algebra associated to $\frac{1}{n}$ for every $n$. If $L/K$ is a quadratic extension, then
+    \[ \mr{inv}_L(B \otimes_K L) = [L:K] \mr{inv}_K(B) = 2 \cdot \frac{1}{2} = 0 \in \Q/\Z, \]
+    so $B \otimes_K L = M_2(L)$.
+\end{exm}
+
+\begin{exm}
+    Call the element $u_{L/K} \in H^2(L/K)$ with $\mr{inv}_K(u_{L/K}) = \frac{1}{n}$ the \textit{fundamental class} of $L/K$. 
+\end{exm}
+
+\begin{rmk}
+    The local Artin reciprocity isomorphism $\wh{H}^{-2}(G, \Z) \to \wh{H}^0(G, L^{\times})$ can be realized as the cup product by the fundamental class $u_{L/K}$.
+\end{rmk}
+
 
 
 

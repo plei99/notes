@@ -37,7 +37,7 @@
 \usepackage[utf8]{inputenc} 
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
-\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\hypersetup{linkcolor=blue,citecolor=blue,filecolor=black,urlcolor=blue}
 
 % other formatting packages
 \usepackage{float}
@@ -161,6 +161,7 @@
 \DeclareMathOperator{\idim}{inj.dim}
 \DeclareMathOperator{\gdim}{gl.dim}
 \DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\codim}{codim}
 
 % Section formatting
 \titleformat{\section}
@@ -1593,6 +1594,133 @@ Now observe that the product of projective spaces is a projective variety. Defin
 This is called the \textit{Segre embedding}. If the $(n+1) \times (m+1)$ matrix of coordinates is given by $Z_{ij}$, then the image of the Segre embedding is given by the vanishing of the $2 \times 2$ minors. For example, we note that the Segre embedding
 \[ \P^1 \times \P^3 \to \P^3 \qquad [x,y], [u,v] \mapsto [xu,xv,yu,yv] \]
 has image $\qty{AD = BC}$, which is a smooth quadric. In fact, the images of $\P^1 \times \qty{p}, \qty{p} \times \P^1$ give us two families of lines on $\Q$.
+
+\section{Dimension}%
+\label{sec:dimension}
+
+Dimension is a topological property. 
+
+\begin{defn}
+    Let $X$ be a topological space. Then we define the \textit{dimension} of $X$ to be
+    \[ \dim X \coloneqq \sup \qty{\ell \mid X_0 \supsetneq \cdots \supsetneq X_{\ell}}, \]
+    where each $X_i$ is a closed irreducible subset of $X$.
+\end{defn}
+
+We will define the dimension of a scheme to be the dimension of its underlying topological space. If $X = \emptyset$, then we set $\dim X = - \infty$. 
+
+\begin{warn}
+    Even for a Noetherian scheme $X$, we can have $\dim X = \infty$. There is an example of Nagata in Vakil's notes or as tag \href{https://stacks.math.columbia.edu/tag/02JC}{02JC} in the Stacks project.
+\end{warn}
+
+It is easy to see that if $X = \Spec A$, then $\dim X = \dim A$.
+
+\begin{exm}
+    Let $A$ be a principal ideal domain such that $A$ is not a field. Then all chains of prime ideals are given by $0 \subseteq (t)$, and thus $\dim A = 1$.
+\end{exm}
+
+\begin{exm}
+    If $A$ is a ring and $\mf{p}_0 \subsetneq \cdots \subsetneq \mf{p}_{\ell}$ is a chain of prime ideals, then in $A[t]$ as have the chain of ideals
+    \[ \mf{p}_0 A[t] \subsetneq \cdots \subsetneq \mf{p}_{\ell} A[t] \subsetneq (\mf{p}_{\ell}, t), \]
+    and thus $\dim A[t] \geq \dim A + 1$. If $A$ is Noetherian, then this is an equality.
+\end{exm}
+
+\begin{lem}
+    Let $X$ be a topological space.
+    \begin{enumerate}
+        \item If $Y \subseteq X$ has the subspace topology, then $\dim Y \leq \dim X$. If $X$ is irreducible and $\dim X < \infty$, then this inequality is strict.
+        \item If $X = \bigcup U_{\alpha}$ is an open covering, then $\dim X = \sup_{\alpha} \dim U_{\alpha}$.
+        \item If $X = \bigcup X_i$ is a union of irreducible components, then $\dim X = \sup \dim X_i$.
+        \item If $X$ is a scheme, then $\dim X = \sup_{x \in X} \dim \msc{O}_{X,x}$.
+    \end{enumerate}
+\end{lem}
+
+\begin{lem}
+    The first three properties are obvious. Now if $X = \bigcup \Spec A_{\alpha}$ is a cover by affines, then we know $\dim X = \sup_{\alpha} \dim A_{\alpha}$. But now we know that for any prime ideal $\mf{p}$, $\mr{ht}(\mf{p}) = \dim A_{\mf{p}}$, so we are done.
+\end{lem}
+
+\begin{cor}
+    If $Y \hookrightarrow X$ is a closed immersion, then $\dim Y \leq \dim X$. If $X$ is integral and $Y \subsetneq X$, then $\dim Y < \dim X$.
+\end{cor}
+
+\begin{exm}
+    Let $A$ be a ring. Then $\dim A = 0$ if and only if all prime ideals are maximal. If $A$ is Noetherian, then this holds if and only if $A$ is Artinian, which is equivalent to $A$ being the product of its localizations.
+\end{exm}
+
+\begin{defn}
+    A morphism $\Spec B \to \Spec A$ is \textit{integral} if $A \to B$ is an integral map of rings.
+\end{defn}
+
+Recall that $B$ is a finite $A$-module if and only if $\varphi$ is integral and $B$ is a finitely-generated $A$-algebra. Recall that for integral morphisms if $\mf{q}_1 \subseteq \mf{q}_2$ are prime ideals of $B$ such that $\mf{q}_1 \cap A = \mf{q}_2 \cap A$, then $q_1 = q_2$. Of course, integral morphisms of rings also satisfy going-up and going-down. The geometric interpretation of this is
+\begin{prop}
+    Let $\Spec B \to \Spec A$ be an integral morphism with $A \subset B$. We already know that $f$ is closed and surjective. The three properties of integral morphisms of rings imply that $\dim B = \dim A$.
+\end{prop}
+
+\begin{defn}
+    Let $X$ be a topological space and $Z \subseteq X$ be closed and irreducible. Then we will define
+    \[ \codim_X(Z) \coloneqq \sup \qty{\ell \mid z = z_{\ell} \subsetneq \cdots \subsetneq Z_0}, \]
+    where each $Z_i$ is a closed irreducible subset of $X$.
+\end{defn}
+
+\begin{exm}
+    If $X = \Spec A$ and $Z = V(\mf{p})$, then $\codim_X(Z) = \mr{ht}(\mf{p}) = \dim A_{\mf{p}}$.
+\end{exm}
+
+\begin{exm}
+    Let $X$ be a scheme and $Z \subseteq X$ be closed and irreducible. Then 
+    \[ \codim_X(Z) = \sup_{U \cap Z \neq \emptyset} \qty{\codim_U (Z \cap U)} = \sup_{U_{\alpha}} \dim \msc{O}_{X, \eta_{Z \cap U_{\alpha}}}. \]
+\end{exm}
+
+\begin{rmk}
+    We always have the inequality $\dim Z + \codim_X Z \leq \dim X$. Equality holds if all maximal chains of closed irreducible subsets have the same length.
+\end{rmk}
+
+\begin{defn}
+    A topological space $X$ is called \textit{catenary} if all maximal chains of closed irreducible subsets have the same length. 
+\end{defn}
+
+\begin{exm}
+    If $A$ is a DVR over a field $k$ with $\mf{m} = (t)$, then $\dim \Spec A[x] \geq 2$. It is easy to see that the ideals $\mf{m}_1 = (tx-1)$ and $\mf{m}_2 = (t,x)$ are both maximal, so if $Z_i = V(m_i)$, we know $\dim Z_i = 0$. However, we see that $\codim_X(Z_2) \geq 2$ while $\codim_X (Z_1) = 1$ because $\mf{m}_1$ is principal.
+\end{exm}
+
+\begin{thm}\label{thm:dimfinitetype}
+    Let $X$ be an integral scheme locally of finite type over $k$.
+    \begin{enumerate}
+        \item There is an equality $\dim X = \operatorname{tr.deg} k(\eta)$. Moreover, $X$ is catenary.
+        \item For all closed points $x \in X$, $\dim X = \dim \msc{O}_{X,x}$.
+        \item If $X, Y$ are finite type over $k$ with $Y$ integral and $f \colon X \to Y$ is dominant, then $\dim Y \geq \dim X$.
+        \item If $f \colon Y \to X$ is a quasi-finite morphism of schemes of finite type over $k$, then $\dim Y \leq \dim X$.
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    Let $A$ be a discrete valuation ring over $k$ and $X = \Spec A$. Then $\Spec k \sqcup \Spec k(\eta_X) \to \Spec A$ is a bijection on points, but $\dim (\Spec k \sqcup \Spec k(\eta_X)) = 0 < \dim X = 1$.
+\end{rmk}
+
+The proof of the Theorem will require Noether normalization:
+\begin{thm}[Noether normalization lemma]
+    Let $A \neq 0$ be a finitely generated integral $k$-algebra. Then there exists $t_1, \ldots, t_d \in A$ such that the morphism $k[t_1, \ldots, t_d] \to A$ is injective and integral.
+\end{thm}
+
+\begin{proof}[Proof of Theorem~\ref{thm:dimfinitetype}]\leavevmode
+    \begin{enumerate}
+        \item Let $X = \bigcup \Spec A$ where $A$ is a finitely generated $k$-algebra. Now we only need to prove the statements for $\Spec A$. By Noether normalization, there exists $t_1, \ldots, t_d$ such that $k[t_1, \ldots, t_d] \hookrightarrow A$ and $X = \Spec A \to \A_k^d$ is a finite morphism. Therefore $\dim X = \dim \A^d_k$, so we need to prove that $\dim \A^d = d$. Clearly we have $\dim \A^n \geq n$, so suppose we have a maximal chain
+            \[ (0) = \mf{p}_0 \subsetneq \mf{p}_1 \subsetneq \cdots \subsetneq \mf{p}_m. \]
+            Choose some nonzero $f \in \mf{p}_1$. Up to passing to an irreducible factor, we may assume that $f$ is irreducible. Therefore we can replace $\mf{p}_1$ with $(f)$. Now we may consider $X = \Spec k[x_1, \ldots, x_n]/(f)$, and then its fraction field has transcendence degree $n-1$, so by induction we may assume that $\dim X = n-1$.
+
+            Now we will prove that $X$ is catenary. It suffices to prove that if $Z \subsetneq X = \Spec A$ is a maximal proper closed irreducible subset, then $\dim Z = n-1$. If $X \xrightarrow{\pi} \A^n_k$ is the morphism obtained from Noether normalization, then we consider $\pi(Z) \subsetneq \A^n$. By going-down, we know $\pi(Z)$ is maximal, so we have now reduced to proving the statement for $\A^n$. But then $W = V(\mf{Q})$ for some prime ideal $\mf{Q}$, so let $f \in \mf{Q}$ be nonzero. If $g$ is an irreducible factor, then maximality of $W$ implies that $\mf{Q} = (g)$. But then the desired statement about dimension is simply a statement about the transcendance degree of $k[x_1, \ldots, x_n]/f$.
+    \end{enumerate}
+\end{proof}
+
+Here is a general statement about unique factorization domains $A$ with $\Spec A = X$. If $Z \subseteq X$ is a closed subset all of whose components have codimension $1$, then $Z = V(f)$ for some $f \in A$. The converse also holds. If we remove the assumption of unique factorization, then the converse is still true by Krull's principal ideal theorem. 
+
+\begin{rmk}
+    A Noetherian domain $A$ is a UFD if and only if every prime ideal of height $1$ is principal.
+\end{rmk}
+
+\begin{rmk}
+    Let $Q = V(xy = z^2) \subset \A^3_k$. Then $V(z)$ has two irreducible components, and each line cannot be cut out by a principal ideal.
+\end{rmk}
+
 
 
 
