@@ -1,0 +1,412 @@
+\documentclass{beamer}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% PAQUETES BÁSICOS %%
+%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{enumitem}
+\usepackage[alphabetic]{amsrefs}
+\usepackage{mathrsfs}
+\usetheme{Darmstadt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% PAQUETES GRÁFICOS %%
+%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[]{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{tikz-cd}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% ENTORNOS Y CAJAS %%
+%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{prop}[theorem]{Proposition}
+
+
+%%%%%%%%%%%%%%
+%% COMANDOS %%
+%%%%%%%%%%%%%%
+
+\renewcommand{\O}{\mathscr{O}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\H}{\mathscr{H}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\V}{\mathscr{V}}
+\newcommand{\W}{\mathscr{W}}
+\newcommand{\X}{\mathscr{X}}
+\newcommand{\Y}{\mathscr{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Supp}{Supp}
+
+
+\mode<presentation>{}
+\title{Families of algebraic cycles}
+\author{Nicolás Vilches}
+\institute{Intersection Theory Seminar \\ Columbia University}
+\date{March 12, 2021}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Contents}
+\tableofcontents
+\end{frame}
+
+
+
+\section{Introduction}
+
+
+
+\begin{frame}{Enumerative geometry}
+``A typical problem in enumerative geometry is to find the number of geometric figures in a given family which satisfy certain conditions''. \pause One of the classical examples is that given five points in general position in $\P^2$, there exists a unique smooth conic passing through them. 
+\begin{figure}[H]
+\centering 
+\begin{tikzpicture}[scale=0.8]
+\clip(-2.,-2.) rectangle (2.,2.);
+\draw [rotate around={-45.:(0.,0.)}] (0.,0.) ellipse (2.cm and 1.4142135623730951cm);
+\begin{scriptsize}
+\filldraw [fill=blue] (1.,1.) circle (2pt);
+\filldraw [fill=blue] (-1.,-1.) circle (2pt);
+\filldraw [fill=blue] (0.,-1.6329931618554518) circle (2pt);
+\filldraw [fill=blue] (-1.651267157575746,0.05752458323349807) circle (2pt);
+\filldraw [fill=blue] (1.7127137631328755,-0.814236214326387) circle (2pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+The idea is that ``conics are parametrized by $\P^5$, and passing through a point is a degree $1$ equation in $\P^5$''. \pause But this might be dangerous:
+\begin{itemize}
+\item $\P^5$ parametrizes conics, not \emph{smooth} conics.
+\item We need \emph{transversal} intersections.
+\end{itemize}
+
+\pause 
+
+For instance, the argument \emph{does not} work for  smooth conics tangent to five lines. Each tangency is a degree 2 equation on $\P^5$, but they are not transversal (the conics of the form $\{L^2=0\}$ are ``tangent'' to all lines). 
+
+The correct number is 1, which may be seen by taking the \emph{dual conic} (the set of tangent lines, as a subset of $(\P^2)^\ast$).
+\end{frame}
+
+
+
+\begin{frame}{Conservation of number}
+The classical principle is called \emph{conservation of number}: if the problem has a finite numerical answer, this number is constant (or jumps to infinity).
+
+\pause
+
+Sadly, this does not work. Given four lines and a point in general position, there exists $1^4 \cdot 2=2$ smooth conics tangent to the lines and passing through the point (as one can show by taking the dual problem). But if the point lies in the diagonals of the quadrilateral given by the lines, then the number of smooth solutions decreases to $1$ or $0$. 
+
+\pause 
+
+Today we will discuss strong foundations for this principle, and some applications in enumerative geometry. 
+\end{frame}
+
+
+
+
+\section{Families of cycle classes}
+
+
+
+\begin{frame}{Notation}
+During this section, $T$ will denote an irreducible variety of dimension $m>0$. We take $t \in T$ a regular closed point, and we denote
+\[ \{t\}=\Spec \kappa(t), \qquad t\colon \{t\} \to T \] 
+for the point and the inclusion.
+
+We will use script letters (e.g. $\X, \Y$) for schemes over $T$, and the corresponding latin letters (e.g. $X_t, Y_t$) for the corresponding fibers over $t$ (as schemes over $\{t\}$). If $f\colon \X \to \Y$ is a morphism, we denote $f_t\colon X_t \to Y_t$ the map on the fibers.
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Specialization}
+Let $p\colon \Y \to T, \alpha \in A_{k+m}\Y$. We define $\alpha_t \in A_k Y_t$ by
+\[ \alpha_t = t^!(\alpha) \]
+where $t^!$ is the refined Gysin homomorphism induced by
+\[ \begin{tikzcd} Y_t \arrow[r] \arrow[d] & \Y \arrow[d, "p"] \\ {\{t\}} \arrow[r, "t"] & T. \end{tikzcd} \]\pause
+For instance, if $\alpha=[\V]$ and $\V \subseteq Y_t$, then $[\V]_t=0$. 
+\end{frame}
+
+
+
+\begin{frame}{Basic properties}
+\begin{prop}
+\label{prop:basicprop}
+\only<1>{
+\begin{enumerate}
+\item If $f\colon \X \to \Y$ is proper, $\alpha \in A_{k+m}\X$, then
+\[ f_{t\ast}(\alpha_t)=(f_\ast(\alpha))_t \qquad \text{in }A_k(Y_t). \]
+
+\item If $f\colon \X \to \Y$ is flat of relative dimension $n$, $\alpha \in A_{k+m}\Y$
+\[ f_t^\ast(\alpha_t)=(f^\ast(\alpha))_t \qquad \text{in }A_{k+n}(X_t). \]
+
+\item If $i\colon \X \to \Y$ is a regular embedding of codimension $d$, such that $i_t\colon X_t \to Y_t$ is also a regular embedding of codimension $d$, $f\colon \V \to \Y$ a morphism, $\alpha \in A_{k+m}\V$, then
+\[ i_t^!(\alpha_t)=(i^!(\alpha))_t \qquad \text{in } A_{k-d}(W_t), \W=f^{-1}(\X). \]
+\end{enumerate}
+}
+\only<2->{
+\begin{enumerate} \setcounter{enumi}{3}
+\item If $E$ is a vector bundle over $\Y$, $\alpha \in A_{k+m} \Y$, then 
+\[ c_i(E_t) \cap \alpha_t = (c_i(E) \cap \alpha)_t \qquad \text{in }A_{k-i}(Y_t). \]
+\end{enumerate}}
+\end{prop}
+
+\only<3>{The proof follows directly from similar statements for the refined Gysin homomorphism (see \textsection 6.2--6.4).}
+\end{frame}
+
+
+
+\begin{frame}{Relation between fibers}
+Given a family $\X \to T$ and $\alpha \in A_{k+m}\X$, it is natural to compare $\alpha_t \in A_k(X_t)$ for different values of $t$. It is not obvious that such relation exists, even if $\X=Y \times T$ is the trivial family.
+
+\pause
+
+\begin{example}
+Let $Y=T$ be a projective curve of genus $g \geq 2$, and $\Delta\subseteq Y \times T$ the diagonal. If $\alpha = [\Delta] \in A_1(Y \times T)$, then $\alpha_t = [t] \in A_0 Y$. But for $t_1 \neq t_2$, we have that $\alpha_{t_1}$ and $\alpha_{t_2}$ are not rationally equivalent. 
+\end{example}
+
+\pause
+
+This can be solved if we assume that $\X=Y \times T$, and if for every $t_1, t_2 \in T$, they can be connected by a chain of rational curves in $T$ (see Example 10.1.7).
+\end{frame}
+
+
+
+\begin{frame}{An useful corollary}
+\begin{corollary}
+Assume $T$ is non-singular, $t \in T$ rational over the ground field, $\Y$ smooth over $T$ with relative dimension $n$. If $\alpha \in A_{k+m}(\Y), \beta \in A_{l+m}(\Y)$, then \label{cor:intfiber}
+\[ \alpha_t \cdot \beta_t = (\alpha \cdot \beta)_t \qquad \text{in } A_{k+l-n}(Y_t). \]
+\end{corollary}
+
+\pause
+
+This gives us a strategy to show that $a \cdot b=c$ in a non-singular variety $Y$. We construct a family $\Y \to T$ with $Y_t=Y$ for some $t$, and such that $a, b, c$ can be lifted to $\alpha, \beta, \gamma$. Then, it suffices to show that $\alpha \cdot \beta=\gamma$, which we can try to prove generically.
+\end{frame}
+
+
+
+\begin{frame}{How to use the corollary}
+Let $C$ be a non-singular curve, $C^{(n)}$ its $n^{\text{th}}$ symmetric product (which points are effective divisors of degree $n$ over $C$). If $A$ is an effective divisor on $C$ of degree $<n$, define
+\[ X_A=\{D \in C^{(n)} \mid D \geq A \}. \]
+
+\pause
+
+One can show that if $A$ and $B$ have disjoint support, then $X_A$ and $X_B$ intersect transversally, and so
+\[ [X_A] \cdot [X_B]=[X_{A+B}]. \]
+
+\pause 
+
+This is true even if $A$ and $B$ intersect, by using Corollary \ref{cor:intfiber} and by ``moving'' $A$. 
+\end{frame}
+
+
+
+\section{Conservation of number}
+
+
+
+\begin{frame}{A useful relation}
+We have seen that for $\alpha \in A_k\Y$, it is not clear that $\{\alpha_t\}_{t \in T}$ are related, even if $\Y=Y \times T$ is the trivial family. \pause We have the following substitute.
+
+\begin{prop}[Conservation of number]
+Let $p\colon \Y \to T$ be a proper morphism, $\dim T=m$ as before. Let $\alpha$ be an $m$-cycle on $\Y$. Then $\alpha_t \in A_0(Y_t)$ all have the same degree (which is obtained by $p_{t\ast}(\alpha_t)=\deg \alpha_t\cdot [\{t\}]$). 
+\end{prop}
+
+\pause
+
+The idea of the proof is write $p_\ast(\alpha)=N[T] \in A_m(T)$, for some $N \in \Z$. Then, by Proposition \ref{prop:basicprop} we get
+\[ p_{t\ast}(\alpha_t)=(p_\ast(\alpha))_t = N[T]_t= N[\{t\}]. \]
+\end{frame}
+
+
+\begin{frame}
+This proposition can be improved to compute the degree of intersections with Chern classes or some divisors (see \textsection 10.2 for precise statements). We will need the following result.
+
+\begin{corollary}
+Let $Y$ be a scheme, $\H_i \subseteq Y \times T$ effective Cartier divisors which are flat over $T, i=1, \dots, d$. Let $a$ be a $d$-cycle on $Y$. Assume that
+\[ \H_1 \cap \dots \cap \H_d \cap (\Supp(a) \times T) \]
+is proper over $T$. Then
+\[ \deg((H_1)_t \cdot \dots \cdot (H_d)_t \cdot a) \]
+is independent of $t$. 
+\end{corollary}
+\end{frame}
+
+
+
+\section{An enumerative problem}
+
+
+
+\begin{frame}{The main objective}
+Our main application of this techniques will be to solve the following problem.
+\begin{center}
+\emph{Given an $r$-dimensional family of plane curves, and $r$ curves in general position in the plane, how many curves in the family are tangent to the $r$ given curves?}
+\end{center}
+
+\pause
+
+The answer will require to compute the \emph{characteristics} $\mu^k \nu^{r-k}$ of the family, which are the number of curves in the family passing through $k$ general points and tangent to $r-k$ general lines. 
+
+\pause 
+
+For instance, if we consider the family of smooth conics, then
+\[ \mu^5 = \nu^5 = 1, \quad \mu\nu^4=\mu^4\nu=2, \quad \mu^2\nu^3=\mu^3\nu^2=4. \]
+\end{frame}
+
+
+
+\begin{frame}{Step 1}
+We will study the \emph{incidence correspondence} 
+\[ I=\{[x:y:z], [a:b:c] \mid ax+by+cz=0\} \subseteq \P^2 \times \P^{2\ast}. \]
+This can be seen as a $\P^1$-bundle over $\P^2$. In fact, if $E$ is the kernel of
+\[ 1_{\P^2}^{\oplus 3} \xrightarrow{(x, y, z)} \O_{\P^2}(1) \to 0, \]
+then $I=\P(E)$. 
+
+\pause
+
+This allows us to compute $A^\bullet(I)$ (see Example 8.3.4), with a basis 
+\[ 1, \lambda, \zeta, \lambda^2, \zeta^2, \lambda^2\zeta=\lambda\zeta^2, \]
+where $\lambda\zeta=\lambda^2+\zeta^2, \lambda^3=\zeta^3=0$, and $\lambda, \zeta$ the pullbacks of $c_1(\O_{\P^2}(1)), c_1(\O_{\P^{2\ast}}(1))$. 
+\end{frame}
+
+
+
+\begin{frame}
+Now, if $M$ is a line and $Q$ a point, consider
+\begin{align*}
+M' &= \{(P, L) \in I \mid L=M\} & Q' &= \{(P, L) \in I \mid P=Q\} \\
+M'' &= \{(P, L) \in I \mid P \in M\} & Q'' &= \{(P, L) \in I \mid Q \in L\}.
+\end{align*}
+One can show that
+\[ \lambda=[M''], \quad \zeta = [Q''], \qquad \lambda^2=[Q'], \quad \zeta^2 = [M']. \]
+\end{frame}
+
+
+
+\begin{frame}{Step 2}
+Let $D \subseteq \P^2$ be a curve without multiple components. Define $D' \subseteq I$ as the closure of
+\[ \{(P, L) \in I \mid P \text{ simple point of D}, L \text{ tangent at }P\}. \]
+
+\pause 
+
+We claim that
+\[ [D'] = n[M']+m[Q'] = n\zeta^2+m \lambda^2 \in A^2I, \]
+where $n$ is the degree and $m$ the \emph{class} of $D$ (the number of tangents from a general point to $D$). The idea is to compute 
+\[ D' \cap M'' = \{(P_i, L_i) \mid P_i \in M \cap D, L_i \text{ tangent at }P_i\}, \]
+which has generically $\# D' \cap M''=n$ points.  
+\end{frame}
+
+
+
+\begin{frame}
+The equivalence $[D']=m[M']+n[Q']$ can be computed explicitely. Take $P_0$ a general point, $M$ a general line, and let $Q_1, \dots, Q_m$ the intersections of $M$ with the tangents from $P_0$.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.5, line cap=round,line join=round, line width=1.25pt]
+\clip(-4.25,-3.5) rectangle (3.35,3.5);
+\draw [rotate around={-45.:(0.,0.)},color=blue] (0.,0.) ellipse (2.cm and 1.4142135623730951cm);
+\draw [color=blue] (3.,-3.5) -- (3.,3.5);
+\draw [dash pattern=on 2pt off 2pt,domain=-4.25:3.35] plot(\x,{(-6.062177826491071-1.9684926258021747*\x)/3.6235853534352556});
+\draw [dash pattern=on 2pt off 2pt,domain=-4.25:3.35] plot(\x,{(--6.0621778264910695--1.1472635755228446*\x)/2.9462470487993815});
+\begin{scriptsize}
+\draw [fill=blue] (-4.,0.5) circle (2.5pt);
+\draw [fill=black] (3.,3.2257880604182683) circle (2.5pt);
+\draw [fill=black] (3.,-3.3027111373413454) circle (2.5pt);
+\draw (-3.75, 1.2) node {$P_0$};
+\draw (2.5,2.5) node {$Q_1$};
+\draw (2.5,-2.5) node {$Q_2$};
+\end{scriptsize}
+\end{tikzpicture}
+\end{figure}
+\pause
+
+The projection from $P_0$ to $M$ gives a family $\mathscr{D} \to \mathbb{A}^1$ with $\mathscr{D}_1=[D'], \mathscr{D}_0 = n[M']+\sum [Q_i']$. (There is a explicit computation in \textsection 10.4.) 
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Step 3}
+Let $\mathscr{X} \subseteq \P^2 \times S$ be a flat family of plane curves, $\dim S=r$, $S$ non-singular. Assume $X_s$ has no multiple compontents for general $s$, and let $S^0 \subseteq S$ an open set with $X_s$ reduced for $s \in S$. 
+
+Let $\X(r)\subseteq I^r \times S^0$ given by $(P_1, L_1), \dots, (P_r, L_r), s$ such that $P_i$ is a simple point of $X_s$, and $L_i$ is tangent in $P_i$. Note that $\dim \X(r)=2r$.
+
+\pause 
+
+Take $D_1, \dots, D_r \subseteq \P^2$ reduced curves, and consider
+\[ \begin{tikzcd} W \arrow[r] \arrow[d] & D_1' \times \dots \times D_r' \arrow[d] \\ \X(r) \arrow[r, "\varphi"] & I^r. \end{tikzcd} \]
+\end{frame}
+
+
+
+\begin{frame}
+We can move $D_1, \dots, D_r$, so that the interseccion between $\X(r)$ and $D_1' \times \dots \times D_r'$ is transversal (by taking a general element in $\operatorname{PGL}(2)^r$). This way, $W$ has $N$ (reduced) points. 
+
+Now, compactify $\overline{\X} \subseteq \P^2 \times \overline{S^0}$, and $\overline{\X(r)}\subseteq I^r \times \overline{S^0}$. If $Z$ is a closed subsed of dimension less than $2r$, which contains all $\overline{\X(r)}-\X(r)$, then the number $N$ does not change after we remove $Z$.
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Step 4}
+We now degenerate each $D_i$ to a multiple line (as we did for $D$). This gives a diagram
+\[ \begin{tikzcd} \W \arrow[r] \arrow[d] & \D_1' \times \dots \times \D_r' \arrow[r] \arrow[d] & \A^r \\ \overline{\X(r)} \arrow[r]& I^r. \end{tikzcd} \]
+The space $\overline{\X(r)}$ is complete, so $\W$ is proper over $\A^r$. This way, we may take an open neighborhood $T$ of $(1, \dots, 1)$ and $(0, \dots, 0)$, so that $\W$ is proper over $T$ and disjoint from $Z$. 
+
+\pause
+
+Now, Corollary \ref{cor:intfiber} applies, and so
+\[ \deg(\X(r) \cdot_\varphi (D_1' \times \dots \times D_r')) = \deg(\X(r) \cdot_\varphi (E_1' \times \dots E_r')), \]
+where $D_i', E_i'$ are the fibers over $1$ and $0$.
+\end{frame}
+
+
+
+\begin{frame}
+The right hand side is just
+\[ \prod_{i=1}^r (m_i \mu + n_i \nu) = \sum_{k=0}^r N_k \mu^k \nu^{r-k}, \]
+where each curve $D_i$ has degree $n_i$ and class $m_i$. 
+
+The left hand side is the number of points $N$, provided that we take a \emph{convenient} $Z$ (which avoids technical difficulties such as bitangents). 
+\end{frame}
+
+
+
+\begin{frame}{The famous example}
+The most known example is the \emph{Steiner's conic problem}, which tries to determine the number of conics tangent to five smooth conics in general position. \pause
+
+The natural family here is the family of smooth conics (as a subset of $\P^5$), which has characteristics
+\[ \mu^5=\nu^5=1, \quad \mu^4\nu=\mu\nu^4=2, \mu^3\nu^2=\mu^2\nu^3=4 \]
+(in characteristic zero!)
+
+This way, the number of conics tangent to five non-singular curves of degree $n$ in general position is
+\[ N=n^5((n-1)^5+10(n-1)^4+40(n-1)^3+40(n-1)^2+10(n-1)+1), \]
+which for $n=2$ gives the famous number $3264$. 
+\end{frame}
+
+
+
+
+
+\end{document}
+
+

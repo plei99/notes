@@ -22,6 +22,7 @@
 \usepackage{physics}
 \usepackage{spectralsequences} 
 \usepackage{stackengine}
+\usepackage{mathrsfs}
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
@@ -115,6 +116,7 @@
 \newcommand{\R}{\mathbb{R}}
 \renewcommand{\H}{\mathbb{H}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\F}{\mathbb{F}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -130,11 +132,13 @@
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 \renewcommand{\abstractname}{Official Description}
 \newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\wt}[1]{\widetilde{#1}}
 \newcommand{\wh}[1]{\widehat{#1}}
 
@@ -145,11 +149,13 @@
 \DeclareMathOperator{\coker}{coker}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\Vect}{Vect}
 
 % Section formatting
@@ -210,6 +216,13 @@ These notes were taken during lecture using the \texttt{vimtex} package of the e
 Any errors are mine and not the instructor's. 
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the instructor.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\section*{Acknowledgements}%
+\label{sec:acknowledgements}
+
+I would like to thank Nicol\'as Vilches and Alex Xu for point out errors and typos in these notes.
+
+
 \newpage
 
 
@@ -1610,7 +1623,7 @@ These cells are called \textit{Schubert cells}. These behave nicely with the inc
 \end{proof}
 
 \begin{thm}[Splitting principle]
-    Let $E^n \to X$ be a line bundle. Then there exists $\wt{X} \xrightarrow{f} \to X$ such that $f^* E$ is a direct sum of line bundles and $f^* \colon H^*(X, \Z) \to H^*(\wt{X}, \Z)$ is injective.
+    Let $E^n \to X$ be a line bundle. Then there exists $\wt{X} \xrightarrow{f} X$ such that $f^* E$ is a direct sum of line bundles and $f^* \colon H^*(X, \Z) \to H^*(\wt{X}, \Z)$ is injective.
 \end{thm}
 This gives us the following slogan:
 \begin{quotation}
@@ -1692,7 +1705,7 @@ Here are some facts about the Stiefel-Whitney classes:
 
 Now we will assume that our real vector bundles are oriented. Recall that $G_k^{\R} = BO(k)$ is the space of $k$-planes in $\R^{\infty}$. Then we set $G_k^+ = BSO(k)$ to be the space of \textbf{oriented} $k$-planes in $\R^{\infty}$. There is a double cover $G_k^+ \to G_k^{\R}$. Recall that every oriented bundle has an Euler class!
 \begin{rmk}
-    Suppose $E \to B$ os an oriented odd-dimensional vector undle. Then the map $(b, v) \mapsto (b,-v)$ reverses orientation on the sphere bundle, so $e(E) = -e(E)$ and thus $2e(E) = 0$.
+    Suppose $E \to B$ is an oriented odd-dimensional vector undle. Then the map $(b, v) \mapsto (b,-v)$ reverses orientation on the sphere bundle, so $e(E) = -e(E)$ and thus $2e(E) = 0$.
 \end{rmk}
 
 Recall that $H^*(SO(n), \Q)$ varies greatly depending on the parity of $n$. We should obtain the same thing for the classifying spaces.
@@ -1714,7 +1727,7 @@ Concretely, we can define the Pontryagin classes in terms of the Chern classes. 
 \end{rmk}
 
 \begin{exm}
-    We will compute the Pontragin classes of $T\C\P^n$.
+    We will compute the Pontryagin classes of $T\C\P^n$.
 \end{exm}
 
 \begin{lem}
@@ -1818,7 +1831,394 @@ The group $\Omega_k(X)$ is called the $k$-th \textit{bordism group}. Clearly $\O
     We know that $W = \Im(\iota^* \colon H^{2k}(W) \to H^{2k}(M))$ is isotropic in $V = H^{2k}(M)$, so we need to show that it is half-dimensional. But then $\Im(\iota^*) = \ker (\iota_*)$ under identification. But then $\iota^*$ is dual to $\iota_*$, so $\dim \Im(\iota^*) = \dim \Im(\iota_*) = \dim V - \dim \ker (\iota_*)$ and thus $W$ is half-dimensional.
 \end{proof}
 
+Recall that a \textit{spectrum} $\mathbb{E}$ is a sequence $(E_n, j_n \colon \Sigma E_n \to E_{n+1})$. Then we have the associated homology theory
+\[ H_n(X, \mathbb{E}) = \varinjlim \pi_{n+\ell} (X_+ \wedge E_{\ell}), \]
+where the colimit is over the sequence of maps given by suspension followed by $j_{\ell}$.
 
+\begin{exm}
+    Consider $E_n = K(\Z, n)$ and let $j_n$ be adjoint to $\Omega K(\Z, n+1) = K(\Z, n)$. Then the associated homology theory is $H_n(-, \Z)$.
+\end{exm}
+
+Thom described the spectrum representing $\Omega_n$. Nowadays we call this the \textit{Thom spectrum} $MSO$. Here, we write $MSO(k) = T(\gamma_k \to BSO(k))$, where $BSO(k)$ is the oriented Grassmannian. Then there is a natural map 
+\[ \iota_k \colon BSO(k) \to BSO(k+1) \qquad \R^{\infty} \supset V \mapsto \R \oplus V \in \R \oplus \R^{\infty} = \R^{\infty}. \] 
+In particular, we have $\iota_k^* \gamma_{k+1} = \underline{\R} \oplus \gamma_k$. Then we have a map $T(\R \oplus \gamma_k) \to T(\gamma_{k+1})$, but in the homework we prove that $T(\R \oplus E) = \Sigma T(E)$.
+
+\begin{thm}[Thom 1954]
+    The spectrum $MSO$ represents the homology theory $\Omega_*$.
+\end{thm}
+
+As a consequence, we have $\Omega_n(\mr{pt}) = \varinjlim \pi_{n+\ell}(MSO(\ell))$. In particular, this is finitely generated. Tensoring with $\Q$, we may use techniques of Serre to prove that
+\[ \Omega_n(\mr{pt}) \otimes \Q = \varinjlim H_{n+\ell} (MSO(\ell), \Q) = \varinjlim_{\ell \to \infty} H_n(BSO(\ell), \Q). \]
+Therefore $\Omega_n(\mr{pt})$ is finitely generated with rank $0$ when $4 \nmid n$ and the number of partitions of $i$ when $n = 4i$.
+
+\begin{rmk}
+    The generators of $\Omega_{4i}(\mr{pt}) \otimes \Q$ are $\C\P^{2i_1} \times \cdots \times \C\P^{2i_k}$, where $I = (i_1, \ldots, i_k)$ is a partition of $i$. Alternatively, we may define
+    \[ p_I \colon \Omega_{4i} (\mr{pt}) \to \Z \qquad M \mapsto \ev{p_{i_1}(M) \cup \cdots \cdots p_{i_j}(M), [M]}. \]
+    This is called the \textit{$I$-Pontryagin number}. Then the map
+    \[ \Omega^{4i}(\mr{pt}) \to \Z^{\# \text{partitions}} \qquad M \mapsto \qty{p_I(M)} \]
+    is an isomorphism after tensoring with $\Q$. 
+
+    Recall that the signature gives a homomorphism $\Omega_{4i}(\mr{pt}) \to \Z$. Therefore it is a linear combination of Pontryagin numbers. We may compute exactly which combination using the \textbf{Hirzebruch signature theorem}. Later, we will prove this as a consequence of the Atiyah-Singer index theorem. We have
+    \begin{enumerate}
+        \item $\mr{sign}(M^4) = \frac{1}{3} p_1$.
+        \item $\mr{sign}(M^8) = \frac{1}{45} (7p_2 - p_1^2)$.
+        \item $\mr{sign}(M^{12}) = \frac{1}{945}(62p_3 - 13 p_1p_2 + 2 p_1^3)$.
+        \item $\mr{sign}(M^{16}) = \frac{1}{14175}(\ldots)$.
+    \end{enumerate}
+\end{rmk}
+An application of this formula is in Milnor's 1956 paper \textit{On manifolds homeomorphic to the $7$-sphere}. 
+\begin{thm}[Milnor 1956]
+    There exist $M^7$ which are homeomorphic but not diffeomorphic to $S^7$.
+\end{thm}
+The idea to distinguish smooth structures is this. We know $H^*(M^7, \Z) \cong H_*(S^7, \Z)$. Then because $\Omega_7 = 0$ there exists $W^8$ such that $M^7 = \partial W^8$. Then we have an intersection form on $H^4(W, M, \Z)/\text{torsion} \cong H^4(W)/\text{torsion}$. In particular, the signature of $W$ is an integer and have a number $q(W) = \ev{p_1^2(W), [W,M]}$.
+\begin{lem}
+    The number $\lambda = 2q(W) - \text{sign}(W) \mod 7$ is is independent of the choice of $W$. Therefore $\lambda$ is an invariant of $M$. 
+\end{lem}
+
+\begin{proof}
+    Consider two bounding manifolds $W_1, W_2$. Then we can glue $W_1, W_2$ to obtain a closed manifold $X$. Then $\sign(X) = \sign(W_1) - \sign(W_2)$ and $\ev{p_1^2(X), [X]} = q(W_1) - q(W_2)$. Then the Hirzebruch formla gives us
+    \[ 45 \sign + p_1^2 = 7 p_2 \]
+    and now basic arithmetic gives us the desired result.
+\end{proof}
+
+\begin{rmk}
+    This is a diffeomorphism invariant of $M$. Then $\lambda(S^7) = 0$ because $S^7$ bounds $S^8$ and gluing them together gives $S^8$.
+\end{rmk}
+
+\begin{exms}
+    We will give examples of $M^7$ homeomorphic to $S^7$ but not diffeomorphic to it. We will construct these as sphere bundles of oriented rank $4$ bundles over $S^4$. Consider $\R^4 \hookrightarrow E \to S^4$. These can be described using \textit{clutching functions}. If we take $S^4 = D_+^4 \cup D_-^4$, and we know $\eval{E}_{D_{\pm}} = D_I \times \R^4$. Therefore it suffices to describe the gluing along the equator, which gives us a map $S^3 \to SO(4)$. Now oriented vector bundles are described by $\pi_3(SO(4)) = \Z \oplus \Z$. 
+
+    Very explicitly, we can identify $S^4$ with the unit quaternions and $\R^4 = \H$. Then $f_{gj} \colon S^3 \to SO(4)$ is defined by
+    \[ f_{hj}(u) \cdot x = u^h x u^j. \]
+    For example, the trivial map $f_{0,0}$ is given by $S^4 \times \R^4$. The unit sphere is $S^4 \times S^3$. Similarly, $f_{1,0}$ gives $\gamma \to \H\P^1$ and gives us the unit sphere $S^7$. Now for $k$ odd, we will choose $h,j$ such that $h+j=1, h-j=k$. Then define $M_k$ to be the unit sphere bundle for $f_{hj}$.
+
+    We will see that $M_k$ is homeomorphic to $S^7$ but $\lambda(M_k) = k^2-1$. Thus $M_3$ is homeomorphic but not diffeomorphic to $S^7$. First, we will write an explicit $f \colon M_k \to \R$ with exactly one maximum and minimum. Then using gradient flow, we have $M_k = D^7 \cup_{\varphi} D^7$ via some $\varphi \colon \partial D^7 \to \partial D^7$. Because $\varphi$ extends radially to $D^7$, we have a homeomorphism $M_k \cong S^7$. To compute $\lambda(M_k)$, note that $M^7$ bounds the unit disk bundle of $E \to S^4$.
+\end{exms}
+
+\section{Topological K-theory}%
+\label{sec:topological_k_theory}
+
+Let $X$ be a \textbf{finite} CW complex (more generally a compact Hausdorff space). Then let $\Vect(X)$ denote the set of isomorphism classes of (complex) vector bundles on $X$.
+
+\begin{rmk}
+    The rank may vary on each component of $X$.
+\end{rmk}
+
+Then $\Vect(X)$ is a unital semiring with operations $\oplus, \otimes$ and unit the trivial line bundle $\underline{\C}$.
+
+\begin{rmk}
+    Unlike $\N$, $\Vect(X)$ is \textbf{not} cancellative. This means that if $a+b = c+b$, then $a \neq c$ in general. 
+\end{rmk}
+
+\begin{exm}
+    Consider $TS^2 \oplus \ul{\R} = \ul{\R^3}$. However, $TS^2 \neq \R^2$.
+\end{exm}
+
+We may define $\Z = \qty{(a,b) \in \N^2} / (a+b' = a'+b)$. This only works because $\N$ is cancellative, but if we modify the condition to be $(a,b) \sim (a',b')$ if $a+b'+e = a'+b+e$ for some $e$, then this defines the \textit{Grothendieck ring}.
+
+\begin{defn}
+    Define the \textit{K-theory ring} $K(X)$ to be the Grothendieck ring of $\Vect(X)$.  
+\end{defn}
+
+This defines a functor from $\ms{finCW}^{\mr{op}} \to \ms{Ring}$.
+
+\begin{exm}
+    We know that $\Vect(\mr{pt}) = \N$, so $K(\mr{pt}) = \Z$. This is because vector bundles on a point are the same as vector spaces.
+\end{exm}
+
+Thus if we consider the inclusion $\mr{pt} \hookrightarrow X$, we obtain the (virtual) rank map $K(X) \to K(\mr{pt}) = \Z$. This is locally constant. Note that if $X$ is finite, then given $E \to X$, there is $E' \to X$ such that $E \oplus E' \cong \ul{\C}^n$ for some $n$. Here are some consequences:
+\begin{enumerate}
+    \item If $\alpha \in K(X)$, then we can write $\alpha = a - \C^N$ for some $a, N$. Here, if $\alpha = E-F$, then we choose $F \oplus F' \cong \C^N$, and thus we get $\alpha = E + F' - \C^N$.
+    \item If $\alpha = a + \C^N$ and $\beta = b - \C^M$, then $\alpha = \beta$ if and only if they have the same rank everywhere and $a,b$ are stably equivalent (which means that $a \oplus \C^A = b + \C^B$ for some $A,B$).
+
+        To see this, we have $a + \C^M + \msc{E} = b + \C^N + \msc{E}$ for some $\msc{E}$. Then we simply add $\msc{E}'$ such that $\msc{E} + \msc{E}' = \C^L$. Now we have $a + \C^{M+L} = b + \C^{N+L}$, so we are done.
+\end{enumerate}
+
+Now we would like to throw away the information about stably equivalent bundles. If $(X, x_0)$ is a pointed space, we define the \textit{reduced K-theory} $\wt{K}(X, x_0) \coloneqq \ker (K(X) \to K(x_0)) = \Z$. This depends only on the component of $x_0$ and is a non-unital ring. 
+
+\begin{prop}
+    We can identify $\wt{K}(X, x_0)$ with vector bundles on $X$ up to stable equivalence.
+\end{prop}
+
+Now stabilization corresponds to the inclusion $BU(k) \hookrightarrow BU(k+1)$, so a bundle up to stabilization has classifying space $BU \coloneqq BU(\infty) = \bigcup BU(k)$. Therefore, we have
+
+\begin{cor}
+    $\wt{K}(X) = [X, BU]$.
+\end{cor}
+
+\begin{rmk}
+    This is false for noncompact spaces in general.
+\end{rmk}
+
+We may also take the maps 
+\[ U(k) \hookrightarrow U(k+1) \qquad A \mapsto \mqty(1 & 0 \\ 0 & A). \]
+Now we define $U \coloneqq U(\infty) = \bigcup_k U(k)$. Then we have a fibration $U \hookrightarrow EU \to BU$, where $EU = V^{\C}(\infty, \infty)$. We also have fibrations
+\[ U(K) \hookrightarrow V_{\C}(\infty, k) \to BU(k). \]
+Because $\pi_r(V_{\C}(n, k)) = 0$ for $r \leq 2(n-k)$, we see that $V_{\C}(\infty, \infty)$ is contractible.
+
+\begin{exm}
+    It is easy to see that 
+    \[ \wh{K}(S^1) = [S^1, BU] = \pi_1(BU) = \pi_0(U) = 0. \] 
+    Similarly, we have 
+    \[ \wt{K}(S^2) = [S^2, BU] = \pi_2(BU) = \pi_1(U) = \pi_1(U(1)) = \Z. \]
+    If $\gamma$ is the tautological class (here, take $S^2 = \C\P^1$), then this is generated by $\gamma - 1$. This is because $c_1(\gamma) = -1$. Therefore $K(S^2) = \wt{K}(S^2) \oplus \Z = \Z \oplus \Z$ is generated by $\gamma, 1$. The map is given by $a \mapsto (c_1(a), \dim(a))$. Now that $(\gamma \otimes \gamma) \oplus 1 \cong \gamma \oplus \gamma$. In particular, ${(\gamma-1)}^2 = 0$. Thus we have $K(S^2) \cong \Z[\gamma]/{ (\gamma-1) }^2$.
+\end{exm}
+
+Now we would like to extend this to a generalized cohomology theory.
+
+\begin{lem}
+    Let $(X, A)$ be a finite CW pair. Then $\wt{K}(X/A) \to \wt{K}(X) \to \wt{K}(A)$ is exact (because $A \subset X$ is a cofibration).
+\end{lem}
+
+Because $A \subset X$ is a cofibration, we know that $X/A \simeq X \cup CA$. Now the exact sequence extends to
+\[ A \hookrightarrow X \to X/A \to \Sigma A \to \Sigma X \to \Sigma X/A \to \cdots \]
+by our discussion of cofiber sequences from last semester. This gives us a long exact sequence
+\[ \cdots \to \wt{K}(\Sigma X/A) \to \wt{K}(\Sigma X) \to \wt{K}(\Sigma A) \to \wt{K}(X/A) \to \wt{K}(X) \to \wt{K}(A). \]
+Now we can manually define a cohomology theory as follows:
+\begin{defn}
+    For $q > 0$, define $\wt{K}^{-q}(X) \coloneqq \wt{K}(\Sigma^q X)$. Analogously there is an unreduced theory $K^{-q}(X,A) = \wt{K}(\Sigma^q(X/A))$. This gives $K^{-q}(X) \coloneqq K^{-q}(X, \emptyset) = \wt{K}(\Sigma^q(X \sqcup \mr{pt}))$.
+\end{defn}
+
+\begin{exm}
+    We have $K^{-q}(\mr{pt}) = \wt{K}(\Sigma^q(S^0)) = \wt{K}(S^q) = \pi_q(BU)$.
+\end{exm}
+
+The K-groups satisfy a miraculous identity:
+\begin{thm}[Bott periodicity, version B]
+For all spaces $X$, $\wt{K}(\Sigma^2 X) \cong \wt{K}(X)$.
+\end{thm}
+Therefore $K^{-q}$ is $2$-periodic and we will consider $K^0, K^1$ as the interesting cases. The original statement of Bott periodicity is
+
+\begin{thm}[Bott periodicity, version C]
+    The homotopy groups $\wt{K}(S^q) = \pi_q(BU) = \pi_{q-1}(U)$ are $2$-periodic. Therefore $\pi_k(U) = \Z$ is $k$ is odd and $0$ if $k$ is even.
+\end{thm}
+
+The most useful form of this result is
+\begin{thm}[Bott periodicity, version A]
+    For all spaces $X$, we have $K(X \times S^2) = K(X)[\gamma]/{(\gamma-1)}^2$. Here, $\gamma$ is the pullback of the tautological bundle $\gamma \to \C\P^1 = S^2$.
+\end{thm}
+
+Concretely, we have a map 
+\[ K(X) \oplus K(X) \xrightarrow{\sim} K(X \times S^2) \qquad (\alpha_1, \alpha_2) \mapsto (\alpha_1 \otimes \C) \oplus (\alpha_2 \otimes \gamma). \]
+Francesco says that proving this result is difficult online, so we only give a sketch.
+
+\begin{proof}[Sketch of proof]
+    We will use generalized clutching functions. Choose a bundle $E \to X$. This gives a bundle $E \to X \times D^2_{\pm}$. But of course $D^2$ is contractible, so we can glue them together using some $f \colon X \times S^1 \to \Aut(E)$. Thus $f(x,z) \in GL(E_{(x,z)})$, so we obtain a class $[E, f]$.
+
+    The key point is that stably, any bundle on $X \times S^2$ has the form $[E,1] \oplus [E', z]$.
+\end{proof}
+
+\begin{exm}
+    We can represent $\gamma \to S^2$ as $[\mr{pt}, f(x,z) = z]$.
+\end{exm}
+
+\begin{proof}[Proof of version B]
+    Consider the long exact sequence
+    \[ \cdots \to K^{-1}(X \times S^2) \xrightarrow{\varphi_{-1}} K^{-1}(X \vee S^2) \to K(X \times S^2, X \vee S^2) \to K(X \times S^2) \xrightarrow{\varphi} K(X \vee S^2) \to \cdots \]
+    Therefore $\varphi$ is surjective because $K(X \vee S^2) = \wt{K}(X \vee S^2) \oplus \Z = \wt{K}(X) \oplus \wt{K}(S^2) \oplus \Z$. This argument also works for $\varphi_{-1}$, and thus
+    \[ \wt{K}(\Sigma^2 X) = \ker (K(X \times S^2) \xrightarrow{\varphi} K(X \vee S^2)). \]
+    By version A, we see that $x = \alpha_1 \otimes \C + \alpha_2 \otimes \gamma = \alpha \otimes (\gamma-1) + \beta \otimes \gamma$. If if $x \in \ker \varphi$, , then its restrictions to both $X, S^2$ are trivial. Restricting to $X$, we require that $0 = \alpha \dim(\gamma-1) + \beta \dim \gamma = \beta$. Restricting to $S^2$, we see that $0 = \dim \alpha \cdot (\gamma-1)$, so $\alpha \in \wt{K}(X)$. Therefore the map $\wt{K}(X) \to \wt{K}(\Sigma^2 X)$ given by $\alpha \mapsto \alpha \otimes (\gamma-1)$ is an isomorphism.
+\end{proof}
+
+\begin{cor}
+    The group $\wt{K}(S^{2n}) = \Z$ is generated by ${(\gamma-1)}^{\otimes n}$ and $\wt{K}(S^{2n+1}) = 0$.
+\end{cor}
+
+Now we want to consider $\wt{K}(X)$ in the noncompact case. The options are
+\begin{enumerate}
+    \item The Grothendieck ring of $\Vect(X)$;
+    \item The set of maps $[X, BU]$;
+    \item The limit $\varprojlim K(Y)$ for compact $Y$.
+\end{enumerate}
+
+Unfortunately these are not the same. We are interested in the case where $X$ is Hausdorff and locally compact. For example, if $X$ is a CW complex such that every point is contained in only finitely many cells or if $E \to X$ is a vector bundle to a compact Hausdorff space, then $E$ is Hausdorff and locally compact. In our case, the one-point-compactification $X^+$ is Hausdorff.
+
+\begin{defn}
+    If $X$ is locally compact and Hausdorff, define $K(X) \coloneqq \wt{K}(X^+, \infty)$.
+\end{defn}
+
+This is a (unital) ring and is functorial under proper maps. Also, if $U \subset X$ is open and relatively compact with $U^+ = X / X \setminus U = X^+ / X^+ \setminus U$, we obtain a map $X^+ \to U^+$. In particular, we obtain a map $K(U) \to K(X)$. Then we have
+\[ K(X) = \varinjlim K(U), \]
+where $U$ ranges over the relatively compact subsets of $X$. Of course, if $X$ is compact, we recover the original $K$-theory.
+
+There is an alternative point of view in terms of complexes. Let
+\[ 0 \to E_0 \to E_1 \to \cdots \to E_n \to 0 \]
+be a complex of bundles over $X$. We define the \textit{support} $\supp \mathbb{E}$ to be the locus where the sequence is not exact.
+
+\begin{exm}
+    If we consider the bundle $0 \to \C \xrightarrow{z} \to \C \to 0$, then the support of this complex is $\qty{0}$.
+\end{exm}
+
+Define $C(X)$ to be the homotopy classes of complexes with compact support, where $\E_0 \sim E_1$ if there exists $\mathbb{G} \to X \times I$ with compact support and $\eval{\mathbb{G}}_{X \times \qty{i}} = \E_i$. Now this contains the set $C_{\emptyset}(X)$ of complexes with empty support. 
+
+\begin{prop}[Segal]
+    If $X$ is Hausdorff and locally compact, then $K(X) \cong C(X) / C_{\phi}(X)$ as rings.
+\end{prop}
+
+The basic idea is that if $E - F \in K(X) = \wt{K}(X, \infty)$, then the dimensions of $E, F$ are equal at $\infty$, so we can consider the complex $0 \to E \xrightarrow{\alpha} F \to 0$ where $\alpha$ is a chosen isomorphism near $\infty$ and extended arbitrarily with compact support to the entire $X$.
+
+\begin{rmk}
+    We have the inclusion $\supp(\E \otimes \E') \subseteq \supp(\E) \cap \supp(E')$. Therefore, the multiplication is well-defined.
+\end{rmk}
+
+\begin{rmk}
+    The sequence $0 \to \C \xrightarrow{z} \C \to 0$ in $K(\R^2) = \wt{K}(S^2)$ corresponds to $\gamma - 1$.
+\end{rmk}
+
+\begin{exm}
+    We have $K(\R^{2n}) = \wt{K}(S^{2n}) = \Z$ and this is generated by ${(\gamma-1)}^{\otimes n}$. The idea is to tensor multiple copies of $0 \to \C \xrightarrow{z_i} \C \to 0$, and the generator is the \textit{Koszul complex}
+    \[ 0 \to {\bigwedge}^0 \C^n \xrightarrow{\wedge \zeta} {\bigwedge}^1 \C^n \xrightarrow{\wedge \zeta} {\bigwedge}^2 \C^n \to \cdots \to {\bigwedge}^n \C^n \to 0. \]
+\end{exm}
+
+Now recall the Thom isomorphism in cohomology. If $\R^n \hookrightarrow E \to B$ is oriented, then $H^k(B, \Z) \xrightarrow{U_E} H^{k+n}(TE, \Z) = H_c^{k+n}(E, \Z)$ is an isomorphism. The Thom class $u_E$ restricts to the generator of $H^n_c(F, \Z)$ for each fiber. In K-theory, if we have $\C^n \to E \xrightarrow{f} B$, then we can use define the Koszul complex of $f^* E$. Restricting to a fiber $F$, we obtain the Koszul complex of $F = \C^n$. In particular, the support is the zero section of $E \to B$, which is $B$. Thus if $\F$ is a compactly supported complex on $B$, $f^* \F \otimes \bigwedge(E)$ is a compactly supported complex on $E$. Therefore we obtain a map $K(B) \simeq K(E)$.
+
+\begin{thm}
+    This is the $K$-theoretic Thom isomorphism.
+\end{thm}
+
+\begin{proof}
+    We can prove this locally using Bott periodicity and then patch to obtain the global result.
+\end{proof}
+
+\begin{rmk}
+    The Thom isomorphism holds under weaker assumptions. This is when $E$ admits a $\mr{spin}^c$ structure by Atiyah-Bott-Shapiro.
+\end{rmk}
+
+Now suppose $X$ is a finite CW complex with only even-dimensional cells. Now we have an exact sequence
+\begin{equation*}
+\begin{tikzcd}
+    K^0(X^{2n}, X^{2n-2}) \ar{r} & K^0(X^{2n}) \ar{r} & K^0(X^{2n-2}) \ar{d} \\
+    K^1(X^{2n-2}) \ar{u} & K^1(X^{2n}) \ar{l} & K^1(X^{2n}, X^{2n-2}).
+\end{tikzcd}
+\end{equation*}
+By induction, we can obtain $K(X) = \Z^{\#(\text{cells})}$. Here, we note that $K^1(X^{2n}) = K^1(X^{2n-2}) = 0$ and $K^1(X^{2n}, X^{2n-2})$ is just $\Z^{\#(\text{$2n$-cells})}$, so this is very easy. In particular, we have $K(\C\P^n) = \Z^{n+1}$. This can also be done using the Leray-Hirsch theorem, and in fact the splitting principle holds. For all $E \to X$, there exists $Y \xrightarrow{f} X$ such that $f^* \colon K(X) \to K(Y)$ is injective and $f^* E$ is a direct sum of line bundles.
+
+\section{K-theory and cohomology}%
+\label{sec:k_theory_and_cohomology}
+
+Now we will discuss the relationship between K-theory and cohomology. For a space $X$, we have the two rings $K(X), H^*(X)$. Can we find a morphism between them? The natural idea is to consider characteristic classes. We can attempt to use the total Chern class, but this is not a homomorphism!
+
+\begin{defn}
+    Given a vector bundle $E \to B$, where $B$ is a finite CW complex, define the \textit{Chern character} by
+    \[ \ch(E) = \sum e^{x_i} = \sum_i \qty(1 + x_i + \frac{x_i^2}{2} + \frac{x_i^3}{3!} + \cdots) \in H^*(X, \Q). \]
+    Here $x_i$ are the Chern roots of $E$. We can actually rewrite this as
+    \begin{align*}
+        \ch(E) &= \dim E + (x_1 + \cdots + x_n) + \frac{x_1^2 + \cdots + x_n^2}{2} + \cdots \\
+               &= \dim E + c_1(E) + \frac{{c_1(E)}^2 - 2 c_2(E)}{2} + \cdots
+    \end{align*}
+    If we write $x_1^k + \cdots + x_n^k = s_k(\sigma_1, \ldots, \sigma_n)$, where $s_k$ is the Newton polynomial and $\sigma_i$ are the elementary symmetric polynomials, we obtain
+    \[ \ch(E) = \dim E + c_1(E) + \frac{s_2(c_1, c_2)}{2} + \frac{s_3(c_1, c_2, c_3)}{3!} + \cdots \in H^{2*}(X, \Q). \]
+\end{defn}
+
+\begin{prop}
+    The Chern character defines a homomorphism $\ch \colon K(X) \to H^{2*}(X, \Z)$.
+\end{prop}
+
+\begin{proof}
+    This is obvious for line bundles because $e^x e^y = e^{x+y}$, and now we are done by splitting.
+\end{proof}
+
+\begin{thm}
+    The Chern character $\ch_{\Q} \colon K(X) \otimes \Q \to H^{2*}(X, \Q)$ is an isomorphism for any finite CW complex $X$.
+\end{thm}
+
+Note that this result is false over the integers. In addition, the map
+\[ K^1(X) \otimes \Q = \wt{K}(\Sigma X) \otimes \Q \xrightarrow{\ch_{\Q}} \wt{H}^{2*}(\Sigma X, \Q) \cong \wh{H}^{2*+1}(X, \Q) \]
+is an isomorphism.
+
+\begin{proof}
+    We induct on the skeleta. This is obvious for the case of a point. So now consider the long exact sequences
+    \begin{equation*}
+    \begin{tikzcd}
+        K^{q-1}(X^{n-1}) \ar{r} \ar{d}{\sim} & K^q(X^n, X^{n-1}) \ar{d} \ar{r} & K^q(X^n) \ar{d} \ar{r} & K^q(X^{n-1}) \ar{d}{\sim}\ar{r} & K^{q+1}(X^n, X^{n-1}) \ar{d} \\
+        H^{q-1}(X^{n-1}) \ar{r} & H^q(X^n, X^{n-1}) \ar{r} & H^q(X^n) \ar{r} & H^q(X^{n-1}) \ar{r} & H^{q+1}(X^n, X^{n-1}) \\
+    \end{tikzcd}
+    \end{equation*}
+    Now we need to show that the maps on the relative groups are isomorphisms by the five lemma. Because $X^n/X^{n-1} = \bigvee S^n$, we need to show this for spheres. In general, this is because
+    \begin{equation*}
+    \begin{tikzcd}
+        \wt{K}(X) \ar{r}{\otimes(\gamma-1)} \ar{d}{\ch} & \wt{K}(\Sigma^2 X) \ar{d}{\ch} \\
+        \wt{H}^{2*}(X, \Q) \ar{r}{\Sigma^2} & \wt{H}^{2*}(\Sigma^2 X; \Q)
+    \end{tikzcd}
+    \end{equation*}
+    commutes. Returning to the case of a sphere, we have
+    \[ \ch(x \otimes (\gamma - 1)) = \ch(x) \cup \ch(\gamma - 1), \]
+    and also
+    \[ \ch(\gamma - 1) = \ch(\gamma) - \ch(1) = 1 + c_1(\gamma) - 1 = c_1(\gamma) \in H^2(S^2, \Z) \]
+    is the generator. Now we simply need to show that $\ch_{\Q}$ are isomorphisms for $S^1, S^2$.
+\end{proof}
+
+\begin{rmk}
+    The torsion of $K(X)$ and $H^{2*}(X, \Z)$ can be very different. For example, we have $K(\R\P^{m-1}) = \Z \oplus \Z/2^{m-1}\Z$, while $H^{2*}(\R\P^{m-1}) = \Z \oplus {(\Z/2\Z)}^{m-1}$.
+\end{rmk}
+
+In general, K-theory is very hard to compute. One can compute it using equivariant K-theory, or we may use the \textit{Atiyah-Hirzebruch spectral sequence}. Here, if $X$ is a finite CW complex, then we have a spectral sequence with
+\[ \E_2^{p,q} = H^p(X, K^q(\mr{pt})) \Rightarrow K^{p+q}(X). \]
+In fact, this is true for any generalized cohomology theory.
+
+\begin{cor}
+    The Chern character $\ch \colon K(S^{2n}) \to H^{2*}(S^{2n}, \Q)$ actually restricts to $\ch \colon \wt{K}(S^{2n}) \to H^{2n}(S^{2n}; \Q)$ which is an isomorphism onto $H^{2n}(S^{2n}, \Z)$.
+\end{cor}
+
+An application of this\footnote{Allegedly this is cool.} is the following: If $x \in H^{2n}(S^{2n}, \Z)$ is given by $x = c_n(E)$, then $(n-1)! \mid x$. This is because $c_1(E) = \cdots = c_{n-1}(E) = 0$, so $\ch(E) = \dim E + \frac{c_n(E)}{(n-1)!} \in H^*(S^{2n}, \Z)$.
+
+\begin{thm}[Borel-Serre]
+    If $TS^{2n}$ admits a complex structure $J$, then $n = 1, 3$.
+\end{thm}
+
+\begin{proof}
+    Suppose we have a complex structure. Then $c_n(TS^{2n}, J) = e(TS^{2n}) = \chi(S^{2n}) = 2$, so $(n-1)! \mid 2$ and thus $n = 1,2,3$. We know $TS^4$ has no complex structure by Wu's theorem.
+\end{proof}
+
+\begin{rmk}
+    When $n =1$, then $S^2 = \C\P^1$ is a complex manifold, so we have holomorphic charts. When $n=3$, we can construct $J$ using the octonions (viewing $S^6$ in the purely imaginary octonions), and the problem of whether $S^6$ admits a complex structure is open.
+\end{rmk}
+
+Here is an important point. For $E \to X$ a vector bundle on a finite CW complex, we have a diagram which does \textbf{not} commute:
+\begin{equation*}
+\begin{tikzcd}
+    K(X) \ar{r}{\cdot \lambda_E} \ar{d}{\ch} & K(E) \ar{d}{\ch} \\
+    H^{2*}(X, \Q) \ar{r}{\cdot u_E} & H_c^{2*}(E, \Q).
+\end{tikzcd}
+\end{equation*}
+On one hand, we have $\ch(x \cdot \lambda_E) = \ch(x) \ch(\lambda_E)$ and on the other hand we have $u_E \cdot \ch(x)$. In general, $\ch(\lambda_E) \neq u_E$! Assume there exists $t \in H^{2*}(X, \Q)$ such that $t \cdot \ch(\lambda_E) = u_E$. Formally, we obtain $t = \frac{\eval{u_E}_X}{\eval{\ch(\lambda_E)}_X}$. If $E$ has Chern roots $x_1, \ldots, x_n$, then we have $\eval{u_E}_X = e(E) = x_1 \cdots x_n$. On the other hand, $\eval{\lambda_E}_X = 1 - E + \bigwedge^2 E - \bigwedge^3 E + \cdots = (1-x_1)(1-x_2) \cdots (1-x_n)$. Applying the Chern character, we have $\ch(\eval{\lambda_E}_X) = (1-e^{x_1})(1-e^{x_2}) \cdots (1-e^{x_n})$, and thus
+\[ t = \prod \frac{x_i}{1-e^{x_i}}. \]
+
+\begin{defn}
+    The \textit{Todd class} $\mr{td}(E)$ is defined by
+    \[ \mr{td}(E) = \prod \frac{x_i}{1-e^{-x_i}} = 1 + \frac{c_1}{2} + \frac{c_1^2 + c_2}{12} + \frac{c_1c_2}{24} + \cdots \]
+\end{defn}
+
+Later, when we do index theory, this will be very important.
+
+\begin{rmk}
+    We have the identity $\frac{x}{e^x - 1} = \sum B_k \frac{x^k}{k!}$, so this is the exponential generating function for the Bernoulli numbers.
+\end{rmk}
+
+\begin{thm}[Adams]
+    If there exists $f \colon S^{4n-1} \to S^{2n}$ with $H(f) = 1$, then $n = 1,2,4$.
+\end{thm}
+
+We will interpret $H(f)$ using K-theory. Consider the mapping cone $C_f = S^{2n} \cup_f D^{4n}$. then we have an exact sequence
+\[ 0 \to \wt{K}(S^{4n}) \to \wt{K}(C_f) \to \wt{K}(S^{2n}) \to 0, \]
+and here we have ${(\gamma-1)}^{2n} \mapsto \alpha, \beta \mapsto {(\gamma-1)}^n$. Then because $\beta^2 \mapsto 0$, we can write $\beta^2 = H(f) \alpha$.
+
+The tool we will use to study this are Adams operations. These are natural transformations $\psi^k \colon K(X) \to K(X)$ satisfying the following properties:
+\begin{enumerate}
+    \item For $L$ a line bundle, $\psi^k(L) = L^{\otimes k}$.
+    \item For any $k, \ell$, $\psi^k \circ \psi^{\ell} = \psi^{k\ell}$.
+    \item If $p$ is prime, then $\psi^p(\alpha) \equiv \alpha^p \pmod p$. This means that $\psi^p(\alpha) - \alpha^p = p\beta$ for some $\beta$.
+\end{enumerate}
+
+The way we will define these is by guessing a formula using splitting and then write it in an invariant way. We know that if $E = L_1 \oplus \cdots \oplus L_n$, we want
+\[ \psi(E) = \psi(L_1) \oplus \cdots \oplus \psi(L_n) = L_1^k \oplus \cdots \oplus L_n^k. \]
+Introducing a formal variable $t_i$, this becomes $t_1^k + \cdots + t_n^k$. Then we obtain
+\[ {\bigwedge}^j\qty(\bigoplus L_i) = \sigma_j(t_1, \ldots, t_n), \]
+so we have 
+\[ t_1^k + \cdots + t_n^k = s_k(\sigma_1, \ldots, \sigma_k) = s_k \qty({\bigwedge}^1\qty(\bigoplus L_i), \ldots, {\bigwedge}^k \qty(\bigoplus L_i)), \]
+and thus we may define
+\[ \psi^k(E) \coloneqq s_k \qty({\bigwedge}^1 E, \ldots, {\bigwedge}^k E). \]
+The properties are easily checked using the splitting principle! For example, the third property is Fermat's little theorem. 
 
 
 

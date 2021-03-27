@@ -43,7 +43,7 @@
 % other formatting packages
 \usepackage{float}
 \usepackage{booktabs}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 \usepackage{csquotes}
 \usepackage{titlesec}
 \usepackage{titling}
@@ -117,6 +117,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
 \renewcommand{\k}{\Bbbk}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\M}{\overline{M}}
@@ -1936,6 +1937,571 @@ Our goal now will be to extend this to $H^2(K^{\mr{sep}}/K) \simeq \Q/\Z$.
 \begin{rmk}
     The local Artin reciprocity isomorphism $\wh{H}^{-2}(G, \Z) \to \wh{H}^0(G, L^{\times})$ can be realized as the cup product by the fundamental class $u_{L/K}$.
 \end{rmk}
+
+\section{Proof of Local Class Field Theory}%
+\label{sec:proof_of_local_class_field_theory}
+
+Our goal is to prove the following result:
+
+\begin{thm}[Local class field theory]\leavevmode
+    \begin{enumerate}
+        \item (Local Artin reciprocity) There exists a unique homomorphism
+            \[ \phi_K \colon K^{\times} \to {\Gal(K^{\mr{sep}}/K)}^{\mr{ab}} \]
+            such that
+            \begin{enumerate}
+                \item For any finite Galois extension $L/K$, we have a commutative diagram
+                    \begin{equation*}
+                    \begin{tikzcd}
+                        K^{\times} \ar{d} \ar{r}{\phi_K} & {\Gal(K^{\mr{sep}}/K)}^{\mr{ab}} \ar{d} \\
+                        K^{\times}/\Nm(L^{\times}) \ar{r}{\phi_{L/K}}[swap]{\sim} & {\Gal(L/K)}^{\mr{ab}}.
+                    \end{tikzcd}
+                    \end{equation*}
+                \item For any finite unramified extension, $\phi_{L/K}(\pi) = \Frob_{L/K}$, where $\pi$ is an uniformizer of $K$.
+            \end{enumerate}
+        \item (Local existence theorem) There is a bijection between norm subgroups of $K^{\times}$ and finite index open subgroups of $K^{\times}$. In addition, if $\operatorname{char} K = 0$, then the finite index open subgroups of $K^{\times}$ are precisely the finite index subgroups of $K^{\times}$.
+    \end{enumerate}
+\end{thm}
+
+\subsection{Proof of local Artin reciprocity}%
+\label{sub:proof_of_local_artin_reciprocity}
+
+To construct $\phi_K$, we will use Tate's theorem. Recall that by Hilbert 90, we have $H^1(L/K, L^{\times}) = 0$. We also computed $H^2(L/K, L^{\times}) = \frac{1}{n} \Z/\Z$, where $n = [L:K]$. By Tate's theorem, we have an isomorphism $\wh{H}^r(L/K, \Z) \simeq \wh{H}^{r+2}(L/K, L^{\times})$ for all $r \in \Z$. We will specialize to the case where $r = -2$, and this gives us an isomorphism
+\begin{equation*}
+\begin{tikzcd}
+    \wh{H}^{-2}(L/K, \Z) \ar[equal]{d} \ar{r}{\sim} & \wh{H}^0(L/K, L^{\times}) \ar[equal]{d} \\
+    {\Gal(L/K)}^{\mr{ab}} \ar{r}{\sim} & K^{\times} / \Nm(L^{\times}).
+\end{tikzcd}
+\end{equation*}
+Then we define $\phi_{L/K}^{\mr{ab}} \xrightarrow{\sim} {\Gal(L/K)}^{\mr{ab}}$ to be its inverse. Taking the limit over all finite Galois extensions $L/K$, we obtain a map
+\[ \phi_K \colon K^{\times} \to {\Gal(K^{\mr{sep}}/K)}^{\mr{ab}}. \]
+By construction, the property a) is satisfied.
+
+To finish the proof, we need to check property b). Let $L/K$ be a finite unramified extension. Our goal is to explicitly describe the shift by $2$ isomorphism produced by Tate's theorem. Recall that Tate's theorem comes from $M = L^{\times}$ and $G = \Gal(L/K)$. Then we construct the splitting module for some $\varphi \in H^2(G, M) = H^2(L/K, L^{\times}) = \frac{1}{n} \Z/\Z$ by defining
+\[ M(\varphi) = M \oplus \bigoplus_{g \neq 1} X_g \qquad g_1 X_{g_2} = X_{g_1g_2} - X_{g_1} + \varphi(g_1, g_2). \]
+Then we have short exact sequences 
+\[ 0 \to M \to M(\varphi)  \xrightarrow{X_g \mapsto g-1} I_g \to  0 \]
+and
+\[ 0 \to I_G \to \Z[G] \xrightarrow{g \mapsto 1} \Z \to 0. \]
+Now we need to trace through the isomorphisms
+\begin{equation*}
+\begin{tikzcd}
+    \wh{H}^{-2}(G, \Z) \ar{r}{\sim} \ar[equal]{d} & \wh{H}^{-1}(G, I_G) \ar{r}{\sim} \ar[equal]{d} & \wh{H}^0(G, M) \ar[equal]{d} \\
+    G = \ev{\Frob_{L/K}} \ar{r}{\sim} & I_G/I_G^2 \ar{r}{\sim} & K^{\times}/\Nm(L^{\times}).
+\end{tikzcd}
+\end{equation*}
+The first isomorphism is given by $\Frob_{L/K} \eqqcolon \sigma \mapsto \sigma - 1$. Therefore it remains to write down the connecting homomorphism $\wh{H}^{-1}(G, I_G) \to \wh{H}^0(G, M)$. This is described using the exact sequences
+\begin{equation*}
+\begin{tikzcd}
+    & M_G \ar{r} \ar{d}{\Nm} & {M(\varphi)}_G \ar{r} \ar{d}{\Nm} & {(I_G)}_G = I_G/I_G^2 \ar{r} \ar{d}{\Nm} & 0 \\
+    0 \ar{r} & M^G \ar{r} & {M(\varphi)}^G \ar{r} & {(I_G)}^G
+\end{tikzcd}
+\end{equation*}
+by lifting $(\sigma - 1) \in I_G/I_G^2$ to ${M(\varphi)}_G$ and then taking $\Nm$. This will automatically land in $M^G$. An obvious list of $\sigma - 1$ to ${M(\varphi)}_G$ is $X_{\sigma}$, so we need to compute $\Nm(X_{\sigma})$. Therefore we have
+\begin{align*}
+    \Nm(X_{\sigma}) &= (1+ \sigma + \cdots + \sigma^{n-1}) X_{\sigma} \\
+                    &= X_{\sigma} + \sigma X_{\sigma} + \cdots + \sigma^{n-1} X_{\sigma} \\
+                    &= X_{\sigma} + (X_{\sigma^2}-X_{\sigma}+\varphi(\sigma, \sigma)) + \cdots + (X_{\sigma^n}-X_{\sigma^{n-1}}+\varphi(\sigma^{n-1}, \sigma)) \\
+                    &= X_{\sigma^n} + \varphi(\sigma, \sigma) + \varphi(\sigma^2, \sigma) + \cdots + \varphi(\sigma^{n-1}, \sigma) \\
+                    &= \varphi(1,1) + \varphi(\sigma, \sigma) + \varphi(\sigma^2, \sigma) + \cdots + \varphi(\sigma^{n-1}, \sigma).
+\end{align*}
+Now it remains to describe this explicitly for $\varphi \in H^2(G, M) = H^2(L/K, L^{\times}) = \frac{1}{n} \Z/\Z$.Recall that this comes from $H^2(L/K, L^{\times}) \xrightarrow{\sim} H^1(L/K, \Q/\Z) = \Hom(G, \Q/\Z)$ coming from the exact sequence
+\[ 0 \to \Z \to \Q \to \Z/\Q \to 0. \]
+Now if $f \in \Hom(G, \Q/\Z)$ such that $f(\sigma) = \frac{1}{n}$, then we can lift $f$ to $\wt{f} \in Z^1(G, \Q)$ and take $\dd{\wt{f}}$. This gives us $\wt{f}(\sigma^i) = \frac{i}{n} \in \Q$. If $\varphi = \dd{\wt{f}}$, then we have
+\begin{align*}
+    \varphi(\sigma^i, \sigma^j) &= \sigma^i \wt{f}(\sigma^j)- \wt{f}(\sigma^{i+j}) + \wt{f}(\sigma^i) \\
+                                &= \frac{j}{n} - \frac{(i+j) \mod n}{n} + \frac{i}{n} \\
+                                &= \begin{cases}
+                                    0 & 0 \leq i+j \leq n-1 \\
+                                    1 & i+j \geq n.
+                                \end{cases}
+\end{align*}
+This gives us 
+\begin{align*}
+    \mr{ord}_K(\Nm(X_{\sigma})) &= \varphi(1,1) + \varphi(\sigma, \sigma) + \varphi(\sigma^2, \sigma) + \cdots + \varphi(\sigma^{n-1}, \sigma) \\
+                              &= 0 + 0 + 0 + \cdots + 1 \\
+                              &= 1
+\end{align*}
+and thus $\Nm(X_{\sigma}) = \pi \in K^{\times}/\Nm(L^{\times})$. \qed
+
+\subsection{Proof of Local Existence}%
+\label{sub:proof_of_local_existence}
+
+We will assume that $\operatorname{char} K = 0$. We will establish a bijection
+\[ \qty{\text{norm subgroups of $K^{\times}$}} \overset{1:1}{\longleftrightarrow} \qty{\text{finite index subgroups of $K^{\times}$}}. \]
+Recall that any subgroup of $K^{\times}$ containing a norm subgroup is also a norm subgroup. Also note that any finite index subgroup of index $n$ contains ${(K^{\times})}^n$. Therefore it suffices to show that ${(K^{\times})}^n$ is a norm subgroup. Our goal is to study the $n$-th power may using the \textit{Kummer sequence}
+\[ 1 \to \mu_n \to {(K^{\mr{sep}})}^{\times} \xrightarrow{x \mapsto x^n} {(K^{\mr{sep}})}^{\times} \to 1. \]
+This is an exact sequence in $\Mod_G$ for $G = \Gal(K^{\mr{sep}}/K)$, so it induces a long exact sequence in cohomology
+\[ 0 \to \mu_n(K) \to K^{\times} \xrightarrow{x \mapsto x^n} K^{\times} \to H^1(G, \mu_n) \to H^1(G, {(K^{\mr{sep}})}^{\times}) = 0. \]
+This gives us the \textit{Kummer isomorphism} $K^{\times}/{(K^{\times})}^n \cong H^1(G, \mu_n)$.
+\begin{enumerate}
+    \item In the simplest case, when $\mu_n \subseteq K^{\times}$, then the isomorphism becomes 
+        \[ K^{\times}/{(K^{\times})}^n \cong \Hom(G, \mu_n) \cong \Hom(\Gal(L/K), \mu_n), \]
+        where $L/K$ is the maximal abelian extension of exponent $n$. Now the pairing
+        \[ K^{\times}/{(K^{\times})}^n \times \Gal(L/K) \to \mu_n \qquad (b, \sigma) \mapsto \frac{\sigma(\sqrt[n]{b})}{\sqrt[n]{b}} \]
+        is in fact a perfect pairing. Therefore $\abs{K^{\times}/{(K^{\times})}^n} = \abs{\Gal(L/K)}$, so by local Artin reciprocity, we have the map 
+        \[ \phi_{L/K} \colon K^{\times}/\Nm(L^{\times}) \xrightarrow{\sim} \Gal(L/K). \]
+        Also, we know $\Nm(L^{\times}) \supseteq {(K^{\times})}^n$, and therefore ${(K^{\times})}^n = \Nm(L^{\times})$.
+    \item In general, if $\mu_n$ is not contained in $K^{\times}$, then take $K_1 = K(\mu_n)$. Now we can find $L_1/K_1$ such that $\Nm(L_1^{\times}) = {(K_1^{\times})}^n$. Now take $L/K$ Galois such that $L_1 \subseteq L$. Then
+        \begin{align*} 
+            \Nm_{L/K}(L^{\times}) &= \Nm_{K_1/K} ( \Nm_{L/K_1}(L^{\times}) ) \\
+                                  &\subseteq \Nm_{K_1/K}(\Nm_{L_1/K_1}(L_1^{\times})) \\
+                                  &= \Nm_{K_1/K}({(K_1^{\times})}^n) \\
+                                  &\subseteq {(K^{\times})}^n. 
+        \end{align*}
+        Therefore ${(K^{\times})}^n$ contains a norm subgroup, and is thus also a norm subgroup. \qed
+\end{enumerate}
+
+\chapter{Global class field theory}%
+\label{cha:global_class_field_theory}
+
+Recall that a number field $K$ is a finite extension of $\Q$. The goal of global class field theory is to understand ${ \Gal(\ol{K}/K) }^{\mr{ab}}$, or equivalently to understand finite abelian extensions of $K$ in terms of \textbf{intrinsic} data associated to $K$. Analogously to the local case, we would like to construct a \textit{global Artin reciprocity map}
+\[ \phi_K \colon C_k \to {\Gal(\ol{K}/K)}^{\mr{ab}} \]
+which induces isomorphisms
+\[ \phi_{L/K} \colon C_k/\Nm(C_L) \xrightarrow{\sim} \Gal(L/K). \]
+
+\begin{rmk}
+    When $K$ is a local field, we took $C_K = K^{\times}$. When $K$ is global, we can again try to take $C_K = K^{\times}$, but in fact this fails.
+\end{rmk}
+
+\begin{exm}
+    Choose $L/K = \Q(i)/\Q$. Then $\Gal(L/K) = \Z/2$, but 
+    \[ \Q^{\times}/\Nm({\Q(i)}^{\times}) = \Q^{\times}/\qty{x \in \Q^{\times} \mid x = a^2+b^2, a,b \in \Q} \neq \Z/2\Z. \]
+    For example, any $p \equiv 3 \pmod 4$ cannot be written as $a^2+b^2$, and in fact the quotient is infinite.
+\end{exm}
+
+Instead of $K^{\times}$, we will take $C_K$ to be a generalization of the ideal class group $\Cl_K$, which is the quotient of all fractional ideals by the principal ones. Thus the class group measures the failure of unique factorization in $K$.
+
+\section{Id\`eles}%
+\label{sec:id`eles}
+
+Our generalization of ideals will be the id\`ele class group of $K$, which is again given by
+\[ C_K \coloneqq \frac{\mathbb{I}_K}{K^{\times}} \]
+for some group $\I_K$. We need to define $\I_K$ and $\Nm_{L/K} \colon C_L \to C_K$.
+
+\begin{notns}
+    We will denote a (finite or infinite) place of $K$ by $v$ and $\abs{-}_v$ the absolute value associated to $v$ such that
+    \[ \prod_v \abs{a}_v = 1 \]
+    for all $a \in K^{\times}$. Then we will denote the completion of $K$ with respect to $\abs{-}_v$ by $K_v$. When $v$ is a finite place, we write $\mc{O}_V \subseteq K_V$ for the ring of integers, $\mf{p}_v \subseteq \mc{O}_K$ the corresponding maximal ideal, and $\wh{\mf{p}}_v \subseteq \mc{O}_v$ for the completion of the maximal ideal.
+\end{notns}
+
+\begin{rmk}
+    We may attempt to take $\I_K = \prod_v K_v^{\times}$. The problem is that this group is too large in the sense that it is not locally compact.
+\end{rmk}
+
+Instead of this, we will allow only finitely many coordinates to be not a unit in $\mc{O}_v$. This will make our group locally compact.
+
+\begin{defn}
+    The group of \textit{id\`eles} (from the French \'el\'ement id\'eal for ideal element) is
+    \[ \I_K \coloneqq \qty{{(a_v)}_v \in \prod_v K_v^{\times} \mid a_v \in \mc{O}_V^{\times} \text{ for all but finitely many }v}. \]
+    This is the \textit{restricted product} of $\prod_v K_v^{\times}$ with respect to $\prod_v \mc{O}_V^{\times}$.
+\end{defn}
+
+\begin{rmk}
+    The id\`eles are equipped with the restricted product topology with a basis of open neighborhoods given by
+    \[ \prod_v U_v \subseteq \I_K, \]
+    where $U_v$ is open in $K_v^{\times}$ for all $v$ and $U_v = \mc{O}_V^{\times}$ for all but finitely many $v$.
+\end{rmk}
+
+Let $S$ be a finite set of places containing $S_{\infty} = \qty{v\ \text{infinite}}$. Then define
+\[ \I_{K,S} \coloneqq \prod_{v \in S} K_v^{\times} \times \prod_{v \notin S} \mc{O}_v^{\times} \subseteq \I_K. \]
+Note the first factor is locally compact and the second product is compact, so $\I_{K,S}$ is locally compact. Then we can write
+\[ \I_K = \bigcup_S \I_{K,S} \]
+and each $\I_{K,S}$ is open in $\I_K$, so in particular $\I_K$ is locally compact.
+
+\begin{rmk}
+    The group $\I_K$ has a basis of open neighborhoods of $1$ given by
+    \[ U(S, \ep) \coloneqq \qty{(a_v) \in \I_K \mid \abs{a_v - 1} < \ep \text{ for all } v \in S, \abs{a_v} = 1 \text{ for all } v \notin S}. \]
+\end{rmk}
+
+\begin{rmk}
+    For all places $v$, there is a natural injection 
+    \[ K_v^{\times} \hookrightarrow \I_K \qquad a \mapsto (1, \ldots, 1, a, 1, \ldots), \]
+    where $a$ goes in the coordinaate corresponding to $v$. The induced topology on $K_v^{\times}$ agrees with the usual topology.
+\end{rmk}
+
+\begin{rmk}
+    If $I_K$ is the group of fractional ideals of $K$, then there is a natural surjection
+    \[ \I_K \twoheadrightarrow I_K \qquad (a_v) \mapsto \prod_{v \nmid \infty} \mf{p}_v^{\mr{ord}_v(a_v)} \]
+    with kernel given by 
+    \[ \prod_{v \mid \infty} K_v^{\times} \times \prod_{v \nmid \infty} \mc{O}_v^{\times} = \I_{K, S_{\infty}}. \]
+    In particular, $\I_K$ can be thought of as an enlargement of $I_K$ with extra information from the infinite places and units at finite places.
+\end{rmk}
+
+\begin{rmk}
+    The group $\I_K$ is completely local. 
+\end{rmk}
+
+\begin{prop}
+    The natural map 
+    \[ K^{\times} \hookrightarrow \I_K \qquad a \mapsto (a, a, \ldots, a, \ldots) \]
+    has discrete image.
+\end{prop}
+
+\begin{proof}
+    It suffices to show that $1 \in K^{\times}$ is open in its imaage. Equivalently, for some $S \supseteq S_{\infty}$ and some $\ep > 0$, we have $K^{\times} \cap U(s, \ep) = \qty{1}$. Let $a \in K^{\times} \cap U(S, \ep)$. Then $\abs{a-1}_v < \ep$ for all $v \in S$ and $\abs{a}_v = 1$ for all $v \notin S$. Note that $\abs{a-1}_v \leq 1$ for all $v \notin S$. Therefore
+    \[ \prod_v \abs{a-1}_v < \ep^{\abs{s}}. \]
+    On the other hand, by the product formula, we know $\prod_v \abs{a-1}_v = 1$ unless $a-1 = 0$. In particular, for $S$ sufficiently large and $\ep$ sufficiently small, we must have $a = 1$.
+\end{proof}
+
+\begin{rmk}
+    Note that $K^{\times} \hookrightarrow K_v^{\times}$ has dense image for any single $v$. However, the product formula implies that for $a \in K^{\times}$, its absolute values $\abs{a}_v$ at different places $v$ ``repel'' each other and makes $K^{\times} \hookrightarrow \I_K$ have discrete image.
+\end{rmk}
+
+\begin{exm}
+    Consider the ring $\Z[\sqrt{2}] \hookrightarrow \R$. Because $\sqrt{2}$ is irrational, this has dense image. However, the embedding
+    \[ \Z[\sqrt{2}] \hookrightarrow \R \times \R \qquad a+b\sqrt{2} \mapsto (a+b\sqrt{2}, a-b\sqrt{2}) \]
+    has discrete image. In fact, the image is a lattice in $\R^2$.
+
+    Similarly, $\Z\qty[\frac{1}{p}] \hookrightarrow \R, \Q_p$ both have dense image, but 
+    \[ \Z\qty[\frac{1}{p}] \hookrightarrow \R \times \Q_p \]
+    has discrete image.
+
+    Now it should not be surprising that $K^{\times} \hookrightarrow \I_K$ has discrete image. This is simply an infinite dimensional generalization of this phenomenon.
+\end{exm}
+
+\begin{defn}
+    Define the \textit{id\`ele class group} $C_k \coloneqq \I_K / K^{\times}$ and equip it with the quotient topology. Because $K^{\times}$ is discrete, this group is locally compact. 
+\end{defn}
+
+\begin{rmk}
+    The $\I_K \twoheadrightarrow I_K$ descends to $C_K \twoheadrightarrow \Cl_K$. In particular, $C_K$ can be viewed as an enlargement of $\Cl_K$.
+\end{rmk}
+
+\begin{defn}
+    Let $L/K$ be a finite extension. Recall that 
+    \[ L \otimes_K K_v \cong \prod_{w \mid v} L_w, \]
+    given $K_v[x]/f(x) = \prod (K_v[x]/f_i(x))$, where $f_i$ are the irreducible factors of $f$ after the extension. Therefore, for all $\alpha \in L^{\times}$, we have 
+    \[ \Nm_{L/K}(\alpha) = \prod_{w \mid v} \Nm_{L_w/K_v} (\alpha). \]
+    Now we can define
+    \[ \Nm_{L/K} \colon \I_L \to \I_L \qquad {(a_w)}_w \mapsto {(b_v)}_v \qquad b_v \coloneqq \prod_{w \mid v} \Nm_{L_w/K_v}(a_w). \]
+\end{defn}
+
+\begin{defn}
+    By definition, we have a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \I_L \ar{r}{\Nm_{L/K}} & \I_K \\
+        L^{\times} \ar[hookrightarrow]{u} \ar{r}{\Nm_{L/K}} & L^{\times}. \ar[hookrightarrow]{u}
+    \end{tikzcd}
+    \end{equation*}
+    Therefore, we have an induced map $\Nm_{L/K} \colon C_L \to C_K$.
+\end{defn}
+
+\section{Statement of global class field theory}%
+\label{sec:statement_of_global_class_field_theory}
+
+Our goal is now to construct the global Artin reciprocity map. We hope to do this using the local Artin reciprocity maps. First, we recall some properties from algebraic number theory.\footnote{The note taker does not actually know any number theory. Please send help.} If $L/K$ is a finite Galois extension of number fields, $v$ a place of $K$, and $w \mid v$ a place of $L$ above $v$, we can define the \textit{decomposition group}
+\[ D(w) \coloneqq \qty{\sigma \in \Gal(L/K) \mid \sigma w = w} = \Gal(L_w/K_v). \]
+
+\begin{rmk}
+    Suppose that $w' \mid v$ is another place of $L$ above $v$. Then $D(w), D(w')$ are conjugate in $\Gal(L/K)$. In particular, if $\Gal(L/K)$ is abelian, then $D(w) = D(w')$ only depends on $v$. By local class field theory, we obtain 
+    \[ \phi_v \colon K_v^{\times} \to \Gal(L_w/K_v) = D(w) \hookrightarrow \Gal(L/K) \]
+    which only depends on $v$.
+\end{rmk}
+
+\begin{prop}
+    There exists a unique continuous homomorphism
+    \[ \phi_K \colon \I_K \to {\Gal(\ol{K}/K)}^{\mr{ab}} \]
+    such that for any finite abelian extension $L/K$ and any place $v$ of $K$, the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \I_K \ar{r}{\phi_{L/K}} & \Gal(L/K) \\
+        K_v^{\times} \ar{r}{\phi_v} \ar[hookrightarrow]{u} & \Gal(L_w/K_v) \ar[hookrightarrow]{u}
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{prop}
+
+\begin{proof}
+    Let $a = (a_v) \in \I_K$. If $a_v \in \mc{O}_v^{\times}$ and $L_w/K_v$ is unramified (true for all but finitely many places), then $\phi_v(a_v) = 1 \in \Gal(L_w/K_v)$. Now $\phi_K$ is uniquely determined by a finite product
+    \[ \phi_K((a_v)) = \prod_v \phi_v(a_v) \in \Gal(L/K), \]
+    where $v$ runs over the places where $a_v \notin \mc{O}_v^{\times}$ or $L_v/K_v$ is ramified. Therefore, varying $L/K$ and taking a limit, this determines $\phi_K$ uniquely. 
+
+    Now it remains to check that $\phi_K$ is continuous. In particular, we need the kernel to be open. Let $S$ be the set of ramified places of $L/K$. Then by local class field theory, the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \I_{K,S} \ar{r}{\phi_{L/K}} & \Gal(L/K) \\
+        \I_{L,S} \ar{u}{\Nm_{L/K}} \ar{r}{\phi_{L/L}} & \Gal(L/L) \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    commutes. Therefore $\ker(\phi_{L/K}) \supseteq \Nm_{L/K} (\I_{L,S})$, which is open. Therefore the kernel itself is also open.
+\end{proof}
+
+\begin{thm}[Global class field theory]\leavevmode
+    \begin{enumerate}
+        \item (Global Artin reciprocity) The homomorphism $\phi_K \colon \I_K \to \Gal(K^{\mr{ab}}/K)$ satisfies
+            \begin{enumerate}
+                \item $\phi_K(K^{\times}) = 1$. Therefore we obtain a global Artin map $\phi_K \colon C_k \to \Gal(K^{\mr{ab}}/K)$.
+                \item For any finite abelian extension $L/K$, $\phi_K$ induces an isomorphism 
+                    \[ \phi_{L/K} \colon C_k/\Nm(C_L) \simeq \Gal(L/K). \]
+            \end{enumerate}
+        \item (Global existence theorem) For any finite index open subgroup $N \subseteq C_K$, there exists a finite abelian extension $L/K$ such that $N = \Nm(C_L)$.
+    \end{enumerate}
+\end{thm}
+
+\begin{cor}
+    We have a bijection between finite abelian extensions $L/K$ and finite index open subgroups of $C_K$.
+\end{cor}
+
+Before we turn to the proof of global class field theory, we will describe some consequences of this bijection. We will begin with ray class fields.
+
+\begin{defn}
+    A \textit{modulus} of $K$ is a function
+    \[ \mf{m} \colon \qty{\text{places of $K$}} \to \Z_{\geq 0} \]
+    such that 
+    \begin{enumerate}
+        \item $\mf{m}(v) = 0$ for all but finitely many places $v$.
+        \item $\mf{m}(v) = 0,1$ if $v$ is a real place.
+        \item $\mf{m}(v) = 0$ if $v$ is a complex place.
+    \end{enumerate}
+\end{defn}
+
+
+\begin{defn}
+    For a modulus $\mf{m}$, define the \textit{principal congruence subgroup}
+    \[ \I_K^m \coloneqq \prod_{v \nmid \infty} U_{v, \mf{m}(v)} \times_{v \mid \infty} K_{v, \mf{m}(v)}^{\times}, \]
+    where $U_{v,0} = \mc{O}_v^{\times}$ and $U_{v,i} = 1 + \mf{p}_v^i$ for $i \geq 1$ for finite places. For infinite places, we have $K_{v,0}^{\times} = K_v^{\times}$, and $K_{v,1}^{\times} = \R_{>0}$.
+\end{defn}
+
+\begin{defn}
+    For a modulus $\mf{m}$, define
+    \[ C_k^{ \mf{m} } \coloneqq \frac{\I_K^{ \mf{m} } \cdot K^{\times}}{K^{\times}}. \]
+    Then define the \textit{ray class group} to be
+    \[ \Cl_{\mf{m}} \coloneqq C_K / C_K^m. \]
+\end{defn}
+
+Here, the term ``ray'' comes from a positivity condition $\R_{>0} \subset \R^{\times}$ at real places, which geometrically means specifying a ray.
+
+\begin{defn}
+    Write $\mf{m} = \prod_v \mf{p}_v^{\mf{m}(v)} = \mf{m}_0 \cdot \mf{m}_{\infty}$. Then we have a description
+    \[ \Cl_{\mf{m}} \coloneqq \frac{ \qty{\text{fractional ideals coprime to $\mf{m}_0$}} }{\qty{x \in K^{\times}, x \in U_{v, \mf{m}(v)} (v \mid \mf{m}_0), x \in \R_{v,>0} (v \mid \mf{m}_{\infty})}}. \]
+    In particular, if $\mf{m}(v) \equiv 0$, then $\mf{m} = \prod_v \mf{p}_v^0 = 1$ and $\Cl_1 = \Cl_K$. On the other hand, if $\mf{m} = \mf{m}_{\infty}$, then
+    \[ \Cl_{\mf{m}_{\infty}} = \frac{\qty{\text{fractional ideals}}}{\qty{x \in K^{\times} \mid x\ \text{totally positive}}} = \Cl_K^+. \]
+    This is called the \textit{narrow class group}. 
+\end{defn}
+
+\begin{defn}
+    The abelian extension $L/K$ associated to $\Cl_{ \mf{m} } \cong \Gal(L/K)$ under global class field theory is called the \textit{ray class field of $\mf{m}$}. The case of $\mf{m}=1$ is called the \textit{Hilbert class field} and is denoted by $H$ with $\Cl_K = \Gal(H/K)$. The case where $\mf{m} = \mf{m}_{\infty}$ gives us the \textit{narrow Hilbert class field} and is denoted by $H^+$. This is characterized by $\Cl_K^+ = \Gal(H^+/K)$. In particular, $H \subseteq H^+$.  
+\end{defn}
+
+\begin{rmk}
+    By local class field theory, the ramified places of the ray class field of $m$ is contained in $\mf{m}$. In particular, $H/K$ is the maximal abelian abelian extension unramified everywhere, and $H^+/K$ is the maximal abelian extension unramified at all finite places.
+\end{rmk}
+
+\begin{exm}
+    If $K = \Q$, then $\Cl_K = \Cl_L^+ \cong \qty{1}$ and thus $H = H^+ = \Q$.
+\end{exm}
+
+\begin{exm}
+    If $K = \Q(\sqrt{3})$, then $\Cl_K = \qty{1}$. However, we have
+    \[ \Cl_K^+ = \frac{K^{\times}}{K_{>0}^{\times} \cdot \mc{O}_K^{\times}} = \Z/2. \]
+    Therefore $H = K = \Q(\sqrt{3})$ and $H^+ = K(i) = \Q(\sqrt{3}, i)$.
+\end{exm}
+
+\begin{exm}
+    Let $K = \Q$ and let $\mf{m} = (m)$ for some $m \in \Z$. Then
+    \[ \Cl_{(m)} = \frac{\qty{\qty(\frac{r}{s}) \in \Q^{\times} \mid (r,m) = (s,m) = 1}}{\qty{\frac{r}{s} \in \Q^{\times} \mid \frac{r}{s} \equiv 1 \pmod m}} = {(\Z/m)}^{\times} / (\pm 1). \]
+    If $\mf{m} = (m) \cdot \infty$, then $\Cl_{(m) \cdot \infty} = {(\Z/m)}^{\times}$.
+
+    Now the ray class fields $L/\Q$ for either $2 \nmid m$ or $4 \mid m$ are given by $\Cl_{(m) \cdot \infty} \cong \Gal(L/\Q)$, where $L = \Q(\zeta_m)$, and the field given by $\Cl_{(m)}$ is $L = \Q(\zeta_m + \zeta_m^{-1})$. In particular, by varying $m$, we obtain the \textit{Kronecker-Weber theorem}. 
+\end{exm}
+
+\begin{thm}[Kronecker-Weber]
+    We have $\Q^{\mr{ab}} = \bigcup_{m \geq 1} \Q(\zeta_m)$ and thus 
+    \[ \Gal(\Q^{\mr{ab}}/\Q) = \varprojlim_m {(\Z/m)}^{\times} = \wt{Z}^{\times} = \prod_p \Z_p^{\times}. \]
+\end{thm}
+
+\begin{rmk}
+    Hilbert's 12th problem asks for an explicit description of the ray class fields for a general number field. For $K = \Q$, we have the Kronecker-Weber theorem. For imaginary quadratic fields, we have modular functions and elliptic curves with complex multiplication. In general, this problem is still open.
+\end{rmk}
+
+We will use the following strategy to prove global Artin reciprocity:
+\begin{enumerate}
+    \item We will prove the first inequality\footnote{Some other references will call this the second inequality because they prove this second.} that $[C_K:\Nm(C_L)] \geq [L:K]$. This will be a consequence of the cohomology of $\I_K, C_K$. In particular, we will show that $h(C_K) = [L:K]$. This will imply that $\abs{\wh{H}^0(G, C_L)} \geq [L:K]$, but this is precisely the index we need.
+    \item Next, we will prove the surjectivity of $\I_K \xrightarrow{\phi_{L/K}} \Gal(L/K)$. This is an application of the first inequality and the weak Chebotarev density theorem.
+    \item We will prove the second inequality\footnote{In the first proof of class field theory, this was the first inequality.} $[C_K : \Nm(C_L)] \leq [L:K]$. This is a consequence of Chebotarev density and we will use the analytic tool of $L$-functions.
+    \item We will prove that $\phi_K(K^{\times}) = 1$. This will follow from the determination of the Brauer groups of $K$.
+\end{enumerate}
+
+\section{Cohomology of Id\`eles and first inequality}%
+\label{sec:cohomology_of_id`eles}
+
+Let $L/K$ be a finite Galois extension of number fields. Recall that if $v$ is a place of $K$, then $L \otimes_K K_v = \prod_{w \mid v} L_w$. The action of $\Gal(L/K)$ on $L \otimes K_v$ induces an action on the product by permuting the places above $v$. If $\alpha = {(\alpha_w)}_{w \mid v}$ and $\sigma \in \Gal(L/K)$, then ${(\sigma \alpha)}_{\sigma w} = \sigma (\alpha_w) \in L_{\sigma w}$.
+
+\begin{prop}
+    Fix $w_0 \mid v$. Then there exists an isomorphism of $G \coloneqq \Gal(L/K)$-modules
+    \[ \prod_{w \mid v} L_w \cong \Ind_{G_{w_0}}^G L_{w_0}, \]
+    where $G_{w_0} = D(w_0)$ is the decomposition group.
+\end{prop}
+
+\begin{proof}
+    Recall that $\Ind_{G_{w_0}}^G L_{w_0} \coloneqq \qty{f \colon G \to L_{w_0} \mid f(\tau \sigma) = \tau f(\sigma)\text{ for all }\tau \in G_{w_0}, \sigma \in G}$. For any $\alpha = {(\alpha_w)}_w$, we define
+    \[ f_{\alpha} \colon G \to L_{w_0} \qquad \sigma \mapsto \sigma(\alpha_{\sigma^{-1} w_0}). \]
+    Then it is easy to compute
+    \[ f_{\alpha}(\tau \sigma) = \tau \sigma (\alpha_{\tau \sigma^{-1} w_0}) = \tau (\sigma \alpha_{\sigma^{-1} w_0}) = \tau f_{\alpha}(\sigma). \]
+    Conversely, for $f \in \Ind_{G_{w_0}}^G L_{w_0}$, we define ${(\alpha_f)}_{\sigma w_0} \coloneqq \sigma f(\sigma^{-1})$. This is well-defined by $G_{w_0}$-equivariance, and we can check that these two assignments are inverse to each other.
+\end{proof}
+
+\begin{cor}
+    By Shapiro's lemma, we have $H^r\qty(G, \prod_{w \mid v} L_w) = H^r(G_{w_0}, L_{w_0})$ for all $r \geq 0$.
+\end{cor}
+
+Similarly, we have
+\begin{cor}
+    For all $r \geq 0$, $H^r\qty(G, \prod_{w \mid v} L_w^{\times}) = H^r(G_{w_0}, L_{w_0}^{\times})$ and $H^r\qty(G, \prod_{w \mid v} U_w) = H^r(G_{w_0}, U_{w_0})$. 
+\end{cor}
+
+In particular, all of these are independent of the choice of $w_0 \mid v$. To stress the independence, we write $G^v \coloneqq G_{w_0}, L^v \coloneqq L_{w_0}$, and so on and so forth. 
+
+\begin{prop}\leavevmode
+    We have the following cohomology of the id\`eles:
+    \begin{enumerate}
+        \item $H^0(G, \I_L) = \I_K$.
+        \item For all $r \in \Z$, $H^r(G, \I_L) = \bigoplus_v \wh{H}^r(G^v, {(L^v)}^{\times})$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item We know that $a = {(a_w)} \in \I_L$ is $G$-invariant if and only if ${(a_w)}_{w \mid v}$ is $G$-invariant for all places $v$ of $K$ if and only if $a_w \in K_v^{\times}$ is independent of the choice of $w \mid v$ for all $v$, and this is equivalent to $a = {(a^v)}_v \in \I_K$.
+        \item Let $S$ be a finite set of places of $K$ containing $S_{\infty}$. Write
+            \[ \I_{L, S} = \qty(\prod_{v \in S} \prod_{w \mid v} L_w^{\times}) \times \qty(\prod_{v \notin S} \prod_{w \mid v} U_w). \]
+            Then $\I_L = \varinjlim \I_{L, S}$ and therefore 
+            \begin{align*}
+                \wh{H}^r(G, \I_L) &= \varinjlim \wh{H}^r(G, \I_{L, S}) \\
+                                  &= \varinjlim \qty(\prod_{v \in S} \wh{H}^r(G^v, {(L^v)}^{\times})) \times \qty(\prod_{v \notin S} \wh{H}^r(G^v, U^v)).
+            \end{align*}
+            If $S$ contains all places of $K$ that are ramified in $L$, then for all $v \notin S$, $L^v/K^v$ is unramified. By local class field theory, $\wh{H}^r(G^v, U^v) = 0$, so 
+            \[ \wh{H}^r(G, \I_L) = \varinjlim \prod_{v \in S} \wh{H}^r(G^v, {(L^v)}^{\times}) = \bigoplus_v \wh{H}^r(G^v, {(L^v)}^{\times}). \qedhere \]
+    \end{enumerate}
+\end{proof}
+
+\begin{cor}
+    We have $H^1(G, \I_L) = 0$ and $H^2(G, \I_L) = \bigoplus_v \frac{1}{n_v} \Z/\Z$, where $n_v = [L^v: K_v]$.
+\end{cor}
+
+These statements follow from collecting all of the local information.
+
+\begin{cor}
+    Assume $L/K$ is cyclic. Assume $S$ contains all places of $K$ that are ramified in $L$ and the infinite places. Then $h(\I_L, S) = \prod_{v \in S} n_v$.
+\end{cor}
+
+\begin{proof}
+    By local class field theory, we have
+    \[ h(\I_{L, S}) = \prod_{v \in S} h({(L^v)}^{\times}) \prod_{v \notin S} h(U^v) = \prod_{v \in S} n_v \prod_{v \notin X} 1 = \prod_{v \in S} n_v. \qedhere \]
+\end{proof}
+
+\begin{defn}
+    Let $T \coloneqq \qty{w \mid v : v \in S}$ be a finite set of places of $L$. Define the group of \textit{$T$-units} of $L$ to be
+    \[ U(T) \coloneqq L^{\times} \cap \I_{L, S} = \qty{\alpha \in L^{\times} \mid \alpha \in U_w, w \notin T}. \]
+\end{defn}
+
+Our next goal is to compute $h(U(T))$ and use this to prove the first inequality. First, we must compute the cohomology of units. Let $L/K$ be a finite Galois extension of number fields and $S$ be a finite set of places containing $S_{\infty}$. Let $T$ be the set of places of $L$ above $S$.
+
+\begin{prop}
+    Assume $L/K$ is cyclic. Then 
+    \[ h(U(T)) = \frac{\prod_{v \in S} n_v}{n}, \] 
+    where $n_v = [L^v:K_v], n=[L:K]$.
+\end{prop}
+
+\begin{proof}
+    We need to use the following comparison result for Herbrand quotients from the homework: let $G$ be a cyclic group and $V$ an $\R[G]$-module. If $M, N \subseteq V$ are two $G$-stable lattices, then $h(M) = h(N)$. We will apply this to the case where $V = \R^{\abs{T}} = \Hom_{\ms{Set}}(T, \R)$.
+    \begin{enumerate}
+        \item Consider $N = \Hom_{\ms{Set}}(T, \Z)$. This is clearly a $G$-stable lattice. As a $G$-module, we have
+            \begin{align*}
+                N &= \bigoplus_{v \in S} \Hom_{\ms{Set}}(G/G^v, \Z) \\
+                  &= \bigoplus_{v \in S} \Ind_{G^v}^G \Z.
+            \end{align*}
+            In particular, we have
+            \begin{align*}
+                h(N) &= \prod_{v \in S} h(\Ind_{G^v}^G \Z) \\ 
+                     &= \prod_{v \in S} h(\Z) \\
+                     &= \prod_{v \in S} \abs{G^v} \\
+                     &= \prod_{v \in S} n_v. 
+            \end{align*}
+        \item Now consider $\lambda \colon U(T) \to V = \R^{\abs{T}}$ given by $\alpha \mapsto {(\log \abs{\alpha}_w)}_{w \in T}$. If $M^0 = \Im(\lambda)$, Dirichlet's unit theorem for $U(T)$ says that $M^0$ is a lattice of rank $\abs{T} - 1$ in the hyperplane $\qty{\sum_{w \in T} x_w = 0}$. Then $M = M^0 \oplus \Z \cdot (1, \ldots, 1)$ is a $G$-stable lattice.
+
+            Now we know that $h(M) = h(N)$, so $h(U(T)) = h(M^0)$ because the kernel of $\lambda$ is the set of roots of unity in $L$, which is finite. Now we obtain
+            \[ h(U(T)) = h(M^0) = \frac{h(M)}{h(\Z)} = \frac{\prod_{v \in S} n_v}{n}, \]
+            as desired. \qedhere
+    \end{enumerate}
+\end{proof}
+
+Now we are able to compute the cohomology of the id\`ele class group $C_K$. 
+
+\begin{lem}
+    For $L/K$, we have $H^0(G, C_L) = C_K$.
+\end{lem}
+
+\begin{proof}
+    The short exact sequence in $\Mod_G$
+    \[ 1 \to L^{\times} \to \I_L \to C_L \to 1 \]
+    gives a long exact sequence
+    \[ 0 \to H^0(G, L^{\times}) \to H^0(G, \I_L) \to H^0(G, C_L) \to H^1(G, L^{\times}) = 0, \]
+    where the last equality is by Hilbert 90. This implies that $H^0(G, C_L) = \I_K/K^{\times} = C_K$.
+\end{proof}
+
+We need to compute the Herbrand quotient of the id\`ele class group, so first we will rewrite $\I_K$ in terms of $S$-units.
+
+\begin{lem}
+    Choose $S$ containing a generating set of prime ideals in $\Cl_K$. Then $\I_K = K^{\times} \cdot \I_{K, S}$.
+\end{lem}
+
+\begin{proof}
+    Recall that we have a surjection 
+    \[ \I_K \twoheadrightarrow I_K \qquad {(a_v)}_v \mapsto \prod_{v \nmid \infty} \mf{p}_v^{\mr{ord}_v(a_v)}. \]
+    with kernel $\I_{K, S_{\infty}}$. In particular, we can write
+    \[ \Cl_K = \I_K / K^{\times} = \I_K / K^{\times} \I_{K, S_{\infty}}. \]
+    By the choice of $S$, we have
+    \[ \I_K/K^{\times} \I_{K,S} = \Cl_K/\ev{\mf{p} \in S} = \Cl_K / \Cl_K = 0. \qedhere \]
+\end{proof}
+
+\begin{thm}
+    Assume $L/K$ is cyclic. Then $h(C_L) = [L:K]$. In particular, $[C_K: \Nm(C_L)] \geq [L:K]$.
+\end{thm}
+
+\begin{proof}
+    Choose $S$ such that $T$ a generating set of prime ideals for $\Cl_L$. Then we can rewrite
+    \[ C_L = \I_L/L^{\times} = L^{\times} \I_{L.T}/L^{\times} = \I_{L,T}/I_{L,T} \cap L^{\times} = \I_{L,T}/U(T). \]
+    Now we have 
+    \[ h(C_L) = \frac{h(\I_{L, T})}{h(U(T))} = \frac{\prod_{v \in S} n_v}{\frac{1}{n} \prod_{v \in S} n_v} = n = [L:K]. \qedhere \]
+\end{proof}
+
+As an application of the first inequality, we will prove
+
+\begin{lem}
+    Asssume $L/K$ is solvable. If there exists $D \subseteq \I_K$ such that $D \subseteq \Nm(\I_L)$ and $K^{\times} \cdot D \subseteq \I_K$ is dense, then $L = K$.
+\end{lem}
+
+\begin{proof}
+    Assume $L \neq K$. Then we may find a tower $K \subseteq K' \subseteq L$ such that $K'/K$ is cyclic. Then we know $D \subseteq \Nm(\I_K')$. By local class field theory, $\Nm(\I_{K'}) \subseteq \I_K$ is an open subgroup, so $K^{\times} \cdot \Nm(\I_{K'})$ is also an open subgroup. Therefore $K^{\times} \cdot \Nm(\I_{K'})$ is also closed. By density, we see that $K^{\times} \Nm(I_{K'}) = \I_K$. In particular, $[C_K : \Nm(C_{K'})] = 1$, so $[K':K] = 1$, which is a contradiction. Thus $L = K$.
+\end{proof}
+
+\begin{prop}
+    Assume $L/K$ is solvable. If all but finitely many places $v$ of $K$ split completely in $L$, then $L = K$. Equivalently, if $L \neq K$, then there are infinitely many places $v$ of $K$ that do not split completely in $L$.
+\end{prop}
+
+\begin{proof}
+    Choose $S$ to contain the set of all $v$ that do not split completely in $L$. Also choose
+    \[ D = \qty{{(a_v)}_v \mid a_v \in K_v^{\times} (v \in S), a_v = 1 (v \notin S)} \subseteq \I_K. \]
+    Then if $v \notin S$, it splits completely in $L$, so $L^v / K_v$ is a trivial extension. Therefore $D \subseteq \Nm(\I_L)$. On the other hand, by weak approximation, any ${(a_v)}_{v \in S}$ can be approximated by a global element $a \in K^{\times}$, so $K^{\times} \cdot D$ is dense in $\I_K$. By the previous lemma, $L = K$.
+\end{proof}
+
+\begin{prop}
+    Assume that $L/K$ is solvable. Then $\qty{\Frob_{w/v}}_{v\ \text{unramified}}$ generate $\Gal(L/K)$.
+\end{prop}
+
+\begin{proof}
+    Take $H = \ev{\Frob_{w/v}} \subseteq \Gal(L/K)$. Choose $E = L^H$. If $v$ is unramified in $L$, then $v$ splits completely in $L^H$. But this means that $E = K$ because only finitely many places are ramified, so $H = \Gal(L/K)$.
+\end{proof}
+
+\begin{cor}
+    Assume $L/K$ is abelian. Then the Artin map $\phi_K \colon \I_K \to \Gal(L/K)$ is surjective.
+\end{cor}
+
+\begin{proof}
+    By local class field theory, if $v$ is unramified in $L$, then $\phi_K (1, 1, \ldots, \pi_v, 1, \ldots) = \Frob_{w/v}$. We know that the $\Frob_{w/v}$ generate $\Gal(L/K)$, so $\phi_K$ is surjective onto $\Gal(L/K)$.
+\end{proof}
 
 
 

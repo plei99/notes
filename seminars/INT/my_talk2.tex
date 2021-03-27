@@ -1,0 +1,345 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+
+\title{Doing Italian-style algebraic geometry rigorously}
+\author{Patrick Lei}
+\date{March 19, 2021}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    We will define intersection multiplicities and then define the Chow ring. For smooth varieties, the Chow ring behaves formally like cohomology in some ways. Finally, we will discuss B\'ezout's theorem, which has a very short proof in our language and then discuss some classical examples.
+\end{abstract}
+
+\section{Intersection multiplicities}%
+\label{sec:intersection_multiplicities}
+
+Consider a Cartesian square
+\begin{equation*}
+\begin{tikzcd}
+    W \ar{r}{j} \ar{d}{g} & V \ar{d}{f} \\
+    X \ar{r}{i} & Y
+\end{tikzcd}
+\end{equation*}
+where $i$ is a regular embedding of codimension $d$ and $V$ has pure dimension $k$. Let $C = C_W V$ have components $C_1, \ldots, C_r$ with multiplicity $m_i$. Let $Z_i$ be the support of $C_i$. We call the $Z_i$ the \textit{distinguished varieties} of the intersection.
+
+\begin{lem}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Every irreducible component of $W$ is distinguished.
+        \item For any distinguished variety $Z$, we have $k-d \leq \dim Z \leq k$.
+    \end{enumerate}
+\end{lem}
+
+\begin{defn}
+    An irreducible component $Z$ of $W = f^{-1}(X)$ is a \textit{proper component} of intersection of $V$ by $X$ if $\dim Z = k-d$. The \textit{intersection multiplicity} of $Z$ in $X \cdot V$, denoted $i(Z, X \cdot V; Y) = i(Z, X \cdot V) = i(Z)$ is the coefficient of $Z$ in the class $X \cdot V \in A_{k-d}(W)$. 
+\end{defn}
+
+If $N_Z$ is the pullback of $N_X Y$ to $Z$, then $i(Z,X\cdot V; Y)$ is the coefficient of $N_Z$ in $[C]$. Now let $A = \msc{O}_{Z,V}$ and $J \subset A$ be the ideal of $W$. Then $A/J$ has finite length when $Z$ is an irreducible component of $W$.
+
+\begin{prop}
+    Assume $Z$ is a proper component of $W$.
+    \begin{enumerate}[(a)]
+        \item If $\ell(A/J)$ is the length of $A/J$, then $1 \leq i(Z, X \cdot V; Y) \leq \ell(A/J)$.
+        \item If $J$ is generated by a regular sequence of length $d$, then $i(Z, X \cdot V; Y) = \ell(A/J)$.
+    \end{enumerate}
+    If $A$ is Cohen-Macaulay, then local equations for $X$ in $Y$ give a regular sequence generating $J$ and equality in (b) holds.
+\end{prop}
+
+Now suppose $Z$ is a proper component of the intersection of $V$ by $X$ on $Y$. Let $A = \msc{O}_{V,Z}$ and $J$ be the ideal in $A$ generated by the ideal (sheaf) of $X$ in $Y$, and let $\mf{m}$ be the maximal ideal of $A$.
+
+\begin{prop}
+    Suppose $V$ is a variety. Then $i(Z, X \cdot V; Y) = 1$ if and only if $A$ is regular and $J = \mf{m}$.
+\end{prop}
+
+\section{Nonsingular varieties}%
+\label{sec:nonsingular_varieties}
+
+Let $Y$ be a smooth variety of dimension $n$. Then $\Delta \subset Y \times Y$ is regularly embedded with codimension $n$. The global \textit{intersection product} is the map 
+\[ A_k(Y) \otimes A_{\ell}(Y) \to A_{k+\ell-n}(Y) \qquad x \otimes y \mapsto x \cdot y \Delta^*(x \times y), \] 
+where $\delta^*$ is the Gysin homomorphism.
+
+More generally, let $X$ be a scheme and $f \colon X \to Y$ a morphism to a smooth variety. Then $\Gamma_f$ is regularly embedded in $Y$, so we can define a \textit{cap product}
+\[ A_i (Y) \otimes A_j (X) \to A_{i+j-n}(X) \qquad y \otimes x \mapsto f^*(y) \cap x = \Gamma_f^*(x \times y). \]
+If $X$ is smooth, then we write $f^*y = f^* y \cap [X]$.
+
+\begin{rmk}
+    We may also replace the Gysin homomorphisms $\Delta^*, \Gamma_f^*$ with the refined Gysin homomorphisms $\Delta^{!}, \Gamma_f^{!}$.
+\end{rmk}
+
+\begin{defn}
+    Let $f \colon X \to Y$ be a morphism with $Y$ smooth of dimension $n$. Let $p_X \colon X' \to X, p_Y \colon Y' \to Y$ be morphisms of schemes. Then form the square
+    \begin{equation*}
+    \begin{tikzcd}
+        X' \times_Y Y' \ar{d} \ar{r} & X' \times Y' \ar{d}{p_X \times p_Y} \\
+        X \ar{r}{\Gamma_f} & X \times Y.
+    \end{tikzcd}
+    \end{equation*}
+    Now define the \textit{refined intersection product} by
+    \[ x \cdot_f y \coloneqq \Gamma_f^{!} (x \times y) \in A_{k+\ell-n}(X' \times_Y Y') \]
+    for $x \in A_k(X'), Y \in A_{\ell}(Y')$. When $X' = X, Y' = Y$, this is the global product.
+\end{defn}
+
+\begin{prop}
+    The refined products satisfy the following formal properties:
+    \begin{enumerate}[(a)]
+        \item (Associativity) If $X \xrightarrow{f} Y \xrightarrow{g} Z$ with $Y, Z$ smooth, then 
+            \[ x \cdot_f (y \cdot_g z) = (x \cdot_f y) \cdot_{gf} z \in A_*(X' \times_Y Y' \times_Z Z'). \]
+        \item (Commutativity) If $f_i \colon X \to Y_i$ with $Y_i$ smooth, then
+            \[ (x \cdot_{f_1} y_1) \cdot_{f_2} y_2 = (x \cdot_{f_2} y_2) \cdot_{f_1} y_1 \in A_*(Y'_1 \times_{Y_1} X' \times_{Y_2} Y_2'). \]
+        \item (Projection) Let $X \xrightarrow{f} Y \xrightarrow{g} Z$ with $Z$ smooth. Let $f' \colon X' \to Y'$ be proper with $p_Y f' = f p_X$ and $f'' = f' \times_Z \mr{id}_Z$. Then
+            \[ f''_* (x \times_{gf} z) = f'_*(x) \cdot_g z \in A_*(Y' \times_Z Z'). \]
+        \item (Compatibility) Let $f \colon X \to Y$ with $Y$ smooth and $g \colon V' \to Y'$ be a regular embedding. Then 
+            \[ g^{!}(x \cdot_f y) = x \cdot_f g^{!}y \in A_*(X' \times_Y V'). \]
+    \end{enumerate}
+\end{prop}
+
+\begin{cor}
+    Let $Y$ be smooth and $j \colon V \to Y$ be a regular embedding. If $x$ is a cycle on $Y$, then $x \cdot [V] = j^!(x) \in A_*(\abs{x} \cap V)$.
+\end{cor}
+
+\begin{cor}
+    Let $f \colon X \to Y$ with $X,Y$ smooth. Then $x \cdot_f y = (x \times y) \cdot [\Gamma_f] \in A_*(\abs{x} \cap f^{-1}(\abs{y}))$.
+\end{cor}
+
+\begin{cor}
+    Let $f \colon X \to Y$ with $Y$ smooth and $x$ a cycle on $X$. Then $x \cdot_f [Y] = x$.
+\end{cor}
+
+\begin{defn}
+    Let $f \colon X \to Y$ be a morphism with $X$ purely $m$-dimensional and $Y$ a smooth $n$-dimensional variety $Y$. For any morphism $g \colon Y' \to Y$, define a \textit{refined Gysin homomorphism}
+    \[ f^{!} \colon A_k(Y') \to A_{k+m-n}(X \times_Y Y') \qquad f^!(y) = [X] \cdot_f y. \]
+\end{defn}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}[(a)]
+        \item If $f$ is flat, then $f^!(y) = f'^*(y)$, where $f' \colon X \times_Y Y' \to Y'$ is the base change.
+        \item If $f$ is a local complete intersection morphism, then $f^{!}$ agrees with the morphism constructed in Section 6.6 of Fulton.
+    \end{enumerate}
+\end{prop}
+
+Now let $Y$ be a smooth variety of dimension $n$. Let $V, W$ be closed subschemes of $Y$ of pure dimension $k, \ell$. Now a component $Z \subseteq V \cap W$ is a \textit{proper component} if $\dim Z = k + \ell - n$. If $Z$ is proper, then the coefficient of $Z$ in $V \cdot W \in A_{k+\ell-n}(V \cap W)$ is called the \textit{intersection multiplicity} $i(Z, V \cdot W; Y) = i(Z, \Delta_Y \cdot (V \times W); Y \times Y)$. If every component of $V \cap W$ is proper, then the intersection class is
+\[ V \cdot W = \sum_Z i(Z, V \cdot W; Y) \cdot [Z]. \]
+\begin{prop}
+    Assume $Z$ is a proper component of $V \cap W$. Then
+    \begin{enumerate}[(a)]
+        \item $1 \leq i(Z, V \cdot W; Y) \leq \msc{O}_{V \cap W, Z}$.
+        \item If the local ring $\msc{O}_{V \cap W, Z}$ is Cohen-Macaulay, then $i(Z,V \cdot W; Y) = \ell(\msc{O}_{V \cap W, Z})$.
+        \item If $V, W$ are varieties, then $i(Z, V \cdot W; Y) = 1$ if and only if the maximal ideal of $\msc{O}_{Y,Z}$ is the sum of the prime ideals of $V$ and $W$. In fact, $\msc{O}_{V,Z}, \msc{O}_{W,Z}$ are regular.
+    \end{enumerate}
+\end{prop}
+
+Now let $Y$ be a smooth variety of dimension $n$. Set $A^p(Y) = A_{n-p}(Y)$. Now this indexing, the intersection product is now $A^p(Y) \otimes A^q(Y) \to A^{p + q}(Y)$. In addition, if $f \colon X \to Y$ is a morphism, the cap product is now $A^p(Y) \otimes A_q(X) \xrightarrow{\cap} A_{q-p}(X)$. If $X$ is also smooth, the pullback now reads $f^* \colon A^p(Y) \to A^p(X)$. 
+
+\begin{prop}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Suppose $Y$ is a smooth variety. Then the intersection product makes $A^*(Y)$ into a commutative graded ring with unit $A^0 \ni 1 = [Y] \in A_n$. Then $Y \mapsto A^*(Y)$ is a contravariant functor from smooth varieties to rings.
+        \item If $f \colon X \to Y$ is a morphism from a scheme $X$ to a smooth variety $Y$, then $A_* X$ is a $A^* Y$-module with action
+            \[ A^p(Y) \otimes A_q(X) \xrightarrow{\cap} A_{q-p}(X). \]
+        \item If $f \colon X \to Y$ is a proper morphism of smooth varieties, then
+            \[ f_* (f^*y \cdot x) = y \cdot f_*(x) \]
+            for all classes $x$ on $X$ and $y$ on $Y$.
+    \end{enumerate}
+\end{prop}
+
+\section{B\'ezout's Theorem}%
+\label{sec:bezout_s_theorem}
+
+We will now use this theory to discuss something classical. It is easy to see that $A_k(\P^n) \cong \Z$ and is generated by $[L^k]$ for a linear subspace $L^k \subset \P^n$. If $\alpha$ is a $k$-cycle on $\P^n$, we define the \textit{degree} $\deg (\alpha)$ to be the integer satisfying $\alpha = \deg (\alpha) \cdot [L^k]$. Equivalently, we may define
+\[ \deg(\alpha) = \int_{\P^n} {c_1(\msc{O}(1))}^k \cap \alpha. \]
+
+\begin{thm}[B\'ezout]
+    Let $\alpha_i \in A^{d_i}(\P^n)$ for $i = 1, \ldots, r$. If $d_1 + \cdots + d_r \leq n$, then
+    \[ \deg(\alpha_1 \cdots \alpha_r) = \deg(\alpha_1) \cdots \deg(\alpha_r). \]
+\end{thm}
+
+\begin{proof}
+    We have an isomorphism $A^*(\P^n) = \Z[h]/(h^{n+1})$, where $h = [L^{n-1}]$. Thus $[L^{n-k}] = h^k$, and the desired result follows.
+\end{proof}
+
+Now if subschemes $V_1, \ldots, V_r \subseteq \P^n$ representing $\alpha_1, \ldots, \alpha_r$ meet properly, then 
+\[ V_1 \cdots V_r = \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot [Z_j], \]
+where $Z_j$ are the components of $\bigcap V_i$. Then B\'ezout's theorem gives us the identity
+\[ \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot \deg(Z_j) = \prod \deg(V_i). \]
+If $H_1, \ldots, H_n$ are hypersurfaces intersecting properly (so the intersection is a finite number of points), then consider the local ring $\msc{O}_{\bigcap H_i,P}$. Then complete intersections are Cohen-Macaulay, so 
+\[ i(P, H_1 \cdots H_n; \P^n) = \ell(\msc{O}_{\bigcap H_i, P}). \]
+Now $\dim_k \msc{O}_{\bigcap H_i, P} = \deg P \ell(\msc{O}_{\bigcap H_i, P})$, and thus we obtain
+\[ \sum_P \dim_k \msc{O}_{\bigcap H_i, P} = \prod \deg H_i. \]
+This recovers the very classical B\'ezout's theorem.
+
+\begin{exm}
+    Let $s$ be the hyperplane class on $\P^n$ and $t$ be the hyperplane class on $\P^m$. Then 
+    \begin{enumerate}
+        \item $A^*(\P^n \times \P^m) = \Z[s,t]/(s^{n+1}, t^{m+1})$.
+        \item If $H_1, \ldots, H_{n+m}$ are hypersurfaces in $\P^n \times \P^m$ with bidegree $(a_i, b_i)$, then
+            \[ \int [H_1] \cdots [H_{n+m}] = \sum_{ \substack{(i_1, \ldots, i_n, j_1, \ldots, j_m) \\ (n,m)\text{-shuffle}} } a_{i_1} \cdots a_{i_n} b_{j_1} \cdots b_{j_m}. \]
+        \item If $\Delta$ is the diagonal in $\P^n \times \P^n$, then $[\Delta] = \sum_{i=0}^n s^i t^{n-i} \in A^n(\P^n \times \P^n)$. 
+            This formula follows from intersecting $\Delta$ with $[L_1 \times L_2]$, where $L_1, L_2$ are linear subspaces of complementary dimension.
+        \item Let $s \colon \P^n \times \P^m \to \P^{nm+n+m}$ be the Segre embedding. It $h$ is the hyperplane class on $\P^{nm+n+m}$, then $s^* u = s + t$. Also, the degree of $s(\P^n \times \P^m)$ is $\binom{n+m}{n}$.
+        \item If $v_m \colon \P^n \to \P^{\binom{n+m}{n}-1}$ is the Veronese embedding and $s,h$ are the hyperplane classes on the source and target, then $v_m^* u = m \cdot s$. If $V$ is a $k$-dimensional subvarity of $\P^n$ of degree $d$, then $\deg(v_m(V)) = d \cdot m^k$.
+    \end{enumerate}
+\end{exm}
+
+
+
+
+\begin{thebibliography}{9}
+    \bibitem{fulton} William Fulton, \textit{Intersection Theory}, 2 ed., Ergebnisse der Mathematik und ihrer Grenzgebiete, 3. Folge, vol. 2, Springer-Verlag, 1998. 
+\end{thebibliography}
+
+
+
+\end{document}

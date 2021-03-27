@@ -37,7 +37,7 @@
 \usepackage[utf8]{inputenc} 
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
-\hypersetup{linkcolor=blue,citecolor=blue,filecolor=black,urlcolor=blue}
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
 
 % other formatting packages
 \usepackage{float}
@@ -152,6 +152,7 @@
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\spec}{Spec}
 \DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Ext}{Ext}
 \DeclareMathOperator{\Tor}{Tor}
 \DeclareMathOperator{\Ann}{Ann}
@@ -162,6 +163,7 @@
 \DeclareMathOperator{\gdim}{gl.dim}
 \DeclareMathOperator{\Pic}{Pic}
 \DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\Bl}{Bl}
 
 % Section formatting
 \titleformat{\section}
@@ -1687,7 +1689,7 @@ Recall that $B$ is a finite $A$-module if and only if $\varphi$ is integral and 
     \begin{enumerate}
         \item There is an equality $\dim X = \operatorname{tr.deg} k(\eta)$. Moreover, $X$ is catenary.
         \item For all closed points $x \in X$, $\dim X = \dim \msc{O}_{X,x}$.
-        \item If $X, Y$ are finite type over $k$ with $Y$ integral and $f \colon X \to Y$ is dominant, then $\dim Y \geq \dim X$.
+        \item If $X, Y$ are finite type over $k$ with $Y$ integral and $f \colon Y \to X$ is dominant, then $\dim Y \geq \dim X$.
         \item If $f \colon Y \to X$ is a quasi-finite morphism of schemes of finite type over $k$, then $\dim Y \leq \dim X$.
     \end{enumerate}
 \end{thm}
@@ -1708,10 +1710,17 @@ The proof of the Theorem will require Noether normalization:
             Choose some nonzero $f \in \mf{p}_1$. Up to passing to an irreducible factor, we may assume that $f$ is irreducible. Therefore we can replace $\mf{p}_1$ with $(f)$. Now we may consider $X = \Spec k[x_1, \ldots, x_n]/(f)$, and then its fraction field has transcendence degree $n-1$, so by induction we may assume that $\dim X = n-1$.
 
             Now we will prove that $X$ is catenary. It suffices to prove that if $Z \subsetneq X = \Spec A$ is a maximal proper closed irreducible subset, then $\dim Z = n-1$. If $X \xrightarrow{\pi} \A^n_k$ is the morphism obtained from Noether normalization, then we consider $\pi(Z) \subsetneq \A^n$. By going-down, we know $\pi(Z)$ is maximal, so we have now reduced to proving the statement for $\A^n$. But then $W = V(\mf{Q})$ for some prime ideal $\mf{Q}$, so let $f \in \mf{Q}$ be nonzero. If $g$ is an irreducible factor, then maximality of $W$ implies that $\mf{Q} = (g)$. But then the desired statement about dimension is simply a statement about the transcendance degree of $k[x_1, \ldots, x_n]/f$.
+        \item We can reduce to the case where $X = \Spec A$. Then we know $\dim X = \dim A = \dim A_{\mf{m}}$ for any maximal ideal $x = \mf{m} \in \Spec A$ because $X$ is catenary.
+        \item Let $y \in Y$ satisfy $f(y) = \eta_X$ and set $Z \coloneqq \ol{\qty{y}}$. Therefore $Z \to X$ is dominant, so $\eta_Z \to \eta_X$, so we have an extension $k(\eta_X) \subseteq k(\eta_Z)$ and therefore $\dim X \leq \dim Z \leq \dim Y$.
+        \item We reduce to the affine case. Up to passing to the closure of the image, we may assume $f$ is dominant. Then we have $f \colon \Spec A \to \Spec B$ and then $f^{-1}(\eta_Y)$ is a finite set, and in fact is a $0$-dimensional scheme of finite type over $k(\eta_Y)$. In particular, $\eta_X$ is a closed point of $\eta_Y$, and thus the field extension $k(\eta_Y) \subseteq \eta_X$ is finite. This means that $\dim Y \leq \dim X$. \qedhere
     \end{enumerate}
 \end{proof}
 
 Here is a general statement about unique factorization domains $A$ with $\Spec A = X$. If $Z \subseteq X$ is a closed subset all of whose components have codimension $1$, then $Z = V(f)$ for some $f \in A$. The converse also holds. If we remove the assumption of unique factorization, then the converse is still true by Krull's principal ideal theorem. 
+
+To prove the statement for a Noetherian UFD, then there are finitely many irreducible components $Z_1, \ldots, Z_s$ and if $Z_i = V(f_i)$, then $Z = V\qty(\prod f_i)$. Therefore we can assume $Z$ is irreducible, but then every height $1$ prime ideal is principal.
+
+In the other direction, we may assume that $f$ is irreducible. If there exists a prime ideal $0 \subseteq \mf{p} \subseteq (f)$, then we can assume that $\mr{ht}(\mf{p}) = 1$ by the Noetherian assumption. But then we know $p$ is principal, so $\mf{p} = (f')$, and this implies that $f \mid f'$ and thus $(f) = (f')$. Thus $\mr{ht}((f)) = 1$.
 
 \begin{rmk}
     A Noetherian domain $A$ is a UFD if and only if every prime ideal of height $1$ is principal.
@@ -1721,8 +1730,490 @@ Here is a general statement about unique factorization domains $A$ with $\Spec A
     Let $Q = V(xy = z^2) \subset \A^3_k$. Then $V(z)$ has two irreducible components, and each line cannot be cut out by a principal ideal.
 \end{rmk}
 
+\begin{thm}[Krull principal ideal theorem]
+    Let $A$ be Noetherian and $f \in A$ be nonzero. Let $\mf{p} \ni f$ be a minimal prime ideal containing $f$. Then $\mr{ht}(\mf{p}) \leq 1$. In fact, if $f$ is not a zero divisor, then $\mr{ht}(\mf{p}) = 1$.
+\end{thm}
 
+\begin{rmk}
+    If $X$ is locally of finite type, we can prove Krull by Noether normalization and the UFD property.
+\end{rmk}
 
+\begin{thm}
+    Let $X$ be locally Noetherian and $f \in \Gamma(X, \msc{O}_X)$. Then every irreducible component of $V(f)$ has codimension $0$ or $1$.
+\end{thm}
+
+\begin{cor}
+    Let $X$ be locally Noetherian and $f_1, \ldots, f_r \in \Gamma(X, \msc{O}_X)$. Then every irreducible component of $V(f_1, \ldots, f_r)$ has codimsion at most $r$.
+\end{cor}
+
+\begin{proof}
+    We may assume that $X = \Spec A$ is affine with $A$ Noetherian. We will induct on $r$. When $r = 1$, then this is just Krull's principal ideal theorem. Now consider $V(f_1, \ldots, f_{r-1}) \supseteq V(f_1, \ldots, f_r)$ and now let $Z \subseteq V(f_1, \ldots, f_r)$ be an irreducible component. Then let $W \subseteq V(f_1, \ldots, f_{r-1})$ be an irreducible component containing $Z$. By induction, we know $W \cap V(f_r) \supseteq Z$. Then every irrreducible component of $W \cap V(f_r)$ has codimension $0$ or $1$ in $W$, so it has codimension at most $r$ in $X$. Therefore, $\codim_X (Z) \leq r$.
+\end{proof}
+
+\section{Separated Morphisms}%
+\label{sec:separated_morphisms}
+
+\begin{defn}
+    A topological space $X$ is \textit{Hausdorff} if $\Delta \subseteq X \times X$ is closed.
+\end{defn}
+
+\begin{rmk}
+    A scheme $X$ is almost never Hausdorff.
+\end{rmk}
+
+\begin{thm}
+    In the topological definition, we are taking the product topology on $X \times X$ and set-theoretically we have the Cartesian product.
+\end{thm}
+
+For schemes, we can consider the fiber product $X \times_S X$ endowed with the Zariski topology as a scheme.
+\begin{defn}
+    Let $\pi \colon X \to S$ be a morphism. Then $\pi$ is \textit{separated} if the morphism $\delta_{\pi} \colon X \times_S X$ determined by the identity on each copy of $X$ is a closed immersion.
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar[bend left=20]{drr}{\mr{id}} \ar[bend right=20]{ddr}{\mr{id}} \ar{dr}{\delta_{\pi}} \\
+        & X \times_S X \ar{r} \ar{d} & X \ar{d} \\
+        & X \ar{r} & S
+    \end{tikzcd}
+    \end{equation*}
+    A scheme $X$ is \textit{separated} if $X \to \Spec \Z$ is separated, and $\pi \colon X \to S$ is called \textit{quasi-separated} if $\delta_{\pi}$ is quasi-compact. 
+\end{defn}
+
+\begin{defn}
+    A morphism $f \colon X \to Y$ is a \textit{locally closed immersion} if $f$ is a closed immersion into some open subset $U \subseteq Y$. Equivalently, $f$ is a homeomorphism onto a locally closed subset of $Y$ and $\msc{O}_{Y, f(x)} \to \msc{O}_{X,x}$ is surjective.
+\end{defn}
+
+\begin{exm}
+    Any morphism $\pi \colon X = \Spec A \to \Spec B = Y$ is separated. Here, we note that $X \times_Y X = \Spec A \otimes_B A$, and the natural morphism $A \otimes_B A \to A$ is surjective.
+\end{exm}
+
+\begin{prop}
+    Let $\pi \colon X \to S$ be a morphism of schemes. Then $\delta_{\pi} \colon X \to X \times_S X$ is always a locally closed immersion.
+\end{prop}
+
+As a consequence, $\pi \colon X \to S$ is separated if and only if $\delta_{\pi}(X) \subseteq X \times_S X$ is closed.
+
+\begin{rmk}
+    Note that if $\pi$ is separated, then it is quasi-separated.
+\end{rmk}
+
+\begin{proof}[Proof of Proposition]
+    Let $S = \bigcup V_{\beta}$ be a cover by open affines and $X = \bigcup U_{\alpha\beta}$ be a cover by open affines such that $f(U_{\alpha\beta}) \subseteq V_{\beta}$. Write $V_{\beta} = \Spec B_{\beta}$ and $U_{\alpha\beta} = \Spec A_{\alpha\beta}$. Now we set 
+    \[ \msc{U} = \bigcup U_{\alpha\beta} \times_{V_{\beta}} U_{\alpha\beta} = \bigcup \Spec A_{\alpha\beta} \otimes_{B_{\beta}} A_{\alpha\beta}. \]
+    Note that $X \to \msc{U}$ is closed because $\Spec A_{\alpha\beta} \to \Spec A_{\alpha\beta} \otimes_{B_{\beta}} A_{\alpha\beta}$ is a closed immersion.
+\end{proof}
+
+\begin{prop}
+    Affine morphisms are separated because morphisms of affine schemes are separated.
+\end{prop}
+
+\begin{exm}
+    Being separated is local on the target.
+\end{exm}
+
+\begin{cor}
+    Closed immersions are separated.
+\end{cor}
+
+\begin{exm}
+    Open immersions are separated.
+\end{exm}
+
+\begin{lem}
+    If $\pi \colon X \to S$ is separated, then for all open affines $U, V \subseteq X$ that map to a common affine open subset of $S$, then $U \cap V$ is affine and $\msc{O}_X(U) \otimes_{\Z} \msc{O}_X(V) \twoheadrightarrow \msc{O}_X(U \cap V)$.
+\end{lem}
+
+\begin{exm}
+    We have $U \cap V = U \times_S V \cap \delta_{\pi}(X) = \delta_{\pi}^{-1}(U \times_S V)$.
+\end{exm}
+
+\begin{proof}
+    We can assume that $S = \Spec R$ is affine. Write $U = \Spec A, V = \Spec B$. Then we know that $U \cap V \to U \times_S V = \Spec A \otimes_R B$ is a closed immersion. Therefore, we have a surjection $A \otimes_{\Z} B \twoheadrightarrow A \otimes_R B \twoheadrightarrow \msc{O}_X(U \cap V)$.
+\end{proof}
+
+\begin{prop}
+    Let $S = \Spec R$. Then $\pi \colon X \to S$ is separated if and only if for all $U, V \subseteq X$ open affines, $U \cap V$ is affine and $\msc{O}_X(U) \otimes_R \msc{O}_X(V) \to \msc{O}_X(U \cap V)$ is surjective. Equivalently, there exists a covering of $X$ by open affines such that the conditions hold.
+\end{prop}
+
+\begin{cor}
+    Let $S = \Spec R$. Then $\P^n_S \to S$ is separated.
+\end{cor}
+
+Recall that closed immersions are preserved under base change. This follows from stability of affine morphisms and the fact that the tensor product is right exact. 
+
+\begin{prop}
+    Being separated and quasi-separated are preserved under base change. 
+\end{prop}
+
+\begin{proof}
+    Let $f \colon Y' \to Y$ be separated. Let $X \to Y$ be a morphism and $X' \to X$ be the base change of $f$. Now consider the Cartesian diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X' \ar{r}{\Delta} \ar{d} & X' \times_X X' \ar{d} \\
+        Y' \ar{r} & Y' \times_Y Y'.
+    \end{tikzcd}
+    \end{equation*}
+    Because the bottom arrow is a closed immersion, so is the top arrow. The proof for the quasi-separated case is similar.
+\end{proof}
+
+\begin{prop}
+    Being separated (or quasi-separated) is closed under composition. If $f \colon X \to Y, g \colon Y \to Z$ are separated, then so is $h = g \circ f$. 
+\end{prop}
+
+\begin{proof}
+    Consider $X_i \xrightarrow{f_i} Y \to Z$ for $i = 1,2$. Then we want to show that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X_1 \times_Y X_2 \ar{d}{\ep} \ar{r}{\gamma} & X_1 \times_Z X_2 \\
+        Y \ar{r}{\Delta} & Y \times_Z Y
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian. Note that $\ep$ is the morphism $X_1 \times_Y X_2 \rightrightarrows X_i \to Y$ and $\gamma$ is constructed using the universal property for $X_1 \times_Z X_2 \rightrightarrows X_i \to Z$. Now consider a scheme $T$ with diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        T \ar{drr}{\varphi} \ar{ddr}{\psi} \\
+        & X_1 \times_Y X_2 \ar{r}{\gamma} \ar{d}{\ep} & X_1 \times_Z X_2 \ar{d} \\
+        & Y \ar{r}{\Delta} & Y \times_Z Y.
+    \end{tikzcd}
+    \end{equation*}
+    Now a map $\varphi \colon T \to X_1 \times_Z X_2$ is given by $\varphi = (\varphi_1, \varphi_2)$, and we know that $( f_1 \circ \varphi, f_2 \circ \varphi_2 ) = (\psi, \psi)$. But now the universal property of the fiber product gives us the desired result.
+\end{proof}
+
+\begin{exer}
+    Open immersions are separated.
+\end{exer}
+
+\begin{cor}
+    Quasi-projective schemes are separated. 
+\end{cor}
+
+\begin{proof}[Proof of Proposition]
+    The square in the following diagram is Cartesian
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r}{\Delta} & X \times_Y X \ar{d} \ar{r} & X \times_Z X \ar{d}{(f,f)} \\
+         & Y \ar{r}{\Delta} & Y \times_Z Y
+    \end{tikzcd}
+    \end{equation*}
+    and thus all horizontal arrows are closed immersions.
+\end{proof}
+
+\begin{prop}
+    Let $f \colon X \to Y$ be quasi-compact and quasi-separated and $\msc{F}$ be a quasicoherent sheaf on $X$. Then $f_* \msc{F}$ is quasicoherent.
+\end{prop}
+
+Consider a morphism $f \colon X \to Y$ of $S$-schemes. Then we define the \textit{graph morphism} $\Gamma_f \colon X \to X \times_F Y$.
+
+\begin{prop}
+    Let $f \colon X \to Y$ be a morphism of $S$-schemes.
+    \begin{enumerate}
+        \item $\Gamma_f \colon X \to X \times_S Y$ is locally closed.
+        \item If $Y \to S$ is separated, then $\Gamma_f \colon X \times_S Y$ is closed.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    Consider the Cartesian diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r}{\Gamma_f} \ar{d} & X \times_S Y \ar{d}{(f, \mr{id})} \\
+        Y \ar{r}{\Delta} & Y \times_S Y.
+    \end{tikzcd}
+    \end{equation*}
+    Because $\Delta$ is a (locally) closed immersion, so is $\Gamma_f$.
+\end{proof}
+
+Now let $f,g \rightrightarrows Y$ be two morphisms of $S$-schemes. We define the \textit{equalizer} to be the limit of this diagram if it exists. We need a scheme structure on the equalizer, and in the diagram
+\begin{equation*}
+\begin{tikzcd}
+    X \ar{r}{(f,g)} & Y \times_S Y \\
+    {(f,g)}^{-1}(\Delta_Y) \ar{r} \ar[hookrightarrow]{u} & Y, \ar{u}{\Delta}
+\end{tikzcd}
+\end{equation*}
+we see that the equalizer is simply $Y \times_{(Y \times_S Y)} X \subseteq X$. This is a locally closed subscheme. Proving that this is actually the equalizer is simply and we simply note that $(f \circ \rho, g \circ \rho)$ factors through $Y \xrightarrow{\Delta} Y \times_S Y$ and therefore factors through the fiber product $Y \times_{(Y \times_S Y)} X$.
+
+\begin{exm}
+    Consider the morphisms $f,g \colon \A^1 \rightrightarrows \A^1$ given by $x \mapsto 0, x \mapsto x^2$. Then the diagrams of (schemes, rings) are
+    \begin{equation*}
+    \begin{tikzcd}
+        \mr{Eq} \ar{r} \ar{d} & \A^1 \ar{d}{\Delta} & \mr{Eq} & k[t] \ar{l} \\
+        \A^1 \ar{r}{(f,g)} & \A^2 & k[t] & \k[x,y] \ar{l}{\overset{x \mapsto 0}{y \mapsto t^2}} \ar{u}{x,y \mapsto t}
+    \end{tikzcd}
+    \end{equation*}
+    and it is easy to see that $\mr{Eq} = \Spec k[t]/t^2$.
+\end{exm}
+
+\begin{cor}
+    Let $f,g \colon X \rightrightarrows Y$ be a morphism and $X$ be reduced and $Y$ separated. Suppose there exists a dense open $U \subseteq X$ such that $\eval{f}_U = \eval{g}_U$. Then $f = g$ everywhere on $X$.
+\end{cor}
+
+\begin{proof}
+    We know $U \subseteq \mr{Eq}(f,g)$ is closed because $Y$ is separated, and thus $\mr{Eq}(f,g) = X$.
+\end{proof}
+
+\begin{exm}
+    The affine line with two origins is \textbf{not} separated! Note that the inclusions of the two copies of $\A^1$ coincide on $\A^1 \setminus \qty{0}$, but globally are different morphisms.
+\end{exm}
+
+\begin{exm}
+    Consider the maps $\Spec k[x]/x^2 \rightrightarrows \Spec k[x]/x^2$ given by the identity and killing the maximal ideal. These agree set-theoretically but are different as morphisms of schemes.
+\end{exm}
+
+We return to rational functions on integral schemes of finite type over an algebraically closed field $k$. More generally, if $X$ is a reduced locally Noetherian scheme, we say that
+\begin{defn}
+    A \textit{rational function} on $X$ is an \textbf{equivalence class} of $(U, f)$, where $U \subseteq X$ is dense and open and $f \in \msc{O}_X(U)$. We declare $(U, f) \sim (U', f')$ if $f,f'$ agree on $U \cap U'$.
+\end{defn}
+
+\begin{defn}
+    We say $f$ is \textit{regular} at $x \in X$ if there exists a representative $(U, f)$ such that $x \in U$.
+\end{defn}
+
+\begin{lem}
+    If $\qty{(U, f)}$ is a rational function, there is a \textbf{maximal} open subset of regular points. This is called the \textit{domain of definition}. 
+\end{lem}
+
+Proof of this is simply the sheaf axioms. Now the set of rational functions on $X$ form a ring. If $X = \Spec A$, this is the total ring of fractions of $A$. If $X$ is integral, this is $k(\eta_X)$.
+
+\begin{exm}
+    On $X = \Spec k[x,y]/xy$, we see that $\frac{1}{(x-1)}{(y-3)}$ is a rational function but $\frac{1}{x(y-3)}$ is not.
+\end{exm}
+
+Now let $X$ be reduced and $Y$ be a scheme.
+\begin{defn}
+    A \textit{rational map} $f \colon X \dashrightarrow Y$ is an \textbf{equivalence class} of pairs ${(U, f)}$ where $U \subseteq X$ is open and dense and $f \colon U \to Y$ is a morphism. We declare $(U, f) \sim (U', f')$ when there exists $V \subseteq U \cap U'$ open and dense such that $f,f'$ agree on $V$.
+\end{defn}
+
+In particular, if $Y$ is separated, then we can take $V = U \cap U'$.
+
+\begin{exm}
+    Consider $\P^n \dashrightarrow \P^{n-1}$ given by projection from a point. This sends $[x_0, \ldots, x_n] \mapsto [x_1, \ldots, x_n]$ and is defined everywhere except $[1,0,\ldots,0]$.
+\end{exm}
+
+\begin{exm}
+    Consider the map $\P^2 \dashrightarrow \P^2$ given by $[x,y,z] \mapsto \qty[\frac{1}{x}, \frac{1}{y}, \frac{1}{z}]$. This is called the \textit{Cremona transformation} and is defined everywhere besides $[1,0,0], [0,1,0], [0,0,1]$. 
+\end{exm}
+
+\begin{exm}
+    The graph of the rational map $\P^2 \dashrightarrow \P^1$ given by projection from a point is simply the blowup of $\P^2$ in a point.
+\end{exm}
+
+\begin{lem}
+    The set of regular points of a rational map is open. If $Y$ is separated, then there exists a morphism $f \colon U^{\mr{reg}} \to Y$ representing the rational map.
+\end{lem}
+
+\begin{defn}
+    Let $f \colon X \dashrightarrow Y$ be a rational map over $S$ with $Y$ separated. Then let $U \subseteq X$ be the set of regular points. Then the \textit{graph} of $f$ is the closed subscheme $\Gamma_f \subseteq X \times_S Y$ given by the closure of $\eval{f}_U$. In fact, the graph is independent of the dense open subset $U$ chosen.
+\end{defn}
+
+\begin{defn}
+    A rational map $f \colon X \dashrightarrow Y$ over $S$ is called \textit{dominant} if there exists a representative $(U, f)$ such that $f \colon U \to Y$ is dominant. 
+\end{defn}
+
+\begin{exm}
+    The map $\P^n \to \A^n$ is dominant (choose a distinguished open subset, then take the identity to $\A^1$).
+\end{exm}
+
+\begin{defn}
+    Let $X,Y$ be reduced. A rational map $f \colon X \dashrightarrow Y$ is called \textit{birational} if it is dominant and there exists a rational dominant map $g \colon Y \dashrightarrow X$ that is inverse to $f$ as rational maps. 
+\end{defn}
+
+\begin{prop}
+    Let $X, Y$ be reduced and $f \colon X \dashrightarrow Y$ over $S$ be birational. Then there exist dense open subsets $U \subseteq X, V \subseteq Y$ such that $\eval{f}_U \colon U \to V$ is an isomorphism.
+\end{prop}
+
+\begin{proof}
+    Let $g \colon Y \dashrightarrow X$ be the inverse. Then we may assume that $U, V$ are affine. Next, if we write $Z = Y \setminus V$, then we can replace $U$ by an open affine in $U \setminus f^{-1}(Z)$. Thus we can assume $X,Y$ are affine. Call $U' \coloneqq f^{-1}(V)$, Then $U' \xrightarrow{f} V \xrightarrow{g} X$. This means that $g \circ f$ is the inclusion of $U'$ in $V$. Now clearly we may replace $V$ with $g^{-1}(U') \eqqcolon V'$, and now $f,g$ are inverse on $U', V'$.
+\end{proof}
+
+\begin{exm}
+    Let $f \colon X \dashrightarrow Y$ be a rational map. Then the projection $\pi \colon \Gamma_f \to X$ is birational, and the maximal open subset where $\rho = \pi^{-1}$ is defined the domain of definition of $f$.
+\end{exm}
+
+\begin{exm}
+    Consider $\A^2 \dashrightarrow \P^1$ given by $(x,y) \mapsto [x,y]$. Then the graph is the blowup $\Bl_0 \A^2$ of $\A^2$ at the origin. 
+\end{exm}
+
+\section{Proper Morphisms}%
+\label{sec:proper_morphisms}
+
+\begin{defn}
+    A morphism $f \colon X \to Y$ is called \textit{proper} if $f$ is of finite type, separated, and universally closed (closed and being closed is preserved under base change). 
+\end{defn}
+
+\begin{exm}
+    Closed immersions are proper. Clearly they are finite type (because they are affine of the form $A \to A/I$), separated, and clearly universally closed because closed immersions are closed and stable under base change.
+\end{exm}
+
+\begin{exm}
+    The map $\A^1 \to \Spec k$ is closed, but not universally closed. For example, the map $\A^2 = \A^1 \times_k \A^1 \to \A^1$ is not closed (take the closed subset defined by $xy=1$).
+\end{exm}
+
+\begin{exm}
+    Let $f \colon X \to Y$ be an integral morphism. Then $f$ is affine and thus separated. Also, integral morphisms are closed and stable under base change, so $f$ is universally closed. Then $f$ is of finite type if and only if it is finite, so finite morphisms are proper.
+\end{exm}
+
+\begin{prop}
+    Being proper is stable under base change, stable under composition, and local on the target.
+\end{prop}
+
+\begin{rmk}
+    Let $\msc{P}$ be a property of a morphism of schemes that is stable under base change and composition. Suppose closed immersions satisfy $\msc{P}$. Then for all morphisms $f \colon X \to Y$, if $X \to X$ has $\msc{P}$ and $Y \to X$ is separated, then $f$ has $\msc{P}$.
+\end{rmk}
+
+\begin{proof}
+    Note that $f \colon X \xrightarrow{\Gamma_f} X \times_S Y \to Y$. Then $X \times_S Y \to Y$ has $\msc{P}$, and $\Gamma_f$ is a closed immersion (because $Y$ is separated) and thus has $\msc{P}$, so $f$ has $\msc{P}$.
+\end{proof}
+
+\begin{rmk}
+    The property $\msc{P}$ can be taken to be proper, separated, closed immersion, etc.
+\end{rmk}
+
+\begin{prop}[Image of proper to separated is proper]
+    Let $f \colon X \to Y$ be a surjective morphism and suppose $X$ is proper and $Y$ is separated of finite type. Then $Y$ is proper.
+\end{prop}
+
+\begin{proof}
+    We only need to check that $Y \to S$ is universally closed. We show that $Y \to S$ is closed. Because $f$ is surjective, then for $Z \subseteq Y$, we know $Z = f(f^{-1}(Z))$, so the image of $Z$ in $S$ is closed. To show that $f$ is universally closed, we simply base change the entire diagram.
+\end{proof}
+
+\begin{rmk}
+    We can eliminate the condition that $f$ is surjective by replacing $Y$ with the scheme-theoretic image of $f$.
+\end{rmk}
+
+\begin{prop}
+    Let $X$ be a reduced scheme and $f \colon X \to Y$ be a morphism. Then the scheme theoretic image coincides with the closure of the set-theoretic image. 
+\end{prop}
+
+\begin{prop}
+    Let $X$ be a proper connected reduced scheme over a field $k$. Then $k \subseteq \Gamma(X, \msc{O}_X)$ is integral. If $k$ is algebraically closed, then $\Gamma(X, \msc{O}_X) = k$.
+\end{prop}
+
+\begin{proof}
+    Let $f \in \Gamma(X, \msc{O}_X)$. Then we can view $f \colon X \to \A^1$. This is proper, so $f(X)$ is a closed connected reduced subscheme of $\A^1$. Thus it suffices to show that $f(X) \neq \A^1$, but this is simply because $\A^1$ is not proper (despite being separated of finite type). Thus $f(X)$ must be a closed point, so the map $k[t] \to \Gamma(X, \msc{O}_X)$ factors through $k(f(X))$. But then $f(X) = V(p(t))$ for some irreducible polynomial $p$, so $f$ also satisfies $p$.
+\end{proof}
+
+\begin{thm}
+    Let $R$ be a ring. Then $\P^n_R \to \Spec R$ is proper.
+\end{thm}
+
+\begin{proof}
+    We already know $\P^n$ is finite type and separated, so we need to show it is universally closed. Therefore it suffices to prove that $\P^n_{\Z}$ is universally closed (because being proper is preserved by base change). Now we need to show that $\P^n \times_{\Z} X \to X$ is closed for all schemes $X$. In fact, we can check this locally, so we only need to show that $\P^n_{A} \to \Spec A$ is closed.
+\end{proof}
+
+We want to think of $\P^n$ as $\Proj(k[x_0, \ldots, x_n])$ under some definition of $\Proj$. This construction should work for any graded ring $R = \bigoplus_{i \geq 0} R_i$. Then there is an \textit{irrelevant ideal} $R_+ = \bigoplus_{i > 0} R_i$. 
+
+We will define $\Proj R$ as a \textbf{set} as the set of all graded prime ideals $\mf{p} \subseteq R$ such that $\mf{p} \not\supseteq R_+$. Now we want to consider $\Proj R$ has a \textbf{topological space}, and we may consider the Zariski topology as in the case of $\Spec R$. 
+
+\begin{lem}
+    Let $\mf{a} \subseteq R$ be a homogeneous ideal. Then $\sqrt{\mf{a}}$ is the intersection of all homogeneous prime ideals containing $\mf{a}$ and $V(\mf{a}) = \emptyset$ if and only if $\sqrt{\mf{a}} = R_+$.
+\end{lem}
+
+Finally we are ready to define $\Proj R$ as a \textbf{locally ringed space}. For any $f \in R$, define $U_f \coloneqq {(\Proj R)}_f = \Proj R \setminus V(f)$. 
+
+\begin{lem}
+    The sets $\qty{U_f}_{f \in R_k, k \geq 1}$ form a basis for the topology of $\Proj R$.
+\end{lem}
+
+\begin{rmk}\leavevmode
+    We have an isomorphism $U_f = { (\Proj R) }_f \simeq \Spec R_{(f)}$, where $R_{(f)}$ is the degree zero localization of $R$ at $f$. Here, the maps are given by 
+    \[ f \notin \mf{p} \mapsto \mf{p} R_f \cap R_{(f)} \] and 
+    \[ \Spec R_{(f)} \ni \mf{Q} \mapsto \bigoplus \qty{x \in R_k \mid \frac{x^{\deg f}}{f^k} \in \mf{Q}}. \]
+\end{rmk}
+
+Finally we are able to describe the structure sheaf on each open subset. Here, we simply define $\msc{O}_{\Proj R}({(\Proj R)}_f) = R_{(f)}$, and so we need to check the gluing axioms. 
+\begin{enumerate}
+    \item Let $f, g_i \in R_+$ be homogeneous and suppose ${(\Proj R)}_f = \bigcup {(\Proj R)}_{g_i}$. This is the same as $f \in \sqrt{\sum g_i R}$, so there exists $n$ such that $f^n = \sum a_i g_i$ for some $a_i \in R$. 
+    \item If ${(\Proj R)}_f \subseteq {(\Proj R)}_g$, then $f^n = a \cdot g$ and thus there exists a canonical map $R_{(g)} \to R_{(f)}$. 
+    \item We have $\bigcup {(\Proj R)}_{g_i} = \Proj R$ if and only if for all homogeneous primes $\mf{p}$ not containing the irrelevant ideal, there exists $g_i \notin \mf{p}$. This is equivalent to $V\qty(\sum g_i R) = \emptyset$, which is equivalent to $\sqrt{\sum g_i R} = R_+$.
+\end{enumerate}
+
+Now we not only obtain the structure sheaf but also a sheaf $\wt{M}$ associated to any graded $R$-module $M = \bigoplus_{k \geq 0} M_k$. In particular, $\Proj R$ is a scheme. If $R = R_0 \oplus R_+$, then there is of course a natural continuous map $\Proj R \to \Spec R_0$. Note that we have a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    R \ar{r} & R_f \\
+    R_0 \ar{r} \ar{u} & R_{(f)} \ar[hookrightarrow]{u}
+\end{tikzcd}
+\end{equation*}
+
+\begin{rmk}
+    If $R$ is finitely generated as an $R_0$-algebra, then $\pi \colon \Proj R \to \Spec R_0$ is of finite type.
+\end{rmk}
+
+\begin{prop}
+    The map $\pi \colon \Proj R \to \Spec R_0$ is separated.
+\end{prop}
+
+\begin{proof}
+    Apply the criterion that if $U, V \subseteq X$ is open affine, then $U \cap V$ is affine and $\msc{O}_X(U) \otimes_R \msc{O}_X(V) \to \msc{O}_X(U \cap V)$ is surjective implies that $f$ is separated. Now apply this to distinguished open subsets.
+\end{proof}
+
+We would like to define functoriality for this construction. Let $R, S$ be graded rings and $\varphi \colon S \to R$ be a morphism of graded rings. Can we define a map $\Proj R \to \Proj S$?
+
+\begin{exm}
+    Let $S = k[x_1, \ldots, x_n] \overset{\varphi}{ \hookrightarrow } R = k[x_0, \ldots, x_n]$. Then $\Proj R = \P^n$ and $\Proj S = \P^{n-1}$. This is not defined globally because $(x_1, \ldots, x_n) \cap S = S_+$ is the irrelevant ideal. Instead, we consider $V(\varphi(S_+)) = Z$, and then we obtain a morphism $\psi \colon \Proj R \setminus Z \to \Proj S$. In fact, here we obtain projection from a point.
+\end{exm}
+
+\begin{rmk}
+    $\psi$ is an affine morphism. 
+\end{rmk}
+
+\begin{exm}
+    If $\varphi(S_+) = R_+$, then $Z \neq \emptyset$, so we have a morphism $\Proj R \to \Proj S$.
+\end{exm}
+
+\begin{exm}
+    For example, if $\varphi$ is surjective, then $\ker \varphi$ is a homogeneous ideal and in fact we have $\Proj R = \Proj S/\ker\varphi \subseteq \Proj S$, and the last inclusion is a closed immersion.
+\end{exm}
+
+\begin{exm}
+    The morphism $k[x_0, \ldots, x_n] \xrightarrow{\varphi} k[x,t] = R$ given by  $x_i \mapsto s^{n-i}t^i$ defines the Veronese embedding.
+\end{exm}
+
+\begin{exm}
+    Suppose $R$ is finitely generated as an $R_0$-algebra by finitely many elements in degree $1$. Then we have a surjection $R_0[x_1, \ldots, x_n] \twoheadrightarrow R$, and thus $\Proj R$ is a closed subscheme of $\P^n_{R_0}$.
+\end{exm}
+
+Now we would like to consider what happens under base change. Let $R = R_0 \oplus R_+$ and consider a morphism $S_0 \to R_0$. Then we can consider the scheme $\Proj R \times_{R_0} \Spec S_0$. Alternatively, we may consider the graded ring $R' = R \otimes_{R_0} S_0 = \bigoplus R_i \otimes_{R_0} S_0$. Of course we have a morphism $\Proj R' \to \Proj R \times_{R_0} \Spec S_0$, and in fact on open subsets, this defines an isomorphism.
+
+As a corollary, let $X$ be a scheme and $\msc{R} = \bigoplus \msc{R}_i$ be a sheaf of graded algebras with $\msc{R}_i$ suasicoherent for all $i \geq 0$. Then there exists a scheme $\Proj_{\msc{O}_X}(\msc{R}) \to X$ such that over an affine open $\Spec A$ where $\msc{R}_i = R_i$, we have $\Proj_A \bigoplus R_i \to \Spec A$.
+
+\begin{exm}
+    If $\msc{F}$ is a finitely generated quasicoherent sheaf, then we may consider $\msc{R} = \bigoplus \mr{Sym}^n \msc{F}$. Then we write $\P_X(\msc{F}) \coloneqq \Proj_{\msc{O_X}}(\msc{R})$. In particular, if $\msc{F} = \msc{O}_X \otimes V$, we obtain $\P_X(V^{\vee})$.
+\end{exm}
+
+Now if $R$ is a graded ring, we can consider the ring $R(d) = \bigoplus_{k \geq 0} R_{kd}$, where $R_{kd}$ now has degree $k$. Then we have an inclusion $\Proj R \to \Proj R(d)$. But then if $R_+ \not\subset \mf{p}$, we know that if $\mf{p}_{kd} \supseteq R_{kd}$, we know that $R_k \subseteq \mf{p}$ for all $k > 0$. In particular, we obtain an honest morphism $\psi \colon \Proj R \to \Proj R(d)$. We can check on principal open subsets that $\psi$ is an isomorphism.
+
+\begin{cor}
+    Let $R, R'$ be rings such that $R_0 = R_0'$ and there exists $N$ such that 
+    \[ \bigoplus_{k \geq N} R_k \simeq \bigoplus_{k \geq N} R_k', \] 
+    then $\Proj R \simeq \Proj R'$.
+\end{cor}
+
+\begin{proof}
+    Replace $R, R'$ with $R(d), R'(d)$ for sufficiently large $d$.
+\end{proof}
+
+Now let $R, S$ be graded rings with $R_0 = S_0$. Now of course we have the fiber product
+\begin{equation*}
+\begin{tikzcd}
+    \Proj R \times_{R_0} \Proj S \ar{r} \ar{d} & \Proj R \ar{d} \\
+    \Proj S \ar{r} & \Spec R_0.
+\end{tikzcd}
+\end{equation*}
+Then if $\R' = \bigoplus R_i \otimes_{R_0} S_i$, we can show that $\Proj R' = \Proj R \times_{R_0} \Proj S$. 
+
+\begin{thm}
+    For any graded ring $R$, the morphism $\Proj R \to \Spec R_0$ is closed.
+\end{thm}
+
+This follows from the fact that $\P^n \to \Spec R_0$ is universally closed and $\Proj R \subseteq \P^n$ is a closed immersion.
+
+\begin{exer}
+    Up to taking $R(d)$ for an appropriate $d$, we can assume that $R$ is finitely generated in degree $1$.
+\end{exer}
+
+\begin{proof}
+    We want to show that $\pi \colon \P^n_A \to \Spec A$ is closed. Let $Z = V(I)$. If $\mf{p}$ is such that $\P^n_{k(\mf{p})} \cap V(I) = \emptyset$, then there exists an open subset $U \ni \mf{p}$ of $\Spec A$ such that $\pi^{-1}(U) \cap V(I) = \emptyset$. If $I = (f_1, \ldots, f_k)$, then $\ol{f}_1, \ldots, \ol{f}_k$ have no nontrivial solutions in $k(\mf{p})[x_0, \ldots, x_n]$. The idea here is to use Nakayama.
+\end{proof}
 
 
 

@@ -43,7 +43,7 @@
 % other formatting packages
 \usepackage{float}
 \usepackage{booktabs}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 \usepackage{csquotes}
 \usepackage{titlesec}
 \usepackage{titling}
@@ -148,6 +148,7 @@
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\Pic}{Pic}
 \DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\spec}{Spec}
 \DeclareMathOperator{\Spec}{Spec}
@@ -156,6 +157,8 @@
 \DeclareMathOperator{\ord}{ord}
 \DeclareMathOperator{\Div}{Div}
 \DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\td}{td}
 
 % Section formatting
 \titleformat{\section}
@@ -802,7 +805,7 @@ We will recall the notion of Chern classes in topology. Recall that characterist
 We now return to algebraic geometry. Let $L$ be a line bundle and $\sigma$ be a rational section. Then $c_1(L) = [\div \sigma] \in A_{n-1}(X)$.
 
 \begin{exm}
-    If $X$ is a smooth variety over $\C$, then we can write $\omega_X = \bigwedge^n \Omega_X$, and $K_X = c_1(\omega_X)$. For example, if $X = \P^n$, then we can choose $\Theta = \dd{x_1} \wedge \cdots \wedge \dd{x_n}$, and $K_X = (n+1)H$.
+    If $X$ is a smooth variety over $\C$, then we can write $\omega_X = \bigwedge^n \msc{O}mega_X$, and $K_X = c_1(\omega_X)$. For example, if $X = \P^n$, then we can choose $\Theta = \dd{x_1} \wedge \cdots \wedge \dd{x_n}$, and $K_X = (n+1)H$.
 \end{exm}
 
 Here are some properties of Chern classes of vector bundles. Let $E$ be a vector bundle on a smooth quasiprojective variety $X$. Then we define
@@ -862,6 +865,507 @@ Here are some properties of the intersection product:
     \item The intersection product is commutative.
     \item Functoriality.
 \end{enumerate}
+
+\chapter{Nicolas (Mar 12): families of algebraic cycles}%
+\label{cha:nicolas_mar_12_families_of_algebraic_cycles}
+
+\textit{Note: these notes were adapted from the source for the \texttt{beamer} provided by the speaker. Very light edits were made to the source.} 
+
+\section{Introduction}
+
+``A typical problem in enumerative geometry is to find the number of geometric figures in a given family which satisfy certain conditions''.  One of the classical examples is that given five points in general position in $\P^2$, there exists a unique smooth conic passing through them. 
+\begin{figure}[H]
+\centering 
+\begin{tikzpicture}[scale=0.8]
+\clip(-2.,-2.) rectangle (2.,2.);
+\draw [rotate around={-45.:(0.,0.)}] (0.,0.) ellipse (2.cm and 1.4142135623730951cm);
+\begin{scriptsize}
+\filldraw [fill=blue] (1.,1.) circle (2pt);
+\filldraw [fill=blue] (-1.,-1.) circle (2pt);
+\filldraw [fill=blue] (0.,-1.6329931618554518) circle (2pt);
+\filldraw [fill=blue] (-1.651267157575746,0.05752458323349807) circle (2pt);
+\filldraw [fill=blue] (1.7127137631328755,-0.814236214326387) circle (2pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{figure}
+
+The idea is that ``conics are parametrized by $\P^5$, and passing through a point is a degree $1$ equation in $\P^5$''.  But this might be dangerous:
+\begin{itemize}
+\item $\P^5$ parametrizes conics, not \emph{smooth} conics.
+\item We need \emph{transversal} intersections.
+\end{itemize}
+
+For instance, the argument \emph{does not} work for  smooth conics tangent to five lines. Each tangency is a degree $2$ equation on $\P^5$, but they are not transversal (the conics of the form $\{L^2=0\}$ are ``tangent'' to all lines). 
+
+The correct number is $1$, which may be seen by taking the \emph{dual conic} (the set of tangent lines, as a subset of ${ (\P^2) }^\ast$).
+
+\subsection{Conservation of number}%
+\label{sub:conservation_of_number}
+
+The classical principle is called \emph{conservation of number}: if the problem has a finite numerical answer, this number is constant (or jumps to infinity).
+
+Sadly, this does not work. Given four lines and a point in general position, there exists $1^4 \cdot 2=2$ smooth conics tangent to the lines and passing through the point (as one can show by taking the dual problem). But if the point lies in the diagonals of the quadrilateral given by the lines, then the number of smooth solutions decreases to $1$ or $0$. 
+
+Today we will discuss strong foundations for this principle, and some applications in enumerative geometry. 
+
+\section{Families of cycle classes}
+
+During this section, $T$ will denote an irreducible variety of dimension $m>0$. We take $t \in T$ a regular closed point, and we denote
+\[ \{t\}=\Spec \kappa(t), \qquad t\colon \{t\} \to T \] 
+for the point and the inclusion.
+
+We will use script letters (e.g. $\msc{X}, \msc{Y}$) for schemes over $T$, and the corresponding latin letters (e.g. $X_t, Y_t$) for the corresponding fibers over $t$ (as schemes over $\{t\}$). If $f\colon \msc{X} \to \msc{Y}$ is a morphism, we denote $f_t\colon X_t \to Y_t$ the map on the fibers.
+
+\subsection{Specialization}%
+\label{sub:specialization}
+
+
+Let $p\colon \msc{Y} \to T, \alpha \in A_{k+m}\msc{Y}$. We define $\alpha_t \in A_k Y_t$ by
+\[ \alpha_t = t^!(\alpha) \]
+where $t^{!}$ is the refined Gysin homomorphism induced by
+\[ \begin{tikzcd} Y_t \arrow[r] \arrow[d] & \msc{Y} \arrow[d, "p"] \\ {\{t\}} \arrow[r, "t"] & T. \end{tikzcd} \]
+For instance, if $\alpha=[\msc{V}]$ and $\msc{V} \subseteq Y_t$, then ${[\msc{V}]}_t=0$. 
+
+Here are some basic properties.
+\begin{prop}\label{prop:basicprop}
+\begin{enumerate}
+\item If $f\colon \msc{X} \to \msc{Y}$ is proper, $\alpha \in A_{k+m}\msc{X}$, then
+\[ f_{t\ast}(\alpha_t)={ (f_\ast(\alpha)) }_t \qquad \text{in }A_k(Y_t). \]
+
+\item If $f\colon \msc{X} \to \msc{Y}$ is flat of relative dimension $n$, $\alpha \in A_{k+m}\msc{Y}$
+\[ f_t^\ast(\alpha_t)={ (f^\ast(\alpha)) }_t \qquad \text{in }A_{k+n}(X_t). \]
+
+\item If $i\colon \msc{X} \to \msc{Y}$ is a regular embedding of codimension $d$, such that $i_t\colon X_t \to Y_t$ is also a regular embedding of codimension $d$, $f\colon \msc{V} \to \msc{Y}$ a morphism, $\alpha \in A_{k+m}\msc{V}$, then
+\[ i_t^!(\alpha_t)={ (i^!(\alpha)) }_t \qquad \text{in } A_{k-d}(W_t), \msc{W}=f^{-1}(\msc{X}). \]
+\end{enumerate}
+\begin{enumerate} \setcounter{enumi}{3}
+\item If $E$ is a vector bundle over $\msc{Y}$, $\alpha \in A_{k+m} \msc{Y}$, then 
+\[ c_i(E_t) \cap \alpha_t = { (c_i(E) \cap \alpha) }_t \qquad \text{in }A_{k-i}(Y_t). \]
+\end{enumerate}
+\end{prop}
+
+The proof follows directly from similar statements for the refined Gysin homomorphism (see \textsection~6.2--6.4).
+
+We would now like to relate different fibers. Given a family $\msc{X} \to T$ and $\alpha \in A_{k+m}\msc{X}$, it is natural to compare $\alpha_t \in A_k(X_t)$ for different values of $t$. It is not obvious that such relation exists, even if $\msc{X}=Y \times T$ is the trivial family.
+
+\begin{exm}
+Let $Y=T$ be a projective curve of genus $g \geq 2$, and $\Delta\subseteq Y \times T$ the diagonal. If $\alpha = [\Delta] \in A_1(Y \times T)$, then $\alpha_t = [t] \in A_0 Y$. But for $t_1 \neq t_2$, we have that $\alpha_{t_1}$ and $\alpha_{t_2}$ are not rationally equivalent. 
+\end{exm}
+
+This can be solved if we assume that $\msc{X}=Y \times T$, and if for every $t_1, t_2 \in T$, they can be connected by a chain of rational curves in $T$ (see Example 10.1.7).
+
+Here is a useful corollary.
+\begin{cor}\label{cor:intfiber}
+Assume $T$ is non-singular, $t \in T$ rational over the ground field, $\msc{Y}$ smooth over $T$ with relative dimension $n$. If $\alpha \in A_{k+m}(\msc{Y}), \beta \in A_{l+m}(\msc{Y})$, then 
+\[ \alpha_t \cdot \beta_t = { (\alpha \cdot \beta) }_t \qquad \text{in } A_{k+l-n}(Y_t). \]
+\end{cor}
+
+This gives us a strategy to show that $a \cdot b=c$ in a non-singular variety $Y$. We construct a family $\msc{Y} \to T$ with $Y_t=Y$ for some $t$, and such that $a, b, c$ can be lifted to $\alpha, \beta, \gamma$. Then, it suffices to show that $\alpha \cdot \beta=\gamma$, which we can try to prove generically.
+
+\subsection{Sample Application}%
+\label{sub:sample_application}
+
+
+Let $C$ be a non-singular curve, $C^{(n)}$ its $n^{\text{th}}$ symmetric product (which points are effective divisors of degree $n$ over $C$). If $A$ is an effective divisor on $C$ of degree $<n$, define
+\[ X_A=\{D \in C^{(n)} \mid D \geq A \}. \]
+
+One can show that if $A$ and $B$ have disjoint support, then $X_A$ and $X_B$ intersect transversally, and so
+\[ [X_A] \cdot [X_B]=[X_{A+B}]. \]
+
+This is true even if $A$ and $B$ intersect, by using Corollary~\ref{cor:intfiber} and by ``moving'' $A$. 
+
+\section{Conservation of number}
+
+We have seen that for $\alpha \in A_k\msc{Y}$, it is not clear that ${\{\alpha_t\}}_{t \in T}$ are related, even if $\msc{Y}=Y \times T$ is the trivial family.  We have the following substitute.
+
+\begin{prop}[Conservation of number]
+Let $p\colon \msc{Y} \to T$ be a proper morphism, $\dim T=m$ as before. Let $\alpha$ be an $m$-cycle on $\msc{Y}$. Then $\alpha_t \in A_0(Y_t)$ all have the same degree (which is obtained by $p_{t\ast}(\alpha_t)=\deg \alpha_t\cdot [\{t\}]$). 
+\end{prop}
+
+The idea of the proof is write $p_\ast(\alpha)=N[T] \in A_m(T)$, for some $N \in \Z$. Then, by Proposition~\ref{prop:basicprop} we get
+\[ p_{t\ast}(\alpha_t)={ (p_\ast(\alpha)) }_t = { N[T] }_t= N[\{t\}]. \]
+
+This proposition can be improved to compute the degree of intersections with Chern classes or some divisors (see \textsection~10.2 for precise statements). We will need the following result.
+
+\begin{cor}
+Let $Y$ be a scheme, $\msc{H}_i \subseteq Y \times T$ effective Cartier divisors which are flat over $T, i=1, \dots, d$. Let $a$ be a $d$-cycle on $Y$. Assume that
+\[ \msc{H}_1 \cap \dots \cap \msc{H}_d \cap (\Supp(a) \times T) \]
+is proper over $T$. Then
+\[ \deg({ (H_1) }_t \cdots { (H_d) }_t \cdot a) \]
+is independent of $t$. 
+\end{cor}
+
+\section{An enumerative problem}
+
+Our main application of these techniques will be to solve the following problem.
+\begin{center}
+\emph{Given an $r$-dimensional family of plane curves, and $r$ curves in general position in the plane, how many curves in the family are tangent to the $r$ given curves?}
+\end{center}
+
+The answer will require to compute the \emph{characteristics} $\mu^k \nu^{r-k}$ of the family, which are the number of curves in the family passing through $k$ general points and tangent to $r-k$ general lines. 
+
+For instance, if we consider the family of smooth conics, then
+\[ \mu^5 = \nu^5 = 1, \quad \mu\nu^4=\mu^4\nu=2, \quad \mu^2\nu^3=\mu^3\nu^2=4. \]
+
+\begin{enumerate}
+    \item We will study the \emph{incidence correspondence} 
+\[ I=\{[x:y:z], [a:b:c] \mid ax+by+cz=0\} \subseteq \P^2 \times \P^{2\ast}. \]
+This can be seen as a $\P^1$-bundle over $\P^2$. In fact, if $E$ is the kernel of
+\[ 1_{\P^2}^{\oplus 3} \xrightarrow{(x, y, z)} \msc{O}_{\P^2}(1) \to 0, \]
+then $I=\P(E)$. 
+
+This allows us to compute $A^\bullet(I)$ (see Example 8.3.4), with a basis 
+\[ 1, \lambda, \zeta, \lambda^2, \zeta^2, \lambda^2\zeta=\lambda\zeta^2, \]
+where $\lambda\zeta=\lambda^2+\zeta^2, \lambda^3=\zeta^3=0$, and $\lambda, \zeta$ the pullbacks of $c_1(\msc{O}_{\P^2}(1)), c_1(\msc{O}_{\P^{2\ast}}(1))$. 
+
+Now, if $M$ is a line and $Q$ a point, consider
+\begin{align*}
+M' &= \{(P, L) \in I \mid L=M\} & Q' &= \{(P, L) \in I \mid P=Q\} \\
+M'' &= \{(P, L) \in I \mid P \in M\} & Q'' &= \{(P, L) \in I \mid Q \in L\}.
+\end{align*}
+One can show that
+\[ \lambda=[M''], \quad \zeta = [Q''], \qquad \lambda^2=[Q'], \quad \zeta^2 = [M']. \]
+    \item Let $D \subseteq \P^2$ be a curve without multiple components. Define $D' \subseteq I$ as the closure of
+\[ \{(P, L) \in I \mid P \text{ simple point of D}, L \text{ tangent at }P\}. \]
+
+We claim that
+\[ [D'] = n[M']+m[Q'] = n\zeta^2+m \lambda^2 \in A^2I, \]
+where $n$ is the degree and $m$ the \emph{class} of $D$ (the number of tangents from a general point to $D$). The idea is to compute 
+\[ D' \cap M'' = \{(P_i, L_i) \mid P_i \in M \cap D, L_i \text{ tangent at }P_i\}, \]
+which has generically $\# D' \cap M''=n$ points.  
+
+The equivalence $[D']=m[M']+n[Q']$ can be computed explicitely. Take $P_0$ a general point, $M$ a general line, and let $Q_1, \dots, Q_m$ the intersections of $M$ with the tangents from $P_0$.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.5, line cap=round,line join=round, line width=1.25pt]
+\clip(-4.25,-3.5) rectangle (3.35,3.5);
+\draw [rotate around={-45.:(0.,0.)},color=blue] (0.,0.) ellipse (2.cm and 1.4142135623730951cm);
+\draw [color=blue] (3.,-3.5) -- (3.,3.5);
+\draw [dash pattern=on 2pt off 2pt,domain=-4.25:3.35] plot(\x,{(-6.062177826491071-1.9684926258021747*\x)/3.6235853534352556});
+\draw [dash pattern=on 2pt off 2pt,domain=-4.25:3.35] plot(\x,{(--6.0621778264910695--1.1472635755228446*\x)/2.9462470487993815});
+\begin{scriptsize}
+\draw [fill=blue] (-4.,0.5) circle (2.5pt);
+\draw [fill=black] (3.,3.2257880604182683) circle (2.5pt);
+\draw [fill=black] (3.,-3.3027111373413454) circle (2.5pt);
+\draw (-3.75, 1.2) node {$P_0$};
+\draw (2.5,2.5) node {$Q_1$};
+\draw (2.5,-2.5) node {$Q_2$};
+\end{scriptsize}
+\end{tikzpicture}
+\end{figure}
+
+The projection from $P_0$ to $M$ gives a family $\mathscr{D} \to \mathbb{A}^1$ with $\mathscr{D}_1=[D'], \mathscr{D}_0 = n[M']+\sum [Q_i']$. (There is a explicit computation in \textsection~10.4.) 
+    \item Let $\mathscr{X} \subseteq \P^2 \times S$ be a flat family of plane curves, $\dim S=r$, $S$ non-singular. Assume $X_s$ has no multiple compontents for general $s$, and let $S^0 \subseteq S$ an open set with $X_s$ reduced for $s \in S$. 
+
+Let $\msc{X}(r)\subseteq I^r \times S^0$ given by $(P_1, L_1), \dots, (P_r, L_r), s$ such that $P_i$ is a simple point of $X_s$, and $L_i$ is tangent in $P_i$. Note that $\dim \msc{X}(r)=2r$.
+
+Take $D_1, \dots, D_r \subseteq \P^2$ reduced curves, and consider
+\[ \begin{tikzcd} W \arrow[r] \arrow[d] & D_1' \times \cdots \times D_r' \arrow[d] \\ \msc{X}(r) \arrow[r, "\varphi"] & I^r. \end{tikzcd} \]
+
+We can move $D_1, \dots, D_r$, so that the interseccion between $\msc{X}(r)$ and $D_1' \times \cdots \times D_r'$ is transversal (by taking a general element in ${ \operatorname{PGL}(2) }^r$). This way, $W$ has $N$ (reduced) points. 
+
+Now, compactify $\overline{\msc{X}} \subseteq \P^2 \times \overline{S^0}$, and $\overline{\msc{X}(r)}\subseteq I^r \times \overline{S^0}$. If $Z$ is a closed subsed of dimension less than $2r$, which contains all $\overline{\msc{X}(r)}-\msc{X}(r)$, then the number $N$ does not change after we remove $Z$.
+    \item We now degenerate each $D_i$ to a multiple line (as we did for $D$). This gives a diagram
+\[ \begin{tikzcd} \msc{W} \arrow[r] \arrow[d] & \msc{D}_1' \times \cdots \times \msc{D}_r' \arrow[r] \arrow[d] & \A^r \\ \overline{\msc{X}(r)} \arrow[r]& I^r. \end{tikzcd} \]
+The space $\overline{\msc{X}(r)}$ is complete, so $\msc{W}$ is proper over $\A^r$. This way, we may take an open neighborhood $T$ of $(1, \dots, 1)$ and $(0, \dots, 0)$, so that $\msc{W}$ is proper over $T$ and disjoint from $Z$. 
+
+Now, Corollary~\ref{cor:intfiber} applies, and so
+\[ \deg(\msc{X}(r) \cdot_\varphi (D_1' \times \cdots \times D_r')) = \deg(\msc{X}(r) \cdot_\varphi (E_1' \times \dots E_r')), \]
+where $D_i', E_i'$ are the fibers over $1$ and $0$.
+
+The right hand side is just
+\[ \prod_{i=1}^r (m_i \mu + n_i \nu) = \sum_{k=0}^r N_k \mu^k \nu^{r-k}, \]
+where each curve $D_i$ has degree $n_i$ and class $m_i$. 
+
+The left hand side is the number of points $N$, provided that we take a \emph{convenient} $Z$ (which avoids technical difficulties such as bitangents). 
+\end{enumerate}
+
+\subsection{A famous example}%
+\label{sub:a_famous_example}
+
+The most famous example is the \emph{Steiner's conic problem}, which tries to determine the number of conics tangent to five smooth conics in general position. 
+
+The natural family here is the family of smooth conics (as a subset of $\P^5$), which has characteristics
+\[ \mu^5=\nu^5=1, \quad \mu^4\nu=\mu\nu^4=2, \mu^3\nu^2=\mu^2\nu^3=4 \]
+(in characteristic zero!)
+
+This way, the number of conics tangent to five non-singular curves of degree $n$ in general position is
+\[ N=n^5({ (n-1) }^5+10{ (n-1) }^4+40{ (n-1) }^3+40{ (n-1) }^2+10(n-1)+1), \]
+which for $n=2$ gives the famous number $3264$. 
+
+\chapter{Patrick (Mar 19): Doing Italian-style algebraic geometry rigorously}%
+\label{cha:patrick_mar_19_doing_italian_style_algebraic_geometry_rigorously}
+
+\textit{Note: these are the speaker's notes.} 
+
+\section{Intersection multiplicities}%
+\label{sec:intersection_multiplicities}
+
+Consider a Cartesian square
+\begin{equation*}
+\begin{tikzcd}
+    W \ar{r}{j} \ar{d}{g} & V \ar{d}{f} \\
+    X \ar{r}{i} & Y
+\end{tikzcd}
+\end{equation*}
+where $i$ is a regular embedding of codimension $d$ and $V$ has pure dimension $k$. Let $C = C_W V$ have components $C_1, \ldots, C_r$ with multiplicity $m_i$. Let $Z_i$ be the support of $C_i$. We call the $Z_i$ the \textit{distinguished varieties} of the intersection.
+
+\begin{lem}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Every irreducible component of $W$ is distinguished.
+        \item For any distinguished variety $Z$, we have $k-d \leq \dim Z \leq k$.
+    \end{enumerate}
+\end{lem}
+
+\begin{defn}
+    An irreducible component $Z$ of $W = f^{-1}(X)$ is a \textit{proper component} of intersection of $V$ by $X$ if $\dim Z = k-d$. The \textit{intersection multiplicity} of $Z$ in $X \cdot V$, denoted $i(Z, X \cdot V; Y) = i(Z, X \cdot V) = i(Z)$ is the coefficient of $Z$ in the class $X \cdot V \in A_{k-d}(W)$. 
+\end{defn}
+
+If $N_Z$ is the pullback of $N_X Y$ to $Z$, then $i(Z,X\cdot V; Y)$ is the coefficient of $N_Z$ in $[C]$. Now let $A = \msc{O}_{Z,V}$ and $J \subset A$ be the ideal of $W$. Then $A/J$ has finite length when $Z$ is an irreducible component of $W$.
+
+\begin{prop}
+    Assume $Z$ is a proper component of $W$.
+    \begin{enumerate}[(a)]
+        \item If $\ell(A/J)$ is the length of $A/J$, then $1 \leq i(Z, X \cdot V; Y) \leq \ell(A/J)$.
+        \item If $J$ is generated by a regular sequence of length $d$, then $i(Z, X \cdot V; Y) = \ell(A/J)$.
+    \end{enumerate}
+    If $A$ is Cohen-Macaulay, then local equations for $X$ in $Y$ give a regular sequence generating $J$ and equality in (b) holds.
+\end{prop}
+
+Now suppose $Z$ is a proper component of the intersection of $V$ by $X$ on $Y$. Let $A = \msc{O}_{V,Z}$ and $J$ be the ideal in $A$ generated by the ideal (sheaf) of $X$ in $Y$, and let $\mf{m}$ be the maximal ideal of $A$.
+
+\begin{prop}
+    Suppose $V$ is a variety. Then $i(Z, X \cdot V; Y) = 1$ if and only if $A$ is regular and $J = \mf{m}$.
+\end{prop}
+
+\section{Nonsingular varieties}%
+\label{sec:nonsingular_varieties}
+
+Let $Y$ be a smooth variety of dimension $n$. Then $\Delta \subset Y \times Y$ is regularly embedded with codimension $n$. The global \textit{intersection product} is the map 
+\[ A_k(Y) \otimes A_{\ell}(Y) \to A_{k+\ell-n}(Y) \qquad x \otimes y \mapsto x \cdot y \Delta^*(x \times y), \] 
+where $\delta^*$ is the Gysin homomorphism.
+
+More generally, let $X$ be a scheme and $f \colon X \to Y$ a morphism to a smooth variety. Then $\Gamma_f$ is regularly embedded in $Y$, so we can define a \textit{cap product}
+\[ A_i (Y) \otimes A_j (X) \to A_{i+j-n}(X) \qquad y \otimes x \mapsto f^*(y) \cap x = \Gamma_f^*(x \times y). \]
+If $X$ is smooth, then we write $f^*y = f^* y \cap [X]$.
+
+\begin{rmk}
+    We may also replace the Gysin homomorphisms $\Delta^*, \Gamma_f^*$ with the refined Gysin homomorphisms $\Delta^{!}, \Gamma_f^{!}$.
+\end{rmk}
+
+\begin{defn}
+    Let $f \colon X \to Y$ be a morphism with $Y$ smooth of dimension $n$. Let $p_X \colon X' \to X, p_Y \colon Y' \to Y$ be morphisms of schemes. Then form the square
+    \begin{equation*}
+    \begin{tikzcd}
+        X' \times_Y Y' \ar{d} \ar{r} & X' \times Y' \ar{d}{p_X \times p_Y} \\
+        X \ar{r}{\Gamma_f} & X \times Y.
+    \end{tikzcd}
+    \end{equation*}
+    Now define the \textit{refined intersection product} by
+    \[ x \cdot_f y \coloneqq \Gamma_f^{!} (x \times y) \in A_{k+\ell-n}(X' \times_Y Y') \]
+    for $x \in A_k(X'), Y \in A_{\ell}(Y')$. When $X' = X, Y' = Y$, this is the global product.
+\end{defn}
+
+\begin{prop}
+    The refined products satisfy the following formal properties:
+    \begin{enumerate}[(a)]
+        \item (Associativity) If $X \xrightarrow{f} Y \xrightarrow{g} Z$ with $Y, Z$ smooth, then 
+            \[ x \cdot_f (y \cdot_g z) = (x \cdot_f y) \cdot_{gf} z \in A_*(X' \times_Y Y' \times_Z Z'). \]
+        \item (Commutativity) If $f_i \colon X \to Y_i$ with $Y_i$ smooth, then
+            \[ (x \cdot_{f_1} y_1) \cdot_{f_2} y_2 = (x \cdot_{f_2} y_2) \cdot_{f_1} y_1 \in A_*(Y'_1 \times_{Y_1} X' \times_{Y_2} Y_2'). \]
+        \item (Projection) Let $X \xrightarrow{f} Y \xrightarrow{g} Z$ with $Z$ smooth. Let $f' \colon X' \to Y'$ be proper with $p_Y f' = f p_X$ and $f'' = f' \times_Z \mr{id}_Z$. Then
+            \[ f''_* (x \times_{gf} z) = f'_*(x) \cdot_g z \in A_*(Y' \times_Z Z'). \]
+        \item (Compatibility) Let $f \colon X \to Y$ with $Y$ smooth and $g \colon V' \to Y'$ be a regular embedding. Then 
+            \[ g^{!}(x \cdot_f y) = x \cdot_f g^{!}y \in A_*(X' \times_Y V'). \]
+    \end{enumerate}
+\end{prop}
+
+\begin{cor}
+    Let $Y$ be smooth and $j \colon V \to Y$ be a regular embedding. If $x$ is a cycle on $Y$, then $x \cdot [V] = j^!(x) \in A_*(\abs{x} \cap V)$.
+\end{cor}
+
+\begin{cor}
+    Let $f \colon X \to Y$ with $X,Y$ smooth. Then $x \cdot_f y = (x \times y) \cdot [\Gamma_f] \in A_*(\abs{x} \cap f^{-1}(\abs{y}))$.
+\end{cor}
+
+\begin{cor}
+    Let $f \colon X \to Y$ with $Y$ smooth and $x$ a cycle on $X$. Then $x \cdot_f [Y] = x$.
+\end{cor}
+
+\begin{defn}
+    Let $f \colon X \to Y$ be a morphism with $X$ purely $m$-dimensional and $Y$ a smooth $n$-dimensional variety $Y$. For any morphism $g \colon Y' \to Y$, define a \textit{refined Gysin homomorphism}
+    \[ f^{!} \colon A_k(Y') \to A_{k+m-n}(X \times_Y Y') \qquad f^!(y) = [X] \cdot_f y. \]
+\end{defn}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}[(a)]
+        \item If $f$ is flat, then $f^!(y) = f'^*(y)$, where $f' \colon X \times_Y Y' \to Y'$ is the base change.
+        \item If $f$ is a local complete intersection morphism, then $f^{!}$ agrees with the morphism constructed in Section 6.6 of Fulton.
+    \end{enumerate}
+\end{prop}
+
+Now let $Y$ be a smooth variety of dimension $n$. Let $V, W$ be closed subschemes of $Y$ of pure dimension $k, \ell$. Now a component $Z \subseteq V \cap W$ is a \textit{proper component} if $\dim Z = k + \ell - n$. If $Z$ is proper, then the coefficient of $Z$ in $V \cdot W \in A_{k+\ell-n}(V \cap W)$ is called the \textit{intersection multiplicity} $i(Z, V \cdot W; Y) = i(Z, \Delta_Y \cdot (V \times W); Y \times Y)$. If every component of $V \cap W$ is proper, then the intersection class is
+\[ V \cdot W = \sum_Z i(Z, V \cdot W; Y) \cdot [Z]. \]
+\begin{prop}
+    Assume $Z$ is a proper component of $V \cap W$. Then
+    \begin{enumerate}[(a)]
+        \item $1 \leq i(Z, V \cdot W; Y) \leq \msc{O}_{V \cap W, Z}$.
+        \item If the local ring $\msc{O}_{V \cap W, Z}$ is Cohen-Macaulay, then $i(Z,V \cdot W; Y) = \ell(\msc{O}_{V \cap W, Z})$.
+        \item If $V, W$ are varieties, then $i(Z, V \cdot W; Y) = 1$ if and only if the maximal ideal of $\msc{O}_{Y,Z}$ is the sum of the prime ideals of $V$ and $W$. In fact, $\msc{O}_{V,Z}, \msc{O}_{W,Z}$ are regular.
+    \end{enumerate}
+\end{prop}
+
+Now let $Y$ be a smooth variety of dimension $n$. Set $A^p(Y) = A_{n-p}(Y)$. Now this indexing, the intersection product is now $A^p(Y) \otimes A^q(Y) \to A^{p + q}(Y)$. In addition, if $f \colon X \to Y$ is a morphism, the cap product is now $A^p(Y) \otimes A_q(X) \xrightarrow{\cap} A_{q-p}(X)$. If $X$ is also smooth, the pullback now reads $f^* \colon A^p(Y) \to A^p(X)$. 
+
+\begin{prop}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Suppose $Y$ is a smooth variety. Then the intersection product makes $A^*(Y)$ into a commutative graded ring with unit $A^0 \ni 1 = [Y] \in A_n$. Then $Y \mapsto A^*(Y)$ is a contravariant functor from smooth varieties to rings.
+        \item If $f \colon X \to Y$ is a morphism from a scheme $X$ to a smooth variety $Y$, then $A_* X$ is a $A^* Y$-module with action
+            \[ A^p(Y) \otimes A_q(X) \xrightarrow{\cap} A_{q-p}(X). \]
+        \item If $f \colon X \to Y$ is a proper morphism of smooth varieties, then
+            \[ f_* (f^*y \cdot x) = y \cdot f_*(x) \]
+            for all classes $x$ on $X$ and $y$ on $Y$.
+    \end{enumerate}
+\end{prop}
+
+\section{B\'ezout's Theorem}%
+\label{sec:bezout_s_theorem}
+
+We will now use this theory to discuss something classical. It is easy to see that $A_k(\P^n) \cong \Z$ and is generated by $[L^k]$ for a linear subspace $L^k \subset \P^n$. If $\alpha$ is a $k$-cycle on $\P^n$, we define the \textit{degree} $\deg (\alpha)$ to be the integer satisfying $\alpha = \deg (\alpha) \cdot [L^k]$. Equivalently, we may define
+\[ \deg(\alpha) = \int_{\P^n} {c_1(\msc{O}(1))}^k \cap \alpha. \]
+
+\begin{thm}[B\'ezout]
+    Let $\alpha_i \in A^{d_i}(\P^n)$ for $i = 1, \ldots, r$. If $d_1 + \cdots + d_r \leq n$, then
+    \[ \deg(\alpha_1 \cdots \alpha_r) = \deg(\alpha_1) \cdots \deg(\alpha_r). \]
+\end{thm}
+
+\begin{proof}
+    We have an isomorphism $A^*(\P^n) = \Z[h]/(h^{n+1})$, where $h = [L^{n-1}]$. Thus $[L^{n-k}] = h^k$, and the desired result follows.
+\end{proof}
+
+Now if subschemes $V_1, \ldots, V_r \subseteq \P^n$ representing $\alpha_1, \ldots, \alpha_r$ meet properly, then 
+\[ V_1 \cdots V_r = \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot [Z_j], \]
+where $Z_j$ are the components of $\bigcap V_i$. Then B\'ezout's theorem gives us the identity
+\[ \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot \deg(Z_j) = \prod \deg(V_i). \]
+If $H_1, \ldots, H_n$ are hypersurfaces intersecting properly (so the intersection is a finite number of points), then consider the local ring $\msc{O}_{\bigcap H_i,P}$. Then complete intersections are Cohen-Macaulay, so 
+\[ i(P, H_1 \cdots H_n; \P^n) = \ell(\msc{O}_{\bigcap H_i, P}). \]
+Now $\dim_k \msc{O}_{\bigcap H_i, P} = \deg P \ell(\msc{O}_{\bigcap H_i, P})$, and thus we obtain
+\[ \sum_P \dim_k \msc{O}_{\bigcap H_i, P} = \prod \deg H_i. \]
+This recovers the very classical B\'ezout's theorem.
+
+\begin{exm}
+    Let $s$ be the hyperplane class on $\P^n$ and $t$ be the hyperplane class on $\P^m$. Then 
+    \begin{enumerate}
+        \item $A^*(\P^n \times \P^m) = \Z[s,t]/(s^{n+1}, t^{m+1})$.
+        \item If $H_1, \ldots, H_{n+m}$ are hypersurfaces in $\P^n \times \P^m$ with bidegree $(a_i, b_i)$, then
+            \[ \int [H_1] \cdots [H_{n+m}] = \sum_{ \substack{(i_1, \ldots, i_n, j_1, \ldots, j_m) \\ (n,m)\text{-shuffle}} } a_{i_1} \cdots a_{i_n} b_{j_1} \cdots b_{j_m}. \]
+        \item If $\Delta$ is the diagonal in $\P^n \times \P^n$, then $[\Delta] = \sum_{i=0}^n s^i t^{n-i} \in A^n(\P^n \times \P^n)$. 
+            This formula follows from intersecting $\Delta$ with $[L_1 \times L_2]$, where $L_1, L_2$ are linear subspaces of complementary dimension.
+        \item Let $s \colon \P^n \times \P^m \to \P^{nm+n+m}$ be the Segre embedding. It $h$ is the hyperplane class on $\P^{nm+n+m}$, then $s^* u = s + t$. Also, the degree of $s(\P^n \times \P^m)$ is $\binom{n+m}{n}$.
+        \item If $v_m \colon \P^n \to \P^{\binom{n+m}{n}-1}$ is the Veronese embedding and $s,h$ are the hyperplane classes on the source and target, then $v_m^* u = m \cdot s$. If $V$ is a $k$-dimensional subvarity of $\P^n$ of degree $d$, then $\deg(v_m(V)) = d \cdot m^k$.
+    \end{enumerate}
+\end{exm}
+
+\chapter{Morena (Mar 26): Grothendieck-Riemann-Roch}%
+\label{cha:morena_mar_26_grothendieck_riemann_roch}
+
+We will begin by reviewing some notions from algebraic topology. 
+\begin{enumerate}
+    \item Let $E$ be a vector bundle over $X$ with Chern roots $\alpha_1, \ldots, \alpha_r$. Then we may define the \textit{Chern character} 
+        \[ \ch(E) = \sum_{i=1}^r e^{\alpha_i} = \sum_{n=0}^{\infty} \frac{s_n(c_1, \ldots, c_n)}{n!}, \]
+        where $s_n$ is the $n$-th Newton polynomial. Recall that if
+        \[ 0 \to E' \to E \to E'' \to 0 \]
+        is exact, then $\ch(E) = \ch(E') + \ch(E'')$ and $\ch(E \otimes F) = \ch(E) \ch(F)$.
+    \item We may define the \textit{Todd class}
+        \[ \td(E) = \prod_{i=1}^r \frac{\alpha_i}{1-e^{-\alpha_i}}. \]
+        Similarly to Chern classes, if 
+        \[ 0 \to E' \to E \to E'' \to 0 \]
+        is exact, then $\td(E) = \td(E') \td(E'')$.
+    \item Now define the ring
+        \[ K^0(X) = \bigoplus \Z[E] / (0 \to E' \to E \to E'' \to 0). \]
+        This is well-behaved under pullback, but pushforward is not well-defined. 
+\end{enumerate}
+
+In order to fix the problems with pushforwards of vector bundles, we will attempt to define the Grothendieck group $K_0(X)$ of coherent sheaves. Unfortunately, pullbacks of coherent sheaves are only right exacts. Also, pushforwards do exist for proper morphisms, but this is only left exact. Therefore we need to consider the higher derived functors, and now we define
+\[ f_* \colon K_0(X) \to K_0(Y) \qquad [\msc{F}] \mapsto \sum_{i=0}^{\infty} {(-1)}^i [R^i f_* \msc{F}]. \]
+This is a finite sum because we assume all of our schemes are Noetherian.
+
+For a smooth variety, there is always a map $K^0(X) \to K_0(X)$. In fact, there is an inverse, because we can resolve any coherent sheaf $\msc{F}$ by vector bundles. In this case, we will write $K_0(X) = K^0(X) = K(X)$. If $\msc{F}$ is resolved by
+\[ 0 \to \msc{L}_n \to \cdots \to \msc{L}_0 \to \msc{F} \to 0, \]
+we write $[\msc{F}] = \sum_{i=0}^n [\msc{L}_i]$ and $\ch(\msc{F}) = \sum_{i=0}^n {(-1)}^i \ch(\msc{L}_i)$.
+
+\section{Statement of the theorem}%
+\label{sec:statement_of_the_theorem}
+
+Recall the Chern character $\ch \colon K(X) \to A(X) \otimes \Q$. In topology, we need the Todd class to make the diagram
+\begin{equation*}
+\begin{tikzcd}
+    K(X) \ar{r}{\lambda_E} \ar{d}{\ch} & K(E) \ar{d}{\ch \cdot {(-1)}^{\mr{rk}(E)} \td(E^*)} \\
+    H^*(X, \Q) \ar{r}{u_E} & H^*(X, \Q)
+\end{tikzcd}
+\end{equation*}
+commute. Now we are able to state the Grothendieck-Riemann-Roch theorem:
+
+\begin{thm}[Grothendieck-Riemann-Roch]
+    Let $f \colon X \to Y$ be proper where $X, Y$ are smooth quasiprojective varieties over $k$. Then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        K(X) \ar{r}{f_*} \ar{d}{\ch \cdot \td(T_X)} & K(Y) \ar{d}{\ch \cdot \td(T_Y)} \\
+        {A(X)}_{\Q} \ar{r}{f_*} & {A(Y)}_{\Q}
+    \end{tikzcd}
+    \end{equation*}
+    commutes. In other words, $f_*(\ch(-) \cdot \td(T_X)) = \ch(f_*(-)) \cdot \td(T_Y)$.
+\end{thm}
+
+First, we will see why this implies the classical (Hirzebruch)-Riemann-Roch theorem. First, let $X$ be a curve, $Y = \mr{pt}$, and $\msc{L}$ be a line bundle. Then the right hand side is 
+\[ \ch(f_* [\msc{L}]) = {(-1)}^i H^i(X, \msc{L}) = \chi(X, \msc{L}). \]
+On the other side, we have
+\begin{align*}
+    f_* (1 + c_1(\msc{L})) ( 1 + c_1(T_X)/2 ) &= f_*(c_1(\msc{L}) + c_1(\msc{T_X})/2) \\
+                                              &= \deg(\msc{L}) - \frac{1}{2} \deg(K) \\
+                                              &= \deg(\msc{L}) - g + 1.
+\end{align*}
+This recovers the classical Riemann-Roch theorem.
+
+Now let $X$ be a smooth surface. Then our formula becomes
+\begin{align*}
+    \chi(X, \msc{L}) &= f_* \qty( \qty(1 + c_1(\msc{L} + \frac{c_1^2(\msc{L})}{2})) \qty(1 + \frac{c_1(T_X)}{2} + \frac{c_1^2(TX) + c_2(TX)}{2}) ) \\
+                     &= \deg \qty( \frac{c_1^2(\msc{L})}{2} - \frac{c_1(\msc{L}) c_1(\Omega_X)}{2} + \frac{c_1^2(\Omega_X) - c_2(\Omega_X)}{12} ). 
+\end{align*} 
+This recovers the Hirzebruch-Riemann-Roch theorem.
+
+\section{Proof for $\P^m \to \mr{pt}$}%
+\label{sec:proof_for_p_m_to_pt_}
+
+First, we have the following theorem:
+\begin{thm}
+    $K(\P^m)$ is generated by $[\msc{O}_{\P^m}(n)]$ for $0 \leq n \leq m$.
+\end{thm}
+
+To prove this, we need to find a resolution of a coherent sheaf $\msc{F}$ by line bundles, so we have
+\[ 0 \to \bigoplus \msc{L_i}^{(n)} \to \cdots \to \bigoplus \msc{L}_i^{(0)} \to \msc{F} \to 0. \]
+Because $\msc{O}(1)$ is ample, $\msc{F} \otimes \msc{O}(N)$ is generated by global sections, so we have the exact sequence
+\[ 0 \to \cdots \to \bigoplus \msc{O} \to \msc{F} \otimes \msc{O}(N) \to 0, \]
+and we can tensor this by $\msc{O}(-N)$. Now if we set $V = \bigoplus^{m+1} \msc{O}(-1)$, we can take the Koszul complex
+\[ 0 \to {\bigwedge}^{m+1} V \to \cdots \to {\bigwedge}^0 V \to 0. \]
+Now we have the exact sequence
+\[ 0 \to \msc{O}(-m-1) \to \cdots \to \bigoplus \msc{O}(-m-1+j) \to \cdots \to \msc{O} \to 0. \]
+In particular, this means that we can generate $K(\P^m)$ by $\qty{\msc{O}, \msc{O}(1), \ldots, \msc{O}(m)}$.
+
+Now it remains to prove Grothendieck-Riemann-Roch just for $\msc{O}(n), 0 \leq n \leq m$. Here, because $Y$ is a point, we have $\ch(f_*(-)) \td(T_*) = \chi(X, -)$. In our case, we know that for $0 < i < m$, $H^i(\P^m, \msc{O}(n)) = 0$ and $H^m(\P^m, \msc{O}(n)) = {H^0(\P^n, \msc{O}(-n-m-1))}^{\vee} = 0$, so
+\[ \chi(\P^n, \msc{O}(n)) = h^n(\P^n, \msc{O}(n)) = \binom{n+m}{m} \]
+by basic combinatorics.\footnote{If you are unsure of this, this is an exercise in Giulia's homework. If you need a hint, please email Caleb, who has several publications in combinatorics, at \url{calebji@math.columbia.edu}.}
+
+On the other hand, we want to compute $f_*(\ch(\msc{O}(n)) \td(T_{\P^m}))$. Recall the Euler exact sequence
+\[ 0 \to \msc{O} \to {\msc{O}(1)}^{\oplus m+1} \to T_{\P^m} \to 0. \]
+Therefore we have $\td(T_{ \P^m }) = { \td(\msc{O}_{\P^n}) }^{m+1}$. Also, $\ch(\msc{O}(n)) = { \ch(\msc{O}(1)) }^n = e^{xn}$. Looking for the $x^m$-coefficient in $\frac{e^{xn} x^{m+1}}{{(1-e^{-x})}^{m+1}}$, we can multiply by $x^{m+1}$ and compute the residue to obtain $\binom{m+n}{n}$.
+
+\begin{rmk}
+    Grothendieck allegedly said the following\footnote{This is supposedly translated from German, but I am unsure of the quality of the translation.} about this result:
+    \begin{quotation}
+        \textit{I would need to misuse about 2h of my listener's time in order to impart only an approximal understanding of this statement for $f \colon X \to Y$. In cold print (as in Springer's lecture notes) this would take around 400-500 pages. A thrilling example of how our urge for knowledge and discoveries decays into a lifeless and ideological delirium while life itself goes thousandfold to the devil -- and is threatened with final destruction. It's high time to change our course!} 
+    \end{quotation}
+\end{rmk}
 
 
 
