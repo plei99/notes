@@ -25,7 +25,10 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[osf]{mathpazo}
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
 \usepackage{microtype}
 
 %CS packages
@@ -36,6 +39,7 @@
 % typeset and bib
 \usepackage[english]{babel} 
 \usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
@@ -129,7 +133,6 @@
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 \renewcommand{\abstractname}{Official Description}
 \newcommand{\mc}[1]{\mathcal{#1}}
-\newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
@@ -219,6 +222,8 @@ Any errors are mine and not the speakers'.
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
 
+Also, I stopped attending the seminar after we finished the MMP in dimension $3$. The seminar has continued onto multiplier ideals, and will later cover Birkar-Cascini-Hacon-McKernan and finally even more advanced topics in birational geometry.
+
 \section*{Acknowledgements}%
 \label{sec:acknowledgements}
 
@@ -235,13 +240,13 @@ I would like to thank Joaqu\'{\i}n Moraga for organizing the seminar, finding mi
 \chapter{Overview}%
 \label{cha:overview}
 
-The goal of the minimal model program is to classify smooth projective complex varieties $X \subseteq \P^n$. Let $T_X$ be the tangent byndle and $\Omega_X$ be the cotangent bundle. Then $\omega_X = \Omega_X^n$ is called the \textit{canonical bundle}, and can be written as $\msc{O}_X(K_X)$ for some Cartier divisor $K_X$.
+The goal of the minimal model program is to classify smooth projective complex varieties $X \subseteq \P^n$. Let $T_X$ be the tangent byndle and $\Omega_X$ be the cotangent bundle. Then $\omega_X = \Omega_X^n$ is called the \textit{canonical bundle}, and can be written as $\mc{O}_X(K_X)$ for some Cartier divisor $K_X$.
 
 \begin{quest}
     Can we understand the geometry of $X$ using numerical properties of $K_X$?
 \end{quest}
 
-For a curve $C \subseteq X$ and a line bundle $\msc{L}$ on $X$, then $\msc{L}.C = \deg_C(i^* \msc{L})$. Then $K_X$ is \textit{ample (resp. antiample)} if $K_X . C > 0$ (resp $<0$) for all curves $C \subseteq X$. Similarly, $K_X$ is \textit{numerically trivial} if $K_X . C = 0$ for all curves $C \subseteq X$.
+For a curve $C \subseteq X$ and a line bundle $\mc{L}$ on $X$, then $\mc{L}.C = \deg_C(i^* \mc{L})$. Then $K_X$ is \textit{ample (resp. antiample)} if $K_X . C > 0$ (resp $<0$) for all curves $C \subseteq X$. Similarly, $K_X$ is \textit{numerically trivial} if $K_X . C = 0$ for all curves $C \subseteq X$.
 
 \begin{defn}
     We say that $X$ is \textit{Fano} if $K_X$ is antiample, \textit{Calabi-Yau} if $K_X$ is numerically trivial, and \textit{canonically polarized} if $K_X$ is ample.
@@ -284,7 +289,7 @@ Now let $x$ be a closed point on $X$. Then there is a variety $\Bl_x X \to X$ th
     Consider points $p_1, \ldots, p_n, \ldots \in \P^2$. Then if we blow up these points in a sequence, we obtain a sequence of varieties $X_1, \ldots, X_2, \ldots, X_n, \ldots$ Over $\P^2 \setminus \qty{p_1, \ldots, p_{i-1}}$, the morphism $X_i \to \P^2$ is an isomorphism. For $i \neq j$, clearly $X_i$ is not isomorphic to $X_j$ (they have different Picard ranks), but they are \textit{birational}. We say that $X_1 \bir X_2$ if they have isomorphic dense open subsets.
 \end{exm}
 
-Now we can state the goal of the Minimal Model Program. If $X$ is projective and has ``mild singularities'' the goal is to prove that there exists a birational map $\pi \colon X \dashrightarrow X'$ and a fibration ($\varphi_* \msc{O}_{X'} = \msc{O}_Z$ and positive dimensional general fiber) $X' \xrightarrow{\varphi} Z$ such that one of the following holds:
+Now we can state the goal of the Minimal Model Program. If $X$ is projective and has ``mild singularities'' the goal is to prove that there exists a birational map $\pi \colon X \dashrightarrow X'$ and a fibration ($\varphi_* \mc{O}_{X'} = \mc{O}_Z$ and positive dimensional general fiber) $X' \xrightarrow{\varphi} Z$ such that one of the following holds:
 \begin{enumerate}
     \item $F$ is Fano;
     \item $F$ is Calabi-Yau;
@@ -298,8 +303,8 @@ The way we will construct this birational morphism is by studying the geometry o
     \item The last case is called a small contraction. The curves which are numerically equivalent to a positive multiple of $C$ cover a set of codimension at least $2$. In this case, $X_1$ may have very bad singularities (by this, we mean that $K_{X_1}$ is not $\Q$-Cartier). We construct a new birational morphism $\varphi_C^+ \colon X^+ \to X_1$ which contracts $K_{X^+}$-positive curves.
 \end{enumerate}
 
-Another type of surgery is a flip, which changes a locus of codimension at least $2$. For example, consider $D = p_1^* \msc{O}(1) \otimes p_2^* \msc{O}(r)$ on $\P^1 \times \P^1$. Then write
-\[ X = \Spec \qty(\bigoplus_{m \geq 0} H^0 (\P^1 \times \P^1, \msc{O}_{\P^1 \times \P^1}(mD))). \]
+Another type of surgery is a flip, which changes a locus of codimension at least $2$. For example, consider $D = p_1^* \mc{O}(1) \otimes p_2^* \mc{O}(r)$ on $\P^1 \times \P^1$. Then write
+\[ X = \Spec \qty(\bigoplus_{m \geq 0} H^0 (\P^1 \times \P^1, \mc{O}_{\P^1 \times \P^1}(mD))). \]
 Then $X$ is (locally) a cone over $\P^1 \times \P^1$, so $K_X$ is not $\Q$-Cartier. Therefore, we can blow up the vertex, and the exceptional divisor is $E \simeq \P^1 \times \P^1$. Now the $\P^1 \times \P^1$ can be collapsed onto each of the two factors, so we obtain a birational map $\pi \colon X_1 \dashrightarrow X_1^+$. Here, if $C,C^+$ are the resulting curves, we have $K_{X_1}.C < 0$ and $K_{X_1^+}.C^+ > 0$.
 \begin{figure}[H]
     \centering
@@ -477,7 +482,7 @@ Recall the \textit{adjunction formula}: If $(X, D)$ is log smooth, then $K_X + \
 
 \begin{prop}[Cones]
     Let $(X, \Delta)$ be a log pair and $A$ an ample Cartier divisor on $X$. Then define
-    \[ C(X, \Delta) = \Spec (\bigoplus_{m \geq 0} H^0(X, \msc{O}_X(mA))). \]
+    \[ C(X, \Delta) = \Spec (\bigoplus_{m \geq 0} H^0(X, \mc{O}_X(mA))). \]
     Then $C(X, A)$ is 
     \begin{enumerate}
         \item terminal if and only if $rA \sim_{\Q} K_X + \Delta$ with $r < -1$ and $(X, \Delta)$ terminal;
@@ -517,7 +522,7 @@ Now consider $G \subseteq GL_n$ a finite group. Then $\C^n/G = \Spec {\C[x_1, \l
 \end{exm}
 
 \begin{thm}[Prokhorov, Xu, 2019]
-    Any klt singularity deforms to a klt cone singularity. For $x \in X$, there exists a flat morphism $\msc{X} \xrightarrow{\varphi} \A^1$ such that $\varphi(\A^1 \setminus 0) \sim (\A^1 \setminus 0) \times X$ and $\varphi^{-1}(0) = X_0$ is a klt cone singularity. This is just a deformation to the normal cone.
+    Any klt singularity deforms to a klt cone singularity. For $x \in X$, there exists a flat morphism $\mc{X} \xrightarrow{\varphi} \A^1$ such that $\varphi(\A^1 \setminus 0) \sim (\A^1 \setminus 0) \times X$ and $\varphi^{-1}(0) = X_0$ is a klt cone singularity. This is just a deformation to the normal cone.
 \end{thm}
 
 We will apply the following philosophy: 
@@ -535,29 +540,29 @@ We will apply the following philosophy:
     where $Y_i$ is strict Calabi-Yau, $S_k$ is hyperkahler, and $Z$ is rationally connected. There is a version for klt singularities in progress.
 \end{exm}
 
-We will now discuss localization of singularities. Suppose $X$ is a variety with terminal singularities and $Z \subseteq X$ a subvariety of codimension $1$. Then $\Spec \msc{O}_{X,Z}$ has terminal singularities if and only if $\Spec \msc{O}_{X,Z}$ is a smooth local ring, and this is equivalent to smoothness at the generic point of $Z$. In particular, if $X$ is terminal, the singularities must appear in codimension at least $3$.
+We will now discuss localization of singularities. Suppose $X$ is a variety with terminal singularities and $Z \subseteq X$ a subvariety of codimension $1$. Then $\Spec \mc{O}_{X,Z}$ has terminal singularities if and only if $\Spec \mc{O}_{X,Z}$ is a smooth local ring, and this is equivalent to smoothness at the generic point of $Z$. In particular, if $X$ is terminal, the singularities must appear in codimension at least $3$.
 
 \section{Vanishing}%
 \label{sec:vanishing}
 
 Let $C \subseteq X$ be a $K_X$-negative curve. Then if $K_X \sim_{\Q} E \geq 0$ for some $E$ effective, we see that $K_X.C = E.C < -$, so $C \subseteq E$. Now if $(X, D)$ is a log smooth pair, we have an exact sequence
-\[ 0 \to \msc{O}_X(K_X) \xrightarrow{\otimes D} \msc{O}_X (K_X \times D) \to \msc{O}_D(K_D) \to 0. \]
-If $H^1(X, \msc{O}_X(K_X)) = 0$, then $H^0(K_X + D) \twoheadrightarrow H^0(K_D)$. This tells us that vanishing theorems help us find sections of line bundles.
+\[ 0 \to \mc{O}_X(K_X) \xrightarrow{\otimes D} \mc{O}_X (K_X \times D) \to \mc{O}_D(K_D) \to 0. \]
+If $H^1(X, \mc{O}_X(K_X)) = 0$, then $H^0(K_X + D) \twoheadrightarrow H^0(K_D)$. This tells us that vanishing theorems help us find sections of line bundles.
 
 \begin{thm}[Kodaira Vanishing]
-    Let $X$ be smooth projective and $\msc{L}$ be ample. Then $H^i(X, \msc{L}^{-1}) = 0$ for all $i < \dim X$.
+    Let $X$ be smooth projective and $\mc{L}$ be ample. Then $H^i(X, \mc{L}^{-1}) = 0$ for all $i < \dim X$.
 \end{thm}
 
 \begin{proof}[Sketch of Proof]
-    Let $s \in H^0(X, \msc{L}^m)$ and $D = (s=0)$ be smooth. Then we have $\msc{O}_X \xrightarrow{s} \msc{L}^m$. Now we have
-    \[ \msc{L}^{-i} \otimes \msc{L}^{-j} \simeq \msc{L}^{-i-k} \msc{O}_X \xrightarrow{\mr{id} \otimes s} \msc{L}^{-i-j} \otimes \msc{L}^m = \msc{L}^{-i-j+m}. \]
-    Setting $Z = \Spec \bigoplus_{i=0}^{m-1} \msc{L}^{-i}$ with projection $p \colon Z \to X$, we note that if $X, D$ are smooth, then $Z$ is smooth. Consider a morphism $\tau \colon H^i(Z, \C_Z) \twoheadrightarrow H^i(Z, \msc{O}_Z)$ and its pushforward $p_* \tau \colon H^i(X, p^* \msc{C}_Z) \twoheadrightarrow H^i(X, p_* \msc{O}_Z)$. Now we consider the surjection
-    \[ \bigoplus_{r=0}^{m-1} H^i(X, \C[\zeta^r]) \twoheadrightarrow \sum_{r=0}^{m-1} H^i\qty(X, \bigoplus_{r=0}^{m-1} \msc{L}^{-r}). \]
-    Now we use the result that $\C[\zeta^r] \hookrightarrow \msc{L}^{-r}$ factors through $\C[\zeta^r] \hookrightarrow \msc{L}^{-r}(-k D) \hookrightarrow \msc{L}^{-r}$. By Serre, we see that $H^i(X, \msc{L}^{-(r+mk)}) = 0$ for arbitrary $k$.
+    Let $s \in H^0(X, \mc{L}^m)$ and $D = (s=0)$ be smooth. Then we have $\mc{O}_X \xrightarrow{s} \mc{L}^m$. Now we have
+    \[ \mc{L}^{-i} \otimes \mc{L}^{-j} \simeq \mc{L}^{-i-k} \mc{O}_X \xrightarrow{\mr{id} \otimes s} \mc{L}^{-i-j} \otimes \mc{L}^m = \mc{L}^{-i-j+m}. \]
+    Setting $Z = \Spec \bigoplus_{i=0}^{m-1} \mc{L}^{-i}$ with projection $p \colon Z \to X$, we note that if $X, D$ are smooth, then $Z$ is smooth. Consider a morphism $\tau \colon H^i(Z, \C_Z) \twoheadrightarrow H^i(Z, \mc{O}_Z)$ and its pushforward $p_* \tau \colon H^i(X, p^* \mc{C}_Z) \twoheadrightarrow H^i(X, p_* \mc{O}_Z)$. Now we consider the surjection
+    \[ \bigoplus_{r=0}^{m-1} H^i(X, \C[\zeta^r]) \twoheadrightarrow \sum_{r=0}^{m-1} H^i\qty(X, \bigoplus_{r=0}^{m-1} \mc{L}^{-r}). \]
+    Now we use the result that $\C[\zeta^r] \hookrightarrow \mc{L}^{-r}$ factors through $\C[\zeta^r] \hookrightarrow \mc{L}^{-r}(-k D) \hookrightarrow \mc{L}^{-r}$. By Serre, we see that $H^i(X, \mc{L}^{-(r+mk)}) = 0$ for arbitrary $k$.
 \end{proof}
 
 \begin{thm}[KV vanishing]
-    Let $X$ be a smooth projective complex and $\msc{L}$ be a line bundle on $X$ such that $\msc{L} \equiv M + \sum a_i D_i$, where $M$ is a big and nef $\Q$-divisor, $\sum D_i$ is a snc divisor, and $0 \leq a_i < 1, a_i \in \Z$. Then $H^i(X, \msc{L}^{-1}) = 0$ for $i < \dim X$.
+    Let $X$ be a smooth projective complex and $\mc{L}$ be a line bundle on $X$ such that $\mc{L} \equiv M + \sum a_i D_i$, where $M$ is a big and nef $\Q$-divisor, $\sum D_i$ is a snc divisor, and $0 \leq a_i < 1, a_i \in \Z$. Then $H^i(X, \mc{L}^{-1}) = 0$ for $i < \dim X$.
 \end{thm}
 
 \begin{prop}
@@ -565,28 +570,28 @@ If $H^1(X, \msc{O}_X(K_X)) = 0$, then $H^0(K_X + D) \twoheadrightarrow H^0(K_D)$
 \end{prop}
 
 \begin{lem}
-    Let $Y \to X$ be finite. Then $\msc{O}_X \to f_* \msc{O}_Y$ splits. If $\msc{F}$ is a coherent sheaf on $X$, then $\msc{F}$ is a direct summand of $f_* f^* \msc{F}$. Finally, $H^i(X, \msc{F})$ is a direct summand of $H^i(Y, f^* \msc{F})$.
+    Let $Y \to X$ be finite. Then $\mc{O}_X \to f_* \mc{O}_Y$ splits. If $\mc{F}$ is a coherent sheaf on $X$, then $\mc{F}$ is a direct summand of $f_* f^* \mc{F}$. Finally, $H^i(X, \mc{F})$ is a direct summand of $H^i(Y, f^* \mc{F})$.
 \end{lem}
 
 \begin{proof}[Sketch of KV Vanishing]
-    Consider $\sum a_i D_i$ and write $a_1 = b/m$ for some $m \geq 0$. Then consider $p_1 \colon X_1 \to X$ such that $p^* D_1 \sim m D$. Then $H^i(X, \msc{L}^{-1})$ is a direct summand of $H^i(X_1, p_1^* \msc{L}^{-1})$. Then $p_1^* D_1$ is a section of $\msc{O}_X(mD)$, so we can apply the index cover to obtain $X_2 \xrightarrow{p_2} X$ with $X_2$ smooth, $p_2^* (D_i)$ is smooth, and $\sum p_2^* p_1^* D_i$ has simple normal crossings. Then
-    \[ {(p_2)}_* \msc{O}_{X_2} = \sum_{k=0}^{m-1} \msc{O}_{X_1}(-j D), \]
+    Consider $\sum a_i D_i$ and write $a_1 = b/m$ for some $m \geq 0$. Then consider $p_1 \colon X_1 \to X$ such that $p^* D_1 \sim m D$. Then $H^i(X, \mc{L}^{-1})$ is a direct summand of $H^i(X_1, p_1^* \mc{L}^{-1})$. Then $p_1^* D_1$ is a section of $\mc{O}_X(mD)$, so we can apply the index cover to obtain $X_2 \xrightarrow{p_2} X$ with $X_2$ smooth, $p_2^* (D_i)$ is smooth, and $\sum p_2^* p_1^* D_i$ has simple normal crossings. Then
+    \[ {(p_2)}_* \mc{O}_{X_2} = \sum_{k=0}^{m-1} \mc{O}_{X_1}(-j D), \]
     so
-    \[ H^i(X_2, p_2^* p_1^* \msc{L}^{-1}(b D)) = \bigoplus_{j=0}^{m-1} H^i(X, p_1^* ((b-j)D)). \]
-    Choosing $j = b$, we see that $H^i(X_1, p_1^* \msc{L}^{-1})$ is a direct summand of $H^i(X_2, p_2^* p_1^* \msc{L}^{-1}(bD))$. Therefore, 
-    \[ p_2^* p_1^* \msc{L}^{-1}(bD) = p_2^* p_1* M + \sum_{i > 1} a_1 p_2* p_1* (D_i). \]
-    But now we have reduced the number of components of $D_i$, so by induction, the cohomology of the pullback vanishes. Now we need to consider $M$. We know $M$ is big and nef, so $M \sim_{\Q} A + E$, where $A$ is ample and $E$ is effective. Then there exists $f \colon Y \to X$ projective and birational such that $f^* \msc{L} = A + E$, where $A$ is ample and $E$ has simple normal crossings with $E = \sum a_i E_i, 0 \leq a_i < 1$. Now let $H \subseteq X$ be an ample divisor. Then
-    \[ H^i(X, \msc{L}(rH) \otimes R^j f_* \omega_Y) \Rrightarrow H^{i+j}(Y, \omega_Y \otimes f^* \msc{L}(rH)). \]
-    But then $f^* \msc{L}(rH) = (A + r f^* H) + E$, where $A + rf^* H$ is ample. But now we know that
-    \[ H^k(Y, f^* \msc{L}(rH) \otimes \omega_Y) = 0 \]
+    \[ H^i(X_2, p_2^* p_1^* \mc{L}^{-1}(b D)) = \bigoplus_{j=0}^{m-1} H^i(X, p_1^* ((b-j)D)). \]
+    Choosing $j = b$, we see that $H^i(X_1, p_1^* \mc{L}^{-1})$ is a direct summand of $H^i(X_2, p_2^* p_1^* \mc{L}^{-1}(bD))$. Therefore, 
+    \[ p_2^* p_1^* \mc{L}^{-1}(bD) = p_2^* p_1* M + \sum_{i > 1} a_1 p_2* p_1* (D_i). \]
+    But now we have reduced the number of components of $D_i$, so by induction, the cohomology of the pullback vanishes. Now we need to consider $M$. We know $M$ is big and nef, so $M \sim_{\Q} A + E$, where $A$ is ample and $E$ is effective. Then there exists $f \colon Y \to X$ projective and birational such that $f^* \mc{L} = A + E$, where $A$ is ample and $E$ has simple normal crossings with $E = \sum a_i E_i, 0 \leq a_i < 1$. Now let $H \subseteq X$ be an ample divisor. Then
+    \[ H^i(X, \mc{L}(rH) \otimes R^j f_* \omega_Y) \Rrightarrow H^{i+j}(Y, \omega_Y \otimes f^* \mc{L}(rH)). \]
+    But then $f^* \mc{L}(rH) = (A + r f^* H) + E$, where $A + rf^* H$ is ample. But now we know that
+    \[ H^k(Y, f^* \mc{L}(rH) \otimes \omega_Y) = 0 \]
     for $k > 0$, so 
-    \[ H^0(X, \msc{L}(rH) \otimes R^j f_* \omega_Y) = H^j(Y, \omega_Y \otimes f^* \msc{L}(rH)) = 0 \]
+    \[ H^0(X, \mc{L}(rH) \otimes R^j f_* \omega_Y) = H^j(Y, \omega_Y \otimes f^* \mc{L}(rH)) = 0 \]
     and therefore $R^j f_* \omega_Y = 0$ for $j > 0$. But now setting $r = 0$, we see that
-    \[ H^i(X, \msc{L} \otimes f_* \omega_Y) \simeq H^i(Y, f^* \msc{L} \otimes \omega_Y) = 0. \qedhere \]
+    \[ H^i(X, \mc{L} \otimes f_* \omega_Y) \simeq H^i(Y, f^* \mc{L} \otimes \omega_Y) = 0. \qedhere \]
 \end{proof}
 
 \begin{thm}
-    Let $(X, \Delta)$ be a proper klt pair with $N$ a $\Q$-Cartier divisor. Suppose that $N = M + \Delta$, where $M$ is big and nef. Then $H^i(X, \msc{O}_X(-N)) = 0$ for $i < \dim X$. Equivalently, $H^{n-i}(X, K_X + N) = 0$ for $n-i > 0$.
+    Let $(X, \Delta)$ be a proper klt pair with $N$ a $\Q$-Cartier divisor. Suppose that $N = M + \Delta$, where $M$ is big and nef. Then $H^i(X, \mc{O}_X(-N)) = 0$ for $i < \dim X$. Equivalently, $H^{n-i}(X, K_X + N) = 0$ for $n-i > 0$.
 \end{thm}
 
 \begin{rmk}
@@ -621,7 +626,7 @@ Note that Kollar-Mori use outdated notation. What they call klt is actually sub-
         \item For any $H$ ample and $\ep > 0$, we have
             \[ \ol{NE}(X) = \ol{NE}_{(K_X + \Delta + \ep H) \geq 0} + \sum_{\text{finite}} \R_{\geq 0} [C_i]. \]
         \item If $F \subseteq \ol{NE}(X)$ is extremal and $(K_X + \Delta)$-negative, then there exists a contraction morphism $\mr{cont}_F \colon X \to Z$ such that $C \subseteq X$ is mapped to a point if and only if $[C] \in F$.
-        \item Let $\mr{cont}_F \colon X \to Z$ be as above and $\msc{L}$ be a line bundle on $X$ such that $\msc{L}.F = 0$. Then there exists $\msc{L}_Z$ on $Z$ such that $\msc{L} \simeq \mr{cont}_F^* \msc{L}_Z$.
+        \item Let $\mr{cont}_F \colon X \to Z$ be as above and $\mc{L}$ be a line bundle on $X$ such that $\mc{L}.F = 0$. Then there exists $\mc{L}_Z$ on $Z$ such that $\mc{L} \simeq \mr{cont}_F^* \mc{L}_Z$.
     \end{enumerate}
 \end{thm}
 
@@ -648,7 +653,7 @@ The logical structure is this: We use non-vanishing to find sections, then use v
     where $A \geq 0$ is effective and $F = F_k'$ is prime. Therefore
     \[ K_Y + \ceil{N(b,c)} = b f^* D + \ceil{A} - F \]
     and we have the exact sequence
-    \[ 0 \to \msc{O}_Y(bf^*D + \ceil{A} - F) \xrightarrow{\times F} \msc{O}_Y(bf^* D + \ceil{A}) \to \msc{O}_F(bf^* D + \ceil{A}) \to 0. \]
+    \[ 0 \to \mc{O}_Y(bf^*D + \ceil{A} - F) \xrightarrow{\times F} \mc{O}_Y(bf^* D + \ceil{A}) \to \mc{O}_F(bf^* D + \ceil{A}) \to 0. \]
     Therefore we have a surjection $H^0(Y, bf^* D + \ceil{A}) \twoheadrightarrow H^0\qty(F, \eval{( bf^* D + \ceil{A} )}_F)$ for $b \geq cm + a$. Now $\ceil{A}$ is $f$-exceptional, so
     \[ \eval{N(b, c)}_F = \eval{( bf^* D + A - F - K_Y )}_F = \eval{(bf^* D + A)}_F - K_F. \]
     Now by non-vanishing, $H^0\qty(F, \eval{ (bf^* D + \ceil{A}) }_F) \neq 0$, so $H^0(Y, bf^* D + \ceil{A})$ has a section not vanishing on $F$. Because $\ceil{A}$ is $f$-exceptional, 
@@ -662,7 +667,7 @@ The logical structure is this: We use non-vanishing to find sections, then use v
 
 \begin{thm}
     Let $(X, \Delta)$ be a proper klt pair and $K_X + \Delta$ be big and nef. Then the graded ring
-    \[ \bigoplus_{m \geq 0}^{\infty} H^0(\msc{O}_X (m K_X + \floor{m \Delta})) \]
+    \[ \bigoplus_{m \geq 0}^{\infty} H^0(\mc{O}_X (m K_X + \floor{m \Delta})) \]
     is finitely-generated over $\C$.
 \end{thm}
 
@@ -718,7 +723,7 @@ is a closed strictly convex cone intersecting $\ev{F}$ at the origin. We also no
 Now by assumption, $-(K_X + \Delta)$ is positive on $F$. This means that $mD - (K_X + \Delta)$ is strictly positive on $\ol{NE}(X) \setminus \qty{0}$ for $m \gg 0$, so $\abs{mD}$ is basepoint-free. Now let $g_F \colon x \to Z$ be the contraction associated by the Stein factorization to the linear system $\abs{mD}$. Because $g_F$ is not an isomorphism, it constracts some curve $C$. Similarly to teh smooth case, we may assume that
 \[ 0 < -(K_X + \Delta).C \leq 2 \dim X. \]
 
-Finally, we prove that any line bundle $\msc{L}$ on $X$ such that $\msc{L}.F = 0$ descends to $Z$, which means there exists a line bundle $\msc{L}_Z$ on $Z$ such that $\msc{L} = g_F^* \msc{L}_Z$. Now let $D$ be a Cartier divisor supporting $F$. We know $W_F \subseteq \ol{NE}(X)$ and that $g_F$ is defined by $\ol{mD}$. Therefore, both $mD$ and $(m+1)D$ are pullbacks of Cartier divisors on $Z$. Write $mD = g_F^* D_1, (m+1)D = g_F^*(D_2)$, and therefore we see that $D = (m+1)D - mD = g_F^* (D_2 - D_1)$. This implies that $D$ is the pullback of a Cartier divisor on $Z$. If $\msc{L}.F = 0$, then $\msc{L} + mD$ also supports $F$, so $\msc{L} + mD = g_F^* M_Z$ for some Cartier divisor $M_Z$ of $Z$. We simply set $\msc{L}_Z = \msc{O}_Z(M_Z - D_1)$. \qed
+Finally, we prove that any line bundle $\mc{L}$ on $X$ such that $\mc{L}.F = 0$ descends to $Z$, which means there exists a line bundle $\mc{L}_Z$ on $Z$ such that $\mc{L} = g_F^* \mc{L}_Z$. Now let $D$ be a Cartier divisor supporting $F$. We know $W_F \subseteq \ol{NE}(X)$ and that $g_F$ is defined by $\ol{mD}$. Therefore, both $mD$ and $(m+1)D$ are pullbacks of Cartier divisors on $Z$. Write $mD = g_F^* D_1, (m+1)D = g_F^*(D_2)$, and therefore we see that $D = (m+1)D - mD = g_F^* (D_2 - D_1)$. This implies that $D$ is the pullback of a Cartier divisor on $Z$. If $\mc{L}.F = 0$, then $\mc{L} + mD$ also supports $F$, so $\mc{L} + mD = g_F^* M_Z$ for some Cartier divisor $M_Z$ of $Z$. We simply set $\mc{L}_Z = \mc{O}_Z(M_Z - D_1)$. \qed
 
 \subsection{Nonvanishing and Rationality}%
 \label{sub:nonvanishing_and_rationality}
@@ -827,7 +832,7 @@ We will state a relative version of the cone theorem. The proof is essentially t
         \item For any $\ep > 0$ and $\varphi$-ample $H$, we have
             \[ \ol{NE}(X/Z) = { \ol{NE}(X/Z) }_{(K_X + \Delta + \ep H) \geq 0} + \sum_{\text{finite}} \R_{\geq 0} [C_j]. \]
         \item Let $F \subseteq \ol{NE}(X/Z)$ be a $(K_X + \Delta)$-negative extremal face. Then there is a unique contraction $X \xrightarrow{\mr{cont}_F} Y$ commuting with the structure morphisms to $Z$ such that $C \subseteq X$ is mapped to a point if and only if $[C] \in F$.
-        \item Let $\msc{L}$ be a line bundle on $X$ such that $\msc{L}.C = 0$ for every curve $C$ with $[C] \in F$. Then there exists a line bundle $\msc{L}_Y$ on $Y$ such that $\msc{L} = \mr{cont}_F^* \msc{L}_Y$.
+        \item Let $\mc{L}$ be a line bundle on $X$ such that $\mc{L}.C = 0$ for every curve $C$ with $[C] \in F$. Then there exists a line bundle $\mc{L}_Y$ on $Y$ such that $\mc{L} = \mr{cont}_F^* \mc{L}_Y$.
     \end{enumerate}
 \end{thm}
 
@@ -843,14 +848,14 @@ We will state a relative version of the cone theorem. The proof is essentially t
     \end{enumerate}
 \end{rmk}
 
-Of course one may wonder why we need to run the MMP relative over a base. Consider a smooth projective family $\msc{X} \to \C^*$ such that $K_{\msc{X}}$ is ample over $\C^*$. We want a good compactification, but naively compactifying gives us an arbitrary central fiber that may not even be normal. Using the resolution of singularities, we may consider a log resolution. This has many components and $K_{\msc{X}}$ is not ample over $\C$ in general. Then we can try to run the MMP over the base, and we expect a commutative diagram
+Of course one may wonder why we need to run the MMP relative over a base. Consider a smooth projective family $\mc{X} \to \C^*$ such that $K_{\mc{X}}$ is ample over $\C^*$. We want a good compactification, but naively compactifying gives us an arbitrary central fiber that may not even be normal. Using the resolution of singularities, we may consider a log resolution. This has many components and $K_{\mc{X}}$ is not ample over $\C$ in general. Then we can try to run the MMP over the base, and we expect a commutative diagram
 \begin{equation*}
 \begin{tikzcd}
-    \msc{X} \ar[hookrightarrow]{r} \ar{d} & \ol{\msc{X}} \ar{d} \\
+    \mc{X} \ar[hookrightarrow]{r} \ar{d} & \ol{\mc{X}} \ar{d} \\
     \C^* \ar[hookrightarrow]{r} & \C
 \end{tikzcd}
 \end{equation*}
-such that $K_{\ol{\msc{X}}}$ is nef over the base and the singularities of $\ol{\msc{X}}_0$ are slc. Here, slc means that the normalization is log canonical and has nodal singularities at codimension $1$ points.
+such that $K_{\ol{\mc{X}}}$ is nef over the base and the singularities of $\ol{\mc{X}}_0$ are slc. Here, slc means that the normalization is log canonical and has nodal singularities at codimension $1$ points.
 
 We may also use the relative MMP to study singularities. Here, let $z \in Z$ and consider a log resolution $X \xrightarrow{\varphi} Z$. Then we write $\varphi^*(K_Z) = K_X + \Delta$. We may then perturb the coefficients of $\Delta$:
 \begin{itemize}
@@ -882,7 +887,7 @@ This obtains a new boundary $B$ with the same support as $\Delta$. If we run the
 \end{defn}
 
 \begin{lem}
-    Let $f \colon X \dashrightarrow Y$ be a small birational map between normal varieties and let $D$ be a Weil divisor on $X$. Then $H^0(\msc{O}_X(D)) \simeq H^0(\msc{O}_Y(f_* D))$.
+    Let $f \colon X \dashrightarrow Y$ be a small birational map between normal varieties and let $D$ be a Weil divisor on $X$. Then $H^0(\mc{O}_X(D)) \simeq H^0(\mc{O}_Y(f_* D))$.
 \end{lem}
 
 \begin{lem}
@@ -907,9 +912,9 @@ This obtains a new boundary $B$ with the same support as $\Delta$. If we run the
 
 \begin{prop}
     Let $\varphi \colon X \to W$ be a flipping contraction for $(X, \Delta)$ klt. Then the flip exists if and only if
-    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \]
-    is a finitely-generated $\msc{O}_Z$-algebra. If this is the case, then
-    \[ X^+ \coloneqq \Proj_Z \qty(\bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta))). \]
+    \[ \bigoplus_{m \geq 0} \varphi_* \mc{O}_X(m(K_X + \Delta)) \]
+    is a finitely-generated $\mc{O}_Z$-algebra. If this is the case, then
+    \[ X^+ \coloneqq \Proj_Z \qty(\bigoplus_{m \geq 0} \varphi_* \mc{O}_X(m(K_X + \Delta))). \]
 \end{prop}
 
 \begin{proof}
@@ -921,15 +926,15 @@ This obtains a new boundary $B$ with the same support as $\Delta$. If we run the
     \end{tikzcd}
     \end{equation*}
     exists. We know that $\pi$ is small, so
-    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \simeq \bigoplus_{m \geq 0} \varphi^+_* \msc{O}_X(m(K_{X^+} + \Delta^+)). \]
+    \[ \bigoplus_{m \geq 0} \varphi_* \mc{O}_X(m(K_X + \Delta)) \simeq \bigoplus_{m \geq 0} \varphi^+_* \mc{O}_X(m(K_{X^+} + \Delta^+)). \]
     Moreover, $K_{X^+} + \Delta^+$ is ample over $W$, so 
-    \[ \Proj_W \qty(\bigoplus_{m \geq 0} \varphi^+_* \msc{O}_X(m(K_{X^+} + \Delta^+))) \simeq X^+. \]
+    \[ \Proj_W \qty(\bigoplus_{m \geq 0} \varphi^+_* \mc{O}_X(m(K_{X^+} + \Delta^+))) \simeq X^+. \]
 
-    Now assume that $A \coloneqq \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta))$ is a finitely-generated $\msc{O}_W$-algebra and define $X^+ = \Proj A$. Then $X \overset{\pi}{\dashrightarrow}$ is an isomorphism in codimension $1$. It could happen that the indeterminancy locus is a divisor. We know $\varphi$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$. Then $A$ is just a sum of copies of the structure sheaf on $X \setminus \mr{Ex}(\varphi)$. Therefore, $X^+ \overset{\pi^{-1}}{\dashrightarrow} X$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$ and suppose $D$ is mapped to a higher codimension cycle by $\varphi^+$. Then
-    \[ \varphi_*^+ \msc{O}_{X^+}(1) \simeq \varphi_* \msc{O}_X(m(K_X + \Delta)) \simeq \msc{O}_W(m(K_W + \varphi_* \Delta)) \]
+    Now assume that $A \coloneqq \bigoplus_{m \geq 0} \varphi_* \mc{O}_X(m(K_X + \Delta))$ is a finitely-generated $\mc{O}_W$-algebra and define $X^+ = \Proj A$. Then $X \overset{\pi}{\dashrightarrow}$ is an isomorphism in codimension $1$. It could happen that the indeterminancy locus is a divisor. We know $\varphi$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$. Then $A$ is just a sum of copies of the structure sheaf on $X \setminus \mr{Ex}(\varphi)$. Therefore, $X^+ \overset{\pi^{-1}}{\dashrightarrow} X$ is an isomorphism over $X \setminus \mr{Ex}(\varphi)$ and suppose $D$ is mapped to a higher codimension cycle by $\varphi^+$. Then
+    \[ \varphi_*^+ \mc{O}_{X^+}(1) \simeq \varphi_* \mc{O}_X(m(K_X + \Delta)) \simeq \mc{O}_W(m(K_W + \varphi_* \Delta)) \]
     for some $m > 0$. Because $E$ is exceptional over $W$, we have 
-    \[ \msc{O}_W(tm(K_X + \varphi_* \Delta)) = \varphi_*^+ \msc{O}_{X^+}(t) \subsetneq \varphi_*^+ \msc{O}_{X^+}(t)(E). \]
-    We have a natural inclusion $\varphi_*^+ \msc{O}_X^+(t)(E) \hookrightarrow \msc{O}_W(tm(K_X + \varphi_* \Delta))$, so there are no contracted divisors. Thus $\pi$ is small. Then the property that $\rho(X/W) = \rho(X^+/W) = 1$ is by Lemma 2.5.6.
+    \[ \mc{O}_W(tm(K_X + \varphi_* \Delta)) = \varphi_*^+ \mc{O}_{X^+}(t) \subsetneq \varphi_*^+ \mc{O}_{X^+}(t)(E). \]
+    We have a natural inclusion $\varphi_*^+ \mc{O}_X^+(t)(E) \hookrightarrow \mc{O}_W(tm(K_X + \varphi_* \Delta))$, so there are no contracted divisors. Thus $\pi$ is small. Then the property that $\rho(X/W) = \rho(X^+/W) = 1$ is by Lemma 2.5.6.
 \end{proof}
 
 \subsection{Finite generation of the canonical ring}%
@@ -937,12 +942,12 @@ This obtains a new boundary $B$ with the same support as $\Delta$. If we run the
 
 \begin{conj}
     Let $X \to Z$ be a projective morphism and $(X, \Delta)$ be a klt pair. Then
-    \[ \bigoplus_{m \geq 0} \varphi_* \msc{O}_X(m(K_X + \Delta)) \]
-    is a finitely-generated $\msc{O}_Z$-algebra.
+    \[ \bigoplus_{m \geq 0} \varphi_* \mc{O}_X(m(K_X + \Delta)) \]
+    is a finitely-generated $\mc{O}_Z$-algebra.
 \end{conj}
 
 \begin{rmk}
-    If $X$ is a smooth projective variety, then $\bigoplus_{m \geq 0} H^0(X, \msc{O}_X(mK_X))$ is finitely generated over the base field $k$.
+    If $X$ is a smooth projective variety, then $\bigoplus_{m \geq 0} H^0(X, \mc{O}_X(mK_X))$ is finitely generated over the base field $k$.
 \end{rmk}
 
 \subsection{Running the MMP}%
@@ -1044,7 +1049,7 @@ We will now define some of these singularity classes and prove some of the impli
         \item There exists $x_1, \ldots, x_r \in \mf{m}$, where $r = \dim N$ such that $x_i$ is not a zero divisor in $N/(x_1, \ldots, x_{i-1})N$ for all $i$. Here, $x_1, \ldots, x_r$ is called a \textit{$N$-regular sequence}.
         \item If $x_1, \ldots, x_r \in \mf{m}$ for $r = \dim N$ and $\dim N/(x_1, \ldots, x_r)M = 0$, then $x_1, \ldots, x_r$ is an $N$-regular sequence.
     \end{enumerate}
-    A coherent sheaf $\msc{F}$ on a scheme $X$ is \textit{Cohen-Macaulay} if $\msc{F}_x$ is Cohen-Macaulay over $\msc{O}_{X,x}$ for every $x \in X$. Finally, a scheme $X$ is \textit{Cohen-Macaulay} if its structure sheaf $\msc{O}_X$ is Cohen-Macaulay.
+    A coherent sheaf $\mc{F}$ on a scheme $X$ is \textit{Cohen-Macaulay} if $\mc{F}_x$ is Cohen-Macaulay over $\mc{O}_{X,x}$ for every $x \in X$. Finally, a scheme $X$ is \textit{Cohen-Macaulay} if its structure sheaf $\mc{O}_X$ is Cohen-Macaulay.
 \end{defn}
 
 There is a condition of Serre, which is slightly weaker than being Cohen-Macaulay. We say that a ring $R$ satisfies the properties
@@ -1060,13 +1065,13 @@ There is a condition of Serre, which is slightly weaker than being Cohen-Macaula
 \begin{defn}
     Let $Y$ be a variety over a field of characteristic $0$ and $X \xrightarrow{f} Y$ be a resolution of singularities. We say that $f$ is \textit{rational} if 
     \begin{enumerate}
-        \item $f_* \msc{O}_X = \msc{O}_Y$ (here, $Y$ is normal).
-        \item The higher derived pushforwards are given by $R^i f_* \msc{O}_X = 0$ for $i > 0$.
+        \item $f_* \mc{O}_X = \mc{O}_Y$ (here, $Y$ is normal).
+        \item The higher derived pushforwards are given by $R^i f_* \mc{O}_X = 0$ for $i > 0$.
     \end{enumerate}
     We say that $Y$ has \textit{rational singularities} if every resolution is rational.
 \end{defn}
 
-Equivalently, the morphism $\msc{O}_Y \to R f_* \msc{O}_X$ is a quasi-isomorphism in the derived category.
+Equivalently, the morphism $\mc{O}_Y \to R f_* \mc{O}_X$ is a quasi-isomorphism in the derived category.
 
 \begin{exms}
     All singularities of the form $A_n$ are rational. If $X \to Y = A_n$, then $f^*(K_Y) = K_X$, so $Y$ is rational. However, the cone over an elliptic curve is not rational.
@@ -1077,7 +1082,7 @@ Equivalently, the morphism $\msc{O}_Y \to R f_* \msc{O}_X$ is a quasi-isomorphis
 \end{defn}
 
 \begin{defn}
-    Let $X \subseteq Y$ be an embedding of a scheme into a regular scheme and $Z \to Y$ be a log resolution of $X$ which is an isomorphism outside $X$. Let $E$ be the reduced preimage of $X$ in $Z$. Then we say $X$ has \textit{Du Bois singularities} if $\msc{O}_X \to R\pi_* \msc{O}_E$ is a quasi-isomorphism.
+    Let $X \subseteq Y$ be an embedding of a scheme into a regular scheme and $Z \to Y$ be a log resolution of $X$ which is an isomorphism outside $X$. Let $E$ be the reduced preimage of $X$ in $Z$. Then we say $X$ has \textit{Du Bois singularities} if $\mc{O}_X \to R\pi_* \mc{O}_E$ is a quasi-isomorphism.
 \end{defn}
 
 \begin{rmk}
@@ -1100,23 +1105,23 @@ Equivalently, the morphism $\msc{O}_Y \to R f_* \msc{O}_X$ is a quasi-isomorphis
 \end{prop}
 
 \begin{proof}
-    Let $Y$ be projective and $D$ be an ample Cartier divisor on $Y$. Then $H^i(X, \omega_X(rf^* D)) = 0$ for $r > 0, r > 0$. By Serre duality, we have $H^{n-i}(X, \msc{O}_X(-rf^* D)) = 0$ for $i > 0$ and $r > 0$. Then the Leray spectral sequence
-    \[ E_2^{i,j} = H^i(Y, R^j f_* \msc{O}_X(-rD)) \Rightarrow H^{i+j}(X, \msc{O}_X(-rf^* D)). \]
+    Let $Y$ be projective and $D$ be an ample Cartier divisor on $Y$. Then $H^i(X, \omega_X(rf^* D)) = 0$ for $r > 0, r > 0$. By Serre duality, we have $H^{n-i}(X, \mc{O}_X(-rf^* D)) = 0$ for $i > 0$ and $r > 0$. Then the Leray spectral sequence
+    \[ E_2^{i,j} = H^i(Y, R^j f_* \mc{O}_X(-rD)) \Rightarrow H^{i+j}(X, \mc{O}_X(-rf^* D)). \]
     Assuming that $f$ is rational, we then obtain
-    \[ H^i(Y, \msc{O}_Y(-rD)) \simeq H^i(X, \msc{O}_X(-rf^* D)) \qquad i > 0. \]
-    Now we will prove that $H^i(Y, \msc{O}_Y(-rD)) = 0$ for $i < n$ and $r \gg 0$ only if $Y$ is Cohen-Macaulay.\footnote{The other direction is true, but we do not need it right now.} Let $H \subseteq \abs{r'D}$ be a general element. We obtain the exact sequence
-    \[ 0 \to \msc{O}_Y(-(r+r')D) \xrightarrow{\cdot H} \msc{O}_Y(-rD) \to \msc{O}_H(=rD) \to 0. \]
-    By vanishing, we see that $H^i(H, \msc{O}_H(-rD))$ for $i < n-1$ and $r \gg 0$. Therefore by induction, $H$ is Cohen-Macaulay and thus $Y$ is Cohen-Macaulay. Taking the case of $i = 0$, we obtain
+    \[ H^i(Y, \mc{O}_Y(-rD)) \simeq H^i(X, \mc{O}_X(-rf^* D)) \qquad i > 0. \]
+    Now we will prove that $H^i(Y, \mc{O}_Y(-rD)) = 0$ for $i < n$ and $r \gg 0$ only if $Y$ is Cohen-Macaulay.\footnote{The other direction is true, but we do not need it right now.} Let $H \subseteq \abs{r'D}$ be a general element. We obtain the exact sequence
+    \[ 0 \to \mc{O}_Y(-(r+r')D) \xrightarrow{\cdot H} \mc{O}_Y(-rD) \to \mc{O}_H(=rD) \to 0. \]
+    By vanishing, we see that $H^i(H, \mc{O}_H(-rD))$ for $i < n-1$ and $r \gg 0$. Therefore by induction, $H$ is Cohen-Macaulay and thus $Y$ is Cohen-Macaulay. Taking the case of $i = 0$, we obtain
     \[ h^0(Y, \omega_Y(rD)) = h^0(X, \omega_X(rf^*D)) = h^0(Y, f_* \omega_X(rD)) \]
     for all $r > 0$. This implies that $f_* \omega_X = \omega_Y$ by a result in Hartshorne.
 
-    Now assume that $Y$ is Cohen-Macaulay and $f_* \omega_X = \omega_Y$. We will induct on the dimension, and CM curves are smooth, so we proceed to the inductive step. We will prove that $R^i f_* \msc{O}_X$ is supported in some $0$-dimensional locus. Let $H \subseteq Y$ be general and $H' = f^{-1}H$, so $f \colon H' \to H$ is a resolution. Then 
-    \[ f_* \omega_{H'} = f_* (\omega_X(H') \otimes \msc{O}_{H'}) = \msc{O}_H(H) \otimes f_* \omega_X = \msc{O}_H(H) \otimes \omega_Y = \omega_H. \]
-    By induction, we see that $\msc{O}_H \otimes R^i f_* \msc{O}_X = R^i f_* \msc{O}_{H'} = 0$ is trivial outside a zero dimensional set. Therefore $H^0(Y, R^q f_* \msc{O}_X(-rD)) = 0$ for $p,q > 0$ or if $p<n$ and $q=0$. By the spectral sequence, we obtain $H^0(Y, R^q f_* \msc{O}_X \otimes_{\msc{O}_Y} \msc{O}_Y(-rD)) = 0$ for $q < n-1$ and
-    \[ H^0(Y, R^{n-1}f_* \msc{O}_X(-rD)) \cong \ker \qty[ H^n(Y, \msc{O}_Y(-rD)) \xrightarrow{\alpha} H^n(X, \msc{O}_X(-rf^* D)) ]. \]
-    This implies that $R^q f_* \msc{O}_X = 0$ for $q < n-1$. When $q = n$, $\alpha$ is the dual to the morphism
+    Now assume that $Y$ is Cohen-Macaulay and $f_* \omega_X = \omega_Y$. We will induct on the dimension, and CM curves are smooth, so we proceed to the inductive step. We will prove that $R^i f_* \mc{O}_X$ is supported in some $0$-dimensional locus. Let $H \subseteq Y$ be general and $H' = f^{-1}H$, so $f \colon H' \to H$ is a resolution. Then 
+    \[ f_* \omega_{H'} = f_* (\omega_X(H') \otimes \mc{O}_{H'}) = \mc{O}_H(H) \otimes f_* \omega_X = \mc{O}_H(H) \otimes \omega_Y = \omega_H. \]
+    By induction, we see that $\mc{O}_H \otimes R^i f_* \mc{O}_X = R^i f_* \mc{O}_{H'} = 0$ is trivial outside a zero dimensional set. Therefore $H^0(Y, R^q f_* \mc{O}_X(-rD)) = 0$ for $p,q > 0$ or if $p<n$ and $q=0$. By the spectral sequence, we obtain $H^0(Y, R^q f_* \mc{O}_X \otimes_{\mc{O}_Y} \mc{O}_Y(-rD)) = 0$ for $q < n-1$ and
+    \[ H^0(Y, R^{n-1}f_* \mc{O}_X(-rD)) \cong \ker \qty[ H^n(Y, \mc{O}_Y(-rD)) \xrightarrow{\alpha} H^n(X, \mc{O}_X(-rf^* D)) ]. \]
+    This implies that $R^q f_* \mc{O}_X = 0$ for $q < n-1$. When $q = n$, $\alpha$ is the dual to the morphism
     \[ H^0(Y, \omega_Y(rD)) \to H^0(X, \omega_X(rf^*D)) = H^0(Y, f_* \omega_X(rD)) \]
-    because $\omega_Y \simeq f_* \omega_X$. Thus $\alpha$ is an isomorphism and thus $R^n f_* \msc{O}_X = 0$.
+    because $\omega_Y \simeq f_* \omega_X$. Thus $\alpha$ is an isomorphism and thus $R^n f_* \mc{O}_X = 0$.
 \end{proof}
 
 \begin{lem}
@@ -1134,18 +1139,18 @@ The idea of the proof is to use the Riemann-Hurwitz formula on a log resolution 
 \end{thm}
 
 \begin{proof}
-    Write $K_Y \equiv f^*(K_X + \Delta) + A - B$, where $Y \to X$ is a log resolution, $\Supp B \subseteq \operatorname{Ex}(f)$, and $\floor{A} = 0$. By KV vanishing, $R^j f_* \msc{O}_Y(\ceil{B}) = 0$ for $j > 0$. Now let $\msc{L}$ be an ample Cartier divisor on $X$. WE have a commutative diagram
+    Write $K_Y \equiv f^*(K_X + \Delta) + A - B$, where $Y \to X$ is a log resolution, $\Supp B \subseteq \operatorname{Ex}(f)$, and $\floor{A} = 0$. By KV vanishing, $R^j f_* \mc{O}_Y(\ceil{B}) = 0$ for $j > 0$. Now let $\mc{L}$ be an ample Cartier divisor on $X$. WE have a commutative diagram
     \begin{equation*}
     \begin{tikzcd}
-        H^i(\msc{O}_Y(-rf^* \msc{L})) \ar{r} & H^i(\msc{O}_Y(\ceil{B} - rf^* \msc{L})) \\
-        H^i(\msc{O}_X(-r\msc{L})) \ar{u} \ar[equal]{r} & H^i(\msc{O}_X(-r\msc{L})). \ar{u}{\beta}
+        H^i(\mc{O}_Y(-rf^* \mc{L})) \ar{r} & H^i(\mc{O}_Y(\ceil{B} - rf^* \mc{L})) \\
+        H^i(\mc{O}_X(-r\mc{L})) \ar{u} \ar[equal]{r} & H^i(\mc{O}_X(-r\mc{L})). \ar{u}{\beta}
     \end{tikzcd}
     \end{equation*}
     Therefore we have
-    \[ H^i(X, \msc{O}_X(-r\msc{L}) \otimes R^j f_* \msc{O}_X(\ceil{B})) \Rrightarrow H^{i+j}(Y, \msc{O}_Y(\ceil{B} - rf^*\msc{L})) \]
-    and $H^i(\msc{O}_Y(-rf^* \msc{L})) = 0$ for $i < n$ and $r > 0$ by KV vanishing. We want to conclude that $H^i(\msc{O}_X(-r\msc{L})) = 0$ for $r > 0, i < n$. Using vanishing and the spectral sequence, we see that $\beta$ is an isomorphism. But then by vanishing again, the top left corner is $0$, and thus everything in the diagram must vanish. Therefore $X$ is Cohen-Macaulay.
+    \[ H^i(X, \mc{O}_X(-r\mc{L}) \otimes R^j f_* \mc{O}_X(\ceil{B})) \Rrightarrow H^{i+j}(Y, \mc{O}_Y(\ceil{B} - rf^*\mc{L})) \]
+    and $H^i(\mc{O}_Y(-rf^* \mc{L})) = 0$ for $i < n$ and $r > 0$ by KV vanishing. We want to conclude that $H^i(\mc{O}_X(-r\mc{L})) = 0$ for $r > 0, i < n$. Using vanishing and the spectral sequence, we see that $\beta$ is an isomorphism. But then by vanishing again, the top left corner is $0$, and thus everything in the diagram must vanish. Therefore $X$ is Cohen-Macaulay.
 
-    Now if we take $j = 0$, we obtain an injection $H^n(\msc{O}_X(-r\msc{L})) \hookrightarrow H^n(\msc{O}_Y(-rf^*\msc{L}))$. By Serre duality, the map $H^0(Y, \omega_Y(rf^*\msc{L})) = H^0(X, f_*\omega_Y \otimes \msc{O}_X(r\msc{L})) \twoheadrightarrow H^0(X, \omega_X \otimes \msc{O}_X(r\msc{L}))$ is a surjection, and surjectivity for $r \gg 0$ implies that $f_* \omega_Y \twoheadrightarrow \omega_X$, and they are isomorphic because they are both rank $1$ reflexive sheaves. Therefore $X$ has rational singularities.
+    Now if we take $j = 0$, we obtain an injection $H^n(\mc{O}_X(-r\mc{L})) \hookrightarrow H^n(\mc{O}_Y(-rf^*\mc{L}))$. By Serre duality, the map $H^0(Y, \omega_Y(rf^*\mc{L})) = H^0(X, f_*\omega_Y \otimes \mc{O}_X(r\mc{L})) \twoheadrightarrow H^0(X, \omega_X \otimes \mc{O}_X(r\mc{L}))$ is a surjection, and surjectivity for $r \gg 0$ implies that $f_* \omega_Y \twoheadrightarrow \omega_X$, and they are isomorphic because they are both rank $1$ reflexive sheaves. Therefore $X$ has rational singularities.
 \end{proof}
 
 \begin{prop}
@@ -1187,26 +1192,26 @@ The idea of the proof is that if $H' \xrightarrow{\pi} H$ is a resolution, then 
 \section{Duality Theory}%
 \label{sec:duality_theory}
 
-Given a projective variety $X$, we want a sheaf $\omega_X$ such that $H^i(X, \msc{F}) = { H^{n-i}(X, \msc{H}om(\msc{F}, \omega_X)) }^{\vee}$ for every Cohen-Macaulay sheaf. Recall that Serre duality establishes this duality for $H^n(\P^n, \msc{F}) = \Hom(\msc{F}, K_{\P^n})$ for any quasicoherent sheaf. Moreover, if $\msc{F}$ is locally free, then
-\[ H^i(\P^n, \msc{F}) = { H^{n-i}(\P^n, K_{\P^n} \otimes \msc{F}^*) }^{\vee}. \]
+Given a projective variety $X$, we want a sheaf $\omega_X$ such that $H^i(X, \mc{F}) = { H^{n-i}(X, \mc{H}om(\mc{F}, \omega_X)) }^{\vee}$ for every Cohen-Macaulay sheaf. Recall that Serre duality establishes this duality for $H^n(\P^n, \mc{F}) = \Hom(\mc{F}, K_{\P^n})$ for any quasicoherent sheaf. Moreover, if $\mc{F}$ is locally free, then
+\[ H^i(\P^n, \mc{F}) = { H^{n-i}(\P^n, K_{\P^n} \otimes \mc{F}^*) }^{\vee}. \]
 \begin{defn}
     A \textit{dualizing sheaf} $\omega_X$ is a coherent sheaf with a surjection
     \[ \Tr_X \colon H^n(X, \omega_X) \to k \]
-    such that for all coherent $\msc{F}$, $\Tr_X$ induces an isomorphism
-    \[ \Hom (\msc{F}, \omega_X) = \Hom(H^n(X, \msc{F}, k)). \]
+    such that for all coherent $\mc{F}$, $\Tr_X$ induces an isomorphism
+    \[ \Hom (\mc{F}, \omega_X) = \Hom(H^n(X, \mc{F}, k)). \]
     The pair $\omega_X, \Tr_X$ is unique if it exists.
 \end{defn}
 
 \begin{prop}
-    Let $f \colon X \to Y$ be a finite morphism, $\msc{F} \in \mr{Coh}(X), \msc{G} \in \mr{Coh}(Y)$. Let $f^! \msc{G} \coloneqq \msc{H}om_{\msc{O}_Y}(f_* \msc{O}_X, \msc{G})$,
+    Let $f \colon X \to Y$ be a finite morphism, $\mc{F} \in \mr{Coh}(X), \mc{G} \in \mr{Coh}(Y)$. Let $f^! \mc{G} \coloneqq \mc{H}om_{\mc{O}_Y}(f_* \mc{O}_X, \mc{G})$,
     \begin{enumerate}
-        \item There exists an isomorphism $f_* \msc{H}om(\msc{F}, f^! \msc{G}) = \msc{H}om_{\msc{O}_Y}(f_* \msc{F}, \msc{G})$.
-        In particular, there is a natural isomorphism $\Hom_X(\msc{F}, f^! \msc{G}) = \Hom_Y(f_* \msc{F}, \msc{G})$.
+        \item There exists an isomorphism $f_* \mc{H}om(\mc{F}, f^! \mc{G}) = \mc{H}om_{\mc{O}_Y}(f_* \mc{F}, \mc{G})$.
+        In particular, there is a natural isomorphism $\Hom_X(\mc{F}, f^! \mc{G}) = \Hom_Y(f_* \mc{F}, \mc{G})$.
     \end{enumerate}
 \end{prop}
 
 \begin{proof}
-    Assume $X = \Spec A, Y = \Spec B$ and $\msc{F} = \wt{M}, \msc{G} = \wt{N}$. Then we have reduced to the identity
+    Assume $X = \Spec A, Y = \Spec B$ and $\mc{F} = \wt{M}, \mc{G} = \wt{N}$. Then we have reduced to the identity
     \[ \Hom_A(M, \Hom_B(A, N)) = \Hom_B(M, N), \]
     but this is obvious. Simply write $\psi(m)(a) = \phi(am)$ for some $\phi \in \Hom_B(M, N)$.
 \end{proof}
@@ -1218,12 +1223,12 @@ Given a projective variety $X$, we want a sheaf $\omega_X$ such that $H^i(X, \ms
 \begin{proof}
     We simply compute
     \begin{align*}
-        \Hom_X(\msc{F}, \omega_X) &= \Hom_X(\msc{F}, f^! \omega_Y) \\
-                                  &= \Hom_Y(f_* \msc{F}, \omega_Y) \\
-                                  &= { H^m(Y, f_* \msc{F}) }^{\vee} \\
-                                  &= { H^n(X, \msc{F}) }^{\vee}.
+        \Hom_X(\mc{F}, \omega_X) &= \Hom_X(\mc{F}, f^! \omega_Y) \\
+                                  &= \Hom_Y(f_* \mc{F}, \omega_Y) \\
+                                  &= { H^m(Y, f_* \mc{F}) }^{\vee} \\
+                                  &= { H^n(X, \mc{F}) }^{\vee}.
     \end{align*}
-    Here, finiteness gives us $R^i f_* \msc{F} = 0$ for $i > 0$ and thus the Leray spectral sequence applies.
+    Here, finiteness gives us $R^i f_* \mc{F} = 0$ for $i > 0$ and thus the Leray spectral sequence applies.
 \end{proof}
 
 \begin{cor}
@@ -1231,41 +1236,41 @@ Given a projective variety $X$, we want a sheaf $\omega_X$ such that $H^i(X, \ms
 \end{cor}
 
 \begin{proof}
-    We always have a finite surjective morphism $X \to \P^n$ (embed in large projective space, then project down). Then $\omega_{\P^n}$ exists, so $\omega_X$ does also. Also $\omega_X$ is $S_2$ if and only if $f_* \omega_X$ is, but $f_* \omega_X = \msc{H}om(\text{locally free})$. 
+    We always have a finite surjective morphism $X \to \P^n$ (embed in large projective space, then project down). Then $\omega_{\P^n}$ exists, so $\omega_X$ does also. Also $\omega_X$ is $S_2$ if and only if $f_* \omega_X$ is, but $f_* \omega_X = \mc{H}om(\text{locally free})$. 
 \end{proof}
 
 \begin{cor}
-    If $X$ is a projective scheme of pure dimension $m$ over $k$, $\msc{F}$ a coherent sheaf such that $\supp \msc{F}$ has pure dimension $m$, then
+    If $X$ is a projective scheme of pure dimension $m$ over $k$, $\mc{F}$ a coherent sheaf such that $\supp \mc{F}$ has pure dimension $m$, then
     \begin{enumerate}
-        \item If $\msc{F}$ is Cohen-Macaulat, so is $\msc{H}om(\msc{F}, \omega_X)$. The converse holds if $\msc{F}$ is $S_2$.
-        \item If $X$ is $S_2$, then $\msc{O}_X$ is Cohen-Macaulay if and only if $\omega_X$ is.
+        \item If $\mc{F}$ is Cohen-Macaulat, so is $\mc{H}om(\mc{F}, \omega_X)$. The converse holds if $\mc{F}$ is $S_2$.
+        \item If $X$ is $S_2$, then $\mc{O}_X$ is Cohen-Macaulay if and only if $\omega_X$ is.
     \end{enumerate}
 \end{cor}
 
 \begin{proof}
-    Let $f \colon X \to \P^m$ be surjective and finite. Then $\msc{F}$ is Cohen-Macaulay if and only if $f_* \msc{F}$ is locally free, so $\msc{H}om_{\msc{O}_X}(\msc{F}, \omega_X)$ is Cohen-Macaulay if and only if
-    \[ f_* \msc{H}om_{\msc{O}_X} (\msc{F}, \omega_X) = \msc{H}om_{\msc{O}_{\P^n}}(f_* \msc{F}, \omega_{\P^n}), \]
-    and $f_* \msc{F}$ is locally free if and only if $\msc{F}$ is $S_2$.
+    Let $f \colon X \to \P^m$ be surjective and finite. Then $\mc{F}$ is Cohen-Macaulay if and only if $f_* \mc{F}$ is locally free, so $\mc{H}om_{\mc{O}_X}(\mc{F}, \omega_X)$ is Cohen-Macaulay if and only if
+    \[ f_* \mc{H}om_{\mc{O}_X} (\mc{F}, \omega_X) = \mc{H}om_{\mc{O}_{\P^n}}(f_* \mc{F}, \omega_{\P^n}), \]
+    and $f_* \mc{F}$ is locally free if and only if $\mc{F}$ is $S_2$.
 \end{proof}
 
 \begin{thm}
-    Let $X$ be a projective scheme of pure dimension $m$, $\msc{F}$ a Cohen-Macaulay sheaf such that $\supp \msc{F}$ has pure dimension. Then
-    \[ H^i(X, \msc{F}) = {H^{n-i}(X, \msc{H}om_{\msc{O}_X}(\msc{F}, \omega_X))}^{\vee}. \]
+    Let $X$ be a projective scheme of pure dimension $m$, $\mc{F}$ a Cohen-Macaulay sheaf such that $\supp \mc{F}$ has pure dimension. Then
+    \[ H^i(X, \mc{F}) = {H^{n-i}(X, \mc{H}om_{\mc{O}_X}(\mc{F}, \omega_X))}^{\vee}. \]
 \end{thm}
 
 \begin{proof}
-    As before, let $f \colon X \to \P^m$ be finite and surjective. We know that $H^i(X, \msc{F}) = H^i(\P^m, f_* \msc{F})$. Then $f_* \msc{F}$ is locally free, so by Serre duality, we have
-    \[ H^i(\P^m, f_* \msc{F}) = { H^{m-i}(\P^m, \msc{H}om_{\msc{O}_{\P^m}}(f_* \msc{F}, \omega_{\P^m})) }^{\vee}, \]
+    As before, let $f \colon X \to \P^m$ be finite and surjective. We know that $H^i(X, \mc{F}) = H^i(\P^m, f_* \mc{F})$. Then $f_* \mc{F}$ is locally free, so by Serre duality, we have
+    \[ H^i(\P^m, f_* \mc{F}) = { H^{m-i}(\P^m, \mc{H}om_{\mc{O}_{\P^m}}(f_* \mc{F}, \omega_{\P^m})) }^{\vee}, \]
     and therefore we obtain
-    \[ H^{m-i}(\P^m, \msc{H}om(f_* \msc{F}, \omega_{\P^m})) = H^{m-i}(\P^m, f_* \msc{H}om_{\msc{O}_X}(\msc{F}, \omega_X)) = H^{m-i}(X, \msc{H}om_{\msc{O}_X}(\msc{F}, \omega_X)). \qedhere \] 
+    \[ H^{m-i}(\P^m, \mc{H}om(f_* \mc{F}, \omega_{\P^m})) = H^{m-i}(\P^m, f_* \mc{H}om_{\mc{O}_X}(\mc{F}, \omega_X)) = H^{m-i}(X, \mc{H}om_{\mc{O}_X}(\mc{F}, \omega_X)). \qedhere \] 
 \end{proof}
 
 \begin{prop}
-    Let $X$ be a projective Cohen-Macaulay scheme of pure dimension $m$, $D \subset X$ a Cartier divisor. Then $\omega_D = \omega_X(D) \otimes \msc{O}_D$. 
+    Let $X$ be a projective Cohen-Macaulay scheme of pure dimension $m$, $D \subset X$ a Cartier divisor. Then $\omega_D = \omega_X(D) \otimes \mc{O}_D$. 
 \end{prop}
 
 \begin{prop}
-    Let $X$ be a normal projective variety of dimension $m$. Then $\omega_X = \msc{O}_X(K_X)$.
+    Let $X$ be a normal projective variety of dimension $m$. Then $\omega_X = \mc{O}_X(K_X)$.
 \end{prop}
 
 These two facts tive the classical \textit{adjunction formula}.
@@ -1328,11 +1333,11 @@ Therefore, if $(X, B+S)$ is plt, then $\qty(S, \eval{B}_S)$ is klt. The inverse 
 This is true and proved by Koll\`ar.
 
 \begin{proof}[Proof of Theorem]
-    Note that $\ceil{-A} - \floor{F} = K_Y - g^*(K_X + D) + \qty{A} + \qty{F}$. By KV vanishing, we have $R^1 g_* \msc{O}_Y(\ceil{-A} - \floor{F}) = 0$. Then we have the exact sequence
-    \[ 0 \to \msc{O}_Y(\ceil{-A} - \floor{F}) \to \msc{O}_Y(\ceil{-A}) \to \msc{O}_{\floor{F}}(\ceil{-A}) \to 0 \]
-    so $g_* \msc{ O }_Y(\ceil{-A}) \twoheadrightarrow g_* \msc{O}_{\floor{F}}(\ceil{-A})$. Now $\ceil{-A}$ is $g$-exceptional, so $g_* \msc{O}_Y(\ceil{-A}) = \msc{O}_X g_* D \geq 0$. Writing $\floor{F} = F_1 \cup F_2$ is a neighborhood of $h^{-1}(x)$, we obtain
-    \[ { g_* \msc{O}_{\floor{F}}(\ceil{-A}) }_{(x)} = { g_* \msc{O}_{F_1} (\ceil{-A}) }_(x) + g_* \msc{O}_{F_2}(\ceil{-A}). \]
-    This will give a surjection $\msc{O}_{X, x} \to \msc{O}_{\floor{F}, x}$, which is not true by connectedness.
+    Note that $\ceil{-A} - \floor{F} = K_Y - g^*(K_X + D) + \qty{A} + \qty{F}$. By KV vanishing, we have $R^1 g_* \mc{O}_Y(\ceil{-A} - \floor{F}) = 0$. Then we have the exact sequence
+    \[ 0 \to \mc{O}_Y(\ceil{-A} - \floor{F}) \to \mc{O}_Y(\ceil{-A}) \to \mc{O}_{\floor{F}}(\ceil{-A}) \to 0 \]
+    so $g_* \mc{ O }_Y(\ceil{-A}) \twoheadrightarrow g_* \mc{O}_{\floor{F}}(\ceil{-A})$. Now $\ceil{-A}$ is $g$-exceptional, so $g_* \mc{O}_Y(\ceil{-A}) = \mc{O}_X g_* D \geq 0$. Writing $\floor{F} = F_1 \cup F_2$ is a neighborhood of $h^{-1}(x)$, we obtain
+    \[ { g_* \mc{O}_{\floor{F}}(\ceil{-A}) }_{(x)} = { g_* \mc{O}_{F_1} (\ceil{-A}) }_(x) + g_* \mc{O}_{F_2}(\ceil{-A}). \]
+    This will give a surjection $\mc{O}_{X, x} \to \mc{O}_{\floor{F}, x}$, which is not true by connectedness.
 \end{proof}
 
 \begin{thm}
@@ -1359,27 +1364,27 @@ and this is trivial over $Z$. We want to write $K_E + B_E = g^*(K_Z + B_Z + M_Z)
 \label{sec:terminal_threefold_mmp}
 
 Let $X$ be a $\Q$-factorial terminal projective threefold and $X \xrightarrow{f} W$ be a flipping contraction. Suppose $\rho(X/W) = 1$, $-K_X$ is ample over $W$, and $X$ has terminal singularities and is smooth in codimension $2$. First, we want to construct a rational map $\pi$ which is an isomorphism in codimension $1$ such that $\rho(X^+/W) = 1$, $K_{X^+}$ is ample over $W$, and $X^+$ has terminal singularities. Also, $X^+$ is unique and coincides with
-\[ \Proj_W \bigoplus_{n \geq 0} f_* \msc{O}_X(nK_X) \]
-provided that this ring is a finitely generated $\msc{O}_W$-algebra. Denote this ring by $R(X)$.
+\[ \Proj_W \bigoplus_{n \geq 0} f_* \mc{O}_X(nK_X) \]
+provided that this ring is a finitely generated $\mc{O}_W$-algebra. Denote this ring by $R(X)$.
 
 \begin{prop}
-    The ring $R(X)$ is finitely generated as an $\msc{O}_W$-algebra if and only if it is finitely generated locally over $W$ (and this is even true locally analytically).
+    The ring $R(X)$ is finitely generated as an $\mc{O}_W$-algebra if and only if it is finitely generated locally over $W$ (and this is even true locally analytically).
 \end{prop}
 
 For a geometric picture, let $X$ be a terminal threefold and suppose $f$ contracts several curves. Then $W$ is not $\Q$-factorial in general. In 1988, Mori proved that these curves can be contracted one-by-one \textbf{in the analytic category} (in the algebraic category, this is clearly impossible by the previous discussion). Now our terminal threefold flipping contractions lead us to studying extremal neighborhoods. Here, we consider an analytic neighborhood of the fiber above $w \in W$. We may assume that $(W, w)$ is a rational singularity. Now what happens if our extremal neighborhood is smooth?
 
 \begin{prop}
-    Let $X \supseteq C = \P^1$ be an extremal neighborhood. Then $\msc{O}_C(K_X) = \msc{O}_C(-1)$, $\msc{I}_C / \msc{I}_C^2 \simeq \msc{O}_C \oplus \msc{O}_C(1)$, and $\abs{-K_X}$ has a smooth member.
+    Let $X \supseteq C = \P^1$ be an extremal neighborhood. Then $\mc{O}_C(K_X) = \mc{O}_C(-1)$, $\mc{I}_C / \mc{I}_C^2 \simeq \mc{O}_C \oplus \mc{O}_C(1)$, and $\abs{-K_X}$ has a smooth member.
 \end{prop}
 
 \begin{proof}
-    We know that $K_X. C = -1$ because $K_X. C < 0$ and $H^1(\msc{O}_C(K_X)) = 0$. Now we have an exact sequence
-    \[ 0 \to \msc{I}_C/\msc{I}_C^2 \to \Omega^1_X \otimes \msc{O}_C \to \msc{O}(K_C) \to 0, \]
-    and thus we have an isomorphism $\bigwedge^2(\msc{I}_C/\msc{I}_C^2) \simeq \msc{O}(K_X) \otimes \msc{O}_C(-K)$. Taking the degree, we conclude that $\deg \msc{I}_C / \msc{I}_C^2 = (-K_X.C) - \deg K_C = 1$. Now if we tensor with $\msc{O}_C(-1)$, we obtain the exact sequence
-    \[ 0 \to \msc{I}_C/\msc{I}_C^2 \otimes \msc{O}_C(-1) \to \msc{O}_X / \msc{I}_C^2 \otimes \msc{O}_X(K_X) \to \msc{O}_C(-1) \to 0. \]
-    Because $H^1(\msc{I}_C / \msc{I}_C^2 \otimes \msc{O}_C(-1)) = 0$, we have $\msc{I}_C / \msc{I}_C^2 \otimes \msc{O}_C(-1) \simeq \msc{O}_C(-1) \oplus \msc{O}_C$.
+    We know that $K_X. C = -1$ because $K_X. C < 0$ and $H^1(\mc{O}_C(K_X)) = 0$. Now we have an exact sequence
+    \[ 0 \to \mc{I}_C/\mc{I}_C^2 \to \Omega^1_X \otimes \mc{O}_C \to \mc{O}(K_C) \to 0, \]
+    and thus we have an isomorphism $\bigwedge^2(\mc{I}_C/\mc{I}_C^2) \simeq \mc{O}(K_X) \otimes \mc{O}_C(-K)$. Taking the degree, we conclude that $\deg \mc{I}_C / \mc{I}_C^2 = (-K_X.C) - \deg K_C = 1$. Now if we tensor with $\mc{O}_C(-1)$, we obtain the exact sequence
+    \[ 0 \to \mc{I}_C/\mc{I}_C^2 \otimes \mc{O}_C(-1) \to \mc{O}_X / \mc{I}_C^2 \otimes \mc{O}_X(K_X) \to \mc{O}_C(-1) \to 0. \]
+    Because $H^1(\mc{I}_C / \mc{I}_C^2 \otimes \mc{O}_C(-1)) = 0$, we have $\mc{I}_C / \mc{I}_C^2 \otimes \mc{O}_C(-1) \simeq \mc{O}_C(-1) \oplus \mc{O}_C$.
 
-    Now let $x \in C$ and $(D, x)$ be a smooth divisor on the germ $(X, x)$. Then $D$ extends naturally to a divisor $D'$ of $X$. We need to show that $D' \in \abs{-K_X}$. Here, we know that $\Pic X = \Z$ and the isomorphism is induced by $\msc{L} \mapsto \msc{L}.C$. Thus $D' \sim -K_X$.
+    Now let $x \in C$ and $(D, x)$ be a smooth divisor on the germ $(X, x)$. Then $D$ extends naturally to a divisor $D'$ of $X$. We need to show that $D' \in \abs{-K_X}$. Here, we know that $\Pic X = \Z$ and the isomorphism is induced by $\mc{L} \mapsto \mc{L}.C$. Thus $D' \sim -K_X$.
 \end{proof}
 
 \begin{cor}
@@ -1401,7 +1406,7 @@ By the classification of terminal threefold singularities, for any extremal neig
 \end{thm}
 
 Because $D$ is Du Val, we know $(X, D)$ is purely log terminal. Now the finite generation of the ring $R(X)$ is implied by the finite generation of the ring
-\[ \bigoplus_{n \geq 0} \eval{f}_D \msc{O}_D(nK_X). \]
+\[ \bigoplus_{n \geq 0} \eval{f}_D \mc{O}_D(nK_X). \]
 This is now a problem about projective surfaces, and apparently this is doable by hand. Here, $D$ is a log-Calabi Yau surface with at most three singular points. Now we conclude the existence of flips for terminal threefolds.
 
 Now we need to prove termination of flips. 

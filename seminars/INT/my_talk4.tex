@@ -1,0 +1,316 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[osf]{mathpazo}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+
+\title{Do we even need derived categories?}
+\author{Patrick Lei}
+\date{April 9, 2021}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    We will discuss the moduli space of stable curves of genus $0$ with $n$ marked points and its intersection theory, following~\cite{keel}. We will give a nice presentation of its Chow ring in terms of boundary divisors.
+\end{abstract}
+
+\section{Serre formula}%
+\label{sec:serre_formula}
+
+Recall the following from my March 19 lecture (this is Proposition 7.2.9 in my notes):
+\begin{prop*}
+    Let $X$ be a smooth variety, $V, W \subset X$ be closed subschemes that intersect properly, and $Z$ be an irreducible component of $V \cap W$. Then
+    \[ V \cdot W = \sum_Z i(Z, V \cdot W; X) \cdot [Z], \]
+    where $1 \leq i(Z, V \cdot W; X) \leq \ell(\msc{O}_{V \cap W, Z})$ is the intersection number and $i(Z, V \cdot W; X) = \ell(\msc{O}_{V \cap W, Z})$ if and only if the local ring is Cohen-Macaulay.
+\end{prop*}
+
+However, most rings are \textbf{not} Cohen-Macaulay, so we would like a formula to compute the intersection multiplicities in all cases. Serre gives a formula in terms of higher Tor functors (because $\msc{O}_{V \cap W, Z} = \msc{O}_{V, Z} \otimes \msc{O}_{W, Z}$). Before we state the formula, first we will state some results about the higher Tor functors. 
+
+First, if $X$ is a locally ringed space and $\msc{F}, \msc{G}$ are modules on $X$, then 
+\[ {\Tor_i^{\msc{O}_X}(\msc{F}, \msc{G})}_x = \Tor_i^{\msc{O}_{X,x}}(\msc{F}_x, \msc{G}_x). \]
+This follows from the construction of the derived tensor product $\otimes^L$ in Stacks, which exposits derived categories much better than I ever could.
+
+\begin{lem}
+    Let $X$ be a locally Noetherian scheme. If $\msc{F}, \msc{G}$ are coherent, so is $\Tor_i^{\msc{O}_X}(\msc{F}, \msc{G})$. Also, if $L, K \in D^-_{\mr{coh}}(\msc{O}_X)$ (this means bounded above complexes of quasicoherent sheaves with coherent homology), then so is $L \otimes^L K$.
+\end{lem}
+
+Proof of this fact is pure homological algebra, and again can be found in the Stacks project.
+
+\begin{lem}
+    Let $X$ be a smooth variety and $\msc{F}, \msc{G}$ be coherent sheaves. Then $\Tor_i^{\msc{O}_X}(\msc{F}, \msc{G})$ is supported on $\Supp \msc{F} \cap \Supp \msc{G}$, and is nonzero only when $0 \leq i \leq \dim X$.
+\end{lem}
+
+\begin{proof}
+    The support condition is clear by looking at the stalks, so we need to consider when the stalks are nonzero. Here, we note that because $X$ is smooth, the local rings $\msc{O}_{X,x}$ are regular local rings. By a result of Serre (Theorem 4.4.1 in my commutative algebra notes), $\msc{O}_{X,x}$ has finite global dimension $\dim \msc{O}_{X,x} \leq \dim X$. Here, the global dimension and the dimension are the same by Theorem 4.3.12 of my commutative algebra notes.\footnote{Originally there was an argument that the global dimension of a Noetherian local ring is the projective dimension of the residue field, which is Theorem 4.3.10 of the commutative algebra notes, and then by the Auslander-Buchsbaum formula this is the same as the depth, and finally regular implies Cohen-Macaulay, so depth equals dimension.}
+\end{proof}
+
+Now we can compute the intersection multiplicities as (Stacks gives this as the definition of intersection multiplicity)
+\[ i(Z, V \cdot W; X) = \sum {(-1)}^i \ell( \Tor_i^{\msc{O}_{X,Z}} (\msc{O}_{V,Z}, \msc{O}_{W,Z}) ). \]
+This formula is due to Serre, and Stacks writes the total intersection as
+\[ W \cdot V = \sum {(-1)}^i [\Tor_i^{\msc{O}_X}(\msc{O}_V, \msc{O}_W)]. \]
+\begin{rmk}
+    Stacks writes the intersection multiplicity as $e(X, V \cdot W, Z)$. I am using the notation in Fulton's book.
+\end{rmk}
+
+\begin{lem}
+    Assume that $\ell(\msc{O}_{V \cap W, Z}) = 1$. Then $i(Z, V \cdot W; X) = 1$ and $V, W$ are smooth in a general point of $Z$.
+\end{lem}
+
+\begin{proof}
+    Write $A = \msc{O}_{X,Z}$. Then $\dim A = \dim X - \dim Z$. Let $I, J$ be the ideals of $V, W$. By Proposition 7.2.9 of the notes,\footnote{This may be cheating, and a self-contained argument is given in Stacks} $I + J = \mf{m}$. Thus there exists $f_1, \ldots, f_r \in I , g_1, \ldots, f_s \in J$ Forming a basis for $\mf{m}/\mf{m}^2$. But this is a regular sequence and a system of parameters, so $A/ (f_1, \ldots, f_r)$ is a regular local ring of dimension $\dim X - \dim V$, so $I = (f_1, \ldots, f_r)$. Similarly, $J = (g_1, \ldots, g_s)$. Now by Corollary 4.4.3 of commutative algebra, the Koszul complex $K(f_1, \ldots, f_r, A)$ resolves $A/I$, so we obtain
+    \begin{align*}
+        \Tor_i^A(A/I, A/J) &= H_i (K(f_1, \ldots, f_r, A) \otimes A/J) \\
+                           &= H_i (K(f_1, \ldots, f_r, A/J)).
+    \end{align*}
+    By Theorem 4.4.2 from commutative algebra, we only have $H_0 = k$.
+\end{proof}
+
+\begin{exm}
+    Suppose $V, W \subset X$ are closed subvarieties, $\dim X = 4$, $\wh{\msc{O}}_{X,p} = \C[[x,y,z,w]]$ and $V = (xz,xw,yz,yw), W = (x-z,y-w)$. Then 
+    \[ \ell(\C[[x,y,z,w]]/(xz,xw,yz,yw,x-z,x-w)) = 3,\] 
+    but the intersection multiplicity is $2$ because $V$ is locally a union $(x=y=0) \cup (z=w=0)$.
+\end{exm}
+
+\section{Some algebra}%
+\label{sec:some_algebra}
+
+Let $(A, \mf{m}, k)$ be a Noetherian local ring. If $M$ is a module and $I$ is an ideal of definition, recall the Hilbert-Samuel polynomial $\varphi_{I,M}(n) = \ell(I^n M / I^{n+1} M)$. Similarly recall the function 
+\[ \chi_{I,M}(n) = \ell(M/I^{n+1} M) = \sum_{i=0}^n \varphi_{I,M}(i). \]
+Recall that $d(M) \coloneqq \deg \chi$ is independent of $I$ and equals the dimension of the support of $M$ (from the proof of Theorem 3.2.9 in my commutative algebta notes). Now write $\chi_{I,M}(n) = e_I(M, d) \frac{n^d}{d!} + O(n^{d-1})$.
+
+\begin{defn}
+    For $d = d(M)$ we write $e_I(M, d)$ as above, and for $d > d(M)$, we set $e_I(M,d) = 0$.
+\end{defn}
+
+\begin{lem}
+    For all $I, M$, we have
+    \[ e_I(M, d) = \sum_{\dim A/\mf{p} = d} \ell_{A_{\mf{p}}} (M_{\mf{p}}) e_{I}(A/\mf{p}, d). \]
+\end{lem}
+
+\begin{lem}
+    Let $P$ be a polynomial of degree $r$ with leading coefficient $a$. Then
+    \[ r! a = \sum_{i=0}^r {(-1)}^i \binom{r}{i} P(t-i) \]
+    for any $t$.
+\end{lem}
+
+\begin{proof}
+    Write $\Delta$ for the operator taking a polynomial $P$ to $P(t) - P(t-1)$. Then
+    \begin{align*}
+        \Delta^{r+1}(P) &= \sum_{i=0}^r {(-1)}^i \binom{r}{i} \Delta(P)(t-i) \\
+                        &= \sum_{i=0}^r {(-1)}^i \binom{r}{i} (P(t-i) - P(t-i-1)).
+    \end{align*}
+    The desired claim follows from Pascal's identity.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be a Noetherian local ring and $I = (f_1, \ldots, f_r)$ be an ideal of definition. Then
+    \[ e_I(M, r) = \sum {(-1)}^i \ell(H_i(K(f_1, \ldots, f_r) \otimes M)). \]
+\end{thm}
+
+There is a very long proof of this statement in Stacks using spectral sequences.
+
+\section{Computing intersection multiplicities without derived categories}%
+\label{sec:computing_intersection_multiplicities_without_derived_categories}
+
+We give some cases where intersection multiplicities can be computed without using derived categories.
+
+\begin{lem}
+    Suppose $\msc{O}_{V,Z}$ and $\msc{O}_{W,Z}$ are Cohen-Macaulay. Then $i(Z, V \cdot W; X) = \ell(\msc{O}_{V \cap W, Z})$.
+\end{lem}
+
+\begin{proof}
+    Write $A = \msc{O}_{X,Z}, B = \msc{O}_{V,Z}, C = \msc{O}_{W,Z}$. Then by Auslander-Buchsbaum (exercise 4d of the final CA homework), we have a resolution $F_{\bullet} \to B$ of length $\depth A - \depth B = \dim A - \dim B = \dim C$. Then $F_{\bullet} \otimes C$ represents $B \otimes^L C$ and is supported in $\qty{ \mf{m}_A }$, so by Lemma 10.108.2 in Stacks, it has nonzero cohomology only in degree $0$.
+\end{proof}
+
+\begin{lem}
+    Let $A$ be a Noetherian local ring and $I = (f_1, \ldots, f_r)$ is generated by a regular sequence. If $M$ is a finite $A$-module with $\dim \Supp M/IM = 0$, then
+    \[ e_I(M,r) = \sum {(-1)}^i \ell(\Tor_i^A(A/I, M)). \]
+\end{lem}
+
+In what follows, we will assume $V$ is cut out in $\msc{O}_{X,Z}$ by a regular sequence $(f_1, \ldots, f_c)$.
+\begin{lem}
+    In this case, we have $i(Z, V \cdot W; X) = c{!}$. This is the leading coefficient of the ``Hilbert polynomial'' $n \mapsto \ell(\msc{O}_{W,Z} / {(f_1, \ldots, f_c)}^t)$.
+\end{lem}
+
+\begin{proof}
+    By the previous lemma, $e(Z, V \cdot W; X) = e_{(f_1, \ldots, f_c)}(\msc{O}_{W,Z}(c))$. Now we need to show that $\dim \msc{O}_{W,Z} = c$. But now if $\dim V = r, \dim W = s, \dim X = n$, $\dim Z = r+s-n$, so $k(Z)$ has transcendence degree $r+s-n$. Because $f_1, \ldots, f_c$ is a regular sequence, $r+c=n$, so $\dim \msc{O}_{W,Z} = s-(r+s-n) = s-(n-c+s-n)=c$.
+\end{proof}
+
+\begin{lem}
+    Assume $c = 1$ (for example, $V$ is an effeective Cartier divisor). Then $i(Z, V \cdot W;X) = \ell(\msc{O}_{W,Z} / (f_1))$.
+\end{lem}
+
+\begin{proof}
+    Note that $\msc{O}_{W,Z}$ is a Noetherian local domain of dimension $1$. Then it is clear that $\ell(\msc{O}_{W,Z}/(f_1^t)) = t \ell(\msc{O}_{W,Z} / (f_1))$ for all $t \geq 1$.
+\end{proof}
+
+\begin{lem}
+    Asssume $\msc{O}_{W,Z}$ is Cohen-Macaulay. Then 
+    \[ i(Z, V \cdot W; X) = \ell(\msc{O}_{W,Z} / (f_1, \ldots, f_c)). \]
+\end{lem}
+
+\begin{proof}
+    Because $f_1, \ldots, f_c$ is a regular sequence, it is also quasi-regular by Proposition 3.5.6 of my commutative algebra notes. Then 
+    \[ \ell(\msc{O}_{W,Z} / {(f_1, \ldots, f_c)}^t) = \binom{c+t}{c} \ell(\msc{O}_{W,Z} / (f_1, \ldots, f_c)). \]
+    Now take the leading coefficient.
+\end{proof}
+
+
+
+\end{document}

@@ -26,7 +26,10 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[osf]{mathpazo}
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
 \usepackage{microtype}
 
 %CS packages
@@ -37,6 +40,7 @@
 % typeset and bib
 \usepackage[english]{babel} 
 \usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
@@ -132,7 +136,6 @@
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 \renewcommand{\abstractname}{Official Description}
 \newcommand{\mc}[1]{\mathcal{#1}}
-\newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
@@ -157,6 +160,8 @@
 \DeclareMathOperator{\spec}{Spec}
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\tind}{t-ind}
 
 % Section formatting
 \titleformat{\section}
@@ -220,7 +225,7 @@ If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
 \section*{Acknowledgements}%
 \label{sec:acknowledgements}
 
-I would like to thank Nicol\'as Vilches and Alex Xu for point out errors and typos in these notes.
+I would like to thank Nicol\'as Vilches and Alex Xu for pointing out errors and typos in these notes. I would also like to thank Alex for graciously offering to teach everyone about the Dirac operator. 
 
 
 \newpage
@@ -1121,7 +1126,7 @@ Then stability is equivalent to the fact that $\varphi_n \mapsto \varphi_{n-1}$.
     \[ \mc{A}_2^r = \varprojlim_{r} H^{n+r}(K(\Z_2, n); \Z_2). \]
 \end{prop}
 
-We will now compute $H^*(K(\Z_2, n), \Z_2)$. We will use the fibration $K(\Z_2, 1) \hookrightarrow * \to K(\Z_2, n)$ and hope to proceed by induction.
+We will now compute $H^*(K(\Z_2, n), \Z_2)$. We will use the fibration $K(\Z_2, n+ 1) \hookrightarrow * \to K(\Z_2, n)$ and hope to proceed by induction.
 
 \begin{exm}
     Let $n = 2$. Then we know $K(\Z_2, 1) = \R \P^{\infty}$. Then the spectral sequence is given by
@@ -1157,11 +1162,13 @@ For example, if $\mr{exc}(I) = 1$, then $I = (2^k, 2^{k-1}, \ldots, 4, 2, 1)$. I
 
 \begin{thm}[Serre]
     We have
-    \[ H^*(K\Z_2, n) = \Z_2 [\Sq^I (e_n) \mid I, \text{admissible},\ \mr{exc}(I) < n]. \]
+    \[ H^*(K( \Z_2, n )) = \Z_2 [\Sq^I (e_n) \mid I, \text{admissible},\ \mr{exc}(I) < n]. \]
 \end{thm}
 
 \begin{exm}
-    We have $H^*(K(\Z_2, 1)) = \Z_2[e_1]$. When $n=3$, the generators are $e_3, \Sq^1 e_3, \Sq^2 e_3, \Sq^3 \Sq^1 e_3, \ldots$. When $n$ increases, the description becomes more and more complicated.
+    We have $H^*(K(\Z_2, 1)) = \Z_2[e_1]$. When $n=3$, the generators are 
+    \[ e_3, \Sq^1 e_3, \Sq^2 e_3, \Sq^3 \Sq^1 e_3, \ldots. \] 
+    When $n$ increases, the description becomes more and more complicated.
 \end{exm}
 
 \begin{thm}[Borel]
@@ -1931,7 +1938,7 @@ Thus if we consider the inclusion $\mr{pt} \hookrightarrow X$, we obtain the (vi
     \item If $\alpha \in K(X)$, then we can write $\alpha = a - \C^N$ for some $a, N$. Here, if $\alpha = E-F$, then we choose $F \oplus F' \cong \C^N$, and thus we get $\alpha = E + F' - \C^N$.
     \item If $\alpha = a + \C^N$ and $\beta = b - \C^M$, then $\alpha = \beta$ if and only if they have the same rank everywhere and $a,b$ are stably equivalent (which means that $a \oplus \C^A = b + \C^B$ for some $A,B$).
 
-        To see this, we have $a + \C^M + \msc{E} = b + \C^N + \msc{E}$ for some $\msc{E}$. Then we simply add $\msc{E}'$ such that $\msc{E} + \msc{E}' = \C^L$. Now we have $a + \C^{M+L} = b + \C^{N+L}$, so we are done.
+        To see this, we have $a + \C^M + \mc{E} = b + \C^N + \mc{E}$ for some $\mc{E}$. Then we simply add $\mc{E}'$ such that $\mc{E} + \mc{E}' = \C^L$. Now we have $a + \C^{M+L} = b + \C^{N+L}$, so we are done.
 \end{enumerate}
 
 Now we would like to throw away the information about stably equivalent bundles. If $(X, x_0)$ is a pointed space, we define the \textit{reduced K-theory} $\wt{K}(X, x_0) \coloneqq \ker (K(X) \to K(x_0)) = \Z$. This depends only on the component of $x_0$ and is a non-unital ring. 
@@ -2046,7 +2053,7 @@ There is an alternative point of view in terms of complexes. Let
 be a complex of bundles over $X$. We define the \textit{support} $\supp \mathbb{E}$ to be the locus where the sequence is not exact.
 
 \begin{exm}
-    If we consider the bundle $0 \to \C \xrightarrow{z} \to \C \to 0$, then the support of this complex is $\qty{0}$.
+    If we consider the bundle $0 \to \C \xrightarrow{z} \C \to 0$, then the support of this complex is $\qty{0}$.
 \end{exm}
 
 Define $C(X)$ to be the homotopy classes of complexes with compact support, where $\E_0 \sim E_1$ if there exists $\mathbb{G} \to X \times I$ with compact support and $\eval{\mathbb{G}}_{X \times \qty{i}} = \E_i$. Now this contains the set $C_{\emptyset}(X)$ of complexes with empty support. 
@@ -2218,7 +2225,641 @@ so we have
 \[ t_1^k + \cdots + t_n^k = s_k(\sigma_1, \ldots, \sigma_k) = s_k \qty({\bigwedge}^1\qty(\bigoplus L_i), \ldots, {\bigwedge}^k \qty(\bigoplus L_i)), \]
 and thus we may define
 \[ \psi^k(E) \coloneqq s_k \qty({\bigwedge}^1 E, \ldots, {\bigwedge}^k E). \]
-The properties are easily checked using the splitting principle! For example, the third property is Fermat's little theorem. 
+The properties are easily checked using the splitting principle! For example, the third property is Fermat's little theorem. Now this induces $\psi^k \colon \wt{K}(X) \to \wt{K}(X)$.
+
+\begin{prop}
+    The map $\psi^k \colon \wt{K}(S^{2n}) \to \wt{K}(S^{2n})$ is multiplication by $k^n$.
+\end{prop}
+
+\begin{proof}
+    Observe that $* \colon \wt{K}(X) \otimes \wt{K}(Y) \to \wt{K}(X \wedge Y)$ is given by $\alpha \otimes \beta \mapsto p_X^*(\alpha) \cdot p_Y^*(\beta)$. Now $\psi^k$ commutes with multiplication, so we simply need to compute this for $\wt{K}(S^2)$. But now we have
+    \[ \psi^k(\gamma - 1) = \psi^k(\gamma) - \psi^k(1) = \gamma^k - 1 = { (1+\alpha) }^k - 1 = 1 + k\alpha - 1 = k \alpha, \]
+    where $\alpha = \gamma - 1$. Now assume the result is true for $S^{2n-2}$. Then $\wt{K}(S^2) \otimes \wt{K}(S^{2n-2}) \to \wt{K}(S^{2n})$ is the Bott periodicity map, so because $\psi^k$ commutes with multiplication, we obtain the desired result.
+\end{proof}
+
+\begin{proof}[Proof of Adams' theorem]
+    Let $f \colon S^{4n-1} \to S^{2n}$ satisfy $H(f) = 1$. Write $C_f = S^{2n} \cup_f D^{4n}$. Now we have an exact sequence
+    \[ 0 \to \wt{K}(S^{4n}) \to \wt{K}(C_f) \to \wt{K}(S^{2n}) \to 0, \]
+    and this is given by ${(\gamma-1)}^{2n} \mapsto \alpha, \beta \mapsto {(\gamma-1)}^n$. Then we know $\beta^2 = H(f) \alpha$. For every $k \in \N$, we have $\psi^k(\alpha) = k^{2n} \alpha$ and $\psi^k(\beta) = k^n \beta + u_k \alpha$ for $u_k \in \Z$. Because multiplication of Adams operations is commutative, we have $\psi^k \psi^{\ell} = \psi^{\ell} \psi^k$. Therefore, for all $k, \ell$, we have
+    \[ (k^{2n}-k^n) u_{\ell} = (\ell^{2n} - \ell^n) u_k. \]
+    Because $H(f) = 1$, we know 
+    \[ 2^n \beta + u_2 \alpha \psi^2(\beta) \equiv \beta^2 = H(f) \alpha = \alpha \pmod{2}, \]
+    and thus $u_2$ is odd. Setting $k=3, \ell=2$, we have
+    \[ (3^{2n} - 3^n) u_2 = (2^{2n} - 2^n) u_3, \]
+    and thus $2^n \mid 3^n - 1$, which implies $n = 1,2,4$.
+\end{proof}
+
+\begin{cor}
+    If $S^{n-1}$ is parallelizable, then $n - 1 = 0,1,3,7$. This is equivalent to $\R^n$ being a division algebra. This means that there exists $\mu \colon \R^n \to \R^n$ that is continuous and linear in each variable such that $\mu(x,y) = 0$ implies that one of $x,y = 0$. Thus $n=1,2,4,8$.
+\end{cor}
+
+\begin{proof}[Sketch of proof]
+    If $\R^n$ is a division algebra, then it is a division algebra with unit. Next, it is clear that $S^{n-1}$ is a unital $H$-space. But now this implies $n = 2m$ and then there exists $S^{4m-1} \to S^{2m}$ with Hopf invariant $1$.
+\end{proof}
+
+To go from $\R^n$ being a divison algebra to $S^{n-1}$ being an $H$-space, let $\mu$ be the multiplication on $\R^n$. Then the multiplication on $S^{n-1}$ is simply $(x,y) \mapsto \frac{\mu(x,y)}{\norm{\mu(x,y)}}$. To go from $S^{n-1}$ being parallelizable to being an $H$-space, choose an orthonormal frame $v_1, \ldots, v_{n-1}$ of $TS^{n-1}$. Then for all $x$, $(x, v_1(x), \ldots, v_{n-1}(x))$ is an orthonormal basis of $\R^n$. We may assume that at $e_1$, this is $(e_1, \ldots, e_n)$, so we obtain a matrix $\alpha_x \in SO(n)$ with $\alpha_{e_1} = \mr{id}$. Now the $H$-space structure is $x * y = \alpha_x(y)$ and this is clearly unital with unit $e_1$.
+
+\begin{rmk}
+    Adams used similar techniques to provide sharp upper bounds on the number of linearly independent vector fields on $S^{n-1}$. To construct the vector fields, we need to use the theory of modules over Clifford algebras. The Clifford algebras are all associative, and the first few examples are $\R, \C, \mathbb{H}$. The category of modules over these are periodic, and this is some sort of algebraic Bott periodicity.
+\end{rmk}
+
+\chapter{The Atiyah-Singer Index Theorem}%
+\label{cha:the_atiyah_singer_index_theorem}
+
+This is a result that relates analysis and topology. First, we will discuss the relation between analysis and $K$-theory.
+
+\section{Fredholm Operators}%
+\label{sec:fredholm_operators}
+
+Let $L \colon \R^n \to \R^m$ be a linear map. Then define the index $\ind(L) \coloneqq \dim \ker (L) - \dim \coker(L)$. In finite dimensions, this is just
+\[ \ind(L) = \dim \ker L - (m - \dim \Im L) = n-m \]
+by rank-nullity. In infinite dimensions, things are more interesting.
+
+\begin{defn}
+    Let $X, Y$ be Hilbert spaces and $L \colon X \to Y$ be a bounded operator. Then $L$ is \textit{Fredholm} if $\dim \ker L < \infty$, $\Im L$ is closed, and $\dim \coker L < \infty$. Now we may define the index $\ind(L) \coloneqq \dim \ker L - \dim \coker L \in \Z$.
+\end{defn}
+
+\begin{rmk}
+    For $X,Y$ Hilbert spaces, the condition that $\Im L$ is closed is automatic. This is a consequence of the open mapping theorem. 
+\end{rmk}
+
+\begin{exm}
+    Consider $L \colon \ell^2(\N) \to \ell^2(\N)$ be the left shift $(x_1, x_2, \ldots) \mapsto (x_2, x_3, \ldots)$. Then $\ind(L) = \dim \ker L - \dim \coker L = 1 - 0 = 1$. Similarly, we may consider the right shift $R \colon \ell^2(\N) \to \ell^2(\N)$ given by $(x_1, x_2,\ldots) \mapsto (0,x_1,x_2,\ldots)$, and $\ind(R) = 0-1=-1$.
+\end{exm}
+
+\begin{thm}
+    The space $\mr{Fred}(X,Y) \subseteq B(X,Y)$ is open and the index $\ind \colon \mr{Fred}(X,Y) \to \Z$ is locally constant.
+\end{thm}
+
+\begin{rmk}
+    If $\qty{L_t}_{t \in [0,1]}$ is a family of operators, then the index is constant, but of course the dimensions of the kernel and cokernel can vary wildly. Thus, index should be a topological quantity in some sense.
+\end{rmk}
+
+\begin{lem}
+    Let $T \colon X \to Y$ be invertible. Then if $p \colon X \to Y$ has small enough norm, $T + p$ is invertible.
+\end{lem}
+
+Thus being invertible is an open condition!
+
+\begin{proof}
+    Write $(T + p) = T(1 + T^{-1}p)$. Then $T^{-1}p$ has small norm, so we can write
+    \[ {(1+T^{-1}p)}^{-1} = \sum {(-1)}^n {(T^{-1} p)}^n, \]
+    and this sum converges. Therefore we have
+    \[ {(T+p)}^{-1} = \qty(\sum {(-1)}^n {(T^{-1}p)}^n) \cdot T^{-1}. \qedhere \]
+\end{proof}
+
+\begin{proof}[Proof of Theorem 3.1.4]
+    Let $T \colon X \to Y$ be Fredholm. Then we know $X = C \oplus \ker T$ and $Y = \Im T + D$, where $\dim \ker T < \infty$ and $\dim D < \infty$. Now we can write $T$ in the block matrix form
+    \[ T = \mqty(T' & 0 \\ 0 & 0) \qquad T' \colon C \xrightarrow{\sim} \Im T. \] Now suppose $p = \begin{psmallmatrix}
+    a & b \\ c & d
+    \end{psmallmatrix}$ has small norm. Then we have 
+    \[ T + p = \mqty(T' + a & b \\ c & d), \]
+    and $T' + a$ is invertible. Then by Gaussian elimination using 
+    \[ G \coloneqq \mqty(I & {(-T'+a)}^{-1} b \\ 0 & I) \qquad H \coloneqq \mqty(I & 0 \\ -c{(T'+a)}^{-1} & I), \]
+    we see that
+    \[ H(T+a)G = \mqty(T'+a & 0 \\ 0 & -c{(T'+a)}^{-1} b + d), \]
+    so we have
+    \[ \ind(T+a) = \ind(H (T+a)G) = \ind(-c{(T+a)}^{-1}b + d) = \dim \ker T - \dim D = \ind(T). \qedhere \]
+\end{proof}
+
+\begin{thm}[Atiyah-J\"anich]
+    Let $H$ be a separable complex Hilbert space. Then there is a natural bijection
+    \[ [X, \mr{Fred}(H)] \to K(X) \]
+    for all finite CW complexes $X$.
+\end{thm}
+
+\begin{rmk}
+    Let $S,T \colon H \to H$ be Fredholm. Then $S \circ T$ is also Fredholm. In particular, $[X, \mr{Fred}(H)]$ is naturally a semigroup and the map $[X, \mr{Fred}(H)] \to K(X)$ is a map of semigroups.
+\end{rmk}
+
+\begin{cor}
+    There is a weak homotopy equivalence $\mr{Fred}(H) \sim BU \times \Z$.
+\end{cor}
+
+\begin{rmk}
+    The map $\dim \colon K(X) \to \Z$ corresponds to the index.
+\end{rmk}
+
+To construct the map $[X, \mr{Fred}(H)] \to K(X)$, note that an element of $[X, \mr{Fred}(H)]$ is a family $\qty{T_x}_{x \in X}$, where $T_x \colon H \to H$. Then because $X$ is compact, there exists a finite dimensional $V \subset H$ such that $\Im(T_x) + V = H$ for all $x$. Therefore $T_x^{-1}(V) \subset H$, so $\bigcup T_x^{-1}(V) \to X$ is a vector bundle. Now we set 
+\[ \qty{T_x} \to \qty{T_x^{-1}(V)} - \ul{\C}^{\dim V} \in K(X). \]
+Note that the vector bundle has dimension $\ind T_x$
+
+The key point in the proof of Atiyah-J\"anich is the fact that the space $GL(H)$ of bounded invertible operators on $H$ is weakly contractible. This is called \textit{Kuiper's theorem}. Note that this is in contrast to $GL(\infty) \simeq U(\infty)$, which is not contractible.
+
+\begin{defn}
+    A bounded operator $K \colon X \to Y$ between Hilbert spaaces is \textit{compact} if it sends bounded sets to precompact sets.
+\end{defn}
+
+\begin{exm}
+    Any finite rank $K$ is compact. Also, the operator 
+    \[ \ell^2(\N) \to \ell^2(\N) \qquad (x_1, x_2, x_3, \ldots) \mapsto \qty(x_1, \frac{x_2}{2}, \frac{x_3}{3}, \ldots) \]
+    is compact.
+\end{exm}
+
+\begin{thm}
+    Let $T, K \colon X \to Y$. Then if $T$ is Fredholm and $K$ is compact, then $T+K$ is Fredholm and $\ind(T) = \ind(T+K)$.
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    We want to show that $\dim \ker(I+K) < \infty$, and this is the same as the unit sphere being compact. Here, if $\norm{x_n} = 1$ and $(I+K)(x_n) = 0$, then the sequence $y_n = \qty{-K x_n}$ has a convergent subsequence, and thus the unit sphere is compact.
+
+    To show that the cokernel is finite dimensional, we use \textit{Schauder's theorem}. Here, if $K \colon X \to Y$ is compact, then $K^* \colon Y^* \to X^*$ is also compact. 
+\end{proof}
+
+\section{Index and topological invariants}%
+\label{sec:index_and_topological_invariants}
+
+The goal of this section is to prove that if $M$ is a closed oriented smooth manifold, then $\chi(M), \sign(M)$ are naturally interpreted as indices of differential operators. Recall the de Rham complex of $C^{\infty}$-forms
+\[ 0 \to \Omega^0(M) \xrightarrow{\dd_0} \Omega^1(M) \xrightarrow{\dd_1} \cdots \xrightarrow{\dd} \Omega^n (M) \to 0. \]
+This has cohomology $H^p(M, \R)$. Note from this point of view that a cohomology class does not have a preferred representative. 
+
+A goal of Hodge theory is to find a preferred representative when $M$ is equipped with a Riemannian metric $g$. Intuitively, each $\Omega^i$ has an $L^2$ inner product
+\[ \ev{\alpha, \beta}_{L^2} = \int_M \ev{\alpha(p), \beta(p)} \dd{\mr{vol}}, \]
+so we obtain an $L^2$ norm. Now a good candidate for the preferred representative of a cohomology class is the \textit{shortest element}! It is not obvious that this even exists. 
+
+Now let $(V, \ev{-,-})$ be an oriented real Euclidean vector space of dimension $n$. Then we define the \textit{Hodge star}
+\[ * \colon {\bigwedge}^i V \to {\bigwedge}^{n-i} V \]
+to satisfy the property that for any oriented orthonormal basis $e_1, \ldots, e_n$, we have
+\[ e_1 \wedge \cdots \wedge e_i \mapsto e_{i+1} \wedge \cdots \wedge e_n. \]
+In a more invariant manner, we have $\mr{vol}(W) \mapsto \mr{vol}(W^{\perp})$. Now if $\alpha, \beta \in \bigwedge^i V$, then $\alpha \wedge *\beta$ is the inner product $\ev{\alpha,\beta} \dd{\mr{vol}}$. On a manifold, if $\alpha, \beta \in \Omega^i$, we obtain
+\[ \ev{\alpha, \beta}_{L^2} = \int_M \ev{\alpha(p), \beta(p)} \dd{\mr{vol}} = \int_M \alpha \wedge *\beta. \]
+
+Returning to the de Rham complex, we would like to write an adjoint $\dd^* \colon \Omega^p \to \Omega^{p-1}$. We set 
+\[ \dd^* = {(-1)}^{n(p+1)+1} * \dd * \colon \Omega^p \to \Omega^{n-p} \to \Omega^{n-p+1} \to \Omega^{p-1}. \]
+
+\begin{prop}
+    The morphism $\dd^*$ is the $L^2$ adjoint of $\dd$, so if $\gamma \in \Omega^{p-1}, \alpha \in \Omega^p$, then
+    \[ \ev{\dd{\gamma}, \alpha}_{L^2} = \ev{\gamma, \dd^* \alpha}. \]
+\end{prop}
+
+\begin{proof}
+    Consider $\gamma \wedge * \alpha \in \Omega^{n-1}$. Then we have
+    \begin{align*}
+        \dd{(\gamma \wedge * \alpha)} &= \dd{\gamma} \wedge * \alpha + {(-1)}^{p-1} \gamma \wedge \dd{(* \alpha)} \\
+                                      &= \ev{\dd \gamma, \alpha} - \ev{\gamma, \dd^* \alpha}.
+    \end{align*}
+    Then the resired result follows from Stokes, which gives us $\int \dd{(\gamma \wedge * \alpha)} = 0$.
+\end{proof}
+
+Now suppose that $\alpha$ minimizes $\norm{-}_{L^2}$ in $[\alpha] \in H^p$. Then any other element differs by an exact form $\eta \in \Omega^{p-1}$, so we have
+\begin{align*}
+    0 &= \eval{\dv{t}}_{t=0} \norm{\alpha + t \eta}_{L^2}^2 \\
+      &= \eval{ \dv{t} }_{t=0} (\norm{\alpha}^2 + 2 t \ev{\alpha, \dd{\eta}} + t^2 \norm{\dd{\eta}}^2) \\
+      &= 2 \ev{\alpha, \dd{\eta}} \\
+      &= 2 \ev{\dd^* \alpha, \eta},
+\end{align*}
+so we must impose $\dd^* \alpha = 0$. In particular, we must have $(\dd + \dd^*) \alpha = 0$.
+
+\begin{defn}
+    The \textit{Hodge Laplacian} is the operator $\Omega \coloneqq {(\dd + \dd^*)}^2 \colon \Omega^i \to \Omega^i$. Note that ${(\dd + \dd^*)}^2 = \dd \dd^* + \dd^* \dd$.
+\end{defn}
+
+This satisfies the following properties: 
+\begin{enumerate}
+    \item $\Delta \colon \Omega^0 \to \Omega^0$ is the negative of the usual Laplacian $- \div \grad f = - \sum \dv[2]{x_i}$.
+    \item The operator $\Delta$ is self-adjoint. Here, note that $\dd + \dd^*$ is self-adjoint. 
+    \item $\Delta$ is nonnegative. Here, note that $\ev{\alpha, \Delta \alpha} = \norm{(\dd + \dd^*) \alpha}^2 \geq 0$.
+    \item We have $\ker \Delta = \ker (\dd + \dd^*)$ on $\Omega^i$.
+\end{enumerate}
+
+\begin{thm}[Hodge]
+    There is an orthogonal decomposition
+    \[ \Omega^p(M) = \dd \Omega^{p-1} \oplus \mc{H}^p \oplus \dd^* \Omega^{p+1}. \]
+    Here, $\mc{H} = \ker(\Delta) = \ker(\dd + \dd^*)$ is the space of \textit{Harmonic forms}. In addition, we have $\mc{H}^p \cong H^p(M, \R)$, and in particular, each cohomology class admits a unique harmonic representative.
+\end{thm}
+
+\begin{rmk}
+    Note that $\dd + \dd^*$ preserves the natural $\Z/2\Z$ grading on $\Omega^*$. Therefore, we may consdier $\dd + \dd^* \colon \Omega^{\mr{even}} \to \Omega^{\mr{odd}}$, so we may consider its index. Therefore we have 
+    \[ \ker \dd + \dd^* = \bigoplus_{i} \mc{H}^{2i}, \qquad \coker \dd + \dd^* = \ker (\dd + \dd^*) = \bigoplus_i \mc{H}^{2i+1}. \]
+    Assuming the Hodge theorem, we therefore obtain $\ind(\dd + \dd^*) = \chi(M)$. In general, the Atiyah-Singer index theorem tells us that this is $e(TM)$.
+\end{rmk}
+
+Now let $M^{4k}$ be oriented. We have an intersection form $Q_M \colon H^{2k}(M, \R) \otimes H^{2k}(M, \R) \xrightarrow{\smile} H^{4k} = \R$. For de Rham cohomology, we may write
+\[ Q_m(\alpha, \beta) = \int_M \alpha \wedge \beta. \]
+Now we will realize the signature as the index of $\dd + \dd^*$ with respect to a different splitting of $\Omega^*(M)$. Set $\ep^2 = i^{2k + p(p-1)} * \colon \Omega^p \to \Omega^{4k-p}$. Then it is easy to see that $\ep^2 = 1$, so we write $\Omega^* = \Omega_+ \oplus \Omega_-$. Also $\ep = *$ on $\Omega^{2k}$ and $\ep$ anticommutes with $\dd + \dd^*$. Therefore, we can consider
+\[ \dd + \dd^* \colon \Omega_+ \to \Omega_-. \]
+This has kernel containing $\beta + \ep(\beta)$ for $\beta \in \mc{H}^{\ell}$, where $\ell < 2k$ as well as $\beta \in \mc{H}^{2k}$ such that $\beta = *\beta$. On the other hand, the cokernel consists of forms of the form $\beta - \ep(\beta)$ for $\beta\in \mc{H}^{\ell}$ with $\ell < 2k$ and $\beta \in \mc{H}^{2k}$ such that $\beta = - *\beta$. Therefore, we may consider only the forms in $\mc{H}^{2k}$, and we see that $\ind(\dd + \dd^*) = \dim \mc{H}^+ - \dim \mc{H}^-$, where $\mc{H}^+$ is the space of self-dual forms and $\mc{H}^-$ is the space of anti-self-dual forms. But now we see that 
+\[ Q_m(\beta, \beta) = \int_M \beta \wedge \beta = \int_M \beta \wedge * \beta = \norm{\beta}^2 \]
+when $\beta \in \mc{H}^+$, and similarly we see that $Q_m$ is negative definite on $\mc{H}^-$. Because $\mc{H}^{2k} = \mc{H}^+ \oplus \mc{H}^-$, we see that $\ind(\dd + \dd^*) = \sign(M)$. The Atiyah-Singer index theorem will express this index in terms of Pontryagin classes, and this will give us the Hirzebruch signature formula.
+
+\section{Elliptic Operators}%
+\label{sec:elliptic_operators}
+
+Let $M^n$ be a smooth manifold and $E^m, F^{\ell}$ be vector bundles over $M$. 
+
+\begin{defn}
+    A \textit{differential operator} (with $C^{\infty}$ coefficients) of order $r$ is an operator
+    \[ L \colon C^{\infty}(E) \to C^{\infty}(F) \]
+    that looks in charts $U \subseteq M$, where $E = U \times \R^m, F = U \times R^{\ell}$, like an operator of the form
+    \[ L = \sum_{\abs{\alpha} \leq r} a_{\alpha(x)} D^{\alpha}, \]
+    where $\alpha$ is a multi-index and $a_{\alpha}(x) \colon \R^m \to \R^{\ell}$ is a matrix smooth in $x$. Here, we write
+    \[ D^{\alpha} = {\qty(\pdv{x_1})}^{\alpha_1} \cdots {\qty(\pdv{x_n})}^{\alpha_n} \]
+    and $\abs{\alpha}$ is the $L^1$-norm. 
+\end{defn}
+
+\begin{defn}
+    A differential operator $L$ of order $r$ is \textit{elliptic} if for all $x \in U$ and $\xi \in \R^n \setminus \qty{0}$ and we substitute $D^{\alpha} \rightsquigarrow \xi^{\alpha} = \xi_1^{\alpha_1} \cdots \xi_n^{\alpha_n}$, the polynomial
+    \[ P_{L, x}(\xi) \coloneqq \sum_{\abs{\alpha} = r} a_{\alpha}(x) \xi^{\alpha} \colon \R^m \to \R^{\ell} \]
+    is an isomorphism.
+\end{defn}
+
+\begin{exm}
+    The Laplacian $\Delta = -\pdv[2]{x_1} - \cdots - \pdv[2]{x_n}$ of order $2$ is elliptic. Here, we have
+    \[ P_{L,x} = - \xi_1^2 - \cdots - \xi_n^2 \colon \R \to \R \]
+    and thus $\Delta$ is elliptic.
+\end{exm}
+
+\begin{exm}
+    The wave operator $\pdv[2]{x_1} - \pdv[2]{x_2}$ is not elliptic. Here, note that
+    \[ P_{L, x}(\xi) = \xi_1^2 - \xi_2^2, \]
+    and this vanishes for $\xi = (1,1)$. 
+\end{exm}
+
+\begin{exm}
+    Consider $\ol{\partial} = \pdv{x} + i \pdv{y}$ acting on $\C$-valued functions. Then we have
+    \[ P_{L, x}(\xi) = \xi_1 + i \xi_2 \colon \C \to \C, \]
+    and this is an isomorphism for $\xi \neq 0$.
+\end{exm}
+
+More intrisically, consider $L \colon \Gamma(E) \to \Gamma(F)$. Then $L$ is elliptic at $x$ if and only if for all $u \in \Gamma(E)$ with $u(x) \neq 0$, and $\varphi \in C^{\infty}(M)$ with $\varphi(x) = 0$ such that $\dd{\varphi(x)} = \xi \in T_x^*M \setminus \qty{0}$, we have $L(\varphi^r u) \neq 0$. Here, we can compute $L(\varphi^r u) = P_{L.x}(\xi) u$.
+
+The key point is that if $L$ is elliptic, then solutions to $Lu = 0$ are very nice. For example, if $u \in C^1$ and $\ol{\partial} u = 0$, then $u \in C^{\infty}$. Similarly, if $u \in C^2$ and $\Delta u = 0$, then $u \in C^{\infty}$. On the other hand, this is false for the wave equation. The correct functional analysis setup for this is Sobolev spaces. Now consider $E \to M$ a Euclidean vector bundle on a Riemannian manifold. Then fix a compatible connection $\nabla$ on $E$ and $k \in \N$. For $u \in \Gamma(E)$, we will define
+
+\begin{defn}
+    The $L^2_k$-norm of $u$ is defined by 
+    \[ \norm{u}_{L^2_k}^2 = \int_M \qty(\abs{u}^2 + \abs{\nabla u}^2 + \cdots + \abs{\nabla^k u}^2) \dd{\mr{vol}}. \]
+    The completion of $\Gamma(E)$ with respect to this norm is the Hilbert space $L^2_k(E)$.
+\end{defn}
+
+\begin{exm}
+    The space $L_1^2(\R)$ contains functions that are continuous and are well-behaved. On the other hand, $L^2(\R)$ contains discontinuous functions. Also, functions in $L_1^2(\R^2)$ are not necessarily continuous.
+\end{exm}
+
+\begin{rmk}
+    If $M$ is compact, then the space $L_k^2(E)$ is independent of the choices made as a topological vector space.
+\end{rmk}
+
+\begin{lem}
+    Let $M$ be commpact and $L \colon \Gamma(E) \to \Gamma(F)$ be a linear differential operator of order $r$. Then for all $k$ there exists $C_k > 0$ such that
+    \[ \norm{L u}_{L^2_k} \leq C_k \norm{u}_{L^2_{k+r}}. \]
+\end{lem}
+
+In particular, this means we can take $L \colon L_{k+r}^2 \to L_k^2(F)$, and this is bounded. There is another estimate, which is only true for elliptic operators.
+
+\begin{thm}[Elliptic estimate]
+    If $L$ is elliptic, then there exists $D_k$ such that 
+    \[ \norm{u}_{L^2_{k+r}} \leq D_k (\norm{Lu}_{L^2_k} + \norm{u}_{L^2}). \]
+\end{thm}
+
+\begin{rmk}
+    The $\norm{u}_{L^2}$ is there to take care of $\ker L$. Also, this estimate is false for $C^k$ norms.
+\end{rmk}
+
+We will simply give the idea of the proof in the simplest case $\Delta \colon C^{\infty}(T^n, \C) \to C^{\infty}(T^n, \C)$. Recall the Fourier transform
+\[ \mc{F} \colon L^2(T^n) \to \ell^2(\Z^n) \qquad f \mapsto \qty{a_{\ul{n}} = \int f(x) e^{-i \ul{n} x} \dd{\mr{vol}}}. \]
+This is an isometry up to factors of $2 \pi$. Under this correspondence, the differential operator $f \mapsto \dv{x_j}$ corresponds to $\qty{a_{\ul{n}}} \mapsto \qty{-i n_j a_{\ul{n}}}$. Now the Sobolev norm $\norm{f}_{L^2_k}^2$ corresponds to the norm
+\[ \norm{\qty{a_{\ul{n}}}}_{L^2_k}^2 = \sum \abs{a_{\ul{n}}}^2 {(1 + \abs{\ul{n}}^2)}^k. \]
+Finally, $f \mapsto \Delta f$ corresponds to $\qty{a_{\ul{n}}} \mapsto \qty{\abs{\ul{n}}^2 a_{\ul{n}}}$. Therefore, we see that
+\[ \norm{\Delta f}_{L^2_k}^2 = \sum \abs{\ul{n}}^2 \abs{a_{\ul{n}}}^2 {(1 + \abs{\ul{n}}^2)}^k, \]
+and thus if $\ul{n} \neq 0$, we see that $\abs{\ul{n}}^2 {(1 + \abs{\ul{n}}^2)}^k \geq D_k {(1+\abs{\ul{n}}^2)}^{k+2}$. This gives us the result
+\[ \norm{\Delta f}^2_{L^2_k} + \norm{f}_{L^2}^2 \geq D_k' \norm{f}_{L^2_{k+2}}^2. \]
+
+In general, $P_{L, x}(\xi)$ is a degree $r$ polynomial in $\xi$ that only vanishes at $0$. This gives us an estimate of the form
+\[ P_{L,x}(\xi) \geq c_x \abs{\xi}^r. \]
+Here are some nice results about Sobolev spaces:
+\begin{description}
+    \item[Sobolev embedding theorem:] If $p > n/2$, we have $L^2_{k+p} \hookrightarrow C^k$.
+    \item[Rellich compactness:] If $k_1 < k_2$, then $L^2_{k_2} \hookrightarrow L^2_{k_1}$ is a compact operator if $M$ is compact. This is an analog of Arzela-Ascoli for Sobolev spaces.
+\end{description}
+
+\begin{thm}
+    If $L$ is an elliptic operator of order $r$ for a compact manifold $M$, then for all $k \in \C$,
+    \[ L \colon L^2_{k+r}(E) \to L^2_j(F) \]
+    is Fredholm. In addition, $\ker L$ and $\coker L = \ker L^*$ consist of smooth configurations. Therefore $\ind L$ is independent of $k$.
+\end{thm}
+
+\begin{cor}
+    Let $\qty{L_t}_{t \in [0,1]} \colon \Gamma(E) \to \Gamma(F)$ be a family of elliptic operators of order $r$. Then $\ind(L_t) \in \Z$ is constant.
+\end{cor}
+
+Therefore if an operator depends on some choice from a connected space (for example metrics), then its index is independent of the choice. Therefore, one hopes that the index depends only on topology.
+
+\begin{lem}
+    Consider $L \colon X \to Y$ and $K \colon X \to Z$ such that $X$ is compact and $\norm{x}_X \leq C (\norm{Lx}_Y + \norm{Kx}_Z)$. Then $\dim \ker L < \infty$ and $\Im L$ is closed.
+\end{lem}
+
+Now Fredholmness of elliptic operators follows from taking $K$ to be the embedding of $L^2_{k+r}$ inside $L^2$. The second part of Theorem 3.3.12 follows from \textit{elliptic regularity}. Here, we know that if $u \in L^2_{k+r}$, then $Lu \in L^2_k$. Now if $Lu \in L^2_{k+1}$, then $u \in L^2_{k+r+1}$. In particular, $Lu = 0$ implies that $u \in L^2_k$ for all $k$, and therefore $u \in C^{\infty}$ by Sobolev embedding.
+
+We observe that $\ind L$ depends only on the family of principal symbols $P_{L,x}(\xi)$. Thus all lower order terms do not matter. Here, the lower order terms give an operator $L^2_{k+r} \to L^2_{k+1} \hookrightarrow L^2_k$, and this is compact. Now we see that the index only depends on $M, E, F, \qty{P_{L,x}}$. This leads us to the following problem.
+
+\begin{quest}[Gelfand]
+    Write a formula for $\ind L$ in terms of topological data (for example characteristic classes).
+\end{quest}
+
+\begin{exm}
+    The operators $\dd + \dd^* \colon \Omega^{\text{even}} \to \Omega^{\text{odd}}$, $\dd + \dd^* \colon \Omega^+ \to \Omega^-$ are elliptic. We simply need to show that the symbols are injective, so let $x \in X, \varphi(x) = 0$, and $\dd \varphi(x) = \xi \in T_x^* M \setminus \qty{0}$. Then if $\alpha \in \Omega^p$, we have
+    \[ \eval{\dd{(\varphi \alpha)}}_x = \eval{\dd \varphi \wedge \alpha}_x + \eval{\varphi \wedge \dd \alpha}_x = \xi \wedge \alpha. \]
+    Similarly, we obtain $\dd^*(\varphi \alpha) = i_{\xi}(\alpha) (x)$, the contraction. Therefore we have
+    \[ P_{\dd + \dd^*, x}(\xi) \alpha = \xi \wedge \alpha + i_{\xi}(\alpha), \]
+    and this is nonzero whenever $\xi, \alpha$ are nonzero. Therefore $\dd + \dd^*$ is elliptic.
+\end{exm}
+
+\begin{rmk}
+    The Hodge theorem requires some extra work. 
+    \begin{enumerate}
+        \item First one needs to show that a generalized solution in $L^2$ exists (this is by general nonsense such as Hahn-Banach and Riesz representation).
+        \item Now use elliptic regularity to get that the solution is smooth.
+    \end{enumerate}
+\end{rmk}
+
+\section{The index theorem}%
+\label{sec:the_index_theorem}
+
+First, we will discuss symbols and K-theory. We will always denote our elliptic differential operator by $D$. Now for all $x \in X$ and $\xi \neq 0 \in T_x^* X$, we know $P_{D,x}(\xi) \colon E_x \to F_x$ is an isomorphism. Now we can put everything together to obtain a bundle map $\sigma(D) \colon \pi^* E \to \pi^* F$, where $\pi \colon TX \to X$ is the projection. Now we know $\sigma(D)$ is an isomorphism outside of the zero section of $TX \to X$, which is compact. This gives us a well-defined element $\sigma(D) \in K(TX)$.
+
+\begin{rmk}
+    The inclusion of $X$ as the zero section of $TX$ gives us a map $K(TX) \to K(X)$, and we have $\sigma(D) \mapsto E-F$.
+\end{rmk}
+
+\begin{rmk}
+    An orientation of $X$ gives an orientation of $TX$. Here, locally we have $TU = U \times \R^n$, and if $b_1, \ldots, b_n$ is an oriented basis of $\R^n$, then we obtain an oriented basis $\qty{(b_1, 0), (0, b_1), \ldots}$.
+\end{rmk}
+
+We are finally ready to state
+
+\begin{thm}[Atiyah-Singer index theorem]
+    Let $X, D$ be as above. Then we have
+    \[ \ind(D) = {(-1)}^n \mr{ch}(\sigma(D)) \mr{td}(TX \otimes \C) [TX]. \]
+    Here, $\mr{ch}(\sigma(D)) \in H_c^{\times}(TX, \Q)$ and $\mr{td}(TX \otimes \C) \in H^*(X, \Q)$. Then we can multiply them together to obtain an element of $H_c^*(TX, \Q)$, and then evaluate it on $[TX]$.
+\end{thm}
+
+Note that this form of the theorem is somewhat inconvenient because $\sigma(D)$ may be very complicated. In some special cases, we may be able to simplify. First, let $\psi \colon H^p(X) \to H_c^{p+n}(TX)$ be the Thom isomorphism. Then for $b \in H_c^{2n}(TX)$, we have
+\[ b[TX] = {(-1)}^{n(n-1)/2} \psi^{-1}(b) [X]. \]
+Here, the sign comes from our weird orientation convention. Note that if $\psi^{-1}(b) = a$, then $b = a \smile U$, where $U$ is the Thom class. Thus $\eval{b}_X = a \smile e(TX)$. Formally, we may write $a = \frac{\eval{b}_x}{e(TX)}$. Assuming that this is actually possible, we obtain $\eval{ \ch(\sigma(D)) }_X = \ch(E-F)$, so we obtain
+\[ \ind(D) = {(-1)}^{n(n-1)/2} \frac{\mr{ch}(E-F) \mr{td}(TX \otimes \C)}{e(TX)} [X]. \]
+\begin{rmk}
+    This does not depend on $\sigma(D)$. In fact, it depends only on $E, F, X$.
+\end{rmk}
+For example, this makes sense when $e(TX)$ is not a zero-divisor. This also makes sense if we can interpret everything in terms of classifying spaces (for example if $e(TX)$ comes from $H^n(BSO(n))$ where $n$ is even). Thus if $b$ is the pullback of a class on $BSO(n)$, then we are still fine, and here we call $D$ a \textit{universal operator}.
+
+\begin{exm}
+    Consider $\dd + \dd^*$ on the complexified tangent bundles. Also assume $n = 2 \ell$ is even. We need to compute $\mr{ch}(\Omega^{\mr{even}} - \Omega^{\mr{odd}})$ and $\mr{td}(TX \otimes \C)$. Now $TX \otimes \C$ has Chern roots $x_1, -x_1, \ldots, x_{\ell}, -x_{\ell}$. Therefore, we have
+    \begin{align*}
+        \mr{ch}(\Omega^{\mr{even}} - \Omega^{\mr{odd}}) &= \ch\qty(\sum {(-1)}^i {\bigwedge}^i (TX \otimes \C)) \\
+                                                        &= \mr{ch}\qty(\prod_{i=1}^{\ell} (1-x_i) (1+x_i)) \\
+                                                        &= \prod_{i=1}^{\ell} (1-e^{x_i})(1-e^{-x_i}).
+    \end{align*}
+    On the other hand, we have
+    \begin{align*}
+        \mr{td}(TX \otimes \C) &= \prod_{i=1}^{\ell} \frac{x_i}{(1-e^{-x_i})} \cdot \frac{-x_i}{(1-e^{x_i})}.
+    \end{align*}
+    Finishing the computation, we obtain
+    \[ \ind(\dd + \dd^*) = {(-1)}^{\ell(2\ell+1)} {(-1)}^{\ell} x_1 \cdots x_{\ell} = x_1 \cdots x_{\ell} = e(TX). \]
+\end{exm}
+
+\begin{cor}
+    This proves that $\chi(X) = e(TX)$ in even dimension. In fact, this is the most complicated proof of this fact that Francesco knows.
+\end{cor}
+
+\begin{rmk}
+    Our machinery is also good to work directly with complexes of differential operators
+    \[ 0 \to \Gamma(E_0) \xrightarrow{D_0} \to \Gamma(E_1) \xrightarrow{D_1} \cdots \to \Gamma(E_k) \to 0. \]
+    For example, we want to consider the de Rham complex. Here, we need that the associated symbol complex is exact for all $\xi \neq 0$. Here, we need to replace the index of $D$ with the alternating sum of dimensions of cohomologies and the Chern character of the alternating sum of the bundles.
+\end{rmk}
+
+\begin{exm}
+    Consider $\dd + \dd^* \colon \Omega^+ \to \Omega^-$. If $V = \wt{V} \otimes \C$, where $\wt{V}$ is oriented of dimension $2m$, then $\bigwedge^* V = \bigwedge^+ V \oplus \bigwedge^- V$. Here, we have $\bigwedge^+(V \oplus W) = \qty(\bigwedge^+ V \otimes \bigwedge^+ W) \oplus \qty(\bigwedge^- V \otimes \bigwedge^- W)$ and $\bigwedge^-(V \oplus W) = \qty(\bigwedge^+ V \otimes \bigwedge^- W) \oplus \qty(\bigwedge^- V \otimes \bigwedge^+ W)$. This implies that $\bigwedge^+ - \bigwedge^-$ behaves nicely under direct sums. Now we use the splitting principle, so we may assume $TX = P_1 \oplus \cdots \oplus P_{\ell}$ is a sum of oriented plane bundles. If $P = L$ with Chern root $x$, then $\bigwedge^+ P_{\C} \cong 1 + \ol{L}$ and $\bigwedge^- P_{\C} \cong 1 + L$. Therefore
+    \[ \mr{ch}\qty({\bigwedge}^+ P_{\C} - {\bigwedge}^- P_{\C}) = (1+e^{-x}) - (1+e^x) = e^{-x} - e^x. \]
+    Now we see that
+    \[ \mr{ch} \qty(\qty({\bigwedge}^+ - {\bigwedge}^-) TX_{\C}) = \prod_{i=1}^{\ell} (e^{-x_i} - e^{x_i}). \]
+    Finally, we see that
+    \begin{align*}
+        \ind(\dd + \dd^*) &= {(-1)}^{\ell} \frac{\mr{ch}\qty(\qty(\bigwedge^+ - \bigwedge^-) TX_{\C}) \mr{td}(TX_{\C})}{e(TX)} [X] \\
+                          &= {(-1)}^{\ell} \prod_{i=1}^{\ell} \frac{e^{-x_i} - e^{x_i}}{x_i} \frac{(x_i)(-x_i)}{(1-e^{x_i})(1-e^{-x_i})} [X] \\
+                          &= \prod_{i=1}^{\ell} \frac{x_i}{\tanh(x_i)} [X].
+    \end{align*}
+    Now note that $\frac{x_i}{\tanh(x_i)}$ is a power series in the even powers of $x_i$, so we obtain
+    \[ \prod_{i=1}^{\ell} \frac{x_i}{\tanh(x_i)} = \sum_{j=0}^{\floor{\frac{\ell}{2}}} L_j(p_1 \cdots p_j). \]
+    If we actually compute the $L_j$, then we obtain the Hirzebruch signature formula.
+\end{exm}
+
+\begin{cor}[Hirzebruch signature formula]
+    Let $X^{4k}$ be an oriented manifold. Then $\mr{sign}(X) = L_k(p_1(TX), \ldots, p_k(TX))[X]$.
+\end{cor}
+
+Now let $X$ be a complex compact manifold. Now we know $TX_{\C} = TX \otimes \C = TX \oplus \ol{TX}$, so we have $TX_{\C}^* = \bigwedge^{1,0} \oplus \bigwedge^{0,1}$. Therefore, we have $\bigwedge^{0,q} = \bigwedge^q \qty(\bigwedge^{0,1})$. Now if we set $\Omega^{0,q} = C^{\infty}\qty(\bigwedge^{0,q})$, we obtain the \textit{Dolbeaut complex}
+\[ 0 \to \Omega^0 \xrightarrow{\ol{\partial}} \Omega^{0,1} \to \Omega^{0,2} \to \cdots \]
+where $\ol{\partial}^2 = 0$ because we have a complex manifold. Now it is easy to see that $\ol{\partial}$ is elliptic. This will imply that the complex has finite-dimensional cohomology, but in fact we have
+\begin{thm}[Dolbeaut]
+    We have $\ker \ol{\partial_p}/\Im \ol{\partial}_{p-1} = H^0(X, \mc{O}_X)$ and has dimension $h^{0,i}$.
+\end{thm}
+Therefore the index is $\ind(\ol{\partial}) = \sum {(-1)}^i h^{0,i} = \chi(X, \mc{O}_X)$. Using the index theorem, we can compute the index as 
+\begin{align*}
+    {(-1)}^{n(2n+1)} \frac{\mr{ch}\qty(\sum {(-1)}^i \bigwedge^{0,i}) \cdot \mr{td}(TX_{\C})}{e(TX)} [X].
+\end{align*}
+If $TX$ has roots $x_1, \ldots, x_n$, we obtain that $\bigwedge^{0,1} = \ol{T^*X}$, so it has the same Chern roots. Therefore, $\mr{ch}\qty(\sum {(-1)}^i \bigwedge^{0,i}) = \prod {(1-e^{x_i})}$. Next, it is easy to see that 
+\[ \mr{td}(TX_{\C}) = \mr{td}(TX) \cdot \mr{\ol{TX}} = \prod \frac{x_i}{(1-e^{-x_i})} \frac{-x_i}{(1-e^{x_i})}. \]
+Finally, we have $e(TX) = c_n(TX) = x_1 \cdots x_n$. In particular, we obtain
+\[ \ind(\ol{\partial}) = \mr{td}(TX) [X]. \]
+As a corollary, we obtain
+\begin{thm}[Hirzebruch-Riemann-Roch]
+    Let $X$ be a compact complex manifold. Then 
+    \[ \chi(X, \mc{O}_X) = \mr{td}(X) [X]. \]
+    More generally, if $V \to X$ is a vector bundle, then $\chi(X, \mc{O}_V) = (\mr{ch}(V) \mr{td}(X)) [X]$.
+\end{thm}
+
+\begin{rmk}
+    The original proof of Hirzebruch is for projective varieties.
+\end{rmk}
+
+\begin{exm}
+    If $S^6$ has a complex structure with structure sheaf $\mc{O}_{S^6}$, then we obtain
+    \[ h^{0,0} - h^{0,1} + h^{0,2} - h^{0.3} = \frac{c_1 c_2}{24} [S^6] = 0, \]
+    so some of $h^{0,1}, h^{0,2}, h^{0.3} \geq 1$.
+\end{exm}
+
+\begin{rmk}
+    The remaining interesting case of a ``universal operator'' is the Dirac operator. If you would like to know more, contact Alex Xu at \texttt{axu@math.columbia.edu}.
+\end{rmk}
+
+\section{Sketch of proof of the index theorem}%
+\label{sec:sketch_of_proof_of_the_index_theorem}
+
+First, we will give a short history of the proof. The original proof announcement and sketch was in 1963 using cobordism theory. This was inspired by Hirzebruch's proof of the Hirzebruch-Riemann-Roch theorem in 1956. The drawback is that this does not generalize to the equivariant setting. The published proof in 1968 was heavily inspired by Grothendieck's 1957 proof of the Grothendieck-Riemann-Roch theorem.
+
+First, if $X$ is a point, then ellipticity is a vacuous assumption, so the index theorem is always true. Now the difficult part is to build the machinery to deal with functoriality. The first thing is to define the \textit{topological index} $\tind(D)$ of $D$ (in contrast with the analytic index $\ind(D)$). Here, we have a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    \qty{\text{elliptic operators on $X$}} \ar{r}{\sigma} \ar{dr}{\ind} & K(TX) \ar{d} \\
+                                                                        & \Z = K(T\mr{pt}).
+\end{tikzcd}
+\end{equation*}
+First, suppose that $S \subseteq M$ is an embedded compact submanifold with normal bundle $N \to S$. We can identify this with an open neighborhood of $S$ in $M$. If $N$ is a complex vector bundle, then $K(S) = K(N)$ by the Thom isomorphism. Now we will call the map
+\[ i_! \colon K(S) \xrightarrow[\phi]{\sim} K(N) \to K(M), \]
+where the second arrow is induced by the open inclusion. Now we have functoriality for embeddings with complex normal bundle.
+
+Now suppose that $\pi \colon E \to X$ is a real vector bundle. Then $TE \cong \pi^* TX \oplus \pi^* E$. If $E = TX$, then $T(TX) = \pi^* TX \oplus \pi^* TX$, and this is naturally a complex vector bundle $TX = \pi^* TX \otimes \C$. Therefore any inclusion $i \colon X \hookrightarrow Y$ induces an inclusion $\dd{i} \colon TX \hookrightarrow TY$. Now the normal bundle $N$ to $TX \hookrightarrow TY$ is complex. As before, we obtain a map $i_! \colon K(TX) \to K(TY)$.
+
+One needs to check that
+\begin{itemize}
+    \item This construction is well-defined.
+    \item $X = X$ induces the identity.
+    \item If we have $X \overset{i}{\hookrightarrow} Y \overset{j}{\hookrightarrow} Z$, then ${(j \circ i)}_! = j_! \circ i_{ ! }$ (functoriality).
+\end{itemize}
+
+\begin{exm}
+    Consider $j \colon \mr{pt} \to \R^n$. In this case, $T(\mr{pt}) = \mr{pt}$, so $N = \R^n$. Then $j_! \colon K(\mr{pt}) \to K(T\R^n) = K(\R^{2n})$ is the Thom isomorphism.
+\end{exm}
+
+\begin{defn}
+    The map $B \colon K(TX) \to \Z$ is the composition 
+    \[ K(TX) \xrightarrow{i_!} K(T\R^n) \xrightarrow[\sim]{{(j_!)}^{-1}} K(\mr{pt}) = \Z \]
+    for any inclusion $i \colon X \subset \R^n$.
+\end{defn}
+
+\begin{rmk}
+    This does not depend on $i \colon X \subset \R^n$.
+\end{rmk}
+
+Here are some obvious properties. 
+\begin{enumerate}
+    \item If $X$ is a point, then $B(a) = \dim a$.
+    \item If $i \colon X \subset Y$ is an inclusion of compact smooth manifolds, then $B(i_! a) = B(a)$ for all $a \in K(TX)$.
+\end{enumerate}
+
+\begin{prop}\leavevmode
+    \begin{itemize}
+        \item There exists a unique homomorphism $B \colon K(TX) \to \Z$ satisfying the above properties.
+        \item Furthermore, for all $a \in K(TX)$, $B(a) = {(-1)}^n \mr{ch}(a) \mr{td}(TX \otimes \C) [TX]$.
+    \end{itemize}
+\end{prop}
+
+Given this, all that is left is to prove that the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \qty{\text{elliptic operators}} \ar{r}{\sigma} \ar{dr}{\ind} & K(TX) \ar{d}{B} \\
+                                                                 & \Z
+\end{tikzcd}
+\end{equation*}
+commutes. This is the hard part of the proof. The basic strategy is to find $\tau \colon K(TX) \to \qty{\text{elliptic operators}}$ which is the inverse of $\sigma$ to index, where $\ind(\tau \sigma D) = \ind(D)$. Then we need to check that $K(TX) \xrightarrow{\ind \circ \tau} \Z$ satisfies the two axioms for $B$. The problem with this strategy is that such a $\tau$ does not exist because $\sigma$ is not surjective.
+
+\begin{proof}[Proof of proposition]
+    Suppose $B'$ is another map satisfying the properties. Consider $X \subset \R^k \subset S^k$ Then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+                                           & K(T\R^k) \ar{d} \\
+        K(TX) \ar{r}{i_!^{+}} \ar{dr}{B'} \ar{ur}{i_!} & K(TS^k) \ar{d}{B'} & K(\mr{pt}) \ar{dl}{B'} \ar{ul}{j_!} \ar{l}{j^+_!} \\
+                                           & \Z
+    \end{tikzcd}
+    \end{equation*}
+    commutes. Then the desired result follows from staring at the diagram.
+
+    For the second part, consider $X^n \subseteq N \subset \R^k$. Here, $N \to X$ is a rank $r \coloneqq k-n$-bundle. Thus $TN \to TX$ is a rank $r$ complex bundle. Now we have a chain of morphisms
+    \[ K(TX) \xrightarrow{\phi} K(TN) \xrightarrow{h} K(T\R^k) \xleftarrow[{\phi'}]{\cdot \lambda_k} K(\mr{pt}) = \Z. \]
+    Now we have $b \coloneqq B(a) = {(\phi')}^{-1}(h(\phi(a)))$, and thus $h(\phi(a)) = \phi'(b) = b \cdot \lambda_k$. If we take the Chern character of everything, we obtain the commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        K(TX) \ar{r}{\phi} \ar{d}{\mr{ch}} \ar[bend left=20]{rr}{i_!} \ar[bend left=30]{rrr}{B} & K(TN) \ar{r}{h} \ar{d}{\mr{ch}} & K(T\R^k) \ar{d}{\mr{ch}} & K(\mr{pt}) \ar{d}{\mr{ch}} \ar{l}{\phi'} \\
+        H^*(TX) \ar{r} & H^*(TN) \ar{r} & H^*(T\R^k) & H^*(\mr{pt}) \ar{l}
+    \end{tikzcd}
+    \end{equation*}
+    Now on the right, we have $\mr{ch}(b \lambda_k) = {(-1)}^k b \sigma_k$, and therefore
+    \begin{align*}
+        b &= b \cdot \sigma_k [T\R^k] \\
+          &= {(-1)}^k \mr{ch}(b \lambda_k) [T\R^k] \\
+          &= {(-1)}^k \mr{ch}(h \phi(a)) [T\R^k] \\
+          &= {(-1)}^k \mr{ch}(\phi(a)) [TN]
+    \end{align*}
+    by the commutativity of the middle square. Now
+    \[ {(-1)}^r \mr{td}(\ol{TN}) \mr{ch}(\phi(a)) = \psi(\mr{ch}(a)) \]
+    where $\psi$ is the Thom isomorphism in cohomology. Notice that $TX \oplus N = \R^k$, so $T(TX) \oplus TN \to TX$ is trivial. Therefore $\mr{td}(TN) \cdot \mr{td}(\pi^*(TX \otimes \C)) = 1$, and thus we have
+    \[ \mr{ch}(\phi(a)) = {(-1)}^r \mr{td}(\pi^*(TX) \otimes \C) \cdot \psi(\mr{ch}(a)). \]
+    Substituting this in $b = {(-1)}^k \mr{ch}(\phi(a)) [TN]$, we obtain the desired result.
+\end{proof}
+
+Now we will see why $\sigma$ is not surjective and how to fix this. There are topological obstructions. For example, consider $X = S^1 = \R/2\pi \Z$. Then $TX = S^1 \times \R$ is a cylinder. We will choose coordinates $x$ on $S^1$ and $\xi$ on $\R$. Now choose $a \in K(TS^1)$. We obtain $E_0 \xrightarrow{\alpha(x, \xi)} E_1$ with $\supp \alpha$ compact. Now if we fixe trivializations $E_0 = E_1 = \C^n$, then for $\xi \gg 0$, the map $\alpha(-, \xi) \colon S^1 \to GL_n(\C)$. Then $\det \alpha(-,\xi) \colon S^1 \to \C^{\times}$. This only depends (up to homotopy) on the sign of $\xi$. Now $S^1 \to \C^{\times}$ has a well-defined degree, so we have
+\[ \deg(a) = \deg(\alpha(-, \xi), \xi \gg 0) - \deg(\alpha(-,\xi), \xi \ll 0) \in \Z. \]
+Now if $a = \sigma(D)$, then $\alpha(x, \xi) = \sum_{\abs{\beta}=r} a_{\beta}(x) \xi^{\beta}$, and thus $\alpha(x, -\xi) = \pm \alpha(x, \xi)$, so $\deg a = 0$. On the other hand, we note that if 
+\[ a = \C \xrightarrow{\beta(x, \xi)} \C \qquad \beta(x, \xi) = \begin{cases}
+    \xi \cdot e^{ix} & \xi \geq 0 \\
+    \xi & \xi \leq 0,
+\end{cases} \]
+then $\deg(a) = 1$, so it cannot come from a differential operator. This tells us that elliptic differential operators are not the right framework to implement our strategy because they are too rigid. Recall that a differential operator on $\R^n$ of order $r$ is a linear map
+\[ L \colon C^{\infty}_c(\R^n) \to C^{\infty}_c(\R^n) \qquad u \mapsto \sum_{\abs{\alpha}\leq r} a_{\alpha}(x) D^{\alpha} u. \]
+Here we will set 
+\[ D^{\alpha} = {\qty(-i \pdv{x_1})}^{\alpha_1} \cdots {\qty(-i \pdv{x_n})}^{\alpha_n} \eqqcolon D_1^{\alpha_1} \cdots D_n^{\alpha_n}. \]
+To define a pseudodifferential operator, we will create a much more complicated definition. Recall the Fourier transform 
+\[ \wh{u}(\xi) = \frac{1}{{(2\pi)}^n} \int_{\R^n} u(x) e^{-ix \cdot \xi} \dd{x}. \]
+Then recall that $\wh{D_i u}(\xi) = \xi_i \wh{u}(\xi)$, so if we set $p(x, \xi) = \sum a_{\alpha}(x) \xi^{\alpha}$, then we have
+\[ \wh{Lu}(\xi) = p(x, \xi) \cdot \wh{u}(\xi). \]
+Using Fourier inversion, we obtain
+\[ Lu(x) = \int_{\R^n} e^{ix \cdot \xi} p(x, \xi) \wh{u}(\xi) \dd{\xi}. \]
+
+\begin{defn}
+    An operator $P \colon C^{\infty}_c(\R^n) \to C^{\infty}(\R^n)$ is called a \textit{pseudodifferential operator} of order $r$ if there exists some $p(x, \xi)$ such that $\abs{D_x^{\beta} D_{\xi}^{\alpha} p(x,\xi)} \leq C_{\alpha, \beta} {(1+\abs{\xi})}^{r-\abs{\alpha}}$ uniformly in compact subsets in $\R^n$ such that
+    \[ Pu(x) = \int_{\R^n} e^{ix \cdot \xi} p(x, \xi) \wh{u}(\xi) \dd{\xi}. \]
+    Also, for all $x$ and all $\xi \neq 0$, the principal symbol
+    \[ \sigma_P(x, \xi) \coloneqq \lim_{\lambda \to \infty} \frac{p(x, \lambda \xi)}{\lambda^r} \]
+    exists.
+\end{defn}
+
+\begin{defn}
+    A pseudodifferential operator $P$ is \textit{elliptic} if $\sigma_P(x, \xi)$ is an isomorphism for all $\xi \neq 0$.
+\end{defn}
+
+\begin{warn}
+    Pseudodifferential operators are not local. This means that $(Pu)(x)$ is not determined by $u$ in a neighborhood of $x$. Thus it takes some work to define pseudodifferential operators on manifolds.
+\end{warn}
+
+However, once we have such a definition, we have the following properties:
+\begin{itemize}
+    \item If $P$ is an elliptic pseudodifferential operator of order $r$, then $P \colon L^2_{k+r} \to L^2_k$ is Fredholm.
+    \item The index of $P$ only depends on $\sigma_P(x, \xi)$ restricted to the unit tangent bundle. This means the index does not depend on the order.
+\end{itemize}
+
+\begin{exm}
+    Consider $L^2(S^1) = \ell^2(\Z)$. Now consider the operator $P$ given by
+    \[ P\qty(\sum_{n=-\infty}^{\infty} a_n e^{inx}) = \sum_{n=0}^{\infty} a_n e^{inx} \]
+    is a pseudodifferential operator of order $0$. Here, $\sigma_P(x, \xi) = 1$ if $\xi > 0$ and $\sigma_P(x, \xi) = 0$ if $\xi < 0$. For the order $1$ version of this, choose 
+    \[ p(x, \xi) = \begin{cases}
+        \xi & \xi \geq 0 \\
+        0 & \xi \leq 0.
+    \end{cases} \]
+\end{exm}
+
+\begin{exm}
+    Set
+    \[ p(x, \xi) = \begin{cases}
+        \xi \cdot e^{ix} & \xi \geq 0 \\
+        \xi & \xi \leq 0.
+    \end{cases} \]
+    This defines an order $1$ elliptic pseudodifferential operator. The order $0$ version of this is given by
+    \[ P(e^{inx}) = \begin{cases}
+        e^{i(n+1)} x & n \geq 0 \\
+        e^{inx} & n < 0.
+    \end{cases} \]
+    Here, $\ind P = -1$.
+\end{exm}
+
+Now if we consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \qty{\text{pseudodifferential operators}} \ar{r}{\sigma} \ar{dr}{\ind} & K(TX) \ar{d}{B} \\
+                                                                           & \Z,
+\end{tikzcd}
+\end{equation*}
+we have now defined $\tau \colon K(TX) \to \qty{\text{pseudodifferential operators}}$. Now we want to show that $\ind(t(a)) = B(a)$. We need to show that $\ind \circ \tau$ satisfies the two axioms. For $X = \mr{pt}$, clearly $\ind \circ \tau$ gives the dimension, but the hard part is functoriality. The complication is that we need to work in an equivariant setting. Historically, what Atiyah and Singer did was prove an equivariant version of the index theorem directly.
+
+Some interesting consequences of the equivariant version of the index theorem are fixed point formulas. For example, we obtain the following statement:
+\begin{prop}
+    Suppose $X$ is a compact complex manifold and $G$ acts on $X$ holomorphically. Then $g \in G$ gives an operator on $H^i(X, \mc{O}_X)$, and consider the quantity
+    \[ L_{\ol{\partial}}(g) \sum {(-1)}^r \tr(g \curvearrowright H^i(X, \mc{O}_X)), \]
+    called the \textit{holomorphic Lefschetz number}. Then if all fixed points of $g$ are isolated,
+    \[ L_{\ol{\partial}}(g) = \sum_p \frac{1}{\det(1-{\dd{g}(p)}^{-1})}, \]
+    where $p$ ranges over the fixed points of $g$.
+\end{prop}
+
+
 
 
 

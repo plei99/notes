@@ -11,6 +11,7 @@
 \usepackage{accents}
 \usepackage{mathtools}
 \usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,shapes}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
 \usepackage{tikz-cd}
@@ -22,10 +23,14 @@
 \usepackage{physics}
 \usepackage{stmaryrd}
 \usepackage{mathrsfs} 
+\usepackage{stackengine} 
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[osf]{mathpazo}
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
 \usepackage{microtype}
 
 %CS packages
@@ -36,6 +41,7 @@
 % typeset and bib
 \usepackage[english]{babel} 
 \usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
@@ -129,7 +135,6 @@
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 \renewcommand{\abstractname}{Official Description}
 \newcommand{\mc}[1]{\mathcal{#1}}
-\newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
@@ -139,6 +144,8 @@
 \newcommand{\wt}[1]{\widetilde{#1}}
 \newcommand{\wh}[1]{\widehat{#1}}
 \renewcommand{\div}{\operatorname{div}}
+\newcommand{\Sm}{\mathsf{Sm}}
+\newcommand{\Cor}{\mathsf{Cor}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
@@ -159,6 +166,12 @@
 \DeclareMathOperator{\Bl}{Bl}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\td}{td}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\CH}{CH}
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Rat}{Rat} 
+\DeclareMathOperator{\coker}{coker}
 
 % Section formatting
 \titleformat{\section}
@@ -219,11 +232,15 @@ Any errors are mine and not the speakers'.
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
 
+\section*{Acknowledgements}%
+\label{sec:acknowledgements}
+
+I would like to thank Nicol\'as Vilches for pointing out that I was missing the accent in his name.
+
 \vspace*{1cm}
 
 \noindent\textbf{Seminar Website:}  \url{http://www.math.columbia.edu/~plei/s21-INT.html}
 \newpage
-
 
 \tableofcontents
 
@@ -241,7 +258,7 @@ The idea of intersection theory is to define a well-defined intersection product
 \section{Chow Groups}%
 \label{sec:chow_groups}
 
-We want to define zeroes and poles for a singular variety. If $V$ is codimension $1$ in $X$ for a nonsingular variety $X$, then consider $r \in {K(X)}^{\times}$, where $K(X) = \mr{Frac}(\msc{O}_{V,X})$, where this local ring is a discrete valuation ring. Then we can write $(r) = \sum \mr{ord}_V(r) [V]$, which is a Weil divisor. For a curve, we can compute $\mr{ord}_V(r) = \dim_k (\msc{O}_{V,X} / (r))$. In general, we can write $\mr{ord}_V(r) = \mr{len}_A(A/(r))$, where $A = \msc{O}_V,X$.
+We want to define zeroes and poles for a singular variety. If $V$ is codimension $1$ in $X$ for a nonsingular variety $X$, then consider $r \in {K(X)}^{\times}$, where $K(X) = \mr{Frac}(\mc{O}_{V,X})$, where this local ring is a discrete valuation ring. Then we can write $(r) = \sum \mr{ord}_V(r) [V]$, which is a Weil divisor. For a curve, we can compute $\mr{ord}_V(r) = \dim_k (\mc{O}_{V,X} / (r))$. In general, we can write $\mr{ord}_V(r) = \mr{len}_A(A/(r))$, where $A = \mc{O}_V,X$.
 
 \begin{exm}
     If $X = \A^3$ and $r = \frac{y^2(x-2)(xy+1)}{zy+x}$, we see that along $y = 0$, we have $A = { k[x,y,z] }_{(y)}$ and thus $\mr{lem}_A(A/r) = 2$.
@@ -303,7 +320,7 @@ Let $f \colon X \to Y$ be a morphism. We want to define a pushforward $A_k(X) \t
     Consider the map $\P^1 \to \Spec k$. Because the order map is a homomorphism, let $r \in k[t] \subset k(t)$ be an irreducible polynomial, where $p$ has degree $n$. Then $\mr{div}(r) = [P] - n [\infty]$ and then we have
     \[ f_* (\mr{div}(r)) = n[\mr{pt}] - n [\mr{pt}] = 0. \]
 
-    Now suppose $f$ is finite. Given $W \subset Y$ of codimension $1$, write $(A, \mf{m}) = (\msc{O}_{W,Y}, \mf{m}_{W,Y})$. Construct a domain $B$ such that $B/A$ is finite and $B \otimes_A K(Y) = K(X)$ such that $\qty{U_i} \to W$ are obtained by $B_{\mf{m}_i} = \msc{O}_{U_i, X}$. Here, we need to show that
+    Now suppose $f$ is finite. Given $W \subset Y$ of codimension $1$, write $(A, \mf{m}) = (\mc{O}_{W,Y}, \mf{m}_{W,Y})$. Construct a domain $B$ such that $B/A$ is finite and $B \otimes_A K(Y) = K(X)$ such that $\qty{U_i} \to W$ are obtained by $B_{\mf{m}_i} = \mc{O}_{U_i, X}$. Here, we need to show that
     \[ \sum \mr{ord}_{V_i}(r) [K(V_i) \colon K(W)] = \mr{ord}_W(N(r)). \]
     Now if $r \in B$, we want $\varphi \colon B \xrightarrow{r} B$, and then the LHS becomes $\ell_A(\operatorname{coker} \varphi) = \mr{ord}_W(\det \varphi_K)$. In general, we need to apply results from EGA III to show that $B$ exists.
 
@@ -327,7 +344,7 @@ Let $f \colon X \to Y$ be a morphism. We want to define a pushforward $A_k(X) \t
 \section{Alternative Definition of Rational Equivalence}%
 \label{sec:alternative_definition_of_rational_equivalence}
 
-Let $X$ be a scheme with irreducible components $X_1, \ldots, X_t$. Then let $m_i \coloneqq \ell_{\msc{O}_X,x} (\msc{O}_{X,x})$. We define the fundamental class $[X] = \sum_{i=1}^t m_i [X_i]$.
+Let $X$ be a scheme with irreducible components $X_1, \ldots, X_t$. Then let $m_i \coloneqq \ell_{\mc{O}_X,x} (\mc{O}_{X,x})$. We define the fundamental class $[X] = \sum_{i=1}^t m_i [X_i]$.
 
 \begin{prop}
     A cycle $\alpha \in Z_k(X)$ is rationally equivalent to $0$ if and only if there exist $(k+1)$-dimensional subvarieties $V_1, \ldots, V_t$ of $X \times \P^1$ such that $f_i \colon V_i \to \P^1$ are dominant and $\alpha = \sum [V_i(0)] - [V_i(\infty)]$.
@@ -368,7 +385,7 @@ Given a Cartier divisor $D = (\{U_\alpha, f_\alpha\})$ and a codimension $1$ sub
 
 For any rational function $f$ on $X$, we get a \textit{principal} Cartier divisor $\div(f)$ by choosing any cover $\{U_\alpha\}$ and defining $f_\alpha = f|_{U_\alpha}$. It is immediate that the image $[\div(f)]$ of this divisor under the map to $Z_{n-1}X$ is the Weil principal divisor. Say that two Cartier divisors $D$ and $D'$ are \textit{linearly equivalent} if $D - D' = \div(f)$ for some $f$; then we define $\Pic X$ to be the group of Cartier divisors modulo linear equivalence, and the above then shows that the map $\Div X \to Z_{n-1} X$ descends to a map $\Pic X \to A_{n-1} X$. This map is in general neither injective nor surjective.
 
-Notice that the definition of a Cartier divisor yields that of a line bundle on $X$: given a divisor $D = (\{U_\alpha, f_\alpha\})$, define a line bundle $L = \msc{O}(D)$ to be trivialized on each $U_\alpha$ with transition functions $f_\alpha/f_\beta$. Two Cartier divisors $D$ and $D'$ are linearly equivalent if and only if $\msc{O}(D) = \msc{O}(D')$, and so we get the alternate description of $\Pic X$ as the abelian group of line bundles on $X$ with group operation given by the tensor product. Conversely, given a line bundle $L$, this determines a Cartier divisor $D(L)$ up to some additional data: a nonzero rational section $s$ of $L$. Therefore we can also think of Cartier divisors as the data of a line bundle together with a nonzero rational section.
+Notice that the definition of a Cartier divisor yields that of a line bundle on $X$: given a divisor $D = (\{U_\alpha, f_\alpha\})$, define a line bundle $L = \mc{O}(D)$ to be trivialized on each $U_\alpha$ with transition functions $f_\alpha/f_\beta$. Two Cartier divisors $D$ and $D'$ are linearly equivalent if and only if $\mc{O}(D) = \mc{O}(D')$, and so we get the alternate description of $\Pic X$ as the abelian group of line bundles on $X$ with group operation given by the tensor product. Conversely, given a line bundle $L$, this determines a Cartier divisor $D(L)$ up to some additional data: a nonzero rational section $s$ of $L$. Therefore we can also think of Cartier divisors as the data of a line bundle together with a nonzero rational section.
 
 We define the \textit{support} $\supp D$ or $|D|$ of a Cartier divisor $D$ to be the union of codimension $1$ subvarieties $V$ of $X$ such that $f_\alpha$ is not a unit for $U_\alpha$ nontrivially intersecting $V$, i.e. $\ord_V D$ is nonzero.
 
@@ -378,9 +395,9 @@ We say that a Cartier divisor $D = (\{U_\alpha, f_\alpha\})$ if all of the $f_\a
 In general, Cartier divisors are not well-behaved under pullbacks (although line bundles are). In particular, given the data of a line bundle $L$ and a nonzero rational section $s$ and a morphism $f\colon Y \to X$, there is no guarantee that the pullback $f^* s$ is nonzero. Therefore we enlarge the notion to make it behave better: let $L$ be a line bundle on $X$, $Z \subset X$ be a closed subset, and $s$ be a nowhere vanishing section of $L$ restricted to $X-Z$, or equivalently a trivialization of $L|_{X-Z}$. A \textit{pseudo-divisor} on $X$ consists of the data of such a triple $(L,Z,s)$, up to the following equivalence: two triples $(L,Z,s)$ and $(L',Z',s')$ define the same pseudo-divisor if $Z = Z'$ and there exists an isomorphism $\sigma\colon L \to L'$ such that restricted to $X-Z$ we have $\sigma \circ s = s'$. Note that this is well-behaved under pullback.
 
 \begin{exm}
-Let $D = (\{U_\alpha, f_\alpha\})$ be a Cartier divisor, with support $|D|$. Then each $f_\alpha$ away from $|D$ gives a local section of the associated line bundle $\msc{O}(D)$, and so these glue to a section $s_D$ of $\msc{O}(D)$ on $X-|D|$; this makes $(\msc{O}(D), |D|, s_D)$ a pseudo-divisor.
+Let $D = (\{U_\alpha, f_\alpha\})$ be a Cartier divisor, with support $|D|$. Then each $f_\alpha$ away from $|D$ gives a local section of the associated line bundle $\mc{O}(D)$, and so these glue to a section $s_D$ of $\mc{O}(D)$ on $X-|D|$; this makes $(\mc{O}(D), |D|, s_D)$ a pseudo-divisor.
 
-We say that a Cartier divisor $D$ \textit{represents} a pseudo-divisor $(L,Z,s)$ when $|D| \subseteq Z$ and there exists an isomorphism $\sigma\colon \msc{O}(D) \to L$ such that restricted to $X-Z$ we have $\sigma \circ s_D = s$, with notation as above.
+We say that a Cartier divisor $D$ \textit{represents} a pseudo-divisor $(L,Z,s)$ when $|D| \subseteq Z$ and there exists an isomorphism $\sigma\colon \mc{O}(D) \to L$ such that restricted to $X-Z$ we have $\sigma \circ s_D = s$, with notation as above.
 \end{exm}
 
 \begin{lem}
@@ -389,12 +406,12 @@ If $X$ is a variety, then every pseudo-divisor $(L,Z,s)$ on $X$ is represented b
 \begin{proof}
 If $Z = X$, then $s$ is a section on $X - X = \{\}$, and so a pseudo-divisor is just a line bundle; and we saw in the previous section that the group of Cartier divisors up to linear equivalence is isomorphic to the group of line bundles, so $L$ corresponds to a unique linear equivalence class of Cartier divisors.
 
-If $Z \neq X$, let $U = X - Z$. As above, choose a Cartier divisor $D = (\{U_\alpha, f_\alpha\})$ with $\msc{O}(D) \simeq L$. The section $s$ consists of a collection of functions $s_\alpha$ on $U \cap U_\alpha$ such that $s_\alpha = f_\alpha/f_\beta \cdot s_\beta$ on $U \cap U_\alpha \cap U_\beta$; thus $s_\alpha/f_\alpha = s_\beta/f_\beta$ on each intersection, i.e. there exists some rational function $r$ such that $s_\alpha / f_\alpha = r$ on each $U \cap U_\alpha$. Then $D' \coloneqq D + \div(r)$ is the Cartier divisor $(\{U_\alpha, f_\alpha r\})$ and by definition $f_\alpha r = s_\alpha$ on each $U \cap U_\alpha$; therefore using the definition above $s_{D'} = s$. Since $D'$ is linearly equivalent to $D$, it corresponds to the same line bundle, and since $r$ is regular on each $U_\alpha$ the support of $\div(r)$ is contained in $Z$; therefore $D'$ represents $(L,Z,s)$.
+If $Z \neq X$, let $U = X - Z$. As above, choose a Cartier divisor $D = (\{U_\alpha, f_\alpha\})$ with $\mc{O}(D) \simeq L$. The section $s$ consists of a collection of functions $s_\alpha$ on $U \cap U_\alpha$ such that $s_\alpha = f_\alpha/f_\beta \cdot s_\beta$ on $U \cap U_\alpha \cap U_\beta$; thus $s_\alpha/f_\alpha = s_\beta/f_\beta$ on each intersection, i.e. there exists some rational function $r$ such that $s_\alpha / f_\alpha = r$ on each $U \cap U_\alpha$. Then $D' \coloneqq D + \div(r)$ is the Cartier divisor $(\{U_\alpha, f_\alpha r\})$ and by definition $f_\alpha r = s_\alpha$ on each $U \cap U_\alpha$; therefore using the definition above $s_{D'} = s$. Since $D'$ is linearly equivalent to $D$, it corresponds to the same line bundle, and since $r$ is regular on each $U_\alpha$ the support of $\div(r)$ is contained in $Z$; therefore $D'$ represents $(L,Z,s)$.
 
 For uniqueness, suppose that two Cartier divisors $D_1 = (\{U_\alpha, f_\alpha\})$ and $D_2 = (\{V_\beta, g_\beta\})$ both represent $(L,Z,s)$. Then similarly there must exist some rational function $r$ such that $r f_\alpha = r g_\beta$ on each $U_\alpha \cap V_\beta$. But since $s_{D_1} = s_{D_2} = s$, if $Z \neq X$, i.e. $U$ is nonempty, then $s_{D_1}$ and $s_{D_2}$ must agree on every $U \cap U_\alpha \cap V_\beta$, and so $r$ restricted to $U$ must be $1$; since $f$ is rational it follows that $f = 1$ and $D_1 = D_2$.
 \end{proof}
 
-For any pseudo-divisor $D = (L,Z,s)$, as for Weil divisors we will write $\msc{O}(D) = L$, $|D| = Z$, and $s_D = s$.
+For any pseudo-divisor $D = (L,Z,s)$, as for Weil divisors we will write $\mc{O}(D) = L$, $|D| = Z$, and $s_D = s$.
 
 If $D = (L,Z,s)$ and $D' = (L', Z', s')$ are two pseudo-divisors, we can define their sum \[ D + D' = (L \otimes L', Z \cup Z', s \otimes s') . \] This agrees with the sum on Cartier divisors, except that the supports may be larger in this case. Similarly defining \[ -D = (L^{-1}, Z, s^{-1}) \] makes the set of pseudo-divisors into an abelian group.
 
@@ -416,7 +433,7 @@ Let $X$ be a scheme, $D$ be a pseudo-divisor on $X$, and $\alpha$ be a $k$-cycle
 \item Let $D'$ be a pseudo-divisor on $X$. Then \[ (D + D') \cdot \alpha = D \cdot \alpha + D' \cdot \alpha \] in $A_{k-1}(|\alpha| \cap (|D| \cup |D'|))$.
 \item Let $f\colon Y \to X$ be a proper morphism, $\beta$ be a $k$-cycle on $Y$, and $g\colon |\beta| \cap f^{-1}(|D|) \to f(|\beta|) \cap |D|$ be the restriction of $f$ to $|\beta| \cap f^{-1}(|D|)$. Then \[ g_* (f^* D \cdot \beta) = D \cdot f_* \beta \] in $A_{k-1}(f(|\beta|) \cap |D|)$.
 \item Let $f\colon Y \to X$ be a flat morphism of relative dimension $n$ and $g\colon f^{-1}(|\alpha| \cap |D|) \to |\alpha| \cap |D|$ be the restriction of $f$ to $f^{-1}(|\alpha| \cap |D|)$. Then \[ f^* D \cdot f^* \alpha = g^* (D \cdot \alpha) \] in $A_{n+k-1}(f^{-1}(|\alpha| \cap |D|))$.
-\item If the line bundle $\msc{O}(D)$ is trivial, then \[ D \cdot \alpha = 0 \] in $A_{k-1}(|\alpha| \cap |D|)$.
+\item If the line bundle $\mc{O}(D)$ is trivial, then \[ D \cdot \alpha = 0 \] in $A_{k-1}(|\alpha| \cap |D|)$.
 \end{enumerate}
 \end{thm}
 \begin{proof}
@@ -426,7 +443,7 @@ For part (c), we can likewise assume that $\beta = [W]$ for some $k$-dimensional
 
 For (d), we can again assume that $\alpha = [V] = [X]$, so the statement similarly becomes \[ [f^* D] = f^* [D] . \] By linearity, we can assume $D = [W]$ for some subvariety $W$ of $X = V$, at which point the statement is $f^* [W] = [f^{-1}(W)]$, which is true whenever $f$ is flat.
 
-Finally for (e) we can again assume $\alpha = [V] = [X]$, so that the statement is $[D] = 0$ in $A_{n-1} X$ whenever $\msc{O}(D)$ is trivial, where $n$ is the dimension of $V = X$. Letting $\tilde D$ be the Cartier divisor representing $D$, we know from section 1 that $\msc{O}(D)$ is trivial precisely when $\tilde D$ is linearly equivalent to the trivial Cartier divisor $0 = (\{U_\alpha, 1\})$ for which every local function is a unit; and we know that the associated Weil divisor map $\Div X \to Z_{n-1} X$ descends to a map $\Pic X \to A_{n-1} X$, i.e. $[D] = [\tilde D] = 0$ whenever $\msc{O}(D)$ is trivial.
+Finally for (e) we can again assume $\alpha = [V] = [X]$, so that the statement is $[D] = 0$ in $A_{n-1} X$ whenever $\mc{O}(D)$ is trivial, where $n$ is the dimension of $V = X$. Letting $\tilde D$ be the Cartier divisor representing $D$, we know from section 1 that $\mc{O}(D)$ is trivial precisely when $\tilde D$ is linearly equivalent to the trivial Cartier divisor $0 = (\{U_\alpha, 1\})$ for which every local function is a unit; and we know that the associated Weil divisor map $\Div X \to Z_{n-1} X$ descends to a map $\Pic X \to A_{n-1} X$, i.e. $[D] = [\tilde D] = 0$ whenever $\mc{O}(D)$ is trivial.
 \end{proof}
 
 \section{Commutativity}
@@ -465,11 +482,11 @@ If $n = k$ and $Y = |\alpha| \cap (|D_1| \cup \cdots \cup |D_k|)$ is complete, t
 For a subvariety $V$ purely of dimension $k$, we will sometimes write simply $V$ instead of $[V]$; similarly we will sometimes write $D$ instead of $[D]$.
 
 \begin{exm}
-    Let $X$ be the projective completion of the affine surface $X' \subset \A^3$ defined by $z^2 = xy$. Consider the Cartier divisor $D$ on $X$ defined everywhere by the equation $x$, corresponding to the subvariety cut out by $x = 0$. Define the lines $\ell, \ell'$ by $x = z = 0$ and $y = z = 0$ respectively, and let $P$ be the origin $(0,0,0)$. Along the subvariety $x = 0$, from the defining equation we also have $z = 0$ (in affine space), and so $[D] = \ord_\ell D \cdot [\ell]$; we have \[ \ord_\ell D = \operatorname{len}_A A/(x) , \] where (in the affine variety) $A = \msc{O}_{X,\ell} = K[x,y,z]/(z^2 - x y)$. Thus $A/(x) = K[x,y,z]/(z^2-xy,x) = K[y,z]/(z^2)$ which has length $2$, with maximal proper subsequence of modules given by $0 \subset K[y] = K[y,z]/(z) \subset K[y,z]/(z^2)$. Therefore $[D] = 2 [\ell]$.  We can compute \[ D \cdot [\ell'] = [j^* D] = [P] \] where $j$ is the inclusion of $\ell'$ into $X$, since restricted to the line $y = z = 0$ the equation $x=0$ specifies only the point $P$ with multiplicity $1$. Therefore there cannot exist any Cartier divisor $D'$ with $[D'] = [\ell']$, since if there were we would have \[ [P] = D \cdot [\ell'] = D \cdot [D'] = D' \cdot [D] = 2 D' \cdot [\ell] \] in either $Z_1 X$ or $A_1 X$, by Theorem~\ref{commutativity} and the above calculation. This proves our above claim that the maps $\Div X \to Z_{\dim X - 1}$ and $\Pic X \to A_{\dim X - 1} X$ are not in general surjective.
+    Let $X$ be the projective completion of the affine surface $X' \subset \A^3$ defined by $z^2 = xy$. Consider the Cartier divisor $D$ on $X$ defined everywhere by the equation $x$, corresponding to the subvariety cut out by $x = 0$. Define the lines $\ell, \ell'$ by $x = z = 0$ and $y = z = 0$ respectively, and let $P$ be the origin $(0,0,0)$. Along the subvariety $x = 0$, from the defining equation we also have $z = 0$ (in affine space), and so $[D] = \ord_\ell D \cdot [\ell]$; we have \[ \ord_\ell D = \operatorname{len}_A A/(x) , \] where (in the affine variety) $A = \mc{O}_{X,\ell} = K[x,y,z]/(z^2 - x y)$. Thus $A/(x) = K[x,y,z]/(z^2-xy,x) = K[y,z]/(z^2)$ which has length $2$, with maximal proper subsequence of modules given by $0 \subset K[y] = K[y,z]/(z) \subset K[y,z]/(z^2)$. Therefore $[D] = 2 [\ell]$.  We can compute \[ D \cdot [\ell'] = [j^* D] = [P] \] where $j$ is the inclusion of $\ell'$ into $X$, since restricted to the line $y = z = 0$ the equation $x=0$ specifies only the point $P$ with multiplicity $1$. Therefore there cannot exist any Cartier divisor $D'$ with $[D'] = [\ell']$, since if there were we would have \[ [P] = D \cdot [\ell'] = D \cdot [D'] = D' \cdot [D] = 2 D' \cdot [\ell] \] in either $Z_1 X$ or $A_1 X$, by Theorem~\ref{commutativity} and the above calculation. This proves our above claim that the maps $\Div X \to Z_{\dim X - 1}$ and $\Pic X \to A_{\dim X - 1} X$ are not in general surjective.
 \end{exm}
 
 \section{The first Chern class}
-Let $X$ be a scheme, $V \subseteq X$ a subvariety of dimension $k$, and $L$ a line bundle on $X$. The restriction of $L$ to $V$ is a line bundle on $V$ and so is isomorphic to $\msc{O}(C)$ for some Cartier divisor $C$ on $V$, determined up to linear equivalence. This in turn defines a well-defined element $[C]$ of $A_{k-1} X$; we write $c_1(L) \cap [V] \coloneqq [C]$. More generally, if $\alpha = \sum_V n_V \cdot [V]$ is a $k$-cycle on $X$ then define $C_V$ for each $V$ as above, and write \[ c_1(L) \cap \alpha \coloneqq \sum_V n_V \cdot [C_V] . \] If $L = \msc{O}(D)$ for some pseudo-divisor $D$, then if $j\colon V \hookrightarrow X$ is the inclusion then the Cartier divisor $\tilde D$ on $V$ representing $j^* D$ satisfies $\msc{O}(\tilde D) \simeq \msc{O}(D)$ by construction; by definition, this means that $[C_V] = [j^* D] = D \cdot [V]$ and so \[ c_1(L) \cap \alpha = D \cdot \alpha \] in $A_{k-1} X$.
+Let $X$ be a scheme, $V \subseteq X$ a subvariety of dimension $k$, and $L$ a line bundle on $X$. The restriction of $L$ to $V$ is a line bundle on $V$ and so is isomorphic to $\mc{O}(C)$ for some Cartier divisor $C$ on $V$, determined up to linear equivalence. This in turn defines a well-defined element $[C]$ of $A_{k-1} X$; we write $c_1(L) \cap [V] \coloneqq [C]$. More generally, if $\alpha = \sum_V n_V \cdot [V]$ is a $k$-cycle on $X$ then define $C_V$ for each $V$ as above, and write \[ c_1(L) \cap \alpha \coloneqq \sum_V n_V \cdot [C_V] . \] If $L = \mc{O}(D)$ for some pseudo-divisor $D$, then if $j\colon V \hookrightarrow X$ is the inclusion then the Cartier divisor $\tilde D$ on $V$ representing $j^* D$ satisfies $\mc{O}(\tilde D) \simeq \mc{O}(D)$ by construction; by definition, this means that $[C_V] = [j^* D] = D \cdot [V]$ and so \[ c_1(L) \cap \alpha = D \cdot \alpha \] in $A_{k-1} X$.
 
 \begin{thm}
 \label{Chern properties}
@@ -493,8 +510,8 @@ Fix an effective Cartier divisor $D$ on a scheme $X$, with the inclusion given b
 With notation as above:
 \begin{enumerate}[label=(\alph*)]
 \item If $\alpha$ is rationally equivalent to $0$, then $i^* \alpha = 0$, and so there is an induced homomorphism $i^*\colon A_k X \to A_{k-1} (|D|)$.
-\item We have \[ i_* i^* \alpha = c_1(\msc{O}(D)) \cap \alpha . \]
-\item If $\beta$ is a $k$-cycle on $|D|$, then \[ i^* i_* \beta = c_1(i^* \msc{O}(D)) \cap \beta . \]
+\item We have \[ i_* i^* \alpha = c_1(\mc{O}(D)) \cap \alpha . \]
+\item If $\beta$ is a $k$-cycle on $|D|$, then \[ i^* i_* \beta = c_1(i^* \mc{O}(D)) \cap \beta . \]
 \item If $X$ is purely $n$-dimensional, then \[ i^* [X] = [D] \] in $A_{n-1} (|D|)$.
 \item If $L$ is a line bundle on $X$, then \[ i^* (c_1(L) \cap \alpha) = c_1(i^* L) \cap i^* \alpha \] in $A_{k-2} (|D|)$.
 \end{enumerate}
@@ -507,7 +524,7 @@ All of these follow immediately from the definitions and the results above.
 \section{Chern and Segre Classes}%
 \label{sec:chern_classes}
 
-Let $L$ be a line bundle over a scheme $X$. If $V^k \subseteq X$ is a subvariety, then there exists a Cartier divisor such that $\eval{L}_V = \msc{O}_V(C)$, which gives us a cycle $[C] \in A_{k-1}$. 
+Let $L$ be a line bundle over a scheme $X$. If $V^k \subseteq X$ is a subvariety, then there exists a Cartier divisor such that $\eval{L}_V = \mc{O}_V(C)$, which gives us a cycle $[C] \in A_{k-1}$. 
 
 \begin{defn}
     We will define the \textit{first Chern class} of $L$ by $c_1(L) \cap [V] = [C]$. Therefore we obtain a map
@@ -527,8 +544,8 @@ Let $L$ be a line bundle over a scheme $X$. If $V^k \subseteq X$ is a subvariety
     \end{enumerate}
 \end{prop}
 
-In the smooth case, Segre classes agree with Chern classes, but they have a nice generalization to the singular case. Let $E$ be a rank $e+1$ vector bundle over a scheme $X$ and let $P = \P(E)$ be the associated projective bundle. Then we have a line bundle $\msc{O}_E(1)$, and so we define
-\[ s_i(E) \cap - \colon A_k X \to A_{k-i} X \qquad s_i(E) \cap \alpha = p_* (c_1 { (\msc{O}(1)) }^{e+i} \cap p^* \alpha ). \]
+In the smooth case, Segre classes agree with Chern classes, but they have a nice generalization to the singular case. Let $E$ be a rank $e+1$ vector bundle over a scheme $X$ and let $P = \P(E)$ be the associated projective bundle. Then we have a line bundle $\mc{O}_E(1)$, and so we define
+\[ s_i(E) \cap - \colon A_k X \to A_{k-i} X \qquad s_i(E) \cap \alpha = p_* (c_1 { (\mc{O}(1)) }^{e+i} \cap p^* \alpha ). \]
 If $E$ is a line bundle, we see that $s_1(E) \cap \alpha = - c_1(E) \cap \alpha$. 
 
 \begin{prop}
@@ -573,14 +590,14 @@ Here are some properties of Chern classes:
 
 \begin{exm}
     Recall the exact sequence
-    \[ 0 \to \msc{O}_{\P^n} \to \msc{O}_{\P^n}(1)^{n+1} \to T_{\P^n} \to 0. \]
-    From the fact that $c_t(\msc{O}_{\P^n}) = 1$ and $c_t(\msc{O}_{\P^n}(1)) = (1+H t)$, we can compute the Chern character of $T_{\P^n}$.
+    \[ 0 \to \mc{O}_{\P^n} \to \mc{O}_{\P^n}(1)^{n+1} \to T_{\P^n} \to 0. \]
+    From the fact that $c_t(\mc{O}_{\P^n}) = 1$ and $c_t(\mc{O}_{\P^n}(1)) = (1+H t)$, we can compute the Chern character of $T_{\P^n}$.
 \end{exm}
 
 Let $E$ be a vector bundle on a nonsingular variety $X$ and suppose $p \colon \P(E) \to X$ is the projection. Then we have an exact sequence
-\[ 0 \to \msc{O}_{\P(E)} \to p^* E \otimes \msc{O}_E(1) \to T_{\P(E)} \to p^* T_X \to 0. \]
+\[ 0 \to \mc{O}_{\P(E)} \to p^* E \otimes \mc{O}_E(1) \to T_{\P(E)} \to p^* T_X \to 0. \]
 This allows us to calculate
-\[ c_t(T_{\P(E)}) = c_t(p^* T_X) \cdot c_t(p^*E \otimes \msc{O}_E(1)). \]
+\[ c_t(T_{\P(E)}) = c_t(p^* T_X) \cdot c_t(p^*E \otimes \mc{O}_E(1)). \]
 
 \section{Rational equivalence of bundles}%
 \label{sec:rational_equivalence_of_bundles}
@@ -588,7 +605,7 @@ This allows us to calculate
 This generalizes the Gysin map from last week. Let $E$ be a vector bundle of rank $r = e+1$ and let $\pi \colon E \to X$ be the projection. Then we obtain a commutative diagram
 \begin{equation*}
 \begin{tikzcd}
-    E \ar[hookrightarrow]{rr} \ar{dr}{\pi} & & \P(E \oplus \msc{O}) \ar{dl}{q} \\
+    E \ar[hookrightarrow]{rr} \ar{dr}{\pi} & & \P(E \oplus \mc{O}) \ar{dl}{q} \\
                                            & X.
 \end{tikzcd}
 \end{equation*}
@@ -597,7 +614,7 @@ This generalizes the Gysin map from last week. Let $E$ be a vector bundle of ran
     \begin{enumerate}
         \item The map $\pi^* \colon A_{k-r} \to A_k E$ is an isomorphism for all $k$.
         \item A cycle $\beta \in A_k \P(E)$ is uniquely expressible in the form
-            \[ \beta = \sum_{i=0}^e {c_1(\msc{O}(1))}^i \cap p^* \alpha_i \]
+            \[ \beta = \sum_{i=0}^e {c_1(\mc{O}(1))}^i \cap p^* \alpha_i \]
             where $\alpha_i \in A_{k+1-e} X$.
     \end{enumerate}
 \end{thm}
@@ -607,8 +624,8 @@ This generalizes the Gysin map from last week. Let $E$ be a vector bundle of ran
 \end{defn}
 
 \begin{prop}
-    Let $\beta \in A_k E$ and $\ol{\beta} \in A_k \P(E \oplus \msc{O})$ that restricts to $\beta$. Then $s^*(\beta) = q_* (c_r(\xi) \cap \ol{\beta})$ where $\xi$ is the universal rank $r$ quotient bundle of $q^* (E \oplus \msc{O})$. Here, we have an exact sequence
-    \[ 0 \to {???} \to q^*(E \oplus \msc{O}) \to \xi \to 0. \]
+    Let $\beta \in A_k E$ and $\ol{\beta} \in A_k \P(E \oplus \mc{O})$ that restricts to $\beta$. Then $s^*(\beta) = q_* (c_r(\xi) \cap \ol{\beta})$ where $\xi$ is the universal rank $r$ quotient bundle of $q^* (E \oplus \mc{O})$. Here, we have an exact sequence
+    \[ 0 \to {???} \to q^*(E \oplus \mc{O}) \to \xi \to 0. \]
 \end{prop}
 
 \chapter{Patrick (Feb 12): Cones: because not every coherent sheaf is locally free}%
@@ -625,14 +642,14 @@ Our goal is to define a Segre class $s(X,Y)$ of a subvariety $X \subsetneq Y$ an
 \label{sub:cones}
 
 \begin{defn}
-    Let $S^{\bullet}$ be a sheaf of graded $\msc{O}_X$-algebras such that $\msc{O}_X \to S^0$ is surjective, $S^1$ is coherent, and $S^{\bullet}$ is generated by $S^1$. Then any scheme of the form $C = \Spec_{\msc{O}_X}(S^{\bullet})$ is called a \textit{cone}. 
+    Let $S^{\bullet}$ be a sheaf of graded $\mc{O}_X$-algebras such that $\mc{O}_X \to S^0$ is surjective, $S^1$ is coherent, and $S^{\bullet}$ is generated by $S^1$. Then any scheme of the form $C = \Spec_{\mc{O}_X}(S^{\bullet})$ is called a \textit{cone}. 
 \end{defn}
 
-If $C$ is a cone, then $\P(C \oplus 1) = \Proj (S^{\bullet}[z])$ is the projective completion with projection $q \colon \P(C \oplus 1 \to X)$. Let $\msc{O}(1)$ be the canonical line bundle on $\P(C \oplus 1)$.
+If $C$ is a cone, then $\P(C \oplus 1) = \Proj (S^{\bullet}[z])$ is the projective completion with projection $q \colon \P(C \oplus 1 \to X)$. Let $\mc{O}(1)$ be the canonical line bundle on $\P(C \oplus 1)$.
 
 \begin{defn}
     The \textit{Segre class} $s(C) \in A_* X$ of $C$ is defined as
-    \[ s(C) \coloneqq q_* \qty( \sum_{i \geq 0} {c_1(\msc{O}(1))}^i \cap [\P(C \oplus 1)] ). \]
+    \[ s(C) \coloneqq q_* \qty( \sum_{i \geq 0} {c_1(\mc{O}(1))}^i \cap [\P(C \oplus 1)] ). \]
 \end{defn}
 
 \begin{prop}\leavevmode
@@ -644,16 +661,16 @@ If $C$ is a cone, then $\P(C \oplus 1) = \Proj (S^{\bullet}[z])$ is the projecti
 \end{prop}
 
 \begin{exm}
-    Let $\msc{F}, \msc{F'}$ be coherent sheaves and let $\msc{E}$ be locally free. Then we may define $C(\msc{F}) = \Spec ( \operatorname{Sym} \msc{F} )$. We may define $s(\msc{F}) = s(C(\msc{F}))$. Now if 
-    \[ 0 \to \msc{F}' \to \msc{F} \to \msc{E} \to 0 \]
-    is exact, then $s(\msc{F'}) = c(E) \cap s(\msc{F})$.
+    Let $\mc{F}, \mc{F'}$ be coherent sheaves and let $\mc{E}$ be locally free. Then we may define $C(\mc{F}) = \Spec ( \operatorname{Sym} \mc{F} )$. We may define $s(\mc{F}) = s(C(\mc{F}))$. Now if 
+    \[ 0 \to \mc{F}' \to \mc{F} \to \mc{E} \to 0 \]
+    is exact, then $s(\mc{F'}) = c(E) \cap s(\mc{F})$.
 \end{exm}
 
 \subsection{Segre Class of a Subvariety}%
 \label{sub:segre_class_of_a_subvariety}
 
-Let $X$ be a closed subscheme of $Y$ defined by the ideal sheaf $\msc{I}$ and let
-\[ C = C_X Y = \Spec \qty( \sum_{n=0}^{\infty} \msc{I}^n / \msc{I}^{n+1} ) \]
+Let $X$ be a closed subscheme of $Y$ defined by the ideal sheaf $\mc{I}$ and let
+\[ C = C_X Y = \Spec \qty( \sum_{n=0}^{\infty} \mc{I}^n / \mc{I}^{n+1} ) \]
 be the normal cone. Note that if $X$ is regularly embedded in $Y$, then $C_X Y$ is a vector bundle.
 
 \begin{defn}
@@ -681,7 +698,7 @@ be the normal cone. Note that if $X$ is regularly embedded in $Y$, then $C_X Y$ 
 
 \begin{cor}
     Let $Y$ be a variety and $X \subseteq Y$ be a proper closed subsecheme. Then let $\wt{Y} = \operatorname{Bl}_X Y$ and $\wt{X} = \P(C)$ be the exceptional divisor with projection $\eta \colon \wt{X} \to X$. Then
-    \[ s(X,Y) = \sum_{k \geq 1} {(-1)}^{k-1} \eta_* (\wt{X}^k) = \sum_{i \geq 0} \eta_* ({c_1(\msc{O}(1))}^i \cap [\P(C)]). \]
+    \[ s(X,Y) = \sum_{k \geq 1} {(-1)}^{k-1} \eta_* (\wt{X}^k) = \sum_{i \geq 0} \eta_* ({c_1(\mc{O}(1))}^i \cap [\P(C)]). \]
 \end{cor}
 
 \begin{exm}
@@ -703,12 +720,12 @@ Let $X \subseteq Y$ be an (irreducible) subvariety. Then the coefficient of $[X]
 
 Suppose $X$ has positive codimension $n$, $p \colon \P(C_X Y) \to X$ and $q \colon \P(C_X Y \oplus 1) \to X$ are the projections to $X$, and $\wt{Y} = \operatorname{Bl}_X Y$ with exceptional divisor $\wt{X} = \P(C)$. Then we have
 \begin{align*}
-    e_X Y [X] &= q_* ( {c_1 ( \msc{O}(1) )}^n \cap [\P[C \oplus 1]] ) \\
-              &= p_* ({c_1 (\msc{O}(1))}^{n-1} \cap [\P(C)]) \\
+    e_X Y [X] &= q_* ( {c_1 ( \mc{O}(1) )}^n \cap [\P[C \oplus 1]] ) \\
+              &= p_* ({c_1 (\mc{O}(1))}^{n-1} \cap [\P(C)]) \\
               &= {(-1)}^{n-1} p_* (\wt{X}^n). 
 \end{align*}
 For example, if $X$ is a point, then we have
-\[ e_P Y = \int_{\P(C)} {c_1(\msc{O}(1))}^{n-1} \cap [\P(C)] = \deg [P(C)]. \]
+\[ e_P Y = \int_{\P(C)} {c_1(\mc{O}(1))}^{n-1} \cap [\P(C)] = \deg [P(C)]. \]
 
 \begin{exm}
     Let $C$ be a smooth curve of genus $g$ and $C^{(d)}$ be the $d$-th symmetric power of $C$. Then let $P_0 \in C$, $J = J(C)$ be the Jacobian, and $u_d \colon C^{(d)} \to J$ be given by $D \mapsto D - d P_0$. We know that the fibers of $u_d$ are the linear systems $\abs{D} \cong \P^r$; if $d > 2g-2$, then $u_d \colon C^{(d)} \to J$ is a projective bundle; and if $1 \leq d \leq g$, then $\mu_d$ is birational onto its image $W_d$.
@@ -728,7 +745,7 @@ For example, if $X$ is a point, then we have
 \subsection{Linear Systems}%
 \label{sub:linear_systems}
 
-Let $L$ be a line bundle on a variety $X$ (of dimension $n$) and let $V \subseteq \abs{L}$ be a partial linear system of dimension $r+1$. Then let $B$ be the base locus of $V$. Then if $\wt{X} = \Bl_B X$, we obtain a morphism $f \colon \wt{X} \to \P^r$ resolving the rational map $X \dashrightarrow \P^r$. By definition, we have $f^* \msc{O}(1) = \pi^*(L) \otimes \msc{O}(-E)$. Define $\deg_f \wt{X}$ to be the degree of $f_* [\wt{X}] \in A_n \P^r$.
+Let $L$ be a line bundle on a variety $X$ (of dimension $n$) and let $V \subseteq \abs{L}$ be a partial linear system of dimension $r+1$. Then let $B$ be the base locus of $V$. Then if $\wt{X} = \Bl_B X$, we obtain a morphism $f \colon \wt{X} \to \P^r$ resolving the rational map $X \dashrightarrow \P^r$. By definition, we have $f^* \mc{O}(1) = \pi^*(L) \otimes \mc{O}(-E)$. Define $\deg_f \wt{X}$ to be the degree of $f_* [\wt{X}] \in A_n \P^r$.
 
 \begin{prop}
     We have the identity
@@ -736,7 +753,7 @@ Let $L$ be a line bundle on a variety $X$ (of dimension $n$) and let $V \subsete
 \end{prop}
 
 \begin{exm}
-    Let $B \subset \P^n$ be the rational normal curve. Then let $V \subset \abs{\msc{O}(2)}$ be the linear system of quadrics containing $B$. If $\wt{P}^n = \Bl_B \P^n$, we see that 
+    Let $B \subset \P^n$ be the rational normal curve. Then let $V \subset \abs{\mc{O}(2)}$ be the linear system of quadrics containing $B$. If $\wt{P}^n = \Bl_B \P^n$, we see that 
     \[ \deg_f \wt{\P}^n = 2^n - (n^2-n+2). \]
     If $n = 4$, then $f(\wt{\P}^4) = \mr{Gr}(2,4) \subset \P^5$.
 \end{exm}
@@ -791,21 +808,21 @@ We will recall the notion of Chern classes in topology. Recall that characterist
     \item $c(\C) = 1$, where $\C$ denotes the trivial bundle.
     \item If $E$ has rank $n$, then $c(E)$ is nonzero only in degrees $0, \ldots, 2n$.
     \item $c(E \oplus E') = c(E) c(E')$.
-    \item $c(\msc{O}_{\C\P^{\infty}}(-1))$ generates $H^2(\C\P^{\infty})$.
+    \item $c(\mc{O}_{\C\P^{\infty}}(-1))$ generates $H^2(\C\P^{\infty})$.
 \end{enumerate}
 
 \begin{rmk}
     Chern classes can be computed using the exponential sequence 
-    \[ 0 \to \Z \to \msc{O}_X \to \msc{O}_X^{\times} \to 0, \] 
+    \[ 0 \to \Z \to \mc{O}_X \to \mc{O}_X^{\times} \to 0, \] 
     where
-    \[ c_1 \colon H^1(\msc{O}_X^{\times}) \to H^2(X, \Z) \qquad L \mapsto c_1(L) \]
-    under the isomorphism $H^1(\msc{O}_X^{\times}) \cong \Pic X$.
+    \[ c_1 \colon H^1(\mc{O}_X^{\times}) \to H^2(X, \Z) \qquad L \mapsto c_1(L) \]
+    under the isomorphism $H^1(\mc{O}_X^{\times}) \cong \Pic X$.
 \end{rmk}
 
 We now return to algebraic geometry. Let $L$ be a line bundle and $\sigma$ be a rational section. Then $c_1(L) = [\div \sigma] \in A_{n-1}(X)$.
 
 \begin{exm}
-    If $X$ is a smooth variety over $\C$, then we can write $\omega_X = \bigwedge^n \msc{O}mega_X$, and $K_X = c_1(\omega_X)$. For example, if $X = \P^n$, then we can choose $\Theta = \dd{x_1} \wedge \cdots \wedge \dd{x_n}$, and $K_X = (n+1)H$.
+    If $X$ is a smooth variety over $\C$, then we can write $\omega_X = \bigwedge^n \mc{O}mega_X$, and $K_X = c_1(\omega_X)$. For example, if $X = \P^n$, then we can choose $\Theta = \dd{x_1} \wedge \cdots \wedge \dd{x_n}$, and $K_X = (n+1)H$.
 \end{exm}
 
 Here are some properties of Chern classes of vector bundles. Let $E$ be a vector bundle on a smooth quasiprojective variety $X$. Then we define
@@ -818,7 +835,7 @@ Here are some properties of Chern classes of vector bundles. Let $E$ be a vector
 \end{enumerate}
 This axiomatic construction of Chern classes was done first by Grothendieck in 1958.
 
-Now we discuss degeneracy loci. We know that $c_1(L) = 0$ if and only if $L \simeq \msc{O}_X$, whic happens if and only if $L$ has a nonvanishing section. Now if $E$ has rank $n$ and we have general global sections $\tau_0, \ldots, \tau_{n-i}$, the degeneracy locus is where
+Now we discuss degeneracy loci. We know that $c_1(L) = 0$ if and only if $L \simeq \mc{O}_X$, whic happens if and only if $L$ has a nonvanishing section. Now if $E$ has rank $n$ and we have general global sections $\tau_0, \ldots, \tau_{n-i}$, the degeneracy locus is where
 \[ {\bigwedge}^{n-i+1} \ni \tau_0 \wedge \cdots \tau_{n-i} = 0. \]
 
 Now recall that we defined the map $c_1(L) \cap - \colon A_k \to A_{k-1}$ and the map $s_i(E) \cap - \colon A_k \to A_{k-i}$. Finally, we defined $c(E) = {s(E)}^{-1}$. We will now return to splitting. If $E \to X$ is a vector bundle of rank $r$, then there exists $f \colon Y \to X$ such that $f_*$ is surjective and $f^*$ is injective on $A_*$ and $f^* E$ has a filtration by line bundles. The proof is by induction and is thus omitted. This allows us to write 
@@ -866,7 +883,7 @@ Here are some properties of the intersection product:
     \item Functoriality.
 \end{enumerate}
 
-\chapter{Nicolas (Mar 12): families of algebraic cycles}%
+\chapter{Nicol\'as (Mar 12): families of algebraic cycles}%
 \label{cha:nicolas_mar_12_families_of_algebraic_cycles}
 
 \textit{Note: these notes were adapted from the source for the \texttt{beamer} provided by the speaker. Very light edits were made to the source.} 
@@ -914,53 +931,53 @@ During this section, $T$ will denote an irreducible variety of dimension $m>0$. 
 \[ \{t\}=\Spec \kappa(t), \qquad t\colon \{t\} \to T \] 
 for the point and the inclusion.
 
-We will use script letters (e.g. $\msc{X}, \msc{Y}$) for schemes over $T$, and the corresponding latin letters (e.g. $X_t, Y_t$) for the corresponding fibers over $t$ (as schemes over $\{t\}$). If $f\colon \msc{X} \to \msc{Y}$ is a morphism, we denote $f_t\colon X_t \to Y_t$ the map on the fibers.
+We will use script letters (e.g. $\mc{X}, \mc{Y}$) for schemes over $T$, and the corresponding latin letters (e.g. $X_t, Y_t$) for the corresponding fibers over $t$ (as schemes over $\{t\}$). If $f\colon \mc{X} \to \mc{Y}$ is a morphism, we denote $f_t\colon X_t \to Y_t$ the map on the fibers.
 
 \subsection{Specialization}%
 \label{sub:specialization}
 
 
-Let $p\colon \msc{Y} \to T, \alpha \in A_{k+m}\msc{Y}$. We define $\alpha_t \in A_k Y_t$ by
+Let $p\colon \mc{Y} \to T, \alpha \in A_{k+m}\mc{Y}$. We define $\alpha_t \in A_k Y_t$ by
 \[ \alpha_t = t^!(\alpha) \]
 where $t^{!}$ is the refined Gysin homomorphism induced by
-\[ \begin{tikzcd} Y_t \arrow[r] \arrow[d] & \msc{Y} \arrow[d, "p"] \\ {\{t\}} \arrow[r, "t"] & T. \end{tikzcd} \]
-For instance, if $\alpha=[\msc{V}]$ and $\msc{V} \subseteq Y_t$, then ${[\msc{V}]}_t=0$. 
+\[ \begin{tikzcd} Y_t \arrow[r] \arrow[d] & \mc{Y} \arrow[d, "p"] \\ {\{t\}} \arrow[r, "t"] & T. \end{tikzcd} \]
+For instance, if $\alpha=[\mc{V}]$ and $\mc{V} \subseteq Y_t$, then ${[\mc{V}]}_t=0$. 
 
 Here are some basic properties.
 \begin{prop}\label{prop:basicprop}
 \begin{enumerate}
-\item If $f\colon \msc{X} \to \msc{Y}$ is proper, $\alpha \in A_{k+m}\msc{X}$, then
+\item If $f\colon \mc{X} \to \mc{Y}$ is proper, $\alpha \in A_{k+m}\mc{X}$, then
 \[ f_{t\ast}(\alpha_t)={ (f_\ast(\alpha)) }_t \qquad \text{in }A_k(Y_t). \]
 
-\item If $f\colon \msc{X} \to \msc{Y}$ is flat of relative dimension $n$, $\alpha \in A_{k+m}\msc{Y}$
+\item If $f\colon \mc{X} \to \mc{Y}$ is flat of relative dimension $n$, $\alpha \in A_{k+m}\mc{Y}$
 \[ f_t^\ast(\alpha_t)={ (f^\ast(\alpha)) }_t \qquad \text{in }A_{k+n}(X_t). \]
 
-\item If $i\colon \msc{X} \to \msc{Y}$ is a regular embedding of codimension $d$, such that $i_t\colon X_t \to Y_t$ is also a regular embedding of codimension $d$, $f\colon \msc{V} \to \msc{Y}$ a morphism, $\alpha \in A_{k+m}\msc{V}$, then
-\[ i_t^!(\alpha_t)={ (i^!(\alpha)) }_t \qquad \text{in } A_{k-d}(W_t), \msc{W}=f^{-1}(\msc{X}). \]
+\item If $i\colon \mc{X} \to \mc{Y}$ is a regular embedding of codimension $d$, such that $i_t\colon X_t \to Y_t$ is also a regular embedding of codimension $d$, $f\colon \mc{V} \to \mc{Y}$ a morphism, $\alpha \in A_{k+m}\mc{V}$, then
+\[ i_t^!(\alpha_t)={ (i^!(\alpha)) }_t \qquad \text{in } A_{k-d}(W_t), \mc{W}=f^{-1}(\mc{X}). \]
 \end{enumerate}
 \begin{enumerate} \setcounter{enumi}{3}
-\item If $E$ is a vector bundle over $\msc{Y}$, $\alpha \in A_{k+m} \msc{Y}$, then 
+\item If $E$ is a vector bundle over $\mc{Y}$, $\alpha \in A_{k+m} \mc{Y}$, then 
 \[ c_i(E_t) \cap \alpha_t = { (c_i(E) \cap \alpha) }_t \qquad \text{in }A_{k-i}(Y_t). \]
 \end{enumerate}
 \end{prop}
 
 The proof follows directly from similar statements for the refined Gysin homomorphism (see \textsection~6.2--6.4).
 
-We would now like to relate different fibers. Given a family $\msc{X} \to T$ and $\alpha \in A_{k+m}\msc{X}$, it is natural to compare $\alpha_t \in A_k(X_t)$ for different values of $t$. It is not obvious that such relation exists, even if $\msc{X}=Y \times T$ is the trivial family.
+We would now like to relate different fibers. Given a family $\mc{X} \to T$ and $\alpha \in A_{k+m}\mc{X}$, it is natural to compare $\alpha_t \in A_k(X_t)$ for different values of $t$. It is not obvious that such relation exists, even if $\mc{X}=Y \times T$ is the trivial family.
 
 \begin{exm}
 Let $Y=T$ be a projective curve of genus $g \geq 2$, and $\Delta\subseteq Y \times T$ the diagonal. If $\alpha = [\Delta] \in A_1(Y \times T)$, then $\alpha_t = [t] \in A_0 Y$. But for $t_1 \neq t_2$, we have that $\alpha_{t_1}$ and $\alpha_{t_2}$ are not rationally equivalent. 
 \end{exm}
 
-This can be solved if we assume that $\msc{X}=Y \times T$, and if for every $t_1, t_2 \in T$, they can be connected by a chain of rational curves in $T$ (see Example 10.1.7).
+This can be solved if we assume that $\mc{X}=Y \times T$, and if for every $t_1, t_2 \in T$, they can be connected by a chain of rational curves in $T$ (see Example 10.1.7).
 
 Here is a useful corollary.
 \begin{cor}\label{cor:intfiber}
-Assume $T$ is non-singular, $t \in T$ rational over the ground field, $\msc{Y}$ smooth over $T$ with relative dimension $n$. If $\alpha \in A_{k+m}(\msc{Y}), \beta \in A_{l+m}(\msc{Y})$, then 
+Assume $T$ is non-singular, $t \in T$ rational over the ground field, $\mc{Y}$ smooth over $T$ with relative dimension $n$. If $\alpha \in A_{k+m}(\mc{Y}), \beta \in A_{l+m}(\mc{Y})$, then 
 \[ \alpha_t \cdot \beta_t = { (\alpha \cdot \beta) }_t \qquad \text{in } A_{k+l-n}(Y_t). \]
 \end{cor}
 
-This gives us a strategy to show that $a \cdot b=c$ in a non-singular variety $Y$. We construct a family $\msc{Y} \to T$ with $Y_t=Y$ for some $t$, and such that $a, b, c$ can be lifted to $\alpha, \beta, \gamma$. Then, it suffices to show that $\alpha \cdot \beta=\gamma$, which we can try to prove generically.
+This gives us a strategy to show that $a \cdot b=c$ in a non-singular variety $Y$. We construct a family $\mc{Y} \to T$ with $Y_t=Y$ for some $t$, and such that $a, b, c$ can be lifted to $\alpha, \beta, \gamma$. Then, it suffices to show that $\alpha \cdot \beta=\gamma$, which we can try to prove generically.
 
 \subsection{Sample Application}%
 \label{sub:sample_application}
@@ -976,10 +993,10 @@ This is true even if $A$ and $B$ intersect, by using Corollary~\ref{cor:intfiber
 
 \section{Conservation of number}
 
-We have seen that for $\alpha \in A_k\msc{Y}$, it is not clear that ${\{\alpha_t\}}_{t \in T}$ are related, even if $\msc{Y}=Y \times T$ is the trivial family.  We have the following substitute.
+We have seen that for $\alpha \in A_k\mc{Y}$, it is not clear that ${\{\alpha_t\}}_{t \in T}$ are related, even if $\mc{Y}=Y \times T$ is the trivial family.  We have the following substitute.
 
 \begin{prop}[Conservation of number]
-Let $p\colon \msc{Y} \to T$ be a proper morphism, $\dim T=m$ as before. Let $\alpha$ be an $m$-cycle on $\msc{Y}$. Then $\alpha_t \in A_0(Y_t)$ all have the same degree (which is obtained by $p_{t\ast}(\alpha_t)=\deg \alpha_t\cdot [\{t\}]$). 
+Let $p\colon \mc{Y} \to T$ be a proper morphism, $\dim T=m$ as before. Let $\alpha$ be an $m$-cycle on $\mc{Y}$. Then $\alpha_t \in A_0(Y_t)$ all have the same degree (which is obtained by $p_{t\ast}(\alpha_t)=\deg \alpha_t\cdot [\{t\}]$). 
 \end{prop}
 
 The idea of the proof is write $p_\ast(\alpha)=N[T] \in A_m(T)$, for some $N \in \Z$. Then, by Proposition~\ref{prop:basicprop} we get
@@ -988,8 +1005,8 @@ The idea of the proof is write $p_\ast(\alpha)=N[T] \in A_m(T)$, for some $N \in
 This proposition can be improved to compute the degree of intersections with Chern classes or some divisors (see \textsection~10.2 for precise statements). We will need the following result.
 
 \begin{cor}
-Let $Y$ be a scheme, $\msc{H}_i \subseteq Y \times T$ effective Cartier divisors which are flat over $T, i=1, \dots, d$. Let $a$ be a $d$-cycle on $Y$. Assume that
-\[ \msc{H}_1 \cap \dots \cap \msc{H}_d \cap (\Supp(a) \times T) \]
+Let $Y$ be a scheme, $\mc{H}_i \subseteq Y \times T$ effective Cartier divisors which are flat over $T, i=1, \dots, d$. Let $a$ be a $d$-cycle on $Y$. Assume that
+\[ \mc{H}_1 \cap \dots \cap \mc{H}_d \cap (\Supp(a) \times T) \]
 is proper over $T$. Then
 \[ \deg({ (H_1) }_t \cdots { (H_d) }_t \cdot a) \]
 is independent of $t$. 
@@ -1011,12 +1028,12 @@ For instance, if we consider the family of smooth conics, then
     \item We will study the \emph{incidence correspondence} 
 \[ I=\{[x:y:z], [a:b:c] \mid ax+by+cz=0\} \subseteq \P^2 \times \P^{2\ast}. \]
 This can be seen as a $\P^1$-bundle over $\P^2$. In fact, if $E$ is the kernel of
-\[ 1_{\P^2}^{\oplus 3} \xrightarrow{(x, y, z)} \msc{O}_{\P^2}(1) \to 0, \]
+\[ 1_{\P^2}^{\oplus 3} \xrightarrow{(x, y, z)} \mc{O}_{\P^2}(1) \to 0, \]
 then $I=\P(E)$. 
 
 This allows us to compute $A^\bullet(I)$ (see Example 8.3.4), with a basis 
 \[ 1, \lambda, \zeta, \lambda^2, \zeta^2, \lambda^2\zeta=\lambda\zeta^2, \]
-where $\lambda\zeta=\lambda^2+\zeta^2, \lambda^3=\zeta^3=0$, and $\lambda, \zeta$ the pullbacks of $c_1(\msc{O}_{\P^2}(1)), c_1(\msc{O}_{\P^{2\ast}}(1))$. 
+where $\lambda\zeta=\lambda^2+\zeta^2, \lambda^3=\zeta^3=0$, and $\lambda, \zeta$ the pullbacks of $c_1(\mc{O}_{\P^2}(1)), c_1(\mc{O}_{\P^{2\ast}}(1))$. 
 
 Now, if $M$ is a line and $Q$ a point, consider
 \begin{align*}
@@ -1054,23 +1071,23 @@ The equivalence $[D']=m[M']+n[Q']$ can be computed explicitely. Take $P_0$ a gen
 \end{tikzpicture}
 \end{figure}
 
-The projection from $P_0$ to $M$ gives a family $\mathscr{D} \to \mathbb{A}^1$ with $\mathscr{D}_1=[D'], \mathscr{D}_0 = n[M']+\sum [Q_i']$. (There is a explicit computation in \textsection~10.4.) 
-    \item Let $\mathscr{X} \subseteq \P^2 \times S$ be a flat family of plane curves, $\dim S=r$, $S$ non-singular. Assume $X_s$ has no multiple compontents for general $s$, and let $S^0 \subseteq S$ an open set with $X_s$ reduced for $s \in S$. 
+The projection from $P_0$ to $M$ gives a family $\mathcal{D} \to \mathbb{A}^1$ with $\mathcal{D}_1=[D'], \mathcal{D}_0 = n[M']+\sum [Q_i']$. (There is a explicit computation in \textsection~10.4.) 
+    \item Let $\mathcal{X} \subseteq \P^2 \times S$ be a flat family of plane curves, $\dim S=r$, $S$ non-singular. Assume $X_s$ has no multiple compontents for general $s$, and let $S^0 \subseteq S$ an open set with $X_s$ reduced for $s \in S$. 
 
-Let $\msc{X}(r)\subseteq I^r \times S^0$ given by $(P_1, L_1), \dots, (P_r, L_r), s$ such that $P_i$ is a simple point of $X_s$, and $L_i$ is tangent in $P_i$. Note that $\dim \msc{X}(r)=2r$.
+Let $\mc{X}(r)\subseteq I^r \times S^0$ given by $(P_1, L_1), \dots, (P_r, L_r), s$ such that $P_i$ is a simple point of $X_s$, and $L_i$ is tangent in $P_i$. Note that $\dim \mc{X}(r)=2r$.
 
 Take $D_1, \dots, D_r \subseteq \P^2$ reduced curves, and consider
-\[ \begin{tikzcd} W \arrow[r] \arrow[d] & D_1' \times \cdots \times D_r' \arrow[d] \\ \msc{X}(r) \arrow[r, "\varphi"] & I^r. \end{tikzcd} \]
+\[ \begin{tikzcd} W \arrow[r] \arrow[d] & D_1' \times \cdots \times D_r' \arrow[d] \\ \mc{X}(r) \arrow[r, "\varphi"] & I^r. \end{tikzcd} \]
 
-We can move $D_1, \dots, D_r$, so that the interseccion between $\msc{X}(r)$ and $D_1' \times \cdots \times D_r'$ is transversal (by taking a general element in ${ \operatorname{PGL}(2) }^r$). This way, $W$ has $N$ (reduced) points. 
+We can move $D_1, \dots, D_r$, so that the interseccion between $\mc{X}(r)$ and $D_1' \times \cdots \times D_r'$ is transversal (by taking a general element in ${ \operatorname{PGL}(2) }^r$). This way, $W$ has $N$ (reduced) points. 
 
-Now, compactify $\overline{\msc{X}} \subseteq \P^2 \times \overline{S^0}$, and $\overline{\msc{X}(r)}\subseteq I^r \times \overline{S^0}$. If $Z$ is a closed subsed of dimension less than $2r$, which contains all $\overline{\msc{X}(r)}-\msc{X}(r)$, then the number $N$ does not change after we remove $Z$.
+Now, compactify $\overline{\mc{X}} \subseteq \P^2 \times \overline{S^0}$, and $\overline{\mc{X}(r)}\subseteq I^r \times \overline{S^0}$. If $Z$ is a closed subsed of dimension less than $2r$, which contains all $\overline{\mc{X}(r)}-\mc{X}(r)$, then the number $N$ does not change after we remove $Z$.
     \item We now degenerate each $D_i$ to a multiple line (as we did for $D$). This gives a diagram
-\[ \begin{tikzcd} \msc{W} \arrow[r] \arrow[d] & \msc{D}_1' \times \cdots \times \msc{D}_r' \arrow[r] \arrow[d] & \A^r \\ \overline{\msc{X}(r)} \arrow[r]& I^r. \end{tikzcd} \]
-The space $\overline{\msc{X}(r)}$ is complete, so $\msc{W}$ is proper over $\A^r$. This way, we may take an open neighborhood $T$ of $(1, \dots, 1)$ and $(0, \dots, 0)$, so that $\msc{W}$ is proper over $T$ and disjoint from $Z$. 
+\[ \begin{tikzcd} \mc{W} \arrow[r] \arrow[d] & \mc{D}_1' \times \cdots \times \mc{D}_r' \arrow[r] \arrow[d] & \A^r \\ \overline{\mc{X}(r)} \arrow[r]& I^r. \end{tikzcd} \]
+The space $\overline{\mc{X}(r)}$ is complete, so $\mc{W}$ is proper over $\A^r$. This way, we may take an open neighborhood $T$ of $(1, \dots, 1)$ and $(0, \dots, 0)$, so that $\mc{W}$ is proper over $T$ and disjoint from $Z$. 
 
 Now, Corollary~\ref{cor:intfiber} applies, and so
-\[ \deg(\msc{X}(r) \cdot_\varphi (D_1' \times \cdots \times D_r')) = \deg(\msc{X}(r) \cdot_\varphi (E_1' \times \dots E_r')), \]
+\[ \deg(\mc{X}(r) \cdot_\varphi (D_1' \times \cdots \times D_r')) = \deg(\mc{X}(r) \cdot_\varphi (E_1' \times \dots E_r')), \]
 where $D_i', E_i'$ are the fibers over $1$ and $0$.
 
 The right hand side is just
@@ -1121,7 +1138,7 @@ where $i$ is a regular embedding of codimension $d$ and $V$ has pure dimension $
     An irreducible component $Z$ of $W = f^{-1}(X)$ is a \textit{proper component} of intersection of $V$ by $X$ if $\dim Z = k-d$. The \textit{intersection multiplicity} of $Z$ in $X \cdot V$, denoted $i(Z, X \cdot V; Y) = i(Z, X \cdot V) = i(Z)$ is the coefficient of $Z$ in the class $X \cdot V \in A_{k-d}(W)$. 
 \end{defn}
 
-If $N_Z$ is the pullback of $N_X Y$ to $Z$, then $i(Z,X\cdot V; Y)$ is the coefficient of $N_Z$ in $[C]$. Now let $A = \msc{O}_{Z,V}$ and $J \subset A$ be the ideal of $W$. Then $A/J$ has finite length when $Z$ is an irreducible component of $W$.
+If $N_Z$ is the pullback of $N_X Y$ to $Z$, then $i(Z,X\cdot V; Y)$ is the coefficient of $N_Z$ in $[C]$. Now let $A = \mc{O}_{Z,V}$ and $J \subset A$ be the ideal of $W$. Then $A/J$ has finite length when $Z$ is an irreducible component of $W$.
 
 \begin{prop}
     Assume $Z$ is a proper component of $W$.
@@ -1132,7 +1149,7 @@ If $N_Z$ is the pullback of $N_X Y$ to $Z$, then $i(Z,X\cdot V; Y)$ is the coeff
     If $A$ is Cohen-Macaulay, then local equations for $X$ in $Y$ give a regular sequence generating $J$ and equality in (b) holds.
 \end{prop}
 
-Now suppose $Z$ is a proper component of the intersection of $V$ by $X$ on $Y$. Let $A = \msc{O}_{V,Z}$ and $J$ be the ideal in $A$ generated by the ideal (sheaf) of $X$ in $Y$, and let $\mf{m}$ be the maximal ideal of $A$.
+Now suppose $Z$ is a proper component of the intersection of $V$ by $X$ on $Y$. Let $A = \mc{O}_{V,Z}$ and $J$ be the ideal in $A$ generated by the ideal (sheaf) of $X$ in $Y$, and let $\mf{m}$ be the maximal ideal of $A$.
 
 \begin{prop}
     Suppose $V$ is a variety. Then $i(Z, X \cdot V; Y) = 1$ if and only if $A$ is regular and $J = \mf{m}$.
@@ -1209,9 +1226,9 @@ Now let $Y$ be a smooth variety of dimension $n$. Let $V, W$ be closed subscheme
 \begin{prop}
     Assume $Z$ is a proper component of $V \cap W$. Then
     \begin{enumerate}[(a)]
-        \item $1 \leq i(Z, V \cdot W; Y) \leq \msc{O}_{V \cap W, Z}$.
-        \item If the local ring $\msc{O}_{V \cap W, Z}$ is Cohen-Macaulay, then $i(Z,V \cdot W; Y) = \ell(\msc{O}_{V \cap W, Z})$.
-        \item If $V, W$ are varieties, then $i(Z, V \cdot W; Y) = 1$ if and only if the maximal ideal of $\msc{O}_{Y,Z}$ is the sum of the prime ideals of $V$ and $W$. In fact, $\msc{O}_{V,Z}, \msc{O}_{W,Z}$ are regular.
+        \item $1 \leq i(Z, V \cdot W; Y) \leq \mc{O}_{V \cap W, Z}$.
+        \item If the local ring $\mc{O}_{V \cap W, Z}$ is Cohen-Macaulay, then $i(Z,V \cdot W; Y) = \ell(\mc{O}_{V \cap W, Z})$.
+        \item If $V, W$ are varieties, then $i(Z, V \cdot W; Y) = 1$ if and only if the maximal ideal of $\mc{O}_{Y,Z}$ is the sum of the prime ideals of $V$ and $W$. In fact, $\mc{O}_{V,Z}, \mc{O}_{W,Z}$ are regular.
     \end{enumerate}
 \end{prop}
 
@@ -1232,7 +1249,7 @@ Now let $Y$ be a smooth variety of dimension $n$. Set $A^p(Y) = A_{n-p}(Y)$. Now
 \label{sec:bezout_s_theorem}
 
 We will now use this theory to discuss something classical. It is easy to see that $A_k(\P^n) \cong \Z$ and is generated by $[L^k]$ for a linear subspace $L^k \subset \P^n$. If $\alpha$ is a $k$-cycle on $\P^n$, we define the \textit{degree} $\deg (\alpha)$ to be the integer satisfying $\alpha = \deg (\alpha) \cdot [L^k]$. Equivalently, we may define
-\[ \deg(\alpha) = \int_{\P^n} {c_1(\msc{O}(1))}^k \cap \alpha. \]
+\[ \deg(\alpha) = \int_{\P^n} {c_1(\mc{O}(1))}^k \cap \alpha. \]
 
 \begin{thm}[B\'ezout]
     Let $\alpha_i \in A^{d_i}(\P^n)$ for $i = 1, \ldots, r$. If $d_1 + \cdots + d_r \leq n$, then
@@ -1247,10 +1264,10 @@ Now if subschemes $V_1, \ldots, V_r \subseteq \P^n$ representing $\alpha_1, \ldo
 \[ V_1 \cdots V_r = \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot [Z_j], \]
 where $Z_j$ are the components of $\bigcap V_i$. Then B\'ezout's theorem gives us the identity
 \[ \sum_j i(Z_j, V_1 \cdots V_r; \P^n) \cdot \deg(Z_j) = \prod \deg(V_i). \]
-If $H_1, \ldots, H_n$ are hypersurfaces intersecting properly (so the intersection is a finite number of points), then consider the local ring $\msc{O}_{\bigcap H_i,P}$. Then complete intersections are Cohen-Macaulay, so 
-\[ i(P, H_1 \cdots H_n; \P^n) = \ell(\msc{O}_{\bigcap H_i, P}). \]
-Now $\dim_k \msc{O}_{\bigcap H_i, P} = \deg P \ell(\msc{O}_{\bigcap H_i, P})$, and thus we obtain
-\[ \sum_P \dim_k \msc{O}_{\bigcap H_i, P} = \prod \deg H_i. \]
+If $H_1, \ldots, H_n$ are hypersurfaces intersecting properly (so the intersection is a finite number of points), then consider the local ring $\mc{O}_{\bigcap H_i,P}$. Then complete intersections are Cohen-Macaulay, so 
+\[ i(P, H_1 \cdots H_n; \P^n) = \ell(\mc{O}_{\bigcap H_i, P}). \]
+Now $\dim_k \mc{O}_{\bigcap H_i, P} = \deg P \ell(\mc{O}_{\bigcap H_i, P})$, and thus we obtain
+\[ \sum_P \dim_k \mc{O}_{\bigcap H_i, P} = \prod \deg H_i. \]
 This recovers the very classical B\'ezout's theorem.
 
 \begin{exm}
@@ -1287,12 +1304,12 @@ We will begin by reviewing some notions from algebraic topology.
 \end{enumerate}
 
 In order to fix the problems with pushforwards of vector bundles, we will attempt to define the Grothendieck group $K_0(X)$ of coherent sheaves. Unfortunately, pullbacks of coherent sheaves are only right exacts. Also, pushforwards do exist for proper morphisms, but this is only left exact. Therefore we need to consider the higher derived functors, and now we define
-\[ f_* \colon K_0(X) \to K_0(Y) \qquad [\msc{F}] \mapsto \sum_{i=0}^{\infty} {(-1)}^i [R^i f_* \msc{F}]. \]
+\[ f_* \colon K_0(X) \to K_0(Y) \qquad [\mc{F}] \mapsto \sum_{i=0}^{\infty} {(-1)}^i [R^i f_* \mc{F}]. \]
 This is a finite sum because we assume all of our schemes are Noetherian.
 
-For a smooth variety, there is always a map $K^0(X) \to K_0(X)$. In fact, there is an inverse, because we can resolve any coherent sheaf $\msc{F}$ by vector bundles. In this case, we will write $K_0(X) = K^0(X) = K(X)$. If $\msc{F}$ is resolved by
-\[ 0 \to \msc{L}_n \to \cdots \to \msc{L}_0 \to \msc{F} \to 0, \]
-we write $[\msc{F}] = \sum_{i=0}^n [\msc{L}_i]$ and $\ch(\msc{F}) = \sum_{i=0}^n {(-1)}^i \ch(\msc{L}_i)$.
+For a smooth variety, there is always a map $K^0(X) \to K_0(X)$. In fact, there is an inverse, because we can resolve any coherent sheaf $\mc{F}$ by vector bundles. In this case, we will write $K_0(X) = K^0(X) = K(X)$. If $\mc{F}$ is resolved by
+\[ 0 \to \mc{L}_n \to \cdots \to \mc{L}_0 \to \mc{F} \to 0, \]
+we write $[\mc{F}] = \sum_{i=0}^n [\mc{L}_i]$ and $\ch(\mc{F}) = \sum_{i=0}^n {(-1)}^i \ch(\mc{L}_i)$.
 
 \section{Statement of the theorem}%
 \label{sec:statement_of_the_theorem}
@@ -1317,20 +1334,20 @@ commute. Now we are able to state the Grothendieck-Riemann-Roch theorem:
     commutes. In other words, $f_*(\ch(-) \cdot \td(T_X)) = \ch(f_*(-)) \cdot \td(T_Y)$.
 \end{thm}
 
-First, we will see why this implies the classical (Hirzebruch)-Riemann-Roch theorem. First, let $X$ be a curve, $Y = \mr{pt}$, and $\msc{L}$ be a line bundle. Then the right hand side is 
-\[ \ch(f_* [\msc{L}]) = {(-1)}^i H^i(X, \msc{L}) = \chi(X, \msc{L}). \]
+First, we will see why this implies the classical (Hirzebruch)-Riemann-Roch theorem. First, let $X$ be a curve, $Y = \mr{pt}$, and $\mc{L}$ be a line bundle. Then the right hand side is 
+\[ \ch(f_* [\mc{L}]) = {(-1)}^i H^i(X, \mc{L}) = \chi(X, \mc{L}). \]
 On the other side, we have
 \begin{align*}
-    f_* (1 + c_1(\msc{L})) ( 1 + c_1(T_X)/2 ) &= f_*(c_1(\msc{L}) + c_1(\msc{T_X})/2) \\
-                                              &= \deg(\msc{L}) - \frac{1}{2} \deg(K) \\
-                                              &= \deg(\msc{L}) - g + 1.
+    f_* (1 + c_1(\mc{L})) ( 1 + c_1(T_X)/2 ) &= f_*(c_1(\mc{L}) + c_1(\mc{T_X})/2) \\
+                                              &= \deg(\mc{L}) - \frac{1}{2} \deg(K) \\
+                                              &= \deg(\mc{L}) - g + 1.
 \end{align*}
 This recovers the classical Riemann-Roch theorem.
 
 Now let $X$ be a smooth surface. Then our formula becomes
 \begin{align*}
-    \chi(X, \msc{L}) &= f_* \qty( \qty(1 + c_1(\msc{L} + \frac{c_1^2(\msc{L})}{2})) \qty(1 + \frac{c_1(T_X)}{2} + \frac{c_1^2(TX) + c_2(TX)}{2}) ) \\
-                     &= \deg \qty( \frac{c_1^2(\msc{L})}{2} - \frac{c_1(\msc{L}) c_1(\Omega_X)}{2} + \frac{c_1^2(\Omega_X) - c_2(\Omega_X)}{12} ). 
+    \chi(X, \mc{L}) &= f_* \qty( \qty(1 + c_1(\mc{L} + \frac{c_1^2(\mc{L})}{2})) \qty(1 + \frac{c_1(T_X)}{2} + \frac{c_1^2(TX) + c_2(TX)}{2}) ) \\
+                     &= \deg \qty( \frac{c_1^2(\mc{L})}{2} - \frac{c_1(\mc{L}) c_1(\Omega_X)}{2} + \frac{c_1^2(\Omega_X) - c_2(\Omega_X)}{12} ). 
 \end{align*} 
 This recovers the Hirzebruch-Riemann-Roch theorem.
 
@@ -1339,41 +1356,824 @@ This recovers the Hirzebruch-Riemann-Roch theorem.
 
 First, we have the following theorem:
 \begin{thm}
-    $K(\P^m)$ is generated by $[\msc{O}_{\P^m}(n)]$ for $0 \leq n \leq m$.
+    $K(\P^m)$ is generated by $[\mc{O}_{\P^m}(n)]$ for $0 \leq n \leq m$.
 \end{thm}
 
-To prove this, we need to find a resolution of a coherent sheaf $\msc{F}$ by line bundles, so we have
-\[ 0 \to \bigoplus \msc{L_i}^{(n)} \to \cdots \to \bigoplus \msc{L}_i^{(0)} \to \msc{F} \to 0. \]
-Because $\msc{O}(1)$ is ample, $\msc{F} \otimes \msc{O}(N)$ is generated by global sections, so we have the exact sequence
-\[ 0 \to \cdots \to \bigoplus \msc{O} \to \msc{F} \otimes \msc{O}(N) \to 0, \]
-and we can tensor this by $\msc{O}(-N)$. Now if we set $V = \bigoplus^{m+1} \msc{O}(-1)$, we can take the Koszul complex
+To prove this, we need to find a resolution of a coherent sheaf $\mc{F}$ by line bundles, so we have
+\[ 0 \to \bigoplus \mc{L_i}^{(n)} \to \cdots \to \bigoplus \mc{L}_i^{(0)} \to \mc{F} \to 0. \]
+Because $\mc{O}(1)$ is ample, $\mc{F} \otimes \mc{O}(N)$ is generated by global sections, so we have the exact sequence
+\[ 0 \to \cdots \to \bigoplus \mc{O} \to \mc{F} \otimes \mc{O}(N) \to 0, \]
+and we can tensor this by $\mc{O}(-N)$. Now if we set $V = \bigoplus^{m+1} \mc{O}(-1)$, we can take the Koszul complex
 \[ 0 \to {\bigwedge}^{m+1} V \to \cdots \to {\bigwedge}^0 V \to 0. \]
 Now we have the exact sequence
-\[ 0 \to \msc{O}(-m-1) \to \cdots \to \bigoplus \msc{O}(-m-1+j) \to \cdots \to \msc{O} \to 0. \]
-In particular, this means that we can generate $K(\P^m)$ by $\qty{\msc{O}, \msc{O}(1), \ldots, \msc{O}(m)}$.
+\[ 0 \to \mc{O}(-m-1) \to \cdots \to \bigoplus \mc{O}(-m-1+j) \to \cdots \to \mc{O} \to 0. \]
+In particular, this means that we can generate $K(\P^m)$ by $\qty{\mc{O}, \mc{O}(1), \ldots, \mc{O}(m)}$.
 
-Now it remains to prove Grothendieck-Riemann-Roch just for $\msc{O}(n), 0 \leq n \leq m$. Here, because $Y$ is a point, we have $\ch(f_*(-)) \td(T_*) = \chi(X, -)$. In our case, we know that for $0 < i < m$, $H^i(\P^m, \msc{O}(n)) = 0$ and $H^m(\P^m, \msc{O}(n)) = {H^0(\P^n, \msc{O}(-n-m-1))}^{\vee} = 0$, so
-\[ \chi(\P^n, \msc{O}(n)) = h^n(\P^n, \msc{O}(n)) = \binom{n+m}{m} \]
+Now it remains to prove Grothendieck-Riemann-Roch just for $\mc{O}(n), 0 \leq n \leq m$. Here, because $Y$ is a point, we have $\ch(f_*(-)) \td(T_*) = \chi(X, -)$. In our case, we know that for $0 < i < m$, $H^i(\P^m, \mc{O}(n)) = 0$ and $H^m(\P^m, \mc{O}(n)) = {H^0(\P^n, \mc{O}(-n-m-1))}^{\vee} = 0$, so
+\[ \chi(\P^n, \mc{O}(n)) = h^n(\P^n, \mc{O}(n)) = \binom{n+m}{m} \]
 by basic combinatorics.\footnote{If you are unsure of this, this is an exercise in Giulia's homework. If you need a hint, please email Caleb, who has several publications in combinatorics, at \url{calebji@math.columbia.edu}.}
 
-On the other hand, we want to compute $f_*(\ch(\msc{O}(n)) \td(T_{\P^m}))$. Recall the Euler exact sequence
-\[ 0 \to \msc{O} \to {\msc{O}(1)}^{\oplus m+1} \to T_{\P^m} \to 0. \]
-Therefore we have $\td(T_{ \P^m }) = { \td(\msc{O}_{\P^n}) }^{m+1}$. Also, $\ch(\msc{O}(n)) = { \ch(\msc{O}(1)) }^n = e^{xn}$. Looking for the $x^m$-coefficient in $\frac{e^{xn} x^{m+1}}{{(1-e^{-x})}^{m+1}}$, we can multiply by $x^{m+1}$ and compute the residue to obtain $\binom{m+n}{n}$.
+On the other hand, we want to compute $f_*(\ch(\mc{O}(n)) \td(T_{\P^m}))$. Recall the Euler exact sequence
+\[ 0 \to \mc{O} \to {\mc{O}(1)}^{\oplus m+1} \to T_{\P^m} \to 0. \]
+Therefore we have $\td(T_{ \P^m }) = { \td(\mc{O}_{\P^n}) }^{m+1}$. Also, $\ch(\mc{O}(n)) = { \ch(\mc{O}(1)) }^n = e^{xn}$. Looking for the $x^m$-coefficient in $\frac{e^{xn} x^{m+1}}{{(1-e^{-x})}^{m+1}}$, we can multiply by $x^{m+1}$ and compute the residue to obtain $\binom{m+n}{n}$.
 
 \begin{rmk}
-    Grothendieck allegedly said the following\footnote{This is supposedly translated from German, but I am unsure of the quality of the translation.} about this result:
+    Grothendieck wrote the following about this result:
     \begin{quotation}
-        \textit{I would need to misuse about 2h of my listener's time in order to impart only an approximal understanding of this statement for $f \colon X \to Y$. In cold print (as in Springer's lecture notes) this would take around 400-500 pages. A thrilling example of how our urge for knowledge and discoveries decays into a lifeless and ideological delirium while life itself goes thousandfold to the devil -- and is threatened with final destruction. It's high time to change our course!} 
+        \textit{Um dieser Aussage \"uber $f \colon X \to Y$ einen approximativen Sunn zu geben, musste ich nahezu zwei Stunden lang die Geduld der Zuh\"orer missbrauchen. Schwartz auf weiss (in Springer's Lecture Notes) nimmt's wohl an die 400, 500 Seiten. Ein packendes Beispiel daf\"ur, wie unser Wissens - und Entdeckungsdrang sich immer mehr in einem lebensentr\"ucken logischen Delirium auslabt, w\"ahrend das Leben selbst auf tausendfache Art zum Teufel geht -- und mit endg\"ultiger Vernichtung bedroht ist. H\"ochste Zeit, unsern Kurs zu \"andern!} 
+    \end{quotation}
+    The English translation of this,\footnote{Provided by the person who originally scanned the note and provided me with the transcription.} keeping sentence structure intact as much as possible, is
+    \begin{quotation}
+        \textit{To give this statement about $f \colon X \to Y$ an approximate meaning I'd have to abuse the patience of the listeners for nearly two hours. Black on white (in Springer's Lecture Notes) it should take about 400, 500 pages. A gripping example of how our thirst for knowledge and discovery indulges more and more in a life-divorced logical delirium, while life itself is going to hell in a thousand different ways -- and is threatened with absolute extinction. High time to change our course!} 
     \end{quotation}
 \end{rmk}
 
+\chapter{Patrick (Apr 02): Fine moduli memes for $1$-categorical teens}%
+\label{cha:patrick_apr_02_}
+
+\textit{Note: these are the speaker's notes.} Throughout this lecture, we work over $\C$.
+
+\section{The moduli space}%
+\label{sec:the_moduli_space}
+
+The space $\ol{M}_{0,n}$ parameterizes curves that look like this:
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (0,0) -- (2,2);
+    \draw[thick] (1.5,2) -- (3.5,0);
+    \draw[thick] (3,0) -- (5,2);
+    \draw[thick] (4.5,2) -- (6.5,0);
+    \draw[thick] (6,0) -- (8,2);
+    \draw[thick] (2.5,2.5) -- (4.5,0.5);
+    \fill (0.5,0.5) circle (3pt);
+    \fill (1,1) circle (3pt);
+    \fill (2.5,1) circle (3pt);
+    \fill (3,2) circle (3pt);
+    \fill (3.5,1.5) circle (3pt);
+    \fill (5.5,1) circle (3pt);
+    \fill (6.5,0.5) circle (3pt);
+    \fill (7,1) circle (3pt);
+    \fill (7.5,1.5) circle (3pt);
+\end{tikzpicture}
+\end{center}
+\caption{A stable curve}%
+\label{fig:stabcurve}
+\end{figure}
+More precisely, these are reduced connected curves that are a tree of $\P^1$s such that each $\P^1$ has at least three marked points or nodes. In addition, at most two components meet at each node and we want $H^1(C, \mc{O}_C) = 0$. If all of these conditions are satisfied, we call our curve \textit{stable}. More precisely, we want to represent the functor
+\[ S \mapsto \left\{ 
+\begin{tikzcd}
+    \mc{C} \ar{r}{\pi} & S \ar[bend left=40]{l}{s_1, \ldots, s_n}   
+\end{tikzcd} \text{ flat, proper } \Biggm\vert \Centerstack{ {$s_1, \ldots, s_n$ disjoint sections} {geometric fibers are stable curves} }
+\right\}. \]
+
+\begin{thm}[Knudsen]
+    There exists a smooth complete variety $\ol{M}_{0,n}$ and universal curve $U_{0,n} \to \ol{M}_{0,n}$ with universal sections $s_1, \ldots, s_n$ that is a fine moduli space for this functor. $\ol{M}_{0,n}$ also contains the space $M_{0,n} = {(\P^1 \setminus \qty{0,1,\infty})}^{n-3} \setminus \Delta$ as a dense open subset.
+\end{thm}
+
+In fact, Knudsen also shows that $U_{0,n} = \ol{M}_{0, n+1}$ and $U_{0,n+1}$ is a blowup of $\ol{M}_{0,n+1} \times_{\ol{M}_{0,n}} \ol{M}_{0,n+1}$ along some subscheme of the diagonal. In order to prove this, Knudsen introduces two operations that we can perform, called contraction and stabilization. Contraction happens when we delete a marked point and stabilization happens when we add a marked point.
+
+\begin{thm}[Knudsen]
+    Contraction and stabilization are functorial! Moreover, they commute with base change.
+\end{thm}
+Here are some pictorial depictions of our operations:
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (0,0) -- (2.5,0);
+    \draw[thick] (2,-1) -- (2,1);
+    \fill (0.5,0) circle (3pt);   
+    \fill (1,0) circle (3pt);   
+    \fill (1.5,0) circle (3pt);   
+    \fill (2,-0.5) circle (3pt);
+    \fill (2,0.5) circle (3pt);
+    \node [right] at (2.1,0.5) {$4$};
+    \node [right] at (2.1,-0.5) {$5$};
+    \node [below] at (0.5,-0.1) {$1$};
+    \node [below] at (1,-0.1) {$2$};
+    \node [below] at (1.5,-0.1) {$3$};
+    \node at (3.5,0.4) {delete $5$};
+    \draw[->, decorate, decoration=snake] (2.8,0) -- (4.2,0);
+    \draw[thick] (4.5,0) -- (7,0);
+    \fill (5,0) circle (3pt);
+    \fill (5.5,0) circle (3pt);
+    \fill (6,0) circle (3pt);
+    \fill (6.5,0) circle (3pt);
+    \node [below] at (5,-0.1) {$1$};
+    \node [below] at (5.5,-0.1) {$2$};
+    \node [below] at (6,-0.1) {$3$};
+    \node [below] at (6.5,-0.1) {$4$};
+\end{tikzpicture}
+\end{center}
+\caption{Contraction}%
+\label{fig:contract}
+\end{figure}
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (0,0) -- (2,0);
+    \draw[thick] (1.5,-1) -- (1.5,1);
+    \fill (0.5,0) circle (3pt);   
+    \fill (1,0) circle (3pt);   
+    \node [below] at (0.5,-0.1) {$1$};
+    \node [below] at (1,-0.1) {$2$};
+    \fill (1.5,-0.5) circle (3pt);
+    \fill (1.5,0.5) circle (3pt);
+    \node [right] at (1.6,0.5) {$3$};
+    \node [right] at (1.6,-0.5) {$4$};
+    \node at (3.5,0.4) {add $5$ at node};
+    \draw[->, decorate, decoration=snake] (2.3,0) -- (4.7,0);
+    \draw[thick] (5,-0.5) -- (7,-0.5);
+    \draw[thick] (6.5,-1) -- (6.5,1);
+    \draw[thick] (5,0.5) -- (7,0.5);
+    \fill (5.5,-0.5) circle (3pt);
+    \fill (6,-0.5) circle (3pt);
+    \fill (5.5,0.5) circle (3pt);
+    \fill (6,0.5) circle (3pt);
+    \fill (6.5,0) circle (3pt);
+    \node [below] at (5.5,-0.6) {$1$};
+    \node [below] at (6,-0.6) {$2$};
+    \node [above] at (5.5,0.6) {$3$};
+    \node [above] at (6,0.6) {$4$};
+    \node [right] at (6.6,0) {$5$};
+\end{tikzpicture}
+\end{center}
+\caption{Stabilization (1)}%
+\label{fig:stab1}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (4.5,0) -- (7,0);
+    \draw[thick] (6.5,-1) -- (6.5,1);
+    \fill (5,0) circle (3pt);   
+    \fill (5.5,0) circle (3pt);   
+    \fill (6,0) circle (3pt);   
+    \fill (6.5,-0.5) circle (3pt);
+    \fill (6.5,0.5) circle (3pt);
+    \node [right] at (6.6,0.5) {$4$};
+    \node [right] at (6.6,-0.5) {$5$};
+    \node [below] at (5,-0.1) {$1$};
+    \node [below] at (5.5,-0.1) {$2$};
+    \node [below] at (6,-0.1) {$3$};
+    \node at (3.5,0.4) {add $5$ at $4$};
+    \draw[->, decorate, decoration=snake] (2.8,0) -- (4.2,0);
+    \draw[thick] (0,0) -- (2.5,0);
+    \fill (0.5,0) circle (3pt);
+    \fill (1,0) circle (3pt);
+    \fill (1.5,0) circle (3pt);
+    \fill (2,0) circle (3pt);
+    \node [below] at (0.5,-0.1) {$1$};
+    \node [below] at (1,-0.1) {$2$};
+    \node [below] at (1.5,-0.1) {$3$};
+    \node [below] at (2,-0.1) {$4$};
+\end{tikzpicture}
+\end{center}
+\caption{Stabilization (2)}%
+\label{fig:stab2}
+\end{figure}
+
+\section{Keel construction of $\ol{M}_{0,n}$}%
+\label{sec:keel_construction_of_m__0_n_}
+
+First, we will describe the boundary divisors of $\ol{M}_{0,n}$. Let $T \subseteq \qty{1,\ldots, n} \eqqcolon [n]$ satisfy $\abs{T}, \abs{T^C} \geq 2$. Then define 
+\[ D^T \coloneqq \overline{ \left\{ \begin{tikzpicture}[scale=0.8]
+    \draw (0,-0.5) -- (2,0.5);
+    \draw (1.5,0.5) -- (3.5,-0.5);
+    \node at (0.5,0.1) {$T$};
+    \node at (3,0.1) {$T^C$};
+\end{tikzpicture} \right\} }. \]
+It is easy to see that $D^T = D^{(T^C)}$. Knudsen proves that $D^T$ is a smooth divisor and that $D^T \cong \ol{M}_{\abs{T}+1} \times \ol{M}_{\abs{T^C}+1}$.
+
+Now consider the map $\pi \colon \ol{M}_{0,n+1} \to \ol{M}_{0,n}$ coming from the identification $\ol{M}_{0, n+1} = U_{0, n}$. Now Keel proves that we can factor $\pi$ as
+\[ \ol{M}_{0,n+1} \xrightarrow{\pi_1 = (\pi, \pi_{1,2,3,n+1})} \ol{M}_{0,n} \times \ol{M}_{0,4} \xrightarrow{p_1} \ol{M}_{0,n}, \]
+where $\pi_{1,2,3,n+1} \colon \ol{M}_{0,n+1} \to \ol{M}_{0,n}$ forgets all sections besides $1,2,3,n+1$. Next, Keel shows that $\pi_1$ is a composition of blowups along smooth codimension $2$ subvarieties using an inductive construction.
+
+Set $B_1 = \ol{M}_{0,n} \times \ol{M}_{0,4}$. Then the universal sections $s_1, \ldots, s_n \colon \ol{M}_{0,n} \to \ol{M}_{0,n+1}$ induce sections $p \circ s_1, \ldots, p \circ s_n$. In fact, $D^T \cong p \circ s_i(D^T)$ and this is independent of $i$. We also have
+
+\begin{lem}[Keel]
+    The divisors $D^T \subset \ol{M}_{0,n+1}$ with $T \subset [n]$ are the exceptional divisors of $\pi_1$.
+\end{lem}
+
+Now we set $B_2$ to be the blowup of $B_1$ at $\bigcup_{\abs{T^C}=2} D^T$. Inductively, we set $B_{k+1}$ to be the blowup of $B_k$ at $\bigcup_{\abs{T^C}=k+1} D^T$. Now we summarize the main results as follows:
+
+\begin{thm}[Keel]
+    The map $\pi_1$ factors through $B_k$ and $\ol{M}_{0,n+1} = B_{n-2}$.
+\end{thm}
+
+\section{Intersection theory of $\ol{M}_{0,n}$}%
+\label{sec:intersection_theory_of_m__0_n_}
+
+There are several major results about the intersection theory of $\ol{M}_{0,n}$. In fact, once we state these results, we will only be seven pages through Keel's paper, and the rest of the paper is dedicated to proving these results.
+
+\begin{thm}
+    We have an isomorphism $A_*(\ol{M}_{0,n}) \to H_*(\ol{M}_{0,n})$. In particular, $\ol{M}_{0,n}$ has no odd homology and $A_*(\ol{M}_{0,n+1})$ is a finitely generated free abelian group. In fact, if a scheme $Y$ satisfies $A^*(Y) = H^*(Y)$, then so does $Y \times \ol{M}_{0,n}$.
+\end{thm}
+
+\begin{thm}
+    For any scheme $S$, there is an isomorphism $A^*(\ol{M}_{0,n} \times S) = A^*(\ol{M}_{0,n}) \otimes A^*(S)$.
+\end{thm}
+
+\begin{thm}
+    For all $k$, we have an isomorphism
+    \[ A^k(\ol{M}_{0,n+1}) \cong A^k(\ol{M}_{0,n}) \oplus A^{k-1}(\ol{M}_{0,n}) \oplus \bigoplus_{\substack{T \subset [n] \\ \abs{T \cap [3]} \leq 1}} A^{k-1}(D^T) \]
+    which is induced by the maps
+    \begin{align*}
+        A^k(\ol{M}_{0,n}) \xrightarrow{\pi^*} A^k(\ol{M}_{0,n+1}) \\
+        A^{k-1}(\ol{M}_{0,n}) \xrightarrow{\pi^*} A^{k-1}(\ol{M}_{0,n+1}) \xrightarrow{\cup \pi_{1,2,3,n+1}^* (c_1(\mc{O}(1)))} A^k(\ol{M}_{0,n+1}) \\
+        A^{k-1}(D^T) \xrightarrow{g^*} A^{k-1}(D^{T \subset [n+1]}) \xrightarrow{j_*} A^k(\ol{M}_{0,n+1}),
+    \end{align*}
+    where $g,j$ are as in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        D^{T \subset [n+1]} \ar{d}{g} \ar[hookrightarrow]{r}{j} & \ol{M}_{0,n+1} \ar{d}{\pi} \\
+        D^T \ar[hookrightarrow]{r}{i} & \ol{M}_{0,n}.
+    \end{tikzcd}
+    \end{equation*}
+\end{thm}
+
+\begin{thm}
+    The Chow groups $A^k(\ol{M}_{0,n})$ are free abelian and the ranks $a^k(n) = \operatorname{rk}(A^k(\ol{M}_{0,n}))$ are given by the recursive formula
+    \[ a^k(n+1) = a^k(n) + a^{k-1}(n) + \frac{1}{2} \sum_{j=2}^{n-2} \binom{n}{j} \sum_{\ell=0}^{k-1} a^{\ell}(j+1) a^{k-1-\ell}( n-j-1 ). \]
+    In particular, we have the Picard rank $a^1(n) = 2^{n-1} - \binom{n}{2} - 1$.
+\end{thm}
+
+\begin{thm}
+    The Chow ring $A^*(\ol{M}_{0,n})$ is the quotient of $\Z[D^T \mid T \subset [n], \abs{T}, \abs{T^C} \geq 2]$
+    by the relations
+    \begin{enumerate}
+        \item $D^T = D^{(T^C)}$;
+        \item For any distinct $i,j,k,\ell \in [n]$, we have the equality
+            \[ \sum_{\substack{i.j\in T \\ k,\ell \notin T}} D^T = \sum_{\substack{i,k\in T \\ j,\ell \notin T}} D^T = \sum_{\substack{i,\ell \in T \\ j,k \notin T}} D^T. \]
+        \item For $T_1, T_2 \subset [n]$, $D^{T_1} D^{T_2} = 0$ unless one of $T_1 \subset T_2, T_2 \subset T_1, T_1 \subset T_2^C, T_2 \subset T_1^C$ holds.
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    All of the relations encode geometric content:
+    \begin{enumerate}
+        \item As divisors, we already know that $D^T = D^{(T^C)}$.
+        \item If we consider the map $\pi_{i,j,k,\ell} \colon \ol{M}_{0,n} \to \M_{0,4}$, then the three sums are the pullbacks of the three boundary divisors $D^{i,j}, D^{i,k}, D^{i,\ell} \subset \M_{0,4} = \P^1$.
+        \item The final relation encodes the fact that $D^{T_1} \cap D^{T_2} = \emptyset$ unless one of the four inclusions holds. Pictorially, this is encoded in the diagram below:
+            \begin{figure}[htpb]
+            \begin{center}
+            \begin{tikzpicture}[scale=1, transform shape]
+                \draw[thick] (0,-0.5) -- (0,2);
+                \draw[thick] (-0.5,1.5) -- (1.5,1.5);
+                \fill (0,0.5) circle (3pt);
+                \fill (0,1) circle (3pt);
+                \fill (0,0) circle (3pt);
+                \fill (0.5,1.5) circle (3pt);
+                \fill (1,1.5) circle (3pt);
+                \draw[->, decorate, decoration=snake] (2,1) -- (3,1);
+                \draw[thick] (3.5,0) -- (3.5,2);
+                \draw[thick] (3,1.5) -- (5,1.5);
+                \draw[thick] (4.5,0) -- (4.5,2);
+                \fill (3.5,0.5) circle (3pt);
+                \fill (3.5,1) circle (3pt);
+                \fill (4,1.5) circle (3pt);
+                \fill (4.5,0.5) circle (3pt);
+                \fill (4.5,1) circle (3pt);
+                \draw[->, decorate, decoration=snake] (6.5,1) -- (5.5,1);
+                \draw[thick] (7,0) -- (7,2);
+                \draw[thick] (6.5,1.5) -- (9,1.5);
+                \fill (7,0.5) circle (3pt);
+                \fill (7,1) circle (3pt);
+                \fill (7.5,1.5) circle (3pt);
+                \fill (8, 1.5) circle (3pt);
+                \fill (8.5,1.5) circle (3pt);
+            \end{tikzpicture}
+            \end{center}
+            \caption{Degeneration to a common stable curve}%
+            \label{fig:degen}
+            \end{figure}
+    \end{enumerate}
+\end{rmk}
+
+\section{Intersection theory of regular blowups}%
+\label{sec:intersection_theory_of_regular_blowups}
+
+Let $i \colon X \subset Y$ be a regularly embedded subvariety, $\pi \colon \wt{Y} \to Y$ be the blowup along $X$, and $\wt{X}$ be the exceptional divisor. Let $g \colon \wt{X} \to X$ and $j \colon \wt{X} \to \wt{Y}$.
+
+\begin{thm}
+    Suppose $i^*$ is surjective. Then
+    \[ A^*(\wt{Y}) = \frac{A^*(Y)[T]}{(P(T), T \cdot \ker(i^*))}, \]
+    where $P(T)$ has constant term $[X]$ and $i^* P(T) = T^d + T^{d-1} c_1(N_X Y) + \cdots + c_d(N_X Y)$, where $d$ is the codimension of $X$ in $Y$. This is induced by $-T = [\wt{X}]$.
+\end{thm}
+
+\begin{thm}
+    A scheme $X$ is HI if $A_*(X) = H_*(X)$. If $X, Y$ are both HI, then so is $\wt{Y}$.
+\end{thm}
+
+\begin{thm}
+    The map
+    \[ A_k(Y) \oplus A_{k-1}(X) \xrightarrow{(\pi^*, j_* g^*)} A_k(\wt{Y}) \]
+    is an isomorphism.
+\end{thm}
+
+\chapter{Patrick (Apr 09): Do we even need derived categories?}%
+\label{cha:patrick_apr_09_serre_intersection_formula}
+
+\textit{Note: these are the speaker's notes}.
+
+\section{Serre formula}%
+\label{sec:serre_formula}
+
+Recall the following from my March 19 lecture (this is Proposition 7.2.9 in my notes):
+\begin{prop*}
+    Let $X$ be a smooth variety, $V, W \subset X$ be closed subschemes that intersect properly, and $Z$ be an irreducible component of $V \cap W$. Then
+    \[ V \cdot W = \sum_Z i(Z, V \cdot W; X) \cdot [Z], \]
+    where $1 \leq i(Z, V \cdot W; X) \leq \ell(\mc{O}_{V \cap W, Z})$ is the intersection number and $i(Z, V \cdot W; X) = \ell(\mc{O}_{V \cap W, Z})$ if and only if the local ring is Cohen-Macaulay.
+\end{prop*}
+
+However, most rings are \textbf{not} Cohen-Macaulay, so we would like a formula to compute the intersection multiplicities in all cases. Serre gives a formula in terms of higher Tor functors (because $\mc{O}_{V \cap W, Z} = \mc{O}_{V, Z} \otimes \mc{O}_{W, Z}$). Before we state the formula, first we will state some results about the higher Tor functors. 
+
+First, if $X$ is a locally ringed space and $\mc{F}, \mc{G}$ are modules on $X$, then 
+\[ {\Tor_i^{\mc{O}_X}(\mc{F}, \mc{G})}_x = \Tor_i^{\mc{O}_{X,x}}(\mc{F}_x, \mc{G}_x). \]
+This follows from the construction of the derived tensor product $\otimes^L$ in Stacks, which exposits derived categories much better than I ever could.
+
+\begin{lem}
+    Let $X$ be a locally Noetherian scheme. If $\mc{F}, \mc{G}$ are coherent, so is $\Tor_i^{\mc{O}_X}(\mc{F}, \mc{G})$. Also, if $L, K \in D^-_{\mr{coh}}(\mc{O}_X)$ (this means bounded above complexes of quasicoherent sheaves with coherent homology), then so is $L \otimes^L K$.
+\end{lem}
+
+Proof of this fact is pure homological algebra, and again can be found in the Stacks project.
+
+\begin{lem}
+    Let $X$ be a smooth variety and $\mc{F}, \mc{G}$ be coherent sheaves. Then $\Tor_i^{\mc{O}_X}(\mc{F}, \mc{G})$ is supported on $\Supp \mc{F} \cap \Supp \mc{G}$, and is nonzero only when $0 \leq i \leq \dim X$.
+\end{lem}
+
+\begin{proof}
+    The support condition is clear by looking at the stalks, so we need to consider when the stalks are nonzero. Here, we note that because $X$ is smooth, the local rings $\mc{O}_{X,x}$ are regular local rings. By a result of Serre (Theorem 4.4.1 in my commutative algebra notes), $\mc{O}_{X,x}$ has finite global dimension $\dim \mc{O}_{X,x} \leq \dim X$. Here, the global dimension and the dimension are the same by Theorem 4.3.12 of my commutative algebra notes.\footnote{Originally there was an argument that the global dimension of a Noetherian local ring is the projective dimension of the residue field, which is Theorem 4.3.10 of the commutative algebra notes, and then by the Auslander-Buchsbaum formula this is the same as the depth, and finally regular implies Cohen-Macaulay, so depth equals dimension.}
+\end{proof}
+
+Now we can compute the intersection multiplicities as (Stacks gives this as the definition of intersection multiplicity)
+\[ i(Z, V \cdot W; X) = \sum {(-1)}^i \ell( \Tor_i^{\mc{O}_{X,Z}} (\mc{O}_{V,Z}, \mc{O}_{W,Z}) ). \]
+This formula is due to Serre, and Stacks writes the total intersection as
+\[ W \cdot V = \sum {(-1)}^i [\Tor_i^{\mc{O}_X}(\mc{O}_V, \mc{O}_W)]. \]
+\begin{rmk}
+    Stacks writes the intersection multiplicity as $e(X, V \cdot W, Z)$. I am using the notation in Fulton's book.
+\end{rmk}
+
+\begin{lem}
+    Assume that $\ell(\mc{O}_{V \cap W, Z}) = 1$. Then $i(Z, V \cdot W; X) = 1$ and $V, W$ are smooth in a general point of $Z$.
+\end{lem}
+
+\begin{proof}
+    Write $A = \mc{O}_{X,Z}$. Then $\dim A = \dim X - \dim Z$. Let $I, J$ be the ideals of $V, W$. By Proposition 7.2.9 of the notes,\footnote{This may be cheating, and a self-contained argument is given in Stacks} $I + J = \mf{m}$. Thus there exists $f_1, \ldots, f_r \in I , g_1, \ldots, f_s \in J$ Forming a basis for $\mf{m}/\mf{m}^2$. But this is a regular sequence and a system of parameters, so $A/ (f_1, \ldots, f_r)$ is a regular local ring of dimension $\dim X - \dim V$, so $I = (f_1, \ldots, f_r)$. Similarly, $J = (g_1, \ldots, g_s)$. Now by Corollary 4.4.3 of commutative algebra, the Koszul complex $K(f_1, \ldots, f_r, A)$ resolves $A/I$, so we obtain
+    \begin{align*}
+        \Tor_i^A(A/I, A/J) &= H_i (K(f_1, \ldots, f_r, A) \otimes A/J) \\
+                           &= H_i (K(f_1, \ldots, f_r, A/J)).
+    \end{align*}
+    By Theorem 4.4.2 from commutative algebra, we only have $H_0 = k$.
+\end{proof}
+
+\begin{exm}
+    Suppose $V, W \subset X$ are closed subvarieties, $\dim X = 4$, $\wh{\mc{O}}_{X,p} = \C[[x,y,z,w]]$ and $V = (xz,xw,yz,yw), W = (x-z,y-w)$. Then $\ell(\C[[x,y,z,w]]/(xz,xw,yz,yw,x-z,x-w)) = 3$, but the intersection multiplicity is $2$ because $V$ is locally a union $(x=y=0) \cup (z=w=0)$.
+\end{exm}
+
+\section{Some algebra}%
+\label{sec:some_algebra}
+
+Let $(A, \mf{m}, k)$ be a Noetherian local ring. If $M$ is a module and $I$ is an ideal of definition, recall the Hilbert-Samuel polynomial $\varphi_{I,M}(n) = \ell(I^n M / I^{n+1} M)$. Similarly recall the function 
+\[ \chi_{I,M}(n) = \ell(M/I^{n+1} M) = \sum_{i=0}^n \varphi_{I,M}(i). \]
+Recall that $d(M) \coloneqq \deg \chi$ is independent of $I$ and equals the dimension of the support of $M$ (from the proof of Theorem 3.2.9 in my commutative algebta notes). Now write $\chi_{I,M}(n) = e_I(M, d) \frac{n^d}{d!} + O(n^{d-1})$.
+
+\begin{defn}
+    For $d = d(M)$ we write $e_I(M, d)$ as above, and for $d > d(M)$, we set $e_I(M,d) = 0$.
+\end{defn}
+
+\begin{lem}
+    For all $I, M$, we have
+    \[ e_I(M, d) = \sum_{\dim A/\mf{p} = d} \ell_{A_{\mf{p}}} (M_{\mf{p}}) e_{I}(A/\mf{p}, d). \]
+\end{lem}
+
+\begin{lem}
+    Let $P$ be a polynomial of degree $r$ with leading coefficient $a$. Then
+    \[ r! a = \sum_{i=0}^r {(-1)}^i \binom{r}{i} P(t-i) \]
+    for any $t$.
+\end{lem}
+
+\begin{proof}
+    Write $\Delta$ for the operator taking a polynomial $P$ to $P(t) - P(t-1)$. Then
+    \begin{align*}
+        \Delta^{r+1}(P) &= \sum_{i=0}^r {(-1)}^i \binom{r}{i} \Delta(P)(t-i) \\
+                        &= \sum_{i=0}^r {(-1)}^i \binom{r}{i} (P(t-i) - P(t-i-1)).
+    \end{align*}
+    The desired claim follows from Pascal's identity.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be a Noetherian local ring and $I = (f_1, \ldots, f_r)$ be an ideal of definition. Then
+    \[ e_I(M, r) = \sum {(-1)}^i \ell(H_i(K(f_1, \ldots, f_r) \otimes M)). \]
+\end{thm}
+
+There is a very long proof of this statement in Stacks using spectral sequences.
+
+\section{Computing intersection multiplicities without derived categories}%
+\label{sec:computing_intersection_multiplicities_without_derived_categories}
+
+We give some cases where intersection multiplicities can be computed without using derived categories.
+
+\begin{lem}
+    Suppose $\mc{O}_{V,Z}$ and $\mc{O}_{W,Z}$ are Cohen-Macaulay. Then $i(Z, V \cdot W; X) = \ell(\mc{O}_{V \cap W, Z})$.
+\end{lem}
+
+\begin{proof}
+    Write $A = \mc{O}_{X,Z}, B = \mc{O}_{V,Z}, C = \mc{O}_{W,Z}$. Then by Auslander-Buchsbaum (exercise 4d of the final CA homework), we have a resolution $F_{\bullet} \to B$ of length $\depth A - \depth B = \dim A - \dim B = \dim C$. Then $F_{\bullet} \otimes C$ represents $B \otimes^L C$ and is supported in $\qty{ \mf{m}_A }$, so by Lemma 10.108.2 in Stacks, it has nonzero cohomology only in degree $0$.
+\end{proof}
+
+\begin{lem}
+    Let $A$ be a Noetherian local ring and $I = (f_1, \ldots, f_r)$ is generated by a regular sequence. If $M$ is a finite $A$-module with $\dim \Supp M/IM = 0$, then
+    \[ e_I(M,r) = \sum {(-1)}^i \ell(\Tor_i^A(A/I, M)). \]
+\end{lem}
+
+In what follows, we will assume $V$ is cut out in $\mc{O}_{X,Z}$ by a regular sequence $(f_1, \ldots, f_c)$.
+\begin{lem}
+    In this case, we have $i(Z, V \cdot W; X) = c{!}$. This is the leading coefficient of the ``Hilbert polynomial'' $n \mapsto \ell(\mc{O}_{W,Z} / {(f_1, \ldots, f_c)}^t)$.
+\end{lem}
+
+\begin{proof}
+    By the previous lemma, $e(Z, V \cdot W; X) = e_{(f_1, \ldots, f_c)}(\mc{O}_{W,Z}(c))$. Now we need to show that $\dim \mc{O}_{W,Z} = c$. But now if $\dim V = r, \dim W = s, \dim X = n$, $\dim Z = r+s-n$, so $k(Z)$ has transcendence degree $r+s-n$. Because $f_1, \ldots, f_c$ is a regular sequence, $r+c=n$, so $\dim \mc{O}_{W,Z} = s-(r+s-n) = s-(n-c+s-n)=c$.
+\end{proof}
+
+\begin{lem}
+    Assume $c = 1$ (for example, $V$ is an effeective Cartier divisor). Then $i(Z, V \cdot W;X) = \ell(\mc{O}_{W,Z} / (f_1))$.
+\end{lem}
+
+\begin{proof}
+    Note that $\mc{O}_{W,Z}$ is a Noetherian local domain of dimension $1$. Then it is clear that $\ell(\mc{O}_{W,Z}/(f_1^t)) = t \ell(\mc{O}_{W,Z} / (f_1))$ for all $t \geq 1$.
+\end{proof}
+
+\begin{lem}
+    Asssume $\mc{O}_{W,Z}$ is Cohen-Macaulay. Then $i(Z, V \cdot W; X) = \ell(\mc{O}_{W,Z} / (f_1, \ldots, f_c))$.
+\end{lem}
+
+\begin{proof}
+    Because $f_1, \ldots, f_c$ is a regular sequence, it is also quasi-regular by Proposition 3.5.6 of my commutative algebra notes. Then 
+    \[ \ell(\mc{O}_{W,Z} / {(f_1, \ldots, f_c)}^t) = \binom{c+t}{c} \ell(\mc{O}_{W,Z} / (f_1, \ldots, f_c)). \]
+    Now take the leading coefficient.
+\end{proof}
+
+\chapter{Caleb (Apr 16): Motivic cohomology}%
+\label{cha:caleb_apr_16_motivic_cohomology}
+
+\textit{Note: these are the speaker's notes. No changes were made except to bring notational and stylistic conventions in line with the rest of the notes and to adapt pictures that were not available to me. Also, the quote of Grothendieck was changed to the original French.} 
+
+These are my notes on motivic cohomology.  Essentially everything here is based off of Voevodsky's lectures, now turned into a book by Mazza and Weibel. 
+
+\section{Bloch's higher Chow groups}
+
+\subsection{Some topological motivation} 
+Recall the following exact sequence. 
+
+\begin{prop}
+[Fulton, Prop. 1.8] Let $Y$ be a closed subscheme of a scheme $X$, and let $U=X-Y$.  Let $i:Y\rightarrow X, j:U\rightarrow X$ be the inclusions.  Then the sequence 
+\[
+\CH^kY\xrightarrow{i_*}\CH^kX\xrightarrow{j^*}\CH^kU\rightarrow 0
+\]
+is exact for all $k$.
+\end{prop} 
+
+This is great, but if we want homology to continue to the left.  We certainly cannot put these sequences together.  In fact, the indexing is a bit misleading in this way -- instead, we should put the $k$s together for a grading of $\CH^*(-)$.  So, we really do need new groups if we want to continue this sequence.  To construct these groups, we first recall the following definition of rational equivalence. 
+
+\begin{defn}
+[$\Rat(X)$]
+Let $Z(X)$ denote the cycles of a scheme $X$ and let $\Phi$ be any subvariety of $X\times \P^1$.  Then we define $\Rat(X)\subset Z(X)$ be the subgroup generated by differences of the form 
+\[
+[\Phi\cap (X\times \{0\})] - [\Phi\cap (X\times \{\infty\})].
+\]
+\end{defn}
+Then rationally equivalent cycles are those which differ by something in $\Rat(X)$.  We see that it looks like there is a homotopy between rationally equivalent cycles. \\  
+
+\subsection{Definition}
+
+Motivated by algebraic topology, we define the algebraic simplex 
+\[
+\Delta^k = \Spec k[x_0, \ldots, x_n]/(x_0+\cdots +x_k-1).
+\] 
+
+Let $z^i(X, n)$ be the subgroup of $Z^i(X\times \Delta^n)$ that meet all faces properly.   This gives both a simplicial abelian group $z^i(X, \bullet)$ and a chain complex $z^i(X, *)$.  
+
+\begin{defn}
+The higher Chow groups $\CH^i(X, m)$ are defined 
+\[
+\CH^i(X, m)\coloneqq\pi_m(z^i(X, \bullet))=H_m(z^i(X, *)).
+\] 
+\end{defn}
+
+
+\subsection{Properties}
+
+\begin{enumerate}
+\item Homotopy invariance: 
+
+The projection $X\times \A^1\rightarrow X$ induces an isomorphism 
+\[
+\CH^i(X, m)\cong \CH^i(X\times \A^1, m).
+\] 
+
+\item Long exact sequence: 
+
+There is a distinguished triangle 
+\[
+z_p(Y, *)\rightarrow z_p(X, *)\rightarrow z_p(U, *)\rightarrow z_p(Y, *)[1].
+\]
+
+\item Isomorphism with rational K-theory: 
+\[
+(K_i(X)\otimes \Q)^{(q)}\cong \CH^q(X, i)\otimes \Q.
+\]
+\end{enumerate}
+
+We will see that $H^{p, q}(X; A)=\CH^q(X, 2q-p; A)$.  In particular, we have $H^{2q, q}(X, A)=\CH^q(X)\otimes A$. 
 
 
 
+\section{The category of correspondences} 
+\subsection{Correspondences}
+Let $X, Y\in \Sm_k$ be smooth separated schemes of finite type over $k$.  Very informally, one can think of $\Cor(X, Y)$ as a generalization of $\Hom(X, Y)$ to multivalued morphisms. 
+
+\begin{defn}
+An \textit{elementary correspondence} between a smooth connected scheme $X/k$ to a separated scheme $Y/k$ is an irreducible closed subset $W\subset X\times Y$ whose associated integral subscheme is finite and surjective over $X$. \\ 
+
+If $X$ is not connected, then an elementary correspondence refers to one that is one from a connected component of $X$ to $Y$.   \\ 
+
+The group $\Cor(X, Y)$ of \textit{finite correspondences} is the free abelian group generated by the elementary correspondences.
+\end{defn} 
+
+Then given a closed subscheme $Z\subset X\times Y$ finite and surjective over $X$, we can associate the finite correspondence $\sum n_iW_i$ where $W_i$ are the irreducible components of the support of $Z$ surjective over a component of $X$ with generic points $\xi_i$ and $n_i =\ell ( O_{Z, \xi_i} )$. \\ 
+
+\subsection{The category of correspondences}
+
+We compose correspondences $V\in\Cor_k(X, Y)$ and $W\in \Cor_k(Y, Z)$ as follows.  Construct the cycle $[T] = (V\times Z)\cdot (X\times W)$ on $X\times Y\times Z$.  Then take its pushforward along the projection $p:X\times Y\times Z\rightarrow X\times Z$. \\ 
+
+It is not difficult to check that $\Sm_k$ embeds into $\Cor_k$ as a subcategory, where $f:X\rightarrow Y$ becomes the graph $\Gamma_f\subset X\times Y$. \\ 
+
+Furthermore, $\Cor_k$ is a symmetric monoidal category.  Indeed, the tensor product is simply $X\otimes Y=X\times Y$.  Given $V\in \Cor_k(X, X')$ and $W\in \Cor_k(Y, Y')$, we get the desired cycle $V\times W\in \Cor_k(X\otimes Y, X'\otimes Y')$. 
+
+\subsection{Examples} 
+\begin{enumerate}
+\item $\Cor_k(\Spec k, X)$ is generated by the $0$-cycles of $X$. 
+
+\item $\Cor_k(X, \Spec k)$ is generated by the irreducible components of $X$. 
+
+\item Take $W\in \Cor_k(\A^1, X)$ and two $k$-points $s, t:\Spec k\rightarrow \A^1$.  Then the zero-cycles $W\circ \Gamma_s$ and $W\circ \Gamma_t$ are rationally equivalent. 
+\end{enumerate}
 
 
+\section{Presheaves with transfers} 
+\subsection{Definition}
+\begin{defn}
+    A \textit{presheaf with transfers} is a contravariant additive functor $F:\Cor_k\rightarrow\ms{Ab}$.
+\end{defn} 
+
+Additivity gives a map 
+\[
+\Cor_k(X, Y)\otimes F(Y)\rightarrow F(X).
+\]
+
+Thus there are extra ``transfer maps" $F(Y)\rightarrow F(X)$ coming from $\Cor_k(X, Y)$. 
+
+\begin{thm}
+    $\ms{PST}(k)$ is an abelian category with enough injectives and projectives. 
+\end{thm}
+
+\subsection{Examples}
+
+\begin{exm}
+The constant presheaf $A$ on $\Sm_k$ can be extended to a pst.  
+
+For $W\in \Cor(X, Y)$ with $X, Y$ connected, the corresponding homomorphism $A\rightarrow A$ is multiplication by the degree of $W$ over $X$. 
+\end{exm}
+
+\begin{exm}
+$\mc{O}^*$ and $\mc{O}$, at least for $X$ normal.  Use the norm and trace maps. 
+
+% https://q.uiver.app/?q=WzAsMyxbMCwwLCJcXG1je099XiooWSkiXSxbMiwwLCJcXG1je099XiooWCkiXSxbMSwxLCJcXG1je099XiooVykiXSxbMCwxXSxbMCwyXSxbMiwxLCJOIiwyXV0=
+\[\begin{tikzcd}
+	{\mc{O}^*(Y)} && {\mc{O}^*(X)} \\
+	& {\mc{O}^*(W)}
+	\arrow[from=1-1, to=1-3]
+	\arrow[from=1-1, to=2-2]
+	\arrow["N"', from=2-2, to=1-3]
+\end{tikzcd}\]
+
+% https://q.uiver.app/?q=WzAsMyxbMCwwLCJcXG1je099XiooWSkiXSxbMiwwLCJcXG1je099XiooWCkiXSxbMSwxLCJcXG1je099XiooVykiXSxbMCwxXSxbMCwyXSxbMiwxLCJOIiwyXV0=
+\[\begin{tikzcd}
+	{\mc{O}(Y)} && {\mc{O}(X)} \\
+	& {\mc{O}(W)}
+	\arrow[from=1-1, to=1-3]
+	\arrow[from=1-1, to=2-2]
+	\arrow["\Tr"', from=2-2, to=1-3]
+\end{tikzcd}\]
+\end{exm}
+
+\begin{exm}
+$\CH^i(-)$, the Chow groups.
+\end{exm}
+
+\begin{exm}
+Representable functors: $h_X(-)$
+\end{exm} 
+
+\subsection{Representable functors of $\Cor_k(X)$} 
+Take $X\in \Ob(\Cor_k(X))$.  We denote
+\[
+\Z_{tr}(X)\coloneqq h_X(-).
+\]
+
+By Yoneda, $\Z_{tr}(X)$ is a projective object in $\ms{PST}(k)$. \\ 
+
+Note that $\Z_{tr}(\Spec k)$ is just the constant sheaf $\Z$ on $\Sm_k$, with the transfer maps constructed in the example from the previous subsection.  Let $(X, x)$ be a pointed scheme.  We define 
+\[
+\Z_{tr}(X, x)\coloneqq \coker [x_*:\Z\rightarrow \Z_{tr}(X)].
+\]
+The structure map $X\rightarrow\Spec k$ provides a splitting, so 
+\[
+\Z_{tr}(X)\cong \Z\oplus \Z_{tr}(X, x).
+\]
+
+Out of laziness we screenshot the following definitions from Voevodsky's lectures.
+
+\begin{defn}
+    If $(X_i, x_i)$ are pointed schemes for $i = 1, \ldots, n$ we define $\Z_{tr}((X_1, x_1) \wedge \cdots \wedge (X_n, x_n))$, or $\Z_{tr}(X_1 \wedge \cdots X_n)$, to be:
+    \[ \coker \qty(\bigoplus_i \Z_{tr}(X_1 \times \cdots \wh{X}_i \cdots \times X_n) \xrightarrow{id \times \cdots \times x_i \times \cdots \times id} \Z_{tr}(X_1 \times \cdots X_n)). \]
+\end{defn}
+
+\begin{lem}
+    The presheaf $\Z_{tr}((X_1, x_1) \wedge \cdots \wedge (X_n, x_n))$ is a direct summand of $\Z_{tr}(X_1 \times \cdots \times X_n)$. In particular, it is a projective object of $\ms{PST}$.
+
+    Moreover, the following sequence of presheaves with transfers is split-exact:
+    \begin{align*}
+        0 \to \Z \xrightarrow{x_i} \bigoplus_i \Z_{tr}(X_i) \to \bigoplus_{i,j} \Z_{tr}(X_i \times X_j) \times \cdots \\
+              \cdots \to \bigoplus_{i,j} \Z_{tr}(X_1 \times \cdots \wh{X}_i \cdots \wh{X}_j \cdots \times X_n) \to \bigoplus_i \Z_{tr}(X_1 \times \cdots \wh{X}_i \cdots \times X_n) \to \\
+              \to \Z_{tr}(X_1 \times \cdots \times X_n) \to \Z_{tr}(X_1 \wedge \cdots \wedge X_n) \to 0.
+    \end{align*}
+\end{lem}
+
+Consider the pointed scheme $(\G_m, 1)$.  We will be interested in the presheaf with transfers $\Z_{tr}(\G_m^{\wedge q})$. \\ 
+
+Before continuing, we recall our construction \[
+\Delta^k = \Spec k[x_0, \ldots, x_n]/(x_0+\cdots +x_k-1).
+\] 
+
+Recall that a simplicial object of a category $C$ is a functor $F:\Delta^{op}\rightarrow C$.
+Then if $F$ is a presheaf of abelian groups on $\Sm_k$, then $F(U\times\Delta^\bullet)$ is a simplicial abelian group.  Then 
+\[
+C_\bullet F: U\mapsto F(U\times \Delta^\bullet)
+\]
+is a simplicial presheaf with transfers.  Similarly, $C_*F(U)$ gives the complex of abelian groups 
+\[
+\cdots\rightarrow F(U\times \Delta^2)\rightarrow F(U\times \Delta^1)\rightarrow F(U)\rightarrow 0.
+\]
+
+\subsection{Homotopy invariant presheaves}
+
+\begin{defn}
+A presheaf $F$ is \textit{homotopy invariant} if for every $X$, the map $p^*:F(X)\rightarrow F(X\times \A^1)$ is an isomorphism.
+\end{defn}
+
+Note that this is equivalent to $p^*$ being surjective.  We can check that an equivalent condition is that for all $X$, we have 
+\[
+i_0^*=i_1^*:F(X\times \A^1)\rightarrow F(X).
+\]
+Furthermore, if $F$ is any presheaf, we have that $i_0^*, i_1^*:C_*F(X\times \A^1)\rightarrow C_*F(X)$ are chain homotopic.  From this we deduce that if $F$ is a presheaf, then the homology presheaves 
+\[
+H_nC_*F:X\mapsto H_nC_*F(X)
+\]
+are homotopy invariant for all $n$. 
+
+\begin{defn}
+Two finite correspondences from $X$ to $Y$ are \textit{$\A^1$-homotopic} if they are the restrictions along $X\times 0$ and $X\times 1$ of an element of $\Cor(X\times \A^1, Y)$. 
+\end{defn}
+
+This is an equivalence relation on $\Cor(X, Y)$.  Note that it is not one if we just look at morphisms of schemes!  With this definition though, we define $f:X\rightarrow Y$ to be an $\A^1$-homotopy equivalence in the expected way.
 
 
+\section{Motivic cohomology} 
+
+\subsection{The motivic complex}
+
+\begin{defn}
+For $q\in \Z_{\ge 0}$, the \textit{motivic complex} $\Z(q)$ is defined as the following complex of presheaves with transfers. 
+\[
+\Z(q)\coloneqq C_*\Z_{tr}(\G_m^{\wedge q})[-q].
+\]
+\end{defn}
+
+We can change coefficients to $A\in \ms{Ab}$ by setting $A(q)=\Z(q)\otimes A$.  \\  
+
+These are actually complexes of sheaves with respect to the Zariski topology.  In fact, they are also sheaves in the \'etale topology.  
+
+For example when $q=0$, applying this to a scheme $Y$ we just get 
+\[
+\cdots\xrightarrow{0} \Z\xrightarrow{id} \Z\xrightarrow{0}\Z\rightarrow 0 
+\]
+which is quasi-isomorphic to just $\Z$.  When $q=1$, the complex looks like 
+\[
+\cdots\xrightarrow{} \Cor(Y\times\Delta^2, \G_m) \xrightarrow{} \Cor(Y\times\Delta^1, \G_m)\xrightarrow{}\Cor(Y, \G_m)\rightarrow 0.
+\]
+
+\subsection{Motivic cohomology groups}
+
+\begin{defn}
+    The \textit{motivic cohomology groups} $H^{p,q}(X, \Z)$ are defined to be the hypercohomology of the motivic complexes $\Z(q)$ with respect to the Zariski topology:
+    \[ H^{p,q}(X, \Z) = \mathbb{H}^p_{Zar}(X, \Z(q)). \]
+    If $A$ is any abelian group, we define
+    \[ H^{p,q}(X, A) = \mathbb{H}^p_{Zar}(X, A(q)). \]
+\end{defn}
+
+\subsection{Weight 1} 
+There is a quasi-isomorphism 
+\[
+\Z(1)\xrightarrow{\cong}\mc{O}^*[-1].
+\]
+Thus we have the following table.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \node at (2,2) {$\Z(X)$};
+    \node at (4,4) {$\mc{O}^*(X)$};
+    \node at (6,4) {$\Pic(X)$};
+    \node at (8,4) {$0$};
+    \node at (2,4) {$0$};
+    \node at (0,4) {$0$};
+    \node at (-2,4) {$0$};
+    \node at (4,2) {$0$};
+    \node at (6,2) {$0$};
+    \node at (8,2) {$0$};
+    \node at (0,2) {$0$};
+    \node at (-2,2) {$0$};
+    \node at (4,0) {$0$};
+    \node at (6,0) {$0$};
+    \node at (8,0) {$0$};
+    \node at (0,0) {$0$};
+    \node at (-2,0) {$0$};
+    \node at (2,0) {$0$};
+    \node at (-2,6) {$H^{-2,2}$};
+    \node at (0,6) {$H^{-1,2}$};
+    \node at (2,6) {$H^{0,2}$};
+    \node at (4,6) {$H^{1,2}$};
+    \node at (6,6) {$H^{2,2}$};
+    \node at (8,6) {$H^{3,2}$};
+    \draw[->] (1,-0.5) -- (1,6.5);
+    \draw[->] (-3,1) -- (8.5,1);
+    \node at (1.3, 6.5) {$q$};
+    \node at (8.5, 1.3) {$p$};
+\end{tikzpicture}
+\end{center}
+\caption{Weight $q$ motivic cohomology}%
+\label{fig:}
+\end{figure}
+
+
+ 
+
+\section{Relation to other fields} 
+\subsection{Algebraic K-theory}
+Atiyah-Hirzebruch: 
+\[E_2^{p, q}=H^p(X; K^q(*))\Rightarrow K^{p+q}(X).\]
+
+In the algebraic setting, it is much more difficult.  Indeed, both algebraic K-theory and motivic cohomology are significantly harder to define than their topological counterparts.  In 2002, Suslin and Friedlander built upon previous work of Bloch and Lichtenbaum to show the following spectral sequence. 
+\[
+E_2^{p,q}=H^{p-q}(X, \Z(-q))=\CH^{-q}(X, -p-q)\Rightarrow K_{-p-q}(X).
+\]
+\subsection{Motives} 
+\begin{quotation}
+    \textit{C'est pour parvenir \`a exprimer cette intuition de ``parent\'e'' entre th\'eories cohomologiques diff\'erentes, que j'ai d\'egag\'e la notion du ``motif'' associ\'e \`a une vari\'et\'e alg\'ebrique. Par ce terme, j'entends sugg\'erer qu'il s'agit du ``motif commun'' (or de la ``raison commune'') sous-jacent \`a cette multitude d'invariants cohomologiques diff\'erents associ\'es \`a l\`a vari\'et\'e, \`a l'aide de la multitude des toutes les th\'eories cohomologiques possibles a priori.\sourceatright{Alexander Grothendieck}} 
+\end{quotation}
+An rough English translation\footnote{Provided by Patrick, whose French is not very good.} of this is
+\begin{quotation}
+    \textit{In order to express this intuition of kinship between different cohomological, I the notion of ``motive'' associated to an algebraic variety. By this term, I hear the suggestion that it is the ``common motive'' (or ``common reason'') underlying the multitude of cohomological invariants associated to a variety, supporting all cohomological that are a priori possible.} 
+\end{quotation}
+
+Grothendieck constructed Chow motives by replacing morphisms of schemes with correspondences (defined under rational equivalence, different from the correspondences discussed earlier), augmenting the category to look like an abelian category, and taking the opposite category.  By construction, this works in that cohomology theories factor through it.  However, to truly achieve what is desired from them, one must assume the standard conjectures on algebraic cycles (or some variants), which have been open for over 50 years! \\ 
+
+Voevodsky used motivic cohomology to construct a triangulated category $DM(k; R)$, which for all intents and purposes acts as the derived category of the desired category of motives.  He studied mixed motives, which apply to all varieties (not just the smooth ones).  These can be thought of as extensions of pure motives, and motivic cohomology studies these $Ext$ groups.  
+
+\subsection{Arithmetic geometry} 
+There's the Bloch-Kato conjecture and the Bloch-Kato conjectures, which are different! \\ 
+
+The Bloch-Kato conjecture is now a theorem: the norm residue isomorphism theorem, proven by Voevodsky.  Through proving it, Voevodsky developed motivic cohomology, motivic homotopy theory, motivic Steenrod algebra... \\
+
+\begin{quotation}
+    \textit{The norm residue isomorphism theorem (or Bloch-Kato conjecture) states that for a field $k$ and an integer $\ell$ that is inverible in $k$, the norm residue map
+    \[ \partial^n \colon K_n^M(k)/\ell \to H_{\text{\'et}}^n(k, \mu_{\ell}^{\otimes n}) \]
+    from Milnor K-theory mod-$\ell$ to \'etale cohomology is an isomorphism. The case $\ell=2$ is the Milnor conjecture, and the case $n=2$ is the Murkurjev-Suslin theorem.\sourceatright{Wikipedia}} 
+\end{quotation}
+
+
+The Bloch-Kato conjectures are on special values of L-functions.  
+\begin{conj}[Soul\'e]
+    If $X$ is regular and proper over $\Spec \Z$, then for an integer $n \in \Z$ we have
+    \[ \operatorname{ord}_{s=n} \zeta_X(s) = - \sum_{i \geq 0} {(-1)}^i \rank (H_i(X; \Z(n))). \]
+\end{conj}
+
+
+Applied to elliptic curves, this implies (one of the two parts of) the Birch-Swinnerton Dyer conjecture!
 
 
 

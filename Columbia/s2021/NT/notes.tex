@@ -21,11 +21,13 @@
 \usepackage{verbatim}
 \usepackage{physics}
 \usepackage{stackengine} 
-\usepackage{mathrsfs}
 \usepackage{stmaryrd}
 
 %font
-\usepackage[osf]{mathpazo}
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
 \usepackage{microtype}
 
 %CS packages
@@ -36,6 +38,7 @@
 % typeset and bib
 \usepackage[english]{babel} 
 \usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
@@ -134,7 +137,6 @@
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
-\newcommand{\mscr}[1]{\mathscr{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\wt}[1]{\widetilde{#1}}
@@ -329,7 +331,7 @@ This is always a finite abelian group.
 
 \begin{rmk}
     More generally, class field theory will add ramification on both sides of the correspondence to obtain a correspondence
-    \[ \qty{\text{finite abelian extensions}} \longleftrightarrow \qty{\text{subgroups of $\mscr{C}_K = \A_K^{\times}/K^{\times}$}}. \]
+    \[ \qty{\text{finite abelian extensions}} \longleftrightarrow \qty{\text{subgroups of $\mc{C}_K = \A_K^{\times}/K^{\times}$}}. \]
 \end{rmk}
 
 \section{Back to Fermat}%
@@ -2259,7 +2261,7 @@ Before we turn to the proof of global class field theory, we will describe some 
 
 \begin{defn}
     For a modulus $\mf{m}$, define the \textit{principal congruence subgroup}
-    \[ \I_K^m \coloneqq \prod_{v \nmid \infty} U_{v, \mf{m}(v)} \times_{v \mid \infty} K_{v, \mf{m}(v)}^{\times}, \]
+    \[ \I_K^m \coloneqq \prod_{v \nmid \infty} U_{v, \mf{m}(v)} \times \prod_{v \mid \infty} K_{v, \mf{m}(v)}^{\times}, \]
     where $U_{v,0} = \mc{O}_v^{\times}$ and $U_{v,i} = 1 + \mf{p}_v^i$ for $i \geq 1$ for finite places. For infinite places, we have $K_{v,0}^{\times} = K_v^{\times}$, and $K_{v,1}^{\times} = \R_{>0}$.
 \end{defn}
 
@@ -2319,7 +2321,7 @@ We will use the following strategy to prove global Artin reciprocity:
 \begin{enumerate}
     \item We will prove the first inequality\footnote{Some other references will call this the second inequality because they prove this second.} that $[C_K:\Nm(C_L)] \geq [L:K]$. This will be a consequence of the cohomology of $\I_K, C_K$. In particular, we will show that $h(C_K) = [L:K]$. This will imply that $\abs{\wh{H}^0(G, C_L)} \geq [L:K]$, but this is precisely the index we need.
     \item Next, we will prove the surjectivity of $\I_K \xrightarrow{\phi_{L/K}} \Gal(L/K)$. This is an application of the first inequality and the weak Chebotarev density theorem.
-    \item We will prove the second inequality\footnote{In the first proof of class field theory, this was the first inequality.} $[C_K : \Nm(C_L)] \leq [L:K]$. This is a consequence of Chebotarev density and we will use the analytic tool of $L$-functions.
+    \item We will prove the second inequality\footnote{In the first proof of class field theory, this was the first inequality.} $[C_K : \Nm(C_L)] \leq [L:K]$. This is a consequence of Chebotarev density and we will use the analytic tool of $L$-functions.\footnote{This is the difference between algebraic geometry and number theory. In number theory, there are infinite places, so analysis cannot be avoided.}
     \item We will prove that $\phi_K(K^{\times}) = 1$. This will follow from the determination of the Brauer groups of $K$.
 \end{enumerate}
 
@@ -2503,7 +2505,728 @@ As an application of the first inequality, we will prove
     By local class field theory, if $v$ is unramified in $L$, then $\phi_K (1, 1, \ldots, \pi_v, 1, \ldots) = \Frob_{w/v}$. We know that the $\Frob_{w/v}$ generate $\Gal(L/K)$, so $\phi_K$ is surjective onto $\Gal(L/K)$.
 \end{proof}
 
+\section{Analytic aspects and second inequality}%
+\label{sec:analytic_aspects_and_second_inequality}
 
+Recall that if $L/K$ is solvable and $L \neq K$, then there exist infinitely many places of $K$ that do not split completely in $L$. For example, if $L/K = \Q(i)/\Q$, then $p$ splits in $L$ if and only if $p \equiv 1 \pmod{4}$. Thus there are infinitely many primes $p \equiv 3 \pmod{4}$. This result is sometimes called the \textit{weak Chebotarev density theorem}, so what is the \textbf{strong} Chebotarev density theorem? In our example, we expect that half of all primes are congruent to $1$ modulo $4$ and that the other half are congruent to $3$ modulo $4$. Of course, there are infinitely many primes, so we need to understand what is meant by ``half of all primes'' here.
+
+\begin{defn}
+    Let $P$ be a set of primes in $\Z$. Define the \textit{natural density} of $P$ to be
+    \[ \mu(P) \coloneqq \lim_{x \to \infty} \frac{\# \qty{p \in P \mid p < x}}{\# \qty{p\ \text{prime} \mid p < x}} \]
+    if this limit exists.
+\end{defn}
+
+\begin{defn}
+    Let $P$ be a set of finite places of a number field $K$. Define the \textit{natural density} of $P$ to be
+    \[ \mu(P) \coloneqq \lim_{x \to \infty} \frac{\# \qty{\mf{p} \in P \mid N \mf{p} < x}}{\# \qty{\mf{p}\ \text{finite place} \mid N \mf{p} < x}} \]
+    if this limit exists.
+\end{defn}
+
+Of course, this definition is a terrible way to do analysis because we are throwing away so much information, so we would like a definition better suited to analytic methods.
+
+\begin{defn}
+    Define the \textit{Dirichlet density} 
+    \[ \delta(P) \coloneqq \lim_{s \to 1^+} \frac{\sum_{\mf{p} \in P}N\mf{p}^{-s}}{\sum_{\mf{p}} N\mf{p}^{-s}} \]
+    if this limit exists.
+\end{defn}
+
+The fundamental fact, proved in any first course in analytic number theory, is that if $\mu(P)$ exists, then $\delta(P)$ exists and $\mu(P) = \delta(P)$. Thus natural density is a stronger notion than Dirichlet density. The proof of this fact uses the prime number theorem and is omitted here because this is not a course in analytic number theory.
+
+\begin{rmk}
+    It is possible that the Dirichlet density exists, but the natural density does not. For $a \in \qty{1, \ldots, 9}$, choose $P_a$ to be the set of primes starting with the digit $a$. Then $\mu(P_a)$ does not exist, but $\delta(P_a) = \log_{10}\qty(1 + \frac{1}{a})$, a result due to Bombieri.\footnote{This pattern also appears in many other places, and is called \textit{Benford's law}.}
+\end{rmk}
+
+Dirichlet density is easier to study because we can use the tool of $L$-functions, which generalize the Riemann zeta function.
+
+\begin{defn}
+    The \textit{Riemann zeta function} is defined by
+    \[ \zeta(s) \colon \sum_{n \geq 1} \frac{1}{n^s} = \prod_p \frac{1}{1-p^{-s}}. \]
+    For a general number field $K$, the \textit{Dedekind zeta function} is defined by
+    \[ \zeta_K(s) \coloneqq \sum_{\substack{\mf{a} \subseteq \mc{O}_K \\ \text{ideal}}} \frac{1}{N\mf{a}^s} = \prod_{\substack{\mf{p} \subseteq \mc{O}_K \\ \text{prime ideals}}} \frac{1}{1-N\mf{p}^{-s}}. \]
+    These series converge when $\Re (s) \gg 0$. When $K = \Q$, $\zeta_{\Q}(s) = \zeta(s)$.
+\end{defn}
+
+\begin{defn}
+    Let $\chi \colon {(\Z/m)}^{\times} \to \C^{\times}$ be a character. The \textit{Dirichlet L-function} of $\chi$ is given by
+    \[ L(s, \chi) \coloneqq \sum_{n \geq 1} \frac{\chi(n)}{n^s} = \prod_p \frac{1}{1- \chi(p) p^{-s}}, \]
+    where $\chi(n) = 0$ if $(n,m) \neq 1$. When $\chi = \mathbb{1}$, then $L(s, \mathbb{1}) = \zeta(s)$.
+\end{defn}
+
+\begin{defn}
+    Let $K$ be a number field and $\mf{m}$ be a modulus of $K$. Let $\chi \colon \Cl_{\mf{m}} \to \C^{\times}$ be a character. The \textit{Weber L-function} of $\chi$ is given by
+    \[ L(s, \chi) \coloneqq \sum_{\substack{\mf{a} \subseteq \mc{O}_K \\ \text{ideal}}} \frac{\chi(\mf{a})}{N\mf{a}^s} = \prod_{\substack{\mf{p} \subseteq \mc{O}_K \\ \text{prime ideals}}} \frac{1}{1-\chi(\mf{p})N\mf{p}^{-s}}. \]
+    Again, we write $\chi(\mf{a}) = 0$ if $(\mf{a}, \mf{m}) \neq 1$. These series converge absolutely when $\Re(s) \gg 0$. When $K = \Q$, $\mf{m} = (m) \cdot \infty$ and we have $\Cl_{(m) \cdot \infty} = {(\Z/m)}^{\times}$, so the Weber L-function recovers the Dirichlet L-function. Of course, when $\chi = \mathbb{1}$, we recover the Dedekind zeta function.
+\end{defn}
+
+\begin{thm}[Analytic properties of Weber L-functions]\leavevmode
+    \begin{enumerate}
+        \item If $\chi \neq \mathbb{1}$, then $L(s, \chi)$ has an analytic continuation to all $s \in \C$ and $L(1, \chi) \neq 0$.
+        \item If $\chi = \mathbb{1}$, then $L(s, \chi) = \zeta_K(s)$ has an analytic continuation to all $s \in \C \setminus \qty{1}$ and a simple pole at $s = 1$. The residue $\Res_{s=1} \zeta_K(s)$ is given by the class number formula for $K$.
+        \item The function $L(s,\chi)$ satisfies the functional equation relating the values at $s$ and $1-s$.
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+    In general, there are more complicated complicated notions of L-functions, although this is a vaguely defined notion. In general, L-functions are series of the form $\sum_{n \geq 1} \frac{a_n}{n^s}$ satisfying
+    \begin{enumerate}
+        \item The series has an Euler product $\prod_p \frac{1}{\text{polynomial}(p^{-s})}$.
+        \item The series has an analytic continuation to $\C$ except for poles for $\zeta(s)$ at $s = 1$.
+        \item The analytic continuation satisfies a functional equation relating the values at $s$ and $1-s$.
+    \end{enumerate}
+\end{rmk}
+
+\begin{cor}
+    For any number field $K$, $\log \zeta_K(s) \sim \log \frac{1}{s-1}$ (this means the difference is analytic at $s=1$).
+\end{cor}
+
+\begin{proof}
+    By the theorem, $\zeta_K(s) (s-1)$ is analytic at $s=1$, so $\log \zeta_K(s) = \log \zeta_K(s)(s-1) - \log (s-1)$. Because $\log \zeta_K(s)(s-1)$ is analytic at $s=1$, so we obtain the desired result after rearranging.
+\end{proof}
+
+\begin{prop}
+    We have the identity
+    \[ \log \zeta_K(s) \sim \sum_{\mf{p}} \frac{1}{N\mf{p}^s}. \]
+\end{prop}
+\begin{proof}
+    We compute
+    \begin{align*}
+        \log \zeta_K(s) &= \log \prod_{\mf{p}} \frac{1}{1-N\mf{p}^{-s}} \\
+                        &= - \sum_{\mf{p}} \log(1-N\mf{p}^{-s}) \\
+                        &= \sum_{\mf{p}} \sum_{n \geq 1} \frac{N\mf{p}^{-ns}}{n} \\
+                        &= \sum_{\mf{p}} \frac{1}{N\mf{p}^s} + \sum_{\mf{p}} \sum_{n \geq 2} \frac{N\mf{p}^{-ns}}{n}. 
+    \end{align*}
+    The second term is analytic at $s=1$, so we obtain the desired result.
+\end{proof}
+
+\begin{cor}
+    We can rewrite
+    \[ \delta(P) = \lim_{s \to 1^+} \frac{\sum_{\mf{p}\in P} N\mf{p}^{-s}}{\log \frac{1}{s-1}}. \]
+\end{cor}
+
+\begin{thm}
+    Let $L/K$ be a finite Galois extension and $P$ be the set of primes of $K$ splitting completely in $L$. Then
+    \[ \delta(P) = \frac{1}{[L:K]}. \]
+\end{thm}
+
+\begin{exm}
+    Let $K = \Q, L = \Q(i)$. Then we have $\delta(p \equiv 1 \pmod{4}) = \delta(p \equiv 3 \pmod{4}) = \frac{1}{2}$.
+\end{exm}
+
+\begin{proof}
+    We can rewrite
+    \begin{align*}
+        \sum_{\mf{p} \in P} \frac{1}{N\mf{p}^s} &= \frac{1}{[L:K]} \sum_{\substack{\mf{q} \subseteq \mc{O}_L \\ f(\mf{q}) = 1}} \frac{1}{N\mf{q}^s} \\
+                                                &\sim \frac{1}{[L:K]} \sum_{\mf{q} \subseteq \mc{O}_L} \frac{1}{N\mf{q}^s} \\
+                                                &\sim \frac{1}{[L:K]} \log \frac{1}{s-1}
+    \end{align*}
+    because the terms with $f(\mf{q}) \geq 2$ contribute to an analytic function and the second item on the right hand side is $\zeta_L(s)$. Now we obtain
+    \begin{align*}
+        \delta(P) &= \lim_{s \to 1^+} \frac{\sum_{\mf{p} \in P} N\mf{p}^{-s}}{\log \frac{1}{s-1}} \\
+                  &= \lim_{s \to 1^+} \frac{\frac{1}{[L:K]} \log \frac{1}{s-1}}{\log \frac{1}{s-1}} \\
+                  &= \frac{1}{[L:K]}. \qedhere
+    \end{align*}
+\end{proof}
+
+Now we want to use these tools to prove the second inequality. The idea is to show that
+\[ \frac{1}{[C_K: \Nm(C_L)]} \geq \frac{1}{[L:K]}. \]
+We will reinterpret the right-hand side as the density of primes of $K$ that split completely in $L$. Now we will reinterpret the left-hand side as a certain density also. Recall that for $\mf{m} = \mf{m}_0 \cdot \mf{m}_{\infty}$ a modulus of $K$, we have the ray class group $\Cl_{\mf{m}}$. 
+
+\begin{thm}
+    Let $K^{\mf{m}} \subseteq H \subseteq I_K^{\mf{m}}$. Then let $A \in I_K^{\mf{m}}/H$ be an ideal class. Then
+    \[ \delta(\qty{\mf{p} \in A}) = \frac{1}{[I_K^{\mf{m}} : H]}. \]
+\end{thm}
+
+\begin{proof}
+    Let $\chi$ be a character of $\I_K^{\mf{m}}/H$. This is a quotient of $\Cl_{\mf{m}}$, so it induces a quotient of $\Cl_{\mf{m}}$. Now let $L(s, \chi)$ be the Weber L-function. But now 
+    \begin{align*} 
+        \log L(s, \chi) &\sim \sum_{\mf{p} \nmid \mf{m}} \frac{\chi(\mf{p})}{N\mf{p}^s} \\ 
+                        &= \sum_{B \in \I_K^{\mf{m}}/H} \sum_{\mf{p} \in B} \frac{\chi(\mf{p})}{N\mf{p}^s} \\
+                        &= \sum_{B \in I_K^{\mf{m}}/H} \chi(B) \sum_{p \in B} \frac{1}{N \mf{p}^s}.
+    \end{align*}
+    But now we want to pick out a single ideal class, so we need to use some Fourier analysis. We use the fact that
+    \[ \sum_{\chi} \chi(g) = \begin{cases}
+        \abs{G} & g = 1 \\
+        0 & g \neq 1
+    \end{cases} \]
+    for any $g \in G$. Multiplying ${\chi(A)}^{-1}$ and summing over all $\chi$, we see that
+    \begin{align*}
+        \sum_{\chi} {\chi(A)}^{-1} \log L(s, \chi) &\sim \sum_{\chi} \sum_B \chi(A^{-1}B) \sum_{\mf{p} \in B} \frac{1}{N \mf{p}}^s \\
+        \log \frac{1}{s-1}                         &=[I_K^{\mf{m}}:H] \sum_{\mf{p} \in A} \frac{1}{N \mf{p}^2},
+    \end{align*}
+    and thus $\delta(\mf{p} \in A) = \frac{1}{[I_K^{\mf{m}}:H]}$, as desired.
+\end{proof}
+
+\begin{rmk}
+    Every finite abelian extension $L/K$ admits a modulus $\mf{m}$ such that 
+    \[ C_k/\Nm(C_K) \simeq I_K^{\mf{m}} / K^{\mf{m}} \cdot \Nm(I_L^{\mf{m}}). \]
+    is a quotient of the ray class group $\Cl_{\mf{m}}$. In particular, we may reinterpret the global Artin map as a map $\phi_{L/K} \colon I_K^{\mf{m}} \to \Gal(L/K)$ given by $\mf{p} \mapsto \Frob_{\mf{p}}$.
+\end{rmk}
+
+\begin{thm}[Second inequality]
+    We have $[I_K^{\mf{m}} : K^{\mf{m}} \cdot \Nm(I_L^{\mf{m}})] \leq [L:K]$.
+\end{thm}
+
+\begin{proof}
+    Apply the previous theorem to $H = K^{\mf{m}} \cdot \Nm(I_L^{\mf{m}})$ and $A = [0]$. Then we know
+    \[ \delta(\mf{p} \in A) = \frac{1}{[I_K^{\mf{m}} : K^{\mf{m}} \cdot \Nm(I_L^{\mf{m}})]}. \]
+    On the other hand, we know
+    \[ \delta(\mf{p}\text{ splits completely in }L) = \frac{1}{[L:K]}. \]
+    But now we know $\mf{p}$ splits completely in $L$ only if $\mf{p} \in \Nm(I_L^{\mf{m}})$, which is the same thing as $\mf{p} \in A$. Thus $\delta(\mf{p} \in A) \geq \delta(\mf{p}\text{ splits completely in }L)$, as desired.
+\end{proof}
+
+Before we continue with the proof of global class field theory, we will prove an important result in analytic number theory.
+
+\begin{thm}[Chebotarev density theorem]
+    Let $L/K$ be a finite Galois extension of number fields. Let $\sigma \in G \coloneqq \Gal(L/K)$ and $C_{\sigma}$ be the conjugacy class of $\sigma$. Then
+    \[ \delta(\mf{p} \mid \Frob_{\mf{p}} \in C_{\sigma}) = \frac{\abs{C_{\sigma}}}{\abs{G}}. \]
+\end{thm}
+
+\begin{proof}
+    We will use global Artin reciprocity, so in the future we will not be using the Chebotarev density theorem. By global Artin reciprocity for abelian extensions, we have an isomorphism $I_k^{\mf{m}}/H \to \Gal(L/K)$ for some modulus $\mf{m}$. But then it is easy to see that
+    \[ \frac{1}{\abs{G}} = \frac{1}{[I_K^{\mf{m}}:H]} = \delta(\mf{p} \in A) = \delta(\mf{p} \in C_{\sigma}) \]
+    because $G$ is abelian. Now when $L/K$ is nonabelian, we will reduce to the abelian case. Let $\sigma \in G$ and write $M = L^{\ev{\sigma}}$. Applying the abelian case to the abelian extension $L/M$, write
+    \[ S_1 \coloneqq \qty{\mf{q} \subset \mc{O}_M \mid \Frob_{\mf{q}} = \sigma \in \Gal(L/M)}. \]
+    We know $\delta(s_1) \frac{1}{\abs{\sigma}}$. Now consider a subset of degree $1$ primes of $M$ and write
+    \[ S_2 \coloneqq \qty{\mf{q} \in S_1 \mid f(\mf{q}/{\mf{p}}) = 1}. \]
+    We know that $\delta(S_1) = \delta(S_2)$. Finally, consider
+    \[ S_3 \coloneqq \qty{\mf{p} \mid \Frob_{\mf{p}} \in C_{\sigma}}. \]
+    Now we have a surjection $S_2 \twoheadrightarrow S_3$ and the fiber has size $\frac{\abs{Z_G(\sigma)}}{\abs{\sigma}}$. This is because if $\mf{q} \mapsto \mf{p}$ with $\Frob_{\mf{p}} = \sigma$, then $\tau \mf{q} \mapsto \mf{p}$ if and only if $\Frob_{ \tau \mf{q} } = \tau \Frob_{\mf{q}} \tau^{-1}$ if and only if $\tau \sigma = \sigma\tau$. Therefore $\tau \mf{q} = \mf{q}$ if and only if $\tau \in D(\mf{q}) = \ev{\sigma} = \Gal(L/M)$. Then we know that
+    \[ \frac{1}{\abs{\sigma}} = \delta(S_2) = \delta(S_3) \cdot \frac{\abs{Z_G(\sigma)}}{\abs{\sigma}}, \]
+    and therefore
+    \[ \delta(S_3) = \frac{1}{\abs{Z_G(\sigma)}} = \frac{\abs{C_{\sigma}}}{\abs{G}}. \qedhere \]
+\end{proof}
+
+\begin{exm}
+    Suppose $\sigma = 1$. Then $C_{\sigma} = \qty{1}$, so Chebotarev density tells us that 
+    \[ \delta(\mf{p} \text{ splits completely in }L) = \frac{1}{[L:K]}. \]
+\end{exm}
+
+\begin{exm}
+    Choose $K = \Q$ and $L = \Q(\zeta_N)$, where either $N$ is odd or $4 \mid N$. Then we know $G = {(\Z/N)}^{\times}$. If we choose $\sigma = a \in {(\Z/N)}^{\times}$, then $C_{\sigma} = \qty{a}$, so by Chebotarev, we see that 
+    \[ \delta(p \equiv a \pmod{N}) = \frac{1}{\phi(N)}. \]
+    Thus we have recovered a strengthening of Dirichlet's theorem on primes in arithmetic progression!
+\end{exm}
+
+\begin{rmk}
+    The original proof of Chebotarev density does not rely on global Artin reciprocity. Instead, it reduces to the cyclotomic case, where global Artin reciprocity is known explicitly. In fact, Artin's proof of global Artin reciprocity was inspired by Chebotarev's proof (will be reduced to the cyclotomic case).
+\end{rmk}
+
+\begin{exm}[Simplest nonabelian example]
+    Let $K = \Q$ and $L = \Q[x] / (x^3 - x^2 + 1)$. This is the cubic extension with minimal $\abs{d_L}$, and here $d_L = -23$. Then $\Gal(\wt{L}/\Q) \cong S_3$. Now $S_3$ has three distinct conjugacy classes $(1), (12), (123)$. These correspond to $f(x)$ splitting completely in $\F_p$, $f(x)$ splitting into a quadratic and a linear factor in $\F_p$, and $f(x)$ being irreducible in $\F_p$, respectively. Now we can compute (possibly using a computer) the table
+    \begin{table}[H]
+        \centering
+        \caption{Primes in each conjugacy class}
+        \label{tab:label}
+        \begin{tabular}{rl}
+        \toprule
+        $\sigma$ & $p$ \\
+        \midrule
+        $(1)$ & $59, \ldots$ \\
+        $(12)$ & $5,7,11,17,19,37,43,53,\ldots$ \\
+        $(123)$ & $2,3,13,29,31,41,47,\ldots$ \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+    Chebotarev predicts that the three classes will occur in a ratio of $1:3:2$.
+\end{exm}
+
+\begin{rmk}
+    There is no simple congruence condition on $p$ to determine $\Frob_p$. However, there is a criterion on $p$ in terms of \textit{modular forms}. For example, for $z \in \mc{H}$, we may consider the function
+    \begin{align*}
+        f(z) &= q \prod_{n \geq 1} (1-q^n) (1-q^{23 n}) &q = e^{2 \pi i z} \\
+             &= \sum_{n \geq 1} a_n q^n &a_n \in \Z.
+    \end{align*}
+    Now some of the coefficients are
+    \begin{table}[H]
+        \centering
+        \caption{Coefficients at primes}
+        \label{tab:label}
+        \begin{tabular}{cccccccccccccccccc}
+            \toprule
+            $p$ & $2$ & $3$ & $5$ & $7$ & $11$ & $13$ & $17$ & $19$ & $23$ & $29$ & $31$ & $37$ & $41$ & $43$ & $47$ & $53$ & $59$ \\
+            \midrule
+            $a_p$ & $-1$ & $-1$ & $0$ & $0$ & $0$ & $-1$ & $0$ & $0$ & $1$ & $-1$ & $-1$ & $0$ & $-1$ & $0$ & $-1$ & $0$ & $2$ \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    So we see that the conjugacy classses corresppond to the coefficients being $2, 0, -1$. In fact, these are the character values for the two-dimensional irreducible representation $\rho$ of $S_3$. By a miracle, we have $\Tr \rho(\Frob_p) = a_p$!
+\end{rmk}
+
+\begin{rmk}
+    Recall that abelian extensions can be understood in terms of the id\`ele class group using Artin reciprocity. But if we write $\I_{\Q} = \A_{\Q}^{\times}$, we can consider the id\`ele class group as a space related to $GL_1$. But now abelian extensions now correspond to $1$-dimensional representations of $\Gal(\ol{\Q}/\Q)$, and the Langlands program gives a conjectural correspondence between $n$-dimensional representations of $\Gal(\ol{\Q}/\Q)$ and automorphic forms on $[GL_n] = GL_n(\A_{\Q}) / GL_n(\Q)$. For example, when $n=2$, the $2$-dimensional representations correspond to modular forms relating $\Tr \rho(\Frob_p)$ and coefficients $a_p$ of the modular form $f(z)$.
+\end{rmk}
+
+\section{Brauer groups and proof of global Artin reciprocity}%
+\label{sec:brauer_groups_and_proof_of_artin_reciprocity}
+
+We have already proved the first inequality that $[C_K : \Nm(C_L)] \geq [L:K]$, at least when $L/K$ is cyclic. We have also proved the second inequality that $[C_K:\Nm(C_L)] \leq [L:K]$ in general.
+
+\begin{cor}[Global version of Hilbert 90]
+    Let $L/K$ be finite Galois. Then $H^1(G, C_L) = 0$.
+\end{cor}
+
+\begin{proof}
+    We begin in the case when $G$ is cyclic. Here, $[C_K : \Nm(C_L)] = [L:K]$. However, $h(C_L) = \frac{[C_K:\Nm(C_L)]}{\abs{H^1(G, C_L)}} = [L:K]$, so $H^1(G, C_L) = 0$.
+
+    Now it remains to reduce the general case to the cyclic case. First, we will consider $G$ solvable and induct on $\abs{G}$. Consider $H \triangleleft G$ such that $G/H$ is cyclic. Then inflation-restriction gives us an exact sequence
+    \[ 0 \to H^1(G/H, C_{L^H}) \xrightarrow{\Inf} H^1(G, C_L) \xrightarrow{\Res} H^1(H, C_L). \]
+    Now the two outside terms vanish by $G/H$ being cyclic and the inductive hypothesis, so $H^1(G, C_L) = 0$.
+
+    Finally, if $G$ is an arbitrary group, we simply consider the restriction to all Sylow subgroups
+    \[ H^1(G, C_L) \xrightarrow{\Res} \prod_p H^1(G_p, C_L) = 0. \]
+    However, this restriction is injective by a past homework, so we are done.
+\end{proof}
+
+Now our goal is to compute the Brauer group $H^2(K)$. We will do this in terms of the local Brauer groups.
+
+\begin{prop}
+    The natural restriction map $H^2(L/K) \to \bigoplus_v H^2(L^v/K_v)$ is injective.
+\end{prop}
+
+\begin{proof}
+    The short exact sequence 
+    \[ 0 \to L^{\times} \to \I_L \to C_L \to 0 \]
+    gives a long exact sequence
+    \[ 0 \to H^1(G, C_L) \to H^2(G, L^{\times}) \to H^2(G, \I_L). \]
+    But now from the computation of the cohomology of id\`eles and the previous corollary, we have an injection
+    \[ H^2(G, L^{\times}) = H^2(L/K) \hookrightarrow H^2(G, \I_L) = \bigoplus_v H^2(L^v/K_v). \qedhere \]
+\end{proof}
+
+\begin{cor}
+    Given $\beta \in H^2(K)$, there exists a cyclic extension $L/K$ with $L \subseteq K(\zeta_m)$ for some $m$ such that $\beta$ is split by $L$ ($\beta \in H^2(L/K) = \ker(H^2(K) \to H^2(L))$).
+\end{cor}
+
+\begin{proof}
+    By the proposition, we know that $\beta \in H^2(K)$ is completely determined by its local restrictions $\qty{\beta_v}_v$. We also know that all but finitely many $\beta_v$ vanish. By local class field theory, we know that $\beta \in H^2(K_v) = \Q/\Z$ (the isomorphism is given by the invariant map). But now there exists $m \geq 1$ such that $m \cdot \mr{inv}_v(\beta_v) = 0$ for all $v$. However, by functoriality of $\mr{inv}_v$ for $w \mid v$, we obtain
+    \[ \mr{inv}_w (\Res_L(\beta)) = [L^v:K_v] \mr{inv}_v(\beta_v) \]
+    by one of the homeworks. Once we prove the following lemma, we will be done.
+\end{proof}
+
+\begin{lem}
+    Let $S$ be a finite set of finite places of $K$ and $m \geq 1$. Then there exists a cyclic cyclotomic extension $L/K$ such that $m \mid [L^v:K_v]$ for all $v \in S$.
+\end{lem}
+
+\begin{proof}
+    First we reduce to the case $K = \Q$. Here, we can just take the composite with $K$ and replace $m$ with $m \cdot [K:\Q]$. Also, we will reduce to the case where $m = \ell^s$, wheere $\ell$ is some prime. Here, we can just take the composite of the extensions for all prime power factors of $m$. We need $\ell^s \mid [L^p : \Q_p]$ for some cyclic cyclotomic extension $L/\Q$. Now 
+    \[ \Gal(\Q(\zeta_{\ell^r}/\Q)) = {(\Z/\ell^r)}^{\times} = \begin{cases}
+        \Z/\ell-1 \times \Z/\ell^{r-1} & \ell \text{ odd } \\
+        \Z/2 \times \Z/2^{r-2} & \ell = 2, r \geq 2.
+    \end{cases} \]
+    Now we can form a cyclic cyclotomic extension
+    \[ L \coloneqq \begin{cases}
+        {\Q(\zeta_{\ell^r})}^{\Z/\ell-1} & \ell \text{ odd } \\
+        {\Q(\zeta_{2^r})}^{\Z/2} & \ell = 2.
+    \end{cases} \]
+    Now we can compute for all $p \in S$ that
+    \[ [\Q_p(\zeta_{\ell^r}) : \Q_p] = \begin{cases}
+        \phi(\ell^r) & p=\ell \\
+        t & p \neq \ell
+    \end{cases} \]
+    Where $t$ is the smallest integer such that $\ell^r \mid \abs{\F_{p^t}^{\times}} = p^t-1$. In particular, as we increase $r$, $[\Q_p(\zeta_{p^r}):\Q_p] \to \infty$, so $[L^p \colon \Q_p] \to \infty$ as we increase $r$, so we may choose $r \gg 0$ such that $\ell^s \mid [L^p:\Q_p]$.
+\end{proof}
+
+We have already proved that $\phi_{L/K} \colon \I_K \to \Gal(L/K)$ is surjective, so it remains to show that it factors through $C_K/\Nm(C_L)$. We need to prove that
+\begin{thm}
+    $K^{\times}$ is contained in the kernel of $\phi_{L/K}$. This means $\phi_{L/K}(K^{\times}) = 1$.
+\end{thm}
+This will imply that the global Artin map is an isomorphism. To prove this, we will use a global relation from Brauer groups.
+
+\begin{thm}
+    For all $\beta \in H^2(L/K)$, we have 
+    \[ \beta \in \ker \qty(H^2(L/K) \to \bigoplus_v H^2(L^v/K_v) \xrightarrow{\sum_v \mr{inv}_v} \Q/\Z). \]
+    Equivalently, $\sum_v \mr{inv}_v(\beta) = 0$.
+\end{thm}
+
+Our strategy will contain the following steps:
+\begin{enumerate}
+    \setcounter{enumi}{-1}
+    \item We will prove Theorem 5.5.5 for $L/K = \Q(\zeta_m)/\Q$.
+    \item Next, we will prove Theorem 5.5.5 for $L/K$ cyclic cyclotomic.
+    \item Next, we will prove Theorem 5.5.6 for $L/K$ cyclic cyclotomic.
+    \item Next, we will prove Theorem 5.5.6 for $L/K$ finite abelian.
+    \item Finally, we will prove Theorem 5.5.5 for $L/K$ finite abelian.
+\end{enumerate}
+
+\subsection{Step 0}%
+\label{sub:step_0}
+
+Choose $a \in \Q^{\times}$. We need to show that $\phi(a) = 1 \in \Gal(\Q(\zeta_m)/\Q) = {(\Z/m\Z)}^{\times}$. It suffices to treat the case where $m = \ell^r$ is a prime power, so we compute explicitly $\phi = \prod_p \phi_p$. There are several cases:
+\begin{enumerate}
+    \item $p \neq \ell$ is finite. Then $p$ is unramified, so $\phi_p(a) = (\zeta_{\ell^r} \mapsto \zeta_{\ell^r}^{p^s}) = p^s \in {(\Z/\ell^r)}^{\times}$, where $a = u \cdot p^s$.
+    \item $p=\ell$. Here $p$ is ramified, so $\phi_p(a) = (\zeta_{\ell^r} \mapsto \zeta_{\ell^r}^{u^{-1}}) = u^{-1} \in {(\Z/\ell^r)}^{\times}$, where $a=u\ell^s$.
+    \item $p=\infty$. Here, $\phi_{\infty}(a) = \mr{sign}(a) \in \qty{\pm 1} = \Gal(\C/\R)$.
+\end{enumerate}
+To show that $\phi(a) = 1$, it suffices to consider $a=p, \ell, -1$.
+\begin{enumerate}
+    \item If $p\neq \ell$, then $\phi_p(p) \phi_{\ell}(p) = p \cdot p^{-1} = 1$.
+    \item If $p=\ell$, then $\phi(\ell) = \phi_{\ell}(\ell) = 1^{-1} = 1$.
+    \item Finally, $\phi(-1) = \phi_{\ell}(-1) \phi_{\infty}(-1) = {(-1)}^{-1} (-1) = 1$.
+\end{enumerate}
+
+\subsection{Step 1}%
+\label{sub:step_1}
+
+We will prove the following result. Because we already proved Theorem 5.5.5 for cyclotomic extensions, this will give us the result for cyclic cyclotomic extensions.
+\begin{lem}
+    If Theorem 5.5.5 holds for $L/K$, then it also holds for subextensions $M/K$ of $L/K$ and for composites $L'/K'$, where $L' = L \cdot K'$.
+\end{lem}
+
+\begin{proof}
+    By functoriality of the local Artin maps, $\phi_{M/K} = \I_K \xrightarrow{\phi_{L/K}} \Gal(L/K) \twoheadrightarrow \Gal(M/K)$. Therefore if $\phi_{L/K}(K^{\times}) = 1$, $\phi_{M/K}(K^{\times}) = 1$ also.
+
+    For the composites, we use functoriality of the local Artin maps to obtain a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \I_{K'} \ar{r}{\phi_{L'/K'}} \ar{d}{\Nm} & \Gal(L'/K') \ar[hookrightarrow]{d} \\
+        \I_K \ar{r}{\phi_{L/K}} & \Gal(L/K).
+    \end{tikzcd}
+    \end{equation*}
+    But now the desired result follows from diagram chasing with ${(K')}^{\times}$.
+\end{proof}
+
+\subsection{Step 3}%
+\label{sub:step_3}
+
+Every $\beta \in H^2(K)$ is split by a cyclic cyclotomic extension by Corollary 5.5.3. This means there exists $L/K$ cyclic cyclotomic such that $\beta \in H^2(L/K)$. This reduces the finite abelian case to the cyclic cyclotomic case.
+
+\subsection{Steps 2 and 4}%
+\label{sub:steps_2_and_4}
+
+We will relate the global Artin maps with Brauer groups. Recall that $H^2(G, \Z) = H^1(G, \Q/\Z) = \Hom(G, \Q/\Z)$. Denote this map by $\delta_{\chi} \mapsto \chi$. Now the cup product with $\delta_{\chi}$ gives us a map $H^0(G, M) \to H^2(G, M)$. If $L/K$ is an extension of local fields, then for $M = L^{\times}$, we have a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    H^0(G, L^{\times}) = K^{\times} \ar{r}{\phi_{L/K}} \ar{d}{\cup \delta_{\chi}} & G = \Gal(L/K) \ar{d}{\chi} \\
+    H^2(G, L^{\times}) = H^2(L/K) \ar{r}{\mr{inv}} & \Q/\Z.
+\end{tikzcd}
+\end{equation*}
+If $L/K$ is an extension of global fields, we consider $M = \I_L$. Then we have a commutative diagram
+\begin{equation}
+\begin{tikzcd}
+    K^{\times} \ar[hookrightarrow]{d}{\cup \delta_{\chi}} \ar[hookrightarrow]{r} & \I_K \ar{r}{\phi_{L/K}} \ar{d}{\cup \delta_{\chi}} & G = \Gal(L/K) \ar{d}{\chi} \\
+    H^2(L/K) \ar[hookrightarrow]{r} & H^2(G, \I_L) = \bigoplus_v H^2(L^v/K_v) \ar{r}{\sum \mr{inv}_v} & \Q/\Z.
+\end{tikzcd}
+\end{equation}
+
+\subsection{Step 2}%
+\label{sub:step_2}
+
+Assume that Theorem 5.5.5 holds for $L/K$ cyclic cyclotomic. Then the top row is trivial, so because $G$ is cyclic, the bottom row is also trivial (in the cyclic case, the shift in degree map is an isomorphism). But this means that $\beta \in H^2(L/K)$ satisfies $\sum \mr{inv}_v(\beta) = 0$, which is the same thing as Theorem 5.5.6 holding for $L/K$ cyclic cyclotomic.
+
+\subsection{Step 4}%
+\label{sub:step_4}
+
+Assume that Theorem 5.5.6 holds for $L/K$ finite abelian. But this means the bottom row of (5.1) is trivial, so in particular, $\chi(\phi_{L/K}(K^{\times})) = 0$. But $\chi$ is arbitrary in $\Hom(G, \Q/\Z)$, so $\phi_{L/K}(K^{\times}) = 1$. This gives Theorem 5.5.5 for all finite abelian extensions.
+
+\subsection{Brauer groups}%
+\label{sub:brauer_groups}
+
+As a consequence of global Artin reciprocity, we can determine the Brauer group of an arbitrary number field.
+
+\begin{thm}
+    Let $K$ be a number field. Then
+    \[ H^2(K) = \ker \qty(\bigoplus_v H^2(K_v) \xrightarrow{\sum_v \mr{inv}_v} \Q/\Z). \]
+\end{thm}
+
+\begin{proof}
+    By Theorem 5.5.6, we know that $H^2(K)$ is contained in the kernel. It remains to prove the reverse inclusion. Consider $(\beta_v) \in \ker$. We know there exists $L/K$ cyclic cyclotomic such that ${(\beta_v)}_v \in \bigoplus_v H^2(L^v/K_v)$. Because $L/K$ is cyclic, we have an isomorphism of exact sequences
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & K^{\times}/\Nm(L^{\times}) \ar{r} \ar{d}{\cup \delta_{\chi}} & \I_K/\Nm(\I_L) \ar{r} \ar{d}{\cup \delta_{\chi}} & C_K/\Nm(C_L) \ar{d}{\sim} \ar{r} & 0 \\
+        0 \ar{r} & H^2(L/K) \ar{r} & H^2(G, \I_L) = \bigoplus_v H^2(L^v/K_v) \ar{r}{\sum_v \mr{inv}_v} & \frac{1}{[L:K]} \Z/\Z \ar{r} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    By definition, the top row is exact, so the bottom row is also exact. But this means that for $(\beta_v) \in \ker\qty(\sum \mr{inv}_v)$, there exists $\beta \in H^2(L/K)$ such that $(\beta_v) = \beta$.
+\end{proof}
+
+\begin{exm}
+    Consider $K = \Q$. Then we have a map
+    \[ H^2(\Q) = \qty{\text{central simple algebras }B/\Q} \to \bigoplus_v H^2(K_v) = \qty{(B_v) \mid B_v\text{ CSA over } \Q_v}. \]
+    This is given by $B_v = B \otimes \Q_v$. Now by the theorem, we note that ${(B_v)}_v$ comes from $B/\Q$ if and only if $\sum \mr{inv}_v(B_v) = 0$. For example, we have
+    \[ \mr{inv}_v(B_v) = \begin{cases}
+        0 & B_v = M_2(\Q_v) \\
+        \frac{1}{2} & B_v \text{ is quaternion algebra}.
+    \end{cases} \]
+    This means that quaternion algebras $B/Q$ are in bijection with the set of ${(B_v)}_v$ where an even number of $B_v$ are not $M_2(\Q_v)$.
+\end{exm}
+
+\section{Proof of global existence}%
+\label{sec:proof_of_global_existence}
+
+We will now complete the proof of global class field theory. We need to prove the following statement:
+\begin{thm*}[Global existence]
+    For any finite index open subgroup $U \subseteq C_K$, there exists a finite abelian extension $L/K$ such that $U = \Nm(C_L)$.
+\end{thm*}
+
+\begin{defn}
+    A subgroup of $C_K$ is a \textit{norm subgroup} if it is of the form $\Nm(C_L)$ for some finite abelian extension $L/K$.
+\end{defn}
+
+Now global existence is the same thing as every finite index open subgroup being a norm subgroup. 
+
+\begin{lem}
+    Any subgroup containing a norm subgroup is also a norm subgroup.
+\end{lem}
+
+\begin{proof}
+    Assume $U = \Nm(C_L)$ and $V \supseteq U$. Then global Artin reciprocity implies that $C_K/U \simeq \Gal(L/K)$. Now we have a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        C_K/U \ar{r}{\sim} \ar[twoheadrightarrow]{d} & \Gal(L/K) \ar[twoheadrightarrow]{d} \\
+        C_K/V \ar{r}{\sim} & \Gal(M/K)
+    \end{tikzcd}
+    \end{equation*}
+    by the fundamental theorem of Galois theory. By construction, $V = \ker(C_K \to \Gal(M/K))$, so in particular, $V = \Nm(C_M)$ by global Artin reciprocity.
+\end{proof}
+
+Now it suffices to produce a enough norm subgroups such that every finite index open subgroup contains a norm subgroup. Here, we will use Kummer extensions. Let $K$ be a field and $\mu_n \subseteq K$. Then if $L_n$ is the maximal abelian extension of $K$ with exponent $n$, then by considering the Kummer sequence
+\[ 1 \to \mu_n \to {(K^{\mr{sep}})}^{\times} \to {(K^{\mr{sep}})}^{\times} \to 1 \]
+we obtain a perfect pairing $\Gal(L_n/K) \otimes K^{\times}/{(K^{\times})}^n \to \mu_n$ given by $(\sigma, b) \mapsto \frac{\sigma(\sqrt[n]{b})}{\sqrt[n]{b}}$. This gives a bijection between finite subgroups of $K^{\times}/{(K^{\times})}^n$ and finite abelian extensions of $K$ of exponent $n$. Here, to a subgroup $B$, we associate field $L = K(\sqrt[n]{B})$ given by adjoining all $n$-th roots of elements in $B$ and to an extension $L/K$ we simply take the $n$-th powers of all elements in $L^{\times}$. Here, it is easy to see that $\abs{B} = [L:K]$.
+
+\begin{exm}
+    Let $K$ be a local field and assume $\mu_n \subseteq K$. Then $L_n/K$ is finite and 
+    \[ [L_n:K] = \abs{K^{\times}/{(K^{\times})}^n} = \frac{n^2}{\abs{n}_K}. \]
+    Here, we know $K^{\times} = \mc{O}_K^{\times} \times \Z$, so $K^{\times}/{(K^{\times})}^n = \mc{O}_K^{\times}/{(\mc{O}_K^{\times})}^n \times \Z/n$. Because $\mc{O}_K^{\times}$ contains a finite index subgroup isomorphic to $\mc{O}_K$, we have $\abs{\mc{O}_K^{\times}/{(\mc{O}_K^{\times})}^n} = \abs{\mu_n(\mc{O}_K^{\times})} \cdot \abs{\mc{O}_K/n\mc{O}_K} = n \frac{1}{\abs{n}_K}$, as desired.
+\end{exm}
+
+Now assume $K$ is a number field. 
+
+\begin{lem}
+    Assume $\mu_n \subseteq K$. Assume that $S \supseteq S_{\infty} \cup \qty{v \mid n}$. Assume $S$ is large enough so that $\I_K = K^{\times} \cdot \I_{K,S}$. Let $a \in K^{\times}$ such that $a \in { ( K_v^{\times} ) }^n$ for all $v \in S$ and $a \in U_v$ for all $v \notin S$. Then $a \in {(K^{\times})}^n$.
+\end{lem}
+
+\begin{proof}
+    Let $L = K(\sqrt[n]{a})$. Then we see that $L^v = K_v$ for all $v \in S$ and $L^v/K_v$ is unramified for all $v \notin S$. By local class field theory, in the first case we have $\Nm({(L^v)}^{\times}) = K_v^{\times}$, and in the second case $\Nm(U^v) = U_v$. Therefore $\Nm(\I_L) \supseteq \I_{K,S}$, so $K^{\times} \Nm(\I_L) \supseteq K^{\times} \I_{K,S} = \I_K$, and therefore $\Nm(C_L) \supseteq C_K$, so $L=K$.
+\end{proof}
+
+\begin{prop}
+    Assume $\mu_n \subseteq K$. Let $U \subseteq C_K$ be a finite index open subgroup and assume $C_K/U$ has exponent $n$. Then $U$ is a norm subgroup.
+\end{prop}
+
+\begin{proof}
+    Let $S \supseteq S_{\infty} \cup \qty{v \mid n}$ and 
+    \[ E \coloneqq \prod_{v \in S} {(K_v^{\times})}^n \prod_{v \notin S} U_v \subseteq \I_K. \]
+    Then let $V \coloneqq K^{\times} \cdot E / K^{\times} \subseteq C_K$. Because $C_K/U$ has exponent $n$, we know $U \supseteq V$ for $S$ sufficiently large. It remains to show that $V$ is a norm subgroup. Enlarging $S$ we may assume that $\I_K = K^{\times} \I_{K,S}$.
+
+    Let $U(S) = K^{\times} \cap \I_{K,S}$ be the $S$-units. By the previous lemma, $K^{\times} \cap E = U(S) \cap E = {U(S)}^n$. Set $L = K(\sqrt[n]{U(S)})$. This is a finite abelian extension of exponent $n$ unramified away from $S$. By local class field theory, we know $\Nm({(L^v)}^{\times}) \supseteq {(K_v^{\times})}^n$ for all $s \in S$ and $\Nm(U^v) = U_v$ for all $v \notin S$. But now $E \subseteq \Nm(\I_L)$ and thus $\Nm(C_L) \supseteq V$. Now we show that $\Nm(C_L) = V$.
+
+    We will show that $[C_K : \Nm(C_L)] = [C_K : V]$. But now we have
+    \begin{align*}
+        [C_K:V] &= [\I_K : K^{\times} \cdot E] \\
+                &= [K^{\times} \cdot \I_{K,S} : K^{\times} \cdot E] \\
+                &= \frac{[I_{K,S} : E]}{[K^{\times} \cap \I_{K,S} : K^{\times} \cap E]} \\
+    \end{align*}
+    Now we compute
+    \begin{align*}
+        [\I_{K,S} : E] &= \prod_{v \in S} [K_v^{\times} : {(K_v^{\times})}^n] \\
+                       &= \prod_{v \in S} \frac{n^2}{\abs{n}_v} \\
+                       &= n^{2 \abs{S}}.
+    \end{align*}
+    We also compute
+    \begin{align*} 
+        [K^{\times} \cap \I_{K,S} : K^{\times} \cap E] &= [U(S) : {U(S)}^n] \\
+                                                       &= \abs{{(\Z/n)}^{\abs{s}}} \\
+                                                       &= n^{\abs{s}}
+    \end{align*}
+    by Dirichlet's unit theorem. Thus $[C_K : V] = n^{\abs{S}}$. On the other hand, we have
+    \begin{align*}
+        [C_K : \Nm(C_L)] &= [L:K] \\
+                         &= \abs{ U(S) \cdot {(K^{\times})}^n / {(K^{\times})}^n } \\
+                         &= \abs{U(S) / U(S) \cap {(K^{\times})}^n} \\
+                         &= \abs{U(S) / {U(S)}^n} \\
+                         &= n^{\abs{S}}
+    \end{align*}
+    using Kummer theory and the Dirichlet unit theorem. This implies that $V = \Nm(C_L)$.
+\end{proof}
+
+To finish the proof of global existence, we reduce to the case of Kummer extensions.
+
+\begin{lem}
+    Let $U \subseteq C_K$ be a finite index open subgroup and $V = \Nm_{K'/K}^{-1}(U)$ for some finite extension $K'/K$. If $V$ is a norm subgroup, then so is $U$.
+\end{lem}
+
+\begin{proof}
+    Write $V = \Nm_{L/K'}(C_L)$ for some finite abelian $L/K'$. Now let $M$ be the maximal abelian subextension of $L/K$. Then
+    \[ \Nm_{M/K}(C_M) = \Nm_{L/K}(C_L) = \Nm_{K'/K} (\Nm_{L/K'}(C_L)) = \Nm_{K'/K}(V) \subseteq U. \]
+    Therefore $U$ is a norm subgroup.
+\end{proof}
+
+We are now able to complete the proof of global existence. We will induct on $[C_K : U]$ and assume $p \mid [C_K : U]$. If $\mu_p \subseteq K$, choose $U_1 \subseteq C_K$ containing $U$ such that $[C_K : U_1] = p$. Then $U_1$ is a norm subgroup, so write $U_1 = \Nm(C_L)$. Now $\Nm_{L/K} \colon C_L \to C_K / U$ has image $U_1 / U$ with kernel $V \coloneqq \Nm_{L/K}^{-1}(U)$. Then $[C_L:V] = \abs{U_1/U} = \frac{[C_K:U]}{p}$, and by the inductive hypothesis, $V$ is a norm subgroup, so $U$ is also a norm subgroup.
+
+If $\mu_p \not\subseteq K$, then take $K' = K(\mu_p)$. Now $U' = \Nm_{K'/K}^{-1}(U)$. Then $U'$ is a norm subgroup by the above, so by the lemma, $U$ is also a norm subgroup.
+
+\section{Primes of the form $x^2 + ny^2$}%
+\label{sec:primes_of_the_form_x_2_ny_2_}
+
+In this section we discuss a classical application of class field theory. This was discussed at the beginning of these notes. Recall that if $K = \Q(\sqrt{d})$ with discriminant $d_K$, then the splitting behavior of
+\[ (p) = \begin{cases}
+    \mf{p}_1 \mf{p}_2 & \qty(\frac{d_K}{p}) = 1 \\
+    \mf{p} & \qty(\frac{d_K}{p}) = -1 \\
+    \mf{p}^2 & p \mid d_K
+\end{cases} \]
+is determined by the Legendre symbol $\qty(\frac{d_K}{p})$.
+
+\begin{exm}
+    Consider $K = \Q(\sqrt{-1})$ with $d_K = 4$. Then $p$ splits in $K$ if and only if $\qty(\frac{-4}{p}) = 1$, which is equivalent to $\qty(\frac{-1}{p}) = 1$, is equivalent to $p \equiv 1 \pmod 4$ by basic arithmetic.
+
+    On the other hand, $\mc{O}_K = \Z[i]$ is a PID, so $p$ splits in $K$ if and only if $p = (x+iy)(x-iy)$, which is equivalent to $p = x^2 + y^2$ for integers $x,y \in \Z$. Combining the two equivalences, we see that $p = x^2 + y^2$ if and only if $p \equiv 1 \mod 4$.
+\end{exm}
+
+\begin{exm}
+    Consider $K = \Q(\sqrt{-5})$ with $d_K = -40$. Then $p$ splits in $K$ if and only if $\qty(\frac{-5}{p}) = 1$, and by quadratic reciprocity this is equivalent to $p \equiv 1,3,7,9 \pmod{20}$. However, $\mc{O}_K = \Z[\sqrt{-5}]$ is no longer a PID, so we have a different criterion for $p = x^2 + 5y^2$. 
+\end{exm}
+
+\begin{thm}
+    If $p \neq 2,5$, then $p=x^2 + 5y^2$ if and only if $p \equiv 1,9 \pmod{20}$.
+\end{thm}
+
+    Some examples are given below.
+    \begin{table}[H]
+        \centering
+        \caption{Primes of the form $x^2 + 5y^2$}
+        \label{tab:label}
+        \begin{tabular}{cc}
+        \toprule
+        $p$ & $(x,y)$ \\
+        \midrule
+        $29$ & $(3,2)$ \\
+        $41$ & $(6,1)$ \\
+        $61$ & $(4,3)$ \\
+        $89$ & $(3,4)$ \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+
+Similarly, we have
+\begin{thm}
+    If $p \neq 2,3$, then $p = x^2 + 6y^2$ if and only if $p \equiv 1,7 \pmod{24}$.
+\end{thm}
+
+Some examples are given below.
+\begin{table}[H]
+    \centering
+    \caption{Primes of the form $x^2 + 6y^2$}
+    \label{tab:label}
+    \begin{tabular}{cc}
+    \toprule
+    $p$ & $(x,y)$ \\
+    \midrule
+    $7$ & $(1,1)$ \\
+    $31$ & $(5,1)$ \\
+    $73$ & $(7,2)$ \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+Our goal is to explain the proof of these results using class field theory.
+
+\begin{lem}
+    Let $\mf{p}$ be a finite prime for a number field $K$. Then $\mf{p}$ is principal if and only if $\mf{p}$ splits completely in $H_K$, where $H_K$ is the Hilbert class field of $K$.
+\end{lem}
+
+\begin{proof}
+    By global Artin reciprocity, $\Cl_K \cong \Gal(H_K/K)$. But then $\mf{p}$ is principal if and only if $[\mf{p}] \in \Cl_K$ is trivial. However, this is equivalent to $\Frob_{\mf{p}}$ being trivial, which is equivalent to $p$ splitting completely in $H_K$.
+\end{proof}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item If $p \neq 2,5$, then $p = x^2 + 5y^2$ if and only if $p$ splits completely in $\Q(\sqrt{-5}, \sqrt{-1})$.
+        \item If $p \neq 2,3$, then $p = x^2 + 6y^2$ if and only if $p$ splits completely in $\Q(\sqrt{-6}, \sqrt{-3})$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item If $p \neq 2,5$, then $p = x^2 + 5y^2$ if and only if $(p) = \mf{p}_1 \mf{p}_2$ splits as a product of principal ideals in $K = \Q(\sqrt{-5})$. By the lemma, this is equivalent to $\mf{p}_1, \mf{p}_2$ splitting completely in $H_K = \Q(\sqrt{-5}, \sqrt{-1})$, and combining, we see this is equivalent to $p$ splitting completely in $H_K$.
+        \item This is the same argument, except $H_K = \Q(\sqrt{-6}, \sqrt{-3})$ when $K = \Q(\sqrt{-6})$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+Therefore, to prove the main theorems, it remains to prove the following result.
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item $p$ splits completely in $\Q(\sqrt{-5}, \sqrt{-1})$ if and only if $p \equiv 1,9 \pmod{20}$.
+        \item $p$ splits completely in $\Q(\sqrt{-6}, \sqrt{-3})$ if and only if $p \equiv 1,7 \pmod{20}$.
+    \end{enumerate}
+\end{prop}
+
+The key to this result is that in these cases, $H_K/\Q$ is an abelian extension, so we may apply global Artin reciprocity. Recall that for $\Q$, $\Cl_{(N) \cdot \infty} = \Gal(\Q(\zeta_N) / \Q) = {(\Z/N)}^{\times}$. Then under the Artin reciprocity map, $p \equiv 1 \pmod N$ if and only if $p$ splits completely in $\Q(\zeta_N)$.
+
+\begin{exm}
+    When $N=4$, we have $\Q(\zeta_4) = \Q(i)$, so we recover the result that $p \equiv 1 \pmod 4$ if and only if $p$ splits in $\Q(i)$.
+\end{exm}
+
+More generally, the global existence theorem gives a bijection between finite index open subgroup of $C_{\Q}$ and finite abelian extensions of $\Q$. In particular, we obtain a bijection between finite subgroups of ${(\Z/N)}^{\times}$ and finite abelian subextensions $K/\Q$ of $\Q(\zeta_N)$. This is given by $\Gal(K/\Q) = {(\Z/N)}^{\times} / H$. Thus we see that $p \in H$ if and only if $p$ splits completely in $K$.
+
+\begin{exm}
+    Let $N = 5$. Then ${( \Z/5 )}^{\times} \cong \Z/4$, and so the possibilities for $H$ are $H = \qty{1}, \qty{\pm 1}, {(\Z/5)}^{\times}$. Clearly the trivial subgroup corresponds to $\Q(\zeta_5)$ and ${(\Z/5)}^{\times}$ corresponds to $\Q$, and $\qty{\pm 1}$ corresponds to $\Q(\zeta_5 + \zeta_5^{-1}) = \Q(\sqrt{5})$. By global class field theory, this is the only abelian subextension $K/\Q$ of $\Q(\zeta_5)$.
+\end{exm}
+
+Note that because quadratic extensions are abelian, every quadratic extension is contained in a cyclotomic extension. For example, $\sqrt{5} = \zeta_5 - \zeta_5^2 - \zeta_5^3 + \zeta_5^4$.
+
+\begin{exm}
+    Consider $N = 20$. Then ${(\Z/20)}^{\times} \cong \Z/4 \times \Z/2$. Now the subgroups and corresponding subextensions are given below.
+    \begin{table}[H]
+        \centering
+        \caption{Subgroups and subfields}
+        \label{tab:label}
+        \begin{tabular}{cc}
+        \toprule
+        $H \subseteq {(\Z/20)}^{\times}$ & $K$ \\
+        \midrule
+        $\qty{1}$ & $\Q(\zeta_{20})$ \\
+        $\qty{\pm 1}$ & $\Q(\zeta_{20}+\zeta_{20}^{-1})$ \\
+        $\qty{1,11}$ & $\Q(\zeta_5)$ \\
+        $\qty{1,9,11,19}$ & $\Q(\sqrt{5})$ \\
+        $\qty{1,9,13,17}$ & $\Q(\zeta_4) = \Q(i)$ \\
+        $\qty{1,9}$ & $\Q(\sqrt{5}, \sqrt{i})$ \\
+        $\qty{1,3,7,9}$ & $\Q(\sqrt{-5})$ \\
+        ${(\Z/20)}^{\times}$ & $\Q$ \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+    This gives us the following diagram of field extensions:
+    \begin{equation*}
+    \begin{tikzcd}
+        & \Q(\zeta_{20}) \ar[dash]{d} \ar[dash]{dl} \ar[dash]{dr} \\
+        \Q(\zeta_{20} + \zeta_{20}^{-1}) \ar[dash]{d} & \Q(\zeta_5) \ar[dash]{dl} & \Q(\sqrt{5}, i) \ar[dash]{dll} \ar[dash]{dl} \ar[dash]{d} \\
+        \Q(\sqrt{5}) \ar[dash]{dr} & \Q(i) \ar[dash]{d} & \Q(\sqrt{-5}) \ar[dash]{dl} \\
+                                   & \Q.
+    \end{tikzcd}
+    \end{equation*}
+    In particular, we see that $p \equiv 1,9 \pmod{20}$ if and only if $p$ splits completely in $\Q(\sqrt{-5}, \sqrt{-1})$.
+\end{exm}
+
+\begin{exm}
+    When $N = 24$, then ${(\Z/24)}^{\times} = \Z/2 \times \Z/2 \times \Z/2$. Then we see that $\Q(\sqrt{-6})$ corresponds to $\qty{1,5,7,11}$ and $\Q(\sqrt{-3})$ corresponds to $\qty{1,7,13,23}$, so $\Q(\sqrt{-6}, \sqrt{-2})$ corresponds to $\qty{1,7}$. Therefore $p \equiv 1,7 \pmod{24}$ if and only if $p$ splits completely in $\Q(\sqrt{-6}, \sqrt{-3})$.
+\end{exm}
+
+\begin{rmk}
+    When $K/\Q$ is abelian, class field theory gives us a congruence condition for primes splitting completely in $K$. On the other hand, when $K/\Q$ is nonabelian, then such a congruence condition does not exist.
+\end{rmk}
+
+\begin{lem}
+    Denote by $Spl(L/K)$ to be the set of primes $\mf{p}$ of $K$ splitting completely in $L$. Then $L_1 \subseteq L_2$ if and only if $Spl(L_1/K) \supseteq Spl(L_2/K)$. In particular, $L_1 = L_2$ if and only if $Spl(L_1/K) = Spl(L_2/K)$.
+\end{lem}
+
+\begin{proof}
+    One direction is clear. In the other direction, suppose $Spl(L_1/K) \supseteq Spl(L_2/K)$. Then $Spl(L_1 L_2/K) \supseteq Spl(L_2/K)$. But now Chebotarev density tells us that $[L_1 L_2:K] \leq [L_2:K]$, and this is only possible if $L_1 L_2 = L_2$, which means $L_1 \subseteq L_2$.
+\end{proof}
+
+\begin{prop}
+    If $K/\Q$ is nonabelian, then there does not exist a congruence condition for $p$ splitting completely in $K$.
+\end{prop}
+
+\begin{proof}
+    If there exists such a congruence condition, then choose $p \in Spl(K(\zeta_N)/\Q)$. Thus $p \in \Q(\zeta_N/\Q)$, and therefore $p \equiv 1 \pmod N$. By the criterion, $\qty{p \equiv 1 \pmod N} \subseteq Spl(K/\Q)$. But this means that $Spl(\Q(\zeta_N)/\Q) \subseteq Spl(K/\Q)$, so $\Q(\zeta_N) \supseteq K$. This implies $K/\Q$ is abelian.
+\end{proof}
+
+\begin{exm}
+    If $K = \Q(\sqrt{-14})$, then $\Cl_K = \Z/4$, so $H_K = \Q(\sqrt{2 \sqrt{2}-1})$ with $\Gal(H_K/\Q) \cong D_4$. Thus there is no congruence condition for $p = x^2 + 14y^2$.
+\end{exm}
+
+\begin{rmk}
+    Even though there is no congruence condition, non-abelian reciprocity gives us a condition using coefficients of modular forms.
+\end{rmk}
 
 
 
