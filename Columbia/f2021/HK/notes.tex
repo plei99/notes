@@ -1,0 +1,886 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stackengine} 
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans} 
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\pt}{\mathrm{pt}}
+\renewcommand{\op}{\mathrm{op}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\dpth}{depth}
+\DeclareMathOperator{\pdim}{proj.dim}
+\DeclareMathOperator{\idim}{inj.dim}
+\DeclareMathOperator{\gdim}{gl.dim}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\Bl}{Bl}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Moduli Spaces and Hyperk\"ahler Manifolds  \\ Fall 2021}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Giulia Sacc\`a}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+Unless otherwise noted, these notes were taken during lecture using the
+\texttt{vimtex} package of the editor \texttt{neovim}.  Any errors are mine and
+not the instructor's.  In addition, my notes are picture-free (but will include
+commutative diagrams) and are a mix of my mathematical style and that of the
+instructor.  If you find any errors, please contact me at
+\texttt{plei@math.columbia.edu}.
+
+\subsection*{Acknowledements}%
+\label{sub:acknowledements}
+
+I would like to acknowledge Kevin Chang and Che Shen for pointing out mistakes in these notes.
+
+
+\newpage
+
+\tableofcontents
+
+\chapter{Hyperk\"ahler Manifolds}%
+\label{cha:introduction}
+
+Some useful references for K3 surfaces are the book by Huybrechts and the Barth-Peters-van de Ven book \textit{Compact Complex Surfaces} and another book. For Hilbert schemes some references are Chapter 7 of \textit{FGA Explained}, Huybrechts-Lehn, some lectures of notes of Lehn, and Nakajima's \textit{Lectures on Hilbert Schemes}. For Hilbert schemes of K3 surfaces and abelian varieties, there is Beauville's \textit{Variet\'es Kahlerienne dont la premiere classe de Chern est nulle}. 
+
+\section{Motivation}%
+\label{sec:motivation}
+
+Giulia believes that hyperk\"ahler manifolds are some of the most interesting objects in algebraic geometry because one can actually prove results about high-dimensional hyperk\"ahler varieties, unlike the usual situation in algebraic geometry. Because these objects are of a differential-geometric nature, through the course we will work over $\C$.
+
+Recall that in order to classify curves, for a given curve $C$, we want to consider the positivity of the canonical bundle. In the first case, we know $\omega_{\P^1} = \mc{O}(-2) < 0$, in the second case of an elliptic curve, we have $\omega_C = \mc{O}_C$, and finally for a higher genus curve the canonical sheaf $\omega_C > 0$ is ample.
+
+In higher dimension, let $X$ be a smooth projective variety. Then there exists an integer $\kappa(X)$, the \textit{Kodaira dimension} of $X$ such that
+\[ h^0(\omega_X^{\otimes m}) \sim m^{\kappa(X)} \]
+for $m \gg 0$ sufficiently divisible. Of course, this is a birational invariant.
+
+There is a classification of surfaces. Each smooth surface is birational to a \textit{minimal} surface. Here, a surface $S$ is minimal if any birational morphism from $S$ to a smooth surface is a birational curve. By Castelnuovo, we know that $S$ is minimal if and only if it does not contain a $(-1)$-curve. Also, any surface dominates a minimal surface.
+
+\section{Hyperk\"ahler manifolds}%
+\label{sec:hyperkahler_manifolds}
+
+\begin{exm}
+    If $S$ is a surface, then $\kappa(S) = -\infty$ if and only if 
+    \[ P_m(S) \coloneqq h^0(\omega_S^{\otimes m}) = 0 \] 
+    for all $m \geq 1$. Some examples of these are $\P^2$ and $\P^1 \times \P^1$.
+\end{exm}
+
+\begin{exm}
+    If $S$ is a surface, then $\kappa(S) = 0$ if and only if $P_m(S) = 0$ generically and there exists $m$ such that $P_m(S) = 1$. In this case, there are two cases. First, $h^0(\omega_S) = 1$, in which case $\omega_S = \mc{O}_S$, and thus either $h^1(\mc{O}_S) = 0$ (in which case we have a \textit{K3 surface}) or $\h^1(\mc{O}_S) = 2$ (in which case we have an \textit{abelian surface}).
+
+    Alternatively, we may have $h^0(\omega_S) = 0$, in which case there exists $m \geq 2$ (where $m \in \qty{2,3,4,6}$) such that $\omega_S^{\otimes m} = \mc{O}_S$. Either $h^1(\mc{O}_S) = 0$, in which case we have an Enriques surface, or $h^1(\mc{O}_S) = 1$, in which case we have a bi-elliptic surface.
+
+    If $T$ is an Enriques surface, then there exists a K3 surface $S$ with a $2:1$ \'etale cover $S \to T$. On the other hand, any bi-elliptic surface has an $m:1$ \'etale cover from an abelian surface.
+\end{exm}
+
+\begin{thm}[Beauville-Bogomolov]
+    Let $M$ be a compact K\"ahler manifold with $c_1(\omega_M) = 0$. The there exists a finite \'etale cover of $M$ by a product
+    \[ T^n \times \prod Y_i \times \prod X_i \to M, \]
+    where $T^n$ is a complex torus, the $Y_i$ are \textit{strict Calabi-Yau}, and the $X_i$ are \textit{irreducible holomorphic symplectic} (or hyperk\"ahler).  
+\end{thm}
+
+\begin{defn}
+    Let $Y$ be a compact K\"ahler manifold. Then $Y$ is \textit{strict Calabi-Yau} if $\pi_1(Y) = 1$ and $H^0(\Omega^P_Y) = \C$ when $p = 0, \dim Y$ and $H^0(\Omega^P_Y)$ vanishes elsewhere.
+\end{defn}
+
+\begin{defn}
+    A compact K\"ahler manifold $X$ is \textit{irreducible holomorphic symplectic} if $\pi_1(X) = 1$ and $H^0(\Omega^2_X) = \C \sigma_X$, where $\sigma_X$ is an irreducible symplectic form. In particular, $\sigma^n$ is a nonzero top form and thus trivializes the canonical bundle. In addition, $\sigma$ induces an isomorphism of holomorphic vector bundles $\Omega_X \simeq T_X$.
+\end{defn}
+
+\section{Some surfaces}%
+\label{sec:some_surfaces}
+
+Returning to the simplest case, we will define K3 surfaces.
+\begin{defn}
+    A smooth projective surface $S$ is a \textit{K3 surface} if $\omega_S = 0$ and $h^1(\mc{O}_S) = 0$. 
+\end{defn}
+It follows from the definition that K3 surfaces are simply connected, so they are in fact both strict Calabi-Yau and irreducible holomorphic symplectic. Later in the course, we will see that irreducible holomorphic symplectic varieties are the true higher-dimensional analogues of K3 surfaces.
+
+\begin{lem}
+    Let $S$ be a K3 surface and $f \colon S \to C$ be a dominant morphism to a smooth projective curve $C$ with connected fibers. Then $C = \P^1$ and the general fiber of $f$ is an elliptic curve.
+\end{lem}
+
+\begin{proof}
+    The proof is left as an exercise to the reader.
+\end{proof}
+
+Any K3 surface $S$ with a dominant map to a curve is called an \textit{elliptic K3}. As a consequence, any surjective map $f \colon S \to B$ where $B$ is not a point and $f$ has connected fibers has either $B = \P^1$ or $B$ is a singular K3. This is generalized by the following remarkable result:
+
+\begin{thm}[Matsushita]
+    Let $X^{2n}$ be an irreducible holomorphic symplectic manifold and $f \colon X \to B$ be a proper surjective morphism with connected fibers with $B$ a normal variety. If $B$ is not a point, then either $\dim B = n$ and $f$ is a Lagrangian fibration where the general fiber is an abelian $n$-fold or $\dim B = 2n$ and $B$ is a singular symplectic variety if $f$ is not an isomorphism. In the second case, $f$ is called a symplectic resolution.
+\end{thm}
+
+\begin{rmk}
+    There is another extremely difficult result of Hwang, which says that if $B$ is smooth, then $B = \P^n$ (if $\dim B = 3$, apparently $B$ is a $\Q$-factorial Fano threefold with klt singularities).
+\end{rmk}
+
+Now we will consider some examples. Beginning in the simplest case, consider a general section $f_4 \in \abs{\mc{O}_{\P^3}(4)}$. By the Bertini theorem, the general $S = (f_4 = 0)$ is smooth, and by the adjunction formula, $\omega_S = \mc{O}_S$. Then we consider the exact sequence
+\[ 0 \to \mc{O}_{\P^3}(4) \to \mc{O}_{\P^3} \to \mc{O}_S \to 0, \]
+and by the long exact sequence of cohomology and the known values of cohomology for projective space, we have $H^1(\mc{O}_S) = 0$. 
+
+\begin{exm}
+    A concrete example of this is the Fermat quartic, which has the equation
+    \[ x_0^4 + x_1^4 + x_2^4 + x_3^4 = 0. \]
+    We will see that this is an elliptic K3. The first step is to see that $S$ contains a line $\ell \subseteq S \subseteq \P^3$, so we choose a primitive $\zeta_8$ and set $x_0 = \zeta_8 x_1$ and $x_2 = \zeta_8 x_3$. Now we project $S$ from $\ell$, and considering planes that contain $\ell$, we obtain a rational map $S \dashrightarrow \P^1$. This extends over $\ell$. Finally, we know that $S \cap \P^2$ is a quartic curve containing a line $\ell$, so in fact the generic fiber of this map is an elliptic curve.
+\end{exm}
+
+Similarly, we may consider other complete intersections, such as the $(2,3)$ complete intersection in $\P^4$ (intersection of a quadric and a cubic) and the $(2,2,2)$ complete intersection in $\P^5$. In higher dimensions, any degree $(n+1)$ hypersurface $Y$ in $\P^n$ has $\omega_Y = \mc{O}_Y$. By the Lefschetz hyperplane theorem, this is a strict Calabi-Yau. 
+
+\begin{exm}
+    Let $\Gamma \in \abs{\mc{O}_{\P^2}(6)}$ be a general sextic and $S$ be a $2:1$ cover of $\P^2$ branched along $\Gamma$. We will use the \textit{covering trick}, which holds for any variety $X$, line bundle $L$, and $0 \neq s \in H^0(L^{\otimes m})$ for some $m \geq 1$. Then if we set $D = (s = 0)$, there exists a finite flat morphism $f \colon Y \to X$ that is a $\Z/m$-cover away from $D$ and ramified along $D$. In this case, $f^* L$ has a section $t$ such that $(t=0) \simeq D$. Finally if $X$ and $D$ are smooth, so is $Y$, and $\omega_Y = f^* \omega_X((m-1) (t=0))$. 
+
+    In our example, we have $\omega_S = f^* \omega_{\P^2} \otimes \mc{O}_X(y^2=\Gamma) = \mc{O}_S$, so $S$ is a K3 surface.
+\end{exm}
+
+\begin{exm}[Kummer K3 surfaces]
+    Let $A$ be an abelian surface. It has an involution $-1$ with fixed locus $A[2]$. Thus $A/\pm 1$ has $16$ singular points that look like $\C^2/\pm 1 = \Spec \C[x^2, xy, y^2] = \Spec \C[a,b,c]/(ab=c^2)$ (the $A_1$ singularity). Now the surface $S = \mr{Bl}_{A[2]} A/\pm 1$ is a K3 surface.
+
+    It is easy to see that the smooth locus of $A/\pm 1$ has a holomorphic symplectic form $\sigma_{A/\pm 1}$. Then we can bull back $f^* \sigma_{A/\pm 1}$ to a holomorphic symplectic form on $f^{-1}(U) \subseteq S$, and this form extends to $S$. The reason for this is that $\Bl_{A[2]} A$ still has the involution $-1$, and $S$ is the quotient of $\Bl_{A[2]} A$ by this involution. If we denote this diagram by
+    \begin{equation}
+    \begin{tikzcd}
+        \Bl_{A[2]} A \arrow{r}{q} \ar{d}{g} & S \ar{d}{f} \\
+        A \arrow{r}{p} & A/\pm 1
+    \end{tikzcd}
+    \end{equation}
+    and denote $\wt{A} \coloneqq \Bl_{A[2]} A$, then we obtain
+    \begin{align*} 
+        \omega_{\wt{A}} &= f^* \omega_A \otimes \mc{O}\qty(\sum E_i) = \mc{O}_{\wt{A}}\qty(\sum E_i) \\
+                        &= q^* \omega_S \otimes \mc{O}_{\wt{A}}\qty(\sum E_i) 
+    \end{align*}
+    and therefore $q^* \omega_S = \mc{O}_{\wt{A}}$, so $\omega_S = \mc{O}_S$. The morphism $f$ is called a \textit{symplectic resolution}. 
+\end{exm}
+
+Before we proceed, we will discuss crepant and symplectic resolutions. Let $Y$ be a smooth variety, so $\Omega^1_Y$ is locally free. Then $\omega_Y \coloneqq \bigwedge^{\dim Y} \Omega^1_Y$ is called the \textit{canonical bundle}. Then if $f \colon X \to Y$ is a birational morphism of smooth varieties, we have an exact sequence
+\[ 0 \to f^* \Omega^1_Y \to \Omega^1_X \to \Omega^1_{X/Y} \to 0. \]
+Then we know $\Omega^1_{X/Y}$ is supported on the exceptional locus of $f$. Because $Y$ is smooth, then the exceptional locus is divisorial, and thus 
+\[\omega_X = f^* \omega_Y \otimes \mc{O}_X\qty(\sum a_i E_i). \]
+Now suppose that $Y$ is just normal with smooth locus $U$. Also suppose that $Y \setminus U$ has codimension at least $2$, so Weil divisors on $U$ and $Y$ are the same. There are two ways to extend $\omega_U$ to $Y$. The first is to denote the inclusion $j \colon U \subseteq Y$ and consider the sheaf $j_* \omega_U$, which is generally not locally free. On the other hand, we can extend the Weil divisor $K_U$ to $Y$, which determines a Weil divisor $K_Y$ on $Y$, called the \textit{canonical class}.
+
+\begin{rmk}
+    In general, the Weil divisor $K_Y$ is not Cartier. In fact, $K_Y$ is Cartier if and only if $j_* \omega_U$ is locally free.
+\end{rmk}
+
+Now let $f \colon X \to Y$ be a reolution of $Y$. This means $f$ is proper and an isomorphism over $U$. We want a formula relating of the form $K_X = f^* K_Y + \sum a_i E_i$. Unfortunately, we can only pull back Cartier divisors, so we will assume that $K_Y$ is $\Q$-Cartier, which means that there exists $m \geq 1$ such that $mK_Y$ is Cartier. We know that $f^{-1}(U) \simeq U$, so $\eval{K_X}_{f^{-1}(U)} = \eval{f^* K_Y}_{f^{-1}(U)}$. Thus there exist integers $a_i$ such that
+\[ m K_X = f^* m K_Y + \sum a_i E_i, \]
+where the $E_i$ are the divisorial components of $X \setminus f^{-1}(U)$. Formally dividing by $m$, we have
+\[ K_X = f^* K_Y + \sum a_i E_i. \]
+Here, the $a_i$ are known as the \textit{discrepancies} and if $a_i = 0$, then the resolution is called \textit{crepant}.
+
+\begin{exm}
+    One example of a crepant resolution is $S \to A / \pm 1$.
+\end{exm}
+
+\begin{exm}
+    Consider $Y = \C^{2N}/\pm 1$. This is the cone over the degree $2$ Veronese embedding of $\P^{2N-1}$. Now we will write $f \colon X = \Bl_0 Y \to Y$, and the exceptional divisor is a $\P^{2N-1}$. We know that $X$ is the total space of $\mc{O}(-2)$, so there is a projection $X \to \P^{2N-1}$. Now we need to compute $a$ in the formula
+    \[ K_X = f^* K_Y + aE. \]
+    First note that $K_Y = 0$. This is because the standard holomorphic symplectic form on $\C^{2N}$ descends to the smooth locus $U \subseteq Y$, so we have a symplectic form on $X \setminus E$. Now by the adjunction formula, we have
+    \[ K_E = \eval{(K_X+E)}_E, \]
+    and thus because $E = \P^{2N-1}$, we have
+    \[ \mc{O}_E(-2N) = \eval{(a+1)E}_E. \]
+    Finally, we see that $\eval{\mc{O}_X(E)}_E = \mc{O}_{\P^{2N-1}}(-2)$, and thus $a+1 = N$, so $a = N-1$. In particular, $f$ is a crepant resolution if and only if $N = 1$. For $N \geq 2$, $f^* \omega_U$ extends to $X$ with a zero of order $N-1$ along $E$. Therefore the form
+    \[ f^* \sigma_U \wedge \cdots \wedge f^* \sigma_U \]
+    has a zero of order $N-1$ along $E$, so $f^* \sigma_U$ does not extend over $E$.\footnote{In fact, in this case, no crepant resolution exists. A necessary condition for $f$ to be a symplectic resolution is that it is crepant. In dimension $2$, the two notions are the same.}
+\end{exm}
+
+\section{Hilbert Schemes of points on surfaces}%
+\label{sec:hilbert_schemes_of_points_on_surfaces}
+
+Let $X$ be a smooth quasiprojective surface. Consider the functor
+\[ \mr{Hilb}_X^n \colon \ms{Sch}^{\mr{op}} \to \ms{Set} \]
+associating a scheme $T$ to isomorphism classes of flat proper morphisms $T \times X \supseteq Z \to T$ satisfying $p_{Z_t}(t) = n$.
+
+\begin{thm}[Grothendieck]
+    The functor $\mr{Hilb}_X^n$ is representable by a quasiprojective scheme $X^{[n]}$. If $X$ is projective, so is $X^{[n]}$.
+\end{thm}
+
+Later in the course, we will sketch a construction of the Hilbert scheme, but for now we will simply assume that it exists. A fundamental resolt about Hilbert schemes is
+\begin{thm}[Fogarty]
+    Let $X$ be a smooth quasiprojective surface. Then $X^{[n]}$ is a smooth connected quasiprojective variety of dimension $2n$ and there exists a morphism $h \colon X^{[n]} \to X^{(n)}$, called the \textit{Hilbert-Chow morphism},\footnote{This may be the most studied morphism in algebraic geometry besides $\P^n \to \Spec k$.} which is a resolution of singularities. Here, if $Z$ is a length $n$ subscheme of $Z$, we have
+    \[ h(Z) = \sum_{p \in X} \ell(\mc{O}_{Z,p}) \cdot p. \]
+\end{thm}
+
+\begin{exm}
+    For $n = 2$, we are looking for ideal sheaves $I \subseteq \mc{O}_X$ with quotient $\mc{O}_Z$ of length $2$. At a point $p$, we know $I/ \mf{m}^2 \subseteq \mf{m}/\mf{m}^2$, and thus subschemes of length $2$ supported on $p$ form a $\P \mf{m}/\mf{m}^2 = \P^1$.
+\end{exm}
+
+\begin{proof}[Sketch of smoothness]
+    We need to compute the Zariski tangent space at a given point, so we have
+    \[ T_{[Z]} X^{[n]} = \Hom_{0 \mapsto Z}(\Spec \C[\ep], X^{[n]}). \]
+    By definition, these are flat proper families of length $n$ subschemes $\mc{Z} \to \Spec \C[\ep]$ such that $\eval{\mc{Z}}_{\ep = 0} = Z$, and by a computation (for example in FGA Explained) we have
+    \[ T_{[Z]} = \Hom_X(I_Z, \mc{O}_Z). \]
+    To compute the dimension, we begin by considering the exact sequence
+    \[ 0 \to I_Z \subseteq \mc{O}_X \to \mc{O}_Z \to 0 \]
+    and applying the functor $\Hom_X(-, \mc{O}_Z)$, we have an exact sequence
+    \[ 0 \to \Hom_X(\mc{O}_Z, \mc{O}_Z) \to \Hom_X(\mc{O}_X, \mc{O}_Z) \to \Hom_X(I_Z, \mc{O}_Z) \to \Ext_X^1(\mc{O}_Z, \mc{O}_Z) \to \Ext_X^1(\mc{O}_Z, \mc{O}_Z), \]
+    and thus because $\Hom_X(\mc{O}_X, \mc{O}_Z) \to \Hom_X(I_Z, \mc{O}_Z)$ is the zero morphism, and $\Ext_X^1(\mc{O}_Z, \mc{O}_Z) = H^1(\mc{O}_Z) = 0$, we can simply compute the Ext group. Here, we have
+    \[ \chi(\mc{O}_Z, \mc{O}_Z) \coloneqq \sum_{i=0}^2 {(-1)}^i \dim \Ext^i (\mc{O}_Z, \mc{O}_Z). \]
+    We simply need to show that the Euler characteristic vanishes because
+    \[ \Ext^2(\mc{O}_Z, \mc{O}_Z) = {\Hom(\mc{O}_Z, \omega_X \otimes \mc{O}_Z)}^{\vee} \]
+    has dimension $n$, as does $\Hom(\mc{O}_Z, \mc{O}_Z)$. To do this, we use Grothendieck-Riemann-Roch, which says that
+    \[ \chi(\mc{F}, \mc{G}) = \mr{ch}(\mc{F}^{\vee}) \cdot \mr{ch}(\mc{G}) \sqrt{\mr{td}(X)}, \]
+    and here we see that $\chi(\mc{O}_X, \mc{G}) = \chi(\mc{F})$ where $\mc{F} = \wt{O}_X$. Now because $\supp (\mc{F})$ has dimension $0$, then $\mr{ch}(\mc{F}) = [0, \ldots, \pm \ell (\mc{F})]$.
+\end{proof}
+
+\begin{exer}
+    Prove that $\chi(\mc{O}_Z, \mc{O}_Z) = 0$ using a locally free resolution in the first variable.
+\end{exer}
+
+Now we will review some basic theory of Hilbert schemes for quasiprojective varieties. Here, if $X$ is quasiprojective and $p(t) \in \Q[t]$ is some Hilbert polynomial, consider $[Z] \in \mr{Hilb}_X^{p(t)}$.
+
+\begin{prop}
+    If $I \subseteq \mc{O}_X$ is the ideal sheaf of $Z$, then $T_{[Z]} \mr{Hilb} = \Hom_X(I, \mc{O}_Z) = \Hom_Z(I/I^2, \mc{O}_Z) = H^0(Z, N_{Z/X})$.
+\end{prop}
+
+\begin{proof}[Sketch of proof]
+    We know that $T_{[Z]} \mr{Hilb} = \Hom(\Spec k[\ep], \mr{Hilb}, 0 \mapsto [Z])$. This set of morphisms is the same as the set of $\mc{Z} \subseteq X \times \Spec k[\ep]$ flat over $k[\ep]$. And a module $M$ is flat over $k[\ep]$ if and only if $M \otimes (\ep) \simeq \ep \cdot M$. Now we want an ideal sheaf $\wt{I} \subseteq \mc{O}_X[\ep]$ such that
+    \begin{equation*}
+    \begin{tikzcd}
+        & 0 & 0 & 0 \\
+        0 \ar{r} & I \ar{r} \ar{u} & \mc{O}_X \ar{u} \ar{r} & \mc{O}_Z \ar{r} \ar{u} & 0 \\
+        0 \ar{r} & \wt{I} \ar{u} \ar[hookrightarrow]{r} & \mc{O}_X[\ep] \ar{r} \ar{u} & \mc{O}_{\wt{\mc{Z}}} \ar{r} \ar{u} & 0 \\
+        0 \ar{r} & I \ar{r} \ar[hookrightarrow]{u}{\cdot \ep} & \mc{O}_X \ar{u}{\cdot \ep} \ar{r} & \mc{O}_Z \ar{r} \ar{u} & 0 \\
+        & & 0 \ar{u} & 0 \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    But now we can see that $I = \wt{I}/\ep I \subseteq \mc{O}_X \oplus \ep \mc{O}_Z$, and thus giving $\wt{I}$ is the same as giving an element of $\Hom_X(I, \mc{O}_Z)$.
+\end{proof}
+
+\begin{exer}
+    Let $X$ be a smooth quasiprojective curve. Show that $X^{[n]} = X^{(n)}$ is smooth of dimension $n$.\footnote{Newton actually proved way back in the day that the symmetric powers of $\A^1$ are smooth (and equal to $\A^n$).}
+\end{exer}
+
+\begin{thm}
+    Let $X$ be a quasiprojective variety. Then there exists a regular proper morphism 
+    \[ h_n \colon X^{[n]} \to X^{(n)} \qquad Z \mapsto \sum_{p \in X} \ell(\mc{O}_Z, p) p \]
+    which is surjective and birational. By a result of Fogarty, the fibers of $h_n$ are connected, so if $X$ is connected, so is $X^{[n]}$.
+\end{thm}
+
+
+From now on, we will assume that $X$ is projective. Therefore, for all $Z \subseteq X$ with $\ell(Z) = n$, there exists an open affine neighborhood $U \subseteq X$ containing $Z$. Therefore we have $[Z] \in U^{(n)} \subseteq X^{(n)}$. Now if $Z = \sum \alpha_i p_i$ and $U_i \ni p_i$ are open neighborhoods, then $Z \in \prod U_i^{(\alpha_i)}$.
+
+\begin{rmk}
+    If $X$ is a smooth surface, then the local structure of $X^{(n)}$ at $np$ is the same as the local structure of ${(\A^n)}^{(n)}$ at $n \cdot \qty{0}$. In particular, when $n = 2$, we have
+    \[ (X^{(2)}, 2p) \simeq (Q, 0) \times \Delta, \]
+    where $\Delta$ is smooth of dimension $2$ and $Q$ is the quadric cone.
+\end{rmk}
+
+Now for any partition $n = \sum \alpha_i$ of $n$ into positive integers with length $k$, write $\ul{\alpha} = (\alpha_i)$. Then define
+\[ X_{\alpha}^{(n)} = \qty{ \sum \alpha_i z_i \mid z_i \neq z_j }. \]
+These $X_{\alpha}^{(n)}$ give a stratification of $X^{(n)}$ into locally closed subsets, where the open stratum is $X^{(n)}_{(1,1,\ldots,1)}$ and the closed stratum is $X^{(n)}_{(n)}$. It is easy to see that $\dim X_{\ul{\alpha}}^{(n)} = 2 \ell(\alpha)$. Another important stratum is $X_{(2,1,\ldots,1)}^{(n)}$, where exactly two points come together. Now note that 
+\[ h_n^{-1}(\sum \alpha_i z_i) = \prod h_{\alpha_i}^{-1} (\alpha_i z_i), \]
+where the $h_{\alpha_i}^{-1}$ are the \textit{punctual Hilbert schemes} $\mr{Hilb}^{\alpha_i}(\mc{O}_X, z_i) \simeq \mr{Hilb}^{\alpha_i} ( k[x_1, x_2], 0 )$. For $\alpha = 2$, the punctual Hilbert scheme is simply $\P \mf{m}/\mf{m}^2$.\footnote{Apparently these are useful in representation theory.}
+
+\begin{thm}[Brian\c{c}on]
+    The fiber $h_n^{-1}(nz)$ is irreducible of dimension at most $n-1$.
+\end{thm}
+
+In particular, this tells us that $X^{[n]}_{(1,\ldots,1)} \to X^{(n)}_{(1,\ldots,1)}$ has fibers of dimension $0$ and is thus an isomorphism.
+
+\begin{prop}
+    The exceptional locus of $h_n$ is an irreducible divisor $E$.
+\end{prop}
+
+\begin{proof}
+    Because $X^{(n)}$ is normal and $\Q$-factorial,\footnote{Every finite quotient of something smooth is $\Q$-factorial.} then any birational $Y \to X^{(n)}$ from a smooth variety $Y$ has divisorial exceptional divisor.
+
+    Now the exceptional locus $E_{(2,1,\ldots,1)} to X^{(n)}_{(2,1,\ldots,1)}$ has fibers $\P^1$, while for a general $\ul{\alpha}$, we have
+    \[ \dim E_{\ul{\alpha}} = \dim X_{\ul{\alpha}}^{(n)} + \sum \dim h_{\alpha_i}^{-1} (\alpha_i z_i) \leq n + \ell(\ul{\alpha}). \]
+    Because the strata are irreducible and so are the fibers, we obtain irreducibility for the exceptional divisor.
+\end{proof}
+
+\begin{prop}
+    Let $X$ be a projective variety. Then there exists a birational surjective morphism $h \colon X^{[n]} \to X^{(n)}$.
+\end{prop}
+
+\begin{proof}
+    We will show that for all $Z \subseteq T \times X$ proper and flat over $T$ with $\ell(Z_t) = n$ for all $t$, there exists a natural morphism $T \to X^{(n)}$ given by
+    \[ t \mapsto \sum_{p \in X} \ell(\mc{O}_{Z_t}, p) \cdot p. \]
+    Fix $t_0 \in T$. Because $X$ is projective, there exists $U \subseteq X$ affine with $Z_{t_0} \in U = \Spec A$. Then because $p \colon Z \to T$ is proper, there exists $t_0 \in V \subseteq T$, where $V = \Spec B$ is affine, and for all $t \in V$, $Z_t \in U$. In conclusion, we have a family $Z_V \subseteq V \times U$. At the level of rings, we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        C & B \otimes A \ar[twoheadrightarrow]{l}{\varphi} \\
+        B \ar{u}.
+    \end{tikzcd}
+    \end{equation*}
+    Now we need a map ${(A^{\otimes n})}^{S_n} \to B$. Because $Z \to V$ is flat, $C$ is a rank $n$ projective $B$-module. Clearly we have a map $A \to \End_B(C)$ given by $A \mapsto \varphi(1 \otimes a)$, and thus $A^{\otimes n}$ acts on $C^{\otimes n}$. Then we obtain an action of ${(A^{\otimes n})}^{S_n}$ on $\bigwedge^n C$, which is just a map
+    \[ {(A^{\otimes n})}^{S_n} \to \End_B\qty({\bigwedge}^n C) \simeq B, \]
+    which is the map we want.
+\end{proof}
+
+As an example, consider $B = k$. Then $C = \prod C_i$ is Artinian, hence a product of Artinian local rings $C_i$ of length $\alpha_i$. Then the map we defined at the end of the proof factors through $\prod \mr{Sym}^{\alpha_i}(C_i)$.
+
+\begin{thm}[Beauville-Fujiki]
+    Let $X$ be a smooth surface. Then the Hilbert-Chow morphism is a crepant resolution and if $X$ has a holomorphic symplectic form, so does $X^{[n]}$.
+\end{thm}
+
+\begin{exer}
+    If $X$ is a smooth surface, prove that
+    \[ X^{[n]} = \Bl_{\Delta} X^{(2)} = (\Bl_{\Delta} X \times X) / S_2. \]
+\end{exer}
+
+\begin{proof}
+    Consider $X_*^{(n)} = X^{(n)}_{(1,\ldots,1)} \cup X^{(n)}_{(2,1,\ldots,1)}$ and define $X^n_*, X^{[n]}_*$ similarly. In $X^n$ consider $\Delta = \bigcup \Delta_{ij}$, where the $i$-th and $j$-th points coincide. Now consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \Bl_{\Delta} X_*^n \ar{r}{\eta} \ar{d}{\rho} & X_*^n \ar{d} \\
+        X_*^{[n]} \ar{r}{h} & X_*^{(n)},
+    \end{tikzcd}
+    \end{equation*}
+    which quite clearly commutes by the same argument showing that $X^{[n]}$ is the blowup of $X^{(n)}$ along the diagonal. Then the exceptional divisor $\bigcup E_{ij}$ is fixed by $S_2$, so it maps to $E_* \subset X_*^{[n]}$. Now it suffices to prove that $X_*^{[n]} \to X_*^{(n)}$ is crepant because the complement has codimension $2$. To see this, the quotients by $S_n$ have simple ramification, and thus we have
+    \begin{align*} 
+        K_{\Bl_{\Delta} X_*^n} &= \rho^*(K_{X_*^{[n]}}) + \sum E_{ij} \\
+        &= \rho^* h^* K_{X_*^{(n)}} + (a+1) \sum E_{ij} \\
+        &= \eta^* K_{X_*^n} + \sum E_{ij},
+    \end{align*}
+    so $a = 0$ because $\pi \colon X_*^n \to X_*^{(n)}$ is \'etale away from codimension $2$ and thus $K_{X^n_*} = \pi^* K_{X_*^{(n)}}$. Therefore the Hilbert-Chow morphism is a crepant resolution.
+
+    Now suppose that $X$ has a holomorphic symplectic form $\omega_X \in H^0(\Omega^2_X)$. By codimension reasons, it is enough to produce a holomorphic symplectic form on $X_*^{[n]}$. Clearly we have a symplectic form $\omega \coloneqq \sum_i p_i^* (\omega_X)$ on $X_*^n$, which is clearly $S_n$-invariant. Therefore, we obtain a symplectic form $\sigma_{X^{(n)}_{(1,\ldots,1)}}$ on $X^{(n)}_{(1,\ldots,1)}$ and a symplectic form $\eta^* \omega$ on $\Bl_{\Delta} X_*^n$, which is degenerate along $\bigcup E_{ij}$ and $S_n$-invariant. This induces a holomorphic $2$-form $\sigma_{X_*^{[n]}}$ on $X_*^{[n]}$ (as in there exists such a $\sigma$ such that $\eta^* \omega = \rho^* \sigma$). We know that $\sigma_{X_*^{[n]}}$ is generically nondegenerate.
+
+    We now show that $\sigma \coloneqq \sigma_{X_*^{[n]}}$ is symplectic. We know $\sigma^n$ is a section of $\omega_{X_*^{[n]}}$, so the degeneracy locus of $\sigma$ is the zero locus of $\sigma^n$. However, we know $K_{X_*^{(n)}} = 0$ by the existence of $\omega_X$, and because $h$ is crepant, we see that $K_{X_*^[n]} = 0$, and thus $\sigma^n$ must be nonzero everywhere.
+\end{proof}
+
+We will now discuss some invariants of $X^{[n]}$.
+
+\begin{prop}
+    There is an isomorphicm of Hodge structures
+    \[ H^2(X^{[n]}, \Q) = h^* H^2(X^{(n)}) \oplus \Q E.\footnote{Note that $X^{(n)}$ is a finite quotient of something smooth and thus has a pure Hodge structure.} \]
+\end{prop}
+
+Now we know that $H^2(X^{(n)}) = {H^2(X^n)}^{S_n}$. By the K\"unneth formula, we have
+\[ H^2(X^n) = \bigoplus_{i=1}^n H^2(X) \otimes H^0(X) \oplus \bigoplus_{i,j} H^1(X) \otimes H^1(X), \]
+and therefore
+\[ H^2(X^{(n)}) = H^2(X) \oplus {\bigwedge}^2 H^1(X). \]
+Now
+\begin{align*} 
+    H^2(X^{[n]}) &= H^2(X_*^{[n]}) \\ 
+    &= {H^2(\Bl_{\Delta} X_*^n)}^{S_n}] \\
+    &= {(\Im \eta^*)}^{S_n} \oplus {\qty(\bigoplus \Q E_{ij})}^{S_n} \\
+    &= \eta^* {(H^2(X_*^n))}^{S_n} \oplus \Q E \\
+    &= H^2(X) \oplus {\bigwedge}^2 H^1(X) \oplus \Q E.
+\end{align*}
+Over $\Z$, we can check in local coordinates that there exists a class $\delta \in H^2(X^[n], \Z)$ such that $2 \delta = E$.\footnote{We had a lengthy discussion checking the computations above, and the moral is that algebraic geometers are bad at basic algebra. Also, to avoid sign problems, work in characteristic $2$.}
+
+\begin{cor}
+    If $X$ is a K3 surface, then there is an isomorphism
+    \[ H^2(X^{[n]}) = H^2(X) \oplus \Q E \]
+    as Hodge structures, and in particular, 
+    \[ H^0(\Omega^2_{X^[n]}) = H^{2,0}(X^[n]) \simeq H^2(X) = \C. \]
+\end{cor}
+
+We will now sketch the computation of the fundamental group of $X^{[n]}$. One fact is that
+\[ h_* \colon \pi_1(X^{[n]}) \to \pi_1(X^{(n)}) = \pi_1(X) / [\pi_1(X), \pi_1(X)] = H_1(X, \Z) \]
+is an isomorphism. In particular, if $X$ is a K3 surface, then $\pi_1(X^{[n]}) = 0$, so $X^[n]$ is irreducible holomorphic symplectic.
+
+If $A$ is an abelian surface, we know $A$ has a holomorphic symplectic form $\sigma_A$, and thus $A^{[n]}$ has a holomorphic symplectic form $\sigma_{A^[n]}$, so $\omega_{A^{[n]}} = \mc{O}_{A^[n]}$. However, we know that $H^1(A^[n]) = H^1(A) = \Z^4$, so it is not simply connected. But then we know that 
+\[ H^2(A^{[n]}) = H^2(A) \oplus {\bigwedge}^2 H^1(A) = H^2(A) \oplus H^2(A), \] 
+so $A^[n]$ has larger $H^{2,0}$. By Beauville-Bogomolov, we know that $A^{[n+1]}$ has an \'etale cover by a product of complex tori, irreducible holomorphic symplectics, and strict Calabi-Yaus. There exists a natural morphism
+\[ \mr{alb} \colon A^[n+1] \xrightarrow{h} A^{(n+1)} \to A \]
+and an action of $A$ on $A^{[n+1]}$ given by translation. Of course, this is not equivariant because $\sum (z_i + a) \mapsto \sum z_i + (n+1)a$, and by generic smoothness all fibers are isomorphic and smooth. Now if we consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    A \times_A A^[n+1] \ar{r} \ar{d} & A^{[n+1]} \ar{d}{\mr{alb}} \\
+    A \ar{r}{n+1} & A,
+\end{tikzcd}
+\end{equation*}
+we see that $A \times_A A^{[n+1]} = K_n(A) \times A$. Later, we will show that $K_n(A)$ is irreducible holomorphic symplectic.
+
+\begin{exm}
+    If $n = 1$, then $K_1(A)$ is the Kummer K3 surface associated to $A$.
+\end{exm}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item $\omega_{K^n(A)} = \mc{O}_{K^n(A)}$;
+        \item The restriction of teh holomorphic symplectic form $\eval{\sigma_{A^{[n+1]}}}_{K^n(A)}$ is a symplectic form.
+        \item $H^2(K^n(A)) = H^2(A) \oplus \Q F$ and $\pi_1(K^n(A)) = 1$, where $F$ is one of the fibers of $E \to A$, where $E \subset A^[n+1]$ is the exceptional divisor of $h$.
+    \end{enumerate}
+\end{prop}
+
+We will prove a result that 
+\begin{prop}
+    There exists a (non-effective) line bundle $\mc{L}$ on $X^{[n]}$ such that $\mc{L}^{\otimes 2} = \mc{O}_{X^{[n]}}(E)$.
+\end{prop}
+
+\begin{proof}
+    Consider $\Bl_{\Delta} X_*^n / A_{n}$. This has simple ramification over $E_* \subseteq X_*^{[n]}$, and thus $f_* \mc{O}_Z = \mc{O}_{X_*^{[n]}} \oplus \mc{L}$. This is the desired line bundle.
+\end{proof}
+
+\begin{cor}
+    If $X$ is a K3 surface, then $\Pic(X^{[n]}) = \Pic(X) + \Z \delta$, where $\delta = c_1(\mc{L})$.
+\end{cor}
+
+\section{Generalized Kummers}%
+\label{sec:generalized_kummers}
+
+Recall the construction of the varieties $K^n(A)$ for an abelian surface $A$. Recall the diagram
+\begin{equation*}
+\begin{tikzcd}
+    K^n(A) \ar[hookrightarrow]{r} \ar{dd} & A^{[n+1]} \ar{dd}{a} \ar{dr} & A^{n+1} \ar{d} \\
+    & & A^{(n+1)} \ar{dl}{\ep} \\
+    0_A \ar[hookrightarrow]{r} & A.
+\end{tikzcd}
+\end{equation*}
+Also recall that $\pi_1(A^{[n+1]}) = \pi_1(A)$. Using the long exact sequence of homotopy groups and the fact that $A$ is a $K(\Z^4,1)$, we see that $\pi_1(K^n(A)) = 0$.
+
+\begin{prop}
+    $K^n(A)$ is an irreducible holomorphic symplectic manifold. In particular,
+    \begin{enumerate}
+        \item If $\sigma_{A^{[n+1]}}$ is the holomorphic symplectic form on $A^[n+1]$, then its restriction to $K^n(A)$ is a holomorphic symplectic form.
+        \item $H^2(K^n(A)) = H^2(A) \oplus Q F$, where $F = E \cap K^n(A)$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    Consider the Leray filtration on $H^2(A^{[n+1]})$ induced by the map $a$. Here, we have
+    \[ H^2(A) = H^2(a_* \Q) \subseteq H^2(A^{[n+1]}) \to H^0(A, R^2 a_* \Q) = {H^2(K^n(A))}^{\mr{inv}}, \]
+    where invariants are taken with respect to the monodromy group of $a$, which is $A[n+1]$ because base change by $A \xrightarrow{n+1} A$ trivializes $a$. We will show that the last inclusion is an equality. Also, note that
+    \[ H^2(A^{[n+1]}) = {\bigwedge}^2 H^1(A) \oplus H^2(A) \oplus \Q E \]
+    and that if $\alpha, \beta \in H^1(A)$, then
+    \[ a^* (\alpha \wedge \beta) = a^* \alpha \wedge a^* \beta = \sum p_i^* \alpha \wedge \sum p_i^* \beta. \]
+    Next, write $K_*^n(A)$ analogously to $A_*^{[n]}$ and let $N = \ker(A^{n+1} \to A)$. Then we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \Bl N_* \ar{dr} \ar{dl} \\
+        K_*^n(A) \ar{dr} & & N_* \ar{dl} \\
+        & K_*^{(n)}(A).
+    \end{tikzcd}
+    \end{equation*}
+    Note that $N$ has an action of $S_{n+1}$ and an action of $A[n+1]$ given by adding $\ep$ to all elements that preserves $N$ and $\Delta$. Then we know that 
+    \[ H^2(N_*) = H^2(N) = H^2(A^n) \]
+    has an action of $A[n+1]$ has an action by translation, which is trivial in cohomology. Finally, we conclude that
+    \[ H^2(K^n(A)) = H^2(K^n_*(A)) = {H^2(\Bl N_*)}^{S_{n+1}} \]
+    and obtain the desired result.
+\end{proof}
+
+Now we have two examples of irreducible holomorphic symplectic manifolds. The first is $\mr{K3}^{[n]}$ with $b_2 = b_2(\mr{K3}) + 1 = 23$ and the second is $K^n(A)$ with $b_2 = b_2(A) + 1 = 7$.
+
+\begin{prop}
+    Let $f \colon \mc{X} \to B$ be a smooth proper morphism of complex manifolds such that for some $0 \in B$, $\mc{X}_0(B)$ is a K\"ahler irreducible holomorphic symplectic manifold. Then there exists an analytic neighborhood $0 \in V \subseteq B$ such that for all $t \in U$, $\mc{X}_t$ is K\"ahler and holomorphic symplectic.
+\end{prop}
+
+\begin{proof}
+    By a result of Kodaira, being K\"ahler is an open condition, so there exists an open $U \subseteq B$ such that for all $t \in U$, $\mc{X}_t$ is K\"ahler. Therefore, for all $t \in U$, the map $t \mapsto h^p(\mc{X}_t, \Omega_{\mc{X}_t}^q)$ is constant by Ehresman's theorem that this family is topologically trivial and upper semicontinuity.
+
+    This implies that up to further restricting $U$, $f_* \Omega^2_{\mc{X}/B}|_U$ is free. This implies that $\sigma_0 \in H^0(\Omega^2_{\mc{X}_0})$ extends locally to a section $\wt{\sigma} \in H^0(\mc{X}_U, \Omega^2_{\mc{X}_U/U})$. To check that this is symplectic, we know that $\wt{\sigma}^n \in H^0(K_{\mc{X}/U})$ has closed zero locus which does not intersect the zero fiber, and so we obtain an open set where this form is nondegenerate.
+\end{proof}
+
+\begin{prop}
+    Let $f \colon \mc{X} \to B$ be a smooth proper family of K\"ahler manifolds. Then if $\mc{X}_0$ is irreducible holomorphic symplectic, so is $\mc{X}_t$ for all $t \in B$.
+\end{prop}
+
+\begin{proof}[Sketch of proof]
+    First, note that the relative canonical bundle $K_{\mc{X}/B} \cong f^* \mc{L}$, where $\mc{L}$ is a line bundle on $B$. By the same proof as before, there exists $Z \subseteq B$ such that for all $t \in B \setminus Z$, $\mc{X}_t$ is irreducible holomorphic symplectic.
+
+    Now suppose $t_0 \in Z$. Then $K_{\mc{X}_{t_0}}$ is trivial and $\mc{X}_{t_0}$ is simply connected, so $\mc{X}_{t_0}$ is a product of irreducible holomorphic symplectic varieties and strict Calabi-Yau manifolds.
+
+Now we will state without proof the fact that if $X$ is a complex manifold with $K_X = \mc{O}_X$, then $\mr{Def}(X)$ is smooth (as a germ of complex manifold). This is a nontrivial result of Kodaira and Spencer. Note that if $X_{t_0} = \prod X_i \times \prod Y_i$, then
+    \[ \mr{Def}(X_{t_0}) = \prod \mr{Def}(X_i) \times \prod \mr{Def}(Y_i) \]
+    because all $X_i, Y_i$ satisfy $h^{1,0} = 0$. Thus the splitting situation is impossible.
+\end{proof}
+
+It is known that if $S$ is a K3 surface, then $\mr{Def}(S)$ has dimension $20$. Also, note that projective K3 surfaces are a $19$-dimensional locus. Here, note that $\mr{Def}(X) = h^1(T_X) = h^1(\Omega^1_X) = h^{1,1}$.
+
+In the next case, if $X = S^{[n]}$, then $\mr{Def}(X)$ has dimension $21$, and there is a $20$-dimensional locus of genuine Hilbert schemes of K3 surfaces. There are also higher-codimension loci parameterizing the spaces $M_v(S, h)$. Note that in both of these situations, the very general object is K\"ahler but not projective.
+
+Now we will discuss some examples of Lagrangian fibrations.
+
+\begin{exm}
+    Let $f \colon S \to \P^1$ be an elliptic K3 surface. Then we have a morphism
+    \[ S^{[n]} \xrightarrow{f} S^{(n)} \xrightarrow{f^{(n)}} {(\P^1)}^{(n)} = \P^n. \]
+    This is clearly a Lagrangian fibration.
+\end{exm}
+
+\begin{exm}
+    Let $A = E \times F$ be the product of two elliptic curves and let $\varphi \colon A \to F$ be the second projection. Then we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        K^2(A) \ar[hookrightarrow]{r} \ar{d} & A^{[3]} \ar{d} \\
+        K^{(2)}(A) \ar[hookrightarrow]{r} & A^{(3)} \ar{d} \ar{r}{\varphi^{(3)}} & F^{(3)} \ar{d}{\ep} & \ep^{-1}(0) \ar{d} \ar[hookrightarrow]{l} \\
+        & A & F & 0_F \ar[hookrightarrow]{l}.
+    \end{tikzcd}
+    \end{equation*}
+    Here, we see that $\ep^{-1}(0) = \check{\P}^2$, and so in general there is a Lagrangian fibration $K^n(A) \to \P^n$.
+\end{exm}
+
+\section{Some operations}%
+\label{sec:some_operations}
+
+Now we will consider some birational transformations. 
+
+\begin{exm}[Atiyah flop]
+    Let $f \colon \mc{S} \to \Delta$ be a family of quartic surfaces in $\P^3$. Suppose that $\mc{S}_t$ is smooth and $\mc{S}_0$ has one simple node $p \in \mc{S}_0$. This simple node is given locally by $x^2 + y^2 + z^2 = t$.
+
+    Note that $\Bl_p \mc{S}_0 \eqqcolon \wt{\mc{S}}_0$ is a smooth K3 surface. We would like to modify the family such that we get smooth fibers for all $t \in \Delta$. Now if we take a base change of $\Delta$ by $t \mapsto t^2$, locally at $p \in \ol{\mc{S}}$ we have the equation $x^2 + y^2 + z^2 = t^2$ is a singular point of $\ol{\mc{S}}$. But then $\mc{X} \coloneqq \Bl_p \ol{\mc{S}}$ is smooth, and $\mc{X}_0 = \wt{\mc{S}}_0 \cup Q$, where $Q = \P^1 \times \P^1$.
+
+    Unfortunately, the discrepancy of $\nu \colon \mc{X} \to \ol{\mc{S}}$ is $1$, so $K_{\mc{X}} = \nu^* K_{\ol{\mc{S}}} + Q$, and so by adjunction we see that
+    \[ \omega_Q = (K_{\mc{X}} + Q)|_Q = \mc{O}(2Q)|_Q, \]
+    and thus $\mc{O}_X(Q) = \mc{O}(-1,-1)$. This tells us that we can contract $Q$ along both of the factors and produce $\mc{S}^+, \mc{S}^-$ with maps to $\ol{\mc{S}}$. Then there is a birational map $\varphi \colon \mc{S}^+ \dashrightarrow \mc{S}^-$ which is an isomorphism away from the central fiber.
+
+    We conclude that $\mc{S}_0^{\pm} = \wt{\mc{S}}_0$ and that $\varphi$ is an isomorphism outside of the copies of $\P^1$ that we contracted $Q$ onto but does not extend over those copies of $\P^1$. Also, note that $\mc{X} = \Gamma_{\varphi}$ and that $\mc{X}_t = \Gamma_{\varphi_t}$ for all $t \neq 0$, and $\mc{X}_0 = \wt{\mc{S}}_0 \cup \P^1 \times \P^1$.
+
+    The next observation is that $H^2(\mc{S}^{\pm}_{t_0}) \simeq H^2(\wt{\mc{S}}_0)$, but passing between the two identifications is actually reflection across the $(-2)$-curve produced from the Atiyah flop.
+\end{exm}
+
+Here, we have used the following result of Nakano and Fujiki: Let $\wt{M}$ be a complex manifold and $E \subseteq \wt{M}$ be a smooth divisor that is a $\P^n$-bundle over some $Z$.. Then there exists a complex manifold $M \supset Z$ and $\pi \colon \wt{M} \to M$ such that $\wt{M} = \Bl_Z M$ if and only if $\mc{O}_{\wt{M}}(E)|_E = \mc{O}_X(-1)$.
+
+Another fact that we used to show that $\mc{S}_0^+$ and $\mc{S}_0^-$ are isomorphic is that two birational K3 surfaces are isomorphic.
+
+Now let $X \supseteq \P^n$ be a holomorphic symplectic manifold of dimension $2n$. For example, some K3 surfaces contain $(-2)$-classes, which are isomorphic to $\P^1$.
+
+\begin{lem}
+    Any such $\P^n \subseteq X$ is a Lagrangian submanifold of $X$. Moreover, if $Z \subseteq X$ is any Lagrangian, $N_{Z/X} \cong \Omega^1_{Z}$.
+\end{lem}
+
+\begin{proof}
+    The first part is clear because $H^0(\Omega^2_{\P^n}) = 0$. Next, consider the exact sequencec
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & \mc{J}/\mc{J}^2 \ar{r} & \Omega^1_{X|Z} \ar{r} & \Omega^1_{Z} \ar{r} & 0 \\
+        0 \ar{r} & T_{Z} \ar{r} \ar[hookrightarrow]{u} & T_{X|Z} \ar{u}{\sim} \ar{r} & N_{X/Z} \ar{r} \ar[twoheadrightarrow]{u} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    Note that the rightmost vertical morphism is generically injective with torsion kernel, but because $N_{X|\P^n}$ is torsion free, we have an isomorphism.
+\end{proof}
+
+Now consider $\Bl_{\P^n} X$ and let $E$ be the exceptional divisor. Denote $\P^n = \P V$ for some vector space $V$.
+
+\begin{lem}
+    We have an isomorphism $E \simeq I \subseteq \P V \times \P V^{\vee}$, where $I$ is the incidence subscheme. Moreover, we have $\mc{O}_{\wt{X}}(E) |_E \cong \mc{O}_E(-1, -1)$.
+\end{lem}
+
+\begin{proof}
+    We know that $E = \P N_{\P^n/X} \simeq \P \Omega^1_{\P^n}$. Now if we consider the Euler sequence
+    \[ 0 \to \Omega^1_{\P^n} \to V^{\vee} \otimes \mc{O}_{\P^n}(-1) \xrightarrow{ev} \mc{O}_{\P^n} \to 0, \]
+    we obtain an embedding
+    \[ \P \Omega^1_{\P^n} \subseteq \P V^{\vee} \times \P V \]
+    as the locus $\qty{(s,x) \mid s(x) = 0}$. Next, we use adjunction in $\wt{X}$ and in $\P V \times \P V^{\vee}$ to see that
+    \[ \mc{O}_X(-n, -n) = \omega_E = \omega_{\wt{X}}(E)|_E = \omega_{\wt{X}(nE)}|_E. \]
+\end{proof}
+
+Now by the Nakano-Fujiki criterion, there exists $\wt{X}' \supseteq \P V$ and $q' \colon \wt{X} \to X'$ such that we have the following diagram:
+\begin{equation*}
+\begin{tikzcd}
+    & \wt{X} \ar{dl} \ar{dr}{q'} \\
+    X \ar[dashrightarrow]{rr}{\varphi} & & X'
+\end{tikzcd}
+\end{equation*}
+such that $q'$ takes $E$ to $\P V^{\vee}$.
+
+\begin{defn}
+    Such an $X'$ is called the \textit{Mukai flop} of $X$ at $\P^n$.
+\end{defn}
+
+\begin{rmk}
+    We can perform the Mukai flop whenever we have $Z \subseteq X$ such that there exists some $\P^r$-bundle structure $Z \to B$ and $Z$ has codimension $r$ in $X$. We also require that $N_{Z/X} \simeq \Omega^1_{Z/B}$.
+\end{rmk}
+
+\begin{rmk}
+    We have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & & \wt{X} \ar{dr} \ar{dl} \\
+        \P^n \ar{dr} \ar[hookrightarrow]{r} & X \ar{dr}{\pi} \ar[dashrightarrow]{rr} & & X' \ar{dl} \\
+        & p \ar[hookrightarrow]{r} & X_0.
+    \end{tikzcd}
+    \end{equation*}
+\end{rmk}
+
+\begin{rmk}
+    If $X'$ and $X$ are isomorphic in codimension $2$, they have isomorphic $H^2$ and $X'$ is holomorphic symplectic.
+\end{rmk}
+
+The local structure of $(X_0, p)$ is isomorphic to that of the cone $C^{\bullet}(I)$. In particular, $X_0$ is not $\Q$-factorial because the exceptional locus of $\pi$ is $\P^n$, which is not a divisor. In addition, $\pi$ is a crepant (symplectic resolution).
+
+\begin{prop}
+    A birational map $f \colon X \dashrightarrow X'$ of compact complex manifolds (or projective varieties) with trivial canonical bundles is an isomorphism in codimension $2$. In particular, $\pi_1(X) = \pi_1(X')$ and $H^2(X, \Z) = H^2(X', \Z)$.
+\end{prop}
+
+\begin{proof}
+    Let $\Gamma$ be the graph of $f$ and consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \Gamma \ar{dl}{p} \ar{dr}{p'} \\
+        X \ar[dashrightarrow]{rr}{f} & & X.
+    \end{tikzcd}
+    \end{equation*}
+    Then if $E, F$ are the exceptional divisors of $p,p'$, we have $K_{\Gamma} = E = F$ up to linear equivalence. However, we know that $H^0(mF) = H^0(mE) = H^0(mK_{\Gamma}) = 1$, but these $h^0(\omega_X^{\otimes m})$ are birational invariants, so $E, F$ do not move in their equivalence class. In particular, we have an isomorphism $X \setminus p(E) \simeq X' \setminus p'(F)$.
+\end{proof}
+
+\begin{cor}
+    Suppose that $f \colon X \twoheadrightarrow S'$ is a birational map of K3 surfaces. Then $f$ is an isomorphism.
+\end{cor}
+
+\begin{proof}
+    Consider the graph $\Gamma$ and diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \Gamma \ar{dl}{p} \ar{dr}{q} \\
+        X \ar[dashrightarrow]{rr}{f} & & S'.
+    \end{tikzcd}
+    \end{equation*}
+    We know that $f$ is an isomorphism away from finitely many points. We know that $f$ is not defined at $x$ if and only if $p^{-1}(x)$ is a curve. But then there exists a curve $C' \subseteq S'$ contracted by $f^{-1}$, which is impossible.
+\end{proof}
+
+\begin{exm}[Beauville]
+    This example comes from the paper \textit{Some remarks on K\"ahler manifolds with $c_1 = 0$} by Beauville.\footnote{This paper is written in English, but Giulia suggests that we read some math papers in French.} Let $S \subseteq \P^3$ be a quartic K3 surface. Choose a length $2$ point $z \in S^{[2]}$, which has linear span a line. But then $\ell \cap S = z + w$, and so we define a rational map $\varphi \colon S^{[2]} \dashrightarrow S^{[2]}$ given by $z + w$.
+\end{exm}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item $\varphi$ is regular at $[Z] \in S^{[2]}$ if and only if $\ell = \ev{Z} \not\subseteq S$.
+        \item If $S \supseteq \ell_1, \ldots, \ell_k$ where the $\ell_i$ are disjoint lines, then $\varphi$ is the Mukai flop at $\ell_1^{[2]}, \ldots, \ell_k^{[2]}$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\leavevmode
+    We have a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \Gamma \ar{dl}{q_1} \ar{dr}{q_2} \\
+        S^{[2]} \ar[dashrightarrow]{rr} \ar{dr}{p} & & S^{[2]} \ar{dl} \\
+        & G = Gr(2,4),
+    \end{tikzcd}
+    \end{equation*}
+    and clearly $p$ is finite over $[\ell] \in G$ if and only if $\ell \not\subseteq S$. In particular, if $\ell \subseteq S$, we have $p^{-1}([\ell]) = \ell^{[2]}$. Now consider the graph $\Gamma$ and note that $\Gamma \subseteq S^{[2]} \times_G S^{[2]} \subseteq S^{[2]} \times S^{[2]}$. Because $S^{[2]}$ is smooth, we know $\varphi$ is regular at $[Z]$ if and only if $q_1^{-1}(Z)$ is finite.
+
+    But now $q_1^{-1}(Z) \subseteq S^{[2]} \times S^{[2]}$ is contained in $[Z] \times p^{-1}(\ell)$. Thus, if $p^{-1}(\ell)$ is finite, so is $q_1^{-1}(Z)$. For dimension reasons, if $\ell \subseteq S$ is a line, then $\ell^{[2]} \times \ell^{[2]}$ is an irreducible component of $S^{[2]} \times_G S^{[2]}$. But then $q_1^{-1}(\ell^{[2]}) = \Gamma \cap \ell^{[2]} \times \ell^{[2]}$, and then $S^{[2]} \times_G S^{[2]} \subseteq S^{[2]} \times S^{[2]}$ is a local complete intersection. But then irreducible components intersect in the correct dimension, so we are done.
+
+    It remains to show that $f$ is the Mukai flop. We may assume that there is a unique line $\ell \subseteq S$. The key technical lemma is that $\varphi$ extends to $\Bl_{\ell^{[2]}} S^{[2]}$, which means we have a map
+    \begin{equation*}
+    \begin{tikzcd}
+        \Bl_{\ell^{[2]}} S^{[2]} \ar{r}{\wt{\varphi}} \ar{d}{\pi} & \Bl_{\ell^{[2]}} S^{[2]} \ar{d}{\pi} \\
+        S^{[2]} \ar[dashrightarrow]{r}{\varphi} & S^{[2]}.
+    \end{tikzcd}
+    \end{equation*}
+    But then $\wt{\varphi}$ takes $E$ to itself, which means that it must swap the two rulings on $E$. But this means that the two copies of $\pi$ contract $E$ along the two rulings, as desired.
+
+    To prove the lemma, $S^{[2]} \to G$ factors as $S^{[2]} \to Z \to G$, where $Z$ is normal and $Z \to G$ is finite. But then $\varphi$ descends to an honest morphism $\ol{\varphi} \colon Z \to Z$, and thus if $\ell^{[2]}$ is contracted to $z_0$, $\ol{\varphi}$ lifts to $\Bl_{z_0} Z = \Bl_{\ell^{[2]}} S^{[2]}$.
+\end{proof}
+
+\begin{prop}[Huybrechts]\label{prop:biratdefs}
+    This proposition comes from the paper \textit{Birational symplectic manifolds and their deformations}. Let $\P^n \subseteq X^{2n}$, where $X$ is K\"ahler and symplectic and $f \colon X \dashrightarrow X'$ be the Mukai flop. Then there exist two birational smooth proper families
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{X} \ar[dashrightarrow]{rr}{\phi} \ar{dr} & & \mc{X}' \ar{dl} \\
+        & \Delta
+    \end{tikzcd}
+    \end{equation*}
+    such that $\phi_t$ is an isomorphism for all $t \neq 0$, $\mc{X}_0 = X$, and $\mc{X}_0' = X'$.
+\end{prop}
+
+\begin{cor}
+    There exists an isomorphism of Hodge structure $H^*(X) \simeq H^*(X')$.
+\end{cor}
+
+\begin{proof}
+    Let $\Gamma \subseteq \mc{X} \times_{\Delta} \mc{X}'$ be the fiber product. Then we know $\Gamma_t = \Gamma_{\varphi_t} \subseteq \mc{X}_t \times \mc{X}_t'$, and this implies that
+    \[ \gamma_t^* \colon H^*(\mc{X}_t') \to H^*(X_t) \qquad \alpha \mapsto p_1^* [\Gamma] \smile p_2^*(\alpha) \]
+    is an isomorphism. But then we know $H^*(\mc{X}_t') \simeq H^*(\mc{X}_0')$ and similarly for $\mc{X}$. We also have a correspondence $\Gamma_0^*$, and this is an isomorphism.
+\end{proof}
+
+\begin{exm}
+    Let $S \to \P^2$ be a degree $2$ K3 surface. Then we obtain some $\P^2 \subseteq S^{[2]}$. Then the Mukai flop of $S^{[2]}$ is a hyperk\"ahler manifold $M$ with a Lagrangian fibration over $\check{\P}^2$. Here, if $\ell \subset \P^2$ is a line, we consider $C \in \abs{f^* \mc{O}_{\P^2}(1)}$, and the fiber over $[C] \in\abs{C} = \check{\P^2}$ is simply $\Pic^2(C)$. In addition, the Mukai flop takes $z \in S^{[2]}$ to the line bundle $\mc{O}_C(Z)$.
+\end{exm}
+
+
+
+\end{document}

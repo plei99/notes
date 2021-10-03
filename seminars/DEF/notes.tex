@@ -1,0 +1,633 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+% \usepackage{fancyhdr}
+% \usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bir}{\sim_{\mr{bir}}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Defomation Theory Graduate Student Seminar \\ Spring 2021}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during the seminar using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\vspace*{1cm}
+
+\noindent\textbf{Seminar Website:}  \url{https://www.math.columbia.edu/~dejong/seminar.html}
+\newpage
+
+\tableofcontents
+
+\chapter{Johan (Sep 24): Schlessinger's Paper}%
+\label{cha:johan_sep_24_schlessinger_s_paper}
+
+The paper by Schlessinger is titled \textit{Functors of Artin Rings}. Throughout this lecture, $k$ is a field, $\mc{C}$ is the category of Artinian local $k$-algebras $A, B, C, \ldots$ with residue field $k$, and $\wh{\mc{C}}$ is the category of Noetherian complete local $k$-algebras $R, S, \ldots$ with residue field $k$.
+
+\begin{rmk}
+    Every $R \in \wh{\mc{C}}$ is of the form $k[[x_1, \ldots, x_n]] / (f_1, \ldots, f_m)$ by the Cohen structure theorem. Then $R \in \mc{C}$ if and only if and only if $(f_1, \ldots, f_m)$ contains ${(x_1, \ldots, x_n)}^N$ for some $N$.
+\end{rmk}
+
+\begin{rmk}
+    In the paper, there is a more general setup, where $\Lambda$ is a complete local Noetherian ring with residue field $k$. Then $\mc{C}_{\Lambda}, \wh{\mc{C}}$ are defined analogously, which will allow things like $\Lambda = \Z_p$.
+\end{rmk}
+
+The idea of deformation theory is to look at functors $F \colon \mc{C} \to \ms{Set}$.
+
+\begin{exm}
+    Given $R \in \wh{\mc{C}}$, we set $h_R \colon \mc{C} \to \ms{Set}$ sending $A \mapsto \Hom_{\wh{\mc{C}}}(R, A)$. This is not necessarily representable because $R \notin \mc{C}$ in general, but it is pro-representable.
+\end{exm}
+
+\begin{defn}
+    A functor $F$ is \textit{pro-representable} if $F \simeq h_R$ for some $R \in \wh{\mc{C}}$.
+\end{defn}
+
+\begin{exm}
+    Let $M$ be a variety over $k$ and $m \in M(k)$. Then define
+    \[ \mr{Def}_{M,m}(A) = \qty{ \Spec A \xrightarrow{m_A} M \mid m_A |_{\Spec k} = m}. \]
+    It is easy to see that $\mr{Def}_{M,m}(A)$ is pro-representable by $\wh{\mc{O}}_{M,m}$.
+\end{exm}
+
+Observe that $h_R(k) = \qty{*}$ is a singleton. Also note that $h_R(A \times_B C) = h_R(A) \times_{h_R(B)} h_R(C)$. Here, $A \times_B C$ is the fiber product of rings and not the tensor product.
+
+Now consider the following conditions on $F$: let $A \to B \gets C$ be a diagram in $\mc{C}$ and consider the morphism
+\[ F(A \times_B C) \xrightarrow{(*)} F(A) \times_{F(B)} F(C). \]
+\begin{itemize}
+    \item $(H_1)$ The morphism $(*)$ is surjective if $C \twoheadrightarrow B$;
+    \item $(H_2)$ The morphism $(*)$ is bijective if $C = k[\ep] \twoheadrightarrow k = B$;
+    \item $(H_3)$ $\dim_k(t_F) < \infty$ (later, we will see that we need $H_2$ for formulate this). Here, $t_F$ is the tangent space to $F$;
+    \item $(H_4)$ The morphism $(*)$ is bijective if $C \twoheadrightarrow B$.
+\end{itemize}
+
+\begin{exm}
+    Fix a group $G$ and a representation $\rho_0 \colon G \to GL_n(k)$. Now define
+    \[ \mr{Def}_{\rho_0}^{\text{naive}}(A) = \qty{\rho \colon G \curvearrowright A^{\oplus n} \mid \rho \pmod{m_A} \cong \rho_0} /\cong. \]
+    Better, we will define
+    \[ \mr{Def}_{\rho_0}(A) = \qty{\rho \colon G \curvearrowright A^{\oplus n} \mid \rho \pmod{m_A} = \rho_0} / \ker(GL_n(A) \to GL_n(k)). \]
+    In general these functors fail $(H_4)$ and $\mr{Def}_{\rho_0}^{\text{naive}}$ even fails $(H_2)$.
+
+    Namely, if $H = \Z$ and $\rho_0$ is the trivial representation, then for $\mr{Def}_{\rho_0}^{\text{naive}}$, we are looking at subsets of
+    \[ GL_n(A \times_B C)/\text{conj} \to GL_n(A)/\text{conj} \times_{GL_n(B)/\text{conj}} GL_n(C)/\text{conj}. \]
+    This morphism is always surjective, but in general it is not injective.
+
+    For example, if $A = k[\ep_1], B = k, C = k[\ep_2]$, we can look at elements of the form $1 + \ep_1 T_1 + \ep_2 T_2$ and see that on the left we can only conjugate together, while on the right we can conjugate both $T_1, T_2$ arbitrarily. Here $A \times_B C = k[\ep_1, \ep_2] = k[x_1,x_2] / (x_1^2, x_1 x_2, x_2^2)$.
+\end{exm}
+
+\begin{defn}
+    A natural transformation $t \colon F \to G$ of functors on $\mc{C}$ is \textit{smooth} if for all surjections $B \twoheadrightarrow A$ the map $F(B) \to F(A) \times_{G(A)} G(B)$ is surjective.
+\end{defn}
+
+Note that this is equivalent to the existence of a lift in the diagram below:
+\begin{equation*}
+\begin{tikzcd}
+    \Spec A \ar{r} \ar[hookrightarrow]{d} & M \ar{d}{f} \\
+    \Spec B \ar{r} \ar[dashrightarrow]{ur} & N.
+\end{tikzcd}
+\end{equation*}
+
+
+This definition is motivated by the following example: let $f \colon M \to N$ be a morphism of varieties over $k$. Let $m \in M(k), n = f(m) \in N(k)$. Then the following are equivalent:
+\begin{enumerate}
+    \item $\mr{Def}_{M,m} \to \mr{Def}_{N,n}$ is smooth.
+    \item $f$ is smooth at $m$.
+\end{enumerate}
+
+\begin{defn}
+    We say $F$ has a \textit{hull} if and only if $F(k) = \qty{*}$ and there exists a smooth $t \colon h_R \to F$ for some $R \in \wh{C}$ which induces an isomorphism $t_R \cong t_F$.
+\end{defn}
+
+Now we will say a bit about tangent spaces.
+\begin{enumerate}
+    \item When $F(k) = \qty{*}$, then $t_F = F(k[\ep])$.
+    \item If $F$ satisfies $(H_2)$ and $F(k) = \qty{*}$, then $t_F$ has a natural $k$-vector space structure. Here, $H_2$ gives $F(k[\ep_1, \ep_2]) \to F(k[\ep]) \times F(k[\ep])$ is a bijection, and then we take $\ep_1 \mapsto \ep, \ep_2 \mapsto \ep$, which defines addition.
+    \item $t_R = \Hom_k(\mf{m}_R / \mf{m}_R^2, k) = \Hom_{\wh{C}}(R, k[\ep]) = h_R(k[\ep]) = t_{(h_R)}$.
+\end{enumerate}
+
+\begin{thm}[Schlessinger]
+    Asssume that $F(k) = \qty{*}$. Then the conditions $(H_1), (H_2), (H_3)$ hold for $F$ if and only if $F$ has a hull. In addition, $(H_3)$ and $(H_4)$ hold if and only if $F$ is pro-representable.
+\end{thm}
+
+\begin{proof}[Very rough idea of proof of $\Rightarrow$ for the hull case]
+    Let $n = \dim_k(t_F)$. Then $(H_2)$ and $n < \infty$ imply the following: Let $S = k[[x_1, \ldots, x_n]]$ and $\mf{m} = \mf{m}_S = (x_1, \ldots, x_n)$. We can find $\xi_1 \in F(S/\mf{m}^2)$ such that
+    \[ t_S = \Hom_{\wh{\mc{C}}}(S, k[\ep]) \xrightarrow{\xi_1} t_F \]
+    is an isomorphism.
+
+    Next, we will choose $q \geq 2$ and consider pairs $(J, \xi)$ where $\mf{m}^{q+1} \subset J \subset \mf{m}^2$ and $\xi \in F(S/J)$ such that $\xi \mapsto \xi_1 \in F(S/\mf{m}^2)$. Say that $(J, \xi) \leq (J', \xi')$ if $J \subset J'$ and $\xi \mapsto \xi'$. Choose a minimal pair $(J, \xi)$ for this ordering. We can choose $J_{q}$ so that $\mf{m}^{q+1} + J_{q+1} = J_q$ and $\xi_{q+1}$ maps to $\xi_q$ for bookkeeping purposes.
+
+    Choose $R = \lim S/J_q$, which is a quotient of $S$. Set $t \colon h_R \to F$ given by sending $\varphi \colon R \to A$ to the following: choose $q$ such that $\varphi$ factors as $R \to S/J_q \xrightarrow{\varphi_q} A$ and take $\xi_q \mapsto F(\varphi_q)(\xi_q) \in F(A)$.
+
+    Finally, we must show that $t$ is smooth. Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        S \ar{dd} \ar{r} \ar[dashrightarrow,bend left=30]{drrr}{\varphi} & S/\mf{m}^{q+1} \ar[dashrightarrow,swap]{dr}{\ol{\varphi}'} \ar[dashrightarrow]{drr}{\ol{\varphi}} \\ 
+        & & S/J_q \times_A B \ar{dl}{pr_1} \ar{r} & B \ar[twoheadrightarrow]{d} \\
+        R \ar{r} & S/J_q \ar{rr} \ar[dashrightarrow,bend left=20]{ur}{\psi} & & A
+    \end{tikzcd}
+    \end{equation*}
+    with $B \ni \wt{\xi} \mapsto \xi \in A$ and $S/J_q \ni \xi_q \mapsto \xi$. First, choose $\varphi \colon S \to B$ making the diagram commute. We may increase $q$ such that $\varphi(\mf{m}^{q+1}) = 0$, so we now have $\ol{\varphi} \colon S/\mf{m}^{q+1} \to B$. Now consider the fiber product $S/J_q \times_A B$ and $pr_1 \colon S/J_q \times_A B \to S/J_q$, so we obtain $\ol{\varphi}' \colon S/\mf{m}^{q+1} \to S/J_q \times_A B$. By $(H_1)$, we obtain some $\wt{\wt{\xi}} \in F(S/J_q \times_A B)$ mapping to $\wt{\xi}$ and $\xi_q$. We may now assume that $B \to A$ is a small extension, which means that $\dim_k \ker(B \to A) = 1$, and thus $pr_1$ is a small extension. Therefore, either $\ol{\varphi}'$ is surjective or its image maps isomorphically via $pr_1$ to $S/J_q$., so we have $\psi$ which gives $R \to B$ lifting our given $r \to A$.
+
+    The tricky part is to show that $F(\psi)(\psi_q) = \wt{\wt{\xi}}$, and this step is deliberately omitted.
+\end{proof}
+
+A generalization of this is as follows. Consider a functor $\mc{F} \colon \mc{C} \to \ms{Grpd}$. We say that $\mc{F}$ satisfies the \textit{Rim-Schlessinger condition} (RS) if
+\[ \mc{F}(A \times_B C) \to \mc{F}(A) \times_{\mc{F}(B)} \mc{F}(C) \]
+is an equivalence whenever $C \twoheadrightarrow B$. Let $x_0 \in \mc{F}(k)$ and set 
+\[ \ol{\mc{F}}_{x_0} \colon \mc{C} \to \ms{Set} \qquad A \mapsto \qty{(x, \alpha) \mid x \in \mc{F}(A), \alpha \colon X_0 \to x|_k} / \cong, \]
+where $(x,\alpha) \cong (x', \alpha')$ means that $\varphi \colon x \to x'$ such that the diagram
+\begin{equation*}
+\begin{tikzcd}
+    x|_k \ar{r}{\varphi} & x'|_k \\
+    x_0 \ar{r}{\mr{id}} \ar{u}{\alpha} & x_0 \ar{u}{\alpha'}
+\end{tikzcd}
+\end{equation*}
+commutes.
+
+\begin{thm}
+    If $\mc{F}$ has (RS) then $\ol{\mc{F}}_{x_0}$ has $(H_1)$ and $(H_2)$. Therefore, if $\dim t_{\ol{\mc{F}}_{x_0}} < \infty$ then $\ol{\mc{F}}_{x_0}$ has a hull.
+\end{thm}
+
+In this situation, $\ol{\mc{F}}_{x_0}$ has $(H_4)$ if and only if $\Aut_A(x) \twoheadrightarrow \Aut_B(x|_B)$ whenever $A \twoheadrightarrow B$ and $x \in \mc{F}_{x_0}(A)$.
+
+\begin{exm}
+    Let $\mc{F}(A)$ be the category of representations $G \curvearrowright A^{\oplus n}$ with morphisms being isomorphisms of representations. This has (RS).
+\end{exm}
+
+\begin{exm}
+    Let $\mc{F}(A)$ be the category of smooth projective families of curves of genus $g$ over $A$ with morphisms being isomorphisms. This has (RS).
+\end{exm}
+
+Returning to the example of representations, it turns out that $t_{\mr{Def}_{\rho_0}} = H^1(G, M_{n \times n}(k))$, where $G$ acts on $M_{n \times n}(k)$ via $\rho_0$ by conjugation.
+
+\begin{exm}
+    Consider $G = \Z \oplus \Z$ and $\rho_0$ to be the trivial representation on $k^{\oplus 2}$. Then $t_{\mr{Def}_{\rho_0}} = H^1(\Z^2, M_2(k)) = M_2(k) \oplus M_2(k)$. Given two matrices $A, B$, we have the representation
+    \begin{align*}
+        \Z^2 \to GL_2(k[\ep]) & (1,0) \mapsto \mqty(\dmat{1,1}) + \ep A \\
+        & (0,1) \mapsto \mqty(\dmat{1,1}) + \ep B.
+    \end{align*}
+    We get a hull $R$ with $h_R \to \mr{Def}_{\rho_0}$. We know that $R$ is a some quotient of $k[[a_{11}, \ldots, a_{22}, b_{11}, \ldots, b_{22}]]$ with $\rho$ looking like
+    \[ (1,0) \mapsto \mqty(\dmat{1,1}) + A \qquad (0,1) \mapsto \mqty(\dmat{1,1}) + B, \]
+    and of course $R$ is the quotient of the power series ring by the ideal generated by the coefficients of $AB - BA$.
+\end{exm}
+
+\chapter{Ivan and Cailan (Oct 1): Deformations of Schemes}%
+\label{cha:ivan_and_cailan_oct_1_deformations_of_schemes}
+
+\section{Deformations of affine schemes}%
+\label{sec:deformations}
+
+We are looking for a Cartesian diagram of schemes
+\begin{equation*}
+\begin{tikzcd}
+    X \ar{r} \ar{d} & \mc{X} \ar{d}{\pi} \\
+    \Spec k \ar{r} & S
+\end{tikzcd}
+\end{equation*}
+where $\pi$ is flat and surjective and $S$ is surjective. This is called an \textit{deformation} of $X$ over $S$. For the beginning of this lecture (the part given by Ivan), we are interested in $S = \Spec A$, where $A \in \mc{C}^*$ (this category was defined in the previous lecture). This case is called a \textit{local deformation}, and in the face where $A$ is Artinian, it is called an \textit{infinitesimal deformation}.
+
+For the ring theorists, we will make the following digression. Let $A$ be a ring and $I \subset A$ be an ideal with $I^2 = 0$. Suppose that $\ol{B}$ is an $A/I$-algebra, $J$ is an $\ol{B}$-module, and $h \colon I \to J$ is an $A$-module map. Then we are interested in a diagram
+\begin{equation*}
+\begin{tikzcd}
+    0 \ar{r} & J \ar{r} & ? \ar{r} & \ol{B} \\
+    0 \ar{r} & I \ar{u}{h} \ar{r} & A \ar{u} \ar{r} & A/I \ar{u} \ar{r} & 0,
+\end{tikzcd}
+\end{equation*}
+which we will call a deformation of $A$. Here are some interesting questions:
+\begin{enumerate}
+    \item Is such a deformation unique?
+    \item If $\ol{B}$ is flat over $A/I$, does that mean that $B$ is flat over $A$?
+\end{enumerate}
+
+Returning to the case of schemes, we will say that two deformations $\mc{X}, \mc{X}'$ of $X$ over $S$ are isomorphic if there exists an $S$-isomorphism $\phi \colon \mc{X}' \to \mc{X}$ commuting with the inclusions of the central fibers $X \to \mc{X}, \mc{X}'$.
+
+\begin{exm}
+    The most basic example of a family is the trivial deformation
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r} \ar{d} & X \times_k S \ar{d} \\
+        \Spec k \ar{r} & S.
+    \end{tikzcd}
+    \end{equation*}
+\end{exm}
+
+\begin{defn}
+    A scheme $X$ is \textit{rigid} if all deformations of $X$ are isomorphic to the trivial deformation.
+\end{defn}
+
+\begin{thm}
+    If $X$ is a smooth affine $k$-scheme and $S = \Spec A$ for some local Artinian ring, then $X$ is rigid.
+\end{thm}
+
+\begin{defn}
+    A closed immersion $i \colon S_0 \hookrightarrow S$ of schemes is called a \textit{first (resp. nth) order thickening} if the ideal sheaf $\mc{I} = \ker(i^{\flat} \colon \mc{O}_S \to \mc{O}_{S_0})$ satisfies $I^2 = 0$ (resp. $I^{n+1} = 0$).
+\end{defn}
+
+\begin{defn}
+    A morphism $f \colon X \to S$ is called \textit{formally smooth} (resp. unfamified, resp. \'etale) if for all first order thickenings $i \colon T_0 \to T$ of affine schemes and diagrams
+    \begin{equation*}
+    \begin{tikzcd}
+        T_0 \ar{r}{u_0} \ar{d}{i} & X \ar{d}{f} \\
+        T \ar{r} \ar[dashrightarrow]{ur}{\wt{u_0}} & S
+    \end{tikzcd}
+    \end{equation*}
+    there exists a lift $\wt{u_0}$ (resp. there is at most one such $\wt{u_0}$, resp. there exists a unique $\wt{u}_0$).
+\end{defn}
+
+\begin{exm}\leavevmode
+    \begin{enumerate}
+        \item Open immersions are formally \'etale. This is cleaer because $T_0, T$ have the same underlying topological space.
+        \item Closed immersions are formally unramified. This is clear because $X \to S$ induces an injection on $T$-points.
+        \item $\A^n_S \to S$ is formally smooth. To see this, assume $S = \Spec R$ is affine and then consider the corresponding lifting problem in commutative algebra.
+    \end{enumerate}
+\end{exm}
+
+\begin{prop}
+    The classes of formally smooth (resp. \'etale, resp. unramified) morphisms are closed under base change, composition, and products and local on both source and target.
+\end{prop}
+
+\begin{defn}
+    A $f \colon X \to S$ is \textit{smooth} if it is formally smooth and locally of finite presentation.
+\end{defn}
+
+We will now consider differentials. Let $X = \Spec A$ be an affine scheme over $k$ and choose a $k$-point and consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \Spec k \ar{r} \ar{d} & X \ar{d} \\
+    \Spec k[\ep] \ar{r} & \Spec k.
+\end{tikzcd}
+\end{equation*}
+If $X$ is smooth, then there exists a lift $\Spec k[\ep] \to X$. But this is given by a morphism
+\[ \wt{\phi} \colon A \to k[\ep] / \ep^2 \qquad a \mapsto \phi(a) + d(a) \ep. \]
+This motivates the following definition:
+\begin{defn}
+    Let $R \to A$ be a morphism of rings and $M$ be an $A$-module. A \textit{derivation} $d \colon A \to M$ is an $A$-linear map satisfying the Leibniz rule.
+\end{defn}
+
+\begin{prop}
+    There exists an $A$-module $\Omega^1_{A/k}$ equipped with a derivation $d \colon \Omega^1_{A/k}$ that is universal among derivations from $A$. This means that all derivations $\wt{d} \colon A \to M$ factor through $d$, and formally, we have an identity
+    \[ \mr{Der}_R(A,M) \simeq \Hom_A(\Omega^1_{A/k}, M). \]
+\end{prop}
+
+\begin{defn}
+    For an $A$-module $M$ with derivation $d \colon A \to M$, define the ring $A[M]$ as the module $A \oplus M$ with the multiplication
+    \[ (a,m) \cdot (a', m') = (aa', am' + a'm). \]
+    There is a sequence $\phi \colon A \to A[M] \to A$.
+\end{defn}
+
+\begin{prop}
+    Let $S \gets R \to A \to B$ be a diagram of rings. Then
+    \begin{enumerate}
+        \item $\Omega^1_{A \otimes S / S} \simeq \Omega^1_{A/R} \otimes_R S$;
+        \item The sequence $\Omega^1_{A/R} \otimes_A B \to \Omega^1_{B/R} \to \Omega^1_{B/A} \to 0$ is exact.
+        \item If $B = A/I$ for some ideal $I$, we have an exact sequence
+            \[ I/I^2 \to \Omega^1_{A/R} \otimes_A B \to \Omega^1_{B/R} \to 0. \]
+        \item For all $f \in A$, we havae $\Omega^1_{A[f^{-1}]/R} \simeq \Omega^1_{A/R} \otimes_A A[f^{-1}]$.
+    \end{enumerate}
+\end{prop}
+
+\begin{rmk}
+    If $J = \ker(A \otimes_R A \to A)$, then $\Omega^1_{A/R} = J/J^2$.
+\end{rmk}
+
+\begin{thm}
+    Let $f \colon X \to S$ be locally of finite presentation. The following are equivalent:
+    \begin{enumerate}
+        \item $f$ is smooth;
+        \item $f$ is flat with smooth fibers;
+        \item $f$ is flat and has smooth geometric fibers.
+    \end{enumerate}
+\end{thm}
+
+We will finally return to deformation theory.
+
+\begin{lem}
+    Let $Z_0$ be a closed subscheme of $Z$ determined by a nilpotent ideal sheaf $N$. If $Z_0$ is affine, then so is $Z$.
+\end{lem}
+Proof of this result can be found in EGA, Chapter I.5.9. 
+
+\begin{proof}[Proof of Theorem 2.1.3]
+    Recall that we have a diagram of the form
+    \begin{equation*}
+    \begin{tikzcd}
+        B \ar{r} & B_0 \\
+        A \ar{u} \ar{r} & k \ar{u},
+    \end{tikzcd}
+    \end{equation*}
+    where $A \to B$ is flat and $B_0 \simeq B \otimes_A k$ is a smooth $k$-algebra. We need to prove that $B_0 \simeq B \otimes_A k$. The first step is to prove this result for first-order deformations. Suppose that $A = k[\ep]$ is a square-zero extension. 
+    \begin{lem}
+        For a ring $R$ with $M, N$ flat over $R$, nilpotent ideal $I \subset R$, and $f \colon M \to N$, then if $f \otimes_R R/I$ is an isomorphism, then so is $f$.
+    \end{lem}
+    To prove the lemma, note that the cokernel of $f$ is preserved by $I$, so it must vanish. Returning to our case, we know that $B$ is a smooth $k[\ep]$-algebra. Now we obtain a square-zero extension $B_0[\ep]$ of $B_0$ and a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        B \ar{r} & B_0 \\
+        k[\ep] \ar{r}{f} \ar{r} & B_0[\ep] \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    with a lift $B \to B_0[\ep]$. But now by the lemma, we have $B \otimes_{k[\ep]} k = B_0[\ep] \otimes_{k[\ep]} k$. The rest of the proof follows using an inductive argument that was verbalized but now written down.
+\end{proof}
+
+\section{Deformations of schemes}%
+\label{sec:deformations_of_schemes}
+
+The main theorem of this section is
+\begin{thm}
+    Assume $X$ is a smooth $R$-scheme. Then there is a bijection
+    \[ \mr{Def}_X^{\mr{sm}}(k[I]) \simeq H^1(X, T_{X/k} \otimes I). \]
+\end{thm}
+
+\begin{proof}
+    Let $\mc{X}'$ be a smooth deformation over $k[I]$. Then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r} \ar{d} & X' \ar{d} \\
+        \Spec k \ar{r} & \Spec k[I]
+    \end{tikzcd}
+    \end{equation*}
+    is cartesian. Then if $U_k = \Spec B_k$ is an affine cover of $X$ and $U_k' = \Spec D_k$ is an affine cover of $X'$, we have a $k[I]$-linear ring isomorphism
+    \[ \varphi_k \colon k[I] \otimes_k B_k \to D_k \qquad (k,i) \otimes b \mapsto s(b) + i. \]
+    Modulo $I$, $\varphi_k$ is the identity on $B_k$. Without loss of generality, we may assume that $U_{kj} = U_k \cap U_j$ is a distinguished open for both $U_k$ and $U_j$, so let $U_{kj} = \Spec B_{kj}$ and $U_{kj}' = \Spec D_{kj}$. Now note that both
+    \[ \varphi_k, \varphi_j \colon k[I] \otimes_k B_{kj} \to D_{kj} \]
+    induce the identity on $B_{kj}$ modulo $I$. Now we have the commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & I \ar{d}{\mr{id}} \ar{r} & D_{kj} \ar{d}{\varphi_j^{-1} \varphi_k} \ar{r} & B_{kj} \ar{d}{\mr{id}} \ar{r} & 0 \\
+        0 \ar{r} & I \ar{r} & D_{kj} \ar{r} & B_{kj} \ar{r} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    \begin{lem}
+        The morphism $g = \varphi_j^{-1} \varphi_k$ must be of the form
+        \[ g(i+b) = i + b + \delta(b), \]
+        where $\delta \colon B_{kj} \to I$ is a derivation. 
+    \end{lem}
+    In particular, this means that $\varphi_j^{-1} \circ \varphi_k(b, b') = (b, \alpha_{kj}(b) + b')$, where $\alpha_{kj} \colon B_{kj} \to I \otimes_k B_{kj}$ is a derivation.
+
+    By definition, we have
+    \begin{align*} 
+        (T_{X/k} \otimes_k I)(B_{kj}) &= {\Hom_{B_{kj}}(\Omega^1_{B_{kj}/k}, B_{kj}) \otimes_k I} \\ 
+        &= {\Hom_{B_{kj}}(\Omega^1_{B_{kj}/k}, B_{kj} \otimes_k I)} \\ 
+        &= \mr{Der}_k(B_{kj}, B_{kj} \otimes_k I).
+    \end{align*}
+    Therefore, $\alpha_k \in H^0(B_{kj}, T_X \otimes_k I)$. Note that
+    \[ \varphi_{\ell}^{-1} \circ \varphi_j \circ \varphi_j^{-1} \circ \varphi_{k}^{-1} = \varphi_{\ell}^{-1} \circ \varphi_k, \]
+    which implies that
+    \[ (b, \alpha_{j\ell}(b) + \alpha_{kj}(b) + b') = (b, \alpha_{k\ell}(b) + b') \]
+    and thus $\qty{\alpha_{kj}} \in Z^1(\qty{U_k}, T_X \otimes_k I)$.
+
+    If two deformations are the same, note that $\varphi_k$ is defined using a ring section $s_k \colon B_k \to D_k$ of the canonical map $\pi_k \colon D_k \to B_k$. If $\varphi_k'$ is defined using another section $s_k'$, then define $\theta_k = s_k' - s_k \in \mr{Der}(B_k, I \otimes_k B_k)$. We now compute
+    \[ ({(\varphi_j')}^{-1} \circ \varphi_k' - \varphi_j^{-1} \circ \varphi_k)(b, b') = (0, \theta_k(b) - \theta_j(b)), \]
+    and thus the two differ by the desired coboundaries.
+\end{proof}
+
+We will now consider some obstructions. We are looking for a diagram of the form
+\begin{equation*}
+\begin{tikzcd}
+    X' \ar{r} \ar{d}{f} & X'' \ar{d} \\
+    \Spec A' \ar{r} & \Spec A''.
+\end{tikzcd}
+\end{equation*}
+for each pair $(j, k)$, we have a isomorphism $\psi_{jk} \colon V_j' \to V_k'$ and a cocycle
+\[ c_{jk\ell} = \psi_{k\ell} \circ \psi_{jk} \circ \psi_{j\ell}^{-1}. \]
+This induces $B_{jk\ell} \in \mr{Der}_A(D_{jk\ell}, J \otimes_A D_{k\ell}) = Z^2(U, T_{X'/A} \otimes_A J)$.
+
+Now we will discuss some examples.
+\begin{thm}
+    Let $C$ be a smooth projective curve, $T = T_C$, and $K = \Omega^1_C$. We have the following table:
+    \begin{table}[H]
+        \centering
+        \caption{Cohomology}
+        \label{tab:label}
+        \begin{tabular}{ccccc}
+        \toprule
+            & degree & $h^0$ & $h^1$ & $h^2$ \\
+            \midrule
+            $K$ & $2g-2$ & $g$ & $1$ & $0$ \\
+            $T$ & $2-2g$ & $\ep$ & $\ep + 3g-3$ & 0 \\
+            \bottomrule
+        \end{tabular}
+        where $\ep = 0$ where $g \geq 2$, $\ep = 1$ if $g = 1$, and $\ep = 3$ if $g = 0$. For $g \geq 2$, $\deg T < 0$, and by Riemann-Roch and Serre duality, we have $h^1(C, T_C) = 3g-3$.
+    \end{table}
+\end{thm}
+
+\begin{thm}
+    $\P^n$ has no infinitesimal deformations.
+\end{thm}
+
+\begin{proof}
+    Consider the Euler sequence
+    \[ 0 \to \mc{O} \to {\mc{O}(1)}^{\oplus n+1} \to T_{\P^n} \to 0 \]
+    and use the long exact sequence in cohomology. Because positive degree line bundles have no higher cohomology, we have $H^1(T_{\P^n}) = 0$.
+\end{proof}
+
+
+
+\end{document}
