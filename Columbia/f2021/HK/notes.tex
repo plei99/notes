@@ -151,6 +151,7 @@
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Supp}{Supp}
 \DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\rk}{rk}
 \DeclareMathOperator{\spec}{Spec}
 \DeclareMathOperator{\Spec}{Spec}
 \DeclareMathOperator{\Proj}{Proj}
@@ -163,6 +164,7 @@
 \DeclareMathOperator{\idim}{inj.dim}
 \DeclareMathOperator{\gdim}{gl.dim}
 \DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
 \DeclareMathOperator{\codim}{codim}
 \DeclareMathOperator{\Bl}{Bl}
 
@@ -227,10 +229,10 @@ commutative diagrams) and are a mix of my mathematical style and that of the
 instructor.  If you find any errors, please contact me at
 \texttt{plei@math.columbia.edu}.
 
-\subsection*{Acknowledements}%
+\subsection*{Acknowledgements}%
 \label{sub:acknowledements}
 
-I would like to acknowledge Kevin Chang and Che Shen for pointing out mistakes in these notes.
+I would like to acknowledge Kevin Chang, Kuan-Wen Chen, Che Shen, and Nicol\'as Vilches for pointing out mistakes in these notes.
 
 
 \newpage
@@ -672,7 +674,7 @@ Now we have two examples of irreducible holomorphic symplectic manifolds. The fi
 
     Now suppose $t_0 \in Z$. Then $K_{\mc{X}_{t_0}}$ is trivial and $\mc{X}_{t_0}$ is simply connected, so $\mc{X}_{t_0}$ is a product of irreducible holomorphic symplectic varieties and strict Calabi-Yau manifolds.
 
-Now we will state without proof the fact that if $X$ is a complex manifold with $K_X = \mc{O}_X$, then $\mr{Def}(X)$ is smooth (as a germ of complex manifold). This is a nontrivial result of Kodaira and Spencer. Note that if $X_{t_0} = \prod X_i \times \prod Y_i$, then
+Now we will state without proof the fact that if $X$ is a complex manifold with $K_X = \mc{O}_X$, then $\mr{Def}(X)$ is smooth (as a germ of complex manifold). This is a nontrivial result of Bogomolov-Tian-Todorov. Note that if $X_{t_0} = \prod X_i \times \prod Y_i$, then
     \[ \mr{Def}(X_{t_0}) = \prod \mr{Def}(X_i) \times \prod \mr{Def}(Y_i) \]
     because all $X_i, Y_i$ satisfy $h^{1,0} = 0$. Thus the splitting situation is impossible.
 \end{proof}
@@ -753,7 +755,7 @@ Now consider $\Bl_{\P^n} X$ and let $E$ be the exceptional divisor. Denote $\P^n
     we obtain an embedding
     \[ \P \Omega^1_{\P^n} \subseteq \P V^{\vee} \times \P V \]
     as the locus $\qty{(s,x) \mid s(x) = 0}$. Next, we use adjunction in $\wt{X}$ and in $\P V \times \P V^{\vee}$ to see that
-    \[ \mc{O}_X(-n, -n) = \omega_E = \omega_{\wt{X}}(E)|_E = \omega_{\wt{X}(nE)}|_E. \]
+    \[ \mc{O}_X(-n, -n) = \omega_E = \omega_{\wt{X}}(E)|_E = \mc{O}_{\wt{X}}(nE)|_E. \]
 \end{proof}
 
 Now by the Nakano-Fujiki criterion, there exists $\wt{X}' \supseteq \P V$ and $q' \colon \wt{X} \to X'$ such that we have the following diagram:
@@ -880,6 +882,626 @@ The local structure of $(X_0, p)$ is isomorphic to that of the cone $C^{\bullet}
 \begin{exm}
     Let $S \to \P^2$ be a degree $2$ K3 surface. Then we obtain some $\P^2 \subseteq S^{[2]}$. Then the Mukai flop of $S^{[2]}$ is a hyperk\"ahler manifold $M$ with a Lagrangian fibration over $\check{\P}^2$. Here, if $\ell \subset \P^2$ is a line, we consider $C \in \abs{f^* \mc{O}_{\P^2}(1)}$, and the fiber over $[C] \in\abs{C} = \check{\P^2}$ is simply $\Pic^2(C)$. In addition, the Mukai flop takes $z \in S^{[2]}$ to the line bundle $\mc{O}_C(Z)$.
 \end{exm}
+
+\begin{prop}
+    Let $\P^n \subseteq X^{2n}$ be a K\"ahler holomorphic symplectic manifold and $f \colon X \dashrightarrow X'$ be the Mukai flop. Then there exist $\mc{X}, \mc{X}'$ over a disk $\Delta$ and $\phi_t \colon \mc{X} \to \mc{X}'$ such that $\phi_t$ is an isomorphism for $t \neq 0$, and ${(\Gamma_{\phi})}_0 = \Gamma_f + \P^n \times \check{\P}^n$.
+\end{prop}
+
+\begin{cor}
+    There exists a universal deformation space for $X$ (as a germ of complex manifold).
+\end{cor}
+
+\begin{proof}
+    We have an identity
+    \[ T_{\mr{Def}(X)} = H^1(X, T_X) = \Ext^1_{\mc{O}_X}(\Omega^1_X, \mc{O}_X). \]
+    Here, a deformation $v$ is taken to the exact sequence
+    \begin{equation}\label{eqn:normal} 0 \to T_X \to T_{\mc{X}}|_X \to N_{X/\mc{X}} = \mc{O}_X \to 0. \end{equation}
+    The first step in the proof is to show that there exists $\mc{X} \to \Delta$ such that $N_{\P^n/\mc{X}} = V^{\vee} \otimes \mc{O}_{\P^n}(-1)$. To do this, note that $H^1(X, T_X) = H^1(X, \Omega^1_X)$ and there is a sequence of maps
+    \[ H^1(X, T_X) \to H^1(P, T_X |_P) \to H^1(P, N_{P/X}) = H^1(P, \Omega^1_P). \]
+    We also have a map $H^1(X, \Omega^1_X) \to H^1(P, \Omega^1_P)$, and the resulting diagram commutes. We need to find $v \in H^1(X, T_X)$ such that $v|_P \neq 0$. Note that because $X$ is K\"ahler, there exists a K\"ahler form $\omega$ that restricts to a nonzero form on $P$. Next, the exact sequence (\ref{eqn:normal}) remains exact after restricting to $P$, and therefore we have
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & T_X |_P \ar{r} \ar{d} & T_{\mc{X}}|_P \ar{r} \ar{d} & N_{X/\mc{X}} |_P \ar{r} \ar[equal]{d} & 0 \\
+        0 \ar{r} & N_{P/X} \ar{r} & N_{P/\mc{X}} \ar{r} & \mc{O}_P \ar{r} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    Because $v_P \neq 0$, the bottom sequence is not split, and because $v_P \in H^1(P, N_{P/X}) = H^1(P, \Omega^1_P)$ is contained in a $1$-dimensional vector space, the sequence is actually the Euler sequence, and thus $N_{P/\mc{X}} = V^{\vee} \otimes \mc{O}_{P}(-1)$.
+
+    Next, we consider the exceptional divisor $\P(V^{\vee} \otimes \mc{O}(-1)) = \P V^{\vee} \times \P V$ of $\Bl_P X$, and we can check that $\mc{O}(E) |_E = \mc{O}(-1, -1)$. By Nakano-Fujiki, there exists a contraction of the exceptional divisor $E$ onto the first factor.
+\end{proof}
+
+\section{Deformations}%
+\label{sec:deformations}
+
+For this part, we will follow notes by Voisin from a class in 2006-07. Let $X$ be a compact complex manifold (or a reduced variety). We will see that
+\[ T_{\mr{Def}_X} = \mr{Def}_X(\C[\ep]) = \Ext^1(\Omega^1_X, \mc{O}_X). \]
+Fix $\Delta_n = \Spec \C[t]/t^{n+1}$. By reducedness, for every $\mc{X}_1 \to \Delta_1$, we assign the exact sequence
+\[ 0 \to \mc{I}/\mc{I}^2 \to \Omega^1_{\mc{X}}|_X \to \Omega^1_X \to 0. \]
+\begin{rmk}
+    The sheaf $\Omega^1_{\mc{X}}$ has torsion, but its restriction to the central fiber is locally free if $X$ is smooth. 
+\end{rmk}
+Conversely, given
+\[ 0 \to \mc{O}_X \to \mc{E} \to \Omega^1_X \to 0, \]
+we want to define an algebra $\mc{O}_{\mc{X_1}}$ fitting in
+\[ 0 \to \mc{O}_X \to \mc{O}_{\mc{X}_1} \to \mc{O}_X \to 0. \]
+Equivalently, we want a sheaf $A$ and $A \to \mc{E}$ commuting with the inclusion of $\mc{O}$ and the differentia $d$. We simply set
+\[ A = \qty{(\alpha, f) \in \mc{E} \oplus \mc{O}_X} \mid r(\alpha) = \dd{f}, \]
+where $r \colon \mc{E} \to \Omega^1_X$ is the map in the exact sequence above. To define the algebra structure, we simply set
+\[ (\alpha, f) (\beta, g) = (\alpha g + \beta f, fg). \]
+It remains to check that the kernel of $A \to \mc{O}_X$ is a square zero ideal.
+
+Next, we will consider global deformations of $X$ a compact complex structure. We can consider the deformations of $X$ over either germs of complex spaces or local Artinian rings. 
+
+\begin{thm}[Kuranishi]
+    If $H^0(X, T_X) = 0$, then there exists a universal family $\mc{X} \to \mr{Def}(X)$ over a germ of (pointed) complex analytic spaces.
+\end{thm}
+
+Alternatively, using the point of view of Schlessinger, because $H^0(T_X) = 0$, then $\mr{Def}_X(-)$ satisfies the axiom $H_4$ and is thus pro-representable.
+
+\begin{rmk}
+    There is generally no chance of having an algebraic family. Unfortunately, even if the central fiber is algebraic, there are arbitrarily small deformations that are not algebraic. If you want to keep everything algebraic, then we need to mark $X$ with an ample line bundle.
+\end{rmk}
+
+\begin{thm}[Bogomolov, Tian, Todorov]
+    Let $X$ be a compact K\"ahler Calabi-Yau manifold with $H^0(T_X) = 0$. Then the germ of space $(\mr{Def}(X), 0)$ is smooth (equivalently, the pro-representing ring $R$ is a formal power series ring).
+\end{thm}
+
+The proof of this result uses the $T^1$-lifting principle, resting on the fact that by the infinitesimal lifting principle, smoothness of $\mr{Def}(X)$ at $0$ is equivalent to the fact that deformations can be lifted to any order. Before we do this, we need some notation and results.
+
+\begin{lem}
+    Given an $n$-th order deformation $f_n \colon \mc{X}_n \to \Delta_n$, the sheaves $\Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}}$ and $\Omega^1_{\mc{X}_{n-1}/\Delta_{n-1}}$ are both locally free. Moreover, they fit into an exact sequence
+    \[ 0 \to \mc{O}_{X_{n-1}} \xrightarrow{\dd{t}} \Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}} \to \Omega^1_{\mc{X}_{n-1} / \Delta_{n-1}} \to 0. \]
+\end{lem}
+
+\begin{proof}
+    Note that $\Omega^1_{\Delta_n} = \qty{\dd{t} \mid t^n \dd{t} = 0}$. Then the sheaf $\Omega^1_{\Delta_n} |_{\Delta_{n-1}}$ is locally free of rank $1$ generated by $\dd{t}$. Now because $X$ is smooth, $\wh{\mc{O}}_X \simeq \C[[x_1, \ldots, x_m]]$, and in fact we have isomorphisms
+    \[ \C[[x_1, \ldots, x_m, t]] / t^{n+1} \simeq \wh{\mc{O}}_{\mc{X}_n} \]
+    for all $n$. This implies that $\Omega^1_{\mc{X}_n}$ is locally generated by $\dd{x_1}, \ldots, \dd{x_m}, \dd{t}$ with $t^n \dd{t} = 0$. In particuar, after killing $t^n$, we see that $\Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}}$ is locally free and generated by the $\dd{x_i}$. We know the exact sequence
+    \[ f^* \Omega^1_{\Delta_n} \to \Omega^1_{X_n} \to \Omega^1_{X_n/\Delta_n} \to 0, \]
+    and restricting to $\mc{X}_{n-1}$, we obtain the desired result.
+\end{proof}
+
+\begin{defn}
+    Given $f_n \colon \mc{X}_n \to \Delta_n$, set
+    \[ e_n \coloneqq [0 \to \mc{O}_{\mc{X}_{n-1}} \to \Omega^1_{\mc{X}_n} |_{X_{n-1}} \to \Omega^1_{\mc{X}_{n-1} / \Delta_{n-1}} \to 0] \in \Ext^1_{X_{n-1}}(\Omega^1_{\mc{X}_{n-1}/\Delta_{n-1}}, \mc{X}_{\mc{X}_{n-1}}). \]
+    This is called the \textit{Kodaira-Spencer class}.
+\end{defn}
+
+\begin{rmk}
+    By the lemma, we have
+    \[ \Ext^1(\Omega^1_{\mc{X}_{n-1} / \Delta_{n-1}}, \mc{O}_{\mc{X}_{n-1}}) = H^1(T_{X_{n-1}/\Delta_{n-1}}). \]
+\end{rmk}
+
+\begin{thm}[Ran]
+    Let $X$ be a compact complex manifold. Given $\mc{X}_n \to \Delta_n$, there exists a lift $f_{n+1} \colon \mc{X}_{n+1} \to \Delta_{n+1}$ if and only if $e_n$ lifts to some class $e_{n+1} \in H^1(T_{\mc{X}_n/\Delta_n})$, where the map
+    \[ H^1(T_{\mc{X}_n / \Delta_n}) \to H^1(T_{\mc{X}_{n-1}} / \Delta_{n-1}) \]
+    is induced as follows: make the identification
+    \[ D \in \Der_{\Delta_n}(\mc{O}_{\mc{X}_n}, \mc{O}_{\mc{X}_n}) = T_{\mc{X}_n/\Delta_n} \mapsto D |_{\mc{X}_{n-1}}. \]
+    Equivalently, given an extension
+    \[ 0 \to \mc{O}_{\mc{X}_n} \to \mc{E} \to \Omega^1_{\mc{X}_n/\Delta_n} \to 0, \]
+    everything is locally free, so we can restrict to $\Delta_{n-1}$ and use the identity $\Omega^1_{\mc{X}_n/\Delta_n} |_{\mc{X}_{n-1}} = \Omega^1_{\mc{X}_{n-1}/\Delta_{n-1}}$.
+\end{thm}
+
+\begin{lem}
+    The algebra $\mc{O}_{\mc{X}_{n+1}}$ is determined by $\mc{O}_{X_n}$ and the short exact sequence
+    \[ 0 \to \mc{O}_X \xrightarrow{t^{n} \dd{t}} \Omega^1_{\mc{X}_{n+1}}|_{\mc{X}_n} \xrightarrow{r} \Omega^1_{\mc{X}_n} \to 0. \]
+\end{lem}
+
+As we did earlier, we construct $A$ to fit into the exact sequence
+\[ 0 \to \mc{O}_X \xrightarrow{t^n} A \to \mc{O}_{\mc{X}_n}. \]
+
+\begin{proof}[Sketch of proof of theorem]
+    One direction is clear. If there is a lift, we construct the class $e_{n+1}$ and clearly, it must restrict to $e_n$ by definition.
+
+    In the other direction, suppose there is a class $e_{n+1}$ lifting $e_n$. We want to construct $\mc{O}_{X_{n+1}}$. Given this $e_{n+1}$, we will find $\mc{E}$ fitting into the sequence
+    \[ 0 \to \mc{O}_{\mc{X}_n} \to \mc{E} \to \Omega^1_{\mc{X}_n / \Delta_n} \to 0. \]
+    Given any $\mc{E}$ as above, there exists an isomorphism $\Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}} \simeq \mc{E} |_{\mc{X}_{n-1}}$ induced by a surjection $r \colon \mc{E} \to \Omega^1_{\mc{X}_n}$. This will give us the desired algebra.
+
+    To prove that such an isomorphism exists, by the existence of $e_{n+1}$, we already have a surjection $f_1 \colon \mc{E} \to \Omega^1_{\mc{X}_n / \Delta_n}$. Then after restricting to $\mc{X}_{n-1}$, we have a sequence
+    \[ \mc{E} \xrightarrow{f_2} \mc{E} \_{\mc{X}_{n-1}} \simeq \Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}} \xrightarrow{g_2} \Omega^1_{\mc{X}_{n-1} / \Delta_{n-1}}. \]
+    We now claim that
+    \[ \Omega^1_{\mc{X}_n} \subseteq \Omega^1_{\mc{X}_n / \Delta_n} \oplus \Omega^1_{\mc{X}_n} |_{\mc{X}_{n-1}} \xrightarrow{g_1,g_2} \Omega^1_{\mc{X}_{n-1} / \Delta_{n-1}}, \]
+    Because $g_1 \circ f_1 = g_2 \circ f_2$, we have our desired $r \colon \mc{E} \to \Omega^1_{\mc{X}_n}$.
+
+    Next, we show that $\ker r \simeq \mc{O}_X$. We have a short exact seqeunce defining $\mc{E}$, and then we obtain a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \mc{O}_X \ar{r}{\sim} \ar{d}{t^n} & \ker r \ar{d} \\
+        0 \ar{r} & \mc{O}_{\mc{X}_n} \ar{r} \ar{d} & \mc{E} \ar{r} \ar{d}{r} & \Omega^1_{\mc{X}_n/\Delta_n} \ar{r} \ar[equal]{d} & 0 \\
+        f^* \Omega^1_{\Delta_n} \ar[twoheadrightarrow]{r} & \mc{O}_{\mc{X}_{n-1}} \ar{r} & \Omega^1_{\mc{X}_n} \ar{r} & \Omega^1_{\mc{X}_n} \ar{r} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    Constructing $A \subseteq \mc{E} \oplus \mc{O}_{\mc{X}_n}$ as we did before, we are done.
+\end{proof}
+
+To prove that $\mr{Def}(X)$ is smooth when $X$ is a compact Calaby-Yau, we need to check the $T^1$ lifting principle. In order to do this, we need some Hodge theory.
+
+\begin{lem}
+    The sequence
+    \[ \mc{O}_X \xrightarrow{\partial} \Omega^1_{X} \xrightarrow{\partial} \Omega^2_X \to \cdots \]
+    is a resolution of the constant sheaf $\C$ in the analytic topology.
+\end{lem}
+
+\begin{cor}
+    $H^k(X, \C) = H^k(X, \Omega^{\bullet})$.
+\end{cor}
+
+This gives us a filtration b\^ete (for stupid filtration) $F^p \Omega^{\bullet}_X = \Omega_X^{\geq p}$, which by standard techniques leads to a spectral sequence where
+\[ E_1^{p,q} = H^q(\Omega_X^p) \Rightarrow \mr{gr}_F H^k(X, \Omega^{\bullet}_X) \]
+which comes from the filtration $F^p H^k(\Omega^{\bullet}_X) = \Im (H^k(\Omega_X^{\geq 0}) \to H^k(\Omega_X^{\bullet}))$.
+
+If $X$ is K\"ahler and compact, then the Hodge theorem implies that this spectral seqeunce (called the Frolicher spectral sequence) at the $E_1$-page and that $F^p H^k(X, \C)$ is the Hodge filtration. To see this, note that
+\[ b_k(X) = \dim E_{\infty}^{p,q} \leq \sum \dim E_{1}^{p,q} = \sum h^{p,q} = b_k(X). \]
+Deligne in the paper \textit{Th\'eor\`eme de Lefschetz et Crit\`eres de D\'eg\'en\'erescence de Suites Spectrales}  shows that if $X$ is any smooth proper scheme over $\C$, the Frolicher spectral sequence degenerates at $E_1$.
+
+Previously, we considered $\mc{X} \to B$ smooth proper morphisms of complex manifolds. then if $X_0$ is K\"ahler, the $h^{p,q}(X_t)$ are locally constant, and in fact the degeneration of the Frolicher spectral sequence at $E_1$ is enough. Thus if $B$ is a complex manifold, the sheaves $R^q f_* \Omega^p_{X/B}$ are locally free and satisfy base change.
+
+\begin{prop}
+    Let $f \colon \mc{X} \to B$ be smooth and proper with $B$ a scheme over $\C$ (possibly of finite type). Then the higher direct images $R^k f_* \Omega^{\bullet}_{X/B}$ and $R^q f_* \Omega^p_{X/B}$ are locally free and satisfy base change. Moverover, there exists a filtration $\mc{F}^p R^k f_* \Omega^{\bullet}_{\mc{X}/B}$ whose successive quotients are locally free and whose associated graded components are $R^q f_* \Omega^p_{\mc{X}/B}$.
+\end{prop}
+
+\begin{lem}[Deligne]
+    Let $A$ be a local Artinian ring over $\C$ and $K^{\bullet}$ be a bounded above complex of free $A$-modules. Then $\ell_A(H^n(K^{\bullet})) \leq \ell(A) \cdot \ell_{\C} H^n(K^{\bullet} \otimes_A \C)$, and if equality holds, then base change holds in degree $n, n+1$, which means that for $j = n, n+1$, we have
+    \[ H^j(K^{\bullet}) \otimes_A N \simeq H^j(K^{\bullet} \otimes_A N), \]
+    where $N$ is any $B$-module of finite type for some Artinian $A$-algebra $B$. In addition, $H^n(K^{\bullet})$ is a free $A$-module.
+\end{lem}
+
+\begin{proof}[Proof of proposition]
+    We will reduce to the case of $B = \Spec A$, where $A$ is an artinian ring over $\C$. Recall that we have an exact sequence
+    \[ 0 \to f^* \Omega^1_B \to \Omega^1_X \to \Omega^1_{X/B} \to 0. \]
+    Then we have the relative de Rham complex which resolves
+    \[ f^{-1} \mc{O}_B \to \Omega^{\bullet}_{X/B}. \]
+    Now because $B$ is affine, we note that
+    \[ R^k f_* \Omega^{\bullet}_{X/B} = H^k(X, f^{-1}\mc{O}_B) = H^k(X, A) = H^k(X_0, \C) \otimes_{\C} A \]
+    by $A$-linearity of the differential. Thus $\mc{H}^k R^k f_* \Omega^{\bullet}_{X/B}$ is a free $A$-module (in the general case, we obtain $R^k f_* \Omega^1_{X/B} = (R^k f_* \C) \otimes \mc{O}_B$).
+
+    Now we consider the stupid filtration $\mc{F}^p \Omega^{\bullet}_{X/B} = \Omega^{\geq p}_{X/B}$ and this induces a spectral sequence
+    \[ E_1^{p,q} = R^q f_* \Omega^p_{X/B} \Rightarrow \mr{Gr}_F R^k f_* \Omega^{\bullet}_{X/B}, \]
+    where $\mc{F}^p R^k f_* \Omega^{\bullet}_{X/B} = \Im (R^k \mc{F}^p \Omega^{\bullet}_{X/B} \to R^k \Omega^{\bullet}_{X/B})$. We now have
+    \begin{align*} 
+        \ell(A) \cdot b_k(X_0) &= \ell (R^k f_* \Omega^{\bullet}_{X/B}) \\
+        &= \sum_{p+q=k} \ell(E_{\infty}^{p,q}) \\
+        &\leq \sum_{p+q=k} \ell(E_1^{p,q})  \\
+        &= \sum \ell(R^q f_* \Omega^p_{X/B}) \\
+        &\leq \ell(A) \sum \ell(H^q(\Omega^p_{X_0})) \\
+        &= b_K(X_0) \cdot \ell(A)
+    \end{align*}
+    by the lemma, so all inequalities are equalities. Using the lemma again, the $R^p f_* \Omega^q_{X/B}$ are free $A$-modules and satisfy base change. The remainder of the result is easy to see.
+\end{proof}
+
+\begin{proof}[Proof of Bogomolov-Tian-Todorov]
+    Given $\mc{X}_n \to \Delta_n$, we have a class $e_n \in H^1(T_{X_{n-1}/\Delta_{n-1}})$, and we want to lift this to $H^1(T_{X_n} / \Delta_n)$. Suppose that $X_0$ is a compact Calabi-Yau such that the Frolicher spectral sequence degenerates at $E_1$ and $\dim X_0 = m$. Then $\Omega^m_{X_n/\Delta_n} \cong \mc{O}_{X_n}$, so there exists a perfect pairing
+    \[ \Omega^1_{X_n/\Delta_n} \otimes \Omega^{m-1}_{X_n / \Delta_n} \to \Omega^m_{X_n / \Delta_n} \simeq \mc{O}_{X_n}. \]
+    Thus $T_{X_n/\Delta_n} \simeq \Omega^{m-1}_{X_n/\Delta_n}$. If we consider
+    \[ R^q f_{n*} \Omega^{m-1}_{X_n/\Delta_n} = H^1(\Omega^{m-1}_{X_n/\Delta_n}) \to H^1(\Omega^{m-1}_{X_{n-1}/\Delta_{n-1}}) = R^1 f_{n-1,*} \Omega^{m-1}_{X_{n-1}/\Delta_{n-1}} = R^1 f_* \Omega^{m-1}_{X_n/\Delta_n} |_{X_{n-1}}, \]
+    we are done.
+\end{proof}
+
+\section{Some Hodge theory}%
+\label{sec:some_hodge_theory}
+
+Let $f \colon \mc{X} \to B$ be a proper surjective smooth morphism either of schemes over $\C$ or with K\"ahler fibers $X_b$. Let
+\[ \mc{H}^k \coloneqq R^k f_* \Omega^{\bullet}_{X/B} = R^k f_* \C \otimes_{\C} \mc{O}_B \]
+be the Hodge bundle. Then there is a decreasing filtration $\mc{F}^p \mc{H}^k \subset \mc{H}^k$ in subbundles. Now suppose that $B$ is sufficiently small so that $\mc{H}^k = H^k(X_0, \C) \otimes \mc{O}_B$ is free.
+
+\begin{thm}
+    Fix $k, p$. Then there is a holomorphic map, called the \textit{period mapping}, 
+    \[ B \xrightarrow{\varphi} \mr{Gr}(f_k^p, H^k(X_0, \C)) \qquad b \mapsto F^p H^k(X_b) \subseteq H^k(X_b, \C) \cong H^k(X_0, \C), \]
+    where $f_k^p = \sum_{\ell \geq p} h^{\ell, k-\ell}(X_0)$. Pulling back the tautological seqeunce on the Grassmannian gives $\mc{F}^p \mc{H}^k \subseteq \mc{H}^k$.
+\end{thm}
+
+We would like to study $\varphi$, and a first step is to study its differentials. Note that $\varphi$ factors via the universal deformation space $\mr{Def}(X_0)$, so we have a diagram
+\begin{equation*}
+\begin{tikzcd}
+    B \ar{rr}{\varphi} \ar{dr} & & \mr{Gr}(f_k^p, H^k(X_0)) \\
+    & \mr{Def}(X_0) \ar{ur}{\wp}.
+\end{tikzcd}
+\end{equation*}
+Now recall that $T_{[W]} \mr{Gr}(j, V) = \Hom(W, V/W)$, and so the differential of the period map is a morphism
+\[ H^1(T_X) \xrightarrow{\dd{\wp_0}} \Hom(F^p H^k, H^k / F^p H^k). \]
+This factors through $\Hom(F^p, F^{p-1}/F^p)$ by Griffiths transversality, and so we have the diagram
+\begin{equation*}
+\begin{tikzcd}
+    H^1(T_X) \ar{rr} \ar{dr} & & \Hom(F^p, F^{p-1}/F^p) \ar{dl} \\
+    & \Hom(F^p/F^{p-1}, F^{p-1}/F^p),
+\end{tikzcd}
+\end{equation*}
+and the bottom term in the diagram is isomorphic to $\Hom(H^{k-p}(\Omega^p_X), H^{k-p+1}(\Omega^{p-1}_X))$.
+
+\begin{prop}
+    The morphism $H^1(X, T_X) \to \Hom(H^{k-p}(\Omega^p_X), H^{k-p+1}(\Omega_X^{p-1}))$ is the morphism sending a tangent vector $v$ to the morphism induced by contraction by $v$.
+\end{prop}
+
+Returning to irreducible holomorphic symplectic manifolds, let $X$ be irreducible holomorphic symplectic. Then the Hodge filtration here gives
+\[ F^2 H^2 = H^0(\Omega^2_X) = C \sigma \qquad F H^2 \twoheadrightarrow H^1(\Omega^1_X), H^2(X) \twoheadrightarrow H^2(\mc{O}_X) = \C \ol{\sigma}. \]
+Then the period map is a morphism
+\[ \mr{Def}(X) \xrightarrow{\wp} \P H^2(X, \C) \qquad t \mapsto \C \sigma_t, \]
+where we have made an identification $\eta_t \colon H^2(X_t, \C) \cong H^2(X_0, \C)$.
+
+\begin{prop}
+    The differential $\dd{\wp_0}$ has maximal rank.
+\end{prop}
+
+\begin{proof}
+    Write the morphism
+    \begin{equation*}
+    \begin{tikzcd}
+        H^1(T_X) \ar{r}{\dd{\wp_0}} \ar{dr} & \Hom(H^{2,0}, H^2/H^{2,0}) \ar{d} \\
+        & \Hom(H^{2,0}, F^1 H^2 / H^{2,0}).
+    \end{tikzcd}
+    \end{equation*}
+    It is enough to show that the morphism $H^1(T_X) \to \Hom(H^{2,0}, F^1 H^2 / H^{2,0}) = H^1(\Omega^1)$ is an isomorphism. But this map is given by contraction, and so it is precisely the isomorphism $T_X \simeq \Omega^1_X$ induced by $\sigma$.
+\end{proof}
+We conclude that $\wp$ is an isomorphism onto its image. There will be a local statement, where we consider small deformations, and a global statement, where we consider the entire moduli space. First, note that $\dim \mr{Def}(X) = b_2 - 2$ and $\dim \P H^2(X) = b_2 - 1$.
+
+\begin{prop}
+    There exists a quadric hypersurface $Q \subseteq \P H^2(X, \C)$ such that $\Im \wp \subseteq Q$.
+\end{prop}
+
+\begin{proof}
+    First note that $\Im \wp$ is contained in a degree $2n$-hypersurface, where $\dim X = 2n$. There is a natural degree $2n$ polynomial on $H^2$ given by the cup product of $H^2$ with itself $2n$ times. By type reasons\footnote{This sounds a lot like computer science.}, because $\sigma_{X_t}$ is a $(2,0)$-form, we know $\sigma_{X_t}^{2n} = 0$, and thus $\sigma_t^{2n} = 0$. Thus if $F$ is the cup product polynomial, we see, $\Im \wp \subseteq \qty{F = 0} \subseteq \P H^2(X, \C)$. (Note that for K3 surfaces, we are done and that this quadric is defined over $\Z$. In fact, the $H^2(S, \Z)$ is a unimodular lattice.)
+
+    Now we will prove that $F = q^n$ up to a constant. To do this, we will prove that $F$ vanishes with order at least $n$ on $\Im \wp$ and then write down a quadric explicitly. Write $\sigma_t = \sigma_0 + t \alpha$, and so we have
+    \begin{align*}
+        \sigma_t^{2n} &= {(\sigma_0 + t \alpha)}^{2n} \\
+        &= \sigma_0^{2n} + t \sigma_0^{2n-1} \alpha + \cdots + t^n \sigma^n \alpha.
+    \end{align*}
+    Thus $F$ vanishes up to order $n$, as desired.
+\end{proof}
+
+\begin{thm}[Beauville, Bogomolov, Fujiki]
+    Let $X$ be irreducible holomorphic symplectic manifold of dimension $2n$. There exists an integral, indivisible, quadratic form $q \colon H^2(X, \C) \to \C$ of signature $(3, b_2 - 3)$ and a constant $c_X \in \Q_{>0}$ such that 
+    \[ \int_X \alpha^{2n} = c_X {q(\alpha)}^n \] 
+    for all $\alpha \in H^2(X)$.
+\end{thm}
+Note that the relation, called the \textit{Fujiki relation}, identifies $q, c_X$ with no ambiguity except when $n$ is even, in which case we specify $q(\omega) > 0$ for $\omega$ K\"ahler. Moreover:
+\begin{itemize}
+    \item $\Im \wp \subseteq \Omega = \qty{ q(x) = 0, q(x,\ol{x}) > 0} \subseteq \Q$. In particular, the map $\wp \colon \mr{Def}(X) \to \Omega$ is a local isomorphism.
+    \item With respect to $q$, $H^{1,1} \perp H^{2,0} \oplus H^{2,0}$.
+\end{itemize}
+
+\begin{proof}
+    We will normalize $\sigma$ such that $\int {(\sigma \ol{\sigma})}^n = 1$. For a class $\alpha = a \sigma + \omega + b \ol{\sigma}$, we will define
+    \begin{align*} 
+        q(\alpha) &= ab + \int {(\sigma \ol{\sigma})}^{n-1} \cdot \omega^2  \\
+        &= \frac{n}{2} \int {(\sigma \ol{\sigma})}^{n-1} \alpha^2 + (1-n) \qty(\int \sigma^{n-1} \ol{\sigma}^n \alpha) \cdot \qty(\int \sigma^n \ol{\sigma}^{n-1} \alpha).
+    \end{align*}
+    First we check that if $\omega$ is a K\"ahler form, then $q(\omega) > 0$. In fact, we have
+    \[ q(\alpha) = \int {(\sigma \ol{\sigma})}^{n-1} \cdot \omega^2, \]
+    and now we use the Hodge-Riemann bilinear relations. Here, if $M$ is compact and K\"ahler with $\dim M = m$ and $\omega$ a K\"ahler form, define
+    \[ (\alpha, \beta) \coloneqq \int \alpha \wedge \ol{\beta} \wedge \omega^{m-k}. \]
+    Then the bilinear form
+    \[ i^{p-q} {(-1)}^{\frac{k(k-1)}{2}} (-,-) |_{H^{p,q}_{\mr{prim}}} \]
+    is positive-definite. In our situation, note that $\sigma^{n-1}$ is a primitive form, and so we obtain the desired result. It is clear that $q(\sigma) = 0, q(\Re(\sigma)) = q(\Im(\sigma)) > 0$, and $q(\Re(\sigma), \Im(\sigma)) = 0$, and so $q$ has rank at least $3$ and is thus irreducible.
+
+    We now prove the Fujiki relation. By type reasons, we have $\sigma_t^{n+1} = 0$, and so if we write $a_t \sigma + \omega_t + b_t {\ol{\sigma}}$, and thus
+    \[ {(\sigma_t^{n+1})}_{2n,2} = 0 = a_t^n b_t \sigma^n \ol{\sigma} + a_t^{n-1} \sigma^{n-1} \omega^2, \]
+    and when we multiply by $\ol{\sigma}^{n-1}$, we have
+    \[ 0 = a_t^{n-1} \qty(a_t b_t + \int {(\sigma \ol{\sigma})}^{n-1} \omega^2). \]
+    Because $a_t \neq 0$ for sufficiently small $t$, we see $q(\sigma_t) = 0$, and thus $(q) = I(\Im(\wp)) \ni F$, which gives us the Fujiki relation.
+
+    We will compute the signature of $q$. If we differentiate the equation
+    \[ \int \alpha^{2n} = c {q(\alpha)}^{n} \]
+    with respect to $t$ under $\alpha + t \beta$, we have
+    \[ 2n \cdot \alpha^{2n-1} \beta = 2n c {q(\alpha)}^{n-1} q(\alpha, \beta). \]
+    Now if $\omega$ is K\"ahler form, then $\beta$ is primitive if and only if $q(\omega, \beta) = 0$. It is now enough to compute the sign of $q |_{H^{1,1}_{\mr{prim}}}$. Differentiating again, we obtain
+    \[ (2n-1) \alpha^{2n-2} \beta \wedge \gamma = 2(n-1) c {q(\alpha)}^{n-2} 2(\alpha, \gamma) q(\alpha, \beta) + c {q(\alpha)}^{n-1} q(\gamma, \beta). \]
+    Choosing $\alpha = \omega$ to be K\"ahler and $\beta, \gamma$ primitive, we obtain
+    \[ (2n-1) \alpha^{2n-2} \beta \wedge \gamma = c {q(\alpha)}^{n-1} q(\gamma, \beta), \]
+    and by the Hodge-Riemann bilinear equations, the left-hand-side is negative.
+
+    Finally, we need to prove integrality. For all $\lambda, \alpha \in H^2(X, \C)$, we have
+    \[ {(\lambda^{2n})}^2 q(\alpha) = q(\lambda) [(2n-1) \lambda^{2n}(\lambda^{2n-2} \alpha^2) - (2n-1) {(\lambda^{2n-1} \alpha)}^2]. \]
+    This is obtained from previous formulae by multiplying the derivative of the Fujiki repation by $q(\alpha)$, using the Fujiki relation, and taking the derivative again.
+\end{proof}
+
+\begin{cor}
+    Up to multiplication by a nonzero constant, we can assume that if $\alpha \in H^2(X,\Q)$, then $q(\alpha) \in \Q$.
+\end{cor}
+
+\begin{proof}
+    We prove that there exists $\lambda \in H^2(X, \Q)$ such that $q(\lambda) \neq 0$. The class $\sigma + \ol{\sigma} \in H^2(X, \R)$ and $q(\sigma + \ol{\sigma}) > 0$, so by density of $H^2(X, \Q) \subset H^2(X, \R)$, we are done.
+\end{proof}
+
+Once we have this normalization, we have proven the integrality statement in Beauville-Bogomolov-Fujiki.
+
+\begin{rmk}
+    The Fujiki relation implies that both $q(-)$ and $c_X \in \Q_{>0}$ in the relation
+    \[ \int \alpha^{2n} = c_X {q(\alpha)}^n \]
+    are deformation invariants.
+\end{rmk}
+
+Using the Hodge-Riemann bilinear relations, we see that restricting $q$ to $H^{2,0} \oplus H^{0,2}$ (as a real vector space) is positive definite. In addition, a basis of $H^{2,0} \oplus H^{0,2}$ is $\Re \sigma, \Im \sigma$, and in fact $q(\Re \sigma, \Im \sigma) = 0$.
+
+Now the period map $\wp \colon \mr{Def}(X) \to Q$ lands in the set 
+\[ \Omega = \qty{x \mid q(x) = 0, q(x+\ol{x}) > 0}. \]
+This set $\Omega$ is called the \textit{period domain}.
+
+\begin{rmk}
+    The points of $\Omega$ parameterize Hodge structures on $H^2(X, \Z)$ of K3-type ($1, b_2-2, 1$). These structures have $x \in H^2(X, \C)$ with $q(x) = 0, q(x, \ol{x}) > 0$, and then $H^{1,1}$ is the orthogonal complement of $x$.
+\end{rmk}
+
+We hope that for every Hodge structure, there is some manifold realizing the Hodge structure, but this is a highly nontrivial result of Huybrechts.
+
+\begin{prop}
+    There exists a natural diffeomorphism $\Omega \simeq \mr{Gr}^+(2, H^2(X, \R))$, where the $+$ means that for a subspace $W$, we have both an orientation and positive-definiteness of $q |_W$ given by
+    \[ \sigma \mapsto \ev{\Re \sigma, \Im \sigma} \qquad W = \ev{w_1, w_2} \mapsto w_1 + i w_2. \]
+\end{prop}
+
+Now we consider the case of K3 surfaces. We know that if $X = S$ is a K3 surface, then $q$ is simply the cup product. To say more about this, first we will prove
+\begin{prop}
+    We have an identity $c_2(S) = 24 \in H^4(S, \Z) = \Z$, and of course this means $b_2(S) = 22$ and $h^{1,1} = 20$. In addition, we have $H^2(S, \Z) = {E_8(-1)}^{\oplus 2} \oplus U^{\oplus 3}$, where $U = \begin{psmallmatrix} 0 & 1 \\ 1 & 0 \end{psmallmatrix}$.
+\end{prop}
+
+\begin{proof}
+    Recall Noether's formula, which says that
+    \[ \chi(\mc{O}_M) = \frac{{c_1(M)}^2 + c_2(M)}{12}. \]
+    In the case of a K3 surface, we know $\chi(\mc{O}_M) = 2$, so we get $c_2(S) = 24$. Because $c_2(S)$ is also the Euler class, we see that $\chi_{\mr{top}}(S) = 24$, which gives us $b_2 = 22$ and $h^{1,1} = 20$. The computation of $H^2(S, \Z)$ as a \textbf{lattice} follows from the abstract classification of lattices once we know that $H^2(S, \Z)$ is unimodular and even of indefinite signature. Recall that a lattice $\Lambda$ is called even if for all $\alpha \in \Lambda$, $\alpha^2 \in 2\Z$ and unimodular if the matrix corresponding to the bilinar form has determinant $\pm 1$.\footnote{For other hyperk\"ahler manifolds, the lattice is not unimodular.}
+
+    To prove that $H^2(S, \Z)$ is even, we use Wu's formula, which says that for all $\alpha \in H^2(M, \Z)$ (for any compact complex surface $M$) we have $c_1 \cdot \alpha \equiv \alpha^2 \pmod 2$. For a K3 surface, this clearly implies that $H^2(S, \Z)$ is even.
+\end{proof}
+
+We now consider Hirzebruch-Riemann-Roch on a K3 surface. If $L$ is a line bundle and $X$ is a surface, we have
+\[ \chi(X, L) = \frac{L^2 - L \cdot K_X}{2} + \chi(\mc{O}_X). \]
+For a K3 surface, we have $\chi(S, L) = \frac{L^2}{2} + 2$.
+
+\begin{cor}\leavevmode
+    \begin{itemize}
+        \item If $L^2 \geq -2$, then $\pm L$ is effective.
+        \item If $L^2 \geq 0$, then either $L = \mc{O}_S$ or $h^0(\pm L) \geq 2$.
+        \item If $L = \mc{O}_S(C)$ for an irreducible curve $C$, then $L^2 = 2g-2$.
+    \end{itemize}
+\end{cor}
+
+\begin{exm}
+    If $C = R$ is a smooth rational curve, then $R^2 = -2$. If $C = E$ is an elliptic curve, then $E^2 = 0$.
+\end{exm}
+
+Now for a compact complex manifold, define the \textit{Neron-Severi group} $\mr{NS}(X) = \Pic X / \Pic^0 X$. This emerges from the exponential sequence
+\[ 0 \to \Z \to \mc{O}_X \to \mc{O}_X^* \to 1 \]
+as the image of $\Pic X \xrightarrow{c_1} H^2(X, \Z)$. By the Lefschetz theorem on $(1,1)$-classes, we know $\Im c_1 = H^2(X, \Z) \cap H^{1,1}_{\R}$. In particular, if $X$ is irreducible holomorphic symplectic, $H^1(\mc{O}_X) = 0$, so $\mr{NS} = \Pic$. The reason we care about this is that if we consider $\mr{Def}(X) \to \Omega$ and identify $H^2(X, \R) = H^2(X_t, \R)$, then the rank $\rho(X) = \rk \Pic X$ can vary.
+
+We now return to consider consequences of the local Torelli theorem.
+\begin{prop}
+    Let $X$ be irreducible holomorphic symplectic. Then some small deformation of $X$ is projective.
+\end{prop}
+
+\begin{proof}
+    It suffices to show that there exists a small deformation such that $X_t$ contains a K\"ahler class that is rational. By the Kodaira embedding theorem, such a class is the first Chern class of an ample line bundle. To prove this, recall the identification $\Omega \cong \mr{Gr}^+(2, H^2(X, \R))$. But then the set of planes $W \subseteq H^2(X, \R)$ defined over $\Q$ are dense, so for $0 \in \mr{Def}(X)$ and corresponding $\wp(0) \in \Omega$, we can choose a nearby point such that $W$ is defined over $\Q$. But then $W^{\perp} = H^{1,1}$ is also defined over $\Q$. Thus if $t \in \mr{Def}(X)$ satisfies $\wp(t) = W$, then $H^{1,1}(X_t)$ is also defined over $\Q$. In particular, $H^{1,1}_{\R} \cap H^2(X_t, \Q)$ is dense and has maximal rank. But then it must have nonempty intersection with the K\"ahler cone of $X_t$, so we are done.
+\end{proof}
+
+Now let $X$ be irreducible holomorphic symplectic, $L$ be a line bundle, and $\ell = c_1(L) \in H^2(X, \Z)$. Set $\Omega_{\ell} \coloneqq \Omega \cap \ell^{\perp}$ and ${\mr{Def}(X)}_{\ell} = \wp^{-1} (\Omega_{\ell}) \subseteq \mr{Def}(X)$. Then if $\mc{X} \to \mr{Def}(X)$ is the universal deformation, we will call $\mc{X}_{\ell}$ the base change to ${\mr{Def}(X)}_{\ell}$.
+
+\begin{prop}
+    The space $\mr{Def}(X)_{\ell} \subset \mr{Def}(X)$ is a smooth hypersurface and is the univeral deformation space of $\mr{Def}_{(X, L)}$ (which means there exists a universal line bundle $\mc{L}$ on $\mc{X}_{\ell}$ such that $\mc{L} |_{X_0} = L$, $\mc{L} |_{X_t} = L_t$, and $c_1(L_t) = \ell_t$). More generally, if $L_1, \ldots, L_k \in \Pic X$ have $\ell_1, \ldots, \ell_k$ linearly independent, then $\mr{Def}(X, L_1, \ldots, L_k) \subseteq \mr{Def}(X) = \wp^{-1}(\Omega \cap \ev{\ell_i}^{\perp})$ is smooth of codimension $k$.
+\end{prop}
+
+\begin{proof}
+    Note that $\ell^{\perp} \subseteq \P H^2(X, \C)$ is smooth if and only if $q(\ell) \neq 0$. On the other hand, if $q(\ell) = 0$, the only singular point is $\ell \in \ell^{\perp}$, but then such an $\ell$ cannot lie in $\Omega$. Thus a necessary condition for $X_t$ to have a line bundle $L_t$ with $c_1(L_t) = \ell_t$ is that $\ell_t$ is a $(1,1)$-class, which is equivalent to $q(\ell_t, \sigma_t) = 0$. Of course, this is equivalent to $\wp(t) \in \Omega_{\ell}$. In particular, we know that if $(\mc{X}, \mc{L}) \to B$ is a deformation of $(X, L)$, the Kodaira-Spencer map $B \to \mr{Def}(X)$ must factor through ${\mr{Def}(X)}_{\ell}$. Of course, by the Lefschetz $(1,1)$-theorem, this is also a sufficient condition. In particular, for all $t \in \mr{Def}(X)_{\ell}$, we have $q(\sigma_t, \ell_t) = 0$, so $\ell_t \in H^{1,1} \cap H^2(X, \Z)$, so there exists a unique line bundle $L_t$ such that $c_1(L_t) = \ell_t$. Therefore on $X_{\ell} \to \mr{Def}(X)_{\ell}$, every fiber has a line bundle, so we prove that there exists a global line bundle and that such a line bundle is universal.
+
+    We show that $\mr{Def}(X, L)$ is unobstructed with tangent space $\ker [H^1(T_X) \xrightarrow{c(L)} H^2(X, \mc{O}_X)] \subseteq H^1(T_X)$. This is induced by the perfect pairing
+    \[ H^1(T_X) \otimes H^1(\Omega^1_X) \to H^2(\mc{O}_X) = \C. \]
+    Consider $\mc{O}_X \xrightarrow{\dd} \Omega^1_X$ and the corresponding map $\mc{O}_X^* \to \Omega^1_X$ given by $u \mapsto \frac{\dd u}{u}$. This induces a map
+    \[ H^1(X, \mc{O}_X) \xrightarrow{c(-)} H^1(X, \Omega_X) = \Ext^1(T_X, \mc{O}_X). \]
+    Thus we have $L \mapsto c(L) \in [0 \to \mc{O}_X \to \mc{E}_L \to T_X \to 0]$. This gives us an exact sequence
+    \[ 0 = H^1(X, \mc{O}_X) \to H^1(X, \mc{E}_L) \hookrightarrow H^1(X, T_X) \twoheadrightarrow H^2(X, \mc{O}_X) \to H^2(X, \mc{E}_L) \to H^2(X, T_X). \]
+    We also have $H^1(X, \mc{E}_L) = T_{\mr{Def}(X, L)}$ and of course $H^1(X, T_X) = T_{\mr{Def}(X)}$. In addition, we have $H^2(X, \mc{E}_L) = \mr{Obs}(\mr{Def}_{(X,L)})$, but deformations of $X$ are unobstructed, so $\mr{Obs}(X, \mc{E}_L) = 0$, and thus deformations of $(X, L)$ are unobstructed.
+\end{proof}
+
+\section{Noether-Lefschetz loci}%
+\label{sec:noether_lefschetz_loci}
+
+\begin{defn}
+    Let $f \colon \mc{X} \to B$ be a non-isotrivial family of irreducible holomorphic symplectic varieties over a connected $B$.\footnote{Note this is equivalent to the Kodaira-Spencer map being nontrivial.} Define
+    \[ \rho_0 = \min_{t \in B} \qty{\rho(X_t)}. \]
+    Then the \textit{Noether-Lefschetz locus}\footnote{Note this is a union of Hodge loci.} of $f$ is
+    \[ \mr{NL}(f) = \qty{t \mid \rho(X_t) > \rho_0}. \]
+\end{defn}
+
+\begin{prop}[Green]
+    The Noether-Lefschetz locus $\mr{NL}(f) \subseteq B$ is dense in the analytic topology.
+\end{prop}
+
+In fact, we will prove a stronger statement.
+
+\begin{prop}[Oguiso]
+    Suppose that $B$ is small enough such that there is an identification $\eta_t \colon H^2(X_t, \Z) \simeq H^2(X_0, \Z) \eqqcolon \Lambda$. In this case, there exists a period mapping $\wp \colon B \to \P \Lambda_{\C}$. Then there exists a primitive sublattice $\Lambda_0 \subseteq \Lambda$ of rank $\rho_0$ such that for all $t \in B$, $\NS(X_t) \supseteq \Lambda_0$.\footnote{Giulia did not give us a precise reference for this, but she said that there are two papers with the keywords `Picard rank' and `hyperk\"ahler' and that we would be able to figure out which one it is.}
+\end{prop}
+
+\begin{proof}
+    Let $I$ be the set of all possible primitive sublattices $\Lambda_{\alpha} \subseteq \Lambda$. Then for all $\alpha \in I$, define $B_{\alpha} = \qty{t \in B \mid \NS(X_t) = \Lambda_{\alpha}}$. But then we see that $B = \bigcup B_{\alpha}$ and that $\wp(B_{\alpha}) \subseteq \P {(\Lambda_{\alpha, \C})}^{\perp}$. But now we know that
+    \[ B = \bigcup \wp^{-1} (\Lambda_{\alpha, \C}^{\perp}), \]
+    and thus there exists $\alpha_0$ such that $B = \wp^{-1}(\Lambda_{\alpha_0, \C}^{\perp})$ and therefore $\Lambda_{\alpha_0} \subseteq \NS(X_t)$ for all $t$.
+\end{proof}
+
+\begin{proof}[Proof of Green]
+    We will assume that $B = \Delta$ is a disk and that $\wp \colon \Delta \to \P \Lambda_{\C}$ is injective. Let $\mc{H}^2_{\C} = R^2 f_* \C \otimes_{\C} \mc{C}^{\infty}(\Delta) \simeq H^2(X_0, \C) \times \Delta$ (where the last identification is local). Here, we have a Hodge filtration $\mc{F}^{\bullet} \mc{H}^2_{\C}$, and we let $\mc{H}^2_{\R}$ be the real part of this bundle. If we intersect $\mc{F}^1 \mc{H}^2 \cap \mc{H}^2_{\R}$, we obtain precisely the bundle $\mc{H}^{1,1}_{\R}$.
+
+    The key claim is that the natural map $\phi \colon \mc{H}^{1,1}_{\R} \to H^2(X_0, \R)$ is an open immersion. Assuming this, we know $H^2(X_0, \Q) \subseteq H^2(X, \R)$ is dense and $\Lambda_0 \subseteq H^2(X, \Q)$ has smaller rank, so $H^2(X_0, \Q) \setminus \Lambda_0$ is dense. In particular, $\phi^{-1}(H^2(X_0, \Q) \setminus \Lambda_0) \subseteq \mc{H}^{1,1}_{\R}$ is dense. In particular, for any $\alpha$, the set of $t$ for which $\alpha_t$ has type $(1,1)$ is dense.
+
+    We omit the proof of the key claim because it uses the Gauss-Manin connection. The idea is that the differential of $\phi_{\C} \colon \mc{H}^2_{\C} \to H^2(X_0, \C)$ is surjective. This is done by identifying it in terms of the Gauss-Manin connection and the differential of the period map.
+\end{proof}
+
+\begin{defn}
+    A pair $(X, H)$ of a complex manifold $X$ and line bundle $H$ is called a \textit{polarized complex manifold} if $H$ is ample (in particular this means $X$ is projective). Here, $H$ is called the polarization. A polarized family $(\mc{X}, \mc{H})$ over $B$ has $\mc{H}$ ample on every fiber.
+\end{defn}
+
+\begin{defn}
+    A family $\mc{X} \to B$ of irreducible holomorphic symplectic manifolds is \textit{(locally) complete} if $B = \mr{Def}(X_0)_h$.
+\end{defn}
+
+\begin{exm}
+    The family of quartic K3 surfaces is locally complete.
+\end{exm}
+
+For higher-dimensional irreducible holomorphic symplectic manifolds, it is in general very hard to construct such locally complete families. The known such constructions are EPW sextics, which are IHS fourfolds of $K3^{[n]}$ type, fourfolds constructed by Debarre-Voisin, and various examples constructed from cubic fourfolds.
+
+\begin{thm}[Matsushita]
+    Let $X$ be irreducible holomorphic symplectic of dimension $2n$ and $f \colon X \to B$ be surjective and proper with connected fibers and $0 < \dim B < 2n$ for $B$ a K\"ahler manifold (alternatively it can be a projective variety). Then $\dim B = n$, $B$ is projective, $b_2(B) = \rho(B) = 1$, and $B$ is Fano (alternatively $B$ is $\Q$-factorial and Fano with log-terminal singularities). Moreover, the general fiber is a complex torus and every component of a fiber is a Lagrangian subvariety.
+\end{thm}
+
+\begin{defn}
+    Let $X$ be holomorphic symplectic. Then a subvariety $V$ is called \textit{Lagrangian} if $\dim V = \frac{1}{2} \dim X$ and for all resolutions $\nu \colon \wt{V} \to V \subseteq X$, $\nu^* \sigma_X = 0$.
+\end{defn}
+
+\begin{proof}
+    Recall that if $g \colon Y \to Z$ is a surjective morphism of K\"ahler manifolds, then $g^* \colon H^k(Z, \Q) \to H^k(Y, \Q)$ is injective.\footnote{In general this is not true over $\Z$.} This immediately gives $H^{2,0}(B) = 0$, and thus $H^{1,1}(B) = H^2(B)$, which immediately gives a rational K\"ahler class, so $B$ is projective. Let $H$ be a polarization on $B$. If $m = \dim B$, then ${c_1(H)}^m \neq 0$ but ${c_1(H)}^{m+1} = 0$, and because $m < 2n$, we know ${c_1(H)}^{2n} = 0$, and by Fujiki, we have $q(f^* H) = 0$.
+
+    Now let $\omega$ be a K\"ahler form on $X$. Because ${(f^*H)}^m = [X_b]$, if we write $L = f^* H$, then $L^m \wedge \omega_X^{2n-m} \neq 0$. Similarly, for $k \leq m$, $L^k \wedge \omega_X^{2n-k} \neq 0$ because $L^k = f^{-1}(H_1 \cap \cdots \cap H_k)$. We need to prove that $m = n$. Here, we apply Fujiki to $\omega + t L$. This gives us 
+    \[ {(\omega + tL)}^{2n} = c {q(\omega + tL)}^n = c {[q(\omega) + t q(\omega, L)]}^n. \]
+    If we expand this, we obtain
+    \[ \omega^{2n} + \cdots + t^m \omega^{2n-m} L^m = c [{q(\omega)}^n + \cdots + t^n {q(\omega, L)}^n]. \]
+    Comparing coefficients in $t$, we observe that the coefficient of $t^n$ is nonzero, and thus $n = m$.
+
+    Now we prove that if $X_b$ is smooth, then it is Lagrangian. Using the Hodge-Riemann bilinear relations, this is the same as showing that
+    \[ \int_{X_b} \sigma |_{X_b} \wedge \ol{\sigma} |_{X_b} \wedge \omega_{X}^{n-2} = 0. \]
+    If $\omega$ is the restriction of a K\"ahler form on $X$, then our integral simply becomes
+    \[ \int_X \sigma \wedge \ol{\sigma} \wedge \omega^{n-2} \wedge L^n. \]
+    Applying Fujiki to $\sigma + \ol{\sigma} + t \omega + s L$ and using the fact that $q(\sigma, L) = q(\ol{\sigma}, L) = 0$, we obtain the desired conclusion. To conclude that all fibers are Lagrangian, we use a major result of Koll\'ar, which says that if $h \colon Y \to Z$ is a proper and surjective morphism of smooth projective varieties, then $R^i h_* \omega_Y$ is torsion free for all $i$. In particular, for $f \colon X \to B$, we see that $R^i f_* \mc{O}_X$ is torsion-free, so for $\ol{\sigma} \in H^2(\mc{O}_X)$, this maps to a torsion section $\ol{\sigma} \in H^0(B, R^2 f_* \mc{O}_X)$, which must vanish. Pulling back to $H^2(\wt{X_b}, \mc{O})$, $X_b$ is Lagrangian. By linear algebra reasons, $\dim X_b \leq n$, so $f$ is equidimensional.
+
+    Next we prove that $B$ is Fano. First, it is clear that $H^1(\mc{O}_B) = 0$, so $\Pic B = \NS B$. But then $f^* \colon H^2(B) \subseteq H^{1,1}(X)$. For all $\alpha \in H^2(B)$, $q(f^* \alpha) = 0$, but because $H^{1,1}(X)$ has signature $(1, -)$, we see that $\dim H^2(B) = 1$. Thus $\NS(B) = \Z H$ for some $H$. This implies that $K_B = m H$, and we want to show that $m < 0$. If we consider the inclusion $f^* \Omega^1_B \hookrightarrow \Omega^1_X$, $\Omega^1_X$ is a slope-semistable bundle because $c_1(X) = 0$. In particular, $\mu(\Omega^1_{B}) \leq \mu(\Omega^1_X) = 0$, so $m \leq 0$. To prove that $m \neq 0$, we see that if $m \neq 0$, then $\mc{O}_B = f^* K_B \hookrightarrow \Omega^n_X$, so $H^0(\mc{O}_B) \subseteq H^0(\Omega^n_X)$, and for type reasons, this is impossible.
+\end{proof}
+
+\begin{rmk}
+    A similar argument shows that if $\alpha \in H^2(X, \Z)$ satisfies $q(\alpha) = 0$, then $\alpha^n \neq 0$ but $\alpha^{n+1} = 0$.
+\end{rmk}
+
+There is a result of Verbitsky that the kernel of $q \colon S^2 H^2(X, \Z) \to H^*(X, \Q)$ is given by $\ev{\alpha^{n+1} \mid q(\alpha) = 0}$. Also, when we proved that $B$ is Fano, we used the following result.
+
+\begin{prop}[Beauville]
+    Let $X$ be irreducible holomorphic symplectic of dimension $2n$. then $H^0(\Omega^*_X) = \ev{\sigma_X}$, where $\sigma_X$ is the holomorphic form.
+\end{prop}
+
+\begin{proof}[Idea of proof]
+    We consider the holonomy representation. We know that $\mr{Hol}(g) = \mr{Sp}(n)$, where $g$ is the hyperk\"ahler metric. This has an action on $\Omega^k_{X, x_0}$. By compactness of $X$, holomorphic tensors are parallel. Coversely, parallel forms are holomorphic. But then we consider representations of $\mr{Sp}(n)$ on $\bigwedge^k \C^{2n}$, but then by the representation-theoretic black box there exists a unique invariant if $k$ is even and no invariants if $k$ is odd.
+\end{proof}
+
+\begin{rmk}
+    There exists a singular definition of irreducible holomorphic symplectic varieties. This uses the algebra of reflexive holomorphic forms.
+\end{rmk}
+
+Now we want to see that the smooth fibers of a Lagrangian fibration $X \to B$ are complex tori. But it is clear that $N_{X_b/X} = \mc{O}_{X_b}^n$ and that $N_{X_b/X} = \Omega^1_{X_b}$. Then we need to prove that $a \colon X \to \mr{Alb}(X)$ is an isomorphism, but we consider the sequence
+\[ T \to X \to \mr{Alb}(X), \]
+and the map $T \to X$ is \'etale, the map $T \to \mr{Alb}(X)$ is surjective, and finally by considering the effect of $a$ on $H_1$, this is an isomorphism.
+
+Alternatively, we may use the holomorphic version of Arnold-Liouville. This describes smooth compact fibers of a completely integrable system. If $M$ is holomorphic symplectic and $h = (h_1, \ldots, h_n) \colon M \to \C^n$ has compact connected fibers and $\dd{h_1}, \ldots, \dd{h_n}$ linearly independent at every point, $h$ is an integrable system if they Poisson commute. This all implies that the smooth fibers are biholomorphic to complex tori. In our case, each vector field $X_{h_i}$ defined by $\dd{h_i} = \sigma_M(X_{h_i}, -)$ acts infinitesimally on $M$ and preserves the level set of $h_{j}$ for all $j$. Thus $X_{h_i}$ acts on each fiber. Because the fibers are compact, the action lifts to an action of $\C$ on the fibers $M_c$. Of course, all of these actions commute, and we obtain an action of $\C^n$ on each $M_c$. The orbits are open, and the fibers are connected, so there exists a unique orbit and the action is transitive. However, the kernel is discrete and has maximal rank, and thus we obtain $M_c = \C^n / \Lambda$.
+
+In our case, the fact that $[X_{h_i}, X_{h_j}] = 0$ is the same thing as our fibers being Lagrangian, and then we can just work locally.
+
+\section{An explicit computation}%
+\label{sec:an_explicit_computation}
+
+We will compute the Beauville-Bogomolov-Fujiki form for irreducible holomorphic symplectic varieties $X$ of $\mr{K3}^{[n]}$ type.
+
+\begin{prop}
+    There exists an isomorphism of lattices
+    \[ (H^2(X, \Z), q) \cong \Lambda_{\mr{K3}} \oplus \ev{-2(n-1)}. \]
+    Moreover, the Fujiki constant is given by 
+    \[ c_n \coloneqq \frac{(2n)!}{n!2^n}. \]
+\end{prop}
+
+\begin{proof}
+    By deformation invariance, it is enough to perform this computation for $X = S^{[n]}$, where $S$ is a K3 surface. Recall that
+    \[ H^2(S^{[n]}, \Z) = h^*(H^2(S^{(n)}, \Z)) \oplus \Z \delta \]
+    where $h$ is the Hilbert-Chow morphism and we have the isomorphism $H^2(S^{(n)}, \Z) \simeq H^2(S, \Z)$. Also, if $E$ is the exceptional divisor of $h$, then $2 \delta = c_1(E)$. Our strategy is the following:
+    \begin{enumerate}
+        \item We will prove that $q |_{H^2(S, \Z)} = (-,-)_S$ up to a constant.
+        \item We will prove that $\delta \perp H^2(S, \Z)$.
+        \item We will compute $q(\delta)$.
+        \item We will compute the Fujiki constant.
+    \end{enumerate}
+    Let $\alpha \in H^2(S, \Z)$. We will compute
+    \begin{align*}
+        \int_{S^{[n]}} h^* \qty(\sum p_i^* \alpha)^{2n} &= \int_{S^{(n)}} \qty(\sum p_i^* \alpha)^{2n} \\
+        &= \frac{1}{n!} \int_{S^n} \qty(\sum p_i^* \alpha)^{2n}. \\
+        &= \frac{1}{n!} \int_{S^n} (p_1^* \alpha + \cdots + p_n^* \alpha)^{2n} \\
+        &= \frac{1}{n!}\sum \binom{2n}{k_1} \binom{2n-k_1}{k_2} \cdots p_1^* \alpha^{k_1} \cdots p_n^* \alpha^{k_n} \\
+        &= \frac{1}{n!} \binom{2n}{2} \binom{2n-2}{2} \cdots \binom{4}{2} \prod_{i=1}^n p_i^*(\alpha \wedge \alpha) \\
+        &= \frac{(2n)!}{n!2^n} (\alpha, \alpha)_S^n.
+    \end{align*}
+    Continuing, we have
+    \begin{align*}
+        \int_S^{[n]} h^* (\alpha)^{2n-1} \cdot E &= c \cdot q(\alpha)^{n-1} q(\alpha, E) \\
+        &= \int_E h^*(i(\alpha))^{2n-1} = 0
+    \end{align*}
+    because $h(E) = \Delta^{2n-2}$, and so the integral vanishes by dimension reasons. Now we have
+    \[ q(\alpha) = \lambda (\alpha, \alpha)_S \]
+    for some $\lambda \in \Z$, and because $\int \alpha^{2n} = c_n q(\alpha)^n = c_X (\alpha, \alpha)^n$, we have $c_X = c_n \cdot \lambda^n$. Later, we prove that $\lambda = 1$. To compute $q(\delta)$, we compute
+    \begin{align*}
+        \int_{S^{[n]}} E^2 \wedge h^* \qty(\sum p_i^* \alpha)^{2n-2} &= \int_E E|_E \wedge h^* \alpha^{2n-2} \\
+        &= \int_{\Delta} h_* (E|_E) \wedge \qty(\sum p_i^* \alpha)^{2n-2},
+        &= -2 \int_{\Delta} \qty(\sum p_i^* \alpha)^{2n-2}.
+    \end{align*}
+    Note that $h_* (E|_E) = -2$ because $E \to \Delta$ looks locally like the resolution of a quadric cone. Noting that we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        E \ar{r} & \Delta \\
+        S \times S^{n-2} \ar{ur}{\eta} \ar{r}{(n-2)!} & S \times S^{(n-2)} \ar{u}{\mr{bir.}},
+    \end{tikzcd}
+    \end{equation*}
+    our integral becomes
+    \begin{align*}
+        \frac{-2}{(n-2)!} \int_{S^{n-1}} \eta^* \qty(\sum p_i^* \alpha)^{2n-2} &= \frac{-2}{(n-2)!} \qty(\frac{(2n-2)!}{2^{n-1}} 2^2 (\alpha, \alpha)_S^{n-1}).
+    \end{align*}
+    On the other hand, we can differentiate the Fujiki relation twice, and we know that
+    \begin{align*}
+        (2n-1) \int_{S^{[n]}} E^2 \wedge h^* \alpha^{2n-2} &= c_X q(\alpha)^{n-1} q(E) \\
+        &= c_X \lambda^{n-1} (\alpha, \alpha)_S^{n-1} q(E). \\
+        &= \frac{c_n}{\lambda} (\alpha, \alpha)_S^{n-1} q(E).
+    \end{align*}
+    Comparing the coefficients, we obtain 
+    \[ \frac{-(2n-1)!}{(n-2)! 2^{n-4}} = \frac{4}{\lambda} \frac{(2n)!}{n!2^n} q(\delta), \]
+    and after cancelling everything, we have
+    \[ \frac{-2}{(n-2)!} = \frac{1}{\lambda} \frac{1}{n-1} q(\delta), \]
+    and therefore $q(\delta) = -2(n-1)\lambda$.\footnote{This was exhibit $N \gg 0$ that mathematicians are bad at arithmetic.} Finally, we are forced to take $\lambda = n-1$, so we are done.
+\end{proof}
+
+In the case when $n=2$, there is a more explicit argument using intersection theory and Segre classes of the Hilbert scheme of $2$ points.
+
+\begin{rmk}
+    It is not a coincidence that $q(E) < 0$.
+\end{rmk}
+
+\begin{defn}
+    If $X$ is irreducible holomorphic symplectic, then $E \subseteq X$ is called \textit{prime exceptional} if it is integral and $q(E) < \infty$.
+\end{defn}
+
+\begin{thm}[Markman,\footnote{Fun fact: Markman was on my undergraduate thesis committee.} Druel]
+    $E \subseteq X$ is prime exceptional if and only if there exists a birational $f \colon X \dashrightarrow X'$ such that the strict transform $E'$ of $E$ can be contracted.
+\end{thm}
+
+\begin{prop}
+    Let $f \colon x \dashrightarrow X'$ be a birational map between irreducible holomorphic symplectic varieties. Then the isomorphism
+    \[ f^* \simeq H^2(X', \Z) \simeq H^2(X, \Z) \]
+    preserves $q_{X'}$ and $q_X$.
+\end{prop}
+
+\begin{proof}
+    If we consider the graph $\wt{\Gamma}$ of $f$ with projections $p, q$, we can normalize first so that 
+    \[ \int_X (\sigma \ol{\sigma})^n = 1, \]
+    and then we compute
+    \[ \int_{\Gamma} p^*(\sigma \ol{\sigma})^{n-1} E^2 = 0. \]
+\end{proof}
+
+Recall that if $Z$ is a smooth projective variety and $\mc{F}$ is a coherent sheaf, then
+\[ \chi(Z, \mc{F}) = \int_Z \mr{ch}(\mc{F}) \mr{td}(Z) \]
+by Hirzebruch-Riemann-Roch. If $\mc{F} = L$ is a line bundle, then we have
+\[ \chi(Z, L) = \sum \int_Z \frac{c_1(L)^i}{i!} \mr{td}_{\dim Z - i}(Z). \]
+
+\begin{prop}
+    Let $X$ be irreducible holomorphic symplectic. Then there exist $q_i \in \Q$ depending only on the deformation class of $X$ such that
+    \[ \chi(X, L) = \sum_{i=0}^n q_i q(L)^i. \]
+\end{prop}
+
+\begin{cor}
+    For all isotropic $L$, we have $\chi(X, L) = n+1$, where $X$ has dimension $2n$.
+\end{cor}
+
+To prove the proposition, we need to prove the following Fujiki-like result.
+\begin{prop}
+    Let $\beta \in H^{4\ell}(X, \R)$ be a class that stays of type $(2\ell, 2\ell)$ for all small deformations of $X$. Then there exists $c_{\beta} \in \R$ such that $\int \beta \wedge \alpha^{2n-2\ell} = c_{\beta} q(\alpha)^{n-\ell}$ for all $\alpha \in H^2(X, \Z)$.
+\end{prop}
+Proof of this is the same as the proof of Fujiki.
 
 
 

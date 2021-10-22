@@ -147,7 +147,9 @@
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Bl}{Bl}
 \DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Tor}{Tor}
 \DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\ad}{ad}
 \DeclareMathOperator{\Aut}{Aut}
@@ -162,6 +164,8 @@
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\ord}{ord}
 \DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\coker}{coker}
 
 % Section formatting
 \titleformat{\section}
@@ -627,6 +631,302 @@ Now we will discuss some examples.
     \[ 0 \to \mc{O} \to {\mc{O}(1)}^{\oplus n+1} \to T_{\P^n} \to 0 \]
     and use the long exact sequence in cohomology. Because positive degree line bundles have no higher cohomology, we have $H^1(T_{\P^n}) = 0$.
 \end{proof}
+
+\chapter{Kevin (Oct 08): Deformations of coherent sheaves}%
+\label{cha:kevin_oct_08_deformations_of_coherent_sheaves}
+
+There will be no mixed characteristic funny business during this lecture. Let $X$ be a projective $k$-scheme (proper might be fine, but this makes certain facts more true) and $\mc{F}$ be a coherent sheaf on $X$. Consider the deformation functor
+\[ D_{\mc{F}} \colon \ms{Art}_k \to \ms{Set} \qquad A \mapsto \qty{\mc{F}_A \in \ms{Coh}(X_A) \mid \mc{F}_A |_X \cong \mc{F}, \mc{F}_A \text{ flat over }A }. \]
+We want to study the properties of this functor, which means we will check Schlessinger's conditions:\footnote{Neither Kevin nor Johan knows why these conditions are called H} Let $A \to B \gets C$ be a diagram in $\mc{C}$ and consider the morphism
+\[ D(B \times_A C) \xrightarrow{r} D(B) \times_{D(A)} D(C). \]
+\begin{itemize}
+    \item $(H_1)$ The morphism $r$ is surjective if $C \twoheadrightarrow A$;
+    \item $(H_2)$ The morphism $r$ is bijective if $C = k[\ep] \twoheadrightarrow k = A$;
+    \item $(H_3)$ $\dim_k(t_D) < \infty$ (later, we will see that we need $H_2$ for formulate this). Here, $t_D$ is the tangent space to $D$;
+    \item $(H_4)$ The morphism $r$ is bijective if $C \twoheadrightarrow A$.
+\end{itemize}
+Recall from Johan's lecture that $(H_1), (H_2), (H_3)$ are equivalent to the existence of a hull and $(H_3), (H_4)$ are equivalent to $D$ being pro-representable.
+
+We only need to check $(H_1)$ for small extensions, which are extensions by a $k$-vector spaace
+\[ 0 \to I \to C \to A \to 0, \]
+where $I$ is killed by the maximal ideal of $C$.
+
+\begin{thm}
+    The functor $D_{\mc{F}}$ admits a hull.
+\end{thm}
+
+\begin{lem}
+    Let $(A, \mf{m})$ be a local Artinian ring.
+    \begin{enumerate}
+        \item If $\mf{m} M = M$, then $M \cong 0$.
+        \item If $M \to N$ induces an isomorphism $M/\mf{m} M \cong N/\mf{m}N$ and $N$ is flat over $A$, then $M \cong N$.
+        \item If $M$ is flat, then $M$ is free.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    We know that $\mf{m}^d = 0$, so $\mf{m}^d M = 0$, and thus $M = \mf{m} M = \mf{m}^2 M = \cdots = \mf{m}^d M = 0$. Next, suppose $M \to N$ induces an isomorphism after killing $\mf{m}$. Then we know that the kernel and cokernel vanish because they are killed by $\mf{m}$, so $M \to N$ must be an isomorphism. The last part is left as an exercise.
+\end{proof}
+
+\begin{proof}[Proof of theorem]
+    We will simply prove $(H_1), (H_2), (H_3)$:
+    \begin{enumerate}
+        \item Suppose that $C \twoheadrightarrow A$ is a small extension and consider a pair $(\mc{F}_B, \mc{F}_C) \in D(B) \times_{D(A)} D(C)$. We know that we have isomorphisms $\mc{F}_B |_{X_A} \cong \mc{F}_A, \mc{F}_c |_{X_A} \cong \mc{F}_A$, and so we take the fiber product
+            \[ \mc{F}_{B \times_A C} \coloneqq \mc{F}_B \times_{F_A} \mc{F}_C. \]
+            We only need to show that our sheaf is flat over $B \times_A C$ because it clearly restricts to $\mc{F}_B$ and $\mc{F}_C$. We can consider each sheaf as a module $M$, and so we know $M_B$ is free over $B$ by the lemma. Choose a basis $\qty{e_i}$. Also consider the diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                M_B \times_{M_A} M_C \ar{r} \ar{d} & M_C \ar{d}{v} \\
+                M_B \ar{r}{u} & M_A.
+            \end{tikzcd}
+            \end{equation*}
+            Then $M_A$ has $A$-basis $u(e_i)$. Because $M_C$ surjects onto $M_A$, we can lift the $u(e_i)$ to $f_i \in C$, and these form a $C$-basis for $M_C$. This all implies that $M_B \times_{M_A} M_C$ is free with basis $(e_i, f_i)$.
+        \item It suffices to prove injectivity. Suppose $\mc{G} \in D(B \times_k k[\ep])$ maps to $(\mc{F}_B, \mc{F}_{k[\ep]}) \in D(B) \times D(k[\ep])$, and so we have morphisms
+            \begin{equation*}
+            \begin{tikzcd}
+                \mc{G} \ar{r} \ar{d} & \mc{F}_{k[\ep]} \ar{d} \\
+                \mc{F}_B \ar{r} & \mc{F}.
+            \end{tikzcd}
+            \end{equation*}
+            We will prove that this diagram is Cartesian. By the lemma, the morphism $\mc{G} \to \mc{F}_B \times_{\mc{F}} \mc{F}_{k[\ep]}$ is an isomorphism.
+        \item We will prove that $T_D = \Ext_X^1(\mc{F}, \mc{F})$. We will only prove this in the case where $\mc{F}$ is a vector bundle $\mc{E}$ of rank $r$. In this case, we have $\Ext_X^1(\mc{E}, \mc{E}) = H^1(X, \End(\mc{E}))$. Now we will associate cocycles to deformations. To each $\mc{E}_{k[\ep]}$, we will associate an open cover $(U_j)$ and 
+            \[ h_{ij} \in \Aut(\mc{O}_{X_{k[\ep]}}^{\oplus r})(U_{ij}), \]
+            and we write $g_{ij} + \ep f_{ij}$, where $g_{ij} \in \Aut_{\mc{O}_X^{\oplus r}}(U_{ij})$ and $f_{ij} \in \End(\mc{O}_X^{\oplus r})(U_{ij})$. The cocycle condition is that
+            \[ g_{ik} + \ep f_{ik} = (g_{ij} + \ep f_{ij})(g_{jk} + \ep f_{jk}), \]
+            which is the same as 
+            \[ f_{ik} = g_{ij} f_{jk} + f_{ij} g_{jk}, \]
+            which is exactly the \v{C}ech $1$-cocycle condition. Proving that equivalent cocycles give the same deformation is easy. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}
+    The condition $(H_4)$ holds when $\mc{F}$ is simple, which means that $k \simeq \End_X(\mc{F})$.
+\end{thm}
+
+\section{Tangent-obstruction theory}%
+\label{sec:tangent_obstruction_theory}
+
+Suppose $D$ is a deformation functor. Then a \textit{tangent-obstruction theory} for $D$ is given by finite-dimensional $k$-vector spaces $(T^1, T^2)$. Suppose we have a small extension
+\[ 0 \to I \to B \to A \to 0. \]
+Then we have another exact sequence
+\[ T^1 \otimes_k I \to D(B) \to D(A) \xrightarrow{\mr{ob}} T^2 \otimes_k I, \]
+which means that
+\begin{enumerate}
+    \item $\xi_A \in D(A)$ lifts to $D(B)$ if and only if $\mr{ob}(\xi_A) = 0$;
+    \item $T^1 \otimes I$ acts transitively on the fibers of $D(B) \to D(A)$;
+    \item If $A = k$, then the action of $T^1 \otimes I$ acts simply transitively on $D(B)$.
+\end{enumerate}
+Note that because $T^1$ acts simply transitively on $D(k[\ep])$, we must have $T^1 = D(k[\ep])$. On the other hand, $T^2$ is not canonical.
+
+\begin{thm}
+    The deformations $D_{\mc{F}}$ admits a tangent-obstruction theory with $T^1 = \Ext^1_X(\mc{F}, \mc{F})$ and $T^2 = \Ext^2_X(\mc{F}, \mc{F})$.
+\end{thm}
+
+\begin{proof}
+    We claim that if $D$ satisfies $(H_1)$ and $(H_2)$, then $D(k[\ep]) \otimes I$ naturally acts on $D(B)$ for small extensions $0 \to I \to B \to A \to 0$. To see this, note that $D(k[\ep]) \otimes_k I = D(k[I])$. We also note that by $(H_2)$, $D(k[I]) \times D(B) = D(k[I] \times_k B)$. Now define $\alpha \colon k[I] \times_k B \to B$ by $\alpha(1+i, b) = 1 + b$, and this gives us an action of $D(k[I]) \times D(B) = D(k[I] \times_k B) \xrightarrow{\alpha_*} D(B)$. To prove transitivity, apply $(H_1)$ to the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        k[I] \times_k B \ar{r}{\alpha} \ar{d}{\pi_B} & B \ar{d} \\
+        B\ar{r} & A.
+    \end{tikzcd}
+    \end{equation*}
+    
+    Now we will consider obstructions. We will assume again that $\mc{F}$ is a rank $r$ vector bundle, which we will call $\mc{E}$. Let
+    \[ 0 \to I \to B \to A \to 0 \]
+    be a small extension, so we will consider $H^2(X, \End(\mc{E}))$. Consider an open cover $(U_i)$ and $g_{ij} \in \Aut(\mc{O}_X^{\oplus r} \otimes_k A)(U_{ij})$. We want to lift these to $h_{ij} \in \Aut(\mc{O}_X^{\oplus r} \otimes_k B)(U_{ij})$. If this is possible, we have a cocycle
+    \[ h_{ij}^{-1} h_{ij} h_{jk} \in 1 + \End(\mc{O}_X^{\oplus r} \otimes_k I)(U_{ij}), \]
+    and the cocycle condition is satisfied when $h_{ij}^{-1} h_{ij} h_{ik} = 1$. If any other $h'_{ij} = h_{ij} +  s_{ij}$, then we note that
+    \[ {(h'_{ij})}^{-1} h'_{ij} h'_{jk} = h_{ik}^{-1} h_{ij} h_{jk} + (- s_{ik} g_{ij} g_{jk} + g_{ik}^{-1} s_{ij} g_{ij} + g_{ik}^{-1} g_{ij} s_{jk}), \]
+    and this gives us a class in $H^2(X, \End(\mc{E})) \otimes I$.
+\end{proof}
+
+\begin{rmk}
+    Let $R$ be the hull of $D$, which means we have a morphism $h_R \to D$. Then we know $R = k[[t_1, \ldots, t_{d_11}]] / (f_1, \ldots, f_{d_2})$. We also know that $d_1 - d_2 \leq \dim R \leq d_1$.
+\end{rmk}
+
+\begin{exm}[Good example]
+    Let $X$ be a smooth projective curve and $\mc{E}$ be a rank $r$ vector bundle. Then we know that 
+    \[ T^1 = H^1(X, \End(\mc{E})), \qquad T^2 = H^2(X, \End(\mc{E})) = 0, \]
+    so deformations of $\mc{E}$ are unobstructed. Now assume that $\mc{E}$ is simple. Then $H^0(X, \End(\mc{E})) = k$ by definition, and we also know that $D_{\ep}$ is pro-represented by some ring $R$ with 
+    \[ \dim R = h^1(X, \End(\mc{E})) = r^2(g-1) + 1 \]
+    by Riemann-Roch.
+\end{exm}
+
+\begin{exm}[Bad example]
+    Let $X$ be a smoorh projective variety and $\mc{E}$ be a rank $r$ vector bundle on $X$. Let $\mc{E}_1, \mc{E}_2 = D_{\mc{E}}(k[\ep])$. Then $(\mc{E}_1, \mc{E}_2) \in D_{\mc{E}}(k[\ep_1, \ep_2] / (\ep_1^2, \ep_1 \ep_2, \ep_2^2))$, and we would like to lift to $D_{\mc{E}}(k[\ep_1, \ep_2]/(\ep_1^2, \ep_2^2))$.
+
+    We will compute the obstruction explicitly. We know $\mc{E}_1, \mc{E}_2$ give us classes $u_1, u_2 \in H^1(X, \End(\mc{E}))$, and after some magical computation, the obstruction to lifting is given by
+    \[ u_1 \smile u_2 + u_2 \smile u_1, \]
+    where the cup product comes from the algebra structure on $\End(\mc{E})$.
+
+    Now let $X = C_1 \times C_2$ be a product of curves. Then $H^1(X, \mc{O}_X) = H^1(C, \mc{O}_{C_1}) \oplus H^1(C_2, \mc{O}_{C_2})$ and $H^2(X, \mc{O}_X) = H^1(C, \mc{O}_{C_1}) \otimes_j H^2(C_2, \mc{O}_{C_2})$. Suppose that $\alpha_1 \in H^1(C_1, \mc{O}_{C_1})$ and $\alpha_2 \in H^1(C_2, \mc{O}_{C_2})$ with nonzero cup product. Then we simply set $\mc{E} = \mc{O}_X \oplus \mc{O}_X$ and 
+    \[ u_1 = \mqty(0 & \alpha_1 \\ 0 & 0) \qquad u_2 = \mqty(0 & 0 \\ \alpha_2 & 0) \qquad u_1 \smile u_2 + u_2 \smile u_1 = \mqty(\dmat{\alpha_1 \smile \alpha_2, \alpha_2 \smile \alpha_1}). \]
+    this gives us our obstructed deformation.
+\end{exm}
+
+\chapter{Patrick (Oct 15): Deformations of singularities}%
+\label{cha:patrick_oct_15_deformations_of_singularities}
+
+We begin by fixing some notation.
+Let $k$ be a field and $R = P/I$, where $P = k[x_1, \ldots, x_n]$ and $I = (f_1, \ldots, f_r)$ is an ideal. Throughout this lecture, we will denote local Artinian rings with residue field $k$ by $A,B,C,\ldots$ and rings by $R,S,T,\ldots$ Finally, denote $Z = \Spec R$.
+
+\section{Explicit criteria for flatness}%
+\label{sec:explicit_criteria_for_flatness}
+
+We will study (embedded) deformations of singular affine schemes embedded in $\A^n$. The first thing we want to understand is to explicitly understand flatness of some $R_A$ over $A$, where $R_A \otimes_A k = R$. We will write $R_A = P_A / I_A$, where $P_A = A[x_1, \ldots, x_n] = A \otimes_k P$. Recall that over a Noetherian local ring $S$ with residue field $k$, a module $M$ is flat if and only if it is free, and this is equivalent to $\Tor_1^S(M, k) = 0$ by standard results in commutative algebra.
+
+Now consider the exact sequence
+\[ 0 \to I_A \to P_A \to R_A \to 0. \]
+After tensoring with $k$, we have 
+\[ 0 \to \Tor_1(R_A, k) \to I_A \otimes_A k \to P \to R \to 0. \]
+Therefore, we know that $R_A$ is flat over $A$ if and only if $I_A \otimes_A k = I$. We would like to understand this statement.
+
+Consider a presentation
+\[ P^s_A \to P_A^r \to I_A \to 0 \]
+of $I_A$. Then we know $R_A$ is flat over $A$ if and only if after tensoring with $k$, we obtain an exact sequence
+\[ P^s \to P^r \to I \to 0. \]
+Note that to give this presentation $P^s \to P^r \to I \to 0$ is the same as giving a complete set of relations among the generators of $I$.
+
+\begin{prop}
+    Suppose that 
+    \begin{equation} P^s \to P^r \to P \to R \to 0 \end{equation}
+    is exact and
+    \begin{equation} P_A^s \to P_A^r \to P_A \to R_A \to 0 \end{equation}
+    is a complex such that $P_A^r \to R_A \to R_A \to 0$ is exact and tensoring (2) with $k$ gives (1). Then $R_A$ is flat over $A$.
+\end{prop}
+
+\begin{proof}
+    Note that the hypotheses are equivalent to the fact that all relations in $I$ can be lifted to $I_A$. Now given $g_1', \ldots, g_r' \in P_A$ such that 
+    \[ \sum_{i=1}^r g_i' f_i' = 0, \]
+    this clearly descends to a relation in $I$ by killing the maximal ideal of $A$. But now if we choose a complete set of relations for $I_A$, this descends to a complete set of relations in $I$, so we may in fact assume that (2) is exact.
+
+    In this case, there exists some $L_A$ such that the sequence splits as
+    \[ P_A^s \to L_A \to 0 \qquad 0 \to L_A \to P_A^r \to I_A \to 0 \qquad 0 \to I_A \to P_A \to R_A \to 0. \]
+    By right exactness of the tensor product, we know $P_A^{s} \otimes k \to L_A \otimes k \to 0$ is exact. We also know that
+    \[ L_A \otimes k \to P_A^r \otimes k \to I_A \otimes k \to 0 \]
+    is exact, again by right exactness. But this means that $I_A \otimes k$ is the cokernel of $P^s \to P^r$, and therefore $I_A \otimes k = I$. This means that $R_A$ is flat.
+\end{proof}
+
+\begin{cor}
+    Let $R = P/I$ and $R_A = P_A / I_A$, where $I = (f_1, \ldots, f_r)$ and $I_A = (f_1', \ldots, f_r')$ such that $f_i'$ is a lift of $f_i$. Then $R_A$ is flat over $A$ if and only if every relation among the $f_i$ lifts to a relation among the $f_i'$.
+\end{cor}
+
+\begin{rmk}
+    This result essentially gives us that first-order embedded deformations of $\Spec R \subset \A^n$ are given by $\Hom(I, R)$. The first-order (not embedded) deformations of $Z$ are given by the cokernel of
+    \[ 0 \to T_X \to T_{\A^n}|_X \to N_{X/\A^n}, \]
+    which arises from the exact sequence
+    \[ I/I^2 \to \Omega^1_{\A^n}|_X \to \Omega^1_X \to 0, \]
+    and this is supported on the singular points of $X$, so when $X$ has isolated singularities, this is finite-dimensional.
+\end{rmk}
+
+Note that if $\Spec R \subset \A^n$ is a complete intersection, then $I$ is generated by a regular sequence, so in particular the Koszul complex is a free resolution of $R$ and therefore there are only trivial relations among the $f_i$ (this means the relations are generated by $f_i f_j - f_j f_i = 0$). Clearly, because we are only considering commutative rings (after all, this is normal algebraic geometry), this means that all deformations of $\Spec R$ are unobstructed.
+
+\section{Hilbert schemes of smooth surfaces}%
+\label{sec:hilbert_schemes_of_smooth_surfaces}
+
+We will prove that deformations of finite length closed subschemes of $\A^2$ are unobstructed. In particular, this will imply that the Hilbert scheme $\mr{Hilb}(\A^2, n)$ is smooth.
+
+Let $Z \subset \A^2$ be a closed subscheme of dimension $0$. Then because $P = k[x,y]$ has dimension $2$, there exists a free resolution
+\[ 0 \to P^s \xrightarrow{(g_{ij})} P^r \to P \to R \to 0 \]
+of $R$. In this case it is possible to understand the matrix $(g_{ij})$, and in fact this is the special case of a more general result. First, when we study the local behavior, we have the following result.
+\begin{thm}[Hilbert, Burch]
+    Let $P$ be a regular local ring of dimension $n$ and $R = P/I$ be a Cohen-Macaulay quotient of codimension $2$. Then there exists an $(r-1) \times r$ matrix $G = (g_{ij})$ whose maximal minors $f_1, \ldots, f_r$ minimally generate $I$, and there is a free resolution
+    \[ 0 \to P^{r-1} \xrightarrow{(g_{ij})} P^r \xrightarrow{(f_i)} P \to R \to 0. \]
+\end{thm}
+
+\begin{proof}
+    Note that the fact that the free resolution has this length is a corollary of the Auslander-Buchsbaum formula, which says that for a ring $R$ and module $M$, we have
+    \[ \depth M + \operatorname{proj.dim} M = \depth R \]
+    and the fact that depth equals dimension for Cohen-Macaulay things. Thus we have a free resolution
+    \[ 0 \to P^{r-1} \xrightarrow{(g_{ij})} P^r \xrightarrow{(a_i)} P \to R \to 0, \]
+    where $a_1, \ldots, a_r$ are a minimal set of generators for $I$. Let $f_i$ is ${(-1)}^i$ times the determinant of the $i$-th minor of $g_{ij}$. We will prove that the map $(f_i)$ is the same as the map $(a_i)$; clearly
+    \[ 0 \to P^{r-1} \xrightarrow{(g_{ij})} P^r \xrightarrow{(f_i)} P \to R \to 0. \]
+    is a resolution. This is because at the generic point of $P$, we know $(g_{ij})$ is injective, so at least one $f_i$ is nonzero. But then we know $\coker (g_{ij})$ is torsion-free (because $I$ is torsion-free), and so it in fact must vanish by rank reasons. Thus $(a_1, \ldots, a_{r})$ and $(f_1, \ldots, f_{r})$ are isomorphic as $P$-modules.
+
+    At a codimension $1$ point in $\Spec P$, note that $0 \to P^{r-1} \to P^r \xrightarrow{(a_i)} P \to B \to 0$ is split exact (because $I$ has codimension $2$). This implies that at least one $f_i$ is a unit, and thus $(f_1, \ldots, f_r)$ has codimension at least $2$. But then the isomorphism $I \cong (f_1, \ldots, f_r)$ is given by multiplication by some nonzero element of $P$ which is a unit away from codimension $2$. But this means it is a unit everywhere.
+\end{proof}
+
+Considering the global picture in $\A^n$, we obtain the following result.
+\begin{thm}[Hilbert, Schaps]
+    Let $Z = \Spec R \subset \A^n$ be a Cohen-Macaulay closed subscheme of codimension $2$. Then $R = P/I$ has a free resolution of the form
+    \[ 0 \to P^{r-1} \xrightarrow{(g_{ij})} P^r \xrightarrow{(f_i)} P \to R \to 0 \]
+    where the $f_i$ are the maximal minors of the matrix $(g_{ij})$.
+\end{thm}
+
+This result in fact holds over any Artinian local ring $A$, which we will use later.
+
+Next, we want to understand what happens if we choose some Artinian local ring with residue field $k$ and lift the $g_{ij}$ to $g_{ij}'$, where $g_{ij}' \in P_A$.
+
+\begin{thm}[Schaps]
+    If $A$ is a square zero extension of $k$, then the sequence
+    \[ 0 \to P_A^{r-1} \xrightarrow{(g_{ij}')} P_A^r \xrightarrow{(f_i')} P_A \to R_A \to 0 \]
+    is exact. Moreover, any lifting of $R$ over $A$ arises by lifting the matrix $(g_{ij})$.
+\end{thm}
+
+\begin{proof}
+    We know that 
+    \[ L_A^{\bullet} \coloneqq P_A^{r-1} \to P_A^r \to P_A \]
+    is a complex. This is because composing the two maps amounts to evaluating determinants with a repeated column. Because $P_A$ is free (and therefore flat), we can tensor with the exact sequence
+    \[ 0 \to \mf{m}_A \to A \to k \to 0 \]
+    to obtain an exact sequence of complexes
+    \[ 0 \to L_A^{\bullet} \otimes_A \mf{m}_A \to L_A^{\bullet} \to L_A^{\bullet} \otimes_A k \to 0. \]
+    Note that 
+    \[ L_A^{\bullet} \otimes_A k = P^{r-1} \xrightarrow{(g_{ij})} P^r \xrightarrow{(f_i)} P \eqqcolon L^{\bullet}. \]
+    In particular, this term is exact by Hilbert-Schaps. In addition, clearly $L_A^{\bullet} \otimes_A \mf{m}_A = L^{\bullet} \otimes_k \mf{m}_A$ because $A \to k$ is a square zero extension, so the complex $L_A^{\bullet} \otimes_A \mf{m}_A$ is exact. By the long exact sequence in homology, we know that $L_A^{\bullet}$ is exact. Note that $L^{\bullet}$ extends to an exact sequence
+    \[ 0 \to P^{r-1} \to P^r \to P \to R \to 0, \]
+    and $L_A^{\bullet}$ extends to an exact sequence
+    \[ 0 \to P_A^{r-1} \to P_A^r \to P_A \to R_A \to 0. \]
+    However, by the homology long exact sequence, we have an exact sequence
+    \[ 0 \to R \otimes_k \mf{m}_A \to R_A \to R \to 0. \]
+    But this implies that $R_A \otimes_A k = R$. Finally, by the local criterion for flatness, we see that $R_A$ is flat over $A$.
+
+    Let $R_A = P_A / I_A$ be a lifting of $R$ over $A$. Lift $f_i \in I$ to $h_i \in I_A$. By Nakayama, these generate $I_A$, so we obtain a free resolution
+    \[ 0 \to P_A^{r-1} \xrightarrow{(g_{ij}')} P_A^r \xrightarrow{(h_i)} P_A \to R_A \to 0, \]
+    where $g_{ij}'$ lift the $g_{ij}$. However, we already have a lift
+    \[ 0 \to P_A^{r-1} \xrightarrow{(g_{ij}')} P_A^r \xrightarrow{(f_i')} P_A \to R_A' \to 0, \]
+    and so we must show $R_A = R_A'$. But we know that the ideals $I_A = (h_1, \ldots, h_r)$ and $I_A' = (f_1', \ldots, f_r')$ are isomorphic as $P_A$-modules. But then if we restrict this isomorphism to $\A^n_A \setminus \supp B$, we obtain a unit in $H^0(\A^n_A \setminus \supp B, \mc{O}_{\A^n_A})$. Because functions extend over codimension $2$, we have $H^0(\A^n_A \setminus \supp B, \mc{O}_{\A^n_A}) = P_A$, so this is a global unit. This gives the desired result.
+\end{proof}
+
+This result holds if we replace $A \to k$ with any square-zero extension of Artinian local rings $B \to A$ and $P, P_A$ with flat things, and so we see that (embedded) deformations of codimension $2$ Cohen-Macaulay subschemes of $\A^n$ are unobstructed. In particular, any dimension $0$ closed subscheme $Z \subset \A^2$ is automatically Cohen-Macaulay (because it is dimension $0$), so its embedded deformations are unobstructed. By some cohomological argument, the tangent space to $\mr{Hilb}(\A^2, n)$ is isomorphic to $\Hom(R, R)$ and has dimension $2n$, so 
+
+\section{An obstructed deformation}%
+\label{sec:an_obstructed_deformation}
+
+Let $R = k[x,y,z]/(z^2, xy, xz, yz)$. Note that this scheme has an embedded point at the origin, so in particular it is \textbf{not} Cohen-Macaulay.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[-,thick] (0,-2) -- (0,2);
+    \draw[-,thick] (-2,0) -- (2,0);
+    \filldraw[black] (0,0) circle (2pt);
+    \draw[->] (0,0) -- (0.5,0.5) node[above,right] {$z$};
+\end{tikzpicture}
+\end{center}
+\caption{Drawing of $\Spec R$}%
+\label{fig:}
+\end{figure}
+
+We will study embedded deformations of $\Spec R$ and see that they are obstructed. In particular, we will choose two deformations of $R$ over $k[\ep]$ that cannot be simultaneously lifted. We claim that a complete set of relations (using the ordering $(xy, xz, yz, z^2)$ for the generators of $I$) is given by the matrix
+\[ G = \mqty(z & -y & 0 & 0 \\ z & 0 & -x & 0 \\ 0 & z & 0 & -x \\ 0 & 0 & z & -y). \]
+
+Now a first-order deformation of $\Spec R$ is given by lifting $(xy,xz,yz,z^2)$ over $k[\ep]$, and the first candidate is to consider $I_{\ep_1} = (xy + \ep_1 y, xz, yz, z^2)$. Then we note that
+\[ G \mqty(xy+\ep_1 y \\ xz \\ yz \\ z^2) = \ep_1 \mqty(yz \\ yz \\ 0 \\ 0), \]
+and we can lift $G$ to kill this vector with the matrix
+\[ G_{\ep_1} = \mqty(z & -y & -\ep_1 & 0 \\ z & 0 & -x-\ep_1 & 0 \\ 0 & z & 0 & -x \\ 0 & 0 & z & -y) = G + \mqty(0 & 0 & -\ep_1 & 0 \\ 0 & 0 & -\ep_1 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0) \eqqcolon G + G_1. \]
+
+Next consider the deformation given by $I_{\ep_2} = (xy, xz, yz+\ep_2 z, z^2)$. We note that
+\[ G \mqty(xy \\ xz \\ yz + \ep_2 z \\ z^2) = \ep_2 \mqty(0 \\ -xz \\ 0 \\ z^2), \]
+and we can lift $G$ to kill this vector with the matrix
+\[ G_{\ep_2} = \mqty(z & -y & 0 & 0 \\ z & \ep_2 & -x & 0 \\ 0 & z & 0 & -x \\ 0 & 0 & z & -y - \ep_2) = G + \mqty(0 & \ep_2 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & -\ep_2 \\ 0 & 0 & 0 & 0) \eqqcolon G + G_2. \]
+
+Now we consider $I_{\ep_1^2, \ep_2^2, \ep_1\ep_2} = (xy+\ep_1 y, xz, yz + \ep_2 z, z^2)$ and attempt to lift this deformation to $k[\ep_1, \ep_2]/(\ep_1^2, \ep_2^2)$. Note that 
+\begin{align*} 
+    (G + G_1 + G_2) \mqty(xy+\ep_1 y \\ xz \\ yz+\ep_2 z \\ z^2) &= \mqty(z & -y & -\ep_1 & 0 \\ z & \ep_2 & -x-\ep_1 & 0 \\ 0 & z & 0 & -x \\ 0 & 0 & z & -y - \ep_2) \mqty(xy+\ep_1 y \\ xz \\ yz+\ep_2 z \\ z^2) \\
+    &= \ep_1 \ep_2 \mqty(-z \\ -z \\ 0 \\ 0),
+\end{align*}
+and clearly $z \notin I$, so in fact we cannot lift this deformation to $k[\ep_1, \ep_2]/(\ep_1^2, \ep_2^2)$. This proves obstructedness.
+
 
 
 
