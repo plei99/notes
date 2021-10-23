@@ -22,6 +22,7 @@
 \usepackage{physics}
 \usepackage{stmaryrd}
 \usepackage{mathrsfs} 
+\usepackage{ulem} 
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
@@ -42,7 +43,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
-\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=blue}
 
 % other formatting packages
 \usepackage{float}
@@ -115,6 +116,7 @@
 % shortcuts
 \newcommand{\Ima}{\mathrm{Im}}
 \newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
 \newcommand{\G}{\mathbb{G}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
@@ -145,6 +147,7 @@
 \newcommand{\bir}{\sim_{\mr{bir}}}
 
 \DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Def}{Def}
 \DeclareMathOperator{\Bl}{Bl}
 \DeclareMathOperator{\NE}{NE}
 \DeclareMathOperator{\Tor}{Tor}
@@ -926,6 +929,130 @@ Now we consider $I_{\ep_1^2, \ep_2^2, \ep_1\ep_2} = (xy+\ep_1 y, xz, yz + \ep_2 
     &= \ep_1 \ep_2 \mqty(-z \\ -z \\ 0 \\ 0),
 \end{align*}
 and clearly $z \notin I$, so in fact we cannot lift this deformation to $k[\ep_1, \ep_2]/(\ep_1^2, \ep_2^2)$. This proves obstructedness.
+
+\chapter{Avi (Oct 22): Local-global methods}%
+\label{cha:avi_oct_22_local_global_methods}
+
+\section{Curves with isolated singularities}%
+\label{sec:curves_with_isolated_singularities}
+
+Here, we will consider the same lifting problems that we have consider before. Let $X$ be a curve over $k$ and consider $p \colon \mr{Def}_X \to \mc{C}$ be the deformations of $X$ as a category cofibered over $\mc{C}$. 
+
+\begin{defn}
+    A functor $F \colon D_1 \to D_2$ is \textit{smooth} if given $\varphi \colon A' \twoheadrightarrow A$ and $(Z, A') \to F(Y, Z)$ over $\varphi$ over $\varphi$ and $(Y', A') \to (Y, A)$ over $\varphi$ in $D_1$, then there exists some $F(Y', A') \to (Z, A')$ over the identity in $A'$.
+\end{defn}
+
+There is an absolute notion, for $D_1$ to be smooth, where we set $D_2 = \mr{Def}_k$ to be the category of trivial deformations. In this case, we also called $D_1$ \textit{unobstructed}, and this corresponds to being unobstructed in the tangent-obstruction theory.
+
+\begin{thm}[Local-to-global]
+    Let $X/k$ be separated of dimension at most $1$ and smooth away from finitely many points. At each singularity $p_1, \ldots, p_n$, consider the inclusions
+    \[ \mc{O}_{X,p} \to \mc{O}_{X,p}^h \to \wh{\mc{O}}_{X,p} \]
+    into the henselizations and completions, respectively. Then the functors
+    \[ \mr{Def}_X \to \prod_i \mr{Def}_{\mc{O}_{X,p}} \xrightarrow{(2)} \prod \Def_{\mc{O}_{X,p}^h} \xrightarrow{(3)} \prod \Def_{\wh{\mc{O}}_{X,p}} \]
+    are all smooth and $(2), (3)$ induce isomorphisms on tangent spaces.
+\end{thm}
+
+This means that we only have to check unobstructedness at the completions of the local rings at each singular point.
+
+\begin{proof}
+    First, we can reduce to the affine case.\footnote{Avi says that Johan sketched this proof and then said not to give it.} If $X$ is a curve, then $X = U_1 \cup U_2$ can be covered by two affine opens such that $U_1, U_1 \cap U_2$ are smooth. Because deformations of smooth affine schemes are unobstructed, we can essentially ignore $U_1$. To do this, we will prove that $\Def_X \to \Def_{U_2}$ is smooth.
+
+    Because smoothness (roughly) respects products, the functor
+    \[ \Def_X \to \Def_{U_1} \times_{\Def_{U_1 \cap U_2}} \Def_{U_2} \]
+    is smooth by formal reasons. Because $U_1, U_1 \cap U_2$ are smooth, we can ignore $\Def_{U_1}, \Def_{U_1 \cap U_2}$ (in fact, the arrow is an equivalence) and project down to $\Def_{U_2}$.
+
+    Now $U_2 = \Spec P$ is affine. Then each $p_i$ gives a maximal ideal $\mf{m}_i$, and so we set $J = \bigcap_i \mf{m}_i$. If we consider the completion $\wh{P}_J$ with respect to $J$, this decomposes as
+    \[ \wh{P}_J = \prod_i \wh{P}_i. \]
+    Applying \href{https://stacks.math.columbia.edu/tag/0DZ5}{Lemma 91.12.5} in the Stacks Project, the functor
+    \[ \Def_P \to \Def_{\wh{P}_J} \simeq \prod_i \Def_{\wh{P}_i} = \prod_i \Def_{\wh{\mc{O}}_{X,p_i}} \]
+    is smooth and an isomorphism on tangent spaces. The henselization step is similar.
+\end{proof}
+
+\begin{exm}
+    Let $X = \Spec k[x,y]/(xy)$. Then $\wh{O}_{X,0} = k[[x,y]] / (xy)$. We will show that all deformations look like $k[x,y] / (xy-t)$ in some sense. Really, we will show that $\Def_X$ has a hull, which is given by $k[[t]]$ with universal deformation
+    \[ X_t \coloneqq \Spec k[[t]] [x,y] / (xy-t) \to \Spec k[[t]]. \]
+    We want $T$ such that $\Hom(T, -) \to \Def_X$ is smooth and induces an isomorphism on tangent spaces. Given a morphism
+    \[ f \colon k[[t]] \to A \ni f(t), \]
+    we obtain a deformation
+    \[ A[[x,y]] / (xy - f(t)) \]
+    of $k[[x,y]]/(xy)$. We can check that this is smooth, and so we need to check that we have an isomorphism of tangent spaces.
+
+    We want to compute $\Def_X(k[\ep])$. If $S \in \Def_X(k[\ep])$, set $R = k[[x,y]]/(x,y)$, and we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        k[\ep] \ar{r} \ar{d} & k \ar{d} \\
+        S \ar{r} & R.
+    \end{tikzcd}
+    \end{equation*}
+    If we consider the exact sequence
+    \[ 0 \to k \to k[\ep] \to k \to 0 \]
+    and tensor with $S$, by flatness we have an exact sequence
+    \[ 0 \to k \otimes_{k[\ep]} S \to S \to k \otimes_{k[\ep]} S \to 0. \]
+    But because $k \otimes_{k[\ep]} S = R$, we have a decomposition $S = R \oplus \ep R$. If we choose lifts $\wt{x}, \wt{y}$ of $x,y$, the product $\wt{x} \wt{y}$ lifts $xy = 0$, so $\wt{x} \wt{y} = (f(x) + g(y)) \ep$. If we choose different lifts $\wt{x}' = \wt{x} + \ep h, \wt{y}' = \wt{y} + \ep h$, we see that 
+    \[ \wt{x}' \wt{y}' = \wt{x} \wt{y} + (xj + yh)\ep. \]
+    But now $xj+yh \in (x,y)$, and so if we set $t = f(0) + g(0)$, then we can write $\wt{x} \wt{y} \in t \ep + (x,y) \ep$, and so there is a canonical choice of the element of $(x,y) \ep$, namely $0$. Thus we can set
+    \[ S_t = k[\ep][[\wt{x}, \wt{y}]] / (\wt{x} \wt{y} - t \ep), \]
+    and now we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & R \ar{r} \ar[equals]{d} & S_t \ar{r} \ar{d} & R \ar{r} \ar[equals]{d} & 0 \\
+        0 \ar{r} & R \ar{r} & S \ar{r} & R \ar{r} & 0.
+    \end{tikzcd}
+    \end{equation*}
+    By the five lemma, $S_t \simeq S$, and so we are done.
+\end{exm}
+
+\section{Smooth curves with a finite group action}%
+\label{sec:smooth_curves_with_a_finite_group_action}
+
+In this section, we will consider lifting from characteristic $p>0$ to characteristic $0$. This means we will have to redefine what lifting. Here, we will suppose $k = \ol{k}$ with characteristic $p$. Let $\Lambda$ be a Noetherian complete local ring with residue field $k$. We define $\mc{C}_{\Lambda}$ be the category of local Artinian $\Lambda$-algebras with residue field $k$.\footnote{Apparently this is interesting in \sout{infinite combinatorics} number theory.}
+
+Forgetting about the requirement that $k$ is algebraically closed, if $k = \F_p$, then we can set $\Lambda = \Z_p$. Let $W = W(k)$ be the ring of Witt vectors in $k$. This is apparently some universal Noetherian local ring lifting $k$, and for example, $W(\F_p) = \Z_p$, and $W(\ol{\F}_p) = \mc{O}_{\check{\Q}_p}$. We will consider some extension $\mc{O}/W$ of rings and write $K$ for the fraction field of $\mc{O}$.
+
+We are interested in deforming smooth proper curves $X/k$ with the action of some finite group $G$, conveniently denoted as a pair $(X, G)$.
+
+\begin{defn}
+    The pair $(X, G)$ \textit{lifts to characteristic $0$} if there exists $\mc{O}$ and $\mc{X} / \mc{O}$ a projective smooth curve with an action of $G$ such that $(\mc{X} \times_0 k, G) \simeq (X, G)$.
+\end{defn}
+
+Given the action of $G$ on $X$, we can construct the quotient $X/G$. To remember the data of the action, we remember the ramified Galois cover $\pi \colon X \to X/G$.\footnote{This is useful if you want to look at some of the omitted proofs.}
+
+Consider the action of $\mr{PGL}_2(\F_q)$ on $\P^1_k$. This includes in $\P^1_{\mc{O}}$, which has an action of $\mr{PGL}_2(\mc{O}) \subset \mr{PGL}_2(K)$. We want an embedding $\mr{PGL}_2(\F_q) \subseteq \mr{PGL}_2(K)$, but generally this is not possible. For example, set $q = 9$ and consider the matrices
+\[ \mqty(0 & -1 \\ 1 & -1), \qquad \mqty(a+1 & a \\ -a & 1-a), \]
+which generate a $(\Z/3)^3$. But then all finite subgroups of $\mr{PGL}_2(K)$ are cyclic, dihedral, $A_4$, $A_5$, or $S_4$, so this action clearly cannot lift.
+
+\begin{prop}
+    Suppose $(X,G)$ is such that for all $x \in X$, the stabilizer $G_x$ has order $\abs{G_x}$ prime to $p$. Then $(X, G)$ lifts to characteristic $0$.
+\end{prop}
+
+Note that this is some local statement, so we need some kind of local-to-global method. Recall that $\wh{\mc{O}}_{X,x} = k[[t]]$, and this has an action of $G_x$. Thus we define a local action as some action of a finite group $G$ on $k[[t]]$, and this lifts if there exists $\mc{O}$ with an action of $G$ on $\mc{O}[[t]]$ specializing to the original action on $k[[t]]$.
+
+\begin{thm}
+    For $(X, G)$, suppose that the local action of $G_x$ on $\wh{\mc{O}}_{X,x}$ lifts to characteristic $0$. Then $(X, G)$ lifts to characteristic $0$.\footnote{Avi was lured in to a paper with French title and French body but English abstract, and in the end did not read this paper.}
+\end{thm}
+
+It is a fact that if $G$ acts faithfully on $k[[t]]$, then $G = P \rtimes C$, where $P$ is $P$-Sylow and $C$ is cyclic.
+
+\begin{proof}[Proof of proposition]
+    We will simply prove that if $\abs{G_x}$ is prime to $p$, then the local action lifts. Then we know that $G_x = G$ is cyclic of order $n$ with generator $\sigma$. If we write
+    \[ \sigma^i t = \sum_{m \geq 0} a_{m,i} t^i, \]
+    then of course if $a_{0,i} \neq 0$, then $\sigma^i t$ is a unit and hence $t$ is a unit, so $a_{0,i} = 0$. Our goal is to replace $t$ by some generator with a more explicit action of $\sigma$. Let $V$ be the vector space spanned by $\sigma^i t$. Then on our designated basis, we have
+    \[ \sigma = \mqty( & & & & & 1 \\ 1 & & & & & \\ & 1 & & & & \\ & & 1 & & & \\ & & & \ddots & & \\ & & & & 1 &). \]
+    This has eigenvalues the $n$-th roots of $1$, so we choose $z \in V$ such that $\sigma z = \zeta_n z$ and replace $k[[z]] = k[[t]]$. But now the action of $\mu_n$ clearly lifts to characteristic $0$, so we are done.
+\end{proof}
+
+We have essentially proved that local actions of cyclic groups of order prime to $p$ lift to characteristic $0$. Here is a mild generalization:
+
+\begin{conj}[Oort\footnote{Fun fact: Oort was Johan's advisor.}]
+    The local action on $k[[t]]$ by the action of any cyclic $G$ lifts to characteristic $0$.
+\end{conj}
+
+This is now a theorem due to (among others?) Obus, Wewers, and Pop. Because of this, if the stabilizers $G_x$ are all cyclic, then $(X, G)$ lifts. However, this is not a necessary condition for lifting. If we consider an action of $(\Z/2)^2$ on $\P^1_k$, this does lift (because $D_4 = (\Z/2)^2$).
+
+
+
+
+
 
 
 
