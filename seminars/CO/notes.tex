@@ -142,6 +142,7 @@
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\ul}[1]{\underline{#1}}
@@ -154,6 +155,8 @@
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ext}{ext}
 \DeclareMathOperator{\ad}{ad}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
@@ -179,6 +182,22 @@
 \DeclareMathOperator{\coker}{coker}
 \DeclareMathOperator{\Hilb}{Hilb}
 \DeclareMathOperator{\Sym}{Sym}
+
+\makeatletter
+\DeclareRobustCommand\widecheck[1]{{\mathpalette\@widecheck{#1}}}
+\def\@widecheck#1#2{%
+    \setbox\z@\hbox{\m@th$#1#2$}%
+    \setbox\tw@\hbox{\m@th$#1%
+       \widehat{%
+          \vrule\@width\z@\@height\ht\z@
+          \vrule\@height\z@\@width\wd\z@}$}%
+    \dp\tw@-\ht\z@
+    \@tempdima\ht\z@ \advance\@tempdima2\ht\tw@ \divide\@tempdima\thr@@
+    \setbox\tw@\hbox{%
+       \raise\@tempdima\hbox{\scalebox{1}[-1]{\lower\@tempdima\box
+\tw@}}}%
+    {\ooalign{\box\tw@ \cr \box\z@}}}
+\makeatother
 
 % Section formatting
 \titleformat{\section}
@@ -239,6 +258,8 @@ the editor \texttt{neovim}.  Any errors are mine and not the speakers'.  In
 addition, my notes are picture-free (but will include commutative diagrams) and
 are a mix of my mathematical style and that of the lecturers.  If you find any
 errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+Also, we should note that Fan used different notation than the rest of us because he likes to be special. 
 
 \vspace*{1cm}
 
@@ -829,6 +850,973 @@ By standard homological algebra, because $\cO$ is Artinian and has enough projec
     \end{enumerate}
 \end{thm}
 
+\chapter{Fan (Oct 27): more on tHe strUcture, simplicity criterioN, ANd embedding of verma modules}%
+\label{cha:fan_oct_27_more_on_the_structure_simplicity_criterion_and_embedding_of_verma_modules}
 
+We will be discussing the following results during this lecture:
+
+\begin{thm}
+    Let $\lambda \in \h^*$. Then $M_{\lambda} = L_{\lambda}$ if and only if $\lambda$ is $\rho$-antidominant (this is the notion of antidominance that we discussed last time).
+\end{thm}
+
+\begin{thm}
+    For any $\lambda \in \h^*$, if $\alpha \in \Phi_+$ has $s_{\alpha} \circ \lambda \leq \lambda$, then $M_{s_{\alpha} \circ \lambda} \hookrightarrow M_{\lambda}$.
+\end{thm}
+
+\section{Basic facts}%
+\label{sec:basic_facts}
+
+Recall that the socle of a module $M$ is defined to be the direct sum of its simple submodules. A fact from ring theory\footnote{that was not in my graduate algebra course as an undergrad} is that if $R$ is left noetherian and has no right zero-divisors, then any two left ideals intersect nontrivially.
+
+
+\begin{prop}
+    for all $\lambda \in \h^*$, $M_{\lambda}$ has a unique simple submodule.
+\end{prop}
+
+\begin{proof}
+    Recall that $M_{\lambda} \cong \U \n^-$, but then simple submodules of $M_{\lambda}$ are ideals in $\U \n^-$, which intersect nontrivially.
+\end{proof}
+
+\begin{thm}
+    For any $\lambda, \mu \in \h^*$,
+    \begin{enumerate}
+        \item Any nonzero $\varphi \colon M_{\mu} \to M_{\lambda}$ is an injection.
+        \item $\dim \Hom_{\cO}(M_{\mu}, M_{\lambda}) \leq 1$.
+        \item If $L_{\mu} \subseteq M_{\lambda}$ is the unique simple submodule, then $L_{\mu} = M_{\mu}$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item $\varphi$ is determined by the image $\varphi(v_+^{\mu}) = y \cdot v_+^{\lambda}$ for some $y \in \U \n^-$ of the highest weight vector. But then $\varphi(y' v_+^{\mu}) = y' \cdot y \cdot v_+^{\lambda}$, and this follows from the fact that $\U \n^-$ has no zero divisors.
+        \item If $\varphi_1, \varphi_2$ are morphisms and $L$ is the unique simple submodule of $M_{\mu}$, then $\varphi_1(L), \varphi_2(L)$ are both simple and thus isomorphic, so there exists $c$ such that $(\varphi_1 - c \varphi_2)(L) = 0$, and so $\varphi - c \varphi_2 = 0$ because it is not injective.
+        \item Suppose $L_{\mu}$ is the unique simple submodule of $M_{\lambda}$. Then we have the sequence
+            \[ M_{\mu} \twoheadrightarrow L_{\mu} \hookrightarrow M_{\lambda}, \]
+            and so $M_{\mu}$ must inject into $M_{\lambda}$ and thus $M_{\mu} = L_{\mu}$.\qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{prop}
+    For $\lambda \in \Lambda_+ - \rho$, if $w = s_n \cdots s_1$ is a reduced word expression, then there exists a sequence of embeddings
+    \[ M_{w \circ \lambda} \subseteq M_{s_{n-1} \cdots s_1 \circ \lambda} \subseteq M_{s_1 \circ \lambda} \subseteq M_{\lambda}. \]
+\end{prop}
+
+\begin{proof}
+    We will induct on $\ell(w)$. Choose some $0 < k < n$. Recall that $\ell(s_{\alpha} w) > \ell(w)$ if and only if $w^{-1} \alpha \in \Phi_+$. Note that $\ell(s_{k+1} \cdots s_1) > \ell(s_k \cdots s_1)$. Thus if $w' = s_k \cdots s_1$, then ${w'}^{-1} \sigma_{k+1} > 0$. We now compute
+    \begin{align*}
+        \sigma_{k+1}^* (s_k \cdots s_1 \circ \lambda + \rho) &= \sigma_{k+1}^* (s_k \cdots s_1 (\lambda + \rho)) \\
+        &= (s_1 \cdots s_k \sigma_{k+1})^* (\lambda + \rho) \in \N.
+    \end{align*}
+    Then we know $M_{s_{k+1} \cdots s_1 \circ \lambda} \subseteq M_{s_k \cdots s_1 \circ \lambda}$.
+\end{proof}
+
+\section{Proof of first theorem}%
+\label{sec:proof_of_first_theorem}
+
+If $\lambda$ is $\rho$-antidominant, we will prove that $M_{\lambda} = L_{\lambda}$. Recall that antidominance is equivalent to $\lambda \leq w \circ \lambda$ for all $w \in W_{\lambda}$. But the Jordan-Holder factors of $M_{\lambda}$ look like $M_{\mu}$ for $\mu \leq \lambda$ with $\mu$ is linked to $\lambda$. This is the same as $\mu \in W_{\lambda} \circ \lambda$. But then the only weight that can appear is $\lambda$, so $M_{\lambda} = L_{\lambda}$.
+
+Now we will prove that if $M_{\lambda} = L_{\lambda}$, then $\lambda$ is antidominant. This is hard, so we will assume for now that $\lambda \in \Lambda$. Because $M_{\lambda}$ is simple, then $N_{\lambda} = 0$. Now assume that for some $\sigma \in \Sigma$, $\sigma^* (\lambda + \rho) > 0$. Then
+\[ s_{\sigma \circ \lambda} = \lambda - \sigma^* (\lambda + \rho) \sigma < \lambda, \]
+and so $M_{s_{\sigma} \circ \lambda} \hookrightarrow M_{\lambda}$. This gives a contradiction.
+
+We now finish the proof in the general case. Assume there exists $\alpha \in \Phi_+$ such that $\alpha^*(\lambda + \rho) \in \Z_+$. Then $s_{\alpha} \circ \lambda = \lambda - \alpha^*(\lambda + \rho) \alpha < \lambda$. By the second theorem, we have an injection $M_{s_{\alpha} \circ \lambda} \hookrightarrow M_{\lambda}$, and thus $M_{\lambda}$ is simple.
+
+\section{More basic facts}%
+\label{sec:more_basic_facts}
+
+\begin{prop}
+    Let $\lambda, \mu \in \h^*$ and $\sigma \in \Sigma$. If $M_{s_{\sigma} \circ \mu} \subseteq M_{\mu} \subseteq M_{\lambda}$, then:
+    \begin{itemize}
+        \item If $\sigma^*(\lambda + \rho) \leq 0$, then $M_{\lambda} \subseteq M_{s_{\sigma} \circ \lambda}$.
+        \item If $\sigma^*(\lambda + \rho) > 0$, then $M_{s_{\sigma} \circ \mu} \subseteq M_{s_{\sigma} \circ \lambda} \subsetneq M_{\lambda}$.
+    \end{itemize}
+\end{prop}
+
+\begin{proof}
+    In the first case, then we know that 
+    \begin{align*}
+        \sigma^*(s_{\sigma} \circ \lambda + \rho) &= \sigma^* (s_{\sigma}(\lambda + \rho)) \\
+        &= (s_{\sigma} \sigma)^* (\lambda + \rho) \\
+        &= - \sigma^*(\lambda + \rho) \\
+        &\geq 0,
+    \end{align*}
+    and so $M_{\lambda} \hookrightarrow M_{s_{\sigma} \circ \lambda}$.
+
+    In the second case, let $v_+^{\lambda}, v_+^{\mu}$ be maximal vectors of $M_{\lambda}, M_{\mu}$. Then we know that
+    \[ f_{\sigma}^{\sigma^*(\lambda + \rho)} \in M_{s_{\sigma} \circ \lambda} \]
+    and because $M_{s_{\sigma} \circ \mu} \subseteq M_{\mu}$, $f_{\sigma}^{\sigma^*(\mu + \rho)} v_+^{\mu} \in M_{s_{\sigma} \circ \mu}$ is a maximal vector. Also because $M_{\mu} \subseteq M_{\lambda}$, there exists $y \in \U \n^-$ such that $y \cdot v_+^{\lambda} = v_+^{\mu}$.
+
+    It is a fact that if $\n$ is a nilpotent Lie algebra and $\xi \in \n, x \in \U \n$, for any $n \in \Z_+$ there exists $k \in \Z$ such that $\xi^k x \in \U \n \ev{\xi^n}$. Applying this fact to $f_{\sigma} \in \n^-$, $y \in \U \n^-$, and $n = \sigma^{\lambda + \rho} \in \Z_+$, there exists $k$ such that
+    \[ f_{\sigma}^k y \in \U \n^- \ev{f_{\sigma}^{\sigma^* (\lambda + \rho)}}. \]
+    But then 
+    \[ f_{\sigma}^k v_{\mu}^+ = f_{\sigma}^k y v_+^{\lambda} \in \U \n^- \ev{f^{\sigma^*(\lambda + \rho)}} \subseteq M_{s_{\sigma} \circ \lambda}. \]
+    If $k < \sigma^*(\mu + \rho)$, then we know $M_{s_{\sigma} \circ \mu} \subseteq M_{s_{\sigma} \circ \lambda}$. On the other hand, if $k > \sigma^*(\mu + \rho)$, we have
+    \begin{align*}
+        [e_{\sigma}, f_{\sigma}^k] \cdot v_+^{\mu} &= k f_{\sigma}^{k-1} (h_0 - k + 1) v_+^{\mu} \\
+        &= k f_{\sigma}^{k-1} (\mu(h_{\sigma}) - k+1) v_+^{\mu} \\
+        &= (\sigma^* (\mu + \rho) - k) k f_{\sigma}^{k-1} v_+^{\mu},
+    \end{align*}
+    but this is equal to $e_{\sigma}f_{\sigma}^k v_+^{\mu}$, so we are done.
+\end{proof}
+
+\section{Proof of second theorem}%
+\label{sec:proof_of_second_theorem}
+
+We will prove this result in the integral case. Assume that $\lambda \in \Lambda$ and $\mu \coloneqq s_{\alpha} \circ \lambda \leq \lambda$. If $\mu \in \Lambda$, then there exists $w$ such that $\mu' \coloneqq w^{-1} \circ \mu \in \Lambda_+ - \rho$. Thus there exists $w = s_n \cdots s_1$ such that if we write $\mu_n = \mu, \mu_{n-1} = s_{n-1} \cdots s_1 \circ \mu', \ldots$, then 
+\[ M_{\mu_n} \subseteq M_{\mu_{n-1}} \subseteq M_{\mu_1} \subseteq M_{\mu'}. \]
+If we define $\lambda' = w^{-1} \circ \lambda$ and $\lambda_n, \ldots, \lambda_1$ analogously and assume that $\mu< \lambda$ and thus $\mu_k \neq \lambda_k$, then we have
+\[ \mu_k = s_{\beta_k} \circ \lambda_k, \]
+where $\beta_k = s_{k+1} \cdots s_n (\alpha)$ so that 
+\[ \mu_k - \lambda_k = -\beta_k^*(\lambda_k) \beta_k + s_{\beta_k}(\rho) - \rho. \]
+Note that this is the difference of a multiple of $\beta_k$ and a sum of positive roots.
+
+Continuing, note that $\lambda_k, \mu_k$ are linked to $\lambda$. These satisfy $\mu' = \mu_0 \geq \cdots \geq \mu_n = \mu$, $\mu < \lambda$, and $\mu' > \lambda'$. Thus there exists $k$ such that $\lambda_k < \mu_k$ and $\lambda_k > \mu_{k+1}$. But then
+\[ 0 < \mu_k - \lambda_k = -\beta_k^*(\lambda_k) \beta_k - \sum \text{positives}, \]
+and in fact we obtain a multiple of $\beta_k$. Now there exists $M_{\mu_{k+1}} \subseteq M_{\lambda_{k+1}}$ and $M_{\mu_{k_2}} \subseteq M_{\lambda_{k+2}}$, so $M_{\mu_n} = M_{\mu} \subseteq M_{\lambda_n} = M_{\lambda}$. To construct this, note that 
+\[ 0 > \mu_{k+1} - \lambda_{k+1} = s_{k+1} \circ \mu_k - s_{k+1} \circ \lambda_k = s_{k+1}(\mu_k - \lambda_k). \]
+This implies that $s_{k+1}$ flips $\beta_k$ and thus $\beta_k = \sigma_{k+1}$. Also, $\beta_{k+1} = - \sigma_{k+1}$. Therefore, 
+\[ \mu_{k+1} = s_{-\sigma_{k+1}} \circ \lambda_{k+1} = s_{\sigma_{k+1}} \circ \lambda_{k+1} < \lambda_{k+1}. \]
+But then the coefficient of $\sigma_{k+1}$ in $\lambda_{k+1} - s_{k+1} \circ \lambda$ is positive, and thus $M_{\mu_{k+1}} \leq M_{\lambda_{k+1}}$.
+
+We then have $M_{\mu_{k+2}} \subseteq M_{\mu_{k+1}} \subseteq M_{\lambda_{k+1}}$, and therefore either $M_{\lambda_{k+1} \subseteq M_{s_{k+2}} \circ \lambda_{k+1}} = M_{\lambda_{k+2}}$ or $M_{\mu_{k+2}} \subseteq M_{\lambda_{k+2}} \subseteq M_{\lambda_{k+1}}$, and so we are done.
+
+We sketch the rest of the proof. Fix $\alpha \in \Phi_+$ and $n > 0$ is an integer. Then define
+\[ \wt{X} \coloneqq \qty{\lambda \in \h^* \mid M_{\lambda - n \alpha} \hookrightarrow M_{\lambda}}. \]
+Then define $H = \qty{\lambda \mid \alpha^*(\lambda + \rho) = n}$. We know that $\Lambda \cap H \subseteq \wt{X} \subseteq H$. But now $\Lambda \cap H$ is Zariski-dense in $H$, so we need to prove that $\wt{X}$ is a closed subscheme of $H$. But now $M_{\lambda -  \alpha} \hookrightarrow M$ exactly when there exists $y \in \U \n^-$ such that $y \in (\U \n^-)^{-n \alpha}$. But now $\n^+ \cdot y \cdot v_+^{\lambda} = 0$, and this is equivalent to
+\[ e_1 y v_+^{\lambda} = \cdots = e_r y v_+^{\lambda} = 0, \]
+and this is equivalent to
+\[ [e_1, y] v_+^{\lambda} = \cdots = [e_r, y]v_+^{\lambda} = 0. \]
+Finally we have $[e_i, y] = y_i + y_i' h_i$. If we write $y = f_1^{-} \cdots f_{\ell}^-$, we have a map
+\[ (\U \n^-)^{-n\alpha} \to (\U \n^-)^{\oplus \ell} \qquad y \mapsto \sum_{i=1}^i y_i + \lambda(h_i) y_i' \]
+by an argument about passing from $e_i f_1 \cdots f_{\ell}$ to $f_1 \cdots f_{\ell} e_i$. But now our chain of equivalences continues to $(y_i + \lambda(h_i) y_i') = 0$ for all $i$. But now $\wt{X}$ is given by the rank of the map being lower than usual, so it is a closed subscheme.
+
+\chapter{Patrick (Nov 03): CAts, bOndage, and why you can'T do representAtioN theory without Geometry}%
+\label{cha:patrick_nov_03_}
+
+\textit{Note: these are the speaker's notes.} 
+
+\section{Introduction}
+\label{sec:introduction}
+
+Our goal is to prove the following theorem, due to Bernstein-Gelfand-Gelfand.
+\begin{thm}[BGG]
+  Let $\lambda, \mu \in \h^{*}$.
+  \begin{enumerate}
+    \item If $\mu$ is strongly linked to $\lambda$, then $M(\mu) \hookrightarrow M(\lambda)$. This implies $[M(\lambda) : L(\mu) ] \neq 0$.
+    \item If $[M(\lambda) : L(\mu)] \neq 0$, then $\mu$ is strongly linked to $\lambda$.
+  \end{enumerate}
+\end{thm}
+
+We first need to define what it means for weights to be strongly linked. Then we will state a result of Jantzen that we will use to prove this theorem. Next, we will do some linear algebra before proving the result of Jantzen. Finally, we will use Jantzen to prove BGG. Note that this is a different order than in which Humphreys does things.
+
+\begin{exm}[Cursed example]
+  Consider $\g = \mf{sl}_4$. Number the simple roots and fundamental weights as usual. This means that the simple roots and fundamental weights are
+  \[ \alpha_1 = e_1 - e_2, \alpha_2 = e_2 - e_3, \alpha_3 = e_3 - e_4; \qquad \varpi_1 = e_1, \varpi_2 = e_1 + e_2, \varpi_3 = e_1 + e_2 + e_3. \]
+  Write $c_1 \varpi_1 + c_2 \varpi_2 + c_3 \varpi_3$ as $(c_1, c_2, c_3)$. This means that
+  \[\alpha_1 = (2,-1,0), \qquad \alpha_2 = (-1,2,-1), \qquad \alpha_3 = (0, -1, 2). \]
+  Consider $\lambda = (1, -2, -1)$. Then we note that $\lambda + \rho = \alpha_1$ but if $w = s_2 s_3 s_2 s_1 s_2$, then $w(\lambda + \rho) = - \alpha_3$. But this implies that
+  \[ \lambda - w \circ \lambda = \lambda - (w(\lambda + \rho) - \rho) = \lambda + \rho - w(\lambda + \rho) = \alpha_1 + \alpha_3, \]
+  and therefore $w \circ \lambda < \lambda$. However, apparently there is no embedding of $M(w \circ \lambda)$ inside $M(\lambda)$.
+
+  The reason for this is actually that if you inspect the Bruhat order for $W = S_4$. The weight in $\Lambda^+ - \rho$ linked to $\lambda$ is $\mu = (0, -1, 0)$. Here, we note that $\lambda = s_2 s_3 \circ \mu$ while $w \circ \lambda = s_3 s_2 s_1 \circ \mu$. However, $s_3 s_2 s_1$ and $s_2 s_3$ are incomparable.
+\end{exm}
+
+\section{Strong linkage}
+\label{sec:strong_linkage}
+
+The first thing we need to do is to define what it means for two weights $\mu, \lambda$ to be strongly linked.
+
+\begin{defn}
+  Let $\lambda, \mu \in \h^{*}$. Write $\mu \uparrow \lambda$ if $\mu = \lambda$ of there exists a root $\alpha > 0$ such that $\mu = s_{\alpha} \circ \lambda < \lambda$. Note that this is equivalent to $\ev{\lambda + \rho, \alpha^{\vee}} \in \Z^{>0}$. More generally, if $\mu = \lambda$ or there exists $\alpha_{1}, \ldots, \alpha_{r} \in \Phi^{+}$ such that
+  \[ \mu = (s_{\alpha_{1}} \cdots s_{\alpha_{r}}) \circ \lambda \uparrow (s_{\alpha_{2}} \cdots s_{\alpha_{r}}) \circ \lambda \uparrow \cdots s_{\alpha_{r}} \circ \lambda \uparrow \lambda, \]
+  we say that $\mu$ is \textit{strongly linked} to $\lambda$ and write $\mu \uparrow \lambda$.
+\end{defn}
+
+Note that if we repeatedly apply Theorem 4.6 (the second big theorem in Fan's lecture), we immediately obtain the first part of the theorem. The second part of the proof is more involved.
+
+Before we proceed, we need to discuss the Bruhat order on the Weyl group (in fact, this can be defined for any Coxeter group, but we will not need this). Let $\lambda$ be a regular integral weight which is antidominant. Then suppose that $\alpha > 0$ is a positive root and that $s_{\alpha} \circ (w \circ \lambda) < w \circ \lambda$ for some $w \in W$. By the second main theorem of the previous lecture, we know that
+\[ M(s_{\alpha} w \circ \lambda) \hookrightarrow M(w \circ \lambda). \]
+But we know that this is equivalent to
+\[ \ev{w(\lambda + \rho), \alpha^{\vee}} = \ev{\lambda + \rho, w^{-1} \alpha^{\vee}} = \ev{\lambda + \rho, (w^{-1}\alpha)^{\vee}} in \Z_{>0} \]
+Because $\lambda$ is antidominant, we know $w^{-1} \alpha < 0$. This tells us that if $w' = s_{\alpha} w$, then
+\[ \ell(w) = \ell(s_{\alpha} w') = \ell((w')^{-1}s_{\alpha}) > \ell((w')^{-1}) = \ell(w'). \]
+All of this is reversible, so by definition we see that $w' \circ \lambda < w \circ \lambda$ if and only if $w' < w$. This implies, after we prove the main theorem, that
+
+\begin{cor}
+  Let $\lambda$ be a regular antidominant weight and let $w, w' \in W$. Then $[M(w \circ \lambda) : L(w' \circ \lambda)] \neq 0$ if and only if $w' \leq w$.
+\end{cor}
+
+\section{Jantzen filtration}
+\label{sec:jantzen_filtration}
+
+\begin{prop}[Jantzen]
+  Let $\lambda \in \h^{*}$. Then $M(\lambda)$ has a filtration by submodules
+  \[ M(\lambda) = M(\lambda)^{0} \supset M(\lambda)^{1} \supset M(\lambda)^{2} \supset \cdots \]
+  such that $M(\lambda)^{i} \gg 0$ for $i$ large enough and the following conditions hold:
+  \begin{enumerate}
+    \item Each nonzero quotient $M(\lambda)^{i} / M(\lambda)^{i+1}$ has a nondegenerate contravariant form in the sense of 3.14.
+    \item $M(\lambda)^{1} = N(\lambda)$ is the unique maximal submodule of $M(\lambda)$.
+    \item At the level of formal characters, we have
+      \[ \sum_{i > 0} \operatorname{ch} M(\lambda)^{i} = \sum_{\alpha > 0, s_{\alpha} \circ \lambda < \lambda} \operatorname{ch} M(s_{\alpha} \circ \lambda). \]
+  \end{enumerate}
+\end{prop}
+
+This filtration is called the \textit{Jantzen filtration} and the formal character formula is called the \textit{Jantzen sum formula}. We will write
+\[ M(\lambda)_{i} \coloneqq M(\lambda)^{i} / M(\lambda)^{i+1}. \]
+Also note that the summation on the right side of the sum formula is over a set of positive roots which we will call $\Phi_{\lambda}^+$. In fact, if $M(\lambda)^n \neq 0$ but $M(\lambda)^{n+1} = 0$, the sum formula tells us that $n = \abs{\Phi_{\lambda}^+}$.
+
+\begin{exm}
+  Let $\lambda$ be regular, antidominant, and integral. Then we know that $\Phi_{w \circ \lambda}^+$ is the set of all $\alpha > 0$ satisfying $s_{\alpha} \circ (w \circ \lambda) < w \circ \lambda$. But this is the same as
+  \[ \ev{w \circ \lambda + \rho, \alpha^{\vee}} = \ev{w(\lambda + \rho), \alpha^{\vee}} = \ev{\lambda + \rho, w^{-1} \alpha^{\vee}} > 0, \]
+  but of course this is equivalent to $w^{-1} \alpha^{\vee} < 0$ by defintion of $\lambda$ being integral and antidominant. Therefore in fact here $n = \ell(w)$.
+\end{exm}
+
+Here are some reasonable questions about these things:
+\begin{enumerate}
+  \item Is the Jantzen filtration unique relative to properties such as the sum formula and existence of nondegenerate contravariant forms on the quotients?
+  \item What are the composition factor multiplicities in each filtration layer $M(\lambda)_i$?
+  \item Are the filtration layers semisimple? If so, does the filtration coincide with one of the standard module filtrations with semisimple quotients?
+  \item How does the Jantzen filtration behave with respect to $M(\mu) \hookrightarrow M(\lambda)$?
+\end{enumerate}
+
+A more precise formulation of the last question is called the \textit{Jantzen conjecture}, and this can only be proved (as of whenever the book was published) using geometric tools like Beilinson-Bernstein localization. For completeness, it is stated here:
+
+\begin{conj}[Jantzen]
+  Suppose that $\mu \uparrow \lambda$ and set $r \coloneqq \abs{\Phi_{\lambda}^+} - \abs{\Phi_{\mu}^+}$. Then $M(\mu) \subset M(\lambda)^i$ if $i \geq r$ while $M(\mu) \cap M(\lambda)^i = M(\mu)^{i-r}$ if $i \geq r$.
+\end{conj}
+
+
+\begin{exm}
+  Let $\g = \mf{sl}_3$. Suppose that $\lambda$ is regular, antidominant, and integral. We will write down the Jantzen filtration for $M(w \circ \lambda)$ and then deduce that all composition factors have multiplicity $1$. Let $\alpha, \beta$ be the simple roots and write $w = s_{\alpha} s_{\beta}$. The sum formula tells us that
+  \begin{align*}
+    \sum_{i>0} \ch M(w \circ \lambda)^i &= \ch M(s_{\alpha} \circ \lambda) + M(s_{\beta} \circ \lambda) \\
+    &= \ch L(s_{\alpha} \circ \lambda) + \ch L(s_{\beta} \circ \lambda) + 2 \ch L(\lambda).
+  \end{align*}
+  But this implies that the Jantzen filtration is
+  \[ M(w \circ \lambda)^0 = M(w \circ \lambda) \supset N(w \circ \lambda) \supset L(\lambda) \supset 0. \]
+  This implies that there are four composition factors each with multiplicity $1$.
+\end{exm}
+
+\section{Proofs of results}
+\label{sec:proofs_of_results}
+
+We will now prove Jantzen's theorem and apply it to prove the main theorem. I assume that everyone is familiar with the basic theory of finitely generated modules over a principal ideal domain.\footnote{This would not be possible at certain meme-tier schools.}
+
+Let $A$ be a principal ideal domain and $p \in A$ be a prime element. Suppose that $M$ is a free $A$-module of rank $r$ with a nondegenerate symmetric bilinear form $(-,-)$. Let $D$ be the determinant of the bilinear form -- this is well-defined up to a unit. Let $\ol{M} = M/pM$, which is a vector space over $\ol{A} \coloneqq A/pA$. For $n \in \Z$, define
+\[ M(n) \coloneqq \qty{e \in M \mid (e, M) \subset p^n A}. \]
+For notation, we will write $M^* = \Hom(M, A)$ and $M^{\vee} \subseteq M^*$ for the image of $M$ under the bilinear form. We will write $e_1, \ldots, e_r$ for a basis of $M$ and $f_1, \ldots, f_r$ for the dual basis.
+\begin{lem}\leavevmode
+  \begin{enumerate}
+    \item We have the identity
+          \[ v_p(D) = \sum_{n > 0} \dim_{\ol{A}} \ol{M(n)}. \]
+    \item For all $n$, the modified bilinear form $(-,-)_n = p^{-n}(-,-)$ induces a nondegenerate form on $\ol{M(n)} / \ol{M(n+1)}$.
+  \end{enumerate}
+\end{lem}
+
+\begin{proof}
+  Write $f = \sum a_j f_j$ for some $f \in M$. Then writing $(e_i, f_j) = f_j \delta_{ij}$, we know that $(e_i, f) = a_i d_i$. On the other hand, we know that $f \in M(n)$ if and only if
+  \[ n \leq v_p((e_i, f)) = v_p(a_i d_i) = v_p(a_i) + v_p(d_i) \]
+  for all $i$. But if we write $n_i \coloneqq v_p(d_i)$, then we know that $M(n)$ is spanned by $f_i$ for all $i$ where $n \leq n_i$ together with $p^{n-i_i} f_i$ for the $i$ such that $n > n_i$. But this implies that
+  \[ \dim \ol{M(n)} = \# \qty{i \mid n \leq n_i}, \]
+  and in particular $\ol{M(n)} = 0$ for $n \gg 0$.\footnote{Humphreys refers to this last $0$ as $\ol{0}$.} This means the sum is defined, and therefore we have
+  \[ \sum_{n>0} \dim \ol{M(n)} = \sum_{n > 0} \# \qty{i \mid n \leq n_i} = \sum_{i=1}^r v_p(d_i) = v_p(D). \]
+
+  For the second part, it ic clear that this form takes values in $A$, but we need to check that there is an induced form on $\ol{M(n)}$. But here, if $e \in pM \cap M(n)$, we see that
+  \[ (e, M(n))_n = p^{-n}(e, M(n)) \subset p^{1-n} (M, M(n)) \subset p^n p^{1-n} A = pA. \]
+  But if $f \in M(n+1)$, the same argument gives us $(f, M(n))_n \subset pA$. This gives us a form on $\ol{M(n)} / \ol{M(n+1)}$. Finally we know that if $n \leq n_j$, then $(e_i, f_j) = \delta_{ij} p^{-n} d_j \neq 0$, and thus we conclude that the form is nondegenerate.
+\end{proof}
+
+Before we continue, we will state some facts about contravariant forms that were not covered by Kevin.
+
+\begin{defn}
+  Let $(-,-)$ be a symmetric bilinear form on a module $M$. Then $(-,-)$ is \textit{contravariant} if $(u \cdot v, w) = (v, \tau(u) \cdot w)$ for all $u \in \U \g$ and $v, w \in M$.
+\end{defn}
+It is not even clear that these exist, but here are some properties:
+\begin{enumerate}
+  \item If $M$ has a contravariant form, then $M_{\lambda} \perp M_{\mu}$ for $\lambda \neq \mu$.
+  \item If $M$ is a highest weight module, then it has a unique (up to scalars) nonzero contravariant form.
+  \item If $N \subset M$ is a submodule, then $N^{\perp}$ is also a submodule.
+  \item Any contravariant form on a highest weight module $M$ must induce the zero form on its maximal submodule. Moreover, the maximal submodule is the radical of the form and the form is nondegenerate if and only if $M = L(\lambda)$ is simple.
+\end{enumerate}
+
+\begin{proof}[Proof of Jantzen]
+  The reason we did all of that linear algebra above is because we will extend to the field $K \coloneqq \C(T)$. Also write $A = \C[T]$. Then apparently we can adapt the entire theory of Lie algebras to $\g_K \coloneqq \g \otimes_{\C} K$ and $\g_A \coloneqq \g \otimes_{\C} A$. I will not check this, and you should not ask me to do so. We will use the lemma to construct filtrations here and then kill $T$ to obtain the Jantzen filtration.
+
+  Let $\lambda \in \h^*$ be a weight and write $\lambda_T \coloneqq \lambda + T \rho \in \h^*_K$. Clearly $\lambda_T$ is antidominant, and thus $M(\lambda_T)$ is simple. But now we know that the contravariant form on $M(\lambda_T)$ is nondegenerate by Theorem 3.15 in Humphreys. Here, recall that the contravariant form satisfies for all $v, w \in M$ and $y \in \U \g$ the identity
+  \[ (y \cdot v, w) = (v, \tau(y) \cdot w). \]
+  Now recall that $\U \g_A = A \otimes_{\C} \U \g \subset K \otimes_{\C} \U \g = \U \g_K$ is an $A$-form. This induces an $A$-form $M(\lambda_T)_A \subset M(\lambda_T)$. Each weight space is a free $A$-module of finite rank and the contravariant form is nondegenerate after restricting to each weight space. If $\Gamma$ is the space of positive linear combinations of simple roots, then write $M_{\lambda_T - \nu}$ for the $A$-form of $M(\lambda_T)_{\lambda_T - \nu}$. Set
+  \[ M(\lambda_T)_A^i \coloneqq \sum_{\nu \in \Gamma} M_{\lambda_T - \nu}(i). \]
+  These form a decreasing filtration of $M(\lambda_T)_A$.
+
+  Now we can quotient by the ideal $(T) \subset \C[T]$ and we obtain a decreasing filtration $M(\lambda)^i$ on $M(\lambda) \cong M(\lambda_T)_A / T M(\lambda_T)_A$. By the lemma, the quotients $M(\lambda)^i / M(\lambda)^{i+1}$ have induced nondegenerate contravariant forms. Also, we know that the filtration of each individual weight space eventually ends at $0$, and thus for large enough $i$ we have $M(\lambda)^i = 0$ because only finitely many weights are linked to $\lambda$.
+
+  Next, we note that $M(\lambda) / M(\lambda)^1$ is a highest weight module with a nondegenerate contravariant form and therefore is simple. Because $M(\lambda)$ has a unique simple quotient, we see that $M(\lambda)^1 = N(\lambda)$. First, we will express the sum
+  \[ \sum_{i > 0} \ch M(\lambda)^i\]
+  in terms of the determinants of the contravariant forms on the steps of the filtration. Here, by some magic involving Shapovalov elements that was discovered by Jantzen and Shapovalov independently while working on their PhD theses, the determinant of the contravariant form on the $\lambda_T - \nu$ weight space of $M(\lambda_T)$ is given by
+  \[ D_{\nu}(\lambda_T) = \prod_{\alpha > 0} \prod_{r > 0} \qty(\ev{\lambda_T + \rho, \alpha^{\vee}} - r)^{\mc{P}(\nu - r \alpha)}, \]
+  where $\mc{P}$ is the Kostant partition function. Note that the Kostant partition function gives the number of ways to write a weight as a sum of positive roots with non-negative coefficients. This is actually unique only up to a unit, but this means that $v_T(D_{\nu}(\lambda_T))$ is well-defined. But now we know that
+  \[ \ev{\lambda_T + \rho, \alpha^{\vee}} - r = \ev{\lambda + \rho, \alpha^{\vee}} - r + T \ev{\rho, \alpha^{\vee}}. \]
+  This is not a multiple of $T$ unless $\ev{\lambda + \rho, \alpha^{\vee}} = r$. But this means that $\alpha \in \Phi_{\lambda}^+$ and $v_T$ for this term is $1$. But this implies that for fixed $\nu$ and $\alpha$, the contribution is given by
+  \[ \mc{P}(\nu - \ev{\lambda + \rho, \alpha^{\vee}} \alpha) e(\lambda - \nu). \]
+  Finally, we compute formally and obtain the result
+  \begin{align*}
+    \sum_{i > 0} \ch M(\lambda)^i &= \sum_{\nu} \sum_{\alpha} \mc{P}\qty(\nu - \ev{\lambda + \rho, \alpha^{\vee}} \alpha) e(\lambda - \nu) \\
+    &= \sum_{\alpha} \sum_{\nu} \mc{P}(\nu) e\qty(\lambda - \ev{\lambda + \rho, \alpha^{\vee}} \alpha - \nu).
+  \end{align*}
+  This comes from a variable change $\nu \mapsto \nu + \ev{\lambda + \rho, \alpha^{\vee}} \alpha$ in $\nu$. But now we precisely have
+  \[ s_{\alpha} \circ \lambda = \lambda - \ev{\lambda + \rho, \alpha^{\vee}} \alpha, \]
+  and therefore if we fix $\alpha$ the sum becomes
+  \[ \sum_{i > 0} \ch M(\lambda)^i = \sum_{\alpha} \ch M(s_{\alpha} \circ \lambda), \]
+  as desired.
+\end{proof}
+
+\begin{rmk}
+  Remember that $\rho$ disappears when we kill $T$. Remember we only needed the fact that $\ev{\rho, \alpha^{\vee}} \neq 0$. We may consider what ahppens if we replace $\rho$ by another weight, but a definitive answer to this is only provided by Belinson-Bernstein using a geometric approach.
+\end{rmk}
+
+\begin{proof}[Proof of BGG]
+  We will finally prove the BGG theorem. We will induct on the number of linked weights $\mu \leq \lambda$. If $\lambda$ is minimal in its linkage class, then we know $M(\lambda) = L(\lambda)$, so we are done. Now suppose that $\mu < \lambda$ and $[M(\lambda) : L(\mu)] > 0$. But this implies that
+  \[ [ M(\lambda)^1 : L(\mu) ] > 0. \]
+  But now the sum formula for the Jantzen filtration gives us
+  \[ [M(s_{\alpha} \circ \lambda) : L(\mu)] > 0 \]
+  for some $\alpha \in \Phi_{\lambda}^+$. By the inductive hypothesis, there exists $\alpha_1, \ldots, \alpha_r \in \Phi^+$ such that
+  \[ \mu = (s_{\alpha_1} \cdots s_{\alpha_r}) s_{\alpha} \circ \lambda \uparrow (s_{\alpha_2} \circ s_{\alpha_r}) s_{\alpha} \circ \lambda \uparrow \cdots \uparrow s_{\alpha_r} s_{\alpha} \circ \lambda \uparrow s_{\alpha} \circ \lambda. \]
+  Because $s_{\alpha} \circ \lambda < \lambda$, we are done.
+\end{proof}
+
+\chapter{Fan (Nov 10): why You shoUld care about the bgg resolutioN, aNd more on homologicAl consideratioNs in category o}%
+\label{cha:fan_nov_10_why_you_should_care_about_the_bgg_resolution_and_more_on_homological_considerations_in_category_o}
+
+\section{The BGG resolution}%
+\label{sec:the_bgg_resolution}
+
+Let $\lambda \in \Lambda_+$ be a dominant (in the old sense) weight. A \textit{BGG resolution} is something of the form
+\[ M_{w_0 \circ \lambda} \to \cdots \to \bigoplus_{\ell(w) = k} M_{w \circ \lambda} \to \cdots \to M_{\lambda} \twoheadrightarrow L_{\lambda} \to 0. \]
+Later, we will see that there is something called \textbf{the} BGG resolution, but we will probably not prove it. 
+
+\begin{thm}[Weak BGG]
+    There exists a resolution
+    \[ 0 \to M_{w_0 \circ \lambda} = D_{\ell}^{\lambda} \to \cdots \to D_0^{\lambda} = M_{\lambda} \to L_{\lambda} \to 0 \]
+    such that the standard filtration of $D_k^{\lambda}$ consists of the weights $\qty{w \circ \lambda \mid \ell(w) = k}$.
+\end{thm}
+
+A fact is that For all subalgebras $\g \supseteq \mf{a}$ there exists a resolution of the trivial resolution
+\[ \cdots \to \U \g \otimes_{\U \mf{a}} \Lambda^k (\mf{g}/a) \to \cdots \to \C_0 \]
+where the differentials are given by
+\[ x \otimes \xi_{\wedge} \mapsto \sum_{i=1}^n (-1)^{i+1} x \xi_i \otimes \xi_{\wedge \setminus i} + \sum_{i < j} (-1)^{i+j} x \otimes [\xi_i, \xi_j] \wedge \xi_{\lambda \setminus i,j}. \]
+
+\begin{lem}
+    For a finite dimensional representation $V$ of $\mf{b}$ which is $\h$-semisimple, the standard filtration of $\U \g \otimes_{\U \mf{a}} V$ contains precisely the weights of $V$, respecting multiplicity.
+\end{lem}
+
+Recall the following theorem from your first course on Lie algebras:
+\begin{thm}[Lie]
+    For $V$ a finite dimensional representation of a solvable $\mf{b}$, there exists
+    \[ V = V_0 \supset \cdots \supset V_n \]
+    such that $\dim V_i / V_{i+1} = 1$, and there exists a nonzero $v \in V$ and $\lambda \colon \mf{b} \to k$ such that $\xi v = \lambda(\xi) v$ for all $\xi \in \mf{b}$.
+\end{thm}
+
+\begin{proof}[Proof of lemma]
+    Using the previous theorem, we have a filtration
+    \[ \U \g \otimes V = \U \g \otimes_{\b} V_0 \supset \cdots \supset V_n \]
+    and the quotients are $\U \g \otimes V_i / V_{i+1} = M_{\lambda}$, where $\lambda$ is a weight of $V$.
+\end{proof}
+
+\begin{lem}
+    For $\vartheta$ a central character and $M$ having a standard filtration, we have
+    \[ \on{Std} M^{\vartheta} = \qty{\lambda \in \on{Std} M \colon \vartheta_{\lambda} = \vartheta}. \]
+\end{lem}
+
+\begin{proof}
+    Choose a standard filtration
+    \[ 0 = M_0 \subset \cdots \subset M_n = M \]
+    such that $M_i / M_{i-1} = M_{\lambda_i}$. Then we have
+    \[ 0 = M_0^{\vartheta} \subset \cdots \subset M_n^{\vartheta} = M^{\vartheta} \]
+    a standard filtration of $M^{\vartheta}$, and also we note that $M_i^{\vartheta} / M_{i-1}^{\vartheta} = (M_i / M_{i--1})^{\vartheta} = M_{\lambda_i}^{\vartheta}$.
+\end{proof}
+
+\begin{proof}[Proof of weak BGG for $\lambda = 0$]
+    Consider the resolution
+    \[ \U \g \otimes_{\U \mf{b}} \Lambda^k (\g / \mf{b}) \to \cdots \to \C_0 \to 0. \]
+    Taking central characters with $\vartheta_0$, we have a new resolution
+    \[ \cdots \to (\U \g \otimes_{\U \mf{b}} \Lambda^k (\g / \mf{b}))^{\vartheta_0} \to \C_0 \to 0. \]
+    But we also know that
+    \begin{align*}
+        \on{Std}(\U \g \otimes_{\U \mf{b}} \Lambda^k (\g/\mf{b})) &= \on{Wt} \Lambda^k (\g / \mf{b}) \\
+        &= \qty{\sum_{\alpha \in S} \alpha}_{\substack{S \subseteq \Phi_- \\ \abs{S} = k}} \\
+        &= \qty{- \sum \alpha \mid \vartheta_{- \sum \alpha} = vartheta_0 }_{\substack{\abs{S} = k \\ S \subseteq \Phi_+}} \\
+        &= \qty{- \sum \alpha \mid - \sum_S \alpha = w \rho - \rho} \\
+    \end{align*}
+    Now recall that $w \rho - \rho = - \sum_{\substack{\alpha \in \Phi_+ \\ w^{-1} \alpha \in \Phi_i}} \alpha$. Also we will use the fact that if $S \subseteq \Phi_+$ has 
+    \[ \sum_{\alpha \in S} \alpha = \sum_{\substack{\alpha \in \Phi_+ \\ w^{-1} \alpha \in \Phi_-}} \alpha, \]
+    then $S = \qty{\alpha \in \Phi_+ \mid w^{-1} \alpha \in \Phi_-} \coloneqq \Phi_w$. This tells us that
+    \begin{align*}
+        \on{Std}(\U \g \otimes_{\U \mf{b}} \Lambda^k (\g/\mf{b})) &= \qty{- \sum_{\Phi_w} \alpha}_{\ell(w) = k} \\
+        &= \qty{w \rho - \rho}_{\ell(w) = k} \\
+        &= \qty{w \circ 0}_{\ell(w) = k}. \qedhere
+    \end{align*}
+\end{proof}
+
+To prove the general case, we will use the translation functor $T_{\mu}^{\lambda}$. This is given by projecting onto $\vartheta_{\mu}$, tensoring by $L_{\lambda - \mu}$, and then including into $\vartheta_{\lambda}$.
+
+\begin{proof}[Proof in general]
+    Let $B_k = (\U \g \otimes_{\mf{b}} \g / \mf{b})^{\theta_0}$. Then recall we have a resolution
+    \[ \cdots \to B_k \to \cdots \to C_0 \to 0. \]
+    Tensoring by $L_{\lambda}$, which is finite-dimensional, we obtain
+    \[ \cdots \to B_k \otimes L_{\lambda} \to \cdots \to L_{\lambda} \to 0. \]
+    Finally, projecting to $\vartheta_{\lambda}$, we have
+    \[ \cdots \to (B_k \otimes L_{\lambda})^{\vartheta_{\lambda}} \to \cdots \to L_{\lambda} \to 0. \]
+    Now if we consider $\on{Std}(B_k \otimes L_{\lambda})$, we have the filtration
+    \[ B_{k,0} \otimes L_{\lambda} \subset B_{k, 1} \otimes L_{\lambda} \subset \cdots \subset B_{k} \otimes L_{\lambda}. \]
+    Also we know that $B_{k, i} \otimes L_{\lambda} / B_{k, i-1} \otimes L_{\lambda} = M_{w_i \circ 0} \otimes L_{\lambda}$. We will use the fact that if $0 = M_0 \subset \cdots \subset M_n = M$, then $\on{Std} M = \bigsqcup \on{Std} M_i / M_{i-1}$. Therefore
+    \begin{align*}
+        \on{Std}(B_k \otimes L_{\lambda}) &= \bigsqcup_i \on{Std}(M_{w_i \circ 0} \otimes L_{\lambda}) \\
+        &= \bigsqcup_i \qty{w_i \circ 0 + \mu}_{\mu \in \on{Wt} L_{\lambda}} \\
+        &= \qty{w \circ 0 + \mu}_{\substack{\mu \in \on{Wt} L_{\lambda} \\ \ell(w) = k}}.
+    \end{align*}
+    Projecting onto the central character $\vartheta_{\lambda}$, we have
+    \begin{align*}
+        \on{Std}(B_k \otimes L_{\lambda})^{\vartheta_{\lambda}} &= \qty{w \circ 0 + \mu \mid \mu \in \on{Wt} L_{\lambda}, \ell(w) = k, \lambda \sim w \circ 0 + \mu} \\
+        &= 
+    \end{align*}
+    Now we know that $w \circ 0 + \mu = u \circ \lambda$ for some $u \in W$ and this means that
+    \[ \mu + w \rho - \rho = u \lambda + u \rho - \rho, \]
+    and thus $\lambda = u^{-1}(\mu + w \rho - u \rho)$. Because $\rho \geq u^{-1} w \rho$ and $u^{-1} \mu \leq \lambda$, we know that
+    \[ \lambda + \rho \geq u^{-1} \mu + u^{-1} w \rho. \]
+    Using the previous equality for $\lambda$, we see that $\rho = u^{-1} w \rho$, which means that $u = w$ and $\mu = u \lambda$.
+\end{proof}
+
+\begin{thm}
+    Let $\lambda, \mu \in \h^*$.
+    \begin{enumerate}
+        \item If $\Ext_{\cO}^1(M_{\mu}, M_{\lambda}) \neq 0$, then $\mu \uparrow \lambda$ and $\mu \neq \lambda$.
+        \item If $\lambda \in \Lambda_+$ and $\Ext_{\cO}(M_{w \circ \lambda}, M_{u \circ \lambda})$, then $u < w$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}[Proof of Strong BGG]
+    We induct on $\abs{\on{Std} D_k^{\lambda}}$. The base case is length $2$. Here, we have
+    \[ 0 \to M_{w \circ \lambda} \to D_k^{\lambda} \to D_k^{\lambda} / M_{w \circ \lambda} = M_{u \circ \lambda} \to 0. \]
+    Because $u, w$ have the same length, the $\Ext^1$ vanishes, and so the exact sequence must split. In the inductive step, we can pull the direct sum out of the Ext functor, and each individual Ext vanishes, so we are done.
+\end{proof}
+
+This argument in fact proves that weak BGG is strong BGG. Note that this was not available to BGG in their original paper.
+
+\begin{proof}[Proof of theorem]
+    By proposition 3.1 of Humphreys, we know $\mu \neq \lambda$. Thus there exists a non-split extension
+    \[ 0 \to M_{\lambda} \to M \to M_{\mu} \to 0. \]
+    We know that there exists a lift $\varphi \colon P_{\mu} \to M$. If $\Im \varphi \cap M_{\lambda} = 0$, then it must be $M_{\mu}$ and so $M_{\mu} \cap M_{\lambda} = 0$, and so it splits. This means that $\Im \varphi \cap M_{\lambda} \neq 0$. Now take the standard filtration
+    \[ P_{\mu} = P_n \supset \cdots \supset P_0 = 0. \]
+    We know that $\on{Std} P_{\mu}$ contains weights at least $\mu$ with $\mu$ appearing exactly once. But then by BGG reciprocity, we know that
+    \[ (P_{\mu} : M_{\mu_i}) = [M_{\mu_i} : L_{\mu}] > 0 \]
+    and this is equivalent to $\mu \uparrow \mu_i$.
+
+    Because $\Im \varphi \cap M_{\lambda} \neq 0$. We can consider the images $\varphi(P_{\mu}) \supset \cdots \supset \varphi(P_0) = 0$. Choose the smallest $i$ such that $\varphi(P_i) \cap M_{\lambda} \neq 0$. Thus $M_{\lambda}$ has a submodule isomorphic to the image of $\varphi(P_i / P_{i-1}) = \varphi(M_{\mu_i})$ If we quotient out more stuff, we get a copy of $L_{\mu_i}$ inside $M_{\lambda}$. But now $[M_{\lambda} : L_{\mu_i}] > 0$, and thus $\mu_i \uparrow \lambda$. By definition, $\mu \uparrow \lambda$.
+
+    Now we will state another fact. Let $\lambda$ be integral, dot-regular, and $\rho$-antidominant. Then $u \circ \lambda \uparrow w \circ \lambda$ if and only if $u \leq w$.
+\end{proof}
+
+\section{Why you should care}%
+\label{sec:why_you_should_care}
+
+We will now explain why you should care about the BGG resolution.
+\begin{thm}[Bott, Kostant]
+    Let $\lambda \in \Lambda_+$. Then
+    \[ H^k(\n^-, L_{\lambda}) = \bigoplus_{\ell(w) = k} \C_{- w \circ (-w_0 \lambda)} \]
+    as $\h$-modules, where $w_0$ is the longest element of $W$.
+\end{thm}
+
+\begin{proof}
+    Recall that $H^k(\n^-, L_{\lambda}) = R^k L_{\lambda}^{\n^-} = R^k \Hom_{n^-}(\C, L_{\lambda}) = R^k \Hom_{\n^-} (L_{\lambda}^*, \C)$. But we know that $L_{\lambda}^* = L_{- w_0 \lambda}$. We now consider the BGG resolution of $L_{- w_0 \lambda}$, and so we have
+    \[ \cdots \to \bigoplus_{\ell(w) = k} M_{w \circ (-w_0 \lambda)} \to \cdots \to L_{-w_0 \lambda} \to 0. \]
+    Note that $\Hom_{\n^-}(M, \C) = \Hom_{\C}(M/\n^- M, \C) = (M / \n^- M)^*$. Therefore
+    \[ \Hom_{\n^-}\qty(\bigoplus_{\ell(w) = k} M_{w \circ (-w_0 M)}, \C) = \bigoplus_{\ell(w) = k} \C_{w \circ (-w_0 \lambda)} = \bigoplus_{\ell(w) = k} \C_{- w \circ (-w_0 \lambda)}. \]
+\end{proof}
+
+Apparently there are two facts that if $w_1, w_4$ differ by length $2$, then either there are two $w_2, w_3$ between them or there is nothing. Also, the BGG resolution is apparently unique.
+
+Next, for $\lambda$ a $\rho$-antidominant weight, we can define $\cO^{\lambda} = \qty{M \mid \mu \in \on{JH} M \Rightarrow \mu \in W_{\lambda} \circ \lambda}$.
+
+\begin{thm}
+    The projective dimension of $M_{w \circ \lambda}$ is $\ell(w)$, the projective dimension of $L_{w \circ \lambda}$ is $2 \ell - \ell(w)$, and the homological dimension of $\cO^{\vartheta_{\lambda}}$ is $2 \ell$.
+\end{thm}
+
+We will now state some more facts. First, if $M, N$ have standard filtrations, then $\Ext_{\cO}^{>0}(M, N^{\vee}) = 0$.
+
+\begin{thm}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $M$ has a standard filtration;
+        \item $\Ext_{\cO}^{>0}(M, M_{\lambda}^{\vee}) = 0$ for all $\lambda \in \h^*$;
+        \item $\Ext_{\cO}^1(M, M_{\lambda}^{\vee}) = 0$ for all $\lambda \in \h^*$;
+        \item $H^0(\n^+, M^{\vee}) = 0$ ($H^1(\n^+, M^{\vee}) = 0$);
+        \item $H_0(\n^-, M) = 0$ ($H^1(\n^-, M) = 0$).
+    \end{enumerate}
+\end{thm}
+
+\begin{prop}
+    We have the identity
+    \[ \chi_M = \sum_{\lambda} \qty(\sum_i (-1)^i \dim \Ext_{\cO}^i(M_{\lambda}, M)) \chi_{M_{\lambda}}. \]
+\end{prop}
+
+\chapter{Fan (Nov 17): VERmas and sImpleS undEr the translation functor, facets, chambers, anD walls}%
+\label{cha:fan_nov_17_vermas_and_simples_under_the_translation_functor_facets_chambers_and_walls}
+
+The reason we should care about translation functors is the following:\footnote{Because Fan was too busy playing Age of Empires, he did not finish preparing this talk.} for any antidominant $\lambda$, $P_{\lambda} = P_{\lambda}^{\dag}$ is self dual. Also, 
+\[ (P_{\lambda} : M_{w \circ \lambda}) = [M_{w \circ \lambda}: L_{\lambda}] = 1. \]
+
+Before we continue, we will do some more homological stuff. If we consider $\Hom_{\mf{b}}(\C_{\lambda}, -) \colon \cO \to \ms{Vect}$, this is actually the same as $\Hom_{\g}(M_{\lambda}, -)$. Of course, this does not remain true in the derived category, but we also have $\Hom_{\mf{b}}(\C_{\lambda}, -) = ((-)^{\n^+})^{\lambda}$. If we consider
+\[ R((-)^{\n^+})^{\lambda} = C^{\bullet}(\n^+, -)^{\lambda} \colon D^+(\cO) \to D^+(\ms{Vect}), \]
+we need to be careful about how we derive things. Recall that Lie algebra cohomology is computed by the Koszul complex
+\[ \U \n \otimes_{\C} \Lambda^k \n \to \cdots \to \C_0 \to 0. \]
+Note that $\U \n$ is most definitely not $\n$-finite, but somehow $\Ext_{\cO}$ can be computed in the category of $\g$-modules that are $\h$-semisimple and locally $\h$-finite. Now we have
+\begin{align*}
+    R \Hom_{\b}(\C_{\lambda}, -) &= (R(-)^{\n^+})^{\lambda} \\
+    &= (R \Hom_{\n^+}(\C_0, -))^{\lambda} \\
+    &= \Hom_{\n^+}(P^{\bullet}(\C_0), -)^{\lambda} \\
+    &= \prod_{k \in \N} \Hom_{\C}(\Lambda^k \n, (-)^{\bullet - k})^{\lambda}
+\end{align*}
+
+\section{The actual content of this lecture}%
+\label{sec:the_actual_content_of_this_lecture}
+
+\begin{defn}
+    Let $\lambda, \mu \in \h^*$ such that $\lambda \equiv \mu \pmod \Lambda$. Then $\lambda - \mu \in \Lambda$. Denote by $(\lambda - \mu)^+ \in \Lambda_+$ the representative of the orbit of $\lambda - \mu$ under the undotted action. Then the \textit{translation functor} $T_{\mu}^{\lambda}$ is given by
+    \[ M \mapsto (M^{\vartheta_{\mu}} \otimes L_{(\lambda - \mu)^+})^{\vartheta_{\lambda}}. \]
+\end{defn}
+
+\begin{prop}
+    $T_{\mu}^{\lambda}$ is exact, preserves projectives, commutes with taking duals, and $T_{\mu}^{\lambda} M_{\mu}$ has a standard filtration.
+\end{prop}
+
+\begin{proof}
+    Exactness is obvious. Preserving projectives and commuting with duals are both from Kevin's talk, and $T_{\mu}^{\lambda} M_{\mu}$ having a standard filtration follows from $M_{\mu} \otimes L_{(\lambda - \mu)^+}$ having a standard filtration follows from
+    \[ (M_{\mu} \otimes L_{(\lambda - \mu)^+} : M_{\mu + w(\lambda - \mu)^+}) = 1 \]
+    and the only $M$ that works is $M_{\lambda}$.
+\end{proof}
+
+\begin{prop}
+    For $\lambda, \mu$ compatible, the functors $T_{\mu}^{\lambda}, T_{\lambda}^{\mu}$ are both left and right adjoints.
+\end{prop}
+
+From now on, all chambers will be discussed with respect to $-\rho$.
+\begin{defn}
+    A \textit{facet} $F$ is a subset of $E$ determined by $\Phi_+ = \Phi_{F+} \sqcup \Phi_{F0} \sqcup \Phi_{F-}$. $F$ is given by
+    \[ F = \qty{\lambda \in E \mid \alpha^*(\lambda + \rho) = \begin{cases}
+        > 0 & \alpha \in \Phi_{F+} \\
+        =0 & \alpha \in \Phi_{F0} \\
+        <0 & \alpha \in \Phi_{F-}.
+    \end{cases}
+    }. \]
+    We can define $\ol{F}$ by making our inequalities weak. We can also define $\wh{F}$ by allowing $\leq 0$ and $\widecheck{F}$ by allowing $\geq 0$.
+\end{defn}
+
+We will assume the following facts without proof:
+\begin{enumerate}
+    \item $\qty{\alpha \mid \pm \alpha \in \Phi_{F0}}$ is a root system. It has the Weyl group given by the subgroup of $W$ fixing $F$ pointwise.
+    \item If there exist $\lambda, w$ such that $w \circ \lambda \in \lambda$, then $w \circ \lambda < \lambda'$ for all $\lambda' \in F$.
+\end{enumerate}
+
+For any $\lambda \in \h^*$, let $E_{\lambda} \subseteq E$ be spanned by $\Phi_{\lambda}$ over $\R$. Let $\lambda^{\natural} \in E_{\lambda}$ be such that for all $\alpha \in \Phi_{\lambda}$, $\alpha^*(\lambda) = \alpha^*(\lambda^{\natural})$.
+
+\begin{defn}
+    Define $W_{\lambda}^{\circ} = \operatorname{Stab}_{W_{\lambda}} \lambda$.
+\end{defn}
+
+We will use the following facts without proof:
+\begin{enumerate}
+    \item For all $w \in W_{\lambda}$, $\lambda - w \circ \lambda = \lambda^{\natural} - w \circ \lambda^{\natural}$ and $(w \circ \lambda)^{\natural} = w \circ \lambda^{\natural}$.
+    \item We have $\on{Stab}_{W_{\lambda}} \lambda = \on{Stab}_{W_{\lambda}} \lambda^{\natural} = \on{Stab}_W \lambda$.
+    \item If $\Phi_{\lambda} = \Phi_{\mu} = \Phi_{\lambda + \mu}$, then $(\lambda + \mu)^{\natural} = \lambda^{\natural} + \mu^{\natural}$.
+\end{enumerate}
+
+\begin{lem}
+    For $\lambda, \mu \in \h^*$ compatible with $\mu^{\natural} \in F$ and $\lambda^{\natural} \in \ol{F}$, for all $\nu \neq (\lambda - \mu)^+ \in \on{Wt} L_{(\lambda - \mu)^+}$, $\mu + \nu \notin W_{\lambda} \circ \lambda$.
+\end{lem}
+
+\begin{thm}
+    Let $\lambda, \mu$ be antidominant and compatible. For $\mu^{\natural} \in F \subseteq E_{\mu}$ and $\lambda \in \ol{F}$, 
+    \[ T_{\mu}^{\lambda} M_{w \circ \mu} = M_{w \circ \lambda} \]
+    for all $w \in W_{\lambda} = W_{\mu}$.
+\end{thm}
+
+\begin{proof}
+    We consider $(M_{w \circ \mu}^{\vartheta_{\mu}} \otimes L_{(\lambda - \mu)^+})^{\vartheta_{\lambda}}$. The standard filtration of this is given by
+    \[ \qty{w \circ \mu + \nu \mid \nu \in \on{Wt}_{(\lambda - \mu)^+}, w \circ \mu + \nu \sim \lambda}, \]
+    Also, $(T_{\mu}^{\lambda} M_{w \circ \mu} : M_{w \circ \lambda}) = 1$ because $w \circ \lambda = w \circ \mu - w(\lambda - \mu)$. But $(w \circ \mu)^{\natural} = w \circ \mu^{\natural} \in w \circ F$. Also $w \circ \lambda \in \ol{w \circ F}$. By the lemma, for any $\nu \neq (\lambda - \mu)^+ \in \on{Wt} L_{(\lambda - \mu)^+}$, $\mu + \nu \notin W_{\lambda} \circ \lambda$. But now only $w \circ \lambda$ can appear in the standard filtration, and so we are done.
+\end{proof}
+
+\begin{cor}
+    For the setting of the theorem, if $M \in \cO^{\mu}$ has a standard filtration, then $T_{\mu}^{\lambda} M$ has a standard filtration.\footnote{Humphreys deleted this without explanation in the errata, and Fan thinks that the proof still works (and therefore that he's smarter than Humphreys).}
+\end{cor}
+
+\begin{proof}
+    Induct on the size of the standard filtration. Consider
+    \[ 0 \to N \to M \to M_{w \circ \mu} \to 0. \]
+    Applying the translation functor, we have
+    \[ 0 \to T_{\mu}^{\lambda} N \to _{\mu}^{\lambda} M \to M_{w \circ \lambda} \to 0. \]
+    By the inductive hypothesis, we are done.
+\end{proof}
+
+\begin{prop}
+    In the same setting, we have
+    \[ T_{\mu}^{\lambda} L_{w \circ \mu} = \begin{cases}
+        0 \\
+        L_{w \circ \lambda}.
+    \end{cases}
+    \]
+\end{prop}
+
+\begin{proof}
+    Consider $M_{w \circ \mu} \to L_{w \circ \lambda} \to 0$. Applying the translation functor, we have
+    \[ M_{w \circ \lambda} \to T_{\mu}^{\lambda} L_{w \circ \mu} \to 0. \]
+    If $T_{\mu}^{\lambda} L_{w \circ \mu}$ is nonzero, it is a highest weight module. But now we have
+    \[ 0 \to L_{w \circ \mu} \to M_{w \circ \mu}^{\dag}, \]
+    and this becomes
+    \[ 0 \to T_{\mu}^{\lambda} L_{w \circ \mu} \to M_{w \circ \lambda}^{\dag}. \]
+    This gives a morphism $M_{w \circ \lambda} \to T_{\mu}^{\lambda} L_{w \circ \mu} \to M_{w \circ \lambda}^{\dag}$. But now recall that $\dim \Hom(M_{\mu}, M_{\lambda}^{\dag}) = \delta_{\mu \lambda}$, and therefore, $L_{w \circ \lambda} \cong T_{\mu}^{\lambda} L_{w \circ \mu}$.
+\end{proof}
+
+\begin{thm}
+    Consider the same setting as before. Then $T_{\mu}^{\lambda} L_{w \circ \mu} = L_{w \circ \lambda}$ if and only if $w \circ \lambda^{\natural} \in \wh{w \circ F}$.
+\end{thm}
+
+\begin{proof}
+    We know that $T_{\mu}^{\lambda}$ is exact, so it does not increase the length of the Jordan-H\"older filtration. Thus it brings a unique $L_{uw \circ \mu}$ to $L_{w \circ \lambda}$. But $T_{\mu}^{\lambda} L_{uw \circ \mu} = L_{uw \circ \lambda} = L_{w \circ \lambda}$, and thus $uw \circ \lambda = w \circ \lambda$.
+
+    Now let $\lambda^{\natural} \in G$ be a facet in $E_{\lambda}$. Suppose that $w \circ \lambda^{\natural} \in \wh{w \circ F}$. For all $\alpha \in w \Phi_{G0}$, $w^{-1} \alpha \in \Phi_{G0}$. Thus $(w^{-1} \alpha)^*(\lambda^{\natural} + \rho) = 0$ and $\alpha^*(w \circ \lambda^{\natural} + \rho) = 0$. But now $\alpha \in \Phi_{(w \circ F)0}$ or $\Phi_{(w \circ F)-}$, and we know that $w \circ \mu^{\natural} \in F$, so $\alpha^*(w \circ \mu^{\natural} + \rho) \leq 0$. Thus
+    \begin{align*}
+        s_{\alpha} w \circ \mu^{\natural} &= s_{\alpha}(w \circ \mu^{\natural} + \rho) - \rho \\
+        &= w \circ \mu^{\natural} - \alpha^*(w \circ \mu^{\natural} + \rho) \alpha \\
+        &\geq w \circ \mu^{\natural}
+    \end{align*}
+    for all $\alpha \in w\Phi_{G0}$. Because $W_{w \circ \lambda}^{\circ}$ is the Weyl group of $\qty{\alpha \mid \pm \alpha \in \Phi_{(w \circ G)0}}$, $uw \circ \mu^{\natural} \geq w \circ \mu^{\natural}$ for all $\mu \in W_{w \circ \lambda}^0$. Thus $uw \circ \mu \geq w \circ \mu$, so $uw \circ \mu = w \circ \mu$. Therefore $T_{\mu}^{\lambda}$ brings $L_{w \circ \mu}$ to $L_{w \circ \lambda}$.
+
+    If $w \circ \lambda^{\natural} \notin \wh{w \circ F}$, we know that $w \circ \lambda^{\natural} \in \widecheck{w \circ F}$. But now because $w \circ \mu^{\natural} \in w \circ F$, $\alpha \in \Phi_{(w \circ F)+}$ has $\alpha^*(w \circ \mu^{\natural} + \rho) > 0$. But now $s_{\alpha} w \circ \mu^{\natural} < w \circ \mu^{\natural}$, and thus $s_{\alpha} w \circ \mu < w \circ \mu$. This implies that there exists $M_{s_{\alpha} w \circ \mu} \hookrightarrow M_Pw \circ \mu$, and so after the translation functor, we have
+    \[ 0 \to M_{s_{\alpha} w \circ \lambda} \to M_{w \circ \lambda} \to T_{\mu}^{\lambda} L_{w \circ \mu} \to 0, \]
+    except $s_{\alpha} w \circ \lambda = w \circ \lambda$.
+\end{proof}
+
+\chapter{Kevin (Dec 01): Kazhdan-Lusztig theory}%
+\label{cha:kevin_dec_01_kazhdan_lusztig_theory}
+
+So far, we have cared about the Verma modules $M_{\lambda}$ and the simple modules $L_{\lambda}$ in category $\cO$. Recall that we have two bases $[M_{\lambda}], [L_{\lambda}]$ of $K(\cO)$. We would like to know the change of basis matrix. There is an answer when $\lambda$ is regular and integral. If $\lambda, \lambda'$ are regular and integral, we know that $\cO^{\lambda} \cong \cO^{\lambda'}$ via the translation functors. Therefore, we only need to consider the principal block $\cO^0$. The answer in this case is the following:
+
+\begin{conj}[Kazhdan-Lusztig]
+    For all $w \in W$, let $M_{w}, L_w$ have highest weight $-w(\rho) - \rho$. Then we have
+    \[ [L_w] = \sum_{y \leq w} \ep_y \ep_2 P_{y,w}(1) [M_y], \]
+    where $\ep_w = (-1)^{\ell(w)}$. Also, we have
+    \[ [M_w] = \sum_{y \leq w} P_{w_0 w, W_0 y}(1) [L_y], \]
+    where $w_0$ is the longest element of $W$. The $P_{y,w}(q)$ are called the \textit{Kazhdan-Lusztig} polynomials (which arise from the study of Hecke algebras) and are only nonzero for $y \leq w$.
+\end{conj}
+
+This result was proved by Beilinson-Bernstein and by Brylinski-Kashiwara using the theory of $D$-modules.
+
+\section{Combinatorics}%
+\label{sec:combinatorics}
+
+\begin{defn}
+    Let $\wt{\mc{H}}$ be the associative $\Z[q]$-algebra with basis $T_w$ for all $w \in W$ subject to the following relations:
+    \begin{itemize}
+        \item $T_w T_{w'} = T_{ww'}$ if $\ell(ww') = \ell(w) + \ell(w')$;
+        \item $(T_s + 1)(T_s - q) = 0$ if $s$ is a simple reflection.
+    \end{itemize}
+    The \textit{Hecke algebra} is defined to be $\mc{H} \coloneqq \wt{\mc{H}} \otimes_{\Z[q]} \Z[q^{\pm 1/2}]$. This has a duality operation defined by
+    \[ \ol{\sum_w a_w T_w} = \sum_w \ol{a_w} T_{w^{-1}}^{-1} \]
+    and $\ol{q^{1/2}} = q^{-1/2}$.
+\end{defn}
+Apparently this comes from number theory,\footnote{Kevin asked if we were satisfied with this ``motivation'' and the only number theorist in the room was not satisfied.} and you are supposed to specialize $q$ to a prime power so that it has number-theoretic meaning. Here are some good properties:
+\begin{itemize}
+    \item If we set $q = 1$, $\mc{H}$ specializes to $\Z[W]$.
+    \item If we set $q$ to be a prime power, then $\mc{H} \otimes_{\Z[q^{\pm 1/2}]} \C$ is the algebra of intertwining operators on the space of functions on the flag variety of $G(\mathbb{F}_q)$.
+\end{itemize}
+
+The Kazhdan-Lusztig polynomials $P_{y, w}(q)$ arise from the following theorem as a change of basis:
+\begin{thm}[Kazhdan-Lusztig]
+    For any $w \in W$, there exists a unique $c_w \in \mc{H}$ such that $\ol{c}_w = c_w$ and
+    \[ c_w = \sum_{y \leq w} \ep_y \ep_w q_w^{1/2} q_y^{-1} \ol{P}_{y,w} T_y. \]
+    The $P_{y,w}$ are polynomials in $q$ of degree at most $\frac{1}{2} (\ell(w) - \ell(y) - 1)$ with $P_{w,w} = 1$.
+\end{thm}
+
+\begin{proof}
+    First define $R_{x,y} \in \Z[q^{1/2}, q^{-1/2}]$ for all $x,y \in W$ by
+    \[ T_{y^{-1}}^{-1} = \sum_x \ol{R}_{x,y} q_x^{-1}, T_x. \]
+    We can check that 
+    \[ R_{x,y} = \begin{cases}
+        R_{sx, sy} & sx < x, sy < y \\
+        R_{xs, ys} & xs < x, ys < y \\
+        (q-1) R_{sx,y} + q R_{sx,sy} & sx > x, sy < y.
+    \end{cases}
+    \]
+    The relations and the fact that $R_{1,1} = 1$ tell us that $R_{x,y} \neq 0$ if and only if $x \leq y$. Also, $R_{x,y}$ is a polynomial of $q$ of degree $\ell(y) - \ell(x)$ when $x \leq y$ and $R_{x,x} = 1$.
+
+    Now we will prove that if the $c_w$ exist, then they are unique. Because $\ol{c}_w = c_w$, we have
+    \begin{align*} 
+        \sum_{x \leq w} \ep_x \ep_w q_w^{1/2} q_x^{-1} \ol{P}_{x,w} T_x &= \sum_{y \leq w} \ep_y \ep_w q_w^{-1/2} q_y P_{y,w} T_{y^{-1}}^{-1} \\
+        &= \sum_{\substack{y \leq w \\ x \leq y}} \ep_y \ep_w q_w^{-1/2} q_y P_{y,w} \ol{R}_{x,y} q_x^{-1} T_x.
+    \end{align*}
+    Comparing coefficients of $T_x$, we have
+    \[ \ep_x \ep_w q_w^{1/2} q_x^{-1} \ol{P}_{x,w} = \sum_{x \leq y \leq w} \ep_y \ep_w q_y q_x^{-1} \ol{R}_{x,y} P_{y,w}. \]
+    After cancelling, we obtain
+    \[ q_w^{1/2} q_x^{-1/2} \ol{P}_{x,w} - q_w^{-1/2} q_x^{1/2} P_{x,w} = \sum_{x \leq y \leq w} \ep_x \ep_y q_x^{-1/2} q_y q_x^{-1/2} \ol{R}_{x,y} P_{y,w}. \]
+    Note that the first term on the left has only positive powers of $q^{-1/2}$ and the second term only has positive powers of $q^{1/2}$. This means that the $P_{x,w}$ are uniquely determined by downward induction on the length of $y$.
+
+    We will now prove the existence of the $c_w$ inductively on the length of $w$. We begin with $c_1 = T_1 = 1$ and $c_s = q^{-1/2} T_s - q^{1/2}$. Now assume that $c_{w'}$ for all $w'$ with $\ell(w') < \ell(w)$. Write $w = sv$, where $\ell(w) = \ell(v) + 1$. Introduce a relation $\prec$, where $y \prec w$ when $y < w$ and $P_{y,w}$ is a polynomial in $q$ of degree exactly $\frac{1}{2} (\ell(w) - \ell(y) - 1)$. If $y \prec w$, define $\mu(y,w)$ to be the coefficient of highest degree of $P_{y,w}$. Now define
+    \[ c_w = c_s c_v - \sum_{\substack{z \prec v \\ s_z < z}} \mu(z,v) c_z. \]
+    Clearly, $\ol{c}_w = c_w$. From the second relation, we obtain
+    \[ P_{y,w} = q^{1-c} P_{sy,v} + q^c P_{y,v} - \sum_{\substack{y \leq z \prec v \\ sz < z}} \mu(z,v) q_z^{-1/2} q_v^{1/2} q^{1/2} P_{y,z}. \]
+    Here, $c = 1$ if $sy < y$ and $c=0$ if $sy > y$. We simply check that all terms are polynomials of low enough degree. This is clear except when $c = 1$ and $y \prec v$, in which the two terms $q^c P_{y,v}$ and $\mu(y,v) q_y^{-1/2} q_v^{1/2} P_{y,y}$ could be problematic. However, the two terms cancel out, and so we are done.
+\end{proof}
+
+\section{Geometry}%
+\label{sec:geometry}
+
+Let $G$ be the simply-connected semisimple group over $\C$ corresponding to $\g$. The \textit{flag variety} $\mc{B}$ is defined as the set of Borel subgroups of $G$ with the geometric structure coming from an identification with $G/B$ for a fixed Borel $B$. This is a smooth projective variety. By the Bruhat decomposition, we have $G = \bigsqcup_{w \in W} B w B$, and this gives us a decomposiion
+\[ \mc{B} = \bigsqcup_{w \in W} \mc{B}_w. \]
+We can check that $\mc{B}_w \cong \A^{\ell(w)}$. Taking the closures $\ol{B}_w$, we obtain the \textit{Schubert varieties}. These are singular, so we need to consider the intersection cohomology instead of the usual cohomology.
+
+Suppose we have a variety $X$ of dimension $n$. Define the \textit{intersection complex} $\mr{IC}_X \in D^b(X, \Q)$ as follows. First, there exists a nice stratification $X = X^n \supseteq X^{n-1} \supset \cdots \supset X^0$ such that
+\begin{itemize}
+    \item Each $X^i$ is closed;
+    \item $X^i - X^{i-1}$ is smooth of pure dimension $i$;
+    \item The stratification is a Whitney stratification.
+\end{itemize}
+Given such a stratification, let $U_i = X - X^{n-i}$. We know that $U_1$ is smooth and that
+\[ U_1 \subset U_2 \subset \cdots \subset U_{n+1} = X. \]
+Denote the inclusions $U_i \subset U_{i+1}$ by $j_i$. Then we define
+\[ \mr{IC}_X \coloneqq \tau_{\leq n-1} R j_{n*} \tau_{\leq n-2} R j_{(n-1)*} \cdots \tau_{\leq 0} R j_{1*} \Q_{U_1}. \]
+This is independent of the choice of Whitney stratification. Of course, we may now define intersection cohomology $IH^*(X)$ as the hypercohomology of this complex. For smooth $X$, $\mr{IC}_X = \Q_X$, and so intersection cohomology is the same as ordinary cohomology. Also, intersection cohomology satisfies Poincar\'e duality and hard Lefschetz.
+
+We can relate intersection cohomology to the Kazhdan-Lusztig stuff as follows:
+\begin{thm}[Kazhdan-Lusztig]
+    \begin{enumerate}
+        \item We have 
+            \[ P_{y,w}(q) = \sum_i \dim \mr{IH}_y^{2i}(\ol{\mc{B}}_w) q^i, \]
+            where $\mr{IH}_y$ means relative to $\mc{B}_y \subseteq \ol{\mc{B}}_w$.
+        \item We have the relation
+            \[ \sum_{i=0}^{\ell(w)} \mr{IH}^{2i}(\ol{\mc{B}}_w) q^i = \sum_{x \leq w} q^{\ell(x)} P_{x,w}(q). \]
+    \end{enumerate}
+\end{thm}
+
+\begin{cor}
+    $P_{y,w}$ has nonegative coefficients.
+\end{cor}
+
+\chapter{Patrick (Dec 08): Koszul duality for people who aren't Peter May}%
+\label{cha:patrick_dec_08_koszul_duality_for_people_who_aren_t_peter_may}
+
+\textit{Note: these are the speaker's notes.} 
+
+Before we begin, we will establish some notation.
+\begin{notns}
+    Let $A = \bigoplus A_j$ be a graded ring. We will denote by $A\text{-}\ms{Mod}$ the category of left $A$-modules and $A\text{-}\ms{mod}$ the category of graded $A$-modules. These carry functors $\Hom, \Ext, \ldots$ and $\hom, \ext, \ldots$, respectively. Also, the subcategories of finitely-generated modules will be called $A\text{-}\ms{Mof}$ and $A\text{-}\ms{mof}$. Finally, we will denote the grading shift $\ev{n}$ by $(M\ev{n})_i = M_{i-n}$. Finally, write $k \coloneqq A_0$. Here, we will assume that $k$ is a field, but after certain adjustments we may allow $k$ to be a noncommutative semisimple ring.
+\end{notns}
+
+\section{Koszul duality}%
+\label{sec:koszul_duality}
+
+\begin{defn}
+    A graded ring $A = \bigoplus_{j \geq 0} A_j$ is a \textit{Koszul ring} if $A_0$ is semisimple and admits a graded projective resolution
+    \[ \cdots \to P^2 \to P^1 \to P^0 \to A_0 \]
+    such that $P^i$ is generated by its degree $i$ component $P^i_i$.
+\end{defn}
+
+\begin{exm}
+    The Koszul resolution
+    \[ S^{\bullet} V \otimes \Lambda^{\bullet} V = \cdots \to S^{\bullet} V \otimes \Lambda^2 V \to S^{\bullet} V \otimes V \to S^{\bullet} V \to k \]
+    shows that $S^{\bullet} V$ is a Koszul ring.
+\end{exm}
+
+There is an alternative characterization of Koszul rings.
+\begin{defn}
+    Let $M$ be a graded module. Then $M$ is \textit{pure of weight $n$} if and only if $M = M_{-n}$.
+\end{defn}
+In the cases we will consider, any simple $A$-module is pure and any pure module is semisimple.
+\begin{prop}
+    Let $A$ be a graded ring with $A_0$ semisimple. Then the following are equivalent:
+    \begin{enumerate}
+        \item $A$ is Koszul.
+        \item For any pure $A$-modules $M, N$ of weights $m, n$ we have $\ext^i_A(M, N) = 0$ whenever $i \neq m-n$.
+        \item We have $\ext_A^i(A_0, A_0\ev{n}) = 0$ whenever $i \neq n$.
+    \end{enumerate}
+\end{prop}
+
+We will list some more properties of Koszul rings:
+\begin{prop}
+    If $A$ is a Koszul ring, so is the opposite ring $A^{\mr{op}}$.
+\end{prop}
+
+\begin{proof}
+    Define $M^{\odot}$ by $M^{\odot}_i = M_{-i}^*$. Then consider a projective resolution
+    \[ \cdots \to P^2 \to P^1 \to P^1 \to k \]
+    such that $P^i = AP_i^i$. But now we note that
+    \[ k \to (P^0)^{\odot} \to (P^1)^{\odot} \to (P^2)^{\odot} \to \cdots \]
+    is an injective resolution of $k$ in $\ms{mod}\text{-}A$. Now we note that
+    \[ \hom_{A^{\mr{op}}}(k\ev{-n}, (P^i)^{\odot}) = (k \otimes_A P^i)_n^{\odot} = (P_i^i)_n^* = 0 \]
+    whenever $i \neq n$. Thus $\ext_{A^{\mr{op}}}^i(k\ev{-n}, k) = 0$ whenever $i \neq n$, and so $A^{\mr{op}}$ is Koszul.
+\end{proof}
+
+\begin{defn}
+    A graded ring $A$ is \textit{quadratic} if the natural map
+    \[ T A_1 = \bigoplus_{n \geq 0} A_1^{\otimes n} \to A \]
+    is surjective and the kernel $R \subseteq T A_1$ is generated by $R \cap A_1 \otimes A_1$.
+\end{defn}
+
+\begin{prop}
+    Any Koszul ring is quadratic.
+\end{prop}
+
+We will now assume that all $A_i$ are finitely generated $k$-modules (I guess we will call it locally $k$-finite). We will now define a candidate dual algebra.
+\begin{defn}
+    Let $A = T_k V / \ev{R}$ be a locally $k$-finite quadratic ring over $k$, where $R \subseteq V \otimes V$. Then define its \textit{quadratic dual} $A^! \coloneqq T_k V^* / \ev{R^{\perp}}$, where $R^{\perp} \subseteq V^* \otimes V^*$ is the annihilator of $R$.
+\end{defn}
+
+\begin{rmk}
+    Clearly $A^{!!} = A$.
+\end{rmk}
+
+\begin{prop}
+    Let $A$ be a locally finite Koszul ring. Then $A^!$ is also Koszul.
+\end{prop}
+
+\begin{proof}
+    We will use the fact (without proof) that the Koszul complex of $A$ is actually
+    \[ \cdots \to A \otimes (A_2^!)^* \to A \otimes (A_1^!)^* \to A \]
+    with differential given by $\Hom(A_{i+1}^!, A) \to \Hom(A_{i+1}^! \otimes V, A \otimes V) \to \Hom(A_i^!, A)$. 
+    In coordinates if $\mr{id}_V = \sum v_{\alpha}^* \otimes v_{\alpha}$, this is given by
+    \[ \dd{f}(a) = \sum f(a v_{\alpha}^*) v_{\alpha}. \]
+    Therefore, we have a bigraded space
+    \[ A \otimes (A^!)^{\odot} = \bigoplus_{i.j} A_i \otimes (A_{-j}^!)^* \]
+    where the differential has bidegree $(1,1)$ and the cohomology appears in bidegree $(0,0)$. Taking duals, we obtain the space
+    \[ A^! \otimes A^{\odot} = \bigoplus_{i,j} A_j^! \otimes A_{-i}^* \]
+    where the differential has degree $(1,1)$ and the cohomology appears in degree $(0,0)$. Except this is a graded projective resolution of $k$ as an $A^!$-module, so $A^!$ is Koszul.
+\end{proof}
+
+\begin{thm}
+    Let $A$ be a locally finite Koszul ring over $k$. Then $\Ext_A^{\bullet}(k, k)$ is canonically isomorphic to $(A^!)^{\mr{op}}$.
+\end{thm}
+We will write $\Ext_A^{\bullet}(k, k) \eqqcolon E(A)$. It is easy to see that $E(E(A)) = A$. 
+
+We will now give a numerical criterion for a ring to be Koszul. Suppose that the $A_i$ are finite-dimensional for all $i$ and that $A_0$ is a product of copies of a field $F$. Then define the \textit{Hilbert polynomial} to be the matrix with entries
+\[ P(A, t)_{x,y} = \sum t^i \dim (1_x A_i 1_y). \]
+
+\begin{lem}
+    Suppose that $A$ is Koszul. Then $P(A,t)P(A^!, -t)^T = 1$.
+\end{lem}
+
+\begin{thm}
+    Let $E = E(A)$. Then $A$ is Koszul if and only if $P(A, t)P(E, -t) = 1$.
+\end{thm}
+
+Now we are finally able to define a derived category version of Koszul duality, which is what we really wanted. Write $C(A)$ for the homotopy category of complexes in $B\text{-}\ms{mod}$. We will use $M^i$ for the grading in the complex and $M^i_j$ for the grading in the module $M^i$. Now define the category $C^{\uparrow}(A)$ to be the full subcategory of $C(A)$ where $M_j^i = 0$ if $i \gg 0$ or $i + j \ll 0$. Similarly, define $C^{\downarrow}(A)$ to be the full subcategory of $C(A)$ where $M_j^i = 0$ if $i \ll 0$ or $i + j \gg 0$. Define the derived categories $D^{\uparrow}(A), D^{\downarrow}(A)$.
+
+\begin{thm}
+    Let $A$ be a locally finite Koszul ring. Then there exists an equivalence of triangulated categories $D^{\downarrow}(A) \cong D^{\uparrow}(A^!)$.
+\end{thm}
+
+We will not prove this result, but we will construct a functor. Let $M \in C(A)$. Then consider the bigraded vector space
+\[ FM = A^! \otimes M = \bigoplus_{\ell,i} A_{\ell}^! \otimes M^i = \bigoplus_{\ell,i} \Hom_A(A \otimes A_{\ell}^{!*}, M^i) \]
+with the differentials coming from the Koszul complex and from $M$ and given by
+\begin{align*}
+    \dd'(a \otimes m) &= (-1)^{i+j} \sum a v_{\alpha}^* \otimes v_{\alpha} m, \\
+    \dd''(a \otimes m) &= a \otimes \partial m,
+\end{align*}
+where $v_{\alpha}^*, v_{\alpha}$ are as before. Now we consider the total differential $\dd = \dd' + \dd''$ and write
+\[ (FM)_q^p = \bigoplus_{\substack{i+j=p \\ \ell-j = q}} A_{\ell}^! \otimes M_j^i. \]
+In fact, $F$ sends $C^{\downarrow}(A)$ to $A^{\uparrow}(A^!)$ and takes acyclic complexes to acyclic complexes, so it induces a derived functor $DF \colon D^{\downarrow}(A) \to D^{\uparrow}(A^!)$. 
+
+The inverse functor is given as follows. Let $N \in C(A^!)$. Then define
+\[ (GN)_{\ell,i} = \Hom_k(A_{-\ell}, N^i). \]
+This will have anticommuting differentials given by
+\begin{align*}
+    (\dd' f)(a) &= (-1)^i \sum v_{\alpha}^* f(v_{\alpha} a), \\
+    (\dd'' f)(a) &= \partial(f(a)).
+\end{align*}
+Then we consider the total differential $\dd = \dd' + \dd''$ and write
+\[ (GN)_q^p = \bigoplus_{\substack{p=i+j\\ q=\ell-j}} \Hom_k(A_{-\ell}, N_j^i). \]
+One can check that $G$ sends $C^{\uparrow}(A^!)$ to $C_{\downarrow}(A)$ and that $G$ takes acyclic things to acyclic things. Thus there is a derived functor $DG \colon D^{\uparrow}(A^!) \to D^{\downarrow}(A)$.
+
+We will write $K \coloneqq DF$ for the \textit{Koszul duality} functor. Here are some more properties of this functor.
+\begin{thm}
+    There is a canonical isomorphism $K(M\ev{n}) = (KM)[-n]\ev{-n}$.
+\end{thm}
+
+\begin{thm}
+    Let $A$ be a Koszul ring over $k$ that is a finite-dimensional $k$-vector space. Also suppose that $A^!$ is left Noetherian. Then there are embeddings $D^b(A\text{-}\ms{mof}) \subseteq D^{\downarrow}(A)$ and $D^b(A^!\text{-}\ms{mof}) \subseteq D^{\uparrow}(A^!)$ such that Koszul duality induces an equivalence
+    \[ K \colon D^b(A\text{-}\ms{mof}) \to D^b(A^!\text{-}\ms{mof}). \]
+\end{thm}
+
+\section{Parabolic-singular duality}%
+\label{sec:parabolic_singular_duality}
+
+Let $S \subset W$ be the set of simple reflections. Then for any subset $S_{\iota} \subset S$, let $W_{\iota} \subset W$ be the subgroup generated by $S_{\iota}$, $w_{\iota}$ be its longest element, and $W^{\iota} \subset W$ be the set of longest representatives of the cosets $W / W_{\iota}$.
+
+Let $\lambda \in \h^*$ be integral and dominant (but possibly singular). Set $\cO_{\lambda} \subset \cO$ to be the full subcategory of objects with the same central character is $L(\lambda)$. Set
+\[ S_{\lambda} \coloneqq \qty{s \in S \mid s \circ \lambda = \lambda}. \]
+Then the simple objects in $\cO_{\lambda}$ are precisely the $L(x \circ \lambda)$ for all $x \in W^{\lambda}$.
+
+Let $\b \subset \mf{q} \subset \g$ be a parabolic subalgebra. Define $\cO^{\mf{q}} \subset \cO_0$ to be the subcategory of all objects that are locally $\mf{q}$-finite. Let $S_{\mf{q}} \subset S$ be the simple reflections corresponding to $\mf{q}$. For all $x \in W^{\mf{q}}$ set $L_x^{\mf{q}} \coloneqq L(x^{-1} w_0 \circ 0) \in \cO^{\mf{q}}$. These represent the simple objects in $\cO^{\mf{q}}$. Call their projective covers $P_x^{\mf{q}}$.
+
+The main theorem of this part of the talk is
+\begin{thm}
+    Suppose that $S_{\lambda} = S_{\mf{q}}$. Then there are isomorphisms of finite-dimensional algebras
+    \begin{align*}
+        \End_{\cO_{\lambda}} \qty(\bigoplus P(x \circ \lambda)) &\cong \Ext_{\cO^{\mf{q}}}^{\bullet}\qty(\bigoplus L_x^{\mf{q}}, \bigoplus L_x^{\mf{q}}) \\
+        \End_{\cO^{\mf{q}}} \qty(\bigoplus P_x^{\mf{q}}) & \cong \Ext_{\cO_{\lambda}}^{\bullet} \qty(\bigoplus L(x \circ \lambda), \bigoplus L(x \circ \lambda)),
+    \end{align*}
+    where the summations are over $x \in W^{\lambda} = W^{\mf{q}}$. The algebras on the right are both Koszul rings and are Koszul dual to each other.
+\end{thm}
+
+Note that $\cO^{\b} = \cO_0$. In particular, in this case, we obtain the following:
+\begin{cor}[Soergel '90]
+    Let $L \in \cO$ be the direct sum of all simple modules with the same central character as $\C = L(0)$. Let $P \in \cO$ be the direct sum of their projective covers. Then there exists an isomorphism
+    \[ \End_{\cO}(P) \cong \Ext_{\cO}^{\bullet}(L, L). \]
+    Moreover, $\Ext_{\cO}^{\bullet}(L, L)$ is a self-dual Koszul ring.
+\end{cor}
+
+The proof of the theorem is geometric and developing the machinery would take to long, so we will prove the equality of dimensions for the first isomorphism. Using BGG reciprocity and the Kazhdan-Lusztig conjectures, we have
+\begin{align*}
+    \dim \End_{\cO_{\lambda}}\qty(\bigoplus P(x \circ \lambda)) &= \sum_{x, y \in W^{\mf{q}}} [P(x \circ \lambda) : L(y \circ \lambda)] \\
+    &= \sum_{x, y, z \in W^{\mf{q}}} (P(x \circ \lambda) : M(z \circ \lambda)) [M(z \circ \lambda) : L(y \circ \lambda)] \\
+    &= \sum_{x,y,z \in W^{\mf{q}}} [M(z \circ \lambda):L(x \circ \lambda)][M(z \circ \lambda) : L(y \circ \lambda)] \\
+    &= \sum_{x,y,z \in W^{\mf{q}}} P_{z,x}(1)P_{z,y}(1).
+\end{align*}
+By an argument involving localization (translating the problem to geometry), this is precisely the dimennsion of $\Ext_{\cO^{\mf{q}}}\qty(\bigoplus L_x^{\mf{q}}, \bigoplus L_x^{\mf{q}})$.
+
+Now write $A_{Q} = \Ext_{\cO}^{\bullet}(\bigoplus L_x^{\mf{q}}, \bigoplus L_x^{\mf{q}})$ and $A^{Q} = \Ext_{\cO}^{\bullet}\qty(\bigoplus L(x \circ \lambda), \bigoplus L(x \circ \lambda))$. Also, write $A^{\mf{q}} = \End_{\cO}\qty(\bigoplus P_x^{\mf{q}})$.
+\begin{cor}
+    There is a ring isomorphism $A^{Q} = E(A_{Q})$.
+\end{cor}
+
+\begin{proof}
+    By the theorem, there is an equivalence $\cO_{\lambda} \cong A_{Q}\text{-}\ms{Mof}$. This is because if $\mc{A}$ is an abelian category whose objects have finite length and $P \in \mc{A}$ is a projective generator, then there is an equivalence $\Hom_{\mc{A}}(P,-) \colon \mc{A} \to \ms{Mof}\text{-}E$, where $E = \End_{\mc{A}} P$. But now this equivalence identifies $L(x \circ \lambda)$ with $A_{Q}^0 1_x$, and from this we deduce the desired isomorphism.
+\end{proof}
+
+\begin{prop}
+    The rings $A_{Q}$ and $A^{Q}$ are Koszul.
+\end{prop}
+
+\begin{proof}
+    First, note that $\cO^{\mf{q}} = \ms{Mof}\text{-}A^{\mf{q}}$. But now the simples correspond under this equivalence, and therefore
+    \[ \Ext_{\cO^{\mf{q}}}^{\bullet}\qty(\bigoplus L_x^{\mf{q}}, \bigoplus L_x^{\mf{q}}) \cong \Ext_{A^{\mf{q}}, \mr{op}}^{\bullet}(A_0^{\mf{q}}, A_0^{\mf{q}}). \]
+    This tells us that $A_Q = E(A^{\mf{q}, \mr{op}})$. Once we prove that $A^{\mf{q}}$ is Koszul, we are done.
+
+    To prove this, consider that $\cO^{\mf{b}} \cong \ms{Mof}\text{-}A^B$. But now we know that $\cO^{\mf{q}}$ consists of objects in $\cO^{\b}$ such that if $[M : L_x^{\mf{b}}] \neq 0$, then $x \in W^{\mf{q}}$, and therefore $\cO^{\mf{q}} \cong \ms{Mof}\text{-}(A^B/I_Q)$, where $I_Q$ is generated by everything in $W \setminus W^{\mf{q}}$. Thus $A^{\mf{q}} \cong \cO^{\mf{q}}$ because they are both endomorphism algebras of the same progenerator. Now restricting modules over $A^B/I_Q$ to $A^B$ induces injections on Ext groups, so we now only need to prove that $A^B$ is Koszul.
+
+    To prove that $A^B = A_B$ is Koszul, we will use the numerical criterion. We will simply use the fact (proved geometrically) that the Hilbert polynomial of $A_Q$ is given essentially by the intersection cohomology matrix
+    \[ P^Q \coloneqq IC(G/Q, t)_{x,y} = P_{x,y}(t^{-2})t^{\ell(y) - \ell(x)}. \]
+    In fact, we have $P(A_Q, t) = (P^Q)^T P^Q$. But now we know that $\cO^{\b} = \cO_0$ and that $L_x^{\b} = L(x^{-1}w_0 \circ 0)$, and thus we have $E(A_B) = A^B = A_B$ with $1_x$ corresponding to $1_{x^{-1} w_0}$. Therefore, we may define
+    \[ (P_B)_{x,y} \coloneqq P^B_{w_0 x^{-1} w_0 y^{-1}} \]
+    and we have $P(E(A_B), t) = P_B^T P_B$. We now have
+    \begin{align*}
+        P(A_B, t)P(E(A_B), -t) &= (P^B(t))^T P^B(t) (P_B(-t))^T P_B(-t) \\
+        &= 1
+    \end{align*}
+    by some magic of Kazhdan-Lusztig, which says that $P^B(t) (P_B(-t))^T = 1$.
+\end{proof}
+
+\begin{rmk}
+    You could also prove that $A_B$ is Koszul by using a result of Bezrukavnikov that if $A_0, A_1$ are finite-dimensional and $A \cong E(A)$, then $A$ is Koszul.
+\end{rmk}
 
 \end{document}

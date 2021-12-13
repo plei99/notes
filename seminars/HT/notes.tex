@@ -1,0 +1,1322 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{ulem} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=blue}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+% \usepackage{fancyhdr}
+% \usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bH}{\mathbb{bH}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bir}{\sim_{\mr{bir}}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Def}{Def}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\res}{res}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Seminar on Mixed Hodge Structures \\ Fall 2021}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during the seminar using the \texttt{vimtex} package of the editor \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\vspace*{1cm}
+
+\noindent\textbf{Seminar Website:}  \url{https://www.math.columbia.edu/~kyc2130/f21_mhs.html}
+\newpage
+
+\tableofcontents
+
+\chapter{Kevin (Oct 28): Intro to mixed Hodge structures; Hodge theory for smooth varieties}%
+\label{cha:kevin_oct_28_intro_to_mixed_hodge_structures_hodge_theory_for_smooth_varieties}
+
+Throughout the seminar, we work over $\C$ like reasonable people.
+
+\section{Review of Hodge theory}%
+\label{sec:review_of_hodge_theory}
+
+Let $X$ be a smooth projective variety. Then we have the Hodge decomposition
+\[ H^n(X, \C) = \bigoplus_{p+q=n} H^{p,q}(X). \]
+Here, $H^{p,q}$ contains forms of type $(p,q)$. Deligne constructs a \textit{mixed Hodge structure} on smooth varieties in \textit{Th\'eorie de Hodge II} and on all varieties in \textit{Th\'eorie de Hodge III}.
+
+\begin{defn}
+    Let $A$ be one of $\Z, \Q, \R$. A \textit{Hodge structure} over $A$ can be defined in several ways:
+    \begin{enumerate}
+        \item A Hodge structure of weight $n$ is a finitely-generated $A$-module $H$ with a decomposition
+            \[ H_{\C} = H \otimes \C = \bigoplus_{p+q=n} H^{p,q} \]
+            satisfying $H^{p,q} = \ol{H}^{q,p}$.
+        \item A Hodge structure of weight $n$ is a finitely-generated $A$-module $H$ with a decreasing filtration $F*{\bullet} H_{\C}$ that is \textit{$n$-opposite} in the sense that if $p+q = n+1$, then $F^p \cap \ol{F}^q = 0$ and $F^p \oplus \ol{F}^q = H_{\C}$.
+        \item A Hodge structure of weight $n$ is a finitely-generated $A$-module $H$ with an action of the Deligne torus $\mathbb{S} \coloneqq \operatorname{Res}_{\R}^{\C} \C^{\times}$ on $H_{\R}$ of weight $n$.
+    \end{enumerate}
+\end{defn}
+
+\begin{rmk}
+    In our definition, $p,q,n$ can all be negative.
+\end{rmk}
+
+To see that these definitions are equivalent, from a decomposition $\bigoplus_{p+q=n} H^{p,q}$ we take the filtration
+\[ F^p H = \bigoplus_{i \geq p} H^{i,n-i}. \]
+In the other direction, for a filtration $F$, we take
+\[ H^{p,q} = F^p \cap \ol{F}^q. \]
+From now on, when we say Hodge structure we will take $A = \Z$.
+
+\begin{defn}
+    A \textit{morphism of Hodge structures} of weight $n$ $(H, F) \to (H', F')$ is a morphism of modules that respects the filtration after tensoring with $\C$.
+\end{defn}
+
+Tensor products of Hodge structures are Hodge structures after adding the weights, and the dual of a Hodge structure is still a Hodge structure after taking the negative of the weight.
+
+\begin{exms}\leavevmode
+    \begin{enumerate}
+        \item Let $X$ be a smooth projective variety. Then by the Hodge theorem, $H^n(X, \Z)$ is a Hodge structure of weight $n$.
+        \item Let $X$ be a smooth proper variety. Then $H^n(X, \Z)$ is a Hodge structure of weight $n$ by a result of Deligne.
+        \item (Tate-Hodge structure) We will define a Hodge structure $\Z(1)$ of weight $-2$ where the underlying $\Z$-module is $2 \pi i \Z$ and $\Z(1) \otimes_{\Z} \C = H^{-1,-1}$. We will denote by $\Z(n)$ the $n$-th tensor power of $\Z(1)$. We may twist Hodge structure by $\Z(n)$ to change the weight.
+
+            If $Z \hookrightarrow X$ is a subvariety of a smooth projective variety of codimension $r$, there are Gysin maps
+            \[ i_! \colon H^{n-2r}(Z, \Z) \to H^n(X, \Z). \]
+            This is not a map of Hodge structures by weight reasons, but after twisting by $\Z(-r)$ we obtain a morphism
+            \[ i_! \colon H^{n-2r}(Z, \Z)(-r) \to H^n(X, \Z) \]
+            that is a morphism of Hodge structures.
+
+            Now set $U \coloneqq X \setminus Z$. Then we have a long exact seqeunce
+            \[ \cdots \to H^{n-2r}(Z)(-r) \to H^n(X) \to H^n(U) \to H^{n-2r+1}(Z)(-r) \to H^{n+1}(X) \to H^{n+1}(U) \to \cdots. \]
+
+            We will introduce a new increasing filtration $W$ on $H^n(U)$ where
+            \[ W_{n-1}(H^n(U)) = 0 \qquad W_n(H^n(U)) = \Im(H^n(X) \to H^n(U)) \qquad W_{n+1}(H^n(U)) = H^n(U). \]
+            Taking the associated graded module 
+            \[ \mr{Gr}_i^W H^n(U) = \begin{cases}
+                \Im(H^n(X) \to H^n(U)) & i = n \\
+                \Im(H^n(U) \to H^{n-2r+1}(2)(-r)) & i=n+1 \\
+                0 & \text{otherwise}.
+            \end{cases} \]
+            Now $W$ has allowed us to isolate the weight $n$ part and the weight $n+1$ part, and now we want to consider mixed Hodge structures.
+    \end{enumerate}
+\end{exms}
+
+\section{Mixed Hodge structures}%
+\label{sec:mixed_hodge_structures}
+
+\begin{defn}
+    A \textit{mixed Hodge structure} is a finitely-generated $\Z$-module $H$ together with two filtrations:
+    \begin{itemize}
+        \item The \textit{weight filtraation} $W$, which is an increasing filtration on $H_{\Q}$;
+        \item The \textit{Hodge filtration} $F$, which is a decreasing filtration on $H_{\C}$.
+    \end{itemize}
+    These are required to be compatible in the sense that for all $n$, the associated graded piece
+    \[ (\on{Gr}_n^W H_{\Q}, F) \]
+    is a Hodge structure over $\Q$.
+\end{defn}
+
+\begin{exm}
+    Let $H$ be an ordinary Hodge strucure of weight $n$. This is a mixed Hodge structure, where we take $W_{n-1} H_{\Q} = 0$ and $W_n H_{\Q} = H_{\Q}$.
+\end{exm}
+
+\begin{defn}
+    A \textit{morphism of mixed Hodge structures} $f \colon (H,W,F) \to (H',W',F')$ is a morphism of $\Z$-modules $H \to H'$ that is compatible with both filtrations.
+\end{defn}
+
+\begin{thm}
+    Any morphism of mixed Hodge structures is automatically \textit{strictly compatible with both filtrations}, which means that if $h' \in \Im(f) \cap W_n'(H')$, there exists $h \in W_n(H)$ such that $f(h) = h'$. The same result is true for $F, F'$.
+\end{thm}
+
+\begin{rmk}
+    The category of mixed Hodge structures is an abelian category.
+\end{rmk}
+
+\begin{thm}[Main theorem of Hodge II]\label{thm:mhs}
+    Let $U$ be a smooth variety. Then $H^n(U, \Z)$ is functorially a mixed Hodge structure.
+\end{thm}
+
+\section{Hypercohomology spectral sequences}%
+\label{sec:hypercohomology_spectral_sequences}
+
+Before we discuss the proof of the main theorem, we will discuss this important tool. Let $X$ be a smooth projective variety. Then recall that 
+\[ H^n(X, \C) = \bigoplus_{p+q=n} H^{q}(X,\Omega^p_X). \]
+This implies that the Hodge-de Rham spectral sequence degenerates. Recall\footnote{Or look up on } that the Hodge-de Rham spectral sequence is given by
+\[ E_1^{p,q} = H^q(\Omega_X^p) \implies H^{p+q}(X, \C). \]
+This is a hypercohomoology spectral sequence.
+
+\begin{defn}
+    Let $(K, F)$ be a filtered complex of abelian sheaves with $F$ decreasing and finite on each component. Then the \textit{hypercohomology spectral sequence} for $(K, F)$ is given by
+    \[ E_1^{p,q} = \bH^{p+q}(X, \on{Gr}_F^p K) \implies \bH^{p+q}(X, K). \]
+\end{defn}
+
+In our case, the Hodge-de Rham spectral sequence is the hypercohomology spectral sequence for $(\Omega_X^{\bullet}, F)$, where $F$ is the filtration b\^ete and is defined by
+\[ F^p(K)^n = \begin{cases}
+    K^n & n \geq p \\
+    0 & n < p.
+\end{cases}
+\]
+This gives us $E_1^{p,q} = \bH^{p+q}(X, \Omega_X^p [-p])$. Using the holomorphic Poincar\'e lemma, the map $C \to \Omega_X^{\bullet}$ is a quasi-isomorphism, and this gives us the Hodge-de Rham spectral sequence.
+
+We will now say some things about filtered complexes.
+\begin{enumerate}
+    \item If $(K, F) \to (K', F')$ is a morphism of filtered complexes, there is an induced map of hypercohomology spectral sequences.
+    \item If $(K, F) \to (K', F')$ is a \textit{filtered quasi-isomorphism} (which means it induces quasi-isomorphisms on all associated graded complexes), then the map of hypercohomology spectral sequences is an isomorphism.
+    \item $F$ induces a filtration on $H^k(X, K)$ given by
+        \[ F^p H^*(X, K) = \Im(\bH^*(X, F^p(K)) \to \bH^*(X, K)). \]
+    \item Every complex $K$ carries a \textit{canonical filtration} $\tau$, which is an increasing filtration and is given by
+        \[ \tau_p(K)^n = \begin{cases}
+            0 & n > p \\
+            \ker \dd^p & n = p \\
+            K^n & n < p.
+        \end{cases}
+        \]
+        In this case, the associated graded pieces are given by $\on{Gr}_p^{\tau} K = H^p(K)[-p]$. If $K \to K'$ is a quasi-isomorphism, then $(K, \tau_K) \to (K', \tau_{K'})$ is a filtered quasi-isomorphism. Thus we can discuss canonical filtrations of items in the derived category.
+\end{enumerate}
+
+\section{Hodge theory for smooth varieties}%
+\label{sec:hodge_theory_for_smooth_varieties}
+
+Let $U$ be a smooth variety. We will find a good compactification of $U$:
+\begin{enumerate}
+    \item First we consider the Nagata compactification $X'$.
+    \item Then resolve the Nagata compactification using resolution of singularities, and now we have a good compactification $X$.
+\end{enumerate}
+
+\begin{defn}
+    A compactification $X$ of $U$ is \textit{good} if $D = X \setminus U$ is a simple normal crossings divisor. This means that $D$ locally analytically looks like a union of hyperplanes.
+\end{defn}
+
+Now that we have a good compactification, we know $D$ is a union of smooth irreducible hypersurfaces 
+\[ D = \bigcup_{i=1}^S D_i. \]
+For all $I \subset [s]$, write $D_I = \bigcap_{i \in I} D_i$. If $I$ is empty, then $D_{\emptyset} = X$. Now write $D^{(i)} \coloneqq \bigsqcup_{\abs{I} = i} D_i$. Also denote the inclusion $j \colon U \hookrightarrow X$.
+
+We want to study $H^*(U, \C_U) = \bH^*(U, \Omega^{\bullet}_U) = \bH^*(X, R_{j*} \Omega^{\bullet}_U)$. But now the higher pushforwards vanish, and so we obtain $\bH^*(X, j_* \Omega_U^{\bullet})$. Our strategy will be to study the \textit{logarithmic de Rham complex}
+\[ \Omega^{\bullet}_X(\log D) \subset j_* \Omega^{\bullet}_U, \]
+which are defined as follows:
+\begin{itemize}
+    \item Logarithmic $1$-forms are locally spanned by $\frac{\dd{z_i}}{z_i}$ for $1 \leq i \leq t$ and $\dd{z_i}$ for $t+1 \leq i \leq n$. Here, we choose coordinates such that $D = \qty{z_1 \cdots z_t = 0}$.
+    \item Logarithmic $k$-forms are given by $\Omega^k_X(\log D) = \bigwedge^k \Omega^1_X(\log D)$.
+\end{itemize}
+In fact, the inclusion $\Omega_X^{\bullet}(\log D) \hookrightarrow j_* \Omega_U^{\bullet}$ is a quasi-isomorphism, so we can instead study the hypercohomology $\bH(X, \Omega_X^{\bullet}(\log D))$.
+
+\chapter{Kevin (Nov 04): Hodge theory for smooth varieties II}%
+\label{cha:kevin_nov_04_hodge_theory_for_smooth_varieties_ii}
+
+Recall that last time, we considered a smooth compactification $X \supseteq U$ of a smooth variety, and the boundary is a simple normal crossings divisor. We have this chain of quasi-isomorphisms
+\[ R j_* \C_U \to R j_* \Omega_U^{\bullet} \simeq j_* \Omega_U^{\bullet} \gets \Omega_X^{\bullet}(\log D). \]
+Therefore it suffices to study $\bH^*(X, \Omega_X^{\bullet}(\log D))$. We are still atempting to prove Theorem~\ref{thm:mhs}.
+
+\section{Setting everything up}%
+\label{sec:setting_everything_up}
+
+\begin{defn}
+    The \textit{weight filtration} $W$ on $\Omega_X^{\bullet}(\log D)$ is defined by
+    \[ W_m(\Omega_X^{\bullet}(\log D)) = \ev{ \alpha \wedge \dv{z_{i_1}} \wedge \cdots \wedge \dv{z_{i_m}}}, \]
+    where $\alpha$ is a holomorphic form on $X$ and $z_1, \ldots$ are the local equations for $D$.
+\end{defn}
+
+Recall the definitions of $D_I, D^{(i)}$ from last time. We will denote the natural maps $a_I \colon D_I \to X$ and $a_i \colon D^{(i)} \to X$.
+
+\begin{defn}
+    Let $I \subset [s]$ with $\abs{I} = m$. The \textit{residue map} $\on{res}_I \colon W_m \Omega_X^{\bullet}(\log D) \to a_{I*} \Omega_{D_I}^{\bullet}[-m]$ is defined by
+    \[ \alpha \wedge \dv{z_1} \cdots \wedge \dv{z_m} + \alpha' \mapsto \alpha |_{D_I}. \]
+    Here, $\alpha$ is holomorphic, $D_I = \qty{z_1 \cdots z_m = 0}$, and $\alpha'$ has fewer poles.
+\end{defn}
+
+The important fact is that $\res_I$ vanishes on $W_{m-1}$ and therefore descends to a map
+\[ \res_I \colon \on{Gr}_m^W \Omega_X^{\bullet}(\log D) \to a_{I*} \Omega^{\bullet}_{D_I}[-m]. \]
+
+\begin{lem}
+    Define
+    \[ \res_m = \bigoplus_{\abs{I} = m} \res_m \colon \on{Gr}_m^W \Omega_X^{\bullet}(\log D) \to a_m^* \Omega_{D^{(m)}}^{\bullet} [-m]. \]
+    This map is an isomorphism.
+\end{lem}
+
+\begin{cor}\leavevmode
+    \begin{enumerate}
+        \item We have the identity
+            \[ \mc{H}^i(\on{Gr}_m^W \Omega_X^{\bullet}(\log D)) \cong \begin{cases}
+                a_{m*} \C_{D^{(m)}} & i = m \\
+                0 & \text{otherwise}.
+            \end{cases}
+            \]
+        \item The map $(\Omega_X^{\bullet}(\log D), W) \xrightarrow{\mr{id}} (\Omega_X^{\bullet}(\log D), \tau)$ is a filtered quasi-isomorphism.
+    \end{enumerate}
+\end{cor}
+
+Now we want to upgrade our known quasi-isomorphisms to filtered quasi-isomorphisms. By the previous discussion, we now have filtered quasi-isomorphisms
+\[ (R j_* \Z_U, \tau) \otimes_{\Z} \C = (R j_* \C_U, \tau) \to (j_* \Omega_U^{\bullet}, \tau) \gets (\Omega_X^{\bullet}(\log D), \tau) \to (\Omega_X^{\bullet}(\log D), W). \]
+This identifies all of the hypercohomology spectral sequences. The final geometric fact that we need is the following:
+
+\begin{lem}
+    The identification $R^m j_* \C_U \cong a_{m*} \C_{D^{(m)}}$ is in fact defined over $\Z$. This means that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R^m j_* \C_U \ar{r}{\sim} & a_{m*} \C_{D^{(m)}} \\
+        R^m j_* \Z_U \ar{r}{\sim} \ar{u} & a_{m*} \Z_{D^{(m)}}(-m) \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{lem}
+
+\section{An exercise in homological algebra}%
+\label{sec:an_exercise_in_homological_algebra}
+
+The first thing we will do is consider the \textit{weight spectral sequence}, which is just the hypercohomology spectral sequence for $(\Omega_X^{\bullet}(\log D), W)$. Here, we have
+\[ E_1^{-p,q} = \bH^{-p+q}(X, \on{Gr}_p^W \Omega_X^{\bullet}(\log D)) \implies H^{-p+q}(U, \C). \]
+But we can identify the $E_1$-page with
+\[ \bH^{-2p+q}(X, a_{p*}(\Omega^{\bullet}_{D^{(p)}})) \cong H^{-2p+q}(D^{(p)}, \C). \]
+But now we see that everything is actually defined over $\Q$, so we now have a spectral sequence
+\[ E_1^{-p,q} = H^{-2p+q}(D^{(p)}, \Q)(-p) \implies H^{-p+q}(U, \Q). \]
+Everything here actually has a Hodge structure. But now the b\^ete filtration $F$ induces filtrations on the weight spectral sequence:
+\begin{enumerate}
+    \item (first direct filtration) $(F_d)$;
+    \item (second direct filtration) $(F_{d^*})$;
+    \item (inductive filtration) $(F_r)$.
+\end{enumerate}
+Some facts about these filtrations are:
+\begin{enumerate}
+    \item $F_d \subset F_r \subset F_{d^*}$;
+    \item The differentials $\dd_r$ are compactible with the direct filtrations;
+    \item If $\dd_r$ is strictly compatible with $F_r$ for $r \in \qty{0, \ldots, r_0 - 3}$, then $F_d = F_r = F_{d^*}$ for all $r \in \qty{0, \ldots, r_0}$. Here, $f \colon (H_1, F_1) \to (H_2, F_2)$ is \textit{strict} if for all $a \in F_2^p \cap \Im f$, then $f \in \Im F_1^p$. The important thing is that all morphisms of mixed Hodge structures are strict.
+    \item This is basically just the previous fact for $r_0 = \infty$.\footnote{Kevin did not give a precise statement because he ran out of space on the board.}
+\end{enumerate}
+
+We are now ready to state the main theorem:
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item $F_d = F_r = F_{d^*}$ for all terms of the weight spectral sequence.
+        \item The filtration $W$ on $H^k(U, \C)$ comes from a filtration on $H^k(U, \Q)$. Moreover, neither $W$ nor $F$ depends on the choice of compactification $X$.
+        \item The filtrations $W[k]$ defined by $W[k]_m = W_{m-k}$ and $F$ make $H^k(U, \Z)$ a functorial mixed Hodge structure.
+    \end{enumerate}
+\end{thm}
+
+\begin{lem}
+    The hypercohomology spectral sequence for $(\on{Gr}_m^W \Omega_X^{\bullet}(\log D), F)$ degenerates at the $E_1$-page. Moreover, the induced filtration on $E_1^{-p,q} \cong H^{-2p+q}(D^{(p)}, \C)$ is $q$-opposite.
+\end{lem}
+
+\begin{proof}
+    We know that $(\on{Gr}_m^w \Omega_X^{\bullet}(\log D), F) \cong a_{m*} (\Omega^{\bullet}_{D^{(m)}}, F) [-m]$. By the Hodge decomposition for $D^{(m)}$, we obtain degeneration at $E_1$, and by the Hodge structure on $H^{-2p+q}(D^{(p)}, \C)$ we obtain $q$-oppositeness.
+\end{proof}
+
+\begin{lem}
+    The differential $\dd_1$ is strictly compatible with $F$.
+\end{lem}
+
+\begin{proof}
+    Because $\dd_1$ is a morphism of Hodge structures, we are done.
+\end{proof}
+
+\begin{lem}
+    The filtration $F_r$ on $E_2^{-p, q}$ is $q$-opposite.
+\end{lem}
+
+\begin{proof}
+    We know that $E_2^{-p, q} = \mc{H}(E_1^{-p-1, q} \to E_1^{-p,q} \to E_1^{-p+1, q})$. Because $F_r$ is the induced filtration, we are done by the previous lemma.
+\end{proof}
+
+\begin{lem}
+    For all $r \geq 0$, $\dd_r$ is strictly compatible with $F_r$. Moreover, for all $r \geq 2$, $\dd_r = 0$.
+\end{lem}
+
+\begin{proof}
+    The $r=0$ case follows from the first lemma. For $r=1$, this is the second lemma. Finally, to prove degeneration, we can simply proceed by induction. We know that $F_d = F_r = F_{d^*}$ on $E_r$. But now by the second fact, we know that $\dd_r$ is compatible with $F_r$. Thus we have
+    \begin{align*}
+        \dd_r(E_r^{-p,q}) &= \dd_r \qty(\sum_{a+b=q} F^q (E_r^{-p,q}) \cap \ol{F}^b(E_r^{-p,q})) \\
+        &\subset \sum_{a+b=q} F^a(E_r^{-p+r, q-r+1}) \cap \ol{F}^b (E_r^{-p+r, q-r+1}) \\
+        &= 0. \qedhere
+    \end{align*}
+\end{proof}
+
+By the final fact, we see that 
+\[ \on{Gr}_p^{W[-p+q]} H^{-p+q}(U, \C) \cong E_2^{-p,q} \] is a subquotient of $H^{-2p+q}(D^{(p)}, \Q)(-r)$. Therefore, $(H^k(U, \Q), W[k], F)$ is a mixed Hodge structure.
+
+Finally, we discuss the functoriality of the mixed Hodge structure. To do this, we want the filtrations
+\[ (\Omega_X^{\bullet}(\log D), W, F) \]
+to be functorial. For $U \to V$, we want to prove that $H^k(U, \C)$ is functorial. We also compactify the morphism to $X \to Y$. But now we know that $H^k(V, \C) \to H^k(U, \C)$ comes from
+\[ \mathbb{H}^k(Y, \Omega_X^{\bullet}(\log D_X)) \to \mathbb{H}^k(Y, \Omega_Y^{\bullet}(\log D_Y)). \]
+All we need to do is to show that there is a compactification that works, and this is given by resolving $X$ and taking $Y$ to be the closure of the graph.
+
+To prove independence of the compactification, suppose $X_1, X_2$ are compactifications. Then let $X'$ resolve $X_1, X_2$ simultaneously, and then $X' \to \ol{U} \subset X_1 \times X_2$ is a resolution of singularities. By functoriality, the isomorphism
+\[ \mathbb{H}^k(X, \Omega^{\bullet}_X(\log D_X)) \cong \mathbb{H}^k(X', \Omega^{\bullet}_X(\log D_{X'})) \]
+is an isomorphism of mixed Hodge structures.
+
+\chapter{Caleb (Nov 11): Cohomological descent}%
+\label{cha:caleb_nov_11_cohomological_descent}
+
+\begin{defn}
+    A \textit{simplicial object} in a category $C$ is a functor $\Delta^{\mr{op}} \to C$, where $\Delta$ is the category with objects $[n]$ for $n \geq 0$ and morphisms are order-preserving set maps. There are distinguished functions $d^i \colon [n-1] \to [n]$ skipping $i$ and $s^i \colon [n+1] \to [n]$ repeating $i$.
+\end{defn}
+
+The maps $d^i, s^i$ induce maps $d_i \colon X_n \to X_{n-1}$ and $S_i \colon X_n \to X_{n+1}$ on a simplicial object. We will refer to simplicial objects in $C$ by $S(C)$ and denote $S_n(C) \coloneqq \Delta^{\mr{op}}_{\leq n} \to C$ and $S_+(C) \coloneqq \Delta_{\geq -1}^{\mr{op}} \to C$ given by adding $[-1] = \emptyset$ to $\Delta$.
+
+For various reasons, we will assume that $C$ has all finite products and fiber products. If this is not sufficient, add assumptions until what is written here makes sense.
+
+\section{Coskeleta}%
+\label{sec:coskeleta}
+
+Given a simplicial object $X_{\bullet} \in S(C)$, let $\mr{sk}_n(X) \in S_n(C)$ be the $n$-th truncation of $X_{\bullet}$.
+
+\begin{defn}
+    Let $Y_{\bullet} \in S_n(C)$. Then the \textit{coskeleton} functor is defined by
+    \[ \Hom_{S_n(C)}(\mr{sk}(X_{\bullet}), Y_{\bullet}) \simeq \Hom_{S(C)}(X_{\bullet}, \mr{cosk}_n(Y_{\bullet})). \]
+\end{defn}
+
+\begin{exm}
+    Let $n = 0$ and $Y_0 \in C$. Given $X_0 \to Y_0$, consider
+    \begin{equation*}
+    \begin{tikzcd}
+        X_2 \ar[shift left=3]{r} 
+        \ar[shift right=1]{r}
+        \ar[shift left=1]{r}
+        & X_1 \ar{r} \ar[shift left=3]{l} 
+        \ar[shift left=2]{r}
+        & X_0 \ar{r}{f} 
+        \ar[shift left=2]{l}
+        & Y_0.
+    \end{tikzcd}
+    \end{equation*}
+    We obtain maps $X_0 \to Y_0 \times Y_0$ and $X_2 \to Y_0 \times Y_0 \times Y_0$, and so on. Then we define
+    \[ \mr{cosk}_0(Y_0)_n = Y^n \]
+    and give it the natural simplicial structure.
+\end{exm}
+
+For an example of a simplicial object, if $Y_{-1}$ is a topological space and $Y_0 = \bigsqcup U_i$, where $U_i$ form an open cover of $Y_{-1}$, then the $Y_i$ are the $i$-intersections.
+
+Now choose $Y_{\bullet} \in S_m(C)$. Set 
+\[ \mr{cosk}_m(Y_{\bullet})_n = \varprojlim_{\mr{sk}_m(\Delta[n])} Y_k = \lim_{\substack{[k] \to [n] \\ k \leq m}} Y_k. \]
+Given a map $\mr{sk}_n(X_{\bullet}) \to Y_{\bullet}$, we need to define a map $X_n \to \lim_{\substack{[k] \to [n]}} Y_k$. For every $\varphi \colon [k] \to [n]$ and $k \leq m$, we have a morphism
+\[ X_n \xrightarrow{\varphi^*} X_k \to Y_k \]
+for $k \leq n$.
+
+\begin{prop}
+    The map $X_{\bullet} \gets \mr{sk}_m(\mr{cosk}_m(X_{\bullet}))$ is an isomorphism.
+\end{prop}
+The proof essentially follows from the construction. For $n \geq m$, the single copy of $Y_n$ corresponding to $[n] \to [n]$ determines everything.
+
+\begin{rmk}
+    The skeleton $\mr{sk}_m$ also has a left adjoint, which is the inclusion $S_n(C) \to S(C)$.
+\end{rmk}
+
+The adjunction $\mr{id} = \mr{cosk}_m \mr{sk}_m$ is not generally an isomorphism, but is an isomorphism for $n$-coskeleta when $0 \leq n \leq m$.
+
+\section{Hypercoverings}%
+\label{sec:hypercoverings}
+
+\begin{defn}
+    Let $P$ be a class of morphisms containing all isomorphisms and stable under base change and composition. Then a simplicial object $X_{\bullet}$ of $C$ is a \textit{$P$-hypercovering} if for all $n \geq 0$ (or $n \geq -1$), the natural adjunction $X_{\bullet} \to \mr{cosk}_n(\mr{sk}_n(X_{\bullet}))$ induces $X_{n+1} \to \mr{cosk}_n(\mr{sk}_n(X_{\bullet}))_{n+1}$ is in $P$.
+\end{defn}
+
+\begin{exm}
+    The map $\mr{cosk}_0(S' / S) \to S$ is a $P$-hypercovering if and only if $S' \to S$ is in $P$. 
+\end{exm}
+
+For example, if $P$ is a surjective condition for topological spaces, then $S' = \bigsqcup U_i \twoheadrightarrow S$ obtains the \v{C}ech construction.
+
+We may compute cohomology using hypercoverings. Define $\check{H}^i(S, \mc{F}) = H^i(\mr{Moore}(\mc{F}(S)))$, where the Moore complex was defined in a different seminar by Caleb. If we take the limit over all hypercoverings, we recover the derived functor cohomology.
+
+We are most interested in hypercoverings of singular schemes, which we will be used to construct Hodge structures.
+
+\begin{defn}
+    A simplicial object $X_{\bullet} \in S(C)$ is \textit{split} if there exist subobjects $NX_j$ with isomorphisms 
+    \[ \bigoplus_{[n] \twoheadrightarrow [m]} N X_m \to X_n \]
+\end{defn}
+
+\begin{rmk}
+    In the case of simplicial abelian groups, we have
+    \[ NX_n = \bigcap_{i=0}^{n-1} \ker d_i. \]
+\end{rmk}
+
+Under nice conditions, split objects have unique splittings. A nice fact is that given split $n$-truncated objects $\mr{sk}_n(X)$ and $NX_{n+1} \to (\mr{cosk}_n(\mr{sk}_n(X)))_{n+1}$, we can recover $X_{n+1}$. This is because we know that
+\[ X_{n+1} = \bigoplus_{[n+1] \to [m]} NX_m \]
+and the map to the coskeleton tells us what the maps out of $X_{n+1}$ are.
+
+\begin{thm}
+    If $\on{sk}_n X$ is split, then there exists $f \colon X' \to X$ with $\on{sk}_n(f)$ an isomorphism and $X'$ split. Furthermore, if $X$ is an augmented $P$-hypercover, so is $X'$.
+\end{thm}
+
+From now on, to be safe, we will assume that we are in one of the following cases:
+\begin{enumerate}
+    \item $C = \ms{Top}/B$ with $P$ the proper surjective morphisms;
+    \item $C$ is the category of schemes \'etale over some base with $P$ the surjective \'etale morphisms;
+    \item $C$ is a topos with $P$ the epimorphisms.
+\end{enumerate}
+
+\begin{cor}
+    For $m \geq 0$ and an augmented $m$-truncated $P$-hypercovering $Z$ in one of the first two situations, the face and degeneracy maps for $Z$ are proper or \'etale. If $X_{\bullet} \to S$ is a proper or \'etale hypercovering, then all structure maps are proper or \'etale.
+\end{cor}
+
+\begin{thm}
+    Let $S$ be a separated scheme over a field $k$. Then there exists a dense open immersion $S \hookrightarrow \ol{S}$ into a proper $k$-scheme and an augmented proper hypercovering $\ol{X}_{\bullet} \to \ol{S}$ such that $\ol{X}_n$ is a projective regular $k$-scheme and the part of $\ol{X}_n$ lying over $\ol{S} \setminus S$ is a (strict) normal crossings divisor.
+\end{thm}
+
+In de Jong's alterations paper, he mentions that this result as an application. Of course, in characteristic $0$, we simply need resolution of singularities, but in positive characteristic, de Jong's alterations theorem is needed.
+
+\begin{proof}
+    First, to construct the open immersion, we use Nagata's compactification theorem. Of course, if we are interested in quasiprojective varieties, then this is unnecessary. The upshot is that now we have a dense open immersion $S \hookrightarrow \ol{S}$ into a proper $k$-scheme.
+
+    By Johan, we obtain a regular $\ol{X}_0 \to \ol{S}$ wich is a proper surjection, where the preimage of $\ol{S} \setminus S$ is a strict normal crossings divisor. Now given $X_{\leq m}$, we know that $\on{cosk}_m X_m$ is a proper hypercovering of $S$. We know that each term is $S$-proper. By Johan applied to $(\on{cosk}_n X_{\leq m})_{m+1}$, we obtain $\ol{X}'$ proper over $(\on{cosk}_m X_{\leq m})_{m+1}$ such that the part over $\ol{S} \setminus S$ is a normal crossings divisor.
+
+    Now set $NX_{m+1} = \ol{X}'$ and take the construction
+    \[ X_{n+1} = \bigoplus_{[n+1] \twoheadrightarrow [m]} N X_m, \]
+    and here we obtain an $(m+1)$-truncated solution. By induction, we are done.
+\end{proof}
+
+\section{Cohomological descent}%
+\label{sec:cohomological_descent}
+
+Let $C$ be a site with the topology generated by $E$-morphisms for some class of morphisms $E$. Let $X_{\bullet}$ be a simplicial object of $C$. Set $\wt{X}_{\bullet}$ to be the category sheaves on the following site:
+\begin{itemize}
+    \item The objects are $E$-morphisms $U \to X_n$;
+    \item The morphisms are commutative squares
+        \begin{equation*}
+        \begin{tikzcd}
+            U \ar{r}{f} \ar{d} & U' \ar{d} \\
+            X_n \ar{r} & X_n'
+        \end{tikzcd}
+        \end{equation*}
+        where $f$ is any morphism in $C$;
+    \item A covering of $[U_i \to X_n]$ is given by any covering of $U_i$.
+\end{itemize}
+This is meant to formalize the notion of sheaves on $X_{\bullet}$. A map $U_{\bullet} \colon X_{\bullet} \to Y_{\bullet}$ induces maps $U_{\bullet *} \colon \wt{X}_{\bullet} \to \wt{Y}_{\bullet}$ and $U_{\bullet}^* \colon \wt{Y}_{\bullet} \to \wt{X}_{\bullet}$.
+
+Now let $a \colon X_{\bullet} \to S$. We have $a^* \colon \wt{S}_{\bullet} \to \wt{X}_{\bullet}$. Here, we have $(a^* \mc{F})_n = a_n^* \mc{F}$. Also, we have $a_* \colon \wt{X}_{\bullet} \to \wt{S}_{\bullet}$, and $a_* \mc{F}^{\bullet}$ is the equalizer of
+\[ a_{0*} \mc{F}^0 \rightrightarrows a_{1*} \mc{F}^1. \]
+On the level of derived categories, we obtain $a^* \colon D_+(S) \to D_+(X_{\bullet})$ and $Ra_* \colon D_+(X_{\bullet}) \to D_+(S)$.
+
+\begin{defn}
+    A morphism $a \colon X_{\bullet} \to S$ is a \textit{morphism of cohomological descent} if the natural transformation $\mr{id} \to Ra_* \circ a^*$ on $D_+(S)$ is an isomorphism.
+\end{defn}
+Note that the adjunction of $(a^*, Ra_*)$ means that equivalently, $a^* \colon D_+(S) \to D_+(S_{\bullet})$ is fully faithful.
+
+\begin{defn}
+    A morphism $a$ is \textit{universally of cohomological descent} if every base change $a_{S'} \colon X_{\bullet} \times_S S' \to S'$ is of cohomological descent.
+\end{defn}
+
+\begin{defn}
+    A map of spaces $a_0 \colon X_0 \to S$ is a \textit{map of cohomological descent} if $\on{cosk}_0(a_0) \colon \on{cosk}_0(X_{\bullet}/S) \to S$ is of cohomological descent.
+\end{defn}
+
+\begin{thm}
+    Morphisms universally of cohomological descent form a Grothendieck topology.
+\end{thm}
+
+We now discuss some properties and applications. Unfortunately, because of time reasons, we cannot review any descent theory.
+
+First, the condition that $\mr{id} \to Ra_* \circ a^*$ is an isomorphism on $D_+(S)$ is equivalent to the isomorphism
+\[ \mc{F} \cong a_* a^* \mc{F} = \ker(a_{0*} a_0^* \mc{F} \to a_{1*} a_1^* \mc{F}) \]
+and $R^i a_*(a^* \mc{F}) = 0$. Note that this is a derived version of ordinary descent theory.
+
+\begin{thm}
+    Let $X_{\bullet}$ be a simplicial space. For any complex $K'$ in $D_+(X_{\bullet})$, there exists a spectral sequence
+    \[ E_1^{p,q} = \mathbb{H}^1(X_p, K'|_{X_p}) \mapsto \mathbb{H}^{p+q}(X_{\bullet} K'). \]
+\end{thm}
+
+On the $0$-skeleton, we have
+\begin{thm}
+    Let $X \to S$ be a proper surjective of either topological spaces or schemes with the \'etale topology. Then $X \to S$ is univerally of cohomological descent.
+\end{thm}
+
+\begin{thm}
+    Let $X_{\bullet} \to S$ be a proper hypercovering. Then it is universally of cohomological descent.
+\end{thm}
+
+All of these theorems have extremely long proofs.
+
+\chapter{Kevin (Nov 18): Applications and examples of mixed Hodge structures; Hodge theory for all varieties}%
+\label{cha:kevin_nov_18_}
+
+\section{End of Hodge II}%
+\label{sec:end_of_hodge_ii}
+
+The main theorem is as follows:
+\begin{thm*}
+    The weight spectral sequence
+    \[ E_1^{-p,q} = H^{-2p+q}(D^{(p)}, \Q)(-p) \implies H^{-p+q}(U, \Q) \]
+    degenerates at the $E_2$ page. The Hodge structures on $E_2$ induce a mixed Hodge structure on $H^{-p+q}(U, \Q)$.
+\end{thm*}
+
+\begin{cor}
+    If $H^k(U, \C)$ has nonzero weight $(p, q)$, then $0 \leq p,q \leq k$ and $k \leq p + q \leq 2n$.
+\end{cor}
+
+\begin{proof}
+    We consider the spectral sequence. All terms that do appear must lie above a line of slope $-2$.\footnote{Kevin didn't type this, so I'm not typing it either.} The lines of slope $-1$ are the cohomology, and so by staring at this for long enough, we obtain the desired result.\footnote{Kevin said he was not going to do this, and then he confused me.}
+\end{proof}
+
+\begin{cor}\leavevmode
+    \begin{enumerate}
+        \item If $X$ is any smooth compactification of $U$, then $\Im(H^k(X, \Q) \to H^k(U, \Q))$ is the bottom weight part $W_k(H^k(U, \Q))$.
+        \item If $Y \to U \hookrightarrow X$ is any morphism with $Y$ smooth and proper, then 
+            \[ \Im(H^k(U, \Q) \to H^k(Y, \Q)) = \Im(H^k(X, \Q) \to H^k(Y, \Q)). \]
+    \end{enumerate}
+\end{cor}
+
+\begin{proof}\leavevmode
+    \begin{enumerate}
+        \item We will use the rising sea (Grothendieck) fact that $\Im(H^k(X, \Q) \to H^k(U, \Q))$ does not depend on the choice of $X$. Therefore we may assume that $X \setminus U$ is a simple normal crossings divisor. Now the weight spectral sequence for $X$ maps to the weight spectral sequence for $U$. But recall that the weight spectral sequence for $X$ only consists of $H^k(X)$ in the rightmost column, while the weight spectral sequence for $U$ has nontrivial things to the left. Therefore, 
+            \[ \Im(H^k(X, \Q) \to H^k(U, \Q)) = E_2^{0,k} = W_k(H^k(U, \Q)). \]
+        \item Recall that maps of mixed Hodge structures are strict. This implies that
+            \[ \Im(H^k(U, \Q) \to H^k(Y, \Q)) = \Im(W_k(H^k(U, \Q)) \to H^k(Y, \Q)). \]
+            By the previous part of this corollary, we are done. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{thm}[Global invariant cycles theorem]
+    If $f \colon U \to S$ is smooth and proper with $S$ smooth and separated, and $X$ is a smooth compactification of $U$, then $\Im(H^k(X, \Q) \to H^k(U_s, \Q)) = H^k(U_s, \Q)^{\pi_1(S, s)}$.
+\end{thm}
+
+\begin{proof}
+    We will only prove the projective case. First, we use the fact that $H^k(U, \Q) \twoheadrightarrow H^k(U_s, \Q)^{\pi_1(S, s)}$. This follows from the degeneration of the Leray spectral sequence for smooth projective morphisms, which gives
+    \[ H^k(U, \Q) \twoheadrightarrow H^0(S, R^k f_* \Q_U) \cong H^k(U_s, \Q)^{\pi_1(S, s)}. \]
+    Using the second corollary for $U_s \hookrightarrow U \hookrightarrow X$, we obtain
+    \begin{align*}
+        H^k(U_s, \Q)^{\pi_1(S, s)} &= \Im(H^k(U, \Q) \to H^k(U_s, \Q)) \\
+        &= \Im(H^k(X, \Q) \to H^k(U_s, \Q))
+    \end{align*}
+    using the previous corollary. In the general case, we dominate $U$ by something projective.
+\end{proof}
+
+\begin{rmk}
+    Using the theorem, we can prove the degeneration of the Leray spectral sequence for smooth proper morphisms.
+\end{rmk}
+
+Now we will do some computations.
+\begin{enumerate}
+    \item Consider $U = \C^{\times} \hookrightarrow X = \P^1$. Then $D = \mr{pt} \sqcup \mr{pt}$. The only nonzero differential is
+        \[ \Q^2 = H^0(D)(-1) \to H^2(\P^1) = \Q, \]
+        and by the cohomology of $\C^{\times}$, we obtain a $\Q$ in the $(0,0)$ position and a $\Q$ in the $(-1,2)$ position. Thus $H^0$ is a pure Hodge structure, but the first cohomology $H^1(\C^{\times}, \Q) = \operatorname{Gr}_2^W H^1(U, \Q)$ actually lives in weight $2$.
+    \item Consider a punctured Riemann surface\footnote{Kevin has been posessed by the spirit of D.H. Phong.} $U = R_g \setminus D$, where $D$ is a disjoint union of $p$ points. There is only one nontrivial differential, which is surjective, so
+        \[ \on{Gr}_1^W H^1(U, \Q) = \Q^{2g}, \qquad \on{Gr}_2^W H^1(U, \Q) \cong \Q^{p-1}. \]
+\end{enumerate}
+
+\section{Hodge III}%
+\label{sec:hodge_iii}
+
+Kevin claims that despite the paper being 70 pages, the actual content is only two pages. Today, we will discuss the other 68 pages.
+
+Our goal is to construct a mixed Hodge structure on $H^k(X, \Q)$ for any complex variety $X$. Our strategy is to take a proper hypercovering $Y_{\bullet} \to X$ such that each $Y_n$ is smooth. We will use cohomological descent, which will tell us that
+\[ H^k(X, \Q) \cong H^k(Y_{\bullet}, \Q). \]
+The right hand side is approximated by $H^k(Y_n, \Q)$ (in the sense that there is some spectral sequence converging to $H^k(Y_{\bullet}, \Q)$), and each of the terms has a mixed Hodge structure, which will induce a mixed Hodge structure on $H^k(Y_{\bullet}, \Q)$.
+
+Now recall the following from Caleb's lecture:
+\begin{itemize}
+    \item A \textit{simplicial variety} is a sequence of varieties $Y_{\bullet}$ with face and degeneracy maps (a simplicial object in the category of varieties).
+    \item An \textit{augmented simplicial variety} $Y_{\bullet} \to X$ is simply a simplicial variety $Y_{\bullet}$ with a map $Y_0 \to X$.
+    \item A sheaf $\mc{F}^{\bullet}$ on a simplicial variety is a collection of sheaves $\mc{F}^n$ on each $Y_n$ equipped with maps $\mc{F}^{\bullet}(p) \colon \mc{F}^n \to p_* \mc{F}^m$, where $p \colon [n] \to [m]$ is a map in the simplex category. Of course, these maps are required to be compatible.
+\end{itemize}
+
+\begin{rmk}
+    If $S_{\bullet}$ is a constant simplicial variety, then a sheaf on $S_{\bullet}$ is a cosimplicial sheaf on $S$.
+\end{rmk}
+
+Given a map $f \colon Y_{\bullet}^1 \to Y_{\bullet}^2$, we can define $f_*, f^*$ pointwise. If we have an augmentation $a \colon Y_{\bullet} \to X$, then we define $(a^* \mc{F})^n = a_n^* \mc{F}$, while we define
+\[ a_* \mc{G}^{\bullet} = \ker (a_{0*} \mc{G}^0 \rightrightarrows a_{1*} \mc{G}^1). \]
+When $X$ is a point, then $a_* = \Gamma$ is the global sections functor. We may then define the right derived functors
+\[ R^k \Gamma(-) = H^k(Y_{\bullet}, -). \]
+
+\begin{defn}
+    A \textit{proper hypercovering} $Y_{\bullet} \to X$ is a hypercovering such that
+    \[ Y_{n+1} \to (\on{cosk}_n \on{sk}_n Y_{\bullet})_{n+1} \]
+    is proper and surjective for all $n \geq -1$. For $n = -1$, this says that $Y_0 \to X$ is a proper surjection.
+\end{defn}
+
+\begin{thm}[SGA4]
+    Proper hypercoverings satisfy cohomological descent. This means that $\mc{F} \to R a_* a^* \mc{F}$ is an isomorphism.
+\end{thm}
+
+\begin{cor}
+    If $Y_{\bullet} \to X$ is a proper hypercovering, then
+    \[ H^k(X, \mc{F}) \cong \bH^k(X, Ra_* a^* \mc{F}) \cong H^k(Y_{\bullet}, a^* \mc{F}). \]
+\end{cor}
+
+Thus we can replace $X$ by some simplicial resolution (proper hypercovering) $Y_{\bullet} \to X$ and then do all of our computations on $Y_{\bullet}$. Then whatever structure we have on $Y_{\bullet}$ will descends to $X$.
+
+\section{Mixed Hodge complexes}%
+\label{sec:mixed_hodge_complexes}
+
+Apparently all of the homological algebra we did in Hodge II is very general, so we can rip it off.\footnote{Kevin really felt like ripping things off today.} This is exactly what we will do now.
+
+\begin{defn}
+    The \textit{filtered derived category} $DF(C)$ of an abelian category $C$ is constructed by taking the category of filtered complexes in $C$, identifying homotopic maps (that respect the filtrations), and inverting filtered quasi-isomorphisms.
+
+    The \textit{bifiltered derived category} $DF_2(C)$ is defined in the same way, except we have two filtrations.
+\end{defn}
+
+\begin{defn}
+    For $A \in \qty{\Z, \Q, \R}$, an \textit{$A$-Hodge complex of weight $n$} is the following data:
+    \begin{enumerate}
+        \item A complex $K_A \in D^+(A)$ such that $H^k(K_A)$ is finitely generated;
+        \item A filtered complex $(K_{\C}, F) \in D^+ F(\C)$ (where $F$ is a decreasing filtration) and an isomorphism $\alpha \colon K_A \otimes_A \C \to K_{\C}$ in $D^+(\C)$.
+    \end{enumerate}
+    This data must satisfy the following conditions:
+    \begin{enumerate}
+        \item The differential $\dd$ on $K_{\C}$ is strict with respect to $F$.
+        \item For all $k$, $(H^k(K_A), F)$ is a Hodge structure of weight $n+k$.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    Let $X$ be a space. An \textit{$A$-Hodge complex of sheaves of weight $n$} is the following data:
+    \begin{enumerate}
+        \item A complex $K_A \in D^+(X, A)$;
+        \item A filtered complex $(K_{\C}, F) \in D^+ F(X, \C)$ and an isomrphism $\alpha \colon K_A \otimes_A \C \to K_{\C}$.
+    \end{enumerate}
+    We also require that $(R \Gamma(K_A), R\Gamma((K_{\C}, F)), R\Gamma(\alpha))$ is a Hodge complex of weight $n$.
+\end{defn}
+
+\begin{exm}
+    If $X$ is smooth and proper, then $(\Z_X, (\Omega_X^{\bullet}, F), \alpha)$ is a Hodge complex of sheaves of weight $0$. Here, $\alpha$ is the map $\C_X \simeq \Omega_X^{\bullet}$.
+\end{exm}
+
+\begin{defn}
+    A \textit{mixed Hodge complex} is the following data:
+    \begin{enumerate}
+        \item A complex $K \in D^+(\Z)$ such that $H^k(K)$ is finitely generated;
+        \item A filtered complex $(K_{\Q}, W) \in D^+ F(\Q)$ (with $W$ an increasing filtration) and an isomorphism $\alpha \colon K \otimes_{\Z} \Q \cong K_{\Q}$;
+        \item A bifiltered complex $(K_{\C}, W, F) \in D^+ F_2(\C)$ and an isomorphism of filtered complexes $\beta \colon (K_{\Q}, W) \otimes_{\Q} \C \to (K_{\C}, W)$.
+    \end{enumerate}
+    We require that for all $n$, $(\on{Gr}_n^W K_{\Q}, (\on{Gr}_n^W K_{\C}, F), \beta)$ is a $\Q$-Hodge structure of weight $n$.
+\end{defn}
+
+\begin{defn}
+    A \textit{mixed Hodge complex of sheaves} is the following data:
+    \begin{enumerate}
+        \item A complex $K \in D^+(X, \Z)$ such that $\bH^k(X, K)$ is finitely generated;
+        \item A filtered complex $(K_{\Q}, W) \in D^+ F(X, \Q)$ and an isomorphism $K \otimes_{\Z} \Q \simeq K_{\Q}$;
+        \item A bifiltered complex $(K_{\C}, W, F) \in D^+ F_2(X, \C)$ and an isomorphism of filtered complexes $\beta \colon (K_{\Q}, W) \otimes_{\Q} \C \to (K_{\C}, W)$.
+    \end{enumerate}
+    We require that for all $n$, $(\on{Gr}_n^W K_{\Q}, (\on{Gr}_n^W K_{\C}, F), \beta)$ is a $\Q$-Hodge complex of sheaves of weight $n$.
+\end{defn}
+
+Here are some facts about these things:
+\begin{enumerate}
+    \item If $(K, (K_{\Q}, W), \alpha, (K_{\C}, W, F), \beta)$ is a mixed Hodge complex of sheaves, then
+        \[ (R \Gamma(K), (R \Gamma(K_{\Q}), W), R \Gamma(\alpha), (R\Gamma(K_{\C}), W, F), R \Gamma(\beta)) \]
+        is a mixed Hodge complex.
+    \item For a smooth variety $U$, the data $(R j_* \Z_U, (R j_* \Q_U, \tau), \alpha, (\Omega_X^{\bullet}(\log D), W, F), \beta)$ is a mixed Hodge complex of sheaves on $X$. Here, $\beta$ is defined as the zigzag
+        \begin{equation*}
+        \begin{tikzcd}
+            (Rj_* \Q_U, \tau) \otimes_{\Q} \C \ar{d} & (j_* \Omega^{\bullet}_U, \tau) \ar{d} & (\Omega_X^{\bullet}(\log D), \tau) \ar{l} \ar{d} \\
+            (R j_* \C_U, \tau) \ar{r} & (R j_* \Omega_U^{\bullet}, \tau)  & (\Omega_X^{\bullet}(\log D), W) 
+        \end{tikzcd}
+        \end{equation*}
+    \item The main theorem of Hodge II says that $(H^k(\text{MHC}), W[k], F)$ is a mixed Hodge structure.
+\end{enumerate}
+
+\chapter{Kevin (Dec 02): Hodge theory for all varieties II}%
+\label{cha:kevin_dec_02_hodge_theory_for_all_varieties_ii}
+
+Recall our geometric setup, where we have a proper hypercovering $Y_{\bullet} \to X$ of $X$ by smooth varieties. We may assume that $Y_{\bullet} \hookrightarrow \ol{Y}_{\bullet}$, where $\ol{Y}_n = Y_n \sqcup D_n$ and $D_n$ is a simple normal crossings divisor. Because proper hypercoverings satisfy cohomological descent, we can work on $Y_{\bullet}$. Thus we need to do Hodge theory on simplicial varieties.
+
+\section{Existence of mixed Hodge structures}%
+\label{sec:existence_of_mixed_hodge_structures}
+
+\begin{defn}
+    A \textit{mixed Hodge complex of sheaves on a simplicial space} $Y_{\bullet}$ is a tuple 
+    \[ (\mc{K}^{\bullet \bullet}, (\mc{K}_{\Q}^{\bullet \bullet}, W), \alpha, (\mc{K}_{\C}^{\bullet\bullet}, W, F), \beta) \] 
+    of sheaves on $Y_{\bullet}$ such that we have a mixed Hodge complex of sheaves on each $Y_n$. Here, the first grading is the degree in the complex and the second is the (co)simplicial degree.
+\end{defn}
+
+\begin{exm}
+    An example of a mixed Hodge complex of sheaves on $\ol{Y}_{\bullet}$ is given by
+    \[ (R j_* \Z_{Y_{\bullet}}, (R j_* \Q_{Y_{\bullet}}, \tau_{\leq}), \alpha, (\Omega^{\bullet}_{\ol{Y}_{\bullet}}(\log D_{\bullet}), W, F), \beta). \]
+    Taking the derived functor of global sections on each $\ol{Y}_n$, we obtain a cosimplicial mixed Hodge complex.
+\end{exm}
+
+Now we wamt to obtain a complex (in the usual sense) with the same cohomology as a given cosimplicial complex. Suppose we have a sheaf $\mc{F}^{\bullet}$ on $\ol{Y}_{\bullet}$. We find some injective resolution $\mc{F}^{\bullet} \hookrightarrow \mc{K}^{\bullet \bullet}$. Next, we consider the cosimplicial complex
+\[ K^{pq} \coloneqq \Gamma(\ol{Y}_q, \mc{K}^{pq}), \]
+and this gives us a double complex $K^{\bullet \bullet}$ using the Moore complex. Finally, from a double complex we obtain an ordinary complex
+\[ \mathbf{s}K^n = \bigoplus_{p + q = n} \Gamma(X_q, \mc{K}^{pq}) \]
+with differential
+\[ \dd {x^{pq}} = \dd_{\mc{K}}(x^{pq}) + (-1)^p \sum_i (-1)^i \delta_i(x^{pq}). \]
+Also, we have
+\[ \Gamma(\ol{Y}_{\bullet}, \mc{K}^{\bullet \bullet}) \simeq \mathbf{s}(K^{\bullet \bullet}) = \mathbf{s} \Gamma^{\bullet}(\ol{Y}_{\bullet}, \mc{K}^{\bullet \bullet}) \]
+and also $R \Gamma(\ol{Y}_{\bullet}, \mc{F}^{\bullet}) \simeq \mathbf{s} R \Gamma^{\bullet}(\ol{Y}_{\bullet}, \mc{F}^{\bullet})$.
+
+\begin{rmk}
+    There exists a filtration $L$ on $\mathbf{s}K^{\bullet}$ given by $L^r(\mathbf{s}K)^{\bullet} = \bigoplus_{q \geq r} K^{pq}$. This gives us a spectral sequence
+    \[ E_1^{st} = H^t(X_s, \mc{F}^s) \implies H^{s+t}(X_{\bullet}, F^{\bullet}). \]
+\end{rmk}
+
+Somehow all of the homological algebra we did applies to bounded below complexes of sheaves. The good thing about this is that now $\mathbf{s} R \Gamma^{\bullet} R j_* \Z_{Y_{\bullet}}$ computes the cohomology of $X$. All we need to do is to prove that this is a mixed Hodge complex, and this means that we need to become Deligne.
+
+\begin{thm}[Main theorem]
+    Let $K^{\bullet \bullet}$ be a cosimplicial mixed Hodge complex. Then there exists a natural filtration $\delta(W, L)$ on $\mathbf{s} K^{\bullet}$ such that $(s K^{\bullet}, \delta(W, L), F)$ is a mixed Hodge complex.
+\end{thm}
+
+\begin{proof}
+    Define
+    \[ \delta(W, L)_n (\mathbf{s}K^{\bullet}_{\Q}) = \bigoplus_{p,q} W_{n+p}(K_{\Q}^{pq}). \]
+    Then we can compute
+    \[ \on{Gr}_n^{\delta(W,L)} (\mathbf{s}K^{\bullet}_{\Q}) = \bigoplus_p \on{Gr}_{n+p}^W K_{\Q}^{\bullet p} [-p]. \]
+    But now each $K_{\Q}^{\bullet p}$ is a mixed Hodge complex, and thus each of the associated graded pieces is a pure Hodge complex of weight $n$. This implies that $\mathbf{s}K^{\bullet}$ is a mixed Hodge complex.
+\end{proof}
+
+Applying the main theorem to $\mathbf{s} R \Gamma^{\bullet} R j_* \Z_{Y_{\bullet}}$, we see that $H^n(X, \Z)$ is a mixed Hodge structure. This is functorial because it is possible to construct compatible proper hyperresolutions, and this implies that it is unique.
+
+If $X$ is smooth, we can choose the proper hyperresolution to simply be $X$ itself, so we have the same mixed Hodge structure as before. From the mixed Hodge complex, we have a weight spectral sequence
+\[ E_1^{-a,b} = \bigoplus_{\substack{p+2r = b \\ q-r = -a}} H^p(D_q^{(r)}, \Q)(-r) \implies H^{-a+b}(X, \Q). \]
+This spectral sequence degenerates at $E_2$, and the differentials on $E_1$ are sums of Gysin maps.
+
+\begin{prop}
+    All of the Hodge numbers $h^{st}$ that appear in $H^n(X, \Q)$ satisfy $0 \leq s,t \leq n$.
+\end{prop}
+
+\begin{proof}
+    First, all of the $E_1^{-a,b}$ have nonnegative Hodge components. To prove the upper bound, if $H^p(D_q^{(r)}, \Q)(-r)$ contributes to $H^n(X, \Q)$, then $p+q+r = n$. In particular, $p + r \leq n$ and any $h^{s't'}$ appearing in $H^p(D_q^{(r)}, \Q)$ has $0 \leq s', t' \leq p$, so when we twist by $(-r)$, we get $s,t \leq p+r \leq n$.
+\end{proof}
+
+\begin{prop}
+    If $X$ is proper, then all of the weights of $H^n(X, \Q)$ are at most $n$.
+\end{prop}
+
+\begin{proof}
+    If $X$ is proper, then each $Y_n$ is already proper, so each $D_n = \emptyset$. Therefore, considering the spectral sequences, we only have nonzero terms for $r = 0$, so the spectral sequence becomes
+    \[ E_1^{-a,b} = H^b(Y_{-a}, \Q) \implies H^{-a+b}(X, \Q). \]
+    If $H^b(Y_{-a}, \Q)$ contributes to $H^n(X, \Q)$, then we must have $b \leq n$.
+\end{proof}
+
+\section{Hodge characteristic}%
+\label{sec:hodge_characteristic}
+
+Given a variety $X = U \sqcup Z$, then 
+\[ \chi^c(X) = \chi^c(U) + \chi^c(Z). \] For complex varieties, $\chi = \chi^c$, but here we use compactly supported cohomology. For example, if $X$ is compact, consider the long exact sequence
+\[ \cdots \to H^n(X, \Z) \to H^n(X) \to H^n(Z) \to \cdots \]
+and then use the fact that $H_c^n(U) = H^n(X, Z)$. Also note that 
+\[ \chi^c(X \times Y) = \chi^c(X) \chi^c(Y). \]
+This tells us that the compactly supported Euler characteristic is motivic and defines a ring homomorphism
+\[ \chi^c \colon K_0(\ms{Var}) \to \Z. \]
+Here, $K_0(\ms{Var})$ is the \textit{Grothendieck ring of varieties} with relations $[X] = [U] + [Z]$ and $[X \times Y] = [X] [Y]$. This loses a lot of information, however, so we construct something better.
+
+\begin{thm}
+    Let $Y \subset X$ be a locally closed subvariety. There is a natural mixed Hodge structure on each $H^n(X, Y, \Z)$ respecting the long exact sequence of the pair $(X, Y)$.
+\end{thm}
+
+\begin{thm}
+    The (relative) K\"unneth theorem respects mixed Hodge structures.
+\end{thm}
+
+\begin{exm}
+    We would like to construct a mixed Hodge structure on $H_c^n(\A^1)$. We know this is $\Q$ in degree $2$ and vanishes everywhere else. There is an isomorphism of mixed Hodge structures $H^2_c(\A^1) \cong H^2(\P^1)$, and thus $H^2_c(\A^1)$ is pure of type $(1,1)$. By the K\"unneth formula, $H_c^{2n}(\A^n)$ is pure of type $(n,n)$.
+\end{exm}
+
+Recall that any Hodge structure $V$ defines an element $[V_{\Q}] \in K_0(\ms{HS})$ by taking graded pieces. Now define
+\[ P_{hn}([V_{\Q}]) = \sum_{p,q} h^{p,q} u^p v^q. \]
+\begin{defn}
+    The \textit{Hodge characteristic with compact support} is the ring morphism
+    \[ \chi_{\mr{Hdg}}^c \colon K_0(\ms{Var}) \to K_0(\ms{hs}) \qquad X \mapsto \sum_i (-1)^i [H_c^i(X, \Q)]. \]
+\end{defn}
+
+\begin{defn}
+    The \textit{Hodge-Euler polynomial with compact support} is the ring morphism
+    \[ e_{\mr{Hdg}}^c \colon K_0(\ms{Var}) \to \Z[u,v] \qquad X \mapsto P_{hn}(\chi_{\mr{Hdg}}^c(X)). \]
+\end{defn}
+
+\begin{rmk}
+    If $X$ is smooth and proper, then the Hodge-Euler polynomial is a generating function for the Hodge numbers of $X$.
+\end{rmk}
+
+\begin{exm}
+    Let $X$ be a torix variety and let $s_k$ be the number of torus orbits of dimension $k$. Therefore, we know that
+    \[ e_{\mr{Hdg}}^c(X) = \sum_k s_k e_{\mr{Hdg}}^c((\C^{\times})^k). \]
+    By the K\"unneth formula and the computation for $\A^1$, we have
+    \[ e_{\mr{Hdg}}^c(X) = \sum_k s_k (uv-1)^k. \]
+    In the case when $X$ is smooth and proper, the Poincar\'e polynomial is $\sum_k s_k (t^2-1)^k$.
+\end{exm}
+
+\begin{exm}
+    Let $X$ be proper irreducible nodal curve with geometric genus $g$. Assume that $X$ has $p$ nodes. From topology, we know that $H^0(X, \Q) = \Q$ is pure of type $(0,0)$. Also, $H^2(X, \Q) \cong \Q$ is also pure of type $(1,1)$. It remains to compute the mixed Hodge structure on $H^1(X, \Q)$. This tells us that
+    \begin{align*} 
+        e_{\mr{Hdg}}^c(X) &= e_{\mr{Hdg}}^c(\Sigma_g) - 2p e_{\mr{Hdg}}^c(\mr{pt}) + p e_{\mr{Hdg}}^c(\mr{pt}) \\
+        &= (1-gu-gv + uv) 0 2p + p = (1+uv) - (p + gu + gv),
+    \end{align*}
+    and thus we have $h^{00} = p, h^{10} = g, h^{01} = g$.
+\end{exm}
+
+\chapter{Caleb (Dec 09): The Ax-Schanuel conjecture for period maps}%
+\label{cha:the_ax_schanuel_conjecture_for_period_maps}
+
+\textit{Note: this lecture was given over the course of two seminars on two consecutive days.} 
+
+\section{Polarized Hodge structures}%
+\label{sec:polarized_hodge_structures}
+
+One motivating question is the one of when a complex torus $\C^g / \Lambda$ is an abelian variety, a Jacobian, etc. When $g = 1$, this is always true because $\C/\Lambda$ is always an elliptic curve by the Weierstrass $\wp$-function (and is its own Jacobian). When $g > 1$, of course complex tori are not always algebraic.
+
+Let $C$ be a curve of genus $g$. Then the Jacobian of $C$ is 
+\[ \on{Jac}(C) = H^1(C, \mc{O}_C) / H^1(C, \Z) \simeq H^0(C, \Omega^1_C)^* / H_1(C, \Z). \]
+If $\delta_1, \ldots, \delta_{2g}$ is an integral homology basis, we can send each $\delta_i$ to the map $\int_{\delta_i} -$. Now let $\omega_1, \ldots, \omega_g$ be a basis of $H^0(C, \Omega^1_C)$. Then $H^1(C, \Z)$ embeds as a period matrix
+\[ \mqty(\int_{\delta_1} \omega_1 & \cdots & \int_{\delta_{2g}} \omega_1 \\
+& \vdots & \\
+\int_{\delta_1} \omega_g & \cdots & \int_{\delta_{2g}} \omega_g). \]
+Now normalize $\omega_i$ so that that the period matrix has the form $\mqty(I_n & \Omega)$. We want conditions on $\Omega$ such such that our complex torus is the Jacobian of a curve. Now on
+\[ H^1_{\mr{dR}}(C) \otimes \C = H^0(C, \Omega^1) \oplus \ol{H^0(C, \Omega^1)}, \]
+consider the alternating bilinar form
+\[ Q(\omega_1, \omega_2) = \int_C \omega_1 \wedge \omega_2. \]
+Given two $1$-forms $\omega, \eta$ with period vectors $u = (u_1, \ldots, u_{2g})$ and $v = (v_1, \ldots, v_{2g})$, we can compute
+\[ \int_C \omega \wedge \eta = u^T \mqty(0 & I_n \\ -I_n & 0) v. \]
+The proof is not completely trivial, but we can take the fundamental polygon of the curve and then use Stokes to write the integral as a sum of products of periods. If $\omega_1, \ldots, \omega_g$ is a basis for $H^0(C, \Omega^1_C)$, then $\omega_i \wedge \omega_j = 0$ because $h^{2,0} = 0$. If we write $P = \mqty(I_n & \Omega)$, we see that
+\[ P \mqty(0 & I_n \\ -I_n & 0) P^T = 0. \]
+This implies that $\Omega = \Omega^T$. We also see that $i Q(\omega, \ol{\omega}) > 0$. Therefore the imaginary part of $\Omega$ is positive-definite. The two conditions we have obtained are called the \textit{Riemann bilinear relations}. These are the conditions for having a principal polarization, but of course not all principally polarized abelian varieties are Jacobians.
+
+Given a $g \times 2g$ matrix $B$, a \textit{polarization} is a skew-symmetric form $E$ with $BEB^T = 0$ and $BEB^* > 0$.By linear algebra, there exists a diagonal matrix $D$ such that
+\[ E = \mqty(0 & D \\ -D & 0). \]
+If $D = I_n$, then this is a \textit{principal polarization}.
+
+\begin{rmk}
+    A polarization on $H^1(A, \C)$ for $A$ a complex torus gives us an element of $H^2(A, \Z)$. By the Lefschetz $(1,1)$-theorem, this is $c_1(L)$ for some line bundle $L$. By the positive-definite property of the polarization, $L$ is ample.
+\end{rmk}
+
+\section{Lefschetz decomposition}%
+\label{sec:lefschetz_decomposition}
+
+Recall that the Hodge decomposition is
+\[ H^n(X, \Z) \otimes \C = \bigoplus_{p+q = n} H^{p,q}(X). \]
+By Dolbeault, we know that $H^{p,q} (X) = H^q(X, \Omega^p)$. Also, $H^{p,q} = \ol{H^{q,p}}$. If we consider a partition of unity (considering $X$ as a real manifold), we obtain a Hermitian metric $h$ on any compact complex manifold $X$. Then we know $h = g-i\omega$, where $\omega$ is a nondegenerate $(1,1)$-form. We know $X$ is K\"ahler if and only if $\omega$ is closed.
+
+We know that $g$ induces an $L^2$-metric on forms, so we obtain the Hodge star operator
+\[ * \colon \Omega^k \to \Omega^{2n-k} \qquad \ev{\alpha, \beta}_{L^2} = \int_X \alpha \wedge *\beta. \]
+Now assume that $X$ is compact K\"ahler.
+
+\begin{defn}
+    Define the operator $L \colon H^k(X, \R) \to H^{k+2}(X, \R)$ by $L(\alpha) = \alpha \wedge [\omega]$.
+\end{defn}
+
+\begin{thm}[Hard Lefschetz]
+    For $k \leq n$, $L^{n-k} \colon H^k(X, \R) \to H^{2n-k}(X, \R)$ is an isomorphism.
+\end{thm}
+
+\begin{defn}
+    The \textit{primitive cohomology} of $X$ is defined to be
+    \[ H^{n=r}_{\mr{pr}}(X, \R) = \ker(L^{r+1} \colon H^{n-r}(X) \to H^{n+r+2}(X)). \]
+\end{defn}
+
+This terminology is justified by the fact that
+\[ H^{n-r}(X, \R) = H^{n-r}_{\mr{pr}}(X, \R) \oplus L(H^{n-r-2}(X)). \]
+This implies that
+\[ H^k(X) = \bigoplus_{k-2r \leq \min(n, 2n-k)} L^r(H^{k-2r}_{\mr{pr}}(X, \R)). \]
+\begin{rmk}
+    This decomposition works also for complex coefficients because $L$ has degree $(1,1)$ and is thus compatible with the Hodge decomposition.
+\end{rmk}
+
+\section{Polarizations}%
+\label{sec:polarizations}
+
+Define an integral form on $H^k(X, \R)$ for $k \leq n$ by
+\begin{align*}
+    Q(\alpha, \beta) &= (-1)^{\frac{k(k-1)}{2}} \ev{L^{n-k} \alpha, \beta} \\
+    &= (-1)^{\frac{k(k-1)}{2}} \int_X \omega^{n-k} \wedge \alpha \wedge \beta.
+\end{align*}
+$Q$ takes real values, and if $[\omega]$ is integral, it takes integral values on $H^k(X, \Z)$. Also, $Q$ is nondegenerate, bilinear, and $(-1)^n$-symmetric. Also, $Q(H^{p,q}, H^{p',q'}) = 0$ unless $(p,q) = (q',p')$. Extending to $H^k(X, \C)$, we have $i^{p-q}Q(\alpha, \alpha) > 0$ for nonzero $\alpha \in H^{p,q}_{\mr{pr}}(X)$. We know $[\omega]$ is integral if and only if $X$ is a smooth projective variety over $\C$ by the Kodaira embedding theorem.
+
+\begin{defn}
+    An \textit{integral polarized Hodge structure of weight $k$} is given by a Hodge structure $(V_{\Z}, F^p V_{\C})$ of weight $k$ and an integer-valued $(-1)^k$-symmetric bilinear form $Q$ on $V_{\Z}$ such that
+    \begin{enumerate}
+        \item $Q(H^{p,q}, H^{p',q'}) = 0$ unless $(p,q) = (q',p')$;
+        \item $i^{p-q} Q(\alpha, \ol{\alpha}) > 0$ for all nonzero $\alpha$ of type $(p,q)$.
+    \end{enumerate}
+\end{defn}
+These are called the \textit{Hodge-Riemann} bilinear relations. To see why they are true, consider the following:
+\begin{enumerate}
+    \item Integrating over $X$ is the same as taking the cap product with $[X]$, and of course $[X]$ has type $(n,n)$. Because $L$ has type $(1,1)$, we need $p + p' = q+q'$.
+    \item The Hodge star is given by
+        \[ * \omega = (-1)^{k(k+1)}{2} i^{p-q} \frac{L^{n-k} \omega}{(n-k)!}. \]
+        This implies that
+        \begin{align*}
+            i^{p-q} Q(\alpha, \ol{\alpha}) &= i^{p-q} (-1)^{\frac{k(k-1)}{2}} \int_X \alpha \wedge L^{n-k} \ol{\alpha} \\
+            &= (n-k)! \int_X \alpha \wedge * \alpha \\
+            &> 0.
+        \end{align*}
+\end{enumerate}
+
+\section{Unpolarized period domains}%
+\label{sec:unpolarized_period_domains}
+
+Let $\pi \colon X \to B$ be a smooth proper map or projective varieties (or a proper holomorphic submersion).
+\begin{thm}[Ehresmann]
+    In this case, $\pi$ is a locally trivial fibration as smooth manifolds. Thus $X \cong X_0 \times B$ locally, and the fibers of $X \to X_0$ are complex submanifolds. Thus the family of complex structures varies holomorphically.
+\end{thm}
+
+Consider the sheaf $R^k \pi_* \C$ on $B$. This is a local system because in the diagram,
+\begin{equation*}
+\begin{tikzcd}
+    X_0 \ar{r} \ar{d} & X \times_B U \ar{d} \ar{r} & X \ar{d}{\pi} \\
+    0 \ar[hookrightarrow]{r} & U \ar[hookrightarrow]{r} & B
+\end{tikzcd}
+\end{equation*}
+$X \times_B U \cong X_0 \times U$, so $H^k(X_0, \C) \simeq H^k(X_b, \C)$ for all $b \in U$. If $X_0$ is K\"ahler, we may assume $U = B$ and then $H^k(X_0, \C) \simeq H^k(X_b, \C)$ and the Hodge numbers are the same. However, the Hodge filtration is not the same. If $A^k$ is the $k$-differential forms, recall that
+\[ F^p A^k(X) = \bigoplus_{r \geq p} A^{r, k-r}. \]
+Then the Hodge filtration is given by
+\[ F^p H^k(X, \C) = \frac{\ker(\dd \colon F^p A^k(X, \C) \to F^p A^{k+1}(X, \C))}{\Im(\dd \colon F^p A^{k-1}(X, \C) \to F^p A^k(X, \C))}. \]
+If we write $b^{p,k} = \dim F^p H^k(X_b, \C)$, the \textit{period map}
+\[ \wp^{p,k} \colon B \to \mr{Gr}(b^{p,k}, H^k(X_0, \C)) \]
+is defined by $b \mapsto F^p H^k(X_b, \C) \subset H^k(X_b, \C) \simeq H^k(X_0, \C)$. By a theorem of Griffiths, this map is holomorphic. If we take all $p$ for a fixed $k$, the period mappings send $b$ to a complete flag of $H^k(X, \C)$. Because $X_b$ is K\"ahler, Hodge symmetry implies that
+\[ F^p H^k(X_b, \C) \oplus \ol{F^{k-p+1} H^k(X_b, \C)} = H^k(X_b, \C). \]
+The open set $D \subset \mr{Fl}(H^k(X, \C))$ satisfying this condition is the \textit{period domain}.
+
+\section{Polarized period domains}%
+\label{sec:polarized_period_domains}
+
+Consider $X \to B$. Then a \textit{polarized Hodge structure} on $H^k_{\mr{pr}}(X_b)$ is given by a bilinear form $Q$ such that
+\begin{enumerate}
+    \item $F^p H^k(X_b, \C) = F^{k-p+1} H^k(X_b, \C)^{\perp}$;
+    \item $H^k(X_b, \C) = F^p H^k(X_b, \C) \oplus \ol{F^{k-p+1} H^k(X_b, \C)}$;
+    \item $(-1)^{\frac{k(k-1)}{2}} i^{p-q} Q(\alpha, \ol{\alpha})$ for nonzero $\alpha \in F^p_{\mr{pr}} H^k(X_b) \cap \ol{F^q H^k_{\mr{pr}}(X_b)}$.
+\end{enumerate}
+Flags satisfying the first condition are the domain $\check{D} \subset \mr{Fl}(H^k_{\mr{pr}}(X_b))$ called the compact dual. The flags satisfying all three conditions form an open subset $D \subset \check{D}$.
+
+\begin{defn}
+    Define $G(R) = \Aut(H_R, Q_R)$, where $R = \Z, \Q, \R, \C$.
+\end{defn}
+
+\begin{defn}
+    A \textit{variation of Hodge structures} $(V_{\Z}, F^{\bullet})$ of weight $k$ over $B$ consists of a local system $V_{\Z}$ of finite rank and a finite filtration of $V_{\C} \otimes \mc{O}_B$ by holomorphic subbundles $F^p$ such that
+    \begin{itemize}
+        \item The filtration $F_b^{\bullet}$ of $(V_{\C})_b$ is a Hodge filtration;
+        \item (Griffiths transversality) If $\nabla$ is the Gauss-Manin connection of $V_{\C} \otimes \mc{O}_B$, then $\nabla(F^p) \subseteq F^{p-1}$.
+    \end{itemize}
+\end{defn}
+
+We now have a \textit{global period map} $\varphi \colon B \to G(\Z) \backslash D$. In the case of $X \to B$, we have $b \mapsto [H^k_{\mr{pr}}(X_b)]$. If $\Gamma$ contains the monodromy representation on $H^k_{\mr{pr}}(X_b)$, then $\varphi$ can be lifted to $\Gamma \backslash D$.
+
+\begin{defn}
+    Let $H$ be a Hodge structure. Then the \textit{special Mumford-Tate group} $MT_H$ is the algebraic $\Q$-subgroup of $\End(H_{\Q})$ such that for any tensor power $H' = H^{\otimes k} \otimes (H^{\vee})^{\otimes \ell}$, the rational Hodge classes of $H'$ are precisely the rational vectors fixed by $MT_H$.
+\end{defn}
+
+\begin{defn}
+    The \textit{Deligne torus} $\mathbb{S}$ is the group $\C^{\times}$ considered as a subgroup of $GL_2(\R)$.
+\end{defn}
+
+Now let $z$ act on $H^{p,q}$ by $z^p \ol{z}^q$. This is a real representation, so $\R^{\times} \subset \mathbb{S}$ acts on $H_{\R}$. We also have $S^1 \subset \C^{\times}$, and these give different definitions of the Mumford-Tate group.
+
+\begin{defn}
+    The Mumford-Tate group is the smallest algebraic group over $\Q$ whose real points contain the image of $S^1$.
+\end{defn}
+
+\begin{defn}
+    The \textit{big Mumford-Tate group} is the same thing but with $R^{\times}$ in place of $S^1$.
+\end{defn}
+
+\begin{exm}
+    Consider $\Q(n) = (2 \pi i)^n \subset \C$ of type $(-n, -n)$. Then the big Mumford-Tate group is $\mathbb{G}_m$ if $n \neq 0$ and $\qty{1}$ if $n = 0$, and the special Mumford-Tate group is $\qty{1}$.
+\end{exm}
+
+\begin{exm}
+    Consider $X = E_{\tau}$ and write $V = H^1(E_{\tau}, \Q)$. Then the special Mumford-Tate group is $\Q(\tau)$ if $E_{\tau}$ has complex multiplication and $SL_2(\Q)$ otherwise.
+\end{exm}
+
+\begin{defn}
+    Let $D$ be the polarized period domain and suppose $x \in D$.
+    \begin{enumerate}
+        \item The orbit $MT_x(\R) x$ is called a \textit{Mumford-Tate subdomain}.
+        \item If $M$ is a normal subgroup of $MT_x$, then $M(\R) x$ is called a \textit{weak Mumford-Tate subdomain}.
+        \item Let $\pi \colon D \to \Gamma \backslash D$ be a quotient map. For $D' \subset D$ a weak Mumford-Tate subdomain, then $\pi(D') \subset \Gamma \backslash D$ is a complex analytic subvariety, called a \textit{weak Mumford-Tate subvariety}. Also, given a period map $\varphi \colon X \to \Gamma \backslash D$, we call $\varphi^{-1} \pi(D')$ also a weak Mumford-Tate subvariety.
+    \end{enumerate}
+\end{defn}
+
+Now let $X/\C$ be smooth. Write $MT_{H_{\Z}} = MT_X$. Let $\Gamma$ be the image of the monodromy $\pi_1(X) \to MT_{H_{\Z}}(\Q)$. Let $G$ be the identity component of the $\Q$-Zariski closure of $\Gamma$ and $D = D(G)$ be the associated weak Mumford-Tate subdomain, $\varphi \colon X \to \Gamma \backslash D$ is the period map and $\check{D}$ be the compact dual of $D$. Now consider
+\begin{equation*}
+\begin{tikzcd}
+    X_D \ar{r} \ar{d} & D \ar{d} \\
+    X \ar{r} & \Gamma \backslash D.
+\end{tikzcd}
+\end{equation*}
+\begin{thm}[Ax-Schanuel]
+    Let $V \subset X \times \check{D}$ be an algebraic subvariety and $U$ be an irreducible analytic component of $U \cap X_D$ such that 
+    \[ \on{codim}_{X \times \check{D}}(U) < \on{codim}_{X \times \check{D}} (V) + \on{codim}_{X \times \check{D}} (X_D). \] 
+    Then the projection of $U \to X$ is contained in a proper weak Mumford-Tate subvariety.
+\end{thm}
+
+\section{$o$-minimality}%
+\label{sec:_o_minimality}
+
+\begin{defn}
+    A \textit{structure} $S$ is a collection of subsets $\qty{S_n}_{n \in \mathbb{N}}$ of $\R^n$ such that
+    \begin{enumerate}
+        \item $S_n$ is closed under finite intersections, unions, and complements.
+        \item The collection $(S_n)$ is closed under finite cartesian products and projection.
+        \item For every polynomial $P \in \R[x_1, \ldots, x_n]$, the set of roots of $P$ is an element of $S_n$.
+    \end{enumerate}
+\end{defn}
+Note that if $P(x_1, \ldots, x_n)$ is a polynomial, the vanishing sets of $P(x_1, \ldots, x_n) - x_{n+1}^2$ are in $S_{n+1}$, and now projecting down, we see that $\qty{P(x_1, \ldots, x_n) \geq 0} \in S_n$. We call the elements $U \in S_n$ the \textit{$S$-definable} subsets of $\R^n$. For $U \in S_n, V \in S_m$, a map $f \colon U \to V$ is \textit{definable} if its graph is.
+
+\begin{exm}
+    Let $\R_{\mr{alg}}$ be the collection of real semialgebraic subsets of $\R^n$ (the Boolean algebra generated by $\qty{P \geq 0}$).
+\end{exm}
+
+\begin{defn}
+    A structure $S$ is \textit{$o$-minimal} if $S_1 = (\R_{\mr{alg}})_1$ is the set of finite unions of intervals.
+\end{defn}
+
+\begin{exm}
+    The $o$-minimal structure $\R_{\mr{exp}}$ is the structure generated by the graph of $\exp \colon \R \to \R$.
+\end{exm}
+
+\begin{exm}
+    The structure $\R_{\sin}$ is not $o$-minimal.
+\end{exm}
+
+\begin{exm}
+    The structure $\R_{\mr{an}}$ generated by graphs of restrictions of real analytic functions to open balls $B(R)$ is $o$-minimal.
+\end{exm}
+
+\begin{exm}
+    The structure $\R_{\mr{an}, \exp}$ generated by $\R_{\mr{an}}, \R_{\exp}$ is $o$-minimal.
+\end{exm}
+
+\begin{defn}
+    An \textit{$S$-definable topological space} $M$ i a topological space $M$ with a finite covering $\qty{V_i}$ of $M$ and homeomorphisms $\varphi_i \colon V-i \to U_i \subset \R^n$ such that
+    \begin{enumerate}
+        \item All $U_i$ and all intersections $U_{ij}$ are $S$-definable.
+        \item The transition functions $\varphi_{ij} \colon U_{ij} \to U_{ji}$ are $S$-definable.
+    \end{enumerate}
+\end{defn}
+
+We can also define $S$-definable continuous maps, but it will not be helpful to write down this definition.
+
+\begin{exm}
+    Consider $\C^* \subset \C$ and let $e \colon \C \to \C^*$ be the covering map. Then we want to put an $\R_{\mr{alg}}$-definable structure on $\C^*$. We can do it in more than one way:
+    \begin{enumerate}
+        \item Simply take $\C^* \subset \C = \R^2$ and induce the structure from $\C^*$.
+        \item Define $F_a = \qty{z \in \C \mid a \cdot \Im z \subset \Re z \subset (1+\ep) + a \Im z}$. Under the map $e$, this covers $\C^*$. Taking thinner strips, we obtain an open covering of $\C^*$, and we obtain a different structure for each $a$.
+    \end{enumerate}
+\end{exm}
+
+\begin{exm}
+    Let $X$ be a real variety. By covering $X$ with affines, the induced $\R_{\mr{alg}}$-structures on affines give us an $\R_{\mr{alg}}$-structure on $X$.
+\end{exm}
+
+\begin{defn}
+    Let $X$ be a complex variety. Let $X^{\mr{def}}$ be the $S$-definable topological space with underlying set $X(\C)$ and then use the previous example.
+\end{defn}
+
+We will now discuss applications of $o$-minimality. The first is a counting theorem of Pila-Wilkie. We will begin by recalling the elementary theory of heights that we should have learned as undergrads (but didn't).
+
+\begin{defn}
+    For $r \in \Q$, define $H(r) = \max\qty{\abs{a}, \abs{b}}$ where $r = \frac{a}{b}$ is reduced. Then for $\alpha \in \Q^n$, write $H(\alpha) = \max H(\alpha_i)$.
+\end{defn}
+
+Note that there are only finitely many points of $\Q^n$ with bounded height. Now let $U \subset \R^n$ be a subset. Define $N(U, t) = \# \qty{\alpha \in U \cap \Q^n \mid H(\alpha) \leq t}$. Then let 
+\[ U^{\mr{alg}} = \bigcup_{Z \text{connected semialgebraic}} Z \]
+and $U^{\mr{tr}} = U \setminus U^{\mr{alg}}$.
+
+\begin{exm}
+    Consider $Z = e^x y$. Then $U^{\mr{alg}}$ is given by $y = z = 0$.
+\end{exm}
+
+\begin{thm}
+    Let $U \subset \R^n$ be definable for some $o$-minimal structure. Then for any $\ep > 0$, $N(U^{\mr{tr}}, t) = O(t^{\ep})$.
+\end{thm}
+
+This result shows that most $\Q$-rational points are algebraic. The next application is the Definable Chow theorem of Peterzil-Starchenko. Recall Chow's theorem, which says that if $X$ is a proper complex variety and $Y \subset X^{\mr{an}}$ is a closed complex analytic subvariety, then $Y$ is an algebraic subvariety.
+
+\begin{thm}[Definable Chow]
+    Fix an $o$-minimal structure and let $X$ be any complex variety. Let $Y$ be a closed complex analytic subvariety whose underlying set is definable. Then $Y$ is algebraic.
+\end{thm}
+
+\end{document}

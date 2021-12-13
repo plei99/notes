@@ -20,6 +20,7 @@
 \usepackage{mdframed}
 \usepackage{verbatim}
 \usepackage{physics}
+\usepackage{stmaryrd}
 \usepackage{stackengine} 
 
 %font
@@ -133,6 +134,7 @@
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\ul}[1]{\underline{#1}}
@@ -429,7 +431,8 @@ Later in the course, we will sketch a construction of the Hilbert scheme, but fo
 Now we will review some basic theory of Hilbert schemes for quasiprojective varieties. Here, if $X$ is quasiprojective and $p(t) \in \Q[t]$ is some Hilbert polynomial, consider $[Z] \in \mr{Hilb}_X^{p(t)}$.
 
 \begin{prop}
-    If $I \subseteq \mc{O}_X$ is the ideal sheaf of $Z$, then $T_{[Z]} \mr{Hilb} = \Hom_X(I, \mc{O}_Z) = \Hom_Z(I/I^2, \mc{O}_Z) = H^0(Z, N_{Z/X})$.
+    If $I \subseteq \mc{O}_X$ is the ideal sheaf of $Z$, then 
+    \[ T_{[Z]} \mr{Hilb} = \Hom_X(I, \mc{O}_Z) = \Hom_Z(I/I^2, \mc{O}_Z) = H^0(Z, N_{Z/X}). \]
 \end{prop}
 
 \begin{proof}[Sketch of proof]
@@ -1503,6 +1506,1042 @@ To prove the proposition, we need to prove the following Fujiki-like result.
 \end{prop}
 Proof of this is the same as the proof of Fujiki.
 
+\chapter{Moduli spaces}%
+\label{cha:moduli_spaces}
+
+Our goal is to eventually prove the following theorem:
+\begin{thm}[Mukai, O'Grady, Yoshioka, Huybrechts]
+    Let $S$ be a projective K3 surface. Let $v \in H^*_{\mr{alg}}(S, \Z) = H^0 \oplus \NS(S) \oplus H^4$ be a primitive Mukai vector. Let $H$ be a general polarization and $M_{v, H}$ be the moduli space of $H$-semistable coherent sheaves on $S$ with Mukai vector 
+    \[ v(F) \coloneqq \mr{ch}(F) \sqrt{\mr{td}(S)} = \qty(r, c_1, \frac{c_1^2}{2} - c_2 + r) \in H^*_{\mr{alg}}(S, \Z). \]
+    If $v^2 \geq -2$, then $M_{v, H}$ is a smooth projective irreducible holomorphic symplectic manifold of dimension $v^2 + 2$ deformation equivalent to $S^{[n]}$, where $n = \frac{v^2}{2} +1$. Moreover, if $v^2 \geq 2$, then there is a canonical isomorphism
+    \[ H^2(M_{v, H}, \Z) \simeq v^{\perp} \subseteq H^*(S, \Z) \]
+    which is an isomorphism of Hodge structures.
+\end{thm}
+
+We'll have to understand what a general polarization is, and here semistability will mean Gieseker stability, and of course we'll need to prove smoothness, projectivity, and symplecticness. OF course just being nonempty and irreducible is a nontrivial result. This result also holds more generally for Bridgeland stability, which we will discuss in this course.
+
+\section{Strategy for deformation equivalence}%
+\label{sec:strategy_for_deformation_equivalence}
+
+Here is the strategy for deformation equivalence. Up to deforming $S$ and considering birational maps among moduli spaces with different Mukai vectors, we can relate $M_{v, H}(S)$ to a Hilbert scheme. Because Yoshioka is notoriously hard to read, we apparently will sketch this. The missing piece is the following result:
+
+\begin{thm}[Huybrechts]
+    Let $f \colon X \dashrightarrow X'$ be a bimeromorphic map of irreducible holomorphic symplectic manifolds. Then $X$ and $X'$ are deformation equivalent. This means that there exists a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{X} \ar[dashrightarrow]{rr}{F} \ar{dr} & & \mc{X}' \ar{dl} \\
+        & \Delta
+    \end{tikzcd}
+    \end{equation*}
+    such that $F$ is an isomorphism after restricting to $\Delta^*$ and $(\Gamma_F)_0 = \Gamma_f$.
+\end{thm}
+
+This result can be found in a series of papers by Huybrechts titled:
+\begin{itemize}
+    \item \textit{Birational symplectic manifolds and their deformations};
+    \item \textit{Compact hyperk\"ahler manifolds: basic results} and erratum;
+    \item \textit{K\"ahler cone...} 
+\end{itemize}
+
+Fix a lattice $\Lambda$ of signature $(3, \rho-3)$, where $\rho = \operatorname{rk} \Lambda$. Then the moduli space $\mc{M}_{\Lambda}$ of $\Lambda$-marked hyperk\"ahler varieties parameterizes pairs $(X, \varphi)$ where $X$ is irreducible holomorphic symplectic and $\varphi \colon H^2(X, \Z) \xrightarrow{\sim} \Lambda$ is an isomorphism of lattices. Here, $(X, \varphi) \simeq (X', \varphi')$ if there exists $f \colon X \to X'$ such that $\varphi \circ f^* = \varphi'$.
+
+This is apparently some nonseparated complex manifold because of local Torelli. Here, we obtain a system of charts on $M_{\Lambda}$ that looks like
+\begin{equation*}
+\begin{tikzcd}
+    \mr{Def}(X) \supseteq U \ar{r} \ar{dr}{\wp_X} & \mc{M}_{\Lambda} & V \subseteq \mr{Def}(X') \ar{d}{\wp_{X'}} \ar[hookrightarrow]{l} \\
+    & \Omega_X \subseteq \P H^2(X, \Z) \ar{r}{\varphi^{-1} \circ \varphi'} & \Omega_{X'} \subseteq \P H^2(X, \Z).
+\end{tikzcd}
+\end{equation*}
+
+\begin{lem}[Tautological lemma]
+    Two points $(X, \varphi), (X', \varphi') \in \mc{M}_{\Lambda}$ are non-separated if and only if there exist families $\mc{X}, \mc{X}' \to \Delta$ and $V \subseteq \Delta$ such that $0 \in \ol{V}$ and $\mc{X}, \mc{X}'$ are isomorphic over $V$ with central fibers $X, X'$.
+\end{lem}
+
+This result tells us that $X, X'$ have the same period map because the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \Lambda \\
+    H^2(X, \Z) \ar{ur}{\varphi} & & H^2(X', \Z) \ar{ul}{\varphi'} \\
+    H^2(X_t, \Z) \ar{u}{\sim} \ar{rr}{\sim} & & H^2(X_t', \Z) \ar{u}{\sim}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{prop}[Huybrechts, Burns-Rapoport]
+    The tautological lemma implies that there exist families
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{X} \ar[dashrightarrow]{rr} \ar{dr} & & \mc{X}' \ar{dl} \\
+        & \Delta
+    \end{tikzcd}
+    \end{equation*}
+    that are isomorphic over $\Delta^*$. Now define $\Gamma_{F^*} \subseteq \mc{X} \times_{\Delta^*} \mc{X}'$. The key input is a volume estimate, which says that the volume of $\Gamma_{t}$ is bounded. By a result of Bishop, there exists a limit cycle $\Gamma_0 \subseteq X_0 \times X_0'$.
+\end{prop}
+
+Let $\omega_t, \omega_t'$ be K\"ahler forms on $\mc{X}_t, \mc{X}_t'$ varying continuously with $t$ and consider the K\"ahler form $p_t^* \omega_t + p_t'^* \omega_t'$. Then we see that
+\begin{align*}
+    \mr{vol}(\Gamma_{t_i}) &= \int_{\Gamma_{t_i}} (p_t^* \omega_t + p_t' \omega_t')^{2n} \\ 
+    &= \int_{X_t} (\omega_t + f_t^* \omega'_t)^{2n} \\
+    &= \int_{X_0} (\eta_t(\omega_t) + (\varphi^{-1} \circ \varphi')(\omega_t'))^{2n}. 
+\end{align*}
+This implies that
+\[ \int_{X_0} (\omega_0 + (\varphi \circ \varphi')\omega_0')^{2n} < \infty, \]
+and therefore that the limit cycle $\Gamma_0 \subseteq X \times X'$ exists. We want to show that there exists $\Gamma_f \subseteq \Gamma_0$ inducing a birational map. Because the correspondences $\Gamma_t^*$ are isomorphic, so is $\Gamma_0^*$. This also tells us that $\Gamma_0^* [X'] = [X]$, and so $\Gamma_0$ is dominant of degree $1$ on both factors. We want to prove that there exists a component that is dominant of degree $1$ on both components. We need to exclude the case where
+\[ \Gamma_0 = Z + Z' + \sum Y_i, \]
+where $Z \to X$ is dominant, $Z' \to X'$ is dominant, and $Y_i$ are not dominant onto either factor. Now we have
+\begin{align*}
+    \int_X (\sigma \ol{\sigma})^n &= \int_X \Gamma_0^* (\sigma') \sigma^{n-1} \ol{\sigma}^n \\
+    &= \int_X p_* (p'^* (\sigma') \smile \Gamma_0) \sigma^{n-1} \ol{\sigma}^n \\
+    &= \int_Z p'^* (\sigma') p^*(\sigma^{n-1} \ol{\sigma}^n) + \int_{Z'} p'^*(\sigma') p^*(\sigma^{n-1} \ol{\sigma}^n)+ \sum \int_{Y_i} p'^*(\sigma') p^*(\sigma^{n-1} \ol{\sigma}^n).
+\end{align*}
+By type reasons, the integrand vanishes on $Z', Y_i$ and thus we only need to study the integral on $Z$. But now $p'^*(\sigma') |_Z = 0$. This is because it comes from a smaller-dimensional subset of $X'$ which must be degenerate, but we know that holomorphic forms are a birational invariant, so this must be degenerate.
+
+\begin{rmk}
+    In general, we have $\Gamma_f \subsetneq \Gamma_0$. Sometimes, even their action on $H^2$ is different.
+\end{rmk}
+
+\begin{proof}[Proof of Huybrechts for projective case]
+    Let $f \colon \dashrightarrow X'$ be birational. We know that $X, X'$ have $L, L'$ such that $q_X(L) = q_{X'}(L')$. Also, we know that $H^0(X, L) = H^0(X', L')$. Now we use Riemann-Roch, and so there exists $a_i, a_i' \in \Q$ such that
+    \[ \chi(X, L) = \sum a_i q(L)^i \qquad \chi(X', L') = \sum a_i' q(L')^i. \]
+    Without loss of generality, we can assume that for $t \gg 0$, $\sum a_i t^i \geq \sum a_i' t^i$. For $n \gg 0$, this means that 
+    \[ \chi(X, L^n) \geq \chi(X', L'^n). \]
+    Now choose $L'$ ample. If $f$ is not an isomorphism, then $L$ will not be nef (but it will be big). We know that
+    \[ X' = \Proj \qty(\bigoplus H^0(X', L'^n)) = \Proj \qty(\bigoplus H^0(X, L^n)) = X, \]
+    and so our map $f \colon X \dashrightarrow X'$ will be induced by $L$ (which is not nef and thus has a base locus, but is big and thus has many global sections).
+
+    Let $(\mc{X}, \mc{L})$ be a deformation of $(X, L)$ such that for a very general $t \in \Delta$, $\rho(X_t) = 1$. Now we use a theorem from the erratum of the second Huybrechts paper, which says that if $X$ is irreducible holomorphic symplectic, then $X$ is projective if and only if there exists $L$ such that $q(L) > 0$. Here, we know that $q(L') = q(L) = q(\mc{L}_t) > 0$, and thus $\mc{L}_t$ is ample on $X_t$ for very general $t$. This is an open condition, so we may assume $\mc{L}_t$ is ample for $t \in \Delta^*$. Thus for all $n > 0$, $H^i(X_t, L_t^n) = 0$.
+
+    The next claim is that $\pi_* \mc{L}^n$ is locally free for $n \gg 0$. Because the base is reduced, it is enough to prove constant fiber dimension. It is enough to show that $t \mapsto h^0(X_t, \mc{L}_t^n)$ is constant for $n \gg 0$. But now we have
+    \[ h^0(X_t, \mc{L}_t^n) = \chi(X_t, \mc{L}_t^n) = \chi(X, L^n) \geq \chi(X', L'^n) = h^0(X', L'^n) = h^0(X, L^n). \]
+    By upper semicontinuity, everything here must be equal. Taking the relative Proj construction and setting
+    \[ \mc{X}' \coloneqq \Proj_{\Delta} \qty(\bigoplus \pi_* \mc{L}^n), \]
+    we are done.
+\end{proof}
+
+\section{Quot schemes}%
+\label{sec:quot_schemes}
+
+Let $k$ be an infinite field with $X \subseteq \P^n_k$. Alternatively, we may consider a projective morphism $X \to B$ with $B$ quasiprojective over $k$. Fix $p(t) \in \Q[t]$. We would like to construct a proper (projective?) separated scheme of finite type over $k$ whose closed points are in bijection with isomorphism classes of sheaves on $X$ whose Hilbert polynomial is $p(t)$. We would also like $M$ to satisfy some universal property, namely representing some functor.
+
+\begin{defn}
+    A family $\qty{F_{\alpha}}_{\alpha \in A}$ of (isomorphism classes of) coherent sheaves on $X$ is called \textit{bounded} if there exists a scheme $S$ fo finite type over $k$ and a coherent sheaf $\mc{F}$ on $S \times X$ such that 
+    \[ \qty{F_{\alpha}} \subseteq \qty{\mc{F}_s \mid s \in S}. \]
+\end{defn}
+
+Unfortunately, fixing the Hilbert polynomial is not in general sufficient to have a bounded family.
+
+\begin{exm}
+    On $\P^1_k$ consider the constant Hilbert polynomial $p(t) \equiv t + 2$. We will consider locally free sheaves on $\P^1$ with this Hilbert polynomial. However, we have sheaves $F_a = \mc{O}(a) \oplus \mc{O}(-a)$. But then $h^0(F_a) = a+1$. This family cannot be bounded because for any scheme $S$ and any $m$ the subscheme
+    \[ S_m = \qty{F_s \mid h^0(F_s) \geq m} \]
+    is closed, and thus $S$ cannot be of finite type.
+\end{exm}
+
+\begin{exm}
+    Let $f \colon C \to \P^1$ be a hyperelliptic curve with $g(C) \geq 2$. Then $\Pic^{g-1}(C)$ contains a theta divisor $\Theta$, but here we have $h^0(L) = 0$ generically and $h^0(L) > 0$ on $\Theta$. Then there exists a universal line bundle $\mc{L}$ on $\Pic^{g-1}(C) \times C$. Then we have a family of line bundles $F_L = f_* L$ on $\P^1$ which are $\mc{O}(a) \oplus \mc{O}(-a-2)$ for $a \geq -1$. If $L \notin \Theta$, we have $F_L = \mc{O}(-1) \oplus \mc{O}(-1)$. However, if $L \in \Theta$ and $h^0(L) = 1$, we have $F_L = \mc{O} \oplus \mc{O}(-2)$. This gives a nonseparated family of sheaves.
+\end{exm}
+
+To achieve boundedness, we need to both fix the Hilbert polynomial and consider sheaves that are quotients of a fixed sheaf $\mc{O}_X^N$. Our main technical tool is the following:
+
+\begin{defn}
+    A coherent sheaf $F$ on $\P^n$ is \textit{Castelnuovo-Mumford regular} if for all $i > 0$ we have $H^i(F(-i)) = 0$.
+\end{defn}
+
+\begin{thm}[Castelnuovo, Mumford]
+    Let $F$ be Castelnuovo-Mumford regular. Then
+    \begin{enumerate}
+        \item $F$ is globally generated.
+        \item $F(\ell)$ is Castelnuovo-Mumford regular for all $\ell \geq 0$.
+        \item $H^0(F) \otimes H^0(\mc{O}_X(\ell)) \twoheadrightarrow H^0(F(\ell))$.
+    \end{enumerate}
+\end{thm}
+
+This can be proved by inducting on the support of $F$ and using the exact sequence
+\[ 0 \to F(-1) \to F \to F|_H \to 0. \]
+Some references are of course \textit{FGA Explained} and Grothendieck's \textit{Techniques des construction et th\'eor\`eme d'existence en geometrie algebrique IV: les schemas de Hilbert}. Also there is a reference due to Mumford.
+
+\begin{thm}
+    Fix $(X, H)$ and some $N \geq 0$. Also fix $p(t) \in \Q[t]$ the Hilbert polynomial. Then there exists an integer $\ell_0$ sich that for all $F$ a quotient of $\mc{O}_X^n \twoheadrightarrow F$, then
+    \begin{enumerate}
+        \item $H^0(\mc{O}_X^N(\ell_0)) \twoheadrightarrow H^0(F(\ell_0))$ and $H^i(F(\ell_0)) = 0$ for all $i > 0$.
+        \item $G(\ell_0)$ is globally generated and
+            \[ H^0(G(\ell_0)) \otimes H^0(\mc{O}_X(s)) \twoheadrightarrow H^0(G (\ell_0 + s)) \]
+            for all $s \geq 0$, where $G$ is the kernel of $\mc{O}_X^N \to F$.
+        \item $H^i(G(\ell_0 + s)) = 0$ for all $s \geq 0$ and $i > 0$.
+    \end{enumerate}
+\end{thm}
+
+We now consider the functor $\ms{Quot}_X^{N,p}$ that takes a scheme $B$ to the set of isomorphism classes of coherent sheaves $\mc{F}$ on $X \times B$ flat over $B$ such that $p_{\mc{F}_b}(t) = p(t)$ and $\mc{O}_{X \times B}^N \twoheadrightarrow \mc{F}$. We will not need this, but it is possible to identify quotients if their kernels are the same as subsheaves of $\mc{O}_{X \times B}^{N}$.
+
+\begin{thm}[Grothendieck]
+    The functor $\ms{Quot}_X^{N, p}$ is represented by a projective scheme $\mr{Quot}_X^{N, p}$. Of course this means there is a universal coherent sheaf $\mc{F}$ on the Quot scheme with a surjection $\mc{O}^N \twoheadrightarrow \mc{F}$.
+\end{thm}
+
+\begin{exm}
+    Let $r \leq n$ be integers. Then $\mr{Gr}(r, n)$ is the Quot scheme for $X = \mr{pt}$ if we consider quotients $k^n \twoheadrightarrow W$ to vector spaces of dimension $n-r$.
+\end{exm}
+
+Of course, we use the Grassmannian to construct the Quot scheme, so we will construct the Grassmannian by hand. If $[V] \in \mr{Gr}(r, n)$, we can choose a splitting $k^n = V \oplus W$. Then the open affines are given by $\Hom(V, W)$ given by associating a map $\varphi$ to its graph $\Gamma_{\varphi}$. There is also the tautological sheaf $\mc{S}$ and exact sequence
+\[ 0 \to \mc{S} \subseteq \mc{O}_{\mr{Gr}}^n \to \mc{Q} \to 0, \]
+and of course we know that $H^0(\det \mc{S}^{\vee}) = \bigwedge^{\vee} k^n$.
+
+Our strategy is to define the Quot scheme as a set, then slap a scheme structure on it and prove that it is locally closed, and finally we prove that the universal family exists.
+
+Let $\ell_0$ be as in the previous theorem, $n = \dim H^0(\mc{O}_X^N(\ell_0))$, and $r = p(\ell_0)$. We will consider $\mr{Gr}(n-r, r)$. Given $\mc{O}_X^N \twoheadrightarrow F$ with $p_F(t) = p(t)$, let $G = \ker(\mc{O}_X^N \twoheadrightarrow F)$. Then we know
+\[ H^0(G(\ell_0)) \subseteq H^0(\mc{O}_X^N(\ell_0)) \to H^0(F(\ell_0)), \]
+and because the higher cohomology of $G(\ell_0)$ vanishes, the last arrow is surjective. We know that the middle term has dimension $n$ and the last term has dimension $r$, so $K_{\ell} \coloneqq H^0(G(\ell_0))$ has dimension $n-r$.
+
+First we need to prove that this assignment is injective because $K_{\ell_0}$ determines $G$ and hence $F$. Indeed, by the theorem, we have a series of surjections
+\[ K_{\ell_0} \otimes H^0(\mc{O}_X^N(s)) \twoheadrightarrow H^0(G(\ell_0 + s)) \subseteq H^0(\mc{O}_X^N(\ell_0 + s)). \]
+Thus it determines $G$ as a graded module, and so in fact $G$ is determined as a coherent sheaf. Alternatively, we can consider $K_{\ell_0} \otimes \mc{O}_X \to \mc{O}_X^N(\ell_0)$, and this surjects onto $G$. We now define the set
+\[ Q = \qty{K \mid K \otimes H^0(\mc{O}_X^N(s)) \xrightarrow{\varphi_{s,k}} H^0(\mc{O}_X^N(\ell_0 + s)) \text{ has rank } p_{\mc{O}_X^N}(\ell_0 + s) - p(\ell_0 + s)}. \]
+We know that $\varphi_{s, k}$ is the fiber of a map of vector bundles. We know $\mc{S} \subseteq H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{\mr{Gr}}$ and so we have a map
+\[ \mc{S} \otimes H^0(\mc{O}_X(s)) \xrightarrow{\varphi_s} H^0(\mc{O}_X^N(\ell_0 + s)) \otimes \mc{O}_{\mr{gr}}. \]
+Now the locus $Q_s$ where the rank of $\varphi_s$ is $p_{\mc{O}_X^N}(\ell_0 + s) - p(\ell_0 + s)$ is localy closed.
+
+\begin{thm}
+    Fix $X, H, N, p, \ell_0$. Then there exist finitely many Hilbert polynomials of quotients $\mc{O}_X^N \twoheadrightarrow F$ such that $G(\ell_0)$ is globally generated by $n-r$ global sections.
+\end{thm}
+
+\begin{proof}
+    Consider $\mr{Gr}(n-r, n) \eqqcolon \mr{Gr}$. We of course have the tautological sequence and the two projections on $\mr{Gr} \times X$. Then we have
+    \[p_1^* \mc{S} \subseteq H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{\mr{Gr} \times X} \to p_2^* \mc{O}_X^N(\ell_0) \twoheadrightarrow \mc{F}(\ell_0). \]
+    Call the kernel of the last morphism $\mc{G}(\ell_0)$. By the flattening stratification and Noetherian induction, we have only finitely many possible Hilbert polynomials.
+\end{proof}
+
+Now let $\mc{F}$ be as in the proof of the theorem and $Q_1, \ldots, Q_m$ be the possible Hilbert polynomials. Then let $\ell_0'$ be the maximum of the $\ell_0(Q_i)$. For all $s$ such that $\ell_0 + s \geq \ell_0'$, we know that
+\[ H^i(\mc{F}_k(\ell_0 + s)) = 0 \]
+for all $i > 0$. Thus $p_{\mc{F}_k}(\ell_0 + s) = h^0(\mc{F}_k(\ell_0 + s))$. Also, we know that $H^i(G_k(\ell_0 + s)) = 0$, and thus 
+\[ H^0(\mc{O}_X^N(\ell_0 + s)) \twoheadrightarrow H^0(\mc{F}_k(\ell_0 + s)) \]
+is surjective. Finally, using the original theorem, the map
+\[ H^0(G_k(\ell_0)) \otimes H^0(\mc{O}_X^N(s)) \to H^0(G_k(\ell_0 + s)) \]
+is surjective.
+
+Let $\gamma \in \mathbb{N}$ be large enough such that if $Q_i(t) = p(t)$ for $\gamma$ values, then $Q_i(t) \equiv p(t)$. We will consider $K \in \bigcap_{s = 1}^{\gamma} Q_{s + \ell_0} = Q$. Here, we observe that
+\[ \varphi_s \colon H^0(G_k(\ell_0)) \otimes H^0(\mc{O}_X^N(s+\ell_0)) \twoheadrightarrow H^0(G_k(s + \ell_0)) \]
+has the correct rank for these $\gamma$ values. Therefore $\mc{F}_K$ has the correct Hilbert polynomial, and so we are done.
+
+It remains to prove that $\mr{Quot}$ represents the functor and that it is a closed subscheme of $\mr{Gr}$. First, we will construct a universal family on $\mr{Quot}$. Recall on the Grassmannian that we have the tautological sequence
+\[ \mc{S} \hookrightarrow H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{\mr{Gr} \times X} \to 1. \]
+Now restricting to $\mr{Quot}$ and pulling back to $\mr{Quot} \times X$, we have
+\begin{equation}\label{eqn:star}
+\begin{tikzcd}
+    p_1^* \mc{S} \ar[hookrightarrow]{r} \ar{drr} & H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{\mr{Quot} \times X} \ar{r} & p_2^* \mc{O}_X^N(\ell_0) \ar[twoheadrightarrow]{r} & \mc{F}(\ell_0) \\
+    & & \mc{G}(\ell_0) \ar[hookrightarrow]{u}.
+\end{tikzcd}
+\end{equation}
+Now observe that $\mc{F}$ is flat over $\mr{Quot}$ if and only if $p_{1*} \mc{F}(\ell)$ is locally free for $\ell \gg 0$. We will see that
+\[ \mc{G}(\ell_0) \hookrightarrow p_2^* \mc{O}_X^N(\ell_0) \twoheadrightarrow \mc{F}(\ell_0) \]
+gives the universal quotient on $\mr{Quot} \times X$. But the flatness condition follows from the vanishing result for $\ell \geq \ell_0$. Using the diagram (\ref{eqn:star}), note that
+\[ p_{2*} (\mc{G}(\ell_0)) \subseteq  \otimes \mc{O}_{\mr{Quot} \times X}(\ell_0) \to \mc{F}(\ell_0) \]
+recovers
+\[ \mc{S}|_{\mr{Quot}} \subseteq H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{\mr{Quot}} \to \mc{Q} |_{\mr{Quot}} \to 0. \]
+
+We will now check the universal property of our family. Consider a quotient $\mc{O}_{X \times B}^N \twoheadrightarrow \mc{F}_B$. We want $\varphi \colon B \to \mr{Quot}$ such that
+\[ \varphi^* (\mc{G} \subseteq \mc{O}_X^N \twoheadrightarrow \mc{F}) = (\mc{G}_B \subseteq \mc{O}_{B \times X}^N \to \mc{F}_B). \]
+But here we push forward $p_{2*}(\mc{O}_{X \times B}^N \to \mc{F}_B) \otimes \mc{O}(\ell_0)$ and we now have
+\[ p_{2*} (\mc{G}_B(\ell_0)) \hookrightarrow H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_B \to p_{2*} \mc{F}_B(\ell_0) \to 0. \]
+But now the first factor is locally free of the correct rank, and so we have a map $B \to \mr{Gr}$ factoring through $\mr{Quot}$.
+
+Finally we prove that $\mr{Quot} \subseteq \mr{Gr}$ is a closed immersion. Here, we will use the valuative criterion. Let $R$ be a discrete valuation ring over $k$ with fraction field $K$. Let $U = \Spec K \subseteq \Spec R = C$. We want to fill in the diagram
+\begin{equation*}
+\begin{tikzcd}
+    U \ar{r}{\varphi} & \mr{Quot} \\
+    C \ar[hookrightarrow]{u} \ar{r}{\psi} \ar[dashrightarrow]{ur} & \mr{Gr} \ar[hookrightarrow]{u}.
+\end{tikzcd}
+\end{equation*}
+On $U \times X$ we have an exact sequence
+\[ \mc{G}_U \coloneqq \varphi^* \mc{G} \hookrightarrow \mc{O}_{U \times X} \to \varphi^* \mc{F}, \]
+and on $C$ we have the exact sequence
+\begin{equation*}
+\begin{tikzcd}
+    \psi^* \mc{S} \ar[hookrightarrow]{r} \ar[twoheadrightarrow]{drr} & H^0(\mc{O}_X^N(\ell_0)) \otimes \mc{O}_{C \times X} \ar{r} & p_2^* \mc{O}_X^N(\ell_0) \ar[twoheadrightarrow]{r} & \wt{\mc{F}}_C(\ell_0) \\
+    & & \mc{G}_C(\ell_0) \ar[hookrightarrow]{u}.
+\end{tikzcd}
+\end{equation*}
+We know $\wt{\mc{F}}_C$ is flat over $C$ if and only if $t \colon \wt{\mc{F}}_C \to \wt{\mc{F}}_C$ is injective. Set $\mc{F}_C \coloneqq \wt{\mc{F}}_C / [[t^{\infty}]]$. Then we have 
+\begin{equation*}
+\begin{tikzcd}
+    0 \ar{r} & \mc{G}_C \ar{r} \ar{d} & \mc{O}_{C \times X}^N \ar{r} \ar[equals]{d} & \wt{\mc{F}}_C \ar{d} \ar{r} & 0 \\
+    0 \ar{r} & \mc{G}_C' \ar{r} & \mc{O}_{C \times X}^N \ar{r} & \mc{F}_C,
+\end{tikzcd}
+\end{equation*}
+But now $\mc{F}_C$ is flat.
+
+\begin{rmk}
+    We can replace $\mc{O}_X^N$ with any sheaf $\mc{H}$ on $X$ and consider quotients $\mc{H} \twoheadrightarrow \mc{F}$. Then $\mr{Quot}_{\mc{H}, p}^X \subseteq \mr{Quot}_{\mc{O}_X^N, p}^X$ is a closed subscheme. Here, we may assume that $\mc{H}$ is a quotient of $\mc{O}_X^N$ for some large enough $N$. This also shows that $\mr{Hilb}_X \subseteq \mr{Hilb}_{\P^n}$ is a closed subscheme for $X \subseteq \P^n$.
+\end{rmk}
+
+\begin{rmk}
+    We may also replace $X/k$ with $X \to S$ a projective morphism with $S$ quasi-projective. Then $\mr{Quot}^{X/S} \to S$ is a projective morphism. Also, we know $(\mr{Quot}^{X/S})_s = \mr{Quot}^{X_s}$.
+\end{rmk}
+
+Wew will now compute the tangent space of the Quot scheme. Here we are following chapter 6 of \textit{FGA explained}. We want to compute
+\[ T_{[\mc{O}_X^N \twoheadrightarrow F]} \mr{Quot} = \ms{Quot}_{\mc{O}_X^N \twoheadrightarrow F}(\Spec k[\ep]). \]
+\begin{thm}
+    The deformation functor $\mr{Def}_{\mc{O}_X^N \twoheadrightarrow F}$ has a tangent-obstruction theory given by
+    \[ T^1_{\mr{Def}} = \Hom_X(G, F), \qquad T^2 = \Ext_X^1(G, F), \]
+    where $G = \ker(\mc{O}_X^N \twoheadrightarrow F)$.
+\end{thm}
+
+We will prove the tangent part of the theorem. Consider the exact sequence
+\[ 0 \to (\ep) \to k[\ep] \to k \to 0. \]
+We have the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & G(\ep) \ar[hookrightarrow]{d} \ar{dr}{\alpha} & ? & G \ar[hookrightarrow]{d} \\
+    0 \ar{r} & \mc{O}_X^N(\ep) \ar{r} \ar[twoheadrightarrow]{d} & \mc{O}_{X[\ep]}^N \ar{r} \ar{dr}{\beta} & \mc{O}_X^N \ar{d} \\
+    & F(\ep) \ar{d} & ? & F \ar{d} \\
+    & 0 & & 0.
+\end{tikzcd}
+\end{equation*}
+We want $G', F'$ flat over $k[\ep]$ filling in the diagram. Remember flatness is equivalent to injectivity of multiplication by $\ep$. First we define $e \in \Ext_X^1(G, F)$. If $e = 0$, then we can fill in the diagram.
+
+\begin{rmk}
+    Let $A \to B \to C$ be a split exact sequence. Then the splittings are the same as $\Hom(C, A)$. 
+\end{rmk}
+
+Therefore, the possible ways to fill the diagram are the same as splittings of $e$, which are the same as $\Hom(G, F)$. We know that $\Im(\alpha) \subseteq \ker(\beta) \to G$. In particular, we have an exact sequence
+\[ 0 \to F(\ep) \to \ker(\beta) / \Im(\alpha) \to G \to 0. \]
+We will define $e \in \Ext_X^1(G, F)$ to be the class of this extension. We will omit checking that multiplication by $\ep$ is zero on this exact sequence.
+
+If $e = 0$, then choose some splitting $\xi \colon G \to \ker(\beta) / \Im(\alpha)$. We will construct a filling of the diagram. We will define $G'$ by the diagram
+\begin{equation*}
+\begin{tikzcd}
+    G' \ar[hookrightarrow]{r} \ar[twoheadrightarrow]{d} & \ker(\beta) \ar[hookrightarrow]{r} \ar[twoheadrightarrow]{d} & \mc{O}_{X[\ep]}^N \\
+    G \ar[hookrightarrow]{r}{\xi} & \ker(\beta) / \Im(\alpha).
+\end{tikzcd}
+\end{equation*}
+We will define $G'$ to be the preimage of $\xi(G)$. This gives us $G(\ep) \hookrightarrow G' \twoheadrightarrow G$ and of course $F'$ with $F(\ep) \to F' \to F$. Checking flatness is omitted.
+
+Conversely, given $G', F'$ filling the diagram, we know that $G = G' / \Im(\alpha) \subseteq \ker(\beta)/\Im(\alpha)$, and this splits the surjection $\ker(\beta) / \Im(\alpha) \twoheadrightarrow G$. It is not hard to check that these two constructions are inverses of each other.
+
+\section{Semistable sheaves}%
+\label{sec:semistable_sheaves}
+
+Given $p(t) \in \Q[t]$, we want to know which sheaves $F$ with $p_F = p$ are quotients of a given sheaf.
+\begin{rmk}
+    A family $\qty{F_{\alpha}}$ of sheaves is bounded if and only if there exists a sheaf $\mc{H}$ such that $\mc{H} \twoheadrightarrow F_{\alpha}$ and there are only finitely many Hilbert polynomials.
+\end{rmk}
+
+Let $X \subseteq \P^n$ be projective and $F$ coherent with $\Supp F \subseteq X$.
+\begin{defn}
+    $F$ is \textit{pure of dimension $d$} if for all nonzero subsheaves $E \subseteq F$, $\dim \Supp E = d$.
+\end{defn}
+Note that this is equivalent to saying that all associated points of $F$ have dimension $d$.
+
+\begin{exm}
+    If $Z \subseteq X$ is a subscheme of dimension $0$, then $\mc{O}_Z$ has pure dimension $0$. Also, if $j \colon C \to X$ is a curve and $L$ is a line bundle on $C$, then $j_* L$ is pure of dimension $1$.
+\end{exm}
+
+\begin{exm}
+    Let $X$ be integral and $\dim X = d$. Then $F$ is pure of dimension $d$ if and only if $F$ is torsion-free.
+\end{exm}
+
+Now define the \textit{torsion filtration} of $F$ as
+\[ 0 \subseteq T_0(F) \subseteq T_1(F) \subseteq \cdots \subseteq T_d(F) = F \]
+where $T_i(F)$ is the maximal subsheaf of dimension at most $i$. Note that $F/T_{d-1}(F)$ is pure of dimension $d$.
+
+Let $(X, H)$ be a polarization with $X$ projective over $k = \ol{k}$. If $E$ is a coherent sheaf, recall that 
+\[ p_E(t) = \chi(E(tH)) = \sum_{i=0}^{\dim E} \alpha_i(E) \frac{t^i}{2!} = \sum \chi(E|_{\bigcap_{j \leq i} H_j}) \binom{t+i-1}{i}, \]
+where $H_i \in \abs{H}$ are generic. We know $\alpha_0 = \chi(E)$. If $d = \dim E$, then $\alpha_d(E) > 0$. 
+
+\begin{rmk}
+    If $E = \mc{O}_X$, then $\alpha_d(\mc{O}_X) = H^d$ is the degree of $X$ with respect to $H$. We may now define the generalized rank of $E$ by $\frac{\alpha_d(E)}{\alpha_d(\mc{O}_X)}$. If $X$ is not irreducible, the generalized rank of $E$ may depend on the polarization.
+\end{rmk}
+
+\begin{rmk}
+    Using Grothendieck-Riemann-Roch, if $X$ is integral, then
+    \[ \frac{\alpha_d(E)}{\alpha_d(\mc{O}_X)} = \mr{rk}(E). \]
+\end{rmk}
+
+\begin{defn}
+    The reduced Hilbert polynomial $p(E)$ of $E$ is defined by
+    \[ p(E) \coloneqq \frac{p_E(t)}{\alpha_d(E)}. \]
+\end{defn}
+If we consider the lexicographic ordering on polynomials, we can make the following definition:
+\begin{defn}
+    A coherent sheaf $E$ on $X$ of dimension $\dim E = d$ is called \textit{(semi)stable} if $E$ is pure and for all $F \subsetneq E$, $p(F) < (\leq) p(E)$.
+\end{defn}
+
+\begin{rmk}
+    IT is enough to check semistability for so-called ``saturated'' subsheaves, which are those $F \subseteq E$ with $E/F$ pure of dimension $d$. Indeed, if $F \subseteq E \to G$ and $G$ is not pure, we can consider $T = T_{d-1}(G)$ and then $G/T$ is pure. We can then replace $F$ with $F'$, called the saturation of $F$ in $E$. Because saturating $F$ increases the Hilbert polynomial because $\alpha_d(F) = \alpha_d(F')$ and $\alpha_{d-1}(F) \leq \alpha_{d-1}(F')$, we can check semistability for saturated subsheaves.
+\end{rmk}
+
+\begin{lem}
+    It is enough to check pure quotients. Namely, for all $E \twoheadrightarrow G$ pure of dimension $d$, $E$ is (semi)-stable if and only if $p(E) < (\leq) p(G)$.
+\end{lem}
+We can check that
+\[ \alpha_d(F)(p(F) - p(E)) = \alpha_d(G)(p(E) - p(G)). \]
+
+\begin{prop}
+    Let $F, G$ be pure of dimension $d$ and semistable.
+    \begin{enumerate}
+        \item If $p(F) > p(G)$, then $\Hom(F, G) = 0$;
+        \item If $p(F) = p(G)$ and there exists a nonzero $f \colon F \to G$, then if $F$ is stable, $f$ is injective. If $G$ is stable, then $f$ is surjective.
+    \end{enumerate}
+\end{prop}
+
+\begin{rmk}
+    Even when $X$ is integral, stability depends on $H$ in general.
+\end{rmk}
+
+\begin{cor}
+    If $E$ is stable and $k = \ol{k}$, then $E$ is simple (which means $\End(E) = k$). Otherwise, $\End(E)$ is a finite-dimensional division algebra over $k$.
+\end{cor}
+
+\begin{proof}
+    Consider the image $E$ of $f$. By semistability, we have $p(F) \leq p(E) \leq p(G)$, and so a nonzero map cannot exist. For the second part, if $F$ is stable, consider the image $E \subseteq G$ again. If $f$ is not injective, then $p(F) < p(E)$, and this is impossible.
+\end{proof}
+
+\begin{exm}
+    Let $C$ be a curve of genus $g \geq 1$ and $L$ a line bundle of degree $d$. Consider $e \in H^1(\mc{O}_C) = \Ext^1(L, L)$. Then we have $0 \to L \to E \to L \to 0$, and $E$ is strictly semistable.
+\end{exm}
+
+\begin{exm}
+    Let $E$ be a vector bundle on $D$ such that $(\deg E, \on{rk} E) = 1$. Then if $E$ is semistable, then $E$ is stable.
+\end{exm}
+
+\subsection{Some filtrations}%
+\label{sub:some_filtrations}
+
+We will now discuss the Harder-Narasimhan filtration
+\begin{lem}
+    Let $E$ be a coherent sheaf pure of dimension $d$. Then there exists $F \subseteq E$ such that for all $G \subseteq E$, $p(F) \geq p(G)$ and if equality holds, then $G \subseteq F$. Moreover, $F$ is semistable and uniquely determined.
+\end{lem}
+
+\begin{defn}
+    The $F$ in the lemma is called the \textit{maximal destabilizing subsheaf} of $E$.
+\end{defn}
+
+\begin{proof}
+    Consider the ordering on the set of pairs $(F \subseteq E, p(F))$ where $(F, p(F)) \leq (F', p(F'))$ if $F \subseteq F'$ and $p(F) \leq p(F')$. This is clearly a nonempty set and every ascending subsequence of subsheaves has a maximal element. Among all maximal elements, choose one with minimal $\alpha_d > 0$. We will prove that $F$ is the desired maximal destabilizing subsheaf.
+
+    If not, there exists $G \subseteq E$ such that $p(G) \geq p(F)$. If $G \not\subseteq F$, then $F \subsetneq F + G$ and $G \cap F \subsetneq G$. By the maximality of $F$, we can asssume that $p(F) > p(F + G)$. We have the exact sequence
+    \[ 0 \to G \cap F \to F \oplus G \to F + G \to 0. \]
+    But now we have $p(F + G) < p(F)$ by assumption, but this means that $p(F \cap G) > p(G) \geq p(F)$, and this is a contradiction. Thus every $G' \subseteq E$ with $p(G') > p(F)$ defines a subsheaf $G \subseteq F$ with $p(G) > p(F)$.
+
+    Now let $G \subseteq F$ be a maximal subsheaf with $p(G) > p(F)$. Let $G \subseteq G' \subseteq E$ be maximal with respect to the ordering. By maximality of $G'$, we know that $p(G') \geq p(G) > p(F)$. We will now prove that $G' \not\subseteq F$. By $\alpha_d$-minimality of $F$, if $G' \subseteq F$, then $\alpha_d(G') < \alpha_d(F)$, and thus $G' \not\subseteq F$ by contradiction. This implies that $F \subsetneq F + G'$ and $G' \cap F \subsetneq G'$. By maximality of $F$, $p(F) > p(F + G')$. We assumed that $p(F) < p(G')$, and thus $p(G' \cap F) > p(G') \geq p(G)$, contradicting the maximality of $G$ in $F$.
+\end{proof}
+
+\begin{defn}
+    Let $E$ be pure of dimension $d$. A \textit{Harder-Narasimhan filtraton} of $E$ is an increasing filtration
+    \[ 0 \subseteq HN_1(E) \subseteq \cdots \subseteq HN_{\ell}(E) = E \]
+    such that
+    \begin{enumerate}
+        \item The graded pieces $HN_i / HN_{i-1}$ are semistable with reduced polynomials $p_i$.
+        \item We have $p_1 > p_2 > \cdots > p_{\ell}$.
+    \end{enumerate}
+\end{defn}
+
+\begin{exm}
+    If $E$ is semistable, then $0 \subseteq E_1 = E$ is a Harder-Narasimhan filtration.
+\end{exm}
+
+\begin{exm}
+    Consider $L_1, L_2$ line bundles of degrees $d_1 \geq d_2$. Then $\Ext^1(L_2, L_1) = H^1(L_1 \otimes L_2^{\vee}) \neq 0$. Considering a nontrivial extension
+    \[ 0 \to L_1 \to E \to L_2 \to 0, \]
+    note that $E$ is unstable and $0 \subseteq L_1 \subseteq E$ is a Harder-Narasimhan filtration.
+\end{exm}
+
+\begin{thm}
+    Let $E$ be pure of dimension $d$. Then there exists a unique Harder-Narasimhan filtration.
+\end{thm}
+
+\begin{proof}
+    We induct on $\alpha_d(E)$. We may assume that $E$ is unstable. Otherwise, let $E_1 \subseteq E$ be the maximal destabilizing subsheaf. Then we consider $E/E_1$ and $\alpha_d(E/E_1) < \alpha_d(E)$. By induction, we have a Harder-Narasimhan filtration
+    \[ 0 \subseteq G_1 \subseteq \cdots \subseteq G_k = G = E / E_1 \]
+    such that $p(G_1) > p(G_2 / G_1) > \cdots p(G_k / p(G_{k-1}))$. Set $E_{i+1} = \pi^{-1}(G_i)$ under $\pi \colon E \to E/E_1$. But now we have $p(E_2 / E_1) = p(G_1), p(E_3/E_2) = p(G_2/G_1), \ldots$, and this gives us
+    \[ E_1 \subseteq E_2 \subseteq \cdots. \]
+    We only need to check that $p(E_1) > p(E_2 / E_1)$. By the maximality of $E_1$, we know that $p(E_1) > p(E_2)$, and this gives the desired result.
+
+    Now let $E_{\bullet}, E'_{\bullet}$ be two Harder-Narasimhan filtrations. Then we know $E_1, E_1' \subseteq E$, and we may assume that $p(E_1') \geq p(E_1)$. Let $j$ be the minimum integer such that $E_1' \subseteq E_j$. But now the map $E_1' \to E_j / E_{j-1}$ is nonzero, and source and target are both semistable, so $p(E_1') \leq p(E_j / E_{j-1}) < p(E_1)$, and the last inequality holds unless $j = 1$. By assumption, we know $E_1' \subseteq E_1$ and $p(E_1) = p(E_1')$. Reversing the argument, we see that $E_1 \subseteq E_1'$, so $E_1 = E_1'$. This proves uniqueness of the maximal destabilizing subsheaf, and by induction, the two filtrations on $E/E_1$ are the same, so $E_{\bullet} = E'_{\bullet}$.
+\end{proof}
+
+We will now move on to another filtration:
+\begin{defn}
+    Let $E$ be a semistable sheaf pure of dimension $d$. Then a \textit{Jordan-H\"older filtration} for $E$ is an increasing filtration
+    \[ 0 = E_0 \subseteq E_1 \subseteq \cdots \subseteq E_{\ell} = E \]
+    such that $\mr{gr}_i(E) = E_i / E_{i-1}$ is \textbf{stable} with $p(\mr{gr}_i(E)) = p(E)$.
+\end{defn}
+
+\begin{exm}
+    If $0 \to L \to E \to L \to 0$ is a nontrivial extension of a line bundle $L$ by itself, this gives a Jordan-H\"older filtration. Also, $E = L^{\oplus n}$ shows that the filtration is not unique in general.
+\end{exm}
+
+\begin{prop}
+    Jordan-H\"older filtrations exist and
+    \[ \mr{gr}_{JH}(E) \coloneqq \bigoplus \mr{gr}_i(E) \]
+    is unique up to isomorphism.
+\end{prop}
+
+\begin{proof}
+    We induct on $\alpha_d(E) > 0$. If $E$ is stable, we are done. Otherwise, there exists $F \subseteq E$ such that $p(F) = p(E)$ and $\alpha_d(F) \leq \alpha_d(E)$. This inequality must be strict because otherwise $p_F(t) = p_E(t)$ and thus $F = E$. Therefore, there exists a subsheaf $F \subseteq E$ with $p(F) = p(E)$ and minimal $\alpha_d(F)$, and this must be stable. By induction, $E/F$ is semistable with the same reduced Hilbert polynomial, and so by induction, it has a Jordan-H\"older filtration. Pulling back to $E$, we obtain the filtration on $E$. 
+
+    The proof of uniqueness is omitted.\footnote{Because there are many things that Giulia wants to do this semester.} The outline is similar to the case of the Harder-Narasimhan filtration, but the actual argument is different.
+\end{proof}
+
+\subsection{Boundedness}%
+\label{sub:boundedness}
+
+We will prove boundedness of semistable sheaves with a fixed Hilbert polynomial in the case of a smooth projective surface (because we will be using this result for K3 surfaces only). Note that this proof will only work for surfaces.
+
+Recall that for a smooth projective surface $X$ with polarization $H$ and a sheaf $E$ of rank $r$, Riemann-Roch says that
+\[ \chi(E) = \frac{1}{2} (c_1(E)^2 - c_1(E) \cdot K_X) - c_2(E) + r \chi(\mc{O}_X). \]
+This implies that
+\[ p_E(t) = \frac{r}{2} H^2 t^2 + \qty(c_1(E) \cdot H - \frac{r}{2} H \cdot K_X) \cdot t + \chi(E). \]
+Thus the coefficients of $p(E)$ are determined by $\frac{c_1(E) \cdot H}{r}$ and $\frac{\chi(E)}{r}$ if $E$ is pure of dimension $2$.
+
+\begin{defn}
+    Let $E$ be pure of dimension $2$. Then define the \textit{slope} of $E$ by
+    \[ \mu(E) = \frac{c_1(E) \cdot H^{n-1}}{\mr{rk}(E)}. \]
+\end{defn}
+
+This gives a notion of slope-stability. It is a fact that slope-stability implies Gieseker stability which implies Gieseker semistability, which implies slope-semistability.
+
+\begin{rmk}
+    There exists a maximal destabilizing subsheaf $F \subseteq E$, and we denote $\mu(F) \eqqcolon \mu_{\mr{max}}(E)$.
+\end{rmk}
+
+\begin{rmk}[Rudakov]
+    We can define stability for any abelian category $\mc{C}$ with a preorder $\leq$. Then we can define stability with respect to $\leq$, and in this case we obtain a Schur Lemma. Under certain finiteness assumptions (where $\mc{C}$ is weakly Artinian or weakly Noetherian with respect to $\leq$), we obtain Harder-Narasimhan filtrations or Jordan-H\"older filtrations.
+\end{rmk}
+
+\begin{exm}
+    King-stability for quiver representations is an example of such a stability condition.
+\end{exm}
+
+\begin{thm}
+    Let $(X, H)$ be a smooth projective polarized surface and $p(t) \in \Q[t]$. Then there exist $N,\ell$ only depending on $(X, H)$ and $p(t)$ such that any slope-semistable $F$ is a quotient $\mc{O}_X^N(-\ell) \twoheadrightarrow F$.
+\end{thm}
+
+\begin{rmk}
+    Note that twisting by $\mc{O}_X(\ell H)$ does not affect (semi)-stability. Therefore the theorem gives boundedness of slope-semistable sheaves with fixed Hilbert polynomial (because they live in the Quot scheme).
+\end{rmk}
+
+We will actually prove a slightly stronger result which allows us to use induction.
+\begin{thm}
+    Let $(X, H)$ and $p(t) \in \Q[t]$ as above and fix $\mu \in \Q$. Then there exists $N, \ell$ only depending on $(X,H), p, \mu$ such that for all $c \geq 0$ and any pure dimension $2$ sheaf $F$ with Hilbert polynomial $p_F = p + c$ and such that $\mu_{\mr{max}}(F) \leq \mu$, $\mc{O}_X^N \twoheadrightarrow F(\ell)$. Moreover, the set of possible $c$ (and hence of possible $p_F$) is finite.
+\end{thm}
+
+\begin{proof}
+    We will induct on the rank of $F$. Let $F$ be such that $p_F = p + c$ for $c \geq 0$ and $\mu_{\mr{max}}(F) \leq \mu$. First we find a uniform $\ell$ such that $h^0(F(\ell)) \neq 0$. Using Riemann-Roch, we will have
+    \[ h^0(F(\ell)) + h^2(F(\ell)) \geq p_F(\ell) \geq p(\ell). \]
+    By Serre duality, $h^2(F(\ell)) = \dim \Hom(F, K_X(-\ell))$.
+
+    First, we claim that there exists a uniform $\ell$ such that $\dim \Hom(F, K_X(-\ell)) = 0$. If we consider
+    \begin{equation*}
+    \begin{tikzcd}
+        0 \ar{r} & G \ar{r} & F \ar{r}{\varphi} \ar{dr} & K_X(-\ell) \\
+        & & & E \ar[hookrightarrow]{u}
+    \end{tikzcd}
+    \end{equation*}
+    where $E$ has rank $1$, then $c_1(E) \cdot H \leq (K_X - \ell H) \cdot H$, and thus
+    \[ \mu(G) = \frac{c_1(G) \cdot H}{r-1} \geq \frac{1}{r-1} (r \mu(F) + \ell H^2 - H \cdot K_X) > \mu. \]
+    In particular, $\mu(G) \leq \mu_{\mr{max}}(F) < \mu$, so we can fix $\ell$ such that $h^0(F(\ell)) \neq 0$. If we consider
+    \[ \mc{O}_X \xrightarrow{s} F(\ell) \to Q, \]
+    we can saturate this and obtain
+    \[ \mc{H} \to F(\ell) \to Q/\mr{Tors} \eqqcolon G. \]
+    We know that $\mc{H}$ is rank $1$ and torsion free, so $\mc{H} = \mc{L} \otimes \mc{I}_Z$, where $\dim Z = 0$ and $\mc{L}$ is a line bundle. This is because $0 \to \mc{H} \hookrightarrow \mc{H}^{\vee \vee}$, and reflexive sheaves are locally free in codimension $3$ and the cokernel is supported in codimension $2$.
+
+    Now we have $h^0(\mc{H}(\ell)) \neq 0$, and thus $H^0(\mc{L}(\ell)) \neq 0$. Write $\mc{L}(\ell) = \mc{O}(D)$ with $D$ effective. Then 
+    \[ -\ell H^2 \leq \mu(H) = D \cdot H - \ell H^2 \leq \mu, \]
+    so there are only finitely many possibilities for $c_1(D)$ (because we have bounded $D \cdot \text{ample}$). In particular, this means there are only finitely many possibilities for $c_1(G)$ and thus for $\mu(G)$. In fact, we can uniformly bound $\mu_{\mr{max}}(G)$ because for any $G' \subseteq G$, we can produce
+    \[ 0 \to \mc{H} \to F' \to G' \to 0 \]
+    and $\mu(F')$ is bounded.
+
+    Now $G$ has rank $r-1$ and slope $\mu_{\mr{max}}(G) \leq \mu'$, where $\mu'$ is uniform. Thus
+    \begin{align*}
+        p_G &= p_F - p_{\mc{H}} \\
+        &= p_F - p_{\ell} + \deg Z \\
+        &= p - p_{\ell} + c + \deg Z \\
+        &= p' + c'
+    \end{align*}
+    for some $p', c'$. By induction, there exist uniform $N', \ell'$ such that $\mc{O}_X^{N'} \twoheadrightarrow G(\ell')$. Moreover, there exist finitely many possible $c'$ and thus finitely many $\deg Z$. Applying the theorem to $\mc{H}$ (that there are finitely many $c_1(\mc{H})$ and $\deg Z$), we have a surjection $\mc{O}_X^{N''} \twoheadrightarrow \mc{H}(\ell')$. Because such $\mc{H}$ form a bounded family, we can assume that $H^1(\mc{H}(\ell')) = 0$. Thus we have 
+    \[ 0 \to H^0(\mc{H}(\ell')) \to H^0(F(\ell')) \to H^0(G(\ell')) \to 0. \]
+    Now we lift the $N'$ sections on the right and consider the $N''$ sections on the right, and we get $\mc{O}_X^{N'''} \twoheadrightarrow F(\ell')$.
+
+    It remains to prove the rank $1$ case. We will prove that give $(X, H), p(t)$ (here $\mu_{\mr{max}} = \mu$ because we are in the rank $1$ case), there exist $N, \ell$ such that if $\mc{H}$ has rank $1$ and $p_{\mc{H}} = p + c$ for $c \geq 0$, then $\mc{O}_X^N \twoheadrightarrow \mc{H}(\ell) \to 0$. We know that $\mc{H} = \mc{L} \otimes \mc{I}_Z$. By Riemann-Roch, there exists $\ell$ such that $H^0(\mc{H}(\ell)) \neq 0$. Fixing such an $\ell$, we know that
+    \[ D \cdot H = \mc{L} \cdot H + \ell H^2, \]
+    and so there are only finitely many possibilities for $c_1(\mc{H})$. Using Riemann-Roch again, we know
+    \[ \frac{1}{2} [c_1(\mc{H})^2 - c_1(\mc{H}) \cdot K_X] - \deg Z + \chi(\mc{O}_X) = \chi(\mc{H}) = p(0) = p(0) + c, \]
+    and therefore there are only finitely many possible $\deg Z$.
+\end{proof}
+
+\begin{prop}
+    The conditions of Gieseker (semi)stability and slope-semistability are open in families.
+\end{prop}
+
+\begin{proof}[Sketch]
+    Consider $\mc{F}$ on $X \times B$. Then consider a destabilizing quotient $\mc{F}_b \twoheadrightarrow G$. Suppose you prove that there exist only finitely many possible Hilbert polynomials $p_i$. We then consider the relative Quot schemes
+    \[ \mr{Quot}_{X \times B / B, p_i}^{\mc{F}} \to B, \]
+    which are proper over $B$. Studying this morphism, we obtain the desired result.
+\end{proof}
+
+\section{Moduli of sheaves}%
+\label{sec:moduli_of_sheaves}
+
+\begin{defn}
+    Two pure sheaves $F, F'$ of dimension $d$ on $(X, H)$ are called \textit{$S$-equivalent} if the associated graded pieces $\mr{gr}^{\mr{GH}}(F) \simeq \mr{gr}^{\mr{JH}}(F')$ are the same. Here, the ``S'' apparently stands for Seshadri.
+\end{defn}
+
+\begin{defn}
+    A \textit{polystable sheaf} is a direct sum $\bigoplus F_i$, where the $F_i$ are stable and $p(F_i) = p(F_j)$ for all $i, j$.
+\end{defn}
+
+Note that we cannot separate $S$-equivalent sheaves. More precisely, consider the following example.
+\begin{exm}
+    Suppose that $F_1, F_2$ are stable with $p(F_1) = p(F_2)$ and suppose that there exists a nontrivial extension
+    \[ 0 \to F_1 \to F \to F_2 \to 0. \]
+    Clearly $F$ is semistable. We will show that there exists a flat family $\mc{F}$ on $\A^1 \times X$ such that for all $t \neq 0$, $\mc{F}_t = F$ and for $t = 0$, $\mc{F}_0 = F_1 \oplus F_2$. This will tell us that if there is a separated moduli space, then $F_1 \oplus F_2$ and $F$ must be the same closed point.
+
+    Consider the second projection $p_2 \colon \A^1 \times X \to X$. Then if we consider $i_0 \colon \qty{0} \times X \hookrightarrow \A^1 \times X$, the exact sequence
+    \[ 0 \to \mc{F} \to p_2^* F \twoheadrightarrow i_{0*} F_2 \]
+    will define the desired family $\mc{F}$.
+\end{exm}
+
+By boundedness of semistable sheaves with a fixed Hilbert polynomial, there exists $m$ such that all such cheaves are $m$-regular (they become Castelnuovo-Mumford regular after twisting with $\mc{O}(m)$). We will now denote $\alpha_d(F)$ by $r$, and now all sheaves with $0 < r' < r$ and the same reduced Hilbert polynomial are also $m$-regular. We will now fix $m$ and set $N = p(m)$. Then we have a surjection $\mc{O}_X^N(-m) \twoheadrightarrow F$. We may now consider the Quot scheme
+\[ \mr{Quot}^{N_m} \subseteq \mr{Grassmannian}. \]
+Recall that the map to the Grassmannian was determined by
+\[ 0 \to p_{1*} G(\ell) \to p_{1*}(\mc{O}_X^N(\ell - m)) \to p_{2*}(\mc{F}(\ell)) \to 0, \]
+which gave $H^0(G(\ell)) \subseteq H^0(\mc{O}_X^N(\ell - m))$. In particular, we have
+\[ \det (p_{2*} \mc{F}(\ell)) = i_{\ell}^* (\text{Pl\"ucker}), \]
+and so $\mc{L}_{\ell} \coloneqq \det p_{2*} \mc{F}(\ell)$ is very ample. Now write $\mc{H} = \mc{O}_X^N(-m)$ for shorthand. Then $\rho \in \mr{Quot}$ is really a map $\mc{H} \to F$. Now define
+\[ R = \qty{F \text{ semistable} \mid h^0(\rho(m)) \text{ is an isomorphism}} \]
+and consider $R^s \subseteq R$ the locus of stable $F$. Let $V \coloneqq k^N$. We know that $R$ is preserved by the natural action of $GL(V)$ because $g$ acts by
+\[ V \otimes \mc{O}(-m) \xrightarrow{g} V \otimes \mc{O}(-m) \xrightarrow{\rho} F, \]
+and so $g \circ \rho = \rho \circ g$.
+
+\begin{lem}
+    Let $\rho \in \mr{Quot}$ such that $F(m)$ is globally generated. Then if $h^0(\rho(m))$ is an isomorphim, the stabilizer of $\rho$ is actually $\Aut(F) \subseteq GL(V)$.
+\end{lem}
+
+We need to understand this $GL(V)$-action and why there is an natural linearization. On $GL(V)$, there exists a ``universal automorphism'' $\tau \colon V \otimes \mc{O}_{GL(V)} \to V \otimes \mc{O}_{GL(V)}$. On $GL(V) \times \mr{Quot}$, we have
+\[ p_2^* \mc{H} \xrightarrow{p_1^* \tau} p_2^* \mc{H} \to p_2^* \mc{F}, \]
+and this gives another quotient, and thus defines a map $\sigma \colon GL(V) \times \mr{Quot} \to \mr{Quot}$. By the universal property, we have $p_2^* \mc{F} = \sigma^* \mc{F}$ and thus a linearization of the action. Because all natural constructions of $GL(V)$-linearized sheavs are naturally $GL(V)$-linearized, we know $\det p_{1*} \mc{F}(\ell) = \mc{L}_{\ell}$ is also linearized. Now we have $\ol{R}$ with the linearized line bundle $\mc{L}_{\ell}$ for $G = SL(V)$, so we can form the GIT quotient.
+
+\begin{thm}
+    For $\ell$ sufficiently large,
+    \begin{enumerate}
+        \item $\rho \in \ol{R}$ is GIT semistable if and only if $F$ is semistable;
+        \item $\ol{GL(V) \cdot F} \cap \ol{GL(V) \cdot F'} \neq \emptyset$ if and only if $F, F'$ are $S$-equivalent.
+        \item $F$ is polystable if and only if $SL(V) \cdot \rho \subseteq R$ is closed.
+    \end{enumerate}
+\end{thm}
+
+Recall that for $G$ a reductive group acting on projective $X$ and a $G$-linearized ample line bundle $L$ on $X$, the GIT quotient $X \sslash G$ is given by $X^{ss}(L) / G$. Recall that points of $X \sslash G$ correspond to equivalence classes of orbits and that $X \sslash G$ is projective. Also recall that one can explicitly determine GIT semistability using the Hilbert-Mumford criterion. This says that $x \in X$ is semistable if and only if for all $\lambda \colon \mathbb{G}_m \to G$, the number $m(x, \lambda) \geq 0$. This $m(x, \lambda)$ is determined by considering $\lim_{t \to 0} \lambda(t) \cdot x \eqqcolon x_0$ and considering the weight of $\mathbb{G}_m$ on the fiber above $x_0$. Then $m(x, \lambda)$ is defined to be $- \text{weight}$.
+
+Now consider $\rho \colon V \otimes \mc{O}_X(-m) \to F \in \ol{R}$. Let $\lambda \colon \mathbb{G}_m \to SL(V)$ be a one-parameter subgroup. This is determined by its weight decomposition $V = \bigoplus V_n$. Define a filtration on $V$ by $V_{\leq n} = \bigoplus_{m \leq n} V_m$. This determines a filtration 
+\[ F_{\leq n} = \rho(V_{\leq n} \otimes \mc{O}_X(-m)) \subseteq F. \]
+\begin{lem}\leavevmode
+    \begin{enumerate}
+        \item We have $\lim_{t \to 0} \lambda(t) \rho = \rho_0$, where 
+            \[ \rho_0 \colon \bigoplus V_{\leq n+1} / V_{\leq n} \otimes \mc{O}_X(-m) \to \bigoplus F_{\leq n+1} / F_{\leq n}. \]
+        \item The weight of $\mathbb{G}_m$ on $(\mc{L}_{\ell})_{\rho_0}$ is given by $\sum n p_{F_n}(\ell)$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    For $\ell \gg 0$, formation of $\mc{L}_{\ell}$ commutes with base change, and so
+    \[ (\mc{L}_{\ell})_{\rho_0} = \det \qty( \bigoplus p_{2*} F_n(\ell)) = \bigotimes \det (p_{2*} F_n(\ell)). \]
+    Assuming that there is no higher cohomology, this has dimension  $\dim H^0(F_n(\ell)) = p_{F_n}(\ell)$. But now the action of $\mathbb{G}_m$ here is given by $n \cdot h^0(F_n(\ell))$.
+
+    We will now sketch the first part. Consider the map $\mathbb{G}_m \to \mr{Quot}$ given by $\lambda(t) \cdot \rho$. By properness, this extends to a map $\A^1 \to \mr{Quot}$. Now $\rho \colon V \oplus \mc{O}_X(-m) \to F$ defines a sheaf $F \otimes k[t, t^{-1}]$, and we want to extend this to $\A^1$.
+
+    First, define
+    \[ \mc{V} \coloneqq \bigoplus V_{\leq n} \cdot t^n \subseteq V \otimes k[t, t^{-1}]. \]
+    This is the same as $V \otimes k[t]$, where $v \otimes 1 \mapsto v \otimes t^n$ if $v \in V_n$. Now multiplication by $t$ on each piece is just the natural inclusion $V_{\leq n} \to V_{\leq n+1}$. Thus the fiber of $\mc{V}$ above $0$ is naturally the direct sum $\bigoplus V_{\leq n+1} / V_{\leq n}$. Similarly, we define the sheaf
+    \[ \mc{F} \coloneqq \bigoplus F_{\leq n} \otimes t^n \subseteq F \otimes t^{-N} k[t] \]
+    on $\A^1 \times X$, and it is easy to see that $\mc{F}_0 = \bigoplus F_n$.
+\end{proof}
+
+We now assume that $\sum n \dim V_n = 0$. This tells us that
+\begin{align*}
+    \mr{wt}(\mc{L}_{\ell}, \rho_0) &= \sum n p_{F_n}(\ell) \\
+    &= \frac{1}{\dim V} \qty(\sum n (\dim V p(F_n, \ell) - \dim V_n p(F, \ell))) \\
+    &= - \frac{1}{\dim V} \qty(\sum \dim V p(F_{\leq n}, \ell) - \dim V_{\leq n} p(F, \ell)).
+\end{align*}
+Now for all $V' \subseteq V$, define $F' = \rho(V' \otimes \mc{O}_X(-m)) \subseteq F$, and for all $F' \subseteq F$, define $V' = \rho^{-1} H^0(F'(m))$. We now want to reformulate the Hilbert-Mumford criterion.
+
+\begin{lem}
+    $\rho \in \ol{R}$ is GIT semistable if and only if for all $V' \subseteq V$, $\vartheta(V') \geq 0$, where
+    \[ \vartheta(V') = \dim V \cdot p(F', \ell) - \dim V' \cdot p(F, \ell). \]
+\end{lem}
+
+The next step is to translate this in terms of subsheaves $F' \subseteq F$ and their Hilbert polynomials. Here, we want 
+\[ \dim V \cdot p(F') \leq \dim V' \cdot p(F). \]
+By a theorem of Le Potier characterizing semistability, we consider $\frac{h^0(F(m))}{r}$.
+
+\begin{thm}[Le Potier]
+    Fix $p \in \Q[t]_d$ and a multiplicity $r$. Then there exists $m \gg 0$ such that for all sheaves $F$ pure of dimension $d$ with $\alpha_d(F) = r$ and $p_F = rp$, the following are equivalent:
+    \begin{enumerate}
+        \item $F$ is semistable.
+        \item $rp(m) \leq h^0(F(m))$ and for all $F' \subseteq F$, $\frac{h^0(F'(m))}{r'} \leq p(m)$.
+    \end{enumerate}
+\end{thm}
+
+Modulo actually proving anything, we now have semistability. It remains to discuss the orbit closures. Consider a semistable $(F, \rho)$. Then we know that $(\mr{JH}(F), \mr{JH}(\rho)) \in \ol{SL(V) \cdot \rho}$. It is enough to show that orbits of polystable sheaves are closed in $R$.
+
+\begin{lem}
+    Consider a sheaf $\mc{E}$ on $C \times X$ flat over $C$ and suppose that $F = \bigoplus F_i^{n_i}$ is polystable. Suppose that $\mc{E}_t = F$ for $t \neq 0$ and that $\mc{E}_0$ is semistable. Then $\mc{E}_0 = F$.
+\end{lem}
+
+To prove this lemma, consider the upper semicontinuous function $t \mapsto \mr{hom}(F_i, \mc{E}_t)$. But then the map
+\[ \bigoplus F_i \otimes \Hom(F_i, \mc{E}_0) \to \mc{E}_0 \]
+is injective, and this gives us the desired inequality.
+
+Now consider $R^s \subseteq R$. We know that $R^s \sslash SL(V) \subseteq R \sslash SL(V) \eqqcolon M$ is open, and that $M$ is projective by GIT quotient. We know that $R^s \to R^s \sslash SL(V)$ is a geometric quotient and that $R \to R \sslash SL(V)$ is a good quotient. Also, closed points are the same as $S$-equivalence classes of semistable sheaves while points of $R^s$ are isomorphism classes of stable sheaves. Now recall the functor $\mc{M} \colon \ms{Sch}/k^{\mr{op}} \to \ms{Set}$ sending a scheme $S$ to isomorphism classes of $F$ on $S \times X$ flat over $S$ with the correct Hilbert polynomial and semistable. Here, $F \sim F'$ is there exists $L \in \Pic(S)$ such that $F = p_1^* L \otimes F'$.
+
+\begin{thm}
+    The moduli spaces $M$ (resp. $M^s$) universally corepresent $\mc{M}$ (resp. $\mc{M}^s$).\footnote{This means that $M$ is a coarse moduli space for $\mc{M}$.}
+\end{thm}
+
+\begin{rmk}
+    If there exist strictly semistable sheaves, then $M$ is not a fine moduli space for $\mc{M}$.
+\end{rmk}
+
+We now try to salvage existence of a universal family on $M^s$ (which is not always possible).
+\begin{defn}
+    A sheaf $\mc{E}$ on $M^s \times X$ flat over $M^s$ is a \textit{universal family} if for all $S$-flat families of stable sheaves $F$ with Hilbert polynomial $p$, there exists $L \in \Pic S$ such that $\phi_F^*(\mc{E}) = F \otimes p_1^* L$. The family is \textit{quasi-universal} if there exists a locally free $W$ such that $\phi_F^*(\mc{E}) = F \otimes p_1^* W$.
+\end{defn}
+
+Now consider a coherent sheaf $\mc{E}$ on $R^s$. This descends to $R^s \sslash GL(V)$ if and only if the action of $\mathbb{G}_m \subseteq GL(V)$ is trivial on $\mc{E}_x$ for all $x \in R^s$. We know that on $R^s \times X$, we have the universal sheaf $\wt{\mc{F}}$. Clearly this does not descent because of the morphism $\Aut(F) \to GL(V)$, so the action is nontrivial. For $\ell \gg 0$, the sheaf
+\[ A_{\ell} \coloneqq p_{1*}(\wt{\mc{F}} \otimes \mc{O}_X(\ell)) \]
+is locally free and $\mathbb{G}_m$-linear if weight $0$. Thus the sheaf $\Hom(p_1^* A_{\ell}, \wt{\mc{F}})$ descends to $M^s \times X$. We claim that this is a quasi-universal family.
+
+\subsection{Determinantal line bundles}%
+\label{sub:determinantal_line_bundles}
+
+Let $X$ be smooth and projective and let $K(X)$ be the Grothendieck group of coherent sheaves on $X$. Of course, this is a ring, and it has a quadratic form
+\[ \chi(a \cdot b) = \int_X \mr{ch}(a) \mr{ch}(b) \mr{td}(X). \]
+We may also consider the numerical Grothendieck group $K_{\mr{num}}(X)$ by quotienting out by the kernel of the quadratic form.
+
+Now suppose that $X \to Y$ is a smooth projective morphism of relative dimension $n$ and $F$ is coherent on $X$ and flat over $Y$. Then there exists a locally free resolution $F_{\bullet} \to F$ of length $n$ which computes higher direct images. What we mean by this is that 
+\[ R^i f_* F_j = \begin{cases}
+    0 & i \leq n \\
+    \text{locally free} & i = n.
+\end{cases}
+\]
+Also, we have $\mc{H}^{n-i}(F^n f_* F_{\bullet}) = R^i f_* F$. Then we have
+\begin{align*}
+    \det (R f_* F) &= \bigotimes \det(R^n f_* F_i)^{(-1)^i} \\
+    &= \bigotimes \det (R^i f_* F)^{(-1)^i}.
+\end{align*}
+Now consider $\mc{E}$ on $S \times X$ flat over $S$ and consider $\lambda_{\mc{E}} \colon \mc{Coh}(X) \to \Pic S$ given by
+\[ F \mapsto \det(R p_{1*} (p_2^* F \otimes \mc{E})). \]
+$\lambda_{\mc{E}}$ satisfies certain properties. The most important for us right now concerns a rank $r$ locally free sheaf $W$ on $S$. Here, we have
+\[ \lambda_{\mc{E} \otimes p_1^* W}(u) = \lambda_{\mc{E}}(u)^r \otimes \det W^{\chi(c \cdot u)}, \]
+where $c$ is the class of $\mc{E}_s$, for all $u \in K(X)$. This gives us a map 
+\[ K_{\mr{num}}(X) \supseteq c^{\perp} \to \Pic(M^s). \]
+For a K3 surface, we can do this on integral cohomology, and then $H^2(M_v, \Z) = v^{\perp}$ as Hodge structures.
+
+\subsection{Mukai's theorem}%
+\label{sub:mukai_s_theorem}
+
+\begin{thm}
+    Let $X$ be projective over $k$, where $k$ is algebraically closed and of characteristic $0$. If $F$ is a stable sheaf on $X$ and $M$ is the moduli space containing $F$, then $\wh{\mc{O}}_{M, F}$ pro-represents $\mr{Def}_F$. Moreover, 
+    \[ T_{[F]} M = \Ext^1(F, F) \xrightarrow{T \det} T_{[\det F]} \Pic(X) = H^1(X, \mc{O}_X) \]
+    is the trace map. In adddition, for any small extension
+    \[ 0 \to I \to \wt{A} \to A \to 0, \]
+    we have $\tr(\mr{ob}(F_A, \wt{A}, A)) = \mr{ob}(\det F_A, \wt{A}, A)$. Also, $\mr{Def}_F$ has a tangent-obstruction theory given by $T^1 = \Ext^1(F, F)$ and $T^2 = \Ext^2(F, F)_0$.
+\end{thm}
+
+\begin{cor}
+    If $F$ is stable and $X$ is a surface with $\omega_X = \mc{O}_X$, then $M$ is smooth at $[F] \in M$.
+\end{cor}
+
+\begin{proof}
+    Here, we know that $\Ext^2(F ,F) \simeq H^2(X, \mc{O}_X)$ is $1$-dimensional, ans thus the trace morphism has no kernel, so deformations are unobstructed.
+\end{proof}
+
+\begin{proof}[Proof of theorem]
+The result about the tangent-obstruction theory of a coherent sheaf is due to Maruyama, Mukai, and Artamkin, and there is a generalization of Lieblich for complexes and for a morphism $X \to S$. 
+
+Next, if $F$ is stable, then $\mr{Def}_F$ is pro-representable. If $F$ is only polystable, then $\mr{Def}_F$ has a hull. Here, we have a map $\mr{Def}_F \to \wh{\mc{O}}_{M, F}$ and $\mr{Quot} \supseteq R^s \to M^2$, and then we use Luna's \'etale slice. First, there there exists $F \in V \subseteq \mr{Quot}$ that is $\Aut(F)$-invariant such that $V \sslash \Aut(F)$ is locally isomorphic to $(M, F)$, and this constructs an inverse when $F$ is stable.
+
+We now want to consider the trace map. If $E$ is locally free, then $\Ext^i(E, E) = H^i(\mr{End}(E))$, and this clearly has a trace map to $H^i(\mc{O}_X)$. We also have the inclusion
+\[ \mc{O}_X \xrightarrow{\delta} \End(E) \xrightarrow{\mr{tr}}(E) \mc{O}_X, \]
+and this induces multiplication by the rank of $E$ on cohomology. For any $E$, choose a locally free resolution $E^{\bullet} \to E$. Then
+\[ \Ext^i(E, E) = \mathbb{H}^i(\Hom(E^{\bullet}, E^{\bullet})), \]
+and now we have the maps
+\[ \mc{O}_X \xrightarrow{\delta} \Hom(E^{\bullet}, E^{\bullet}) \xrightarrow{\tr} \mc{O}_X. \]
+Now we want to compute deformation of $F$ on $k[\ep]$. Here, we have a short exact sequence
+\[ 0 \to F \to F_{\ep} \to F \to 0. \]
+But now there exists a splitting $k \to k[\ep]$, and so we have an element of $\Ext^1_X(F, F)$. Conversely, given any extension
+\[ 0 \to F \to \mc{F} \to F \to 0, \]
+we declare the multiplication by $\ep$ to be $\mc{F} \to F \to \mc{F}$.
+
+We now consider obstructions. Up to tensoring by $\mc{O}(m)$, we can assume that $H^i(F) = 0$ for all $i > 0$. Then declare $V = H^0(F)$ and $\mc{H} = V \otimes \mc{O}_X$. Then we have a short exact sequence
+\[ 0 \to G \to \mc{H} \to F \to 0. \]
+Because $\mc{H}$ is locally free and $X$ is smooth, then $dh(G) = \max \qty{0, dh(F) - 1}$. Applying $\Hom(-, F)$, we now have
+\begin{equation*}
+\begin{tikzcd}
+    0 \ar{r} & \Hom(F, F) \ar{r} & \Hom(\mc{H}, F) \ar{r} & \Hom(G, F) \ar[out=-20, in=160]{dll} \\
+    & \Ext^1(F, F) \ar{r} & \Ext^1(\mc{H}, F) \ar{r} & \Ext^1(G, F) \ar{r} & \Ext^2(F, F) \ar{r} & 0.
+\end{tikzcd}
+\end{equation*}
+Becuase $\Ext^1(\mc{H}, F) = 0$ and $\Ext^1(G, F)$ is the obstruction space for the Quot scheme, we have the desired expression for the obstruction. We will in fact give a different proof. For
+\[ 0 \to I \to \wt{A} \to A \to 0, \]
+we have the following diagram:
+\begin{equation*}
+\begin{tikzcd}
+    & I \ar[equals]{r} \ar{d} & I \ar{d} \\
+    0 \ar{r} & \wt{\mf{m}} \ar{r} \ar{d} & \wt{A} \ar{r} \ar{d} & k \ar[equals]{d} \\
+    0 \ar{r} & \mf{m} \ar{r} \ar{d} & A \ar{d} \ar{r} & k \ar{r} & 0 \\
+    & 0 & 0.
+\end{tikzcd}
+\end{equation*}
+Given $F_A$, we know that $\mr{ob}(F_A, \wt{A}, A) \in \Ext^2(F, F \otimes_k I) = \Ext^2(F, F) \otimes I$. Tensoring by $F_A$, we now have
+\begin{equation*}
+\begin{tikzcd}
+    & F_A \otimes I \ar[equals]{r} \ar{d} & F_A \otimes I \ar{d} \\
+    0 \ar{r} & F_A \otimes \wt{\mf{m}} \ar{r} \ar{d} & F_A \otimes \wt{A} \ar{r} \ar{d} & F \ar[equals]{d} \\
+    0 \ar{r} & F_A \otimes \mf{m} \ar{r} \ar{d} & F_A \ar{d} \ar{r} & F \ar{r} & 0 \\
+    & 0 & 0.
+\end{tikzcd}
+\end{equation*}
+Now we know that
+\[ [0 \to F_A \otimes \mf{m} \to F_A \to F \to 0] = f_{F_A} \in \Ext^1(F, F_A \otimes \mf{m}) \]
+and
+\[[0 \to F_A \otimes I \to F_A \otimes \wt{\mf{m}} \to F_A \otimes \mf{m} \to 0] = e_{F_A} \in \Ext^1(F_A \otimes \mf{m}, F \otimes I). \]
+Applying $\Hom(F, -)$, we now obtain
+\[ \Ext^1(F, F_A \otimes \wt{\mf{m}}) \to Ext^1(F, F_A \otimes \mf{m}) \xrightarrow{\cup e_{F_A}} \Ext^2(F, F \otimes I). \]
+This tells us that the obstruction $\mr{ob}(F_A, \wt{A}, A) = f_{F_A} \cup e_{F_A}$.
+
+\begin{lem}
+    If $E$ is locally free, then $\mr{ob}(E_A, \wt{A}, A) \in \ker(\mr{tr} \colon H^2(\End(E)) \to H^2(\mc{O}_X))$.
+\end{lem}
+
+To prove this, for some $E_{\wt{A}}$, we get $\qty{G_{\alpha\beta}} \in H^1(\End(E) \otimes \wt{A})$ such that
+\[ G_{\alpha\beta} G_{\beta \gamma} G_{\gamma\alpha} = \mr{Id}_{F_A} + \sum o_{\alpha\beta\gamma} \cdot t, \]
+and we can construct the obstruction by hand.
+
+Now denote
+\[ [0 \to G \to \mc{H} \to F \to 0] = \theta \in \Ext^1(F, G). \]
+We claim there exists $\psi \in \Ext^1(G, F)$ such that 
+\[ \mr{ob}(G_A, \wt{A}, A) = \psi \cup \theta \in \Ext^2(G, G) \otimes I \]
+and 
+\[ \mr{ob}(F_A, \wt{A}, A) = \theta \cup \psi \in \Ext^2(F, F) \otimes I. \]
+We know that $\tr(\theta \cup \psi) =0$ if and only if $\tr(\psi \cup \theta) = 0$.
+\end{proof}
+
+We will now construct a holomorphic form on the moduli space.
+\begin{thm}
+    Let $X$ be a K3 surface or an abelian surface. Then $M^s$ is smooth and has a holomorphic symplectic form coming from
+    \[ \Ext^1(F, F) \times \Ext^1(F, F) \xrightarrow{\cup} \Ext^2(F, F) \xrightarrow{\mr{tr}} H^2(\mc{O}_X) = H^2(\Omega^2_X) = k. \]
+    This is in fact induced from Serre duality.
+\end{thm}
+
+The first step is to prove that there exists an isomorphism of sheaves
+\[ TM^s = \Ext^1_{p_1}(\wt{F}, \wt{F}), \]
+where $\Ext^1_f(F, -) = R^i f_* \circ \Hom(F, -)$. We need to consider the Kodaira-Spencer map and the Atiyah class. Given a coherent sheaf $F$ on $Y$, we have
+\[ 0 \to \mc{I} / \mc{I}^2 \to \mc{O}_{2 \Delta} \to \mc{O}_{\Delta} \to 0. \]
+Considering $p_{1*}(-) \otimes p_2^* F$, the \textit{Atiyah class} of $F$ is
+\[ [0 \to \Omega^1_Y \otimes F \to p_{1*}(p_2^*F \otimes \mc{O}_{2 \Delta}) \to F \to 0] = A(F) \in \Ext^1(F, F \otimes \Omega^1_Y). \]
+Now given $A^i(F) \in \Ext^i(F, F \otimes \Omega_Y^i)$, we will see that $\tr(A^i(F)) = \mr{ch}_i(F)$.
+
+Given $F$ on $S \times X$ flat over $S$, we consider
+\[ \Ext^1(F, F \otimes \Omega^1_{S \times X}) \to H^0(S, \Ext_{p_1}^1(F, F \otimes \Omega^1_{S \times X})) \to H^0(S, \Ext^1_{p_1}(F, F \otimes \Omega^1_S). \]
+Note that $\Omega^1_{S \times X} = p_1^* \Omega^1_S \oplus p_2^* \Omega^1_X$. Now we can define $KS_F \colon T_S \to \Ext^1_{p_1}(F, F)$.
+
+The next step is to see that if $F$ is a family of stable sheaves on $S \times X$, then $p_{1*} \Hom(F, F) = H^0(\mc{O}_X) \otimes \mc{O}_S$. Moreover, we have a series of isomorphisms
+\[ H^2(\mc{O}_X) \xrightarrow{\delta} \Ext^2_{p_1}(F, F) \xrightarrow{\tr} H^2(\mc{O}_X) \otimes \mc{O}_S. \]
+We now apply this on the Quot scheme and descend, and we deduce that
+\[ \pi^* T_{M^s} = \Ext^1_{p_1}(\wt{F}, \wt{F}). \]
+
+Before we continue, we review some things about correspondences. Let $X$ be smooth and projective. Suppose $\Gamma \in \mr{CH}^k(S \times X)$, where $S$ is smooth and quasiprojective. Then there exists a lift
+\[ \Gamma \in \mr{CH}^k(\ol{S} \times X) \twoheadrightarrow \mr{CH}^k(S \times K) \ni \Gamma. \]
+But then there is a cycle map to $H^{2k}(\ol{S} \times X)$, and we obtain a cohomology class $[\ol{\Gamma}]$. Then we obtain a map
+\[ H^*(X) \xrightarrow{p_2^*} H^*(\ol{S} \times X) \xrightarrow{\cup [\ol{\Gamma}]} H^{*+2k}(\ol{S} \times X) \xrightarrow{p_{1*}} H^{*+2k-2\dim X}(\ol{S}). \]
+Because $[\ol{\Gamma}]$ is a Hodge class, this is a morphism of Hodge structures. Recall that by the K\"unneth formula, we have
+\[ H^{2k}(\ol{S} \times X) = \bigoplus H^j(\ol{S}) \otimes H^{2k-j}(X), \]
+and by Poincar\'e duality we have $H^{2k-j}(X) = H^{2n-2k+j}(X)^{\vee}$. Thus we have 
+\[ \ol{\Gamma}_j \in \Hom(H^{2n-2k+j(X), H^j(\ol{S})}). \]
+In general, we will view $\ol{\Gamma}^*$ in $H^k(S \times X, \Omega^k_{S \times X})$. Recall that
+\[ \Omega^k_{S \times X} = \bigoplus p_1^* \Omega_S^{k-j} \otimes p_2^* \Omega_X^j, \]
+and therefore $\Gamma \in H^k(\Omega^k_{S \times X}) = \bigoplus H^i(\Omega^j_S) \otimes H^{k-i}(\Omega^{k-j}_X)$. By Serre duality, $H^{k-i}(\Omega_X^{k-j}) \simeq H^{n-k+i}(\Omega_X^{n-k+j})^{\vee}$, and so we have $H^{n-k+i}(\Omega_X^{n-k+j}) \to H^i(\Omega_S^j)$. If $\dim X = 2$, we can choose $k=2, i=0$, and so we have
+\[ H^0(\Omega_X^j) \to H^0(\Omega_S^j). \]
+
+As a corollary, for all $\alpha \in H^0(\Omega_X^j)$ a holomorphic $j$-form, $\Gamma^*(\alpha)$ is a holomorphic $j$-form on $S$ that extends to a $j$-form on any smooth projective compactification $\ol{S}$ of $S$. In particular, $\Gamma^* (\alpha)$ is closed.
+
+Now let $F$ be a sheaf on $S \times X$ that is a flat family of sheaves on $X$. Then call $\gamma^2(F) = \tr (A^2(F))$, where $A^2$ is the Atiyah class. This was introduced by Atiyah for vector bundle and Illusie for coherent sheaves. Here, $A(F) \in \Ext^1(F, F \otimes \Omega_{S \times X})$. Thus $\gamma^i(F) \in H^i(\Omega^i_{S \times X})$. If $L$ is a line bundle, then $\gamma^i(L) \in H^1(\Omega^1_L)$ is up to a multiple $c_1(L)$. Also, $\frac{\gamma^i(F)}{i!} = \mr{ch}_i(F)$. Now if we consider $\gamma^2(F) \in H^2(\Omega^2_{S \times X})$, considering the correct K\"unneth component gives us a morphism
+\[ \tau_F \colon H^0(\Omega^2_X) \to H^0(\Omega^2_S). \]
+
+We will now assume that $F$ is a family of stable sheaves.
+\begin{lem}
+    For all smooth points $s \in S$ and all $\alpha \in H^0(\Omega^2_X)$, the holomorphic $2$-form $\tau_F(\alpha) \in H^0(\Omega^2_S)$ induces the alternating bilinear pairing given by
+    \begin{equation*}
+    \begin{tikzcd}
+        T_{S,s} \times T_{S,s} \ar{r} \ar{d}{\mr{KS}_{F,s} \times \mr{KS}_{F,s}} & k \\
+        \Ext^1(F_s, F_s) \times \Ext^1(F_s, F_s) \ar{d}{\cup} & H^2(\Omega^2_X) \ar{u}{\simeq} \\
+        \Ext^2(F_s, F_s) \ar{r} & H^2(\mc{O}_X). \ar{u}{\cup \alpha}
+    \end{tikzcd}
+    \end{equation*}
+\end{lem}
+
+\begin{thm}
+    Let $M_0^s$ be the stable locus where the trace map is an isomorphism and $\mc{E}$ be a quasi-universal family on $M_0^S \times X$. Then $\frac{\tau_{\mc{E}}}{\on{rk} \mc{E}} \colon H^0(\Omega^2_X) \to H^0(\Omega^2_{M_0^s})$ is independent of $\mc{E}$. Moreover, for all $\alpha \in H^0(\Omega_X^2)$, $\tau(\alpha)$ is nondegenerate at $[F] \in M_0^s$ if and only if $\Ext^1(F, F) \xrightarrow{\alpha} \Ext^1(F, F \otimes \Omega^2_X)$ is an isomorphism.
+\end{thm}
+
+\begin{proof}
+    First, let $\mc{E}, \mc{E}'$ be quasi-universal families. Then we know that $\mc{E} \otimes p_1^* W = \mc{E}' \otimes p_1^* W'$ for some $W, W'$. But now we have
+    \[ A(\mc{E} \otimes p_1^* W) = A(\mc{E}) \otimes \mr{id}_{p_1^* W} + \mr{id}_{\mc{E}} \otimes p_1^* A(W). \]
+    When we consider the component $H^0(\Omega_X^2) \to H^0(\Omega_S^2)$, only the $A(\mc{E})$ term contributes. Finally, if we consider the traces, we obtain the desired result.
+
+    The second part of this follows from Serre duality. Here, we have
+    \begin{equation*}
+    \begin{tikzcd}
+        \Ext^i(F, E \otimes K_X) \otimes \Ext^{n-i}(E, F) \ar{r} & \Ext^n(E, E \otimes K_X) \ar{r}{\tr} & H^n(K_X) \ar{r}{\sim} & k \\
+        \Ext^i(F, E) \otimes \Ext^{n-i}(E, F) \ar{r} \ar{u}{\cup \alpha \otimes \mr{id}} & \Ext^n(E, E) \ar{u}{\cup \alpha} \ar{r}{\tr} & H^n(\mc{O}_X) \ar{u}{\cup \alpha}.
+    \end{tikzcd}
+    \end{equation*}
+    This must commute, and thus our pairing must have been nondegenerate.
+\end{proof}
+
+\begin{cor}
+    Let $X$ be a K3 surface or an abelian surface. Then $M^s$ is smooth and has a holomorphic symplectic form.
+\end{cor}
+
+We now want to resolve the following questions:
+\begin{enumerate}
+    \item What is $\dim M^s$? Is it even non-empty?
+    \item When does $M^s = M$? Is it irreducible?
+    \item What happens on $M \setminus M^s$? When does there exist a symplectic resolution $\wt{M} \to M$?
+\end{enumerate}
+We will focus on the case when $X$ is a K3 surface. Then $\dim M^s = \dim Ext^1(F, F)$, where $F$ is a stable sheaf. But now $\dim \Hom(F, F) = \dim \Ext^2(F, F) = 1$, we have $\dim M^s = - \chi(F, F) + 2$. Using Grothendieck-Riemann-Roch, we see that
+\[ \chi(F, F) = \on{ch}(F) \on{ch}(F^{\vee}) \on{td}(X). \]
+
+\begin{defn}
+    Define $v(F) \coloneqq \on{ch}(F) \cdot \sqrt{\on{td}(X)} \in H^*(X, \Z)$. This is called the \textit{Mukai vector} of $F$ and is equal to $\qty(r, c_1, \frac{c_1^2}{2} - c_2 + r)$.
+\end{defn}
+
+For $v = (a,b,c), w = (a',b',c') \in H^*(S, \Z)$, we write $v \cdot w = (v, w^{\vee}) = bb' -ac'-a'c$, where $v^{\vee} = (a,-b,c)$. Now we have $\chi(F, F) = (v(F), v(F)^{\vee}) = -v^2$. Thus $\dim M^s = v^2 + 2$.
+
+We will now discuss $v$-generic polarizations. Let $H$ be a polarization on $X$ and let $F$ be a $\mu_H$-semistable sheaf on $X$. Let $F' \subseteq F$ be such that $\mu_H(F') = \mu_H(F)$. Define $\xi_{F'} = c_1(F) \cdot r' - c_1(F') \cdot r$. Then our condition that $\mu_H(F') = \mu_H(F)$ is equivalent to $\xi_{F'} \cdot H = 0$, and by the Hodge index theorem, $\xi_{F'}^2 \leq 0$. Of course, this means that $\xi_{F'} = 0$, and in fact this is equivalent to $\xi_{F'} \cdot H = 0$.
+
+\begin{defn}
+    The locus $\qty{\xi_{F'} \cdot x = 0} \subseteq \on{Amp}(X)_{\R}$ (or in $\mc{H}$ a cross-section) is called the \textit{wall} associated to $F'$.
+\end{defn}
+
+\begin{thm}
+    The walls of $v(F)$ are \textit{locally finite} in $\mc{H}$.
+\end{thm}
+
+\begin{proof}
+    We have $\frac{-r^2 \Delta(F)}{4} \leq \xi^2 \leq 0$, where $\Delta(F) = c_2(\End(F))$. This gives local finiteness.
+\end{proof}
+
+Now $H$ is called \textit{generic} if $H$-semistability implies $H$-stability. There may not always exist such a polarization, but if $v \in H^*(S, \Z)$ is a primitive element, then a $v$-generic polarization does exist.
+
+\begin{thm}[Yoshioka, O'Grady]
+    Let $(X, H)$ be a polarized K3 surface and $v$ a primitive Mukai vector such that $v^2 \geq -2$. Then $M_{v,H}$ is smooth, projective, nonempty, nonempty, irreducible, and connected of dimension $v^2 + 2$ and is deformation to $X^{[v^2/2 + 1]}$.
+\end{thm}
+
+This is proved by first deforming the K3 surface to an elliptic K3 and then by using Fourier-Mukai transforms to get birational maps of moduli spaces.
+
+\begin{thm}[O'Grady, KLS, PR]
+    Let $(S, H)$ be a polarized K3 surface. Suppose that $v = m v_0$, where $v_0$ is primitive. Suppose that $H$ is $v_0$-generic and $v_0^2 \geq 2$. Then $M_{m v_0}$ is a singular symplectic variety which has a resolution if and only if $m = 2$ and $v_0^2 = 2$. In this case, then the resolution $\wt{M}_{2 v_0}$ is irreducible holomorphic symplectic of OG10 type.
+\end{thm}
+
+\begin{rmk}
+    If $v_0^2 = 0$, then the moduli space is a symmetric power of a K3 and if $v_0^2 = -2$, the moduli space is a point.
+\end{rmk}
+
+Note that $b_2(OG10) = 24 > b_2(S^{[5]})$.
+
+\chapter{Bonus: cubic fourfolds}%
+\label{cha:bonus_cubic_fourfolds}
+
+Let $X \subseteq \P^5$ be a smooth cubic hypersurface. By the Lefschetz hyperplane theorem, $H^k(\P^5, \Z) \to H^k(X, \Z)$ is an isomorphism for $k < 4$ and is injective for $k = 4$. The only mystery is $H^4(X, \Z)$. Note that $H^4 = 3$, so if $k > 2$, then $H^{2k}(X, \Z) = \Z \frac{H^k}{3}$. We know that $H^4(X, \Z)$ is torsion free and that the cup product is an odd unimodular lattice. But now we compute $\chi^{\mr{top}}(X) = c_4(X)$, and here we simply use
+\[ 0 \to T_X \to T_{\P^5}|_X \to \mc{O}_X(3) \to 0, \]
+and therefore $c_4(X) = 27$. In particular, we have $b_4 = 27-4 = 23$. Because $X$ is Fano by the adjunction formula, we have
+\[ H^4(X, \C) = H^{3,1} \oplus H^{2,2} \oplus H^{1,2}. \]
+
+\begin{prop}
+    $H^1(\Omega^3_X)$ has dimension $1$ and under the natural isomorphism between $\Omega^3_X \simeq T_X(-3)$, the generator corresponds up to a multiple to the extension class of
+    \[ 0 \to T_X \to T_{\P^5}|_X \to \mc{O}(3) \to 0 \]
+    in $\Ext^1(\mc{O}(3), T_X) = H^1(T_X(-3))$.
+\end{prop}
+
+This is proved using Bott vanishing for $H^p(\Omega^q_{\P^n}(k))$ and standard exact sequences. We also obtain $H^3(\Omega_X^1) \simeq H^4(\mc{O}_X(-3))$.
+
+Now let $\Gamma \subseteq S \times X$ be a family of curves on $X$ parameterized by $S$. Then for any smooth projective model $\wt{S}$ of $S$, there exists a holomorphic $2$-form $\wt{\Gamma}^*(\eta) \in H^0(\Omega^2_{\wt{S}})$. Here, we have a map $H^4(X) \to H^2(S)$, and then $H^{3,1} \mapsto H^{2,0}$ because this shifts the Hodge structure down by $(1,1)$.
+
+
+\section{Fano variety of lines on $X$}%
+\label{sec:fano_variety_of_lines_on_x_}
+
+The main theorem is the following
+\begin{thm}[Beauville-Donagi]
+    Let $X$ be a cubic fourfold. Then the Hilbert scheme $F(X)$ of lines in $X$ is a smooth connected irreducible holomorphic symplectic fourfold deformation equivalent to $K3^{[2]}$.
+\end{thm}
+
+Let $X_d \subseteq \P^n$ and write $V = H^0(\mc{O}_{\P^n}(1))^{\vee}$. Then $F(X_d) \subseteq \mr{Gr}(2, n+1)$. Using the tautological exact sequence
+\[ 0 \to \mc{S} \to V \otimes \mc{O}_{\mr{Gr}} \to \mc{Q} \to 0, \]
+dualizing, and taking symmetric powers, we have
+\[ \on{Sym}^d V^{\vee} \otimes \mc{O}_{Gr} \twoheadrightarrow \on{Sym}^d \mc{S}^{\vee}. \]
+This takes $X \in \on{Sym}^d V^{\vee}$ to $f_{\mc{S}}$. thus $F(X_d) = \qty{f_{\mc{S}} = 0}$. This has expected dimension $4$.
+
+We now compute the tangent space. If $\ell \subseteq X$, we have the normal bundle
+\[ 0 \to N_{\ell/X} \to N_{\ell/\P^5} \to N_{X/\P^5}|_{\ell} \to 0. \]
+The terms are $\bigoplus_{i=1}^3 \mc{O}(a_i)$, where $a_i \leq 1$ and $\sum a_i = 1$, $\mc{O}(1)^{\oplus 4}$, and $\mc{O}(3)$. The first term could be either $\mc{O}(1) \oplus \mc{O} \oplus \mc{O}$ or $\mc{O}(1)^{\oplus 2} \oplus \mc{O}(1)$. The first case are lines of the first kind and form an open subset, and the lines of the second kind form a closed nonempty subset. Because $h^0(N_{\ell/X}) = 4$ and $h^1(N_{\ell/X}) = 0$, the deformations are unobstructed, and so $F(X)$ is smooth of the expected dimension. The next step is the following:
+
+\begin{prop}
+    For any cubic fourfold $\omega_{F(X)} = \mc{O}_{F(X)}$. In the case when $X$ is a cubic threefold, then $\omega_{F(X)} = h_{F(X)}$, where $h$ is the Pl\"ucker restricted to $F(X)$.
+\end{prop}
+
+To see this, we know that $\omega_{F(X)} = \omega_{\mr{Gr}} \otimes \det N_{F/\mr{Gr}}$. This becomes $\det \Hom(\mc{S}, \mc{Q}) \otimes \on{Sym}^3 \mc{S}^{\vee}$, and in the dimension $4$ case, this is $\mc{O}(-6h) \otimes \mc{O}(6h) = \mc{O}_{F(X)}$.
+
+To prove that $F(X)$ is connected, let $\Gamma \subseteq F(X) \times X$ be the universal family of lines. Then $p \colon \Gamma \to F(X)$ is a $\P^1$-bundle if course, and we claim that $q \colon \Gamma \to X$ is a fibration in $(2,3)$ complete intersections in $\P^3$ and in particular, this means that $F(X)$ is connected.
+
+We know that $p^{-1}(x)$ is the locus of all lines containing $x$. Then the locus swept by $\ell \ni x$ is the intersection of $Q_x \cap H_x \cap X$, where $Q_x$ is a quadric cone and $H_x$ is a hyperplane. Choosing local coordinates for $X \cap H_x \subseteq H_x = \P^4$, we may choose $x = [0,0,0,0,1]$. Then $X$ is given by
+\[ f_2(x,y,z,u) \cdot v + f_3(x,y,z,u), \]
+and then $X \cap H_x = \qty{f_2 = f_3 = 0}$.
+
+\begin{rmk}
+    The same shows that if $X_0$ is a cubic fourfold with a node ($A_1$ singularity) $o$, then the set of lines through $o \in X_0$ is a $(2,3)$ complete intersection in $\P^4$ and is therefore a K3 surface.
+\end{rmk}
+
+We will finally prove that $F(X)$ is irreducible holomorphic symplectic and deformation equivalent to $S^{[2]}$. Let $\mc{X} \to \Delta$ be a family such that $X_t$ is a smooth cubic fourfold for $t \neq 0$ and $X_0$ is a cubic fourfold with a single $A_1$ singularity. Then we have $F(X_0) \subseteq F(\mc{X}/\Delta)$.
+
+\begin{lem}
+    Let $S$ be the K3 surface of lines passing through the node. Then $F(X_0) \simeq \on{Sym}^2(S)$.
+\end{lem}
+
+Here, there is a unique plane passing through both a line not containing the node and the node, and the intersection of this $\P^2$ with this line is part of a triangle of lines. Up to a $2:1$ base change of $\Delta$, we can resolve the central fiber. The upshot is that there exists $\wt{F} \to \Delta$ such that $\wt{F}_t = F(X_t)$ for $t \neq 0$ and $\wt{F}_0 = S^{[2]}$.
+
+Now if $\mc{M} \to \Delta$ is a projective morphism and $\mc{M}_0$ is birational to a hyperk\"ahler and the $\mc{M}_t$ is hyperk\"ahler, then up to a base change, we can resolve the central fiber such that $\wt{\mc{M}}_0$ is smooth hyperk\"ahler.
+
+\begin{thm}[Beauville-Donagi]
+    The Abel-Jacobi map
+    \[ \Gamma^* \colon H^4(X, \Z) \to H^2(F(X), \Z) \]
+    is an isomorphism of Hodge structures over $\Z$, and more specifically, 
+    \[ (H^4(X, \Z)_0, \cup) \xrightarrow{\sim} (H^2(F(X), \Z), q)(-1) \]
+    is an isomorphism of lattices.
+\end{thm}
+
+\begin{cor}
+    The set of $(F(X), h)$ forms a codimension $1$ locus in the moduli space of irreducible holomorphic symplectic manifolds of their deformation type.
+\end{cor}
+
+For very general $X$, the Neron-Severi group of $F(X)$ is $\Z h$.
+
+\begin{prop}
+    Let $F \to S \times X$ be a flat family of sheaves. For all $\omega \in H^1(\Omega_X^3)$, $\tr(A^3(F))$ induces a holomorphic $2$-form on $S$ which pointwise is
+    \begin{equation*}
+    \begin{tikzcd}
+        T_s S \times T_s S \ar{r}{KS \times KS} & \Ext^1(F_s, F_s) \times \Ext^1(F_s, F_s) \ar{r}{\cup} & \Ext^2(F, F) \ar[in=160,out=-20,swap]{dll}{\cup A(F)} & \\
+        \Ext^3(F, F \otimes \Omega) \ar{r}{\tr} & H^3(\Omega^1) \ar{r}{\cup \omega} & H^4(\Omega^4) = k.
+    \end{tikzcd}
+    \end{equation*}
+\end{prop}
+
+This is proved by considering the K\"unneth component $H^1(\Omega^3_X) \to H^0(\Omega^2_S) \otimes H^3(\Omega^1_X)$.
+
+Now suppose that $M$ is a moduli spaace of stable sheaves. Then a sufficient condition, due to Kuznetsov and Markusevich, for this form to be nondegenerate on a smooth point $[F]$ is that $H^{\bullet}(F) = H^{\bullet}(F(-1)) = H^{\bullet}(F(-2)) = 2$, and this is precisely the same as $F$ being in the Kuznetsov component of $D^b(X)$. This is because
+\begin{prop}[Kuznetsov-Markusevich]
+    The pairing
+    \[ \Ext^i(F, G) \otimes \Ext^{2-i}(G, F) \to \Ext^2(G, G) \xrightarrow{\ep_G} \Ext^5(G, G \otimes \Omega_X^4) \xrightarrow{\tr} H^4(\Omega^4_X) \]
+    is nondegenerate. Here, $\ep_G$ is the composition of $\mr{id}_G \otimes \nu \in \Ext^1(G \otimes \Omega^1_X, G \otimes \mc{O}(-3))$ and $A(G) \in \Ext^1(G, G \otimes \Omega^1_X)$.
+\end{prop}
 
 
 \end{document}
