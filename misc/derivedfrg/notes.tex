@@ -1,0 +1,390 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=black,filecolor=black,urlcolor=blue}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{A note about derived categories}
+\author{Patrick Lei}
+\date{April 29, 2022}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    These are my notes from the introductory talks at the \href{https://sites.google.com/view/derivedfrg/events/cornell-2022}{Derived categories and moduli spaces} conference at Cornell University, given by Rachel Webb and Tudor P\v{a}durariu.
+\end{abstract}
+
+\section{Reconstruction of some schemes from their derived categories (Rachel Webb)}
+
+The references are
+\begin{itemize}
+    \item Caldararu, \href{https://arxiv.org/abs/math/0501094}{\textit{Derived categories of sheaves: a skimming}}.
+    \item Bondal-Orlov, \href{https://arxiv.org/abs/alg-geom/9712029}{\textit{Reconstruction of a variety from the derived category and groups of autoequivalence}}.
+    \item Bondal-Kapranov, \href{http://www.mathnet.ru/php/archive.phtml?wshow=paper&jrnid=im&paperid=1153&option_lang=eng}{\textit{Representable functors, Serre functors, and mutations}}.
+\end{itemize}
+
+Let $X$ be a scheme and let $D(X)$ be the bounded derived category of coherent sheaves.
+
+\begin{quest}
+    Let $X$ and $Y$ be schemes such that $D(X) \simeq D(Y)$. When do we have $X \simeq Y$?
+\end{quest}
+
+\begin{thm}[Bondal-Orlov]
+    If $X$ is smooth projective and $\omega_X$ or $\omega_X^{-1}$ is ample, then $D(X)$ classifies $X$ up to isomorphism.
+\end{thm}
+
+Roughly speaking, Serre duality is an invariant of $D(X)$, so if $D(X) \simeq D(Y)$, then
+\[ \bigoplus H^0(X, \omega_X^{\otimes i}) \simeq \bigoplus H^0(Y, \omega_Y^{\otimes i}), \]
+so if $\omega_X$ and $\omega_Y$ are ample, we can take $\Proj$ to obtain $X \simeq Y$.
+
+\subsection{Serre duality}
+
+Recall that if $X$ is a smooth projective variety, then $\omega_X = \det (T_X^*)$. If $\mc{E}$ is locally free, then
+\[ H^i(X, \mc{E}) = H^{n-i}(X, \mc{E}^{\vee} \otimes \omega_X)^{\vee}. \]
+Moreover, if $\mc{E}, \mc{F} \in D(X)$, we have
+\[ \Hom_{D(X)}(\mc{E}, \mc{F}) = \Hom_{D(X)}(\mc{F}, \mc{E} \otimes \omega_X[n])^{\vee}. \]
+When $\mc{E}, \mc{F}$ are locally free, we see that
+\[ \Hom_{D(X)}(\mc{E}, \mc{F}) = H^0(X, \mc{E}^{\vee} \otimes \mc{F}) = H^n(X, \mc{F} \otimes \mc{E}^{\vee} \otimes \omega)^{\vee} = \Hom(\mc{E}, \mc{F} \otimes \omega_X[n])^{\vee}. \]
+
+\begin{defn}[Bondal-Kapranov]
+    Let $C$ be a $k$-linear category. A \textit{Serre functor} is an equivalence $S \colon C \to C$ together with an isomorphism
+    \[ \phi_{AB} \colon \Hom(A,B) \xrightarrow{\sim} \Hom(B, SA)^{\vee}. \]
+\end{defn}
+
+\begin{exm}
+    Let $C = D(X)$. Then we define $SA = A \otimes \omega_X[n]$.
+\end{exm}
+
+\begin{thm}[Bondal-Kapranov]
+    Let $C$ be as above. A Serre functor on $C$ is unique, exact, and if $F \colon C \simeq D$ is an equivalence and $S_C$ is a Serre functor on $C$, then $D$ has a Serre functor $S_D$ and $F \circ S_C = S_D \circ F$.
+\end{thm}
+
+\begin{proof}
+    Clearly Serre functors are unique (Homs into $SA$ are uniquely described). If $F \colon C \simeq C$ is an autoequivalence, we note that 
+    \begin{align*} 
+        \Hom(A, S(FB)) &= \Hom(FB, A)^{\vee} \\ 
+        &= \Hom(B, F^{-1}A)^{\vee} \\ 
+        &= \Hom(F^{-1}A, SB) \\
+        &= \Hom(A, FSB). \qedhere
+    \end{align*}
+\end{proof}
+
+It is \textbf{not true} in general that $F \colon D(X) \simeq D(Y)$ implies that $F(\omega_X) = \omega_Y$. More closely, we actually have $F(\mc{O}_X \otimes \omega_X[n]) = F(\mc{O}_X) \otimes \omega_Y[n]$.
+
+\subsection{Reconstruction}
+
+This subsection is dedicated to the proof of the following theorem.
+
+\begin{thm}[Bondal-Orlov]
+    Let $X$ be a smooth projective variety such that $\omega_X$ is ample (or anti-ample). Let $Y$ be any smooth quasiprojective variety. Then if $D(X) \simeq D(Y)$, $X \simeq Y$.
+\end{thm}
+
+There is a closely related result that is of interest.
+\begin{thm}[Bondal-Orlov]
+    Let $X$ be as above. Then up to natural transformation, every autoequivalence of $D(X)$ is a composition of shifts, twists, and automorphisms of $X$.
+\end{thm}
+
+\begin{exm}[Mukai]
+    Let $E$ be an elliptic curve. Then there exists $\Phi \colon D(E) \xrightarrow{\sim} D(E)$ such that $\Phi \circ \Phi = \iota [-1]$.
+\end{exm}
+
+We will need two key lemmas, describing which objects in the derived category are points and which objects are line bundles.
+
+\begin{defn}
+    A object $P \in D(X)$ is a \textit{point object of codimension $s$} if
+    \begin{enumerate}[(i)]
+        \item $S_D(P) \simeq P[s]$, were $S_D$ is the Serre functor on $D(X)$;
+        \item $\Hom(P, P[i]) = 0$ for $i < 0$;
+        \item $\Hom(P, P) = k(P)$ is some field.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    Let $X$ be a smooth projective variety of dimension $n$ and suppose one of $\omega_X^{\pm 1}$ is ample. Then point objects in $D(X)$ are $\mc{O}_x[i]$.
+\end{defn}
+
+\begin{defn}
+    An object $L \in D(X)$ is \textit{invertible} if for all point objects $P \in D(X)$, there exists $s \in \Z$ such that
+    \begin{enumerate}
+        \item $\Hom(L, P[s]) = k(P)$;
+        \item $\Hom(L, P[i]) = 0$ for all $i \neq s$.
+    \end{enumerate}
+\end{defn}
+
+\begin{lem}
+    Let $X$ be a smooth variety such that all point objects are $\mc{O}_x[i]$. Then invertible objects are shifts of line bundles $\mc{L}[i]$.
+\end{lem}
+
+\begin{proof}[Sketch of Theorem 1.7]
+    Let $F \colon D(X) \xrightarrow{\sim} D(X)$ be an autoequivalence. Then $F(\mc{O})$ is invertible, so $F(\mc{O}) = \mc{L}[i]$ for some line bundle $\mc{L}$. Now if we replace $F$ by $F(-) \otimes \mc{L}^{-1}[i]$, we can assume $F(\mc{O}) = \mc{O}$. This implies that $F(\omega_X) = \omega_X$. This gives an automorphism
+    \[ \bigoplus H^0(X, \omega_X^{\otimes i}) \xrightarrow{\sim} H^0(X, \omega_X^{\otimes i}). \]
+    Taking the proj, we obtain $f \in \Aut(X)$. Finally, we can assume that $F$, fixes $\mc{O}$, $\omega_X$ and induces the identity on $X$. With some work, we can finally show that $F$ is the identity functor.
+\end{proof}
+
+\begin{proof}[Sketchier summary of Theorem 1.6]
+    The proof proceeds in several steps.
+    \begin{enumerate}
+        \item The first step is to show that point objects in $D(Y)$ are precisely structure sheaves $\mc{O}_y[i]$. This is because on $X$, if $P, Q$ are point objects, either $P = Q[i]$ or $\Hom(P,Q[i]) = 0$ for all $i$. But then if $P \in D(Y)$ is not $\mc{O}_Y[i]$, then for all $y \in Y, i \in \Z$, $\Hom(P, \mc{O}_Y[i]) = 0$, so $P = 0$.
+        \item The second step is to note that invertible objects on $Y$ are shifts of line bundles $\mc{L}[i]$.
+        \item We now want to define a morphism $f \colon \abs{X} \to \abs{Y}$ of topological spaces. Modifying $F$ a little bit, we can enforce $F(\mc{O}_x[0]) \to \mc{O}_Y[0]$ by choosing a line bundle $\mc{L}_X$ and $F \mc{L}_X \eqqcolon \mc{L}_Y$.
+        \item Next, $f$ is a homeomorphism. If $\mc{M}, \mc{N}$ are line bundles and we have $\mc{N} \to \mc{M}$, then 
+            \[ \qty{x \mid \Hom(\mc{M}, \mc{O}_x) \to \Hom(\mc{N}, \mc{O}_x) \text{ is zero}} \]
+            is a closed set, and the complements of such sets form a basis for the topology.
+        \item Now we know that $Y$ is a smooth projective variety of the same dimension as $X$, so using a topological argument, we see that $\omega_Y$ is ample. This gives us an isomorphism of pluricanonical rings, so $X \simeq Y$. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\section{The Fourier-Mukai transform (Tudor P\v{a}durariu)}
+
+Following from the Bondal-Orlov reconstruction theorem, we now consider examples of nonisomorphic varieties $X, Y$ such that $D^b(X) \simeq D^b(Y)$. These are related by Fourier-Mukai transforms, and our strategy will be to start with $X$ with some properties and construct $Y$ as a moduli space of objects on $X$.
+
+Let $X, Y$ be smooth projective varieties and consider $\mc{E} \in D^b(X \times Y)$. We of course have the following diagram:
+\begin{equation*}
+\begin{tikzcd}
+    & X \times Y \ar{dl}{\pi_X} \ar{dr}{\pi_Y} \\
+    X & & Y.
+\end{tikzcd}
+\end{equation*}
+Then we will define the \textit{Fourier-Mukai transform with kernel $\mc{E}$}
+\[ \Phi = \Phi^{\mc{E}}_{X \to Y} \coloneqq \pi_{Y*} (\mc{E} \otimes \pi_X^*(-)) \colon D^b(X) \to D^b(Y). \]
+
+\begin{exms}\leavevmode
+    \begin{enumerate}
+        \item The identity functor $\mr{id} \colon D^b(X) \xrightarrow{\sim} D^b(X)$ is given by the Fourier-Mukai transform with kernel $\mc{E} = \mc{O}_{\Delta}$.
+        \item The shift $[1] \colon D^b(X) \to D^b(X)$ is given by the Fourier-Mukai transform with kernel $\mc{O}_{\Delta}[1]$.
+        \item Let $f \colon X \to Y$ be a morphism and let $Z \subset X \times Y$ be the graph of $f$. Then $f_* \colon D^b(X) \to D^b(Y)$ is given by the Fourier-Mukai transform with kernel $\mc{O}_Z$ and $f^*$ is given by the Fourier-Mukai transform in the opposite direction with the same kernel.
+    \end{enumerate}
+\end{exms}
+
+Fourier-Mukai transforms are interesting because of the following theorem.
+\begin{thm}[Orlov]
+    Let $X, Y$ be smooth and projective over $\C$ and $\Phi \colon D^b(X) \xrightarrow{\sim} D^b(Y)$ be a derived equivalence. Then there exists $\mc{E} \in D^b(X \times Y)$ such that $\Phi = \Phi_{X \to Y}^{\mc{E}}$.
+\end{thm}
+
+Here are some properties of Fourier-Mukai transforms:
+\begin{enumerate}
+    \item We can compose Fourier-Mukai transforms. If $\mc{E} \in D^b(X \times Y), \mc{F} \in D^b(Y \times Z)$, we would like $\mc{G} \in D^b(X \times Z)$ such that
+        \[ \Phi_{Y \to Z}^{\mc{F}} \circ \Phi_{X \to Y}^{\mc{E}} = \Phi_{X \to Z}^{\mc{G}}. \]
+        Consider the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            & X \times Y \times Z \ar[swap]{dl}{\pi_{XY}} \ar{d}{\pi_{XZ}} \ar{dr}{\pi_{YZ}} \\
+            X \times Y & X \times Z & Y \times Z.
+        \end{tikzcd}
+        \end{equation*}
+        Then we define 
+        \[ \mc{G} \coloneqq \pi_{XZ*} (\pi_{YZ}^*(\mc{F}) \otimes \pi_{XY}^*(\mc{E})). \]
+    \item If $\mc{E} \in D^b(X \times Y)$, then $\Phi_{X \to Y}^{\mc{E}}$ has left adjoint $\Phi^{\mc{E}^{\vee} \otimes \omega_Y[\dim Y]}_{Y \to X}$ and right adjoint $\Phi_{Y \to X}^{\mc{E}^{\vee} \otimes \omega_X[\dim X]}$.
+\end{enumerate}
+
+Now we will construct examples of derived equivalent varieties that are nonisomorphic.The first example is due to Mukai. Let $A$ be an abelian variety. The dual abelian variety $A^{\vee}$ parameterizes degree $0$ line bundles on $A$, so we have a universal line bundle $\mc{P}$ on $A \times A^{\vee}$ such that $\mc{P}|_{A \times p} = \mc{L}_p$ is the line bundle corresponding to $p \in A^{\vee}$.
+
+\begin{thm}[Mukai]
+    The Fourier-Mukai transform $\Phi_{A \to A^{\vee}}^{\mc{P}} \colon D^b(A) \to D^b(A^{\vee})$ is an equivalence.
+\end{thm}
+
+The second example is also due to Mukai. Let $S$ be a smooth projective surface with $\omega_X \simeq \mc{O}_X$. Let $M$ be a moduli space of stable sheaves on $S$ (with no strictly semistable sheaves). Then of course there exists a universal sheaf $\mc{U}$ on $S \times M$, where a point $p \in M$ corresponds to a stable sheaf $\mc{U}_p$ on $S$. Then we have $\mc{U}|_{S \times p} = \mc{U}_p$. 
+
+\begin{thm}[Mukai]
+    If $\dim M = 2$, which says that if $M$ parameterizes sheaves with Mukai vector $(r, \beta, d) \in H^0(S, \Z) \oplus H^2(S, \Z) \oplus H^4(S, \Z)$, then $\beta^2 - 2rd = 0$, then $\Phi_{M \to S}^{\mc{U}} \colon D^b(M) \to D^b(S)$ is a derived equivalence.
+\end{thm}
+
+A useful lemma is the following:
+\begin{lem}[Mukai, Bondal-Orlov, Bridgeland]
+    Let $X, Y$ be smooth and projective, $\Phi \colon D^b(X) \to D^b(Y)$, $x \in X$, and $\mc{P}_x \coloneqq \Phi(\mc{O}_x)$.
+    \begin{enumerate}
+        \item $\Phi$ is fully faithful if and only if
+            \[ \Ext^1_Y(\mc{P}_x, \mc{P}_y) = \begin{cases}
+                0 & x \neq y \text{ or } i \notin [0, \dim X] \\
+                \C & x = y \text{ and } i=0.
+            \end{cases}
+            \]
+        \item $\Phi$ is an equivalence if, in addition, $\mc{P}_x \otimes \omega_Y \cong \mc{P}_x$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}[Proof of Theorem 2.4]
+    First, note that $\Phi^{\mc{U}}(\mc{O}_p) = \mc{U}_p$. The second condition of the lemma is clear because $S$ is Calabi-Yau, so we only need to check the first condition. Clearly $\Hom(\mc{U}_p, \mc{U}_p) = \C$ because $\mc{U}_p$ is stable, so for points $p, q$ we need to consider $\Ext^i(\mc{U}_p, \mc{U}_q)$. This vanishes for $i \leq 1$ or $i \geq 3$ because $\mc{U}_p, \mc{U}_q$ is an honest sheaf. We can see that
+    \begin{align*}
+        \Ext^0(\mc{U}_p, \mc{U}_q) &= \Hom(\mc{U}_p, \mc{U}_q) = 0 \\
+        \Ext^2(\mc{U}_p, \mc{U}_q) &= \Hom(\mc{U}_q, \mc{U}_p)^{\vee} = 0 \\
+        \Ext^1(\mc{U}_p, \mc{U}_q) = 0,
+    \end{align*}
+    where the first equality is because $\mc{U}_p, \mc{U}_q$ are different stable sheaves, the second follows from Serre duality, and the third follows from Riemann-Roch.
+\end{proof}
+
+
+\end{document}

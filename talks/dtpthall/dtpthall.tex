@@ -1,0 +1,399 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{DT/PT correspondence using motivic Hall algebras}
+\author{Patrick Lei}
+\date{April 21, 2022}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    A DT/PT correspondence for projective Calabi-Yau threefolds was proved by Bridgeland in 2011 and for orbifolds by Beentjes-Calabrese-Rennemo in 2018. We will state the necessary results about motivic Hall algebras and then discuss the DT/PT correspondence.
+\end{abstract}
+
+\section{Introduction}
+
+Let $\mc{X}$ be a proper smooth Deligne-Mumford stack with $\omega_{\mc{X}} = \mc{O}_{\mc{X}}$, $H^1(\mc{X}, \mc{O}_{\mc{X}}) = 0$, and projective coarse moduli space $X$. Note here that $X$ is Gorenstein, Calabi-Yau, and has at worst quotient singularities. We will also impose that $\mc{X}$ satisfies the hard Lefschetz condition, which says that age is invariant under the map $I \colon I \mc{X} \to I \mc{X}$ taking $(x, g) \mapsto (x, g^{-1})$.
+
+Now let $N(\mc{X})$ denote the numerical $K$-theory of $\mc{X}$, that is $K(D(\mc{X}))$ modulo the Euler pairing
+\[ \chi(E, F) = \sum (-1)^i \dim \Ext^i_{\mc{X}}(E, F). \]
+Then denote $N_{\leq 1}(\mc{X})$ denote the classes with support in dimension at most $1$ and $N_0(\mc{X})$ be the classes with $0$-dimensional support. Then choose\footnote{For a manifold, $\on{ch}_3$ defines a canonical splitting, but this cannot always be done for orbifolds.} a splitting
+\[ N_{\leq 1}(\mc{X}) = N_1(\mc{X}) \oplus N_0(\mc{X}) \ni (\beta, c). \]
+Finally, we call a class $\beta \in N_1(\mc{X})$ \textit{effective} if it is represented by an actual sheaf $F \in \mt{Coh}_{\leq 1}(\mc{X})$.
+
+Now let $Y = \on{Quot}(\mc{O}_{\mc{X}}, [\mc{O}_x])$ for a non-stacky point $x \in \mc{X}$. Then $Y$ is a smooth projective Calabi-Yau threefold and there is a map $f \colon Y \to X$, which is a crepant resolution. Then, if we consider the universal sheaf on $Y \times \mc{X}$ by $\mc{O}_{\mc{Z}}$, the Fourier-Mukai transform
+\[ \Phi = p_{\mc{X}*} (\mc{O}_{\mc{Z}} \otimes p_Y^*(-)) \colon D(Y) \to D(\mc{X}) \]
+is a derived equivalence, called the \textit{McKay correspondence}. Then there is a map $N_{\leq 1}(Y) \to N_{\leq 1}(\mc{X})$, and thus we obtain a splitting $N_{\leq 1}(Y) = N_{\text{n-exc}}(Y) \oplus N_{\mr{exc}}(Y)$. Finally, write $N_{\mr{mr}}(\mc{X}) = \Phi(N_{\leq 1}(Y))$ and $N_{1,\mr{mr}}(\mc{X}) = \Phi(N_{\text{n-exc}}(Y))$. Also, write $\Psi \coloneqq \Phi^{-1}$.
+
+Then define following DT and PT generating series:
+\begin{align*}
+    \mr{DT}(\mc{X})_{\beta} &= \sum_{c \in N_0(\mc{X})} \mr{DT}(\mc{X})_{(\beta, c)} q^c; \\
+    \mr{DT}(\mc{X})_{0} &= \sum_{c \in N_0(\mc{X})} \mr{DT}(\mc{X})_{(0, c)} q^c; \\
+    \mr{PT}(\mc{X})_{\beta} &= \sum_{c \in N_0(\mc{X})} \mr{PT}(\mc{X})_{(\beta, c)} q^c.
+\end{align*}
+
+\begin{thm}[DT/PT correspondence]
+    Let $\beta \in N_{1, \mr{mr}}(\mc{X})$. Then there is an equality of generating series
+    \[ \mr{PT}(\mc{X})_{\beta} = \frac{\mr{DT}(\mc{X})_{\beta}}{\mr{DT}(\mc{X})_0}. \]
+\end{thm}
+
+\section{Categorical preliminaries}
+
+\begin{defn}
+    Let $\mt{B}$ be an abelian category. Then a \textit{torsion pair} is a pair of full subcategories $(\mt{T}, \mt{F})$ such that $\Hom(T, F) = 0$ for all $T \in \mt{T}, F \in \mt{F}$ and every $E \in \mt{B}$ fits into a (unique) short exact sequence
+    \[ 0 \to T_E \to E \to F_E \to 0 \]
+    with $T_E \in \mt{T}, F_E \in \mt{F}$.
+\end{defn}
+This can be naturally generalized to the notion of a \textit{torsion $n$-tuple} $(\mt{B}_1, \ldots, \mt{B}_n)$.
+
+\begin{exm}
+    Let $\mt{T} = \mt{Coh}_{\leq d}(\mc{X})$ and $\mt{F} = \mt{Coh}_{\geq d+1}(\mc{X})$ be the category of sheaves with no subsheaves of dimension $\leq d$. Then $(\mt{T}, \mt{F})$ is a torsion pair on $\mt{Coh}(\mc{X})$.
+\end{exm}
+
+For a torsion pair $(\mt{T}, \mt{F})$, we can define a new abelian category 
+\[ \mt{B}^{\flat} = \qty{E \in D^{[-1,0]}(\mt{B}) \mid H^{-1}(E) \in \mt{F}, H^0(E) \in \mt{T}}. \]
+This is called \textit{tilting} at the torsion pair $(\mt{T}, \mt{F})$.
+
+\begin{exm}
+    Define the category $\mt{Coh}^{\flat}(\mc{X})$ by tilting at the torsion pair of the previous example for $d = 1$.
+\end{exm}
+
+Unfortunately, this category is too large for our purposes, so we will define a new category. First, if $\mc{C}_1, \ldots, \mc{C}_n \subset D(\mc{X})$ are full subcategories, let $\ev{\mc{C}_1, \ldots, \mc{C}_n}_{\mr{ex}} \subset D(\mc{X})$ be the smallest full subcategory of $D(\mc{X})$ containing all of the $\mc{C}_i$ and closed under extensions. Now we may define 
+\[ \mt{A} = \ev{\mc{O}_{\mc{X}}[1], \mt{Coh}_{\leq 1}(\mc{X})}_{\mr{ex}} \subset \mt{Coh}^{\flat}(\mc{X}). \]
+This is a Noetherian abelian category with the inclusions $\mt{Coh}_{\leq 1}(\mc{X}) \subset \mt{A} \subset D(\mc{X})$ being exact. In addition, $\mt{A}$ contains all ideal sheaves $I_C[1]$, PT stable pairs, and Bryan-Steinberg pairs.
+
+\begin{defn}
+    Let $\mt{T}, \mt{F}$ be full subcategories of $\mt{Coh}_{\leq 1}(\mc{X})$. Write $\mt{Pair(T,F)} \subset \mt{A}$ for the full subcategory on objects $E$ such that $\on{rk} E = -1$, $\Hom(T, E) = 0$ for $T \in \mt{T}$, and $\Hom(E, F) = 0$ for $F \in \mt{F}$. 
+\end{defn}
+
+\begin{exm}
+    For example, if $\mt{T}_{\mr{PT}} = \mt{Coh}_0(\mc{X})$ and $\mt{F}_{\mr{PT}} = \mt{Coh}_{1}(\mt{X})$, then a $(\mt{T}_{\mr{PT}}, \mt{F}_{\mr{PT}})$-pair is a PT stable pair.
+\end{exm}
+
+For a pair of full subcategories as above, we may also define
+\[ \mt{V(T,F)} \coloneqq \qty{E \in \mt{A} \mid \Hom(\mt{T}, E) = \Hom(E, \mt{F}) = 0}. \]
+If $(\mt{T}, \mt{F})$ and $(\wt{\mt{T}}, \wt{\mt{F}})$ are torsion pairs, then $(\mt{T}, \mt{V(T, \wt{F})}, \wt{\mt{F}})$ is a torsion triple on $\mt{A}$.
+
+\section{Moduli stack}
+
+There is a stack $\mf{Mum}_Y$ parameterizing objects $E \in D(Y)$ such that $\Ext^{<0}(E, E) = 0$ which is an Artin stack locally of finite type, which was constructed by Lieblich in 2006.\footnote{As with all students of Johan, this was actually done in maximal generality for a proper morphism of algebraic spaces.} Because Fourier-Mukai transforms behave well in families, by the McKay correspondence, we have a corresponding stack $\mf{Mum}_{\mc{X}}$. In addition, there is a decomposition
+\[ \mf{Mum}_{\mc{X}} = \bigsqcup_{\alpha \in N(\mc{X})} \mf{Mum}_{\mc{X}, \alpha} \]
+into open and closed substacks by the numerical $K$-theory class. If $\mt{C} \subset D(\mc{X})$ is a full subcategory of objects with vanishing self-$\Ext^{<0}$ and defines an open substack of $\mf{Mum}_{\mc{X}}$, then we will call the corresponding open substack $\mt{\ul{C}} \subset \mf{Mum}_{\mc{X}}$.
+
+\begin{defn}
+    A torsion pair $(\mt{T}, \mt{F})$ on $\mt{Coh}_{\leq 1}(\mc{X})$ is \textit{open} if $\mt{T}, \mt{F}$ are open subcategories.
+\end{defn}
+
+\begin{lem}
+    The following conditions define open substacks of $\mf{Mum}_{\mc{X}}$ for full, open subcategories $\mt{T}, \mt{F}$ of $\mt{Coh}(\mc{X})$:
+    \begin{enumerate}
+        \item $H^0(E) \in \mt{T}$ and $E \in D^{[-1,0]}(\mc{X})$;
+        \item $H^{-1}(E) \in \mt{F}$ and $E \in D^{[-1,0]}(\mc{X})$.
+    \end{enumerate}
+    In particular, if $(\mt{T}, \mt{F})$ is an open torsion pair, then the objects of the tilt of $\mt{Coh}(\mc{X})$ at $(\mt{T}, \mt{F})$ form an open substack of $\mf{Mum}_{\mc{X}}$
+\end{lem}
+
+\begin{prop}
+    Let $(\mt{T}, \mt{F})$ be open torsion pairs on $\mt{Coh}_{\leq 1}(\mc{X})$. Suppose that $\mt{Coh}_0(\mc{X}) \subset \mt{T}$. Then the substack $\mt{\ul{Pair}(T, \wt{F})} \subset \mf{Mum}_{\mt{X}}$ is open.
+\end{prop}
+
+In particular, $\mt{Coh}^{\flat}(\mc{X})$ is an open subcategory. In addition, the category $\mt{A}_{\on{rk}\geq -1} \subset \mt{Coh}^{\flat}(\mc{X})$ is open. This means that
+\[ \mt{\ul{A}}_{\on{rk} \geq -1} \subset \ul{\mt{Coh}}^{\flat}(\mc{X}) \subset \mf{Mum}_{\mc{X}} \]
+are inclusions of open substacks, and in particular, the first two stacks are Artin stacks locally of finite type.
+
+\section{Motivic Hall algebras}
+
+Recall the Grothendieck ring of varieties $K(\mt{Var}_{\C})$ (taken with $\Q$-coefficients), which is spanned by isomorphism classes of varieties with the relations $[X] = [Z] + [X \setminus Z]$ for a closed subvariety $Z \subset X$ and $[X] \cdot [Y] = [X \times Y]$. This will not be helpful when we consider stacks, so instead we will consider the following two relations.
+
+\begin{defn}
+    Let $Y$ be connected. Then a morphism $f \colon X \to Y$ is a \textit{Zariski fibration} if there is an open cover $Y = \bigcup U_i$ such that $f^{-1}(U_i) = U_i \times F_i$.\footnote{Given our assumptions, all $F_i$ are isomorphic.}
+\end{defn}
+
+\begin{defn}
+    A morphism $f \colon X \to Y$ is a \textit{geometric bijection} if $f$ induces a bijection on $\C$-points.
+\end{defn}
+
+\begin{lem}
+    $K(\mt{Var}_{\C})$ is spanned by isomorphism classes of varieties with the following relations:
+    \begin{enumerate}
+        \item If $f \colon X \to Y$ is a geometric bijection, then $[X] = [Y]$;
+        \item $[X_1] + [X_2] = [X_1 \sqcup X_2]$.
+    \end{enumerate}
+\end{lem}
+
+Now we say that a morphism $f \colon X \to Y$ of stacks is a Zariski fibration if for any scheme $T$, the base change $f_T \colon X \times_{Y} T \to T$ is a Zariski fibration of schemes. Of course, the definition of geometric bijection should be changed to that of inducing an equivalence on groupoids of $\C$-points.
+
+\begin{defn}
+    The \textit{Grothendieck ring of stacks} $K(\mt{St}_{\C})$ is the $\Q$-vector space spanned by symbols $[X]$ for finite type Artin stacks with affine stabilizers $X$ with the following relations:
+    \begin{enumerate}
+        \item $[X \sqcup Y] = [X] + [Y]$;
+        \item If $f \colon X \to Y$ is a geometric bijection, then $[X] = [Y]$;
+        \item If $X_1, X_2 \to Y$ are Zariski fibrations with the same fibers, then $[X] = [Y]$.
+    \end{enumerate}
+\end{defn}
+For any Artin stack $S$ locally of finite type with affine stabilizers, then there is a relative version $K(\mt{St}_S)$, which is a module over $K(\mt{St}_{\C})$. For our purposes, we will take $\mt{C} = \mt{Coh}^{\flat}(\mc{X})$ and let $S = \mt{\ul{C}}$. 
+
+\begin{prop}
+    There exists an Artin stack $\mt{\ul{C}}^{(2)}$ locally of finite type parameterizing short exact sequences in $\mt{C}$. This stack is equipped with maps
+    \[ \pi_i \colon \mt{\ul{C}}^{(2)} \to \mt{\ul{C}} \qquad [0 \to E_1 \to E_2 \to E_3 \to 0] \mapsto E_i \]
+    for $i = 1,2,3$. Then the morphism $(\pi_1, \pi_3) \colon \mt{\ul{C}}^{(2)} \to \mt{\ul{C}}$ is of finite type.
+\end{prop}
+
+Now, for $[X_1 \to \mt{\ul{C}}], [X_2 \to \mt{\ul{C}}] \in K(\mt{St}_{\mt{\ul{C}}})$, define the stack $X_1 * X_2$ as the fiber product
+\begin{equation*}
+\begin{tikzcd}
+    X_1 * X_2 \ar{r} \ar{d} & \mt{\ul{C}}^{(2)} \ar{r}{\pi_2} \ar{d}{(\pi_1, \pi_3)} & \mt{\ul{C}} \\
+    X_1 \times X_2 \ar{r} & \mt{\ul{C}} \times \mt{\ul{C}}.
+\end{tikzcd}
+\end{equation*}
+This defines an associative product on $K(\mt{St}_{\mt{\ul{C}}})$, and we define the \textit{motivic Hall algebra} $H(\mt{C}) \coloneqq (K(\mt{St}_{\mt{\ul{C}}}), *)$.
+
+There is an inclusion $K(\mt{Var}_{\C})[\L^{-1}, (1 + \cdots + L^n)^{-1} \mid n \geq 1] \to K(\mt{St}_{\C})$. Then we define the subalgebra of \textit{regular elements} $H_{\mr{reg}}(\mt{C})$ to be the $K(\mt{Var}_{\C})[\L^{-1}, [\P^n]^{-1} \mid n \geq 1]$-submodule generated by schemes $[Z \to \mt{\ul{C}}]$.
+
+\begin{prop}
+    $H_{\mr{reg}}(\mt{C})$ is closed under $*$ and the quotiennt $H_{\mr{reg}}(\mt{C}) / (\L - 1) H_{\mr{reg}}(\mt{C})$ is commutative with Poisson bracket given by $\qty{f, g} = \frac{f * g - g * f}{\L - 1}$. This is called the \textit{semi-classical Hall algebra}.
+\end{prop}
+
+Let $\Q[N(\mc{X})]$ with product $t^{\alpha_1} \star t^{\alpha_2} = (-1)^{\chi(\alpha_1, \alpha_2)} t^{\alpha_1 + \alpha_2}$ be the \textit{Poisson torus}. The Poisson bracket is defined by $\qty{t^{\alpha}, t^{\beta}} = (-1)^{\chi(\alpha, \beta)} \chi(\alpha, \beta) t^{\alpha + \beta}$. Then there is a Poisson algebra homomorphism
+\[ I \colon H_{\mr{sc}}(\mt{C}) \to \Q[N(\mc{X})] \qquad [s \colon Y \to \mt{C}_{\alpha} \hookrightarrow \mt{C}] = e(Y, s^{-1} \nu), \]
+where $\nu \colon \mt{C} \to \Z$ is the Behrend function.
+
+We will not be considering the motivic Hall algebra but rather a completed version $H_{\mr{gr}}(\mt{C})$ which is analogous to the completion from Laurent polynomials to Laurent series. There is an algebra $H_{\mr{gr,reg}}(\mt{C})$ of regular elements and a semi-classical algebra $H_{\mr{gr,sc}}(\mt{C})$, which comes with an integration morphism 
+\[ I \colon H_{\mr{gr,sc}}(\mt{C}) \to \Q \qty{N(\mc{X})} = \qty{\sum_{\alpha \in N(\mc{X})} n_{\alpha} t^{\alpha}}. \]
+
+\section{Wall-crossing and the DT/PT correspondence}
+
+\begin{defn}
+    A torsion pair $(\mt{T}, \mt{F})$ on $\mt{Coh}_{\leq 1}(\mc{X})$ is called \textit{numerical} if whenever $[T \in \mt{T}] = [F \in \mt{F}]$ in $N(\mc{X})$, then $T = F = 0$.
+\end{defn}
+All of the torsion pairs we will consider are numerical.
+
+\begin{prop}
+    Let $(\mt{T}, \mt{F})$ be an open numerical torsion pair and suppose that $\mc{M} \subset \mt{\ul{Pair}(T,F)}$ is an open and finite type substack. Then $(\L - 1) [\mc{M}] \in H_{\mr{reg}}(\mt{C})$.
+\end{prop}
+
+\begin{lem}
+    Assume that $\mt{Pair(T_-, F_-)}, \mt{Pair(T_+, F_+)}, \mt{W}$ define elements of $H_{\mr{gr}}(\mt{C})$ and let $\alpha \in N(\mt{A})$. The following are equivalent:
+    \begin{enumerate}
+        \item The stack $\mt{\ul{Pair}(T_+, F_-)}_{\alpha}$ is of finite type.
+        \item The stack $(\mt{\ul{Pair}(T_+, F_+)} * \mt{\ul{W}})_{\alpha}$ is of finite type.
+        \item The stack $(\mt{\ul{W}} * \mt{\ul{Pair}(T_-, F_-)})_{\alpha}$ is of finite type.
+    \end{enumerate}
+\end{lem}
+
+\begin{defn}
+    A full subcategory $\mt{W} \subset \mt{Coh}_{\leq 1}(\mc{X})$ is \textit{log-able} if
+    \begin{enumerate}
+        \item $\mt{W}$ is closed under direct sums and summands;
+        \item $\mt{W}$ defines an element of $H_{\mr{gr}}(\mt{C})$;
+        \item If $\alpha \in N(\mc{X})$, there are only finitely many ways to write $\alpha = \alpha_1 + \cdots + \alpha_n$, where each $\alpha_i$ represents a nonzero element in $\mt{W}$.
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}[No-poles]
+    If $\mt{W}$ is log-able, then
+    \[ (\L - 1) \log [\mt{\ul{W}}] \in H_{\mr{gr,reg}}(\mt{C}). \]
+\end{thm}
+
+We are finally ready to do wall-crossing, but we need one more definition.
+
+\begin{defn}
+    Let $(\mt{T}_{\pm}, \mt{F}_{\pm})$ be open torsion pairs on $\mt{Coh}_{\leq 1}(\mc{X})$ such that $\mt{T}_+ \subset \mt{T}_-$. Let $\mt{W} = \mt{T}_- \cap \mt{F}_+$. These torsion pairs are \textit{wall-crossing material} if $\mt{W}$ is log-able and the categories $\mt{Pair(T_+, F_-)}, \mt{Pair(T_-, F_+)}, \mt{Pair(T_+,F_-)}$ define elements of $H_{\mr{gr}}(\mt{C})$.
+\end{defn}
+
+\begin{thm}
+    Suppose $(\mt{T_{\pm}}, \mt{F_{\pm}})$ are open torsion pairs with $\mt{T_+} \subset \mt{T_-}$ which are wall-crossing material. Then $w \coloneqq I((\L-1) \log [\mt{\ul{W}}])$ is well-defined and
+    \[ I((\L-1)[\mt{\ul{Pair}(T_+,F_+)}]) = \exp(\qty{w,-}) I((\L-1) [\mt{\ul{Pair}(T_-, F_-)}]). \]
+\end{thm}
+
+\begin{proof}[Proof of DT/PT correspondence]
+    Let $\mt{T}_{\mr{DT}} = 0, \mt{F}_{\mr{DT}} = \mt{Coh}_{\leq 1}(\mc{X}), \mt{W} = \mt{Coh}_0(\mt{X})$. Then the torsion pairs $(\mt{T}_{\mr{DT}}, \mt{F}_{\mr{DT}}), (\mt{T}_{\mr{PT}}, \mt{F}_{\mr{PT}})$ are wall-crossing material, so we can apply the previous theorem. Isolating the terms with class $\beta$ and noting that $(\mt{T}_{\mr{DT}}, \mt{F}_{\mr{DT}})$-pairs are ideal sheaves $I[1]$, we obtain
+    \[ \mr{DT}(\mc{X})_{\beta}z^{\beta} t^{-[\mc{O}_{\mc{X}}]} = \exp(\qty{w,-}) \mr{PT}(\mc{X})_{\beta} z^{\beta} t^{-[\mc{O}_{\mc{X}}]}. \]
+    Now let $c \in N_0(\mc{X})$. Applying the McKay equivalence, we have $\Psi(c) \in N_{\leq 1}(Y)$. Because $\beta$ is multi-regular, $\Psi(\beta, c') \in N_{\leq 1}(Y)$ for all $c' \in N_0(\mc{X})$. But then the Euler pairing is trivial on $N_{\leq 1}(Y)$, so 
+    \[ \chi(c, (\beta, c')) = \chi(\Psi(c), \Psi(b, c')) = 0. \]
+    Next, write $w = \sum_{c \in N_0(\mc{X})} w_c q^c$. We then have $\qty{w, z^{\beta}q^{c'}} = 0$, so
+    \[ \exp(\qty{w, -}) \mr{PT}(\mc{X})_{\beta} z^{\beta} t^{-[\mc{O}_{\mc{X}}]} = PT(\mc{X})_{\beta} z^{\beta} \exp(\qty{w,-}) t^{-[\mc{O}_{\mc{X}}]}. \]
+    Combining this with the first DT-PT identity, we have 
+    \[ \frac{\mr{DT}(\mc{X})_{\beta}}{\mr{PT}(\mc{X})_{\beta}} = t^{[\mc{O}_{\mc{X}}]} \exp(\qty{w,-}) t^{-[\mc{O}_{\mc{X}}]}. \]
+    Finally, noting that $\mr{PT}(\mc{X})_0 = 1$ because $\mc{O}_{\mc{X}}[1]$ is the only stable pair with $\beta = 0$, we obtain
+    \[ \frac{\mr{DT}(\mc{X})_{\beta}}{\mr{PT}(\mc{X})_{\beta}} = \frac{\mr{DT}(\mc{X})_{0}}{\mr{PT}(\mc{X})_{0}} = \mr{DT}(\mc{X})_{0}. \qedhere \]
+\end{proof}
+
+
+\end{document}

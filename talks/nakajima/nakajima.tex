@@ -1,0 +1,351 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{What's the deal with Nakajima quiver varieties?}
+\author{Patrick Lei}
+\date{May 11, 2022}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    I will introduce Nakajima quiver varieties and attempt to explain why so many people care about them.
+\end{abstract}
+
+\section{Introduction and history}
+
+Nakajima quiver varieties are related to many areas of mathematics and originally appeared as moduli spaces of Yang-Mills instantons, for example in
+\begin{itemize}
+    \item Kronheimer, \textit{The construction of ALE spaces as hyper-K\"ahler quotients} (1989);
+    \item Kronheimer-Nakajima, \textit{Yang-Mills instantons on ALE gravitational instantons} (1990).
+\end{itemize}
+
+In the representation theoretic context, they were introduced and originally studied by Nakajima in two papers in the 1990s to study representations of Kac-Moody algebras:
+\begin{itemize}
+    \item \textit{Instantons on ALE spaces, quiver varieties, and Kac-Moody algebras} (1994);
+    \item \textit{Quiver varieties and Kac-Moody algebras} (1998).
+\end{itemize}
+There are several expositions of the basic ideas of Nakajima, for example:
+\begin{itemize}
+    \item Schiffmann, \textit{Variet\'es carquois de Nakajima} (S\'eminaire Bourbaki, 2006-2007);
+    \item Ginzburg, \textit{Lectures on Nakajima's quiver varieties} (2012);
+    \item Nakajima, \textit{Introduction to quiver varieties -- for ring and representation theorists} (2016).
+\end{itemize}
+There is also an entire book by Kirillov that starts from the basics of quivers and finishes with the work of Nakajima. Nakajima varieties are also used to study geometric representations of other objects, for example in
+\begin{itemize}
+    \item Nakajima, \textit{Quiver varieties and finite-dimensional representations of quantum affine algebras} (2001);
+    \item Maulik-Okounkov, \textit{Quantum groups and quantum cohomology} (2019);
+    \item Okounkov, \textit{Lectures on K-theoretic computations in enumerative geometry} (2017);
+    \item Aganagic-Okounkov, \textit{Elliptic stable envelopes} (2021);
+\end{itemize}
+
+\section{What is a Nakajima variety?}
+
+Let $Q$ be a quiver with vertex set $I$. Recall that a representation of $Q$ is the same thing as a functor $Q \to \ms{Vect}_{\C}$. Nakajima quiver varieties will be moduli spaces of framed representations of $Q$ in the following sense. 
+
+First, define a new quiver $Q'$ by adding a vertex $i'$ for all $i \in I$ and an arrow $i' \to i$. Also let $\mathbf{v} = (v_i)_{i \in I}$ and $\mathbf{w} = (w_i)_{i \in I}$ be dimension vectors and $V = \bigoplus_{i \in I}$ and $W = \bigoplus_{i \in I} W_i$ be $\mathbf{v}, \mathbf{w}$-dimensional vector spaces, respectively. Consider the space
+\begin{align*} 
+    \mathbf{M} \coloneqq T^* \ms{Rep}(Q', \mathbf{v}, \mathbf{w}) ={} & \bigoplus_{\substack{i \to j \\ \text{edge of }Q}} \Hom(V_i, V_j) \oplus \Hom(V_j, V_i) \\
+    &\oplus \bigoplus_{i \in I} \Hom(W_i, V_i) \oplus \Hom(V_i, W_i) \\
+    ={} &\ms{Rep}(Q, \mathbf{v}) \oplus \ms{Rep}(Q^{\mr{op}}, \mathbf{v}) \oplus \Hom_I(W, V) \oplus \Hom_I(V, W)
+\end{align*}
+of representations of the union of $Q'$ and $(Q')^{\mr{op}}$ with the vertices identified. This has a natural action of $GL_{\mathbf{v}} = \prod_{i \in I} GL_{ v_i }$. 
+
+The Nakajima variety will be a hyperk\"ahler reduction of this vector space, which is given the natural symplectic form of a cotangent bundle. The moment map is defined by
+\[ \mu \colon \mathbf{M} \to \mf{gl}_{ \mathbf{v} } \qquad (\mathbf{x}, \mathbf{y}, \mathbf{i}, \mathbf{j}) \mapsto \sum_e [x_e, y_{\ol{e}}] + \mathbf{i} \circ \mathbf{j}, \]
+where $\mf{gl}_n$ is identified with its dual by $x \mapsto \Trace(x \cdot -)$.
+
+It remains to define stability conditions. Let $\theta \in \Z^I$. (Often, we will choose $\theta^+ = (1, \ldots, 1)$ or $\theta^- = (-1, \ldots, -1)$.) The following definition of stability is not the standard definition of stability as defined for quiver representations, but is equivalent and most useful in practice. It also coincides with GIT stability by work of King.
+\begin{defn}
+    A quadruple $(\mathbf{x}, \mbf{y}, \mbf{i}, \mbf{j}) \in \mu^{-1}(\lambda)$ is \textit{$\theta$-semistable} if the following condition holds: If $S = \bigoplus_{i \in I} S_i \subseteq V$ is stable under $\mbf{x}$ and $\mbf{y}$, we have
+    \begin{align*}
+        S_i \subset \ker \mbf{j}_i \ & \forall i \in I \implies \theta \cdot (\dim_I S) \leq 0; \\
+        S_i \supset \Im \mbf{i}_i \ & \forall i \in I \implies \theta \cdot (\dim_I S) \leq \theta \cdot \mbf{v}.
+    \end{align*}
+\end{defn}
+
+Finally, we define the \textit{Nakajima quiver variety} 
+\[ \mc{M}_{\lambda,\theta}(\mbf{v}, \mbf{w}) \coloneqq \mu^{-1}(\lambda) \sslash_{\theta} GL_{\mbf{v}}. \]
+If we omit $\lambda$, this means that we take $\lambda = 0$. For a generic $\lambda, \theta$, there are no strictly semistable points, and there are no nontrivial finite stabilizers, so $\mc{M}_{\lambda,\theta}(\mbf{v}, \mbf{w})$ is a holomorphic symplectic variety.
+
+\begin{exm}
+    Let $Q$ be the quiver with one vertex and no edges and let $\theta > 0$. Set $\mathbf{v} = r$ and $\mathbf{w} = n$. Then we see that 
+    \[ \mu(\mbf{i}, \mbf{j}) = \mbf{i} \circ \mbf{j}. \]
+    In addition, a point $(\mbf{i}, \mbf{j})$ is semistable if and only if $\ker \mbf{j} = 0$, so we see that
+    \[ \mu^{-1}(0)^{\mr{ss}} = \qty{( \mbf{j} \colon \C^r \hookrightarrow \C^n, \mbf{i} \colon \C^n/\Im(\mbf{j}) \to \C^r )}, \]
+    and so quotienting out by $GL_r$, we see that $\mc{M}_{\theta^+}(r, n) = T^* \mr{Gr}(r, n)$. If we choose the other stability condition, then $(\mbf{i}, \mbf{j})$ is semistable if and only if $\mbf{i}$ is surjective, so
+    \[ \mu^{-1}(0)^{\mr{ss}} = \qty{( \mbf{i} \colon \C^n \twoheadrightarrow \C^r, \mbf{j} \colon \C^r \to \ker \mbf{i} )}, \]
+    and again we have $\mc{M}_{\theta^-}(r, n) = T^* \mr{Gr}(r, n)$.
+\end{exm}
+
+\begin{exm}
+    Let $Q$ be the quiver with one vertex and one edge. Let $\mbf{v} = n$ and $\mbf{w} = 1$ and choose $\theta = -1$. Then $\mbf{i} \circ \mbf{j}$ is a rank $1$ operator, so we see that in $\mu^{-1}(0)$,
+    \[ \ev{\mbf{i}, \mbf{j}} = \Tr(\mbf{i} \circ \mbf{j}) = -\Tr([x,y]) = 0 \]
+    and thus $[x,y]$ is a nilpotent rank $1$ operator. Then by some linear algebra magic, we can choose a basis of $\C^n$ such that $x,y$ are both upper-triangular. Now in this upper triangular form, we have a morphism
+    \[ \mc{M}_0(n,1) \to \C^{2n}/S_n \qquad (x,y,\mbf{i}, \mbf{j}) \mapsto (\text{eigenvalues of }x,y), \]
+    and in fact this is an isomorphism.
+
+    Now adding in the stability condition, we see that $\mbf{i}$ must be a cyclic vector for $x$ and $y$. But then we know $\ev{\mbf{j}, a\mbf{i}} = \Tr(a \circ \mbf{i} \circ \mbf{j}) = -\Tr(a \circ [x,y]) = 0$, so $\mbf{j} = 0$ and thus $[x,y] = 0$. Therefore,
+    \[ \mu^{-1}(0)^{\mr{ss}} = \qty{(x,y, \mbf{i},\mbf{j}) \mid [x,y] = 0, \mbf{j} = 0, \mbf{i} \text{ is cyclic for } x,y}. \]
+    Taking the quotient by $GL_n$, we see that $\mc{M}_{\theta^-}(n, 1) = (\C^2)^{[n]}$ is the Hilbert scheme of $n$ points on $\C^2$ and the natural map $\mc{M}_{\theta^-}(n, 1) \to \mc{M}_0(n,1)$ is the Hilbert-Chow morphism.
+\end{exm}
+
+\section{Kac-Moody Lie algebras}
+
+Let $C = (a_{ij})$ be a matrix such that $a_{ii} = 2$, $a_{ij} \leq 0$, and $a_{ij} = 0$ if and only if $a_{ji} = 0$. Then define the Lie algebra $\wt{\g}$ by
+\[ \left. \wt{\mf{g}} = \ev{e_i,
+f_i, h_i} \middle/ \qty( \Vectorstack{ {[h_i, e_i] = a_{ij} e_j} {[h_j, f_j] =
+-a_{ij} f_j} {[e_i, f_j] = \delta_{ij} h_i} } ) \right. . \]
+Then the \textit{Kac-Moody algebra} $\g$ is defined to be the quotient of $\wt{\g}$ by the maximal submodules in $\wt{\mf{n}_+}$ and $\wt{\mf{n}_-}$. In the case where $C$ is symmetrizable (for example for semisimple Lie algebras), then the maximal submodules in $\wt{n}_{\pm}$ are generated by the \textit{Chevalley-Serre relations}
+\[ \ad(e_i)^{1-a_{ij}} e_j = \ad(f_i)^{1-a_{ij}} f_j = 0 \qquad \text{ for all }i, j. \]
+
+Note that for every $i$, we have a copy of $\mf{sl}_2$ given by $\mf{sl}_2^i = \ev{e_i, h_i, f_i}$.
+
+\begin{defn}
+    A $\g$-module $M$ is \textit{integrable} if for every $i$, $M$ decomposes as a sum of finite-dimensional $\mf{sl}_2^i$-modules.
+\end{defn}
+
+For our purposes (where $\g$ is associated to a quiver with no loops), we will modify $\g$ by replacing the root lattice in the Cartan decomposition with the weight lattice (still having $[h, e_i] = \ev{h, \alpha_i} e_i$ and $[h, f_j] = -\ev{h, \alpha_j} f_j$). However, this point is not essential for our discussion.
+
+\section{Borel-Moore homology}
+
+We will let $H_*(X)$ denote the Borel-Moore homology of a space $X$. This is defined by $H_*(X) \coloneqq H^*(M, M \setminus X)$, where $X \hookrightarrow M$ is any embedding into a smooth manifold, and is independent of the choice of $M$. This has an advantage over ordinary homology in that even noncompact manifolds have fundamental classes. For any proper map $p \colon X \to Y$, there is a pushforward $p_*$. There is also a cap product $\cap \colon H_i(X) \times H_j(Y) \to H_{i+j-\dim M}(X)$, which does depend on the ambient smooth manifold $M$.
+
+If $M_1, M_2, M_3$ are smooth manifolds, $Z_{12} \subset M_1 \times M_2$, $Z_{23} \subset M_{2} \times M_3$, and $p_{13} \colon (p_{12}^{-1} Z_{12}) \cap (p_{23}^{-1} Z_{23}) \to M_1 \times M_3$ is proper, define
+\[ Z_{12} \circ Z_{13} \coloneqq p_{13} ((p_{12}^{-1} Z_{12}) \cap (p_{23}^{-1} Z_{23})). \]
+Then the convolution product is defined by
+\[ * \coloneqq p_{13*} ((- \boxtimes [M_3]) \cap ([M_1] \boxtimes -)) \colon H_i(Z_{12}) \times H_j(Z_{23}) \to H_{i+j-\dim M_2}(Z_{12} \circ Z_{23}). \]
+
+\section{Constructing representations of Kac-Moody Lie algebras}
+
+From now on, let $Q$ be a quiver with no loops (including loops containing more than one edge) and $\mf{g} = \mf{g}_Q$ be the Kac-Moody Lie algebra produced from the Cartan matrix $C_Q = 2 \mr{Id} - A_Q$, where $A_Q$ is the adjacency matrix of the underlying undirected graph of $Q$. We will denote the generators $e_i, h_i, f_i$ for $i \in I$, the simple roots by $\alpha_i$, and the corresponding fundamental weights by $\varpi_i$. We will also make the universal choice of $\theta = \theta^+$ and write $\mc{M}(\mbf{v}, \mbf{w}) = \mc{M}_{\theta^+}(\mbf{v}, \mbf{w})$ and $M(\mbf{v}, \mbf{w}) = \mc{M}_0(\mbf{v}, \mbf{w})$ for the affine quotient.
+
+Consider the natural morphism $\pi \colon \mc{M}(\v, \w) \to M(\v, \w)$, which is projective. Define the subscheme
+\[ \Lambda(\v, \w) \coloneqq \pi^{-1}(M(v, w)^{\C^{\times}})_{\mr{red}}, \]
+where the action of $\C^{\times}$ on $\mbf{M} = T^* \ms{Rep}(Q', \v, \w)$ by scaling the cotangent directions. This action preserves $\mu^{-1}(0)$ and in fact descends to $\mc{M}(\v, \w)$. In fact, in our case where $Q$ has no loops, $M(\v, \w)^{\C^{\times}} = \qty{0}$, so $\Lambda(\v, \w) = \pi^{-1}(0)$.
+
+\begin{thm}
+    Every irreducible component of $\Lambda(\v, \w)$ is a Lagrangian subvariety of $Q$.
+\end{thm}
+
+Recall that a Lagrangian subvariety $L$ of a symplectic variety $X$ if for any smooth point $x \in L$, $T_x L \subset T_x X$ is a maximal isotropic subspace with respect to the symplectic form $\omega_X$. In addition, the irreducible components of $\Lambda(\v, \w)$ are the closures of attracting loci of components $F_s$ of $\mc{M}(\v, \w)^{\C^{\times}}$, which are defined by
+\[ \mr{Attr}(F_s) = \qty{z \in \mc{M}(\v, \w) \mid \lim_{t \to \infty} t(z) \in F_s}. \]
+These attracting loci play an important role also in the work of Okounkov and collaborators.
+
+Now, for $\v, \v' \in \Z^I$, we will define a \textit{Steinberg variety} $Z(\v, \v', \w) \subset \mc{M}(\v, \w) \times \mc{M}(\v', \w)$ as the fiber product in the following diagram:
+\begin{equation*}
+\begin{tikzcd}
+    Z(\v, \v', \w) \ar{r} \ar{d} & \mc{M}(\v', \w) \ar{r}{\pi} & M(\v', \w)  \\
+    \mc{M}(\v, \w) \ar{r}{\pi} & M(\v, \w) \ar[hookrightarrow]{r} & M(\v+\v', \w).\ar[hookleftarrow]{u}
+\end{tikzcd}
+\end{equation*}
+All irreducible components of $Z(\v, \v', \w)$ are half-dimensional in our case, and good components are Lagrangian subvarieties. Also, if $d = \dim_{\C}(\mc{M}(\v, \w)) + \dim_{\C}(\mc{M}(\v', \w))$, we will define a new grading on Borel-Moore homology by
+\[ H_{[i]}(Z(\v, \v', \w)) \coloneqq H_{d-i}(Z(\v, \v', \w)). \]
+
+Now we may introduce the following schemes with infinitely many components:
+\[ \mc{M}(\w) \coloneqq \bigsqcup_{\v \in \Z^I} \mc{M}(\v, \w), \qquad M(\w) \coloneqq \bigsqcup_{\v \in \Z^I}M(\v, \w), \qquad Z(\w) \coloneqq \bigsqcup_{(\v, \v')} Z(\v, \v', \w). \]
+Also, define the algebra
+\[ H_{\w} = \bigoplus_{m \geq 0} \qty(\prod_{\substack{\v, \v' \geq 0 \\ \abs{\v-\v'} \leq m}} H_{[0]}(Z(\v, \v', \w))) \]
+and the vector space
+\[ L_{\w} \coloneqq \bigoplus_{\v \in \Z^I} H_{\mr{top}}(\Lambda(\v, \w)). \]
+\begin{thm}[Nakajima]
+    There is a natural algebra homomorphism $\Psi \colon \wt{\mc{U}}\g \to H_{\w}$ such that the induced action on $L_{\w}$ makes $L_{\w}$ a simple integrable $\g$-module with highest weight $\sum_{i \in I} w_i \cdot \varpi_i$.
+\end{thm}
+
+This action is defined in the following way. Let $i \in I$. Then define
+\[ Z^i(\v, \w) \coloneqq \qty{(\rho, \rho') \mid \rho \overset{\text{framed}}{\subset} \rho'} \subset \mc{M}(\v, \w) \times \mc{M}(\v + \mbf{e}^i, \w). \]
+This is an irreducible component of $Z(\v, \v', \w)$. Thus we have operators 
+\begin{align*}
+    F_i(\v, \w) \coloneqq [Z^i(\v, \w)] * - &\colon H_{\mr{top}}(\Lambda(\v, \w)) \to H_{\mr{top}}(\Lambda(\v + \mbf{e}^i, \w)) \\
+    E_i(\v, \w) \coloneqq [Z^i(\v, \w)] * - &\colon H_{\mr{top}}(\Lambda(\v + \mbf{e}^i, \w)) \to H_{\mr{top}}(\Lambda(\v, \w))
+\end{align*}
+Finally, we define the following operators:
+\begin{align*}
+    f_i &= \sum_{\v} F_i(\v, \w); \\
+    e_i &= \sum_{\v} (-1)^{\dim_{\C}(\mc{M}(\v+\mbf{e}^i, \w) - \dim_{\C}(\mc{M}(\v, \w)))} E_i(\v, \w); \\
+    h_i &= \sum_{\v} \qty(w_i - \sum_j a_{ij} v_j) \mr{id}_{H_{\mr{top}}(\Lambda(\v, \w))}.
+\end{align*}
+
+
+
+
+\end{document}

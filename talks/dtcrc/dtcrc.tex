@@ -1,0 +1,407 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{The DT Crepant Resolution Conjecture}
+\author{Patrick Lei}
+\date{April 28, 2022}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    We will prove the DT crepant transformation conjecture by crossing infinitely many walls in a finite amount of time.
+\end{abstract}
+
+\section{Brief review}
+
+Recall that $\mc{X}$ is a projective Calabi-Yau 3-orbifold (where we require $H^1(\mc{O}_{\mc{X}} = 0)$), that $X$ is the coarse moduli space (which is a projective, Gorenstein, Calabi-Yau variety with at worst quotient singularities), and $Y$ was a distinguished crepant resolution of $X$. Also recall that we have derived equivalences $\Phi \colon D(Y) \leftrightarrow D(\mc{X}) \colon \Psi$.
+
+Let $\mt{C}$ be the category $\mt{Coh}(\mc{X})$ tilted at the torsion pair $(\mt{Coh}_{\leq 1}(\mc{X}), \mt{Coh}_{\geq 2}(\mc{X}))$. We consider the graded motivic Hall algebra $H_{\mr{gr}}(\mt{C})$, which is a module over $K(\mt{St}_{\C})$. Also, recall the category
+\[ \mt{A} = \ev{\mc{O}_{\mc{X}}[1], \mt{Coh}_{\leq 1}(\mc{X})}. \]
+Finally, recall the integration map $I \colon H_{\mr{gr,sc}}(\mt{C}) \to \qty{\sum_{\alpha \in N(\mc{X})} n_{\alpha} q^{\alpha}}$, where $H_{\mr{sc}}(\mt{C})$ is a quotient of the algebra 
+\[ H_{\mr{reg}}(\mt{C}) = K(\mt{Var}_{\C})[\L^{-1}][[\P^n]^{-1} \mid n \geq 1] \cdot \qty{\text{schemes}} \subset H(\mt{C}). \]
+of regular elements.
+
+\section{Stability conditions}
+
+Fix an ample class $\omega \in N^1(Y)$ and an ample line bundle $A$ on $X$.
+
+\begin{defn}
+    A \textit{stability condition} on $\mt{Coh}_{\leq 1}(\mc{X})$ consists of a slope function $\mu \colon N_{\leq 1}(\mc{X}) \to S$ to a totally ordered set $(S, <)$ such that if
+    \[ 0 \to A \to B \to C \to 0, \]
+    then either $\mu(A) > \mu(B) > \mu(C)$ or $\mu(A) < \mu(B) < \mu(C)$ or $\mu(A) = \mu(B) = \mu(C)$ and every $F \in \mt{Coh}_{\leq 1}(\mc{X})$ has a Harder-Narasimhan filtration $0 = F_0 \subset \cdots \subset F_n = F$.
+\end{defn}
+
+We will now define a number of stability conditions. First, we fix a ``generating'' vector bundle $V$ (where every coherent sheaf on $\mc{X}$) is locally a quotient of $V^{\oplus n}$ for some $n$. We can assume that $V = V^{\vee}$ (by taking $V \oplus V^{\vee}$). Now we define a modified Hilbert polynomial for a sheaf $F$ by
+\[ p_F(k) = \chi(\mc{X}, V^{\vee} \otimes F(k)) = \ell(F) k + \deg(F). \]
+
+\begin{defn}
+    Define the \textit{Nironi slope} of $F$ to be
+    \[ \nu(F) \coloneqq \frac{\deg F}{\ell(F)} \]
+    if $F \notin \mt{Coh}_0(\mc{X})$ and $\nu(F) = \infty$ otherwise. Also write $\nu_+(F), \nu_-(F)$ for the slopes of the Harder-Narasimhan factor of $F$ with largest (resp. smallest) slope.
+\end{defn}
+
+\begin{defn}
+    Define the stability condition $\zeta$ on $N_1^{\mr{eff}}(\mc{X}) \setminus 0$ by
+    \[ \zeta(\beta, c) = \qty(- \frac{\deg_Y(\on{ch_2}(\Psi(A \cdot \beta)) \cdot \omega)}{\deg(A \cdot \beta)}, \nu(\beta, c)) \in (-\infty, \infty]^2 \]
+    for $\beta = 0$ and $\zeta(0, c) = (\infty, \infty)$. Here, we use the lexicographical ordering on $(-\infty, \infty]$.
+\end{defn}
+
+For a stability condition $\mu$ and $s \in S$, define a torsion pair by 
+\begin{align*}
+    \mt{T}_{\mu, s} &\coloneqq \qty{T \in \mt{Coh}_{\leq 1}(\mc{X}) \mid T \twoheadrightarrow Q \neq 0 \implies \mu(Q) \geq s}; \\
+    \mt{F}_{\mu, s} &\coloneqq \qty{F \in \mt{Coh}_{\leq 1}(\mc{X}) \mid 0 \neq H \hookrightarrow F \implies \mu(H) < s}.
+\end{align*}
+Also, call the category of $(\mt{T}_{\mu, s}, \mt{F}_{\mu, s})$-pairs $\mt{P}_{\mu, s}$. Finally, define the category of semistable sheaves of slope $s$ by $\mc{M}_{\mu}^{\mr{ss}}(s)$.
+
+In order to control DT-like invariants coming from stability conditions, we need our categories of semistable objects and of pairs to satisfy openness and boundedness properties. 
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item For any $\delta \in \R$, the torsion pair $(\mt{T}_{\nu,\delta}, \mt{F}_{\nu, \delta})$ is open.
+        \item For any $(\gamma, \eta) \in \R_{>0} \times \R$, the torsion pair $(\mt{T}_{\zeta, (\gamma,\eta)}, \mt{F}_{\zeta, (\gamma,\eta)})$ is open. In addition, the moduli stack $\ul{\mc{M}}_{\zeta}^{\mr{ss}}(a,b) \subset \mt{\ul{Coh}}_{\leq 1}(\mc{X})$ is open for any $(a,b) \in \R^2$.
+    \end{enumerate}
+\end{prop}
+
+We will now discuss boundedness. For any real number $\gamma > 0$, define the function
+\[ L_{\gamma} \colon N_0(\mc{X}) \to \R \qquad c \mapsto \deg(c) + \gamma^{-1} \deg_Y(\on{ch_2}(\Psi(c)) \cdot \omega). \]
+This will control the series expansion of the rational function $f_{\beta}(q)$, where $\mr{PT}(\mc{X})_{\beta}$ is the expansion of $f_{\beta}(q)$ in $\Q[N_0(\mc{X})]_{\mr{deg}}$ (this means roughly that degree is bounded below).
+
+\begin{defn}
+    Let $S \subset N_0(\mc{X})$ and $L \colon N_0(\mc{X}) \to \R$ be a homomorphism. Then $S$ is \textit{$L$-bounded} if the set
+    \[ S \cap \qty{c \in N_0(\mc{X}) \mid L(c) \leq M} \]
+    is finite for every $M \in \R$. We also say that $S$ is \textit{weakly $L$-bounded} if the set
+    \[ (S/\ker L) \cap \qty{c \in N_0(\mc{X})/L \mid L(c) \leq M} \]
+    is finite for every $M \in \R$.
+\end{defn}
+
+The main results about semistable sheaves and pairs are the following. Recall that a category $\mt{W}$ is log-able if $(\L-1) \log[\mt{\ul{W}}] \in H_{\mr{gr,reg}}(\mt{C})$.
+\begin{prop}
+    Let $(a,b) \in \R^2$. The set
+    \[ \qty{ c \in N_0(\mc{X}) \mid \ul{\mc{M}}^{\mr{ss}}(a,b) \neq \emptyset} \]
+    is $L_{\gamma}$-bounded. Moreover, the category $\mc{M}_{\gamma}^{\mr{ss}}(a, b)$ is log-able.
+\end{prop}
+
+\begin{prop}
+    For any $(\gamma, \eta) \in \R_{>0} \times \R$, the set
+    \[ \qty{c \in N_0(\mc{X}) \mid \mt{P}_{\zeta, (\gamma, \eta)}(\beta, c) \neq \emptyset} \]
+    is $L_{\gamma}$-bounded. Moreover, the stack $\mt{\ul{P}}_{\zeta, (\gamma,\eta)}(\beta, c)$ is of finite type.
+\end{prop}
+
+\begin{cor}
+    The category $\mt{P}_{\zeta, (\gamma, \eta)}$ defines an element of $H_{\mr{gr}}(\mt{C})$.
+\end{cor}
+
+Finally, we will locate regions in which the notion of a $(\mt{T}_{\zeta,(\gamma,\eta)}, \mt{F}_{\zeta, (\gamma,\eta)})$-pair is constant.
+
+\begin{lem}
+    Let $\beta \in N_1(\mc{X})$. $\mt{T}_{\gamma,(\gamma,\eta)} \cap \mt{Coh}_{\leq 1}(\mc{X})_{\leq \beta}$ and $\mt{F}_{\zeta, (\gamma,\eta)} \cap \mt{Coh}_{\leq 1}(\mc{X})_{\leq \beta}$ are constant on the components of $(\R_{>0} \times \R) \setminus (V_{\beta} \times \R)$, where
+    \[ V_{\beta} = \qty{- \frac{\deg_Y(\on{ch}_2(\Psi(A \cdot \beta')) \cdot \omega)}{\deg(A \cdot \beta')} \mid 0 < \beta' \leq \beta} \cap \R_{>0}. \]
+    For $\gamma \in V_{\beta}$, the categories are locally constant on $\qty{\gamma} \times \R \setminus W_{\beta}$, where $W_{\beta} = \frac{1}{\ell(\beta)!} \Z$.
+\end{lem}
+
+\section{DT-like invariants}
+
+We define DT-like invariants counting objects in the categories that we have defined. Once we do this, we will cross our infinitely many walls.
+
+Recall that $\mc{M}_{\zeta}^{\mr{ss}}(a, b)$ is log-able for any $(a, b) \in \R^2$. Therefore, we have an element
+\[ \eta_{\zeta, (a,b)} = (\L-1) \log [\ul{\mc{M}}_{\zeta}^{\mr{ss}}(a,b)] \in H_{\mr{gr, reg}}(\mt{C}). \]
+Therefore, we can define DT-type (Joyce-Song) invariants by
+\[ \sum_{\zeta(\beta, c) = (a,b)} J_{(\beta,c)}^{\zeta} z^{\beta} q^c \eqqcolon I\qty(\eta_{\zeta,(a,b)}). \]
+
+Now let $(\gamma, \eta) \in \R_{>0} \times \R$ be away from the walls. By a result of Abramovich-Corti-Vistoli, there is an element $(\L-1)[\mt{\ul{P}}_{\zeta,(\gamma,\eta)}(\beta, c)] \in H_{\mr{reg}}(\mt{C})$. Then we can define DT-type invariants by
+\[ \mr{DT}_{(\beta,c)}^{\zeta,(\gamma,\eta)}z^{\beta} q^c t^{-[\mc{O}_{\mc{X}}]} \coloneqq I((\L-1)[\mt{\ul{P}}_{\zeta,(\gamma,\eta)}(\beta,c)]). \]
+Finally, we can form generating series 
+\begin{align*} 
+    \mr{DT}_{\beta}^{\zeta, (\gamma,\eta)} &\coloneqq \sum_{c \in N_0(\mc{X})} \mr{DT}_{(\beta,c)}^{\zeta,(\gamma,\eta)} q^c \in \Z[N_0(\mc{X})]_{L_{\gamma}}; \\ 
+    J^{\zeta}(a,b)_{\beta} &\coloneqq \sum_{\substack{c \in N_0(\mc{X}) \\ \zeta(\beta,c) = (a,b)}} J^{\zeta}_{(\beta,c)} q^c \in \Q[N_0(\mc{X})]_{L_{\gamma}}. 
+\end{align*}
+
+\begin{lem}
+    Let $\beta \in N_1(\mc{X})$ and let $\gamma > \gamma'$ for all $\gamma' \in V_{\beta}$. An object $E \in \mt{A}$ of class $(-1, \beta, c)$ is a $(\mt{T}_{\zeta, (\gamma,\eta)}, \mt{F}_{\zeta, (\gamma, \eta)})$-pair if and only if it is a PT stable pair.
+\end{lem}
+
+The following is a technical lemma whose proof requires the Hard Lefschetz condition.
+\begin{lem}
+    For every $\gamma \in V_{\beta}$, there is a unique class $\beta_{\gamma} \in N_1(\mc{X})$ with $0 < \beta_{\gamma} \leq \beta$ such that $L_{\gamma}(A \cdot \beta_{\gamma}) = 0$. Class the class $c_{\gamma} \coloneqq A \cdot \beta_{\gamma} \in N_0(\mc{X})$.
+\end{lem}
+
+Now we will discuss wall-crossing. Once we cross all of the walls in $V_{\beta}$, we will have Bryan-Steinberg invariants, which we will define later. First, we need to understand what happens when we reach a wall $\gamma \in V_{\beta}$. Note that the set 
+\[ S = \bigcup_{\beta' \leq \beta} \qty{(\beta', c) \mid L_{\gamma}(c) \leq x, \mt{\ul{P}}_{\zeta, (\gamma,\eta)}(\beta',c) \neq \emptyset} \]
+is finite for any $x \in \R$, so we can define
+\[ M_{\beta,\gamma,x}^+ = \max_{(\beta',c) \in S} \deg(\beta',c) \qquad M_{\beta, \gamma,x}^- \coloneqq \min_{(\beta',c) \in S} \deg(\beta', c). \]
+
+\begin{lem}
+    Let $\gamma \in V_{\beta}$, $E \in \mt{A}$ be of class $(-1, \beta, c)$, and let
+    \begin{align*}
+        \eta_{\gamma, (\beta,c)}^+ &\coloneqq \max \qty{0, \deg(\beta, c) - M^-_{\beta, \gamma,L_{\gamma}(c) - K_{\gamma}}}; \\
+        \eta_{\gamma, (\beta,c)}^- &\coloneqq \min \qty{0, \deg(\beta, c) - M^+_{\beta, \gamma,L_{\gamma}(c) - K_{\gamma}}};
+    \end{align*}
+    If $\eta > \eta^+_{\gamma, (\beta, c)}$, then $E$ is a $(\mt{T}_{\zeta, (\gamma, \eta)}, \mt{F}_{\zeta, (\gamma,\eta)})$-pair iff $E$ is a $(\mt{T}_{\zeta, (\gamma+\ep, \eta)}, \mt{F}_{\zeta, (\gamma + \ep,\eta)})$-pair. If $\eta < \eta^-_{\gamma, (\beta, c)}$, then $E$ is a $(\mt{T}_{\zeta, (\gamma, \eta)}, \mt{F}_{\zeta, (\gamma,\eta)})$-pair iff $E$ is a $(\mt{T}_{\zeta, (\gamma-\ep, \eta)}, \mt{F}_{\zeta, (\gamma - \ep,\eta)})$-pair.
+\end{lem}
+
+This tells us that on each wall $\gamma \in V_{\beta}$, we can enter $\qty{\gamma} \times \R$ at $\infty$ from the right and then leave the wall to the left at $-\infty$. Now we need to understand what happens at the walls $W_{\beta}$ as we move from $\infty$ to $-\infty$.
+
+\begin{prop}
+    Let $\beta \in N_1(\mc{X})$, $\gamma \in V_{\beta}$, and $\eta \in W_{\beta}$. Then
+    \[ \mr{DT}_{\leq \beta}^{\zeta, (\gamma, \eta + \ep)} t^{-[\mc{O}_{\mc{X}}]} = \exp(\qty{J^{\zeta}(\gamma,\eta)_{\leq \beta}, -}) \mr{DT}_{\leq \beta}^{\zeta, (\gamma, \eta-\ep)} t^{-[\mc{O}_{\mc{X}}]} \in \Q[N_1^{\mr{eff}}(\mc{X})]_{\leq \beta}. \]
+\end{prop}
+
+Now define the series
+\[ \mr{DT}_{(\beta, c_0 + \Z c_{\gamma})}^{\zeta, (\gamma, \eta)} \coloneqq \sum_{k \in \Z} \mr{DT}_{(\beta, c_0 + kc_{\gamma})}^{\zeta, (\gamma,\eta)} q^{c_0 + kc_{\gamma}}. \]
+
+\begin{lem}
+    Let $\beta \in N_1(\mc{X})$, $c_0 \in N_0(\mc{X})$, $\gamma \in V_{\beta}$, and $\eta_0 \leq -\ell(\beta)$. Then
+    \[ \mr{DT}_{(\beta, c_0 + \Z c_{\gamma})}^{\zeta, (\gamma, \eta_0)} - \mr{DT}_{(\beta, c_0 + \Z c_{\gamma})}^{\zeta, (\gamma, \infty)} \]
+    is a rational function of degree less than $\deg(\beta, 0) + M_{\beta, \gamma, L_{\gamma}(c_0)}^+ + n_0 \ell(\beta) + \ell(\beta)^2$.
+\end{lem}
+Taking $n_0 \to -\infty$, we obtain
+\begin{cor}
+    Let $\beta, c_0, \gamma$ be as above. Then $\mr{DT}_{(\beta, c_0 + \Z c_{\gamma})}^{\zeta, (\gamma, \infty)}$ and $\mr{DT}_{(\beta, c_0 + \Z c_{\gamma})}^{\zeta, (\gamma, -\infty)}$ are equal as rational functions.
+\end{cor}
+
+\begin{thm}
+    Let $\beta \in N_1(\mc{X})$, $\gamma \in R_{>0} \setminus V_{\beta}$, $\eta \in \R$. Then $\mr{DT}_{\beta}^{\zeta, (\gamma, \eta)}$ is the expansion of $f_{\beta}(q)$ in $\Z[N_0(\mc{X})]_{L_{\gamma}}$.
+\end{thm}
+
+\section{Bryan-Steinberg invariants}
+
+In order to have a crepant resolution conjecture, we need some kind of enumerative invariants on $Y$. Define
+\[ \mt{T}_f = \qty{F \in \mt{Coh}_{\leq 1}(Y) \mid R f_* F \in \mt{Coh}_0(X)}. \]
+Then define $\mt{F}_f = \mt{T}_f^{\perp}$. We can define a Bryan-Steinberg pair $(F, s)$ as a $(\mt{T}_f, \mt{F}_f)$-pair in $\mt{A}_Y$. Equivalently, we have
+
+\begin{defn}
+    A \textit{Bryan-Steinberg pair} $(F, s)$ consists of $F \in \mt{Coh}_{\leq 1}(Y)$ and $s \in H^0(Y, F)$ such that $R f_* \on{coker}(s) \in \mt{Coh}_0(X)$ and $F$ admits no maps from elements of $\mt{T}_f$.
+\end{defn}
+
+For a class $(\beta, n) \in N_1(Y) \oplus \Z$, let $\mt{\ul{P}}_{\mr{BS}}(\beta, n)$ be the moduli stack of Bryan-Steinberg pairs of class $(-1, \beta, n) \in \Z \oplus N_{\leq 1}(Y)$. Then we can define the BS invariant $\mr{BS}(Y/X)_{(\beta, n)}$ via the Behrend function.
+
+Before we continue, we will say a little but more about the McKay correspondence. Define the category $\mt{Per}(Y/X)$ to be the category of complexes $E \in D(Y)$ such that $R f_*(E) \in \mt{Coh}(X)$ and such that for any $F \in \mt{Coh}(Y)$ with $R f_* F = 0$, $\Hom(F[1], E) = 0$ (called \textit{perverse coherent sheaves}).
+
+\begin{prop}
+    The equivalence $\Phi \colon D(Y) \to D(\mc{X})$ restricts to an equivalence of abelian categories $\mt{Per}(Y/X) \simeq \mt{Coh}(\mc{X})$.
+\end{prop}
+
+We now need to relate Bryan-Steinberg pairs to objects living on $\mc{X}$. We first define a new torsion pair.
+
+\begin{defn}
+    Let $\mt{T}_{\zeta, 0} \subset \mt{Coh}_{\leq 1}(\mc{X})$ denote the subcategory of sheaves $T$ such that if $T \twoheadrightarrow Q$, then either $Q \in \mt{Coh}_0(\mc{X})$ or 
+    \[ \deg_Y(\on{ch}_2(\Psi(Q \cdot A)) \cdot \omega) < 0. \]
+    Let $\mt{F}_{\zeta, 0} \subset \mt{Coh}_{\leq 1}(\mc{X})$ be the full subcategory on sheaves $F$ such that if $S \hookrightarrow F$, then $S$ has pure dimension $1$ and $\deg_Y(\on{ch}_2(\Psi(S \cdot A)) \cdot \omega) \geq 0$.
+\end{defn}
+
+The following result justifies the inclusion of $\zeta, 0$ in the subscript.
+\begin{lem}
+    Let $\beta \in N_1(\mc{X})$. If $0 < \gamma < \min_{\gamma'\in V_{\beta}} \gamma'$, then for any $\eta \in \R$ an object $E \in \mt{A}$ of class $(-1, \beta, c)$ is a $(\mt{T}_{\zeta, 0}, \mt{F}_{\zeta, 0})$-pair if and only if it is a $(\mt{T}_{\zeta, (\gamma, \eta)}, \mt{F}_{\zeta, (\gamma, \eta)})$-pair.
+\end{lem}
+
+We should think of $(\mt{T}_{\zeta, 0}, \mt{F}_{\zeta, 0})$ as being the limit of $(\mt{T}_{\zeta, (\gamma, \eta)}, \mt{F}_{\zeta, (\gamma, \eta)})$-pairs as $\gamma \to 0$. Finally, we relate $(\mt{T}_{\zeta, 0}, \mt{F}_{\zeta, 0})$-pairs to $(\mt{T}_f, \mt{F}_f)$-pairs, and as a corollary, we can relate enumerative invariants on $\mc{X}$ to enumerative invariants on $Y$.
+
+\begin{lem}
+    We have the following:
+    \begin{align*}
+        \mt{T}_f &= \Psi(\mt{Coh}_0(\mc{X})) \cap \mt{Coh}(Y); \\
+        \mt{T}_{\zeta, 0} &= \ev{\Phi(\mt{Per}_{\leq 1}(Y/X) \cap \mt{Coh}(Y)[1]), \Phi(\mt{T}_f)}_{\mr{ex}}; \\
+        \mt{F}_{\zeta, 0} &= \Phi\qty(\mt{Per}_{\leq 1}(Y/X) \cap \mt{Coh}(Y) \cap \mt{T}_f^{\perp}).
+    \end{align*}
+\end{lem}
+
+These give us the following:
+\begin{lem}
+    If $E$ is a $(\mt{T}_{\zeta, 0}, \mt{F}_{\zeta, 0})$-pair with $\beta_E \in N_{1,\mr{mr}}(\mc{X})$, then $\Psi(E)$ is an $f$-stable pair. On the other hand, if $E = (\mc{O}_Y \to F)$ is an $f$-stable pair, then $\Phi E$ is a $(\mt{T}_{\zeta, 0}, \mt{F}_{\zeta, 0})$-pair.
+\end{lem}
+
+This implies that $\mt{\ul{P}}_{\mr{BS}}(\beta, n) \cong \mt{\ul{P}}_{\zeta, (\gamma,\eta)}(\Phi(\beta, n))$ for $0 < \gamma < \min_{\gamma' \in V_{\beta}} \gamma'$, so we have proven
+
+\begin{thm}[Crepant resolution conjecture]
+    There exists a unique rational function $f_{\beta} \in \Q(N_0(\mc{X}))$ such that
+    \begin{enumerate}
+        \item The Laurent expansion of $f_{\beta}$ with respect to $\deg$ is the series $\mr{PT}(\mc{X})_{\beta}$;
+        \item The Laurent expansion of $f_{\beta}$ with respect to $L_{\gamma}$ for $0 < \gamma < \min_{\gamma' \in V_{\beta}} \gamma'$ is the series $\mr{BS}(Y/X)_{\beta}$.
+    \end{enumerate}
+\end{thm}
+
+Using results of Bryan-Steinberg and of the previous lecture, we have
+
+\begin{cor}[Crepant resolution conjecture, original formulation]
+    There is an equality of rational functions
+    \[ \frac{\mr{DT}(\mc{X})_{\beta}}{\mr{DT}(\mc{X})_0} = \frac{\mr{DT}(Y)_{\beta}}{\mr{DT}_{\mr{exc}}(Y)}. \]
+\end{cor}
+
+
+\end{document}

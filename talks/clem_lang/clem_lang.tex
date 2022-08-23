@@ -1,0 +1,391 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%\usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{Rational curves on Calabi-Yau hypersurfaces}
+\author{Patrick Lei}
+\date{March 25, 2022}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    I will discuss sweeping out of Calabi-Yau hypersurfaces by abelian varieties as well as rational curves on such hypersurfaces. We will focus in particular on the case of quantic threefolds and discuss Clemens' conjecture.
+\end{abstract}
+
+\section{Introduction}
+
+First, we recall some basic definitions.
+
+\begin{defn}
+    Let $X$ be a smooth (or maybe with nice singularities prescribed by the MMP) variety. Then $X$ is \textit{Calabi-Yau} if $\omega_X = \mc{O}_X$.
+\end{defn}
+
+\begin{exm}
+    By the adjunction formula, a degree $n+2$ hypersurface in $\P^{n+1}$ is Calabi-Yau. For some low dimensional examples, this means that elliptic curves, quartic surfaces, and quintic threefolds are Calabi-Yau.
+\end{exm}
+
+\begin{exm}
+    Recall that if $f \colon Y \to X$ is a double cover branched along a divisor $D$, we have
+    \[ K_Y = f^* \qty(K_X + \frac{1}{2} D). \]
+    This implies that the double cover of $\P^2$ branched along a sextic is Calabi-Yau as is the double cover of $\P^3$ branched along an octic surface.
+\end{exm}
+
+\section{Rational curves on Calabi-Yau hypersurfaces}
+
+We will now consider rational curves on Calabi-Yau hypersurfaces.
+
+\begin{thm}[Clemens]
+    Let $X$ be a general Calabi-Yau hypersurface of dimension $n \geq 2$. Then $X$ contains rational curves of arbitrarily large degree.
+\end{thm}
+
+For a quintic threefold, note that if we have $\P^1 \simeq C \subset X$, then the exact sequence
+\[ 0 \to T_{C} \to T_{\P^3}|_C \to N_{C/X} \to 0 \]
+tells us that $\deg N_{C/X} = -2$. Hirzebruch-Riemann-Roch for a smooth curve $C$ of genus $g$ says that
+\[ \chi(C, \mc{E}) = \on{rk} \mc{E} (1-g) + c_1(\mc{E}), \]
+and this gives us $\chi(N_{C/X}) = 0$ in our case. Generically, we expect (by upper semicontinuity of cohomology) that $h^0(N_{C/X}) = h^1(N_{C/X}) = 0$, and thus we expect
+\[ N_{C/X} = \mc{O}(-1) \oplus \mc{O}(-1). \]
+Actually, for any smooth rational curve $\P^1 \hookrightarrow X$ in a general quintic threefold, that is exactly the normal bundle by a result of Bin Wang in 2015. By basic deformation theory, we see that such $C$ are infinitesimally rigid. In fact, we can strengthen the previous theorem:
+
+\begin{thm}
+    Let $X$ be a quintic threefold. then $X$ has infinitely many infinitesimally rigid rational curves.
+\end{thm}
+
+On the flip side, we expect that there are not too many rational curves on a quintic threefold.
+
+\begin{conj}[Clemens]
+    Let $X$ be a general quintic threefold. Recall that by the Lefschetz hyperplane theorem, $H_2(X) = \Z$ is generated by the class of a line. Then for any $d > 0$, $X$ contains only finitely many rational curves of degree $d$.
+\end{conj}
+
+This conjecture is true in degrees $d \leq 11$ by a result of Cotterill in 2012. It also inspired the development of enumerative geometry, mirror symmetry, and many other ideas, but we will not discuss them here.
+
+\begin{rmk}
+    The conjecture is crucially supported by the fact that deformations of $C \simeq \P^1$ inside $X$ are unobstructed. On the other hand, if $Q$ is a quartic surface and $C \subset Q$ is a rational curve, then $N_{C/Q} = \mc{O}(-2)$, and because $h^1(N_{C/X}) = 1$, we see that deformations of $C$ in $Q$ are obstructed.
+\end{rmk}
+
+\begin{rmk}
+    The Clemens conjecture is false if we let $X$ be a double cover of $\P^3$ ramified along an octic surface $S$. Consider lines $\ell$ such that $\ell \cap S = 2p_1 + 2 p_2 + 2 p_3 + p_4 + p_5$ as cycles. There is a $1$-dimensional family of such lines. If $\pi \colon X \to \P^3$ is the double cover, then $\pi^{-1}(\ell)$ is ramified over $\ell$ at $2$ points and is therefore rational. But this means we have a $1$-parameter family of rational curves in $X$ all of the same degree.
+\end{rmk}
+
+The remark is related to the following result:
+
+\begin{prop}
+    Let $X$ be a Calabi-Yau threefold and suppose that $X$ contains a smooth rational curve $C \simeq \P^1$ with normal bundle 
+    \[ N_{C/X} \simeq \mc{O}(1) \oplus \mc{O}(1). \]
+    Assume there exists a rational curve $C' \subset X$, a neighborhood $U \supset C \cup C'$, and an involution $i \colon U \to U$ such that
+    \begin{enumerate}
+        \item The fixed locus of $i$ is a smooth hypersurface of $U$ that meets $C$ transversally;
+        \item $i(C) = C' \neq C$.
+    \end{enumerate}
+    Then,
+    \begin{enumerate}
+        \item If $i$ has at least one fixed point on $C$, then $X$ contains a one-parameter family of rational curves.
+        \item If $i$ has two fixed points $p, p' \in C$ and the tangent directions to $C'$ at $p, p'$ are distinct in $\P(N_{C/X}) = C \times \P^1$, then $X$ is swept out by a two-parameter family of elliptic curves.
+    \end{enumerate}
+\end{prop}
+
+To obtain this result, we need to choose a special octic surface. Let $\ell$ be a line in $\P^3$ and note that the map
+\[ H^0(\P^3, \mc{O}_{\P^3}(8)) \to H^0(\P^1, \mc{O}_{\P^1}(8)) \]
+is surjective (this is an exercise in Hartshorne). Now if we choose $f \in H^0(\P^1, \mc{O}(8))$ to vanish at three points with degrees $2,2,4$, then by a Bertini-type argument, the general octic surface $S$ living above $f$ is smooth. Now note that $\pi^{-1}(\ell)$ splits into two components because the local equation looks like
+\[ y^2 = x^4 (x+1)^2 (x-1)^2, \]
+and therefore the two components look like $y = \pm x^2 (x+1)(x-2)$. But now if we take $C, C'$ to be the two components and $i$ to exchange the two sheets, we see that both assumptions of the proposition are satisfied. We have already exhibited a one-parameter family of rational curves above, and later we will produce a two-parameter family  of elliptic curves.
+
+\section{Sweeping out of hypersurfaces}
+
+In this section we will discuss sweeping out of hypersurfaces by abelian varieties. This will roughly mean that a variety is covered by a generically finite morphism from a family of abelian varieties.
+
+\begin{defn}
+    Let $S$ be a quasiprojective variety and $f \colon \mc{Y} \to S$ be a smooth projective morphism of relative dimension $r$. Also let $X$ be a variety of dimension $n$. Then $X$ is \textit{rationally swept out} by members of $\mc{Y}$ if there exists a quasiprojective variety $B$ of dimension $n-r$, a morphism $B \to S$, and a dominant rational map $\mc{Y}_B \dashrightarrow X$.
+\end{defn}
+
+For example, we can consider when $S$ is a moduli space of varieties and $\mc{Y}$ is the universal family. Also, the definition of sweeping out is equivalent to the property that the union of the images of generically finite rational maps $Y_s \dashrightarrow X$ contains a Zariski open set of $X$.
+
+The main result that Voisin proves about sweeping out of hypersurfaces by varieties is the following:
+
+\begin{thm}[Voisin]
+    Let $1 \leq r \leq n$ and $\gamma = \ceil{\frac{r-1}{2}}$. Let $S$ have dimension $C$ and $\mc{Y} \to S$ be a family of $r$-dimensional smooth projective varieties. Finally fix a positive integer $d$. Then, if the two inequalities
+    \begin{enumerate}
+        \item $(d+1) r \geq 2n + C + 2$;
+        \item $(\gamma + 1) d \geq 2n - r + 1 + C$
+    \end{enumerate}
+    hold, the very general hypersurface of degree $d$ in $\P^{n+1}$ is \textbf{not} swept out by members of the family $\mc{Y} \to S$.
+\end{thm}
+
+This result is a consequence of a Hodge-theoretic result. First, let $U \subset \abs{\mc{O}_{\P^{n+1}}(d)}$ be the open set parameterizing smooth hypersurfaces. Let $\rho \colon \mc{M} \to U$ be a morphism with $\mc{M}$ smooth and quasiprojective such that the corank of $\rho$ is constant and equal to $C$ and that the image of $\rho$ is stable under $GL_{n+2}$. Let $\mc{X}_U$ be the universal smooth hypersurface and $j \colon \mc{X}_{\mc{M}} \hookrightarrow \mc{M} \times \P^{n+1}$ be the natural closed immersion.
+
+\begin{thm}[Nori]\leavevmode
+    \begin{enumerate}
+        \item Assume that $(d+1)r \geq 2n+C+2$. Then the restriction
+            \[ j^* \colon F^n H^{2n-r}(\mc{M} \times \P^{n+1}, \C) \to F^n H^{2n-r}(\mc{X}_{\mc{M}}, \C) \]
+            is surjective.
+        \item If $(\gamma + 1) d \geq 2n+1-r+C$, then the restriction
+            \[ j^* \colon H^{2n-r-i}(\mc{M} \times \P^{n+1}, \C) \to H^{2n-r-i}(\mc{X}_{\mc{M}}, \C) \]
+            is surjective for any $i \geq 1$.
+    \end{enumerate}
+\end{thm}
+
+The proof of this is of course Hodge-theoretic and uses spectral sequences, and it is omitted here. Finally, we state a conjecture about the sweeping out of hypersurfaces by abelian varieties.
+
+\begin{proof}[Proof of Voisin assuming Nori]
+    Suppose that there is a $B$ of dimension $n-r$, maps $\rho \colon B \to S$ and $m \colon B \to U$, and a dominant $\phi \colon \mc{Y}_B \dashrightarrow \mc{X}_B$. But then if $f \colon \mc{Y}_B \to B$ and $\pi \colon \mc{X}_U \to U$ are the families, we have $\pi \circ \phi = m \circ f$.
+
+    Now by shrinking $B$, we may assume that all $B_s$ for $s \in S$ are smooth and that the corank of $m_s \coloneqq m |_{B_S}$ is constant and $\leq C$. Now if $\mc{Y}_s \coloneqq f^{-1}(\mc{B}_s)$, write $\phi_s \coloneqq \phi |_{\mc{Y}_s}$. Therefore we have a rational map
+    \[ \phi_s \colon \mc{Y}_s = Y_s \times \mc{B}_s \dashrightarrow \mc{X}_U \times_U \mc{B}_s \eqqcolon \mc{X}_s. \]
+    But then the graph $\Gamma_{\phi_s} \subset Y_s \times \mc{B}_s \times_{\mc{B}_s} \mc{X}_s = Y_s \times \mc{X}_s$. This gives a cohomology class $\gamma_s \in H^{2n}(Y_s \times \mc{X}_s, \Q)$. Now Nori's theorem implies the class $\gamma_{s, r} \in H^r(Y_s, \Q) \otimes H^{2n-r}(\mc{X}_s, \Q)$ vanishes in 
+    \[ H^r(Y_s, \Q)_{\mr{tr}} \otimes (H^{2n-r}(\mc{X}_s, \Q) / H^{2n-r}(\P^{n+1} \times \mc{B}_s, \Q)). \]
+
+    Finally, returning to $\Gamma_{\phi} \subset \mc{Y}_B \times_U \mc{X}$, which has codimension $n$. If we fix $s \in S$, the class $[\Gamma_{\phi}] \in H^{2n}(\mc{Y}_B \times_U \mc{X}, \Q)$ restricts to $\gamma_s$. If we fix $u \in U$ and let $B_u \coloneqq m^{-1}(u)$. Then $\phi$ restricts to
+    \[ \phi_u \colon \mc{Y}_u \eqqcolon \mc{Y} \times_S B_u \dashrightarrow X_u, \]
+    which is dominant and generically finite on fibers. But now, a Hodge-theoretic argument tells us that
+    \[ \phi_u^* \colon H^n(X_u, \Q)_{\mr{tr}} \to H^n(\mc{Y}_u, \Q) \]
+    is injective and is in fact nonzero in $\Hom(H^n(X_u, \Q)_{\mr{tr}}, H^{n-r}(B_u, R^r f_* \Q_{\mr{tr}}))$. But now $[\Gamma_{\phi}]$ is nontrivial in $H^{2n}(\mc{X}_B, R^r f_* \Q_{\mr{tr}}) / H^{2n}(\mc{Y}_B \times \P^{n+1}, \Q)$, and so by a spectral sequence argument, $\gamma_{s,r}$ is nonzero, which is a contradiction.
+\end{proof}
+
+\begin{conj}[Lang]
+    Let $X$ be not of general type. Then the union of the images of non-constant rational maps $\phi \colon A \dashrightarrow X$ from an abelian variety $A$ is $X$.
+\end{conj}
+
+Equivalently, this becomes:
+
+\begin{conj}
+    Let $X$ be a variety of Kodaira dimension $0 \leq \kappa(X) < \dim X$ (in particular, $X$ is not of general type). Then $X$ is rationally swept out by abelian varieties of dimension $r \geq 1$.
+\end{conj}
+
+Note that this conjecture is true when $X$ is a double cover of $\P^3$ branched along an octic surface $S$. Consider the two-parameter family of lines $\ell \subset \P^3$ such that
+\[ \ell \cap S = 2 p_1 + 2 p_2 + p_3 + p_4 + p_5 + p_6. \]
+Then the preimage of $\ell$ in $X$ is branched over $\ell \simeq \P^1$ at $4$ points, and therefore its normalization is an elliptic curve. But this implies that $X$ is swept out by a two-parameter family of elliptic curves.
+
+\section{Sweeping out of Calabi-Yau hypersurfaces by abelian varieties}
+
+\begin{thm}
+    Let $X$ be a very general Calabi-Yau hypersurface in $\P^{n+1}$ (that is, of degree $d = n+2$). Then $X$ is \textbf{not} swept out by $r$-dimensional abelian varieties for any $r \geq 2$.
+\end{thm}
+
+\begin{proof}
+    This boils down to checking some inequalities. First, recall that
+    \[ \dim \mc{A}_r = \frac{r(r+1)}{2}. \]
+    Then we need to check the two inequalities. The first is
+    \[ (n+3)r \geq 2n + \frac{r(r+1)}{2} + 2, \]
+    which is clearly true for $r \geq 2$ because
+    \begin{align*}
+        r\qty(n+3-\frac{r+1}{2}) \geq 2(n+1),
+    \end{align*}
+    which holds because $n + 3 - \frac{r+1}{2} + r \geq n+3$ and both $r \geq 2$ and $n+3-\frac{r+1}{2} \geq 3$. The second inequality is
+    \[ (\gamma + 1)(n+2) \geq 2n - r + 1 + \frac{r(r+1)}{2}, \]
+    and this holds for $r \geq 2$ by high school algebra (of the kind that I cannot bother to figure out).
+\end{proof}
+
+\begin{cor}
+    If Lang's conjecture is true for a very general Calabi-Yau hypersurface $X$, then $X$ is swept out by elliptic curves.
+\end{cor}
+
+This will imply that $X$ has a uniruled divisor, but first we need the following lemma:
+
+\begin{lem}
+    Let $X$ be a very general Calabi-Yau hypersurface of dimension $\dim X \geq 2$. Then $X$ is not swept out by an isotrivial family of elliptic curves.
+\end{lem}
+
+\begin{lem}
+    Suppose a variety $X$ is swept out by a non-isotrivial family of elliptic curves. Then $X$ has a uniruled divisor.
+\end{lem}
+
+\begin{proof}
+    By assumption, we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{K} \ar[dashrightarrow]{r}{\phi} \ar{d}{\pi} & X \\
+        B,
+    \end{tikzcd}
+    \end{equation*}
+    where $\mc{K} \to B$ is a family of elliptic curves. Now this is given by $B \to \mc{M}_{1,1}$, so we can choose a smooth projective model $B' \supset B$ and a smooth projective model $\mc{K}' \supset \mc{K}$. Now we can replace $\phi$ with an honest morphism
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{K}' \ar{r}{\phi} \ar{d}{\pi} & X \\
+        B'.
+    \end{tikzcd}
+    \end{equation*}
+    But now the $j$-invariant map
+    \[ j \colon B' \xrightarrow{\mc{K}'} \ol{\mc{M}}_{1,1} \to \P^1 \]
+    (composing the defining map of $\mc{K}'$ with the coarse moduli space) is surjective. But now for $t \in \P^1$, consider the divisor
+    \[ \mc{K}_t' \coloneqq (j \circ \pi)^{-1}(t). \]
+    For a generic $t \in \P^1$, this is sent to a divisor of $X$, and in particular for any $t$, the image $\phi(\mc{K}_t')$ contains a divisor of $X$. But now if we take $t = \infty$, noting that an elliptic curve must degenerate to a union of rational curves, we see that any component of $\mc{K}_{\infty}'$ is uniruled, so we are done.
+\end{proof}
+
+\begin{cor}
+    Clemens' conjecture and Lang's conjecture contradict each other.
+\end{cor}
+
+
+\end{document}
