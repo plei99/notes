@@ -22,7 +22,7 @@
 \usepackage{physics}
 \usepackage{stmaryrd}
 \usepackage{mathrsfs} 
-\usepackage{ulem} 
+\usepackage[normalem]{ulem} 
 \usepackage{stackengine}
 %\usepackage{/home/patrickl/homework/macaulay2}
 
@@ -42,10 +42,12 @@
 \usepackage[english]{babel} 
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
-\usepackage[backend=biber, style=alphabetic]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
 \usepackage{cleveref}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
 
 % other formatting packages
 \usepackage{float}
@@ -72,6 +74,7 @@
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{conj}[thm]{Conjecture}
 \newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
@@ -119,6 +122,7 @@
 \newcommand{\Ima}{\mathrm{Im}}
 \newcommand{\A}{\mathbb{A}}
 \newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\G}{\mathbb{G}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
@@ -177,6 +181,7 @@
 \DeclareMathOperator{\depth}{depth}
 \DeclareMathOperator{\coker}{coker}
 \DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Hilb}{Hilb}
 
 % Section formatting
 \titleformat{\section}
@@ -222,6 +227,12 @@
 \maxsecnumdepth{subsection}
 \settocdepth{subsection}
 
+\addbibresource{../../math.bib}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
 \begin{document}
     
 \begin{titlingpage}
@@ -253,7 +264,7 @@ I would like to thank Ga\"etan Borot, Alexandr Buryak, Melissa Liu, Nikita Nekra
 
 Here is an equation of a plane curve over formal power series in $s$, which we will call the \textit{Lambert curve}:
 \[ ye^y = xe^x e^{-s}. \]
-This curve appears in the work of Oblomkov-Okounkov-Pandharipande which treats the descendent Gromov-Witten/Pandharipande-Thomas correspondence in the stationary, non-fully equivariant case. The main question is to consider deformations of this curve.
+This curve appears in the work of Oblomkov-Okounkov-Pandharipande~\cite{gwptdescendent} which treats the descendent Gromov-Witten/Pandharipande-Thomas correspondence in the stationary, non-fully equivariant case. The main question is to consider deformations of this curve.
 
 We will now state the main formula of interest:
 \begin{equation}\label{eqn:maineqn} 
@@ -263,7 +274,7 @@ This formula lives on the curve $ye^{y} = we^{w} e^{-x/\theta}$, where $\theta^{
 \[ \phi(z) = \sum_{n > 0} \frac{a_n}{n} \qty(\frac{izc_1}{u})^{-n} + \frac{1}{c_1} \sum_{n < 0} \frac{a_n}{n} \qty(\frac{izc_1}{u})^{-n}. \]
 The $a_n$ satisfy the usual Heisenberg relations $[a_n, a_m] = m \delta_{n+m, 0}$.
 
-\begin{thm}[Oblomkov-Okounkov-Pandharipande]
+\begin{thm}[{\autocite[Theorems 4, 5]{gwptdescendent}}]\label{thm:oopmain}
     There is an equality (after the standard change of variables $q=-e^{iu}$ and up to a monomial in $q$) of equivariant $2$-legged vertices with descendents
     \[ \braket{\prod_{i=1}^m H_{k_i}^{\mr{GW}}(p)}{\mu_1, \mu_2, \emptyset}^{\mr{GW}} = q^? \braket{\prod_{i=1}^m H_{k_i}^{\mr{PT}}(p)}{\mu_1, \mu_2, \emptyset}^{\mr{PT}} \]
     modulo $(s_1+s_2)(s_2+s_3)$, where
@@ -302,7 +313,7 @@ We can also write the completed conjugacy classes $\overline{C}_{\mu} = C_{\mu} 
 
 \subsection{GW/Hurwitz correspondence}
 
-\begin{thm}[Okounkov-Pandharipande, 2001]\label{thm:op01}
+\begin{thm}[{\cite{op1}}]\label{thm:op01}
     There is a correspondence
     \[ \tau_k(\omega) = \frac{1}{k!} \ol{(k+1)} \]
     between Gromov-Witten descendents and Hurwitz objects, where $\omega \in H^2(X)$ is the class of a point. More precisely, we have
@@ -318,11 +329,11 @@ The left hand side becomes
 \end{align*}
 where $\tau_k(\omega) = \ch_{k+2}(\omega)$.
 
-\subsection{PT theory}
+\subsection{Pandharipande-Thomas theory}\label{sub:pt}
 
-For a threefold $Z$, Pandharipande-Thomas theory considers moduli spaces
+For a threefold $Z$, Pandharipande-Thomas theory~\cite{ptthy} considers moduli spaces
 \[ P_n(Z, \beta) = \qty{[\mc{O}_Z \xrightarrow{\varphi} \mc{F}]} \]
-of \textit{stable pairs}, where $\mc{F}$ is a pure dimension $1$ sheaf on $X$ supported on $\beta \in H_2(Z)$ and $n = \ell(\mc{F}/\varphi(\mc{O}_Z))$. This has technical advantages over the older Donaldson-Thomas theory, one of them being that we don't have to study the Hilbert scheme of points on $\C^3$. If we let $\mc{O}_{\P_n(Z, \beta) \times Z} \to \F$ be the universal stable pair, then we define
+of \textit{stable pairs}, where $\mc{F}$ is a pure dimension $1$ sheaf on $X$ supported on $\beta \in H_2(Z)$ and $n = \chi(\mc{F})$. This has technical advantages over the older Donaldson-Thomas theory, one of them being that we don't have to study the Hilbert scheme of points on $\C^3$. If we let $\mc{O}_{\P_n(Z, \beta) \times Z} \to \F$ be the universal stable pair, then we define
 \[ \ch_k(\gamma) = \int_Z \ch_k(\F) \cup \gamma \] for any $\gamma \in H^*(Z)$.
 
 Now consider $Z = \C^2 \times \P^1$. Then the first nonempty PT moduli space is
@@ -366,8 +377,8 @@ Then we have
     - \psi_j^* \psi_j & j < 0.
 \end{cases}
 \]
-We can check that $[\psi_i, \psi_j] = [\psi_i^*, \psi_j^*] = 0$ and $\psi_i \psi_j^* + \psi_j^* \psi_i = \delta_{ij}$. If we consider $E_{ij} \in \mf{gl}(\infty)$, then assigning $E_{ij} \mapsto \psi_i \psi_j^*$ gives a projective representation of $\mf{gl}(\infty)$. The Casimir operator is $c = \sum_{k \in \Z + \frac{1}{2}} E_{kk}$, and this acts by
-\[ c v_S = (\abs{S_+} - \abs{S_-}) v_S. \]
+We can check that $[\psi_i, \psi_j] = [\psi_i^*, \psi_j^*] = 0$ and $\psi_i \psi_j^* + \psi_j^* \psi_i = \delta_{ij}$. If we consider $E_{ij} \in \mf{gl}(\infty)$, then assigning $E_{ij} \mapsto \psi_i \psi_j^*$ gives a projective representation of $\mf{gl}(\infty)$. The Casimir operator is $C = \sum_{k \in \Z + \frac{1}{2}} E_{kk}$, and this acts by
+\[ C v_S = (\abs{S_+} - \abs{S_-}) v_S. \]
 In addition, the operator $H = \sum k E_{kk}$ acts by 
 \[ H v_{\lambda} = \abs{\lambda} v_{\lambda}. \]
 
@@ -375,7 +386,7 @@ Define the operators
 \[ \mc{E}_r(z) = \sum e^{z(k-r/2)} E_{k-r,k} + \frac{\delta_{r,0}}{\zeta(z)}, \]
 where $\zeta(z) = e^{z/2} - e^{-z/2}$. In particular, we have $\mc{E}_r(0) = \sum E_{k-r, k} = \alpha_r$ for $r \neq 0$, where $[\alpha_k, \alpha_r] = k \delta_{k+r}$.
 
-The space $\qty(\bigwedge^{\infty/2} V)_0$ has two natural bases given by the $v_S$ and by $\prod \alpha_{k_i} v_{\emptyset}$, where $v_{\emptyset} = \qty(-\frac{1}{2}) \wedge \qty(-\frac{3}{2}) \wedge \cdots$. The transition function between them is $\chi_{\mu}^{\lambda}$. This appears in the Gromov-Witten theory of $\P^1$:
+The space $\qty(\bigwedge^{\infty/2} V)_0$ has two natural bases given by the $v_S$ and by $\prod \alpha_{k_i} v_{\emptyset}$. The transition function between them is $\chi_{\mu}^{\lambda}$. This appears in the Gromov-Witten theory of $\P^1$:
 \begin{align*} 
     \mel**{\mu}{\prod \tau_{k_i}(\omega)}{v}^{\P^1} &= \frac{1}{\zeta(\mu) \zeta(\lambda)} \sum_{\abs{\lambda} = \abs{\mu}} \chi_{\mu}^{\lambda} \chi_{\nu}^{\lambda} \times \prod \frac{\P_{k_i+1}(\lambda)}{(k_i+1)!} \\ 
     &= \mel**{\alpha_{\mu}}{\prod_{i=1}^n \frac{[z^{k_i}] \mc{E}_0(z)}{k_i!}}{\alpha_{\nu}},
@@ -383,18 +394,401 @@ The space $\qty(\bigwedge^{\infty/2} V)_0$ has two natural bases given by the $v
 where the last equality uses the formula $[z^k](\mc{E}_0(z)) v_{\lambda} = \P_k(\lambda) v_{\lambda}$. The last formula we will write in this section is the relation
 \[ [\mc{E}_a(z), \mc{E}_b(w)] = \zeta\qty(\det \mqty(z & a \\ w & b)) \mc{E}_{a+b}(z+w). \]
 
-\chapter{Counting curves in 1, 3, and 5 dimensions (Andrei Okounkov)}%
+\section{Equivariant Gromov-Witten theory of $\P^1$}
+
+We are interested in an equivariant version of the GW/Hurwitz correspondence, so we want to compute the Gromov-Witten invariants
+\begin{align*}
+    \braket{a_{k_1}([0]) \cdots a_{k_m}([0])}{\mu}^{\P^1/\infty}_{\C^{\times}} &= \braket{\alpha_{k_1} \cdots \alpha_{k_m} \wt{W}}{\mu} \\
+    &= \mel**{\vec{k}}{\wt{W}}{\mu},
+\end{align*}
+where the $a_{k_i}$ are Getzler descendents, $\wt{W}$ is the operator in~\Cref{thm:op02}, and $\mu$ is ramification data over $\infty$.
+
+\subsection{Localization in Gromov-Witten theory}
+
+Focusing on the case of $\P^1$, we will discuss localization. We begin with the moduli space $\ol{\mc{M}}^{\bullet}_{g, n+m}(\P^1, d)$ of disconnected stable maps, and the fixed points 
+\[ \qty(\ol{\mc{M}}_{g, n+m}(\P^1, d))^{\C^{\times}} \] 
+with respect to the $\C^{\times}$ action $\xi (v_1, v_2) = (v_1, \xi v_2)$ are simply a moduli space of bipartite graphs with extra markings on the vertices (genuses $g_i$ and marked points) and the edges (degrees $d_{ij}$) subject to various conditions, for example
+\[ \sum d_{ij} = d. \]
+Then recall that $H^*_{\C^{\times}}(\mr{pt}) = \C[t]$ and $H^*_{\C^{\times}}(\P^1) = \C[h,t]/h(h+t)$. 
+
+In particular, we see that
+\[ \qty( \ol{\mc{M}}^{\bullet}(\P^1, d) )^{\C^{\times}} = \bigsqcup_{\vec{g}, \vec{k}} \frac{ \ol{\mc{M}}_{g_1, k_1}, \ol{\mc{M}}_{g_{\ell}, k_{\ell}} }{\Aut}, \]
+so we need to consider integrals over this space.
+
+One standard technique is to cut the edges in half and consider the vertices and then glue the edges together, and this puts the markings and the degree $d_{ij}$ copies of $\P^1$ on the same footing. We now need to compute the contribution of a vertex $v_0$ to our integral. We want to compute the contribution of $v_0$ to
+\[ \ev{\tau(z_1)[0] \cdots \tau(z_n)[0] \tau(w_1)[\infty]\cdots\tau(w_m)[\infty]}, \]
+which is in fact
+\[ C^{\circ}(v_0) = \frac{\prod_{i=1}^{e(v_0)} \frac{d_i^{d_i}}{d_i!}}{t^{2g(v_0) - 2 + d(v_0) + \mr{val}(v_0)}} \times H^{\circ}_{g(v_0)(d_1, \ldots, d_{e(v_0)}, \ldots, tz_i, \ldots)}. \]
+
+\subsection{Hodge integrals}
+
+The main component of this computation is the $H^{\circ}$ terms, which are called \textit{Hodge integrals}. Let 
+\[\pi \colon C \to \ol{\mc{M}}_{g,n} \] 
+be the universal curve on the moduli space of curves. Then 
+\[ \mathbb{E} = \pi_*(\omega_{\pi}) \] 
+is a rank $g$ vector bundle, called the Hodge bundle. Then let $\lambda_i = c_i(\E)$ be the Hodge classes and $\psi_i = c_1(T^*_{z_i} C)$ be the psi classes. The Hodge integral is now
+\[ H^{\circ}_g(z_1, \ldots, z_n) = \prod z_i \int_{\ol{\mc{M}}_{g, n}} \frac{1 - \lambda_1 + \cdots \pm \lambda_g}{\prod_{i=1}^n (1-z_i \psi_i)}. \]
+
+There is a connection between Hodge integrals and Hurwitz numbers in the nonequivariant case, due to Ekedahl-Lando-Schapiro-Vainshtein~\cite{elsv}. The main contribution of Okounkov-Pandharipande~\cite{op2} is to replace the Hurwitz numbers in the equivariant case. First, we consider $C_g(\mu)$, which counts genus $g$ curves with simple ramification at $c_1, \ldots, c_b$ and ramification data $\mu$ at $\infty$, where
+\[ b = 2g + \abs{\mu} + \ell(\mu) - 2 \]
+by the Riemann-Hurwitz formula. By ELSV, this number is computed by the formula
+\[ C_g(\mu) = \frac{b!}{\zeta(\mu)} \qty(\frac{\prod \mu_i^{\mu_i}}{\mu!}) H_g^{\circ}(\mu_1, \ldots, \mu_{\ell}). \]
+
+Our next goal is to interpret $C_g(\mu)$ in the Fock space analytically. Write
+\[ \mc{A}(a,b) = S(b)^a \times \sum_{k \in \Z} \frac{\zeta(b)^k}{(a+1)_k} \mc{E}_k(b), \]
+where
+\[ (a+1)_k = \begin{cases}
+    (a+1) \cdots (a+k) & k \geq 0 \\
+    (a(a-1)\cdots(a+k+1))^{-1} & k \leq 1
+\end{cases}
+\]
+is the Pochammer symbol. In the case where $m \in \Z$ and $(a,b) = (m, um)$, we obtain
+\[ \mc{A}(m, um) = \sum_{n \geq 0} \frac{\zeta(u)^n}{n!} \mc{E}_{n-m}(u). \]
+Keeping $b$ as the number of simple branch points, we obtain
+
+\begin{lem}[\cite{op2}]
+    We have the identity
+    \begin{align*}
+        C_g(\mu) &= \frac{b!}{\zeta(\mu)} \qty(\frac{\prod \mu_i^{\mu_i}}{\mu!}) H_g^{\circ}(\mu_1, \ldots, \mu_{\ell}) \\
+        &= \ev{\prod_{i=1}^{\ell} \mc{A}(\mu_i, u \mu_i)} \\
+        &= \frac{u^?}{\zeta(\mu)} \ev{e^{\alpha_1} \mc{P}_2^b \prod \alpha_{-\mu_i}},
+    \end{align*}
+    where we use the formula
+    \[ \frac{u^m m^m}{m!} \mc{A}(m, um) = e^{\alpha_1} e^{u \mc{P}_2} \alpha_{-m} e^{u \mc{P}_2} e^{-\alpha_1}. \]
+\end{lem}
+
+We will also discuss some more properties of the $\mc{A}_{a,b}$. First, there is the identity
+\[ [\mc{A}(z, uz), \mc{A}(w, uw)] = \frac{1}{w} \sum_{k \in \Z} \qty(-\frac{z}{w})^k = \delta(z, -w), \]
+and second
+\[ [u^k] \qty(\prod_{i < j} (z_i + z_j) \times \ev{\mc{A}(z_1, uz_1) \cdots \mc{A}(z_n, uz_n)}) \in \Q[z]. \]
+
+\begin{exm}
+    We have an explicit example of a Hodge integral
+    \begin{align*}
+        H^0(z_1, z_2, u) &= \frac{S(uz_1)^{z_1} S(uz_2)^{z_2}}{\zeta(u(z_1+z_2))} \times \sum_{k > 0} \zeta(ku(z_1+z_2)) \times \frac{\zeta(uz_1)^k \zeta(uz_2)^{-k}}{(1+z_1)_k (1+z_2)_{-k}}
+    \end{align*}
+    with two insertions.
+\end{exm}
+
+\subsection{Application to Gromov-Witten theory}
+
+Returning to the vertex contributions, we obtain
+\begin{align*}
+    (\cdots) H(d_1, \ldots, d_n, tz_1, \ldots, tz_m) &= (\cdots) \ev{\mc{A}(tz_1, uz_1) \cdots \mc{A}\qty(d_1, \frac{u}{t}d_1) \cdots} \\
+    &= (\cdots) \ev{\mc{A}(tz_1, uz_1) \cdots e^{\alpha_1} e^{\frac{u}{t} \mc{P}_2} \prod \alpha_{-d_i}}.
+\end{align*}
+If we let $P_d$ be the projection operator on $\ker(H-d)$ and write it explicitly as
+\[ P_d = \sum \frac{1}{\zeta(\mu)} e^{-\frac{u}{t}} \mc{P}_2 \prod \alpha_{-\mu_i} P_0 \prod \alpha_{\mu_i} e^{-\frac{u}{t} \mc{P}_2}, \]
+then we obtain the formula
+\begin{align*}
+    \ev{\tau(z_1)[0]\cdots\tau(z_n)[0]\tau(w_1)[\infty]\cdots\tau(w_m)[\infty]} &= \sum_{\mu} H(t \vec{z}, \mu) (\cdots) H(-t\vec{w}, \mu) \\
+    &= \ev{\prod_{i=1}^n \mc{A}(tz_i, uz_i) e^{\alpha_1} P_d e^{-\alpha_1} \prod_{i=1}^m \mc{A}^*(-t w_i, uw_i)}.
+\end{align*}
+When $m = 0$, the formula simplifies to
+\begin{align*}
+    \ev{\tau(z_1)[0]\cdots\tau(z_n)[0]} &= \ev{\prod_{i=1}^n \mc{A}(tz_i, uz_i) e^{\alpha_1} P_d e^{-\alpha_{-1}}} \\
+    &= \ev{\prod_{i=1}^n \mc{A}(tz_i, uz_i) \frac{\alpha_1^d}{d!}} \\
+    &= \braket{\prod_{i=1}^n \mc{A}(tz_i, uz_i)}{1^d} \\
+\end{align*}
+
+\subsection{Dressing operator}
+
+Recall that we want to compute the Gromov-Witten invariants with Getzler descendents, which are given by
+\[ \braket{a_{k_1}([0]) \cdots a_{k_n}([0])}{\mu}^{\P^1/\infty, \C^{\times}} = \braket{\alpha_{k_1} \cdots \alpha_{k_n} W e^{\alpha_1}}{\mu}. \]
+It remains to describe this matrix $W$ and the variant $\wt{W} = W e^{\alpha_{1}}$. Here, the $a_n$ are defined by
+\[ \sum_{n=0}^{\infty} z^n \tau_n = \sum_{n=0}^{\infty} \frac{(iuz)^{n-1}}{1+zc_1} a_n, \]
+so for example we have
+\[ \tau_1 = \frac{iu}{2} a_2 - c_1 a_1. \]
+
+We will work in $\mf{gl}_{\infty}(V)$. We also write 
+\[ \wt{\mf{gl}}(V) = \ev{H^a S^b}_{a,b \in \Z}, \] 
+where $H = \sum k E_{kk}$ and $S = \alpha_{-1} = \sum E_{k,k-1}$, so $SH = (H+1)S$. Then define the operator
+\[ \wt{\mc{A}} = \frac{1}{u} \sum \frac{(uz)^k}{(tz+1)_k} \alpha_k. \]
+Both the operators $\mc{A}, \wt{\mc{A}}$ live in $\mf{gl}(V)[[z^{\pm 1}, u^{\pm 1}, t^{\pm 1}]$. 
+Then we will have $W^{-1}AW = \wt{A}$.
+
+\begin{lem}
+    Write $D = S^{-1} + H$, $Z = \frac{tS}{u}$, and $\wt{D} = D - \frac{1}{2} \qty(H \frac{1}{1-Z} + \frac{1}{1-Z}H)$. Then there exists a unique solution to the equation
+    \[ \dv{W}{t} = WB, \qquad B = \frac{H^2 Z^2}{(1-Z)^2} + \frac{HZ^2}{(1-Z)^3} + \frac{2Z^3 + 3Z^2}{8(1-Z)^4} \]
+    such that
+    \begin{enumerate}
+        \item $W |_{u=0} = 1$;
+        \item $W^{-1} DW = \wt{D}$;
+        \item $W$ is upper triangular.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}[Sketch of proof]
+    We will compute the derivative
+    \begin{align*}
+        \dv{t} (W \wt{D} W^{-1}) &= W \qty(\frac{1}{t} [B, \wt{D}] + \dv{\wt{D}}{t})W^{-1},
+    \end{align*}
+    and this implies that $\wt{D}|_{t=0} = D|_{t=0}$. Some more ``basic checking'' completes the proof.
+\end{proof}
+
+\begin{rmk}
+    The operator $B$ in the lemma was discovered by a computer and it is unclear why it appears.
+\end{rmk}
+
+\begin{thm}[\cite{gwptdescendent}]
+    We have the formula
+    \[ W^{-1} \mc{A} W = \wt{\mc{A}}. \]
+\end{thm}
+
+\begin{proof}
+    Define the operator
+    \[ \mc{A}^{(m)} \coloneqq \frac{u^{m+1}m^m}{m!} \mc{A}|_{t=1,z=m} \]
+    and define $\wt{\mc{A}}^{(m)}$ analogously. In fact, we have $\mc{A}^{(m)} = (\mc{A}^{(1)})^m$ and
+    \begin{align*}
+        \wt{\mc{A}}^{(m)} &= S^m e^{\frac{mu}{S}} \\\
+        \mc{A}^{(m)} &= e^{\frac{u}{S}} e^{\frac{uH^2}{2}} S^m e^{\frac{-uH^2}{2}}.
+    \end{align*}
+    Thus we obtain $W^{-1} \mc{A}^{(1)} W = \wt{\mc{A}}^{(1)}$. Differenting both sides by $t$, we obtain the desired result.
+\end{proof}
+
+\section{GW/PT correspondence}
+
+Let $X$ be a threefold and consider Pandharipande-Thomas theory on $X$, which we defined in~\Cref{sub:pt}.
+
+\begin{exm}
+    Let $X = \P^3$ and $\beta = \P^1$. Then
+    \[ P_n(X, \beta) = \qty{L \subset \P^3 \mid n \text{ points on }L}, \]
+    and we will call the $n$ points $z_1, \ldots, z_n$. Then we see that
+    \[ \mc{O}_{\P^3} \xrightarrow{\varphi} \mc{F} = \mc{O}_L(n) \]
+    and $\varphi$ has zeroes at $z_1, \ldots, z_n$. In particular, we have
+    \[ \on{vir-dim} P_n(X, \beta) = \dim \mr{Gr}(\P^1, \P^3). \]
+    This and similar examples were worked out by Pandharipande-Thomas~\cite{ptthy} and by Moreira~\cite{moreira}.
+\end{exm}
+
+\begin{exm}
+    Consider $X = \P^1 \times \C^2$. We will consider the moduli space $P_{\chi}(\C^2 \times \P^1, n \P^1)$. If we consider the torus $T_0$ preserving the symplectic form on $\C^2$, then the virtual class satisfies
+    \[ [P_{\chi}(\P^1 \times \C^2)]^{\mr{vir}}_{T_0} = \delta_{\chi, n}[\Hilb_n(\C^2)]. \]
+\end{exm}
+
+\subsection{Descendents in PT theory}
+
+Let $\F$ be the universal stable pair on $P_n(X, \beta) \times X$. Then if $\gamma \in H^*(X)$, we define
+\[ \ch_k(\gamma) = \int_X \ch_k(\F - \mc{O}) \cdot \gamma. \]
+When $X = \P^1 \times \C^2$, then 
+\[ \int_{P_n(X, n \P^1)} \prod_{i=1}^n \ch_{k_i}(\gamma_i) = \int_{\Hilb_n(\C^2)} \prod \ch_{k_i}(\gamma_i). \]
+Then there is the formula
+\[ \ch(z)([0]) \ket{[I_{\lambda}]} = S^{-1} \qty(\frac{x}{s})e^{zH} \ket{v_{\lambda}}. \]
+Of course, if $\C^{\times}$ acts on $\C^2$ with the antidiagonal action, we see that
+\[ (\Hilb_n(\C^2))^{\C^{\times}} = \bigsqcup_{\abs{\lambda} = n} \qty{I_{\lambda}}, \]
+where $I_{\lambda} = (x^{\lambda_1}, x^{\lambda_2}y, \ldots, x^{\lambda_{\ell}} y^{\ell})$. Then we have $\mc{O} / I_{\lambda} = \mc{F}$, and so
+\begin{align*} 
+    \ch(\mc{F}) |_{I_{\lambda}} &= \sum_{ij \in \lambda} e^{s(i-j)} \\ 
+    &= \sum_{i=1}^{\ell} \frac{e^{(\lambda_i - i)s}-1}{e^s-1}.
+\end{align*}
+The $S^{-1}\qty(\frac{x}{s})$ term comes from the presence of the Todd class. Recall the definition
+\begin{align*}
+    H^{\mr{PT}}(x) &= \sum_{k=-1}^{\infty} x^{k+1} H_k^{\mr{PT}} \\
+    &= S^{-1}\qty(\frac{x}{\theta}) \sum_{k=0}^{\infty} x^k \ch_k(\F-\mc{O}),
+\end{align*}
+where $\theta^{-1} = -c_2(T_X)$.
+
+Now the main formula is that for $s=1$, we have
+\begin{align*} 
+    \mel**{1^n}{\prod_{i=1}^n H_{k_i}^{\mr{PT}}([0])}{\mu}^{T_0} &= [z^{\vec{k}}] \mel**{e^{\alpha_1}}{e^{\qty(\sum z_i)H}}{\mu} \\
+    &= [z^{\vec{k}}]\braket{e^{\qty(\sum z_i)(H+\alpha_1)}e^{\alpha_1}}{\mu} \\
+    &= [z^{\vec{k}}] \braket{W^{-1} e^{\qty(\sum z_i) D}e^{\alpha_1}}{\mu} \\
+    &= [z^k] \braket{e^{\qty(\sum z_i)\wt{D}}We^{\alpha_1}}{\mu}.
+\end{align*}
+On the Gromov-Witten side, we have
+\begin{align*}
+    \mel**{1^n}{\prod_{i=1}^n H_{k_i}^{\mr{GW}}([0])}{\mu} = \braket{\prod \alpha_{k_i}W^{-1}e^{\alpha_1}}{\mu}.
+\end{align*}
+This allows us to solve the GW/PT correspondence and match descendents, where
+\begin{align*}
+    e^{z\wt{D}} &= \ch(z)[0] \\
+    \alpha_k &= \tau_k([0]).
+\end{align*}
+This actually allows us to define negative descendents, but to match the descendents we need to write $\wt{D}$ in terms of the $\alpha_k$.
+
+\subsection{Matching GW and PT descendents}
+
+Our method will be to do the following:
+\begin{enumerate}
+    \item Diagonalize $D$;
+    \item If $A \in \mf{gl}(V)$ is diagonal with eigenvalues
+        \[ A \ul{\qty(k+\frac{1}{2})} = \lambda_k \ul{\qty(k+\frac{1}{2})}, \]
+        then $A$ acts on $\bigwedge^{\infty/2} V$ by
+        \[ \Res_{w=0} \qty(\sum_{k \in \Z} \lambda_k w^{-k}) \times \psi(w) \psi^*(w). \]
+        There is a boson/fermion correspondence between
+        \begin{align*}
+            \psi(x) &= T x^{c+\frac{1}{2}} \Gamma_+(x), \\
+            \psi^*(x) &= T^{-1} x^{-c+\frac{1}{2}} \Gamma_-(x).
+        \end{align*}
+\end{enumerate}
+
+The first step is of course to diagonalize $D$ (for simplicity, we will set $t=s=1$). Clearly we can identify
+\[ V = z^{\frac{1}{2}} \C[z][[z^{-1}]]. \]
+Then we know
+\[ D = \qty(\frac{1}{z} - \dv{z} \frac{z^2}{(iu-z)} - \frac{1}{2} \frac{z}{(1-z)^2}) f(z), \]
+so we need to solve the differential equation $Df(z) = \lambda f(z)$. The solution is
+\[ f(z) = \qty(1-\frac{z}{iu})^{-\frac{1}{2}} z^{\frac{1}{2}-\lambda} \times \exp \qty[\frac{iu}{2z^2} - \frac{(1+iu\lambda)}{z}]. \]
+To make this work, we need $\lambda \in \Z$, and to diagonalize $D$ we take the basis
+\[ f_k(z) = \qty(z^{-1} e^{\frac{-iu}{z}})^k \times \exp(g(z)), \]
+where $g(z) = -\frac{iu}{2z^2} + \frac{1}{z} - \frac{1}{2} \log\qty(1-\frac{iu}{z})$. The Lambert curve is obtained from $f_k$, which produces the curve 
+\[ xe^{-x} = ye^{-y} e^{\frac{x}{\theta}}. \]
+
+\begin{rmk}
+    Recall the dressing operator $W$, which we defined using a differential equation. An explicit formula for $W$ is
+    \[ W = W_{\lambda,\mu} = \braket{a_{\lambda}}{\mu}^{\P^1, \C^{\times}}. \]
+\end{rmk}
+
+An upgraded version of the GW/PT correspondence is the following:
+\begin{thm}[\cite{gwptdescendent}]
+    Subject to $t_1 + t_2 = 0$, there is an explicit equality of descendent vertices
+    \[ \braket{\prod H_{k_i}^{\mr{GW}}([0])}{\emptyset, \emptyset, \mu}^{\mr{GW}, T_0} =\braket{\prod H_{k_i}^{\mr{PT}}([0])}{\emptyset, \emptyset, \mu}^{\mr{PT}, T_0}. \]
+\end{thm}
+
+\begin{rmk}
+    Using the Pandharipande-Pixton philosophy, we can obtain equality~\Cref{thm:oopmain}. This will be enough to prove the stationary GW/PT correspondence for toric varieties.
+\end{rmk}
+
+\subsection{GW/PT correspondence with descendents}
+
+Recall that on the Gromov-Witten side, the insertions of interest are $\tau_0(\gamma)$, while in PT theory, the corresponding insertions should be $\ch_2(\gamma)$. This correspondence was proved in~\cite{moop} for any toric variety and any $\gamma$, while Pandharipande-Pixton~\cite{ppquintic} prove this for $X$ a complete intersection in $\P^N$. There is also a conjectural equality between $\tau_k([\mr{pt}])$ and $\ch_{k+2}([\mr{pt}])$.
+
+More generally,~\cite{mnop2} conjecture that there is a series of ``chemical reactions'' that take
+$\prod_{i=1}^n \tau_{k_i}(\gamma_i)$ to an expression involving with Chern classes.
+
+Pandharipande-Pixton~\cite{ppgwptdesc} consider the operators
+\begin{align*}
+    M_{\lambda,\mu}^{\mr{PT}} = \braket{\prod \ch_{\lambda_i + 2}([0])}{\mu}_{\mr{PT},T}^{\C^2 \times \P^1 / \C^2 \times \infty} \\
+    M_{\lambda,\mu}^{\mr{GW}} = \braket{\prod \tau{\lambda_i}([0])}{\mu}_{\mr{GW}, T}^{\C^2 \times \P^1 / \C^2 \times \infty}
+\end{align*}
+in the fully equivariant case. This fits into an overall picture
+\begin{equation*}
+\begin{tikzcd}
+    \text{GW desc} \ar{r}{M^{\mr{GW}}} & \text{rel conds} & \text{PT desc} \ar[swap]{l}{M^{\mr{PT}}} \ar[bend left=30]{ll}{M^{\mr{GW/PT}} = M^{\mr{GW}} \circ (M^{\mr{PT}})^{-1}}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{thm}[\cite{ppgwptdesc}]\leavevmode
+    \begin{itemize}
+        \item The operator $M^{\mr{PT}}$ is rational in $q$;
+        \item The operators $M^{\mr{PT}}$ and $M^{\mr{GW}}$ are upper-triangular.
+        \item There is an equality
+            \[ \ev{M^{\mr{GW/PT}}(D)}_{\mr{GW},T}^X = \ev{D}_{\mr{PT},T}^X \]
+            for any $X$ and any $D = \prod_{i=1}^m \ch_{k_i}(\gamma_i)$.
+    \end{itemize}
+\end{thm}
+
+While $M^{\mr{GW/PT}}$ is unknown, there is an explicit formula for some of the matrix elements, which we call $C^{\bullet}$.
+\begin{thm}[\cite{gwptdescendent}]
+    There is an explicit equality
+    \[ \ev{C^{\bullet}\qty(\prod_{i=1}^n \ch_{k_i}(\gamma_i))}_X^{\mr{GW}} = \ev{\prod \ch_{k_i}(\gamma_i)}_X^{\mr{PT}} \]
+    for any toric $X$ and stationary descendents $\gamma_i \in H^{>0}(X)$.
+\end{thm}
+
+We will consider the formal algebras
+\begin{align*}
+    \mathbb{D}_{\mr{PT}}^X &\supset \mathbb{D}_{\mr{PT}}^{ X, \mt{st} } \coloneqq \braket{\ch_i(\gamma) \mid i \geq 2, \gamma \in H^{>0}} \\
+    \mathbb{D}_{\mr{GW}}^X &\supset \mathbb{D}_{\mr{GW}}^{ X, \mt{st} } \coloneqq \braket{\tau_i(\gamma) \mid i \geq 0, \gamma \in H^{>0}}.
+\end{align*}
+Then write
+\[ \wt{\ch}_k(\gamma) \coloneqq \ch_k(\gamma) + \frac{1}{24} \ch_{k-2}(\gamma \cdot c_2). \]
+Then we can write
+\[ C^{\bullet}\qty(\prod_{i=1}^m \wt{\ch}_i(\gamma)) = \prod_{P \text{ partition of } (1, \ldots, n)} \prod_{s \in P} C^{\circ} \qty(\prod_{s \in P} \wt{\ch}_{{k_i}}(\gamma_i)). \]
+The $C^{\circ}$ are quite complicated, but in a simple case, we have
+\[ C^{\circ}(\wt{\ch}_{k_1+2}(\gamma) \wt{\ch}_{k_2 + 2}(\gamma')) = -\frac{(iu)}{k_1!}{k_2!} a_{k_1+k_2}(\gamma \cdot \gamma') + \sum (*) a_{\mu_1} a_{\mu_2}(\gamma \cdot \gamma' c_1). \]
+There is a bumping and splitting that produces things like
+\[ a_k a_{\ell}(\alpha) = \sum_{i=1}^N a_k(\alpha_i^L) a_{\ell}(\alpha_i^R), \]
+where $\Delta \cdot \alpha = \sum \alpha_i^L \otimes \alpha_i^R \in H^*(X \times X)$. We will take the $\alpha_i^L$ and $\alpha_i^R$ to have degrees $d^L, d^R$, respectively.
+
+\subsection{Virasoro constraints in PT theory}
+
+For a toric variety $X$, we can apply the GW/PT correspondence to the Virasoro constraints for $\mr{GW}(X)$. This obtains Virasoro constraints for $\mr{PT}(X)$, which turns out to be quite simple. The Virasoro constraints in PT theory are:
+\begin{itemize}
+    \item We have
+        \[ R_k(\ch_i(\gamma)) = \qty(\prod_{n=0}^k (i+d-3+n)) \ch_{i+k}(\gamma) \]
+        for any $\gamma \in H^{2d}(X, \Q)$. For example, $R_{-1}(\ch_i(\gamma)) = \ch_{i=1}(\gamma)$.
+    \item The constant terms are
+        \begin{align*} 
+            T_k ={}& -\frac{1}{2} \sum_{a+b=k+2} (-1)^{d^L d^R}(a+d^L-3)!(b+d^R-3)! \ch_a \ch_b(c_1) \\ 
+            &+ \frac{1}{24} \sum_{a+b=k} a! b! \ch_a \ch_b(c_1 c_2). 
+        \end{align*}
+    \item There are also the operators $L_k^{\mr{PT}} = T_k + R_k$ satisfying
+        \[ L_k^{\mr{PT}}, L_{\ell}^{\mr{PT}} = (k+\ell) L_{k+\ell}^{\mr{PT}} \]
+        and operators $\mc{L}_k^{\mr{PT}} = L_k^{\mr{PT}} + (k+1)! L_{-1}^{\mr{PT}} \ch_{k+1}(p)$.
+\end{itemize}
+
+\begin{thm}[\cite{virasoropt}]
+    For any $D \in \mathbb{D}^{\mr{PT},\mr{st}}$, we have
+    \[ \ev{\mc{L}_k^{\mr{PT}}(D)}_X^{\mr{PT}} = 0. \]
+\end{thm}
+
+\begin{conj}
+    The theorem holds for all descendents $D \in \mathbb{D}^{\mr{PT}}$.
+\end{conj}
+
+The proof essentially amounts to checking the following formula:
+\begin{thm}
+    There is the formula
+    \[ C^{\bullet} \circ L_k^{\mr{PT}}(D) = (iu)^{-k} \wt{\mc{L}}_k^{\mr{GW}} \circ C^{\bullet}(D). \]
+\end{thm}
+Here, $L_k^{\mr{GW}}$ is the usual Virasoro for Gromov-Witten theory.\footnote{Alexei complained about this not preserving stationary things.} The only contribution to descendents of $1$ to $L_k^{\mr{GW}}$ are
+\[ (k+1)! \tau_0(1) \tau_{k-1}(p) = T_k^{\circ}. \]
+Therefore, we can define $\wt{L}_k^{\mr{GW}} = L_k^{\mr{GW}} - T_k^{\circ}$ and $\mc{L}_k^{\mr{GW}} = \wt{\mc{L}}_k^{\mr{GW}} + (iu)^2 (k+1)! \wt{L}_{-1}^{\mr{GW}}$.
+\begin{prop}\leavevmode
+    \begin{itemize}
+        \item The operator $\mc{L}_k^{\mr{GW}}$ preserve stationary descendents, as in
+            \[ \mc{L}_k^{\mr{GW}}(\mathbb{D}^{\mr{GW}, \mr{st}}) \subset \mathbb{D}^{\mr{GW}, \mr{st}}. \]
+        \item We have the vanishing
+            \[ \ev{\mc{L}_k^{\mr{GW}}(D)}^{\mr{GW}} = 0 \]
+            for all $D \in \mathbb{D}^{\mr{GW}}$.
+    \end{itemize}
+\end{prop}
+
+Let $S$ be a surface and $X = S \times \P^1$. Then
+\[ P_n(S \times \P^1, [n \P^1]) = \Hilb_n(S), \]
+and so the virtual class is
+\[ [P_n(S \times \P^1, [n \P^1])]^{\mr{vir}} = [\Hilb_n(S)]. \]
+Then if $\mc{I}$ is the universal ideal on the Hilbert scheme, define
+\[ \ch_k^{\Hilb}(\gamma) = \int_S \ch_k(\mc{I}) \gamma. \]
+\begin{cor}
+    For any toric surface $S$ and $\gamma_i \in H^*(S)$, we have
+    \[ \int_{\Hilb_n(S)} \mc{L}_k^{\Hilb} \qty(\prod_{i=1}^n \ch_{k_i}^{\Hilb}(\gamma_i)) = 0. \]
+\end{cor}
+
+\begin{proof}
+    This follows from
+    \[ \ch_{k_i}(\gamma \times [\mr{pt}]) = \ch_{k_i}^{\Hilb}(\gamma). \]
+\end{proof}
+
+\begin{rmk}
+A cobordism argument was used by Moreira~\cite{moreira} to extend this to any surface $S$ with $H^1(S) = 0$.
+\end{rmk}
+
+
+\chapter{Counting curves in 1, 3, \xout{and 5} dimensions (Andrei Okounkov)}%
 \label{cha:andrei}
 
 The main object in Gromov-Witten theory is the moduli space $\mc{M}_{\mr{GW}}$ of stable maps $C \to X$ from a curve to $X$. This is of course highly disconnected, so the genus $g$ component will be weighted by $u^{2g-2}$ while we will hide the degree component for now. One of the major ideas in this subject is to push forward cohomology classes to the moduli of curves, which forms a \textit{cohomological field theory} with rich structure coming from maps between different moduli spaces of curves. Instead, we will push things forward to $X$. Just like we can vary the source curves in families, we can degenerate $X$. Also, automorphisms of $X$ still act on our moduli space.
 
-Our goal is to give a target space space of integrals over $\mc{M}_{\mr{GW}}$. We would like a geometric theory that reproduces the same integrals and an algebraic theory that computes them in some fashion resembling a topological quantum field theory -- for example Chern-Simons theory.
+Our goal is to give a target space description of integrals over $\mc{M}_{\mr{GW}}$. We would like a geometric theory that reproduces the same integrals and an algebraic theory that computes them in some fashion resembling a topological quantum field theory -- for example Chern-Simons theory.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{basicdeg}
+    \caption{Basic degeneration}
+    \label{fig:basicdeg}
+\end{figure}
 
 The most basic degeneration of a variety $X$ is to degenerate 
 \[ X \rightsquigarrow X_1 \cup_D X_2, \] 
-where $D$ is a smooth divisor shared between $X_1$ and $X_2$. If we write $\P = \P(\mc{O}_D \oplus N_{X_i/D})$, we obtain the relation
+where $D$ is a smooth divisor shared between $X_1$ and $X_2$ as in~\Cref{fig:basicdeg}. If we write $\P = \P(\mc{O}_D \oplus N_{X_i/D})$, we obtain the relation
 \[ [X] = [X_1] + [X_2] - [\P] \]
-in algebraic cobordism. As proved by Levine-Pandharipande, this relation generates all relations in algebraic cobordism. A similar type of degeneration is the expanded degeneration of Jun Li, which creates an accordion of $\P^1$-bundles.
+in algebraic cobordism. As proved by Levine-Pandharipande~\cite{algcob}, this relation generates all relations in algebraic cobordism. A similar type of degeneration is the expanded degeneration of Jun Li~\cite{expdeg}, which creates an accordion of $\P^1$-bundles as in~\Cref{fig:extdeg}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{extdeg}
+    \caption{Expanded degeneration}
+    \label{fig:extdeg}
+\end{figure}
 
 This fits well into the usual TQFT formalism where the boundary divisor $D = \bigsqcup D_i$ is associated to a vector space $\mc{H}(D) = \bigotimes \mc{H}(D_i)$ and the manifold $X$ is a vector in this space. Because $\mc{H}(D)$ is usually the cohomology of some nice space, it has a product $\cup$, integration, and a form
 \[ (\alpha, \beta) = \int \alpha \cup \beta. \]
@@ -402,7 +796,7 @@ We can impose conditions at $D$ by either pulling back cohomology classes from $
 
 In reality, we have more general degenerations, where we have a degeneration
 \[ X \rightsquigarrow \bigcup_i X_i, \]
-where the $X_i$ are glued along a simple normal crossings divisor. This has been extensively studied in geometry, for example in logarithmic Gromov-Witten theory, logarithmic Donaldson-Thomas theory of Maulik-Ranganathan, and Brett Parker's ``exploded manifolds.''
+where the $X_i$ are glued along a simple normal crossings divisor. This has been extensively studied in geometry, for example in logarithmic Gromov-Witten theory, logarithmic Donaldson-Thomas theory of Maulik-Ranganathan~\cite{logdt}, and Brett Parker's ``exploded manifolds''~\cite{expman}.
 
 \section{Counting curves in 1 dimension}
 
@@ -414,7 +808,7 @@ and thus changing dimension by $2$ is very easy.
 
 In the case of $\dim X = 1$, the geometric target space theory is just Hurwitz theory, which as in~\Cref{sub:hurwitz} counts ramified covers of $X$ of degree $d$ with specified ramification data. This ramification data is an instance of a relative condition in Gromov-Witten theory, which is as follows. We can consider the moduli space of relative stable maps $\mc{M}_{\mr{GW}}(X/D)$, where we impose that $f^{-1}(D) = \sum \mu_i p_i$, where $\mu$ is a partition and the $p_i$ are the marked points of $C$.
 
-Hurwitz theory has moduli spaces parameterizing maps $C \to X$ which are ramified covers with the specified ramification, where $(X, x_1, \ldots, x_n)$ can vary in moduli. These moduli spaces are finite over the moduli of curves, so the most interesting number is simply the degree of this map, which is the Hurwitz number. Under degenerations $X \rightsquigarrow X_1 \cup X_2$, then the ramification at the node $x_0$ should match. These are called admissible covers; see Harris-Morrison for a reference. This gives us the relation
+Hurwitz theory has moduli spaces parameterizing maps $C \to X$ which are ramified covers with the specified ramification, where $(X, x_1, \ldots, x_n)$ can vary in moduli. These moduli spaces are finite over the moduli of curves, so the most interesting number is simply the degree of this map, which is the Hurwitz number. Under degenerations $X \rightsquigarrow X_1 \cup X_2$, then the ramification at the node $x_0$ should match. These are called admissible covers; see Harris-Morrison~\cite{harmor} for a reference. This gives us the relation
 \[ \mr{Hur}(X, \mu_1, \mu_2, \ldots) = \mr{Hur}(X_1, \mu_1, \ldots, \bullet) \cdot \mr{Hur}(X_2, \mu_2, \ldots, \bullet), \]
 where $\bullet = \sum_{\eta} \zeta(\eta) \eta \otimes \eta \in \mc{H} \otimes \mc{H}$. This insertion is inverse to the the pairing on $\mc{H}$.
 
@@ -453,10 +847,10 @@ This reduces to computing everything in the Gromov-Witten theory of $X = (\P^1, 
 
 The remarkable formula in~\Cref{thm:op01} can be computed explicitly and gives a formula for the completed cycles as conjugacy classes. More generally, if we have two relative points, the invariants can be computed explicitly and are B/C-symmetric in $\eta \cup \eta'$. In particular, for $d = 0$, we have
 \[ \tau_k(\mr{pt}) v_{\emptyset} = \frac{1}{(k+1)!}(1-2^{-k-1}) \zeta(-k-1), \]
-and this was computed by Faber and Pandharipande.
+and this was computed by Faber and Pandharipande~\cite{gwhodge}.
 
 We now want to consider the equivariant theory for $\P^1$.
-\begin{thm}[Okounkov-Pandharipande, 2002]
+\begin{thm}[\cite{op2}]\label{thm:op02}
     We have the identity
     \[ \braket{\exp\qty(\sum_{i \geq 0} t_i \tau_i([0]))}{\mu} = \braket{\exp\qty(\sum_{n \geq 1} \wt{t}_n \alpha_n) \wt{W}}{\mu}, \]
     where we take a linear change of times determined by
@@ -465,12 +859,12 @@ We now want to consider the equivariant theory for $\P^1$.
 
 \subsection{Role of integrable systems}
 
-This last formula was found by Getzler and is problematic in the $\ep \to \infty$ limit. Morally, the Gromov-Witten descendents give a quantum integrable system that looks like a free boson or free fermion. By the Kyoto school of integrable systems, there is a classical integrable system for generating functions. In particular, for $\P^1$ with two marked points, the degeneration gives us
+This last formula was found by Getzler~\cite{getz} and is problematic in the $\ep \to \infty$ limit. Morally, the Gromov-Witten descendents give a quantum integrable system that looks like a free boson or free fermion. By the Kyoto school of integrable systems, there is a classical integrable system for generating functions. In particular, for $\P^1$ with two marked points, the degeneration gives us
 \[ \ev{\exp \qty(\sum_{n \geq 1} \wt{t}_n \alpha_n) g \exp\qty(\sum_{n \geq 1} \wt{s}_n \alpha_{-n})}, \]
 which is a tau function for the 2-Toda hierarchy and in particular gives a KP hierarchy for linear Hodge integrals in degree $0$.
 
 \begin{rmk}
-    These equations differ from the equations found in 2008 by Kazarian, and this is not well-understood.
+    These equations differ from the equations found in 2009 by Kazarian~\cite{kaz}, and this is not well-understood.
 \end{rmk}
 
 Fundamentally, these equations come from Pl\"ucker relations for $GL(\infty) \hookrightarrow \End(\mr{Fock})$. This is because in $\mr{Fock} \otimes \mr{Fock}$ there is an invariant operator $\sum \psi_k \otimes \psi_k^*$ commuting with $GL(\infty)$. Our goal now is to understand the deformation of the following for $\dim X = 3$:
@@ -481,4 +875,740 @@ Fundamentally, these equations come from Pl\"ucker relations for $GL(\infty) \ho
     \item The invariant operator in $\mr{Fock} \otimes \mr{Fock}$.
 \end{enumerate}
 
-\end{document}
+\section{Counting curves in 3 dimensions}
+
+Again, we are looking for a target space description of enumerative theories, but this time for threefolds. Here, we will consider Donaldson-Thomas (sheaf-counting) theories on a threefold $X$. The connection to Gromov-Witten theory was conjectured by Maulik-Nekrasov-Okounkov-Pandharipande~\cite{mnop1,mnop2} building on the work of Aganagic-Klemm-Marino-Vafa~\cite{vertexphys} and the connection to box counting by Okounkov-Reshetikhin-Vafa~\cite{crystals}.
+
+\subsection{Donaldson-Thomas theory}
+
+While Gromov-Witten theory thinks of a curve inside $X$ as a map $f \colon C \to X$, Donaldson-Thomas theory thinks of $C$ as being cut out by the ideal sheaf
+\[ \mc{I}_C \in \Hilb(X, \mr{curves}), \]
+which has discrete invariants the degree $\beta \in H_2(X, \Z)$ and the holomorphic Euler characteristic $\chi(\mc{O}_C)$. This has a natural obstruction theory
+\[ \Ext^i(\mc{I}_C, \mc{O}_C), \]
+which is unsuitable for our purposes. Instead, we interpret $\mc{I}_C$ as a rank $1$ torsion-free sheaf with 
+\[ \det \mc{I}_C = \mc{O}_C, \]
+and so we obtain the obstruction theory
+\[ \mr{Def} = \Ext_0^1(\mc{I}_C, \mc{I}_C), \qquad \mr{Obs} = \Ext_0^2(\mc{I}_C, \mc{I}_C). \]
+There are no higher Ext groups (even for orbifolds) by a result of Zhou~\cite{relorbdt}.
+
+In Donaldson-Thomas theory, the descendents are $\ch(\mf{I}_C)$, where $\mf{I}_C$ is the universal sheaf on $X \times \Hilb(X)$. We would hope that counts in fixed degree (this does work) and fixed genus (this does not work because moduli spaces are empty for $g \ll 0$ or $\chi \ll 0$) may be related, but unfortinately this is too naive. Instead, we expect a GW/DT correspondence
+\[ \sum u^{2g-2} (\cdots) \xleftrightarrow{\text{corresponds}} \sum (-z)^{\chi} (\cdots) \]
+after the standard change of variables
+\[ z = -e^{iu}, \]
+where $z$ is weighted by $\chi$ and $u$ is weighted by genus.
+
+All moduli spaces in Donaldson-Thomas theory are schemes, so all DT invariants are actually integers. If we want actual equality of analytic functions with the Gromov-Witten partition function, we must have rationality of the DT partition function (this is related to BPS integrality). For this all to work out, the virtual dimensions
+\begin{align*}
+    \mr{GW-vir-dim} &= (\deg, c_1(X)) + (g-1)(3-\dim X) \\
+    \mr{DT-vir-dim} &= (\deg, c_1(X))
+\end{align*}
+must be the same, so $X$ must be a threefold. Of course, our correspondence requires
+\begin{enumerate}
+    \item Identification of descendents;
+    \item Division by degree $0$ contributions in DT theory;
+    \item Prefactors like $z^{-\frac{\mr{vir-dim}}{2}} \leftrightarrow (-iu)^{\mr{vir-dim}}$.
+\end{enumerate}
+See~\cite{takagidt} for precise formulas and additional discussion.
+
+In DT theory, it is possible to remove the degree $0$ terms \textbf{geometrically} using Pandharipande-Thomas theory, which was discussed in~\Cref{sub:pt}. Some parts of identifying the descendents are easy (for example primary descendents and relative conditions are fine). 
+
+\subsection{Relative conditions in DT theory}
+
+In Gromov-Witten theory, a relative condition for a divisor $D$ consists of specifying a condition like 
+\[ f^{-1}(D) = 2p_1 + p_2 + 2 p_3. \] 
+If $p_2$ and $p_3$ are mapped to the same point with $p_3$ tangent to $D$, then we have an evaluation map to the inertia stack of $S^n D \ni 2 f(p_1) + 3 f(p_2)$, where we remember the ramification data $(2,1)$ on $f(p_2) = f(p_3)$. Therefore, we are really integrating orbifold cohomology classes, where classes in $H^*(D)$ are colored by integers, so we are considering
+\[ S^{\bullet} (H^{\bullet}(D) \otimes t \C[t]). \]
+If we want to resolve the tangency, then we must degenerate $X$ in a family and bubble off of $\P^1$-bundle on $D$ (or a whole accordion).
+
+In Donaldson-Thomas theory, we have a map
+\[ \mc{O}_C(-D) \to \mc{O}_C \to \mc{O}_{C \cap D} \in \Hilb(D, m), \]
+which is regular as long as multiplying by the equation of $D$ is injective. To ensure this, we must bubble out the accordion as above. Therefore, the relative conditions come from $H^*(\Hilb(D, n))$, which has a Nakajima basis
+\[ \prod \alpha_{-m_i}(\gamma_i) \ket{\mr{vac}}, \]
+where the vacuum vector is $1 \in H^0(\Hilb(D, 0))$. Of course, there is an isomorphism
+\[ \bigoplus_n H^*(\Hilb(D, n)) \simeq S^{\bullet}(H^*(D) \otimes t \C[t]), \]
+and so adding a subscheme of length $m_i$ along $\gamma_i \in H^*(D)$ should correspond to tangency of order $m_i$ along $\gamma_i$.
+
+The GW/DT correspondence has been proved for many, but not all, threefolds, and a key step, as in Maulik-Oblomkov-Okounkov-Pandharipande~\cite{moop}, is to consider a fibration
+\[ A_r \hookrightarrow X \to B, \]
+where $A_r$ is a crepant resolution of $\C^2/\mu_{r+1}$, where $\mu_{r+1}$ acts with weights $(1, -1)$. Thus $X$ is a crepant resolution of 
+\[ \qty(\mc{L}_1 \oplus \mc{L}_2 \to B) / \mu_{r+1}. \]
+When $r = 0$, then $X = \mc{L}_1 \oplus \mc{L}_2 \to B$ is a local curve, so for example $B \times \C \times \C$ is fine, and we should recover Hurwitz theory for $\ep_1 + \ep_2 = 0$.
+
+\begin{rmk}
+    ADE surfaces are special for many reasons, for example enhanced symmetries of $H^*(\Hilb)$ or of $D^b \ms{Coh}$.
+\end{rmk}
+
+The torus fixed points on $\Hilb(B \times \C^2)$ are those curves supported on $B$, which can be thought of having a partition on $B$ (corresponding to the closure of the generic point) with some extra boxes. The DT analog of the Mumford relations is that if $\ep_1 + \ep_2 = 0$, then the virtual class vanishes for all nonminimal cases. Of course, the fixed points of $\Hilb(\C^2, n)$ correspond to partitions. If $\abs{\lambda} = n$, then
+\[ T_{\lambda} \Hilb(\C^2, n) = \sum_{\square} (a(\square) + 1) \ep_1 - \ell(\square) \ep_2 + (\ell(\square) + 1) \ep_1 - a(\square) \ep_2, \]
+where $a(\square), \ell(\square)$ are the arm and leg lengths respectively. Then we obtain
+\[ \Ext^{\bullet}_{X, \circ} (\mc{I}_{\lambda}, \mc{I}_{\lambda}) = H^*(B, -), \]
+and so the virtual class is
+\[ \prod_{\square} \qty((a+1-\ell)(\ell+1-a))^{2g(B)-2}. \]
+When $\ep_1 + \ep_2 = 0$, this becomes
+\[ (-1)^{n(1-g(b))} \ep_1^{2n(1-g(b))} \prod_{\square} h(\square)^{2g(B)-2}. \]
+This clearly is related to the representation theory of the symmetric group.
+
+\begin{rmk}
+    Subsequent to~\cite{moop}, a different perspective was developed, in particular for computations in K-theory. Unfortunately, we cannot say anything about a possible relation to Gromov-Witten theory.
+\end{rmk}
+
+\subsection{Role of quantum groups}
+
+If we return to our $A_r$-bundle over $B$, we want some kind of cohomological field theory on the stack of $(\C^{\times})^2$-bundles on curves $B$ (which can vary in moduli). This has various building blocks related to $B = \P^1$ with a descendent at $0$ and relative condition at $\infty$ with the $\C^{\times}$ action. The descendent conditions correspond to
+\[ S^{\bullet}(H^*(A_r) \otimes t \C[t]), \]
+while the relative conditions correspond to 
+\[ H^{\bullet}(\Hilb(A_r)). \]
+By the ideas of Nekrasov-Shatashvili~\cite{nekshat}, this structure should be described by a quantum group, and this idea has been realized (also in K-theory) with the quantum group $\mc{U}_{\hslash}\qty(\wh{\wh{\mf{gl}(r+1)}})$ in K-theory and the Yangian for cohomology. Here, if $t_1, t_2$ are the weights of $(\C^{\times})^2$ acting on $\C^2$, then $\hslash = \frac{1}{t_1 t_2}$ is the weight of the symplectic form. There is a noticeable difference between $\mf{gl}$ and $\mf{sl}$, and it becomes more dramatic for other quivers.
+
+\begin{rmk}
+    In order to work with these objects, it is important to use a computer, and we would like to advertise the code written by Henry Liu: \url{https://github.com/liu-henry-hl/boxcounting}.
+\end{rmk}
+
+\begin{rmk}
+    If we restrict to $\ep_1 + \ep_2 = 0$, then
+    \[ \ms{Y}(\wh{\mf{gl}(1)}) \simeq \mc{U}(\mf{gl}(\infty)) \]
+    as a Hopf algebra, so we recover our description of Hurwitz theory.
+\end{rmk}
+
+\begin{exm}
+    Recall that the operators corresponding to $\P^1$ with one descendent and two relative conditions commute. These should be Baxter $Q$-operators, and this is more or less true.
+\end{exm}
+
+\subsection{Quantum loop algebra}
+
+The \textit{quantum loop algebra} $\mc{U}_{\hslash}(\wh{g})$ is a Hopf algebra deformation of $\mc{U}(\mf{g} \otimes \C[t^{\pm 1}])$. The original loop algebra has a loop rotation automorphism, where if $V$ is a representation, $V(a)$ is the precomposition with $t \mapsto at$. The way we will construct our quantum group is by using the category of modules, which for a Hopf algebra have tensor products and duals. There are particularly important maps. where for $\wh{g}$, we take
+\[ V_1(a_1) \otimes V_2(a_2) \xrightarrow{(1 2)} V_2(a_2) \otimes V_1(a_1), \]
+and for $\mc{U}_{\hslash}(\wh{g})$ we take
+\[ V_1(a_1) \otimes V_2(a_2) \xrightarrow{R_{12}^{\vee}(a_1/a_2)} V_2(a_2) \otimes V_1(a_1). \]
+This $R_{12}^{\vee}(a_1/a_2)$ is a rational operator, and it must depend only on $\frac{a_1}{a_2}$ if the loop rotation is an automorphism. If we have three representations $V_1, V_2, V_3$, then there are two ways to reverse the order, and the equality between them is called the \textit{Yang-Baxter equation}, see~\Cref{fig:ybe}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{ybe}
+    \caption{Yang-Baxter equation sculpture at the Simons Center}
+    \label{fig:ybe}
+\end{figure}
+
+Finally, we would like to reconstruct our quantum group given a family of $R$-matrices. We will do this using
+\[ \text{Hopf algebra} \hookrightarrow \bigotimes V_{k_i}(a_i). \]
+We can always assume that the collection of $V_i$ are closed under the tensor product. If we consider a physical space $V_i(a)$ and auxillary space $V_0(u)$, then matrix elements in $V_0$ give operators depending on $u$ in $V_i(a)$. These operators will generate $\mc{U}_{\hslash}$ and are closed under product (two auxillary spaces, one physical) and coproduct (one auxillary, two physical). Morphisms in the category of modules are maps commuting with $R$-matrices, and so we obtain relations in $\mc{U}_{\hslash}$. The $R$-matrix indeed gives braiding and commutation relations by the Yang-Baxter equations.
+
+Now we will consider a family of subalgebras, called \textit{Baxter subalgebras}. Let $g \in \End(V_i(a_i))$ be such that $[g \otimes g, R] = 0$. These come from the Cartan torus, which in geometric cases come from discrete invariants. Then we consider the \textit{transfer matrix}
+\[ \tr_1 (g \otimes 1) R_{V_i, V_j}(u/a). \]
+These commute for fixed $g$ and all $V_i, u$, and so we get a family of commutative subalgebras in $\mf{U}_{\hslash}(\wh{g})$ which are parameterized by a maximal torus in $\mf{g}$.
+
+More generally, we can have several strands on a cylinder and one strand going around as in~\Cref{fig:cylbraid} with the same condition on $g$ as before. But then we have commutativity with $g(a_i) = q a_i$, and so we get a canonical flat $q$-difference connection on $V_1(a_1) \otimes \cdots \otimes V_n(a_n)$, which is the qKZ equation.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{cylbraid}
+    \caption{Cylindrical braiding condition.}
+    \label{fig:cylbraid}
+\end{figure}
+
+\subsection{Some more curve counting}
+
+We now want to return to curve counting on fibrations
+\[ A_r \hookrightarrow X \to B, \]
+where for now we will specialize $B = \P^1$.
+
+We will begin with Gromov-Witten theory. For example, when $r = 0$, then $X$ is the total space of two line bundles on $\P^1$, so above $0, \infty$ there are curves collapsed to a point and above the base there are copies of $\P^1$ mapping with degrees $\mu_i$. Therefore we have something like
+\[ \sum_{\mu} \mr{edge}(\mu)^{-1} \times (\text{triple Hodge integral at $0$}) \times (\text{triple Hodge integral at $\infty$}). \]
+The triple Hodge integral terms (\Cref{fig:thodge}) also involve nonsingular boundary conditions of tangency to $\pi^{-1}(\infty)$ (resp. $\pi^{-1}(0)$). Recall that we can break a curve in half while adding relative boundary conditions, and if we have $\P^1$ with a $\C^{\times}$ action, it can be broken in half with nonsingular boundary conditions into $\mr{edge}^{-1}$.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{triplehodge}
+    \caption{Triple Hodge integral terms.}
+    \label{fig:thodge}
+\end{figure}
+
+On the other side, in DT theory, a half edge corresponds to a 3D partition with extra boxes. 
+
+The correspondences also include Givental's $J$-function for $\Hilb(\C^2, n)$, which is of course a Nakajima quiver variety.
+
+Of course, whenever the target is a GIT quotient (for example in the case of a Nakajima variety), there is a notion of quasimaps~\cite{qmap}, which for $A_0$ are actually equal to Pandharipande-Thomas moduli spaces~\cite{pcmi}. For $r > 0$, these are not PT moduli spaces, but there is still a correspondence with PT-like theories~\cite{qmapsp}. The combinatorics of the PT vertex terms looks like~\Cref{fig:ptcomb}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{ptcomb}
+    \caption{Combinatorics of one-legged PT vertex.}
+    \label{fig:ptcomb}
+\end{figure}
+
+The half-edge solves differential and difference equations (giving quantum groups) and are a much evolved relative of the hypergeometric function of the form
+\[ \sum_{d \geq 0} z^d \prod_{i=1}^m \frac{(b_i)_d}{(a_i)_d} \]
+where the $z$ are the K\"ahler variables (solving a linear differential equation) and the product term contains the equivariant variables (solving a linear difference equation).
+
+\subsection{qKZ equation}
+
+Donaldson-Thomas and quasimap theories make sense in $K$-theory, and so we obtain a $q$-difference equation from quantun groups, for example the qKZ equation. which comes from~\Cref{fig:cylbraid}. Here, the strands are $V_i(a_i)$ and we will call the blue strand $V_k(a_k)$. Recall that
+\[ [g \otimes g, R] = 0, \]
+and so we have 
+\[ g = (\text{Loop rotation}) \cdot z, \]
+where $z$ lives in the Cartan torus (also the K\"ahler variables) and the loop rotation is $T^{-1}$, where $Ta = qa$. 
+
+Consider unrolling the cylinder into a hyperplane arrangement. Consider the simple example of hyperplanes $x_1=x2+\qty{-1,0,1}$ with walls like $x_1=x_3$ and $x_2=x_3$, see~\Cref{fig:hyperplane}. We can move in three directions, and in the first direction we obtain
+\[ g^{(1)} R_{13} R_{12}. \]
+In the second direction, we obtain
+\[ g^{-(1)} R_{12}^{-1} g^{(1)} g^{(2)} R_{23} = g^{(2)} R_{12}^{-1} g^{-(2)} g^{(2)} R_{23}. \]
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{hyperplane}
+    \caption{Hyperplane arrangement}
+    \label{fig:hyperplane}
+\end{figure}
+
+More generally, from each wall in our hyperplane arrangement $\ev{\alpha, x} + n = 0$, we obtain an operator $B_w(q^nx^{\alpha})$. If we consider $\lambda$ such that $\ev{\alpha, \lambda} \in \Z$ for all $\alpha$, then translation by $\lambda$ is conjugation by $\mc{O}(\lambda)$ of all $B_w$. This produces commuting $q$-difference operators, which are transition functions for a vector bundle of the form
+\[ \C^{\mr{rank}} / q^{\mr{shifts}}. \]
+
+For example, for $\mc{U}_{\hslash}(\wh{\mf{g}})$, we obtain the following:
+\begin{enumerate}
+    \item First, of course the qKZ equation, which depends on $z$ in the Cartan torus of $\mf{g}$.
+    \item Universally, there exists a $q$-difference connection in $z$ that commutes with the qKZ operator. Operators in $\mc{U}_{\hslash}(\wh{\mf{g}})$ act on $V_1(a_1) \otimes \cdots \otimes V_n(a_n)$. This was studied first by Etingof-Varchenko~\cite{etvar} for finite-dimensional Lie algebras $\g$, where the $\alpha$ are simply the roots of $\mf{g}$. They write elements
+        \[ B_w \in \mc{U}_{\hbar}(\mf{sl}_2) \hookrightarrow \mc{U}_{\hslash}(\wh{\g}), \]
+        and these are called \textit{quantum dynamical Weyl groups}. More generally, Okounkov-Smirnov~\cite{qdenak} consider more complicated arrangements, for example for $\mc{U}_{\hslash}\qty(\wh{\wh{\mf{gl}(1)}})$, where we need all roots of of $\wh{\mf{gl}(1)}$, and so the hyperplane arrangement is $\Q$. This is clearly preserved by translation by $\Z$, so the root subalgebras are
+        \[ \mc{U}_{\hslash}(\wh{\mf{gl}(1)}) \hookrightarrow \mc{U}_{\hslash}\qty(\wh{\wh{\mf{gl}(1)}}). \]
+\end{enumerate}
+
+The way to prove the above is to
+\begin{enumerate}
+    \item Find qKZ among the $q$-difference equations in the equivariant variables;
+    \item Use commutation with qKZ and other known results to conclude.
+\end{enumerate}
+
+We know that $K(\Hilb(\C^2, \mr{pts}))$ is a module over a quantum group. Then
+\[ K(\Hilb(\C^2, \mr{pts})) \otimes K(\Hilb(\C^2, \mr{pts})) = K(\mr{ideal} \oplus \mr{ideal}), \]
+where $\mr{ideal} \oplus \mr{ideal}$ lives inside the space $M(2)$ of rank $2$ framed sheaves on $\C^2$. Here, a framed sheaf is a sheaf $\mc{F}$ on $\P^2$ such that 
+\[ \mc{F}|_{\P^2 \setminus \C^2} \simeq \mc{O}_{\P^2\setminus \C^2}^{\oplus 2}. \]
+Clearly, there is an action of $GL(2)$ on framed sheaves, so the sum of two ideals is the fixed locus of the maximal torus. Normalizing one of the weights of the torus, the locus of two ideals is the fixed locus of matrices of the form
+\[ \mqty(a & 0 \\ 0 & 1), \]
+and so shifts in $a$ give the qKZ equation.
+
+\begin{rmk}
+    The Hilbert scheme $\Hilb(\C^2, n)$ is the Nakajima quiver variety $M(n,1)$ for the quiver with one vertex and one loop.
+\end{rmk}
+
+Then the qKZ equation is
+\[ (z \otimes 1)R_{12}(a) \]
+and comes from a twist by $\mc{O}(1)$ in the framing. In the case of $A_r$ for $r > 0$, there are more fixed points of $a$ and there are ``constant sections'' whose degrees are encoded in the K\"ahler variables.
+
+\subsection{Stable envelopes}
+
+We would now like a map
+\[ \on{Stab} \colon K(\Hilb) \otimes K(\Hilb) \to K(M(2)) \]
+such that if we insert the relative conditions in the $A_r$-fibration, all contributions cancel except those of the constant curves. Once this \textit{stable envelope} exists, we will have
+\[ R \approx \on{Stab}^T \cdot \on{Stab}. \]
+Vanishing is easier in cohomology~\cite{qgqc}, but is more difficult in K-theory. The reason for this is that vanishing in $K$-theory is usually proved using rigidity (properness, which implies the result is a polynomial in $a$, and a degree bound, which implies the result has negative degree).
+
+The stable envelope is supported on the full attracting locus inside $Y \times Y^a$ (or repelling for $\on{Unstab}$), which gives properness. For degree bounds, the Newton polygon
+\[ \mr{deg}\qty(\on{Stab}|_{F_j \times F_i}) \]
+is contained a fixed polygon.
+
+\begin{rmk}
+    Rigidity in K-theory should come from a rigidity argument in elliptic cohomology, where K-theory is thought of as coming from a nodal degeneration of an elliptic curve.
+\end{rmk}
+
+More abstractly, let $A$ be a torus acting on a variety $Y$. Then we choose a chamber in $\on{\ms{Lie}} A$, where the walls are weights on $N_{Y/Y^A}$. This is a choice of attracting and repelling directions and corresponds to $\xi \in \on{\ms{Lie}} A$ such that $Y^{\xi} \neq Y^A$. Now for all adjacent strata in our chamber structure, there should be an attaching map, and the attaching maps should commute. These can be constructed with some assumptions on $Y$, and now the $R$-matrix is simply the composition of one attaching operator and the inverse of the other. By the original commutation relation, we obtain the Yang-Baxter equation.
+
+\begin{exm}
+    If we consider the rank $r$ sheaves $M(r)$ and write $r = r_1 + r_2 + r_3$, then there is an action of $(\C^{\times})^3$. Therefore,
+    \[ M(r)^A = M(r_1) \times M(r_2) \times M(r_3). \]
+    More generally, for Nakajima varieties we can consider $w = \sum w^{(i)}$.
+\end{exm}
+
+\subsection{From enumerative geometry to quantum integrable systems}
+
+A quantum integrable system is controlled by a commutative subalgebra of
+\[ \End(H^*(\Hilb(A_r, \mr{pts}))). \]
+One interesting problem is to find the eigenvectors and eigenvalues of this algebra. The Hilbert scheme of $A_r$ can be replaced by some Nakajima quiver variety
+\[ \bigsqcup_v \mc{M}(v, w), \]
+where the framing $w$ is fixed.
+
+The quantum integrable system is actually the $q \to 1$ limit of some flat $q$-difference connection. In this setting, the problem of finding eigenthings is the problem of finding an integral solution to the $q$-difference connection. 
+
+In the classical setting, consider a hyperplane arrangement and take hyperplanes
+\[ \ev{\beta_1,x} = y_i = 0, \]
+where the $\beta_1$ is fixed and the $y_i$ vary, then we obtain integrals that look like
+\[ \int_{\gamma_j} \omega_i(x) \prod_m \qty(\ev{\beta_m, x} + y_m)^{c_m}, \]
+where the $\omega_i(x)$ are rational and the $\gamma_j$ are homology classes on the complement of the hyperplane arrangement. This is like an Euler integral, which has the form
+\[ \int x^{a-1}(x-1)^{b-1}(y-x)^{c-1} \dd{x}. \]
+Our integral solves a differential equation (the Gauss-Manin connection) as well as a difference equation.
+
+We now need to consider a $q$-analog. Here, the $\gamma_k$ will live on the complement of translates of subtori inside a tori, and the exponentials become gamma functions. Thus we are now integrating
+\[ \int_{\gamma_j} \omega_i(x) \prod_m \frac{\Gamma_q(x^{m} a_m)}{\Gamma_q(x^{\beta_m}b_m)}, \]
+which is a $q$-analog of a Mellin-Barnes integral. These are fundamental solutions $\Psi_{ij}$ to the $q$-difference equation.
+
+The $q$-difference equation has the form 
+\[ \Psi(qa) = M(a) \Psi(a). \]
+In the $q \to 1$ limit, our solutions become
+\[ e^{\frac{\int \log \lambda_j \frac{\dd{a}}{a}}{\log q}} \psi_j(a), \]
+where $\psi_j(a)$ is the eigenvector with eigenvalue $\lambda_j(a)$. The eigenvectors and eigenvalues correspond to critical points of the $\int \log \lambda_j \frac{\dd{a}}{a}$ term, where the eigenvalues are $e^{\pdv{S}{a}}$ and the eigenvectors are given by evaluating $\omega_i(x)$ at the critical points $x$ of $S$. The $\omega_i(x)$ are called the \textit{off-shell Bethe eigenfunctions} and also depend on some auxillary variables. Note that we need to substitute in solutions of the \textit{Bethe equations} 
+\[ \partial_x S = 0. \]
+
+\begin{rmk}
+    There is an important detail in which it is better to do the replacement
+    \[ \int_{\gamma_j} \omega_i(x) \prod_m \frac{\Gamma_q(x^m a_m)}{\Gamma_q(x^{\beta_m} b_m)} \rightsquigarrow \int_{\norm{x}=1} \omega_i(x) \ell_j(x) \prod_m \frac{\Gamma_q(x^m a_m)}{\Gamma_q(x^{\beta_m} b_m)}. \]
+\end{rmk}
+
+Geometrically, we will work with quasimaps to Nakajima quiver varieties. The fundamental solution will correspond to the $\P^1$ with one nonsingular point and one relative point. On the other hand, the vertex (see~\cite[Section 7.4]{pcmi}) is the Mellin-Barnes integral.
+
+\begin{exm}
+    Consider $\mc{L} = \mc{O}(d)$ on $\P^1$. This has weight $w$ above $0$, $q$ along the $\P^1$, and $q^{-d} w$ above $\infty$. Therefore,
+    \[ H^0(\mc{L}) = w + q^{-1} w + \cdots + q^{-d} w, \qquad H^1(\mc{L}) = 0 \]
+    if $d > 0$, and so the Euler class is
+    \[ \mr{Euler} = (1-w^{-1})(1-qw^{-1}) \cdots (1-q^dw^{-1}), \]
+    which is a ratio of two $q$-gamma functions.
+\end{exm}
+
+The ideas in this example work more generally, and now it remains to find the elliptic term. This will come from some consideration of elliptic cohomology. The moduli space
+\[ \ms{Qmap}(\P^1 \to \Hilb) \]
+of quasimaps (or for a general Nakajima variety) has evaluation maps
+\begin{equation*}
+\begin{tikzcd}
+    & \ms{Qmap}(\P^1 \to \Hilb) \ar{dl}{\mr{ev}_0} \ar{dr}{\mr{ev}_{\infty}} \\
+    \text{ambient stack} & & \Hilb.
+\end{tikzcd}
+\end{equation*}
+This gives us a push-pull morphism
+\begin{equation*}
+\begin{tikzcd}
+    K(\text{ambient stack}) & & & K(\Hilb) \ar[swap]{lll}{\on{ev}_0(\wh{\mc{O}}^{\mr{vir}} \otimes \on{ev}_{\infty} \cdot z^{\mr{deg}})} \\
+    \ms{Ell}() \ar{u}{\frac{\Gamma_q}{\Gamma_q}} & & & \ms{Ell}(\Hilb) \ar{u}{\frac{\Gamma_q}{\Gamma_q}} \ar{lll}{!}.
+\end{tikzcd}
+\end{equation*}
+This gives us an elliptic function $\ell_j(x)$ which goes into the missing argument of the bottom-left $\ms{Ell}$. Also, the ratios of gamma functions were known to Iritani in the classical setting.
+
+\begin{rmk}
+    The consideration of elliptic cohomology does not affect the gamma function terms of the fundamental solution. The gamma function terms control the spectrum and can be observed already in the case of just one nonsingular point. This was observed already in~\cite{nekshat}.
+\end{rmk}
+
+\subsection{Elliptic cohomology}
+
+Recall that
+\[ H^*(\P^{n-1}, \C) = \C[x]/x^{n}, \]
+where $x = c_1(\mc{O}(1))$. If we consider the action of $(\C^{\times})^n$, we can consider the \textbf{equivariant} cohomology 
+\[ H_A^*(\P^{n-1}, \C) = H_A^*(\P^{n-1}, \C) = \frac{\C[x, a_1, \ldots, a_n]}{\prod_{i=1}^n (x+a_i)}. \]
+This comes from the observation that $\P^n$ has $n$ ways to lift $x$ to an equivariant class (consider each of the toric divisors). If we consider
+\[ \Spec H_A^*(\P^{n-1}, \C), \]
+this is the union of hyperplanes $x = -a_i$, which are the cohomologies of the fixed points. Lifting to $k$-theory, we have the same picture after replacing $x=-a_i$ with $x=a_i^{-1}$ and taking $a \in A$ instead of $x \in \on{\ms{Lie}}(A)$.
+
+Returning to the case of Nakajima varieties, the ring 
+\[ K_{(\C^{\times})^2} (\Hilb(\C^2, n)) \]
+is generated by the tautological bundle and its exterior powers. Then its spectrum
+\[ \Spec K_{(\C^{\times})^2}(\Hilb(\C^2, n)) \]
+is again a union of planes with data coming from plane partitions (which are the fixed points).
+
+Finally, it makes sense to replace $\C^{\times}$ by $E = \C^{\times}/q^{\Z}$, where all of the exact same equations hold (subject to writing the group operation on $E$ as multiplication). The elliptic cohomology of $\Hilb(\C^2, n)$ is drawn in~\Cref{fig:ellhilbc2}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{ellhilbc2}
+    \caption{Elliptic cohomology of $\Hilb(\C^2, n)$}
+    \label{fig:ellhilbc2}
+\end{figure}
+
+\begin{rmk}
+    It is important to note that $\ms{Ell}_G(X)$ is a \textbf{scheme} and not an algebra, so it is covariant in both $G$ and $X$.
+\end{rmk}
+
+Note that if $G$ is connected, then
+\[ \ms{Ell}_G(\mr{pt}) = \ms{Ell}([\mr{pt}/G]) \]
+is the moduli space of semistable degree $0$ $G$-bundles on the dual elliptic curve $E^{\vee}$. Also note that $\ms{Ell}_{(\C^{\times})^n}(\mr{pt}) = E^n$.
+
+\subsection{Computations in elliptic cohomology of $\Hilb(\C^2, n)$}
+
+In order to compute things, we need Euler classes. Suppose $p$ is a fixed point of $A$ acting on $X$, $V$ is a vector bundles, and $A$ acts with weights $w_i$ on $V_p$. Then
+\[ \mr{Euler}(V)|_p = \begin{cases}
+    \prod w_i & \text{in cohomology} \\
+    \prod (1-w_i^{-1}) & \text{in K-theory} \\
+    \prod \vartheta(w_i) & \text{in elliptic cohomology}.
+\end{cases}
+\]
+Note that these theta functions are \textbf{not} functions but are sections of line bundles on elliptic curves. Recall that $V$ is a pullback
+\begin{equation*}
+\begin{tikzcd}
+    V \ar{r} \ar{d} & \C^n/\mr{GL}(n) \ar{d} \\
+    X \ar{r} & [\mr{pt}/\mr{GL}(n)].
+\end{tikzcd}
+\end{equation*}
+This gives us a map
+\[ \ms{Ell}(X) \to \ms{Ell}([\mr{pt}/\mr{GL}(n)]) = S^n E, \]
+and on $S^n E$ there is the theta divisor $\Theta$, which is the locus of bundles with a section. Pulling back to $\ms{Ell}(X)$, we obtain a line bundle $\Theta(V)$, which is where $\mr{Euler}(V)$ lives.
+
+Pushforwards in the elliptc theory involve Euler classes and thus twists by line bundles. If we use localization, we obtain the factors in~\Cref{tab:loccohkell}.
+\begin{table}[H]
+    \centering
+    \caption{Localization in different cohomology theories}
+    \label{tab:loccohkell}
+    \begin{tabular}{ccc}
+        \toprule
+        In $H^*$ & In $K^*$ & In $\ms{Ell}$ \\
+        \midrule
+        $\frac{1}{\prod w_i}$ & $\frac{1}{\prod(1-w_i^{-1})}$ & $\frac{1}{\vartheta(w_i)}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+Then the pushforward $X \to \mr{pt}$ gives us a map $\Theta(TX) \to \ms{Ell}(\mr{pt})$ and the inclusion of a fixed point in $X$ gives us a map $\ms{Ell}(\mr{pt}) \to \Theta(TX)$.
+
+\begin{rmk}
+    There is an inclusion
+    \[ \Pic(X) \otimes E \hookrightarrow \Pic_0(\ms{Ell}(X)). \]
+    The K\"ahler variables live on the left hand side, and quantum computations in K-theory embed inside classsical computations in elliptic cohomology.
+\end{rmk}
+
+\begin{rmk}
+    In principle, one could study enumerative counts in elliptic cohomology or even in another complex oriented cohomology theory like complex cobordism (see~\cite{cobpt}). However, we cannot form generating functions in these situations (for example in elliptic cohomology everything lives on a different line bundle), so we want to study the difference equations directly without generating functions.
+\end{rmk}
+
+We want to actually compute with the line bundles $\Theta(V)$ for vector bundles on $\Hilb(\C^2, n)$. For the tautological bundle, we have
+\[ \deg \Theta(\mr{Taut}) |_{\lambda} = \sum_{\square} S^2\binom{1-j}{1-i} = \sum_{\square} \mqty{(j-1)^2 & (i-1)(j-1) \\ (i-1)(j-1) & (i-1)^2} \in S^2 \Z^2 = \mr{NS}(E^2). \]
+For the tangent bundle, we obtain
+\[ \deg \Theta(\mr{Tan})|_{\lambda} = \sum_{\square} S^2 \binom{a+1}{-\ell} + S^2 \qty\binom{-a}{\ell+1}. \]
+Note that if we restrict $t_1t_2 = 1$, we have a square root. Thus, we can find a \textit{polarization}
+\[ \mr{Tan} = T^{\frac{1}{2}} + t_1 t_2 (T^{\frac{1}{2}})^{\vee}. \]
+Thus we will need sections of a line bundle of the form
+\[ \mc{L} = \sqrt{\Theta(\mr{Tan})} \otimes \Pic_0(\ms{Ell}). \]
+We will call the determinant $\det \mr{Taut} \eqqcolon \mc{O}(1)$. Recall that taking the determinant corresponds to taking
+\[ (x_1, \ldots, x_n) \in S^n E \to E \ni \prod x_i. \]
+Now recall that $\Pic_0(E) = E^{\vee} = E$, so for $z \in \Pic_0(E)$ (the K\"ahler variable), we can consider the meromorphic section
+\[ \frac{\vartheta\qty(\prod x_i z)}{\vartheta\qty(\prod x_i) \vartheta(z)} \]
+of some degree $0$ line bundle. More generally, we can take $z \in \Pic(X) \otimes E$.
+
+Recall that we have a map
+\[ \ms{Ell}(\Hilb) \to \ms{Ell}(\text{ambient stack}). \]
+We want to take a Lagrangian class on $\Hilb$ and extend it to the ambient stack. This is like taking a section of a line bundle $\mc{S}$ on $\ms{Ell}(\Hilb)$ and extending it to the ambient stack. The ambient stack has a Harder-Narasimhan stratification in which the stable locus is the first piece. This allows us to take an inductive approach to the interpolation, see~\cite{indconststab}. There is a nonabelian analogue of this, see~\cite{nonabstab}.
+
+One step of the induction is the following. Consider the inclusion $U = X \setminus \mr{Attr}(F) \hookrightarrow X$. Then in ordinary cohomology, we have the long exact sequence
+\[ \cdots \to H^i(X, U) \to H^i(X) \to H^i(U) \to \cdots \]
+By Atiyah-Bott, the normal bundle $N_{X/\mr{Attr}(F)}$ has a nontrivial action, so all of the connecting maps vanish. By excision, we can replace $(X, U)$ by an embedding of $F$ into a vector bundle $V$ over $F$, which produces
+\[0 \to H^i(\mr{Thom}(V)) \to H^i(V) \to H^i(V \setminus 0) \to 0. \]
+In elliptic cohomology, we obtain an exact sequence of line bundles. Consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    V \ar{d} \ar{r} & { [\C^n/\mr{GL}(r)] } \ar{d}  & { [(\C^n \setminus 0) / \mr{Gl}(r)] } \ar[l, phantom, "\supset"] \ar[equal]{r} & { [\mr{pt}/\mr{Gl}(r-1)] } \\
+    F \ar{r} & { [\mr{pt}/\mr{GL}(r)] }.
+\end{tikzcd}
+\end{equation*}
+This produces us an inclusion $\ms{Ell}(V \setminus 0) \hookrightarrow \ms{Ell}(V)$, which gives us the divisor $\Theta(V)$ on $\ms{Ell}(V)$. From a section of $\mc{L} |_{\Theta(V)}$, we have an exact sequence
+\[ 0 \to \mc{S} \otimes \Theta(-V) \to \mc{S} \to \mc{S}|_{\Theta(V)} \to 0. \]
+In studying sheaves on $\ms{Ell}(F)$, we want global sections. Consider the long exact cohomology sequence
+\[ 0 \to H^0(\mc{S} \otimes \Theta(-V)) \to H^0(\mc{S}) \to H^0(\mc{S}|_{\Theta(V)}) \to H^1(\mc{S} \otimes \Theta(-V)) \to \cdots. \]
+Note that because $\mc{S} \in \Theta(T^{\frac{1}{2}}) \otimes \Pic_0$, $\mc{L} \coloneqq \mc{S} \otimes \Theta(-V)$ has degree $0$. It is also nontrivial (sections have poles related to enumerative geometry). However, if $\mc{S}$ is a nontrivial degree $0$ line bundle on an abelian variety $\mc{E}$, it has no cohomology whatsoever.
+
+We have now produced a stable envelope
+\[ \mr{Stab} \colon \ms{Ell}(\text{stable}) \to \ms{Ell}(\mr{stack}) \]
+which interpolates sections of line bundles. We also have the traditional elliptic stable envelope~\cite{ellstab}
+\[ \on{Stab} \colon \ms{Ell}(X^A) \to \ms{Ell}(X). \]
+As we change attracting and repelling directions, we obtain elliptic $R$-matrices. The K-theoretic and cohomological versions can be obtained using degeneration.
+
+\subsection{Quantum q-difference equations}
+
+We would like to solve these equations using integrals. Recall that in K-theory, we have
+\begin{equation*}
+\begin{tikzcd}
+    K(\mr{stable}) \ar{rrr}{\on{ev}_0 (\on{ev}_{\infty}^{-1} \otimes \wh{\mc{O}}^{\mr{vir}} z^{\deg})} & & & K(\mr{stack})[[z]] \\
+    K(\mr{stable}) \ar{u}{(\mr{Iritani})\Gamma_q} \ar{rrr}{\ch(\on{Stab}_{\ms{Ell}})} & & & K(\mr{stack})(z) \ar{u}.
+\end{tikzcd}
+\end{equation*}
+Recall that the solutions are of the form
+\[ \Psi_{ij} = \int_{\abs{x}=1} \omega_i(x) \ell_j(x) \prod \frac{\Gamma_q}{\Gamma_q}. \]
+As $q \to 1$, the gamma functions give the Bethe equation, while the $\omega_i(x)$ are the $q=0$ limit of the $\ell_i(x)$ in~\cite{qmapbethe}. This is called the \textit{off-shell Bethe eigenfunction}. For quotients by groups of the form $\prod GL(V_i)$, the nonabelian stable envelope reduces to the abelian one, so there is a formula in terms of $R$-matrices.
+
+Consider the $XXZ$ spin chain, where we have states like $\uparrow \downarrow \downarrow \uparrow \downarrow \downarrow \downarrow$. Take the vacuum to be $\downarrow \cdots \downarrow$. Then the physical diagram will look like~\Cref{fig:xxzspin}.
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[scale=0.9, transform shape]
+    \draw[-] (-4,2) -- (-4,-2);
+    \draw[-] (-3,2) -- (-3,-2);
+    \draw[-] (-2,2) -- (-2,-2);
+    \draw[-] (-1,2) -- (-1,-2);
+    \draw[-] (0,2) -- (0,-2);
+    \draw[-] (1,2) -- (1,-2);
+    \draw[-] (2,2) -- (2,-2);
+    \draw[-] (3,2) -- (3,-2);
+    \draw[-] (4,2) -- (4,-2);
+    \draw[-] (-5,1) -- (5,1);
+    \draw[-] (-5,0) -- (5,0);
+    \draw[-] (-5,-1) -- (5,-1);
+    \node[text=blue] at (-4,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-3,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-2,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-1,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (0,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (1,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (2,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (3,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (4,2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-4,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=green] at (-3,-2.3) {$\boldsymbol{\uparrow}$};
+    \node[text=blue] at (-2,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-1,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=green] at (0,-2.3) {$\boldsymbol{\uparrow}$};
+    \node[text=green] at (1,-2.3) {$\boldsymbol{\uparrow}$};
+    \node[text=blue] at (2,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (3,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (4,-2.3) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-5.2,1) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-5.2,0) {$\boldsymbol{\downarrow}$};
+    \node[text=blue] at (-5.2,-1) {$\boldsymbol{\downarrow}$};
+    \node[text=green] at (5.6,1) {$\boldsymbol{\uparrow}(u_1)$};
+    \node[text=green] at (5.6,0) {$\boldsymbol{\uparrow}(u_2)$};
+    \node[text=green] at (5.6,-1) {$\boldsymbol{\uparrow}(u_3)$};
+    \node at (0,2.8) {$T^* \mr{Gr}(0,9)$};
+    \node at (-6.3,0) {$T^* \mr{Gr}(0,3)$};
+    \node at (7.1,0) {$T^* \mr{Gr}(3,3)$};
+    \node at (0,-2.8) {$T^* \mr{Gr}(3,9)$};
+\end{tikzpicture}
+\end{center}
+\caption{Example of XXZ spin chain}%
+\label{fig:xxzspin}
+\end{figure}
+If the spectral variables $u_i$ solve the Bethe equation, then the bottom state is an eigenvector. This is the origin of the algebraic Bethe ansatz.
+
+In our setting, consider the picture of~\Cref{fig:statmechnak}.
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[->] (-1,0) -- (1,0);
+    \draw[->] (0,1) -- (0,-1);
+    \node at (-1.8,0) {$\mc{M}(0, v)$};
+    \node at (1.8,0) {$\mc{M}(v, v)$};
+    \node at (0,1.3) {$\mc{M}(0, w)$};
+    \node at (0,-1.3) {$\mc{M}(v, w)$};
+\end{tikzpicture}
+\end{center}
+\caption{Simple model for Nakajima varieties}%
+\label{fig:statmechnak}
+\end{figure}
+The analog of all up arrows here is when $v = w$ and the maps $W \to V$ are isomorphisms while the maps $V \to W$ are zero. This happens because the Bethe roots sit inside a maximal torus of $\prod GL(W_i) = \prod GL(V_i)$ here.
+
+\subsection{An open problem}
+
+In dimension $1$, we computed the equivariant $\P^1$ in terms of the action of $GL(\infty)$ on the Fock space and concluded that the $\P^1$ with two marked points is a $\tau$-function for the 2-Toda hierarchy. This comes from the action of $GL(\infty)$ on $\mr{Fock} \otimes \mr{Fock}$, which has the action of $\sum \psi_i \otimes \psi_i^*$
+
+In dimension $3$, we know both the equivariant $\P^1$ with one marked and one nonsingular point and with one marked point and one relative point in terms of $\mc{U}_{\hslash} \qty(\wh{\wh{\mf{gl}(1)}})$. In the $\hslash=1$ limit, we recover $\mc{U}(\mf{gl}(\infty))$, which corresponds to going down to $1$ dimension. If we take $\mc{U}_{\hslash}$ acting on $\mr{Fock} \otimes \mr{Fock}(\mr{shift})$ along with a screening operator, where
+\[ \mr{Fock} = \bigoplus_{n \geq 0} K(\Hilb(\C^2, n)), \]
+what is the deformation of 2-Toda? 
+
+The case of one marked point and one relative point is rational in $z$~\cite{ratcapdescvertex}. Three key facts are
+\begin{enumerate}
+    \item The equivariant $\P^1$ with one descendent and one relative condition vanishes for $\mc{M}(v, w)$ for $w \gg 0$ (the so-called large framing vanishing)~\cite{pcmi}.
+    \item Splitting the equivariant $\P^1$ in half and adding two nonsingular points, consider $w = w_0 + w_1$, where $w_0$ is fixed and $w_1$ is large. Then $a \in \C^{\times}$ acts on $W_1$ by scaling. We now have
+        \[ \mc{M}(\cdot, w)^a = \mc{M}(\cdot, w_0) \times \mc{M}(\cdot, w_1), \]
+        so the descendent is a Laurent polynomial in the Chern roots of the tautological bundle $V$. Twisting by $\det V$, we obtain an ordinary polynomial. Localizing on $\P^1$ and $a$ and taking $a \to 0$, we reduce to computing the same descendent for $w = w_0$.
+    \item In the $a \to 0$ limit, the fundamental solution for the $q$-difference equation becomes the product of an explicit fusion operator and two fundamental solutions.
+\end{enumerate}
+
+\chapter{Double ramification cycles and integrable hierarches (Paolo Rossi)}%
+
+\section{Integrable systems}
+
+\subsection{Notation and formalism}
+
+We will precisely define things like the KdV equation, tau functions, and higher symmetries. This comes from a formal algebraic discussion of things like dynamical systems. For a detailed reference, see~\cite{dubzhang}. Define the \textit{phase space}
+\[ \mc{P} \coloneqq \qty{u \colon S^1 \to \C^n} \]
+We consider the coordinates $u^{\alpha} \colon S^1 \to \C$ as formal variables. Also, we will let $x$ be the coordinate on $S^1$.
+
+\begin{defn}
+    A \textit{differential polynomial} is an element of the ring
+    \[ \wh{\mc{A}} \coloneqq \C[[u^*]][u_{>0}^*][[\ep]], \]
+    where $u_k^{\alpha} = \partial_x^k u^{\alpha}$. This has a grading where $u_k^*$ has degree $k$ and $\ep$ has degree $-1$.
+\end{defn}
+
+This is not quite a ring of functions on $\mc{P}$, so we will correct this. Define the operator
+\[ \partial_x \colon \wh{\mc{A}} \to \wh{\mc{A}} \qquad \partial_x = \sum_{k \geq 0} u_{k+1}^{\alpha} \pdv{u_k^{\alpha}}. \]
+This gives us a space $\wh{\mc{F}} = \wh{\mc{A}}/(\Im \partial_x \oplus \C)$ of \textit{local functionals} and should be thought of as integrating over the $S^1$. There is a way to reintroduce a ring structure on local functionals, but it will not be necessary for our purposes.
+
+As changes of coordinates on the phase space, consider the \textit{Miura transformations}
+\[ \wt{u}^{\alpha} = \wt{u}^{\alpha}(u_*^*, \ep) \in \in \wh{\mc{A}}^{[0]}. \]
+For some amount of invertibility, we require
+\[ \deg \qty(\pdv{\wt{u}^{\alpha}}{u^{\beta}}) \neq 0, \qquad u_*^* = 0, \qquad \ep = 0. \]
+
+\begin{rmk}
+    Miura transformations are invertible in the sense that they can be solved for $u^*$ as a system of ODEs order by order in $\ep$.
+\end{rmk}
+
+We may define \textit{Fourier coordinates} on $\mc{P}$ by taking the substitution
+\[ u^{\alpha} \sum_{b \in \Z} p_b^{\alpha} (e^{ix})^b. \]
+Here, the $p_b^{\alpha}$ are the Fourier coordinates. We force the coefficients to have polynomial dependence on $b$ and to sum to $0$ in analogy with the Fourier transform.
+
+\subsection{Poisson structure}
+
+We will now place a Poisson structure
+\[ \qty{-,-} \colon \wh{\mc{F}} \times \wh{\mc{F}} \to \wh{\mc{F}} \]
+on $\mc{P}$ or equivalently on $\wh{\mc{F}}$. Here, we take
+\[ \qty(\int f \dd{x}, \int g \dd{x}) \mapsto \int \pdv{\ol{f}}{u^{\alpha}} K^{\alpha\beta} \qty(\pdv{\ol{g}}{u^{\beta}}) \dd{x}, \]
+where $\ol{f} = \int f \dd{x}$ and the \textit{variational derivatives} are defined by
+\[ \pdv{\ol{f}}{u^{\alpha}} = \sum_{k \geq 0} (-\partial_x)^k \pdv{f}{u_k^{\alpha}} \colon \wh{\mc{F}} \to \wh{\mc{A}} \] 
+and the Poisson operator $K^{\alpha\beta}$ is defined by
+\[ K^{\alpha\beta} = \sum_{j \geq 0} K_j^{\alpha\beta} \partial_x^j \qquad K_j^{\alpha\beta} \in \wh{\mc{A}}^{[-j+1]}. \] 
+This is not quite a Poisson structure in general as we still need to impose skew-symmetry and the Jacobi identity.
+
+\subsection{System of evolutionary PDEs}
+
+A \textit{system of evolutionary PDEs} (or a vector field on $\mc{P}$) is a differential equation
+\[ \pdv{u^{\alpha}}{t} = Q^{\alpha(u_*^*, \ep)} \in \wh{\mc{A}}^{[1]}, \]
+where $Q^{\alpha}$ is a differential polynomial. Analogously, recall that a vector field $X$ on a finite-dimensional manifold can be written as either
+\[ X = X^{\alpha} \pdv{x^{\alpha}} \]
+or as 
+\[ \dv{x^{\alpha}}{t} = X^{\alpha(x^1, \ldots, x^n)}. \]
+
+Define the operator
+\[ L_{\nu}^{\beta} = \sum_{s \geq 0} (-\partial_x)^s \circ \pdv{\wt{u}^{\beta}}{u_s^{\nu}} \]
+and its adjoint
+\[ (L^*)_{\mu}^{\alpha} = \sum_{s \geq 0} \pdv{\wt{u}^{\alpha}}{u_s^{\mu}} \partial_x^s. \]
+This is related to coordinate transformations on tensors by the formula
+\[ K_{\wt{u}}^{\alpha\beta} = (K^*)_{\mu}^{\alpha} \circ K^{\mu\nu} \circ L_{\nu}^{\beta}. \]
+
+\begin{thm}[\cite{darbouxhamiltonian}]
+    There exists a Miura transformation bringing any Poisson structure of the form
+    \[ K^{\alpha\beta} = g^{\alpha\beta}(u^*) \partial_x + b_{\gamma}^{\alpha\beta}(u^*) u_1^{\gamma} + O(\ep) \]
+    with $g^{\alpha\beta}$ a nondegenerate flat metric on $\C^n$ to the form
+    \[ K_{\wt{u}}^{\alpha\beta} = \eta^{\alpha\beta} \partial_x \]
+    where $\eta^{\alpha\beta}$ nondegenerate constant symmetric. Note that the Jacobi identity imposes that the $b_{\gamma}^{\alpha\beta}$ are the Christoffel symbols for the Levi-Cevita connection of $g^{\alpha\beta}$, see~\cite{dubnov}.
+\end{thm}
+
+\begin{exm}[KdV equation]\label{exm:kdv}
+    Let $\mc{P} = \qty{u \colon S^1 \to \C}$. Then the ring of differential polynomials is
+    \[ \wh{\mc{A}} = \C[[u]] [u_{>0}] [[\ep]] \]
+    and we will consider the vector field
+    \[ \pdv{u}{t} = u u_1 + \frac{\ep^2}{12} u_3. \]
+    This is a Hamiltonian operator for the Poisson structure, where $K = \partial_x$. The Hamiltonian that produces this system is
+    \[ \ol{h} = \int \qty(\frac{u^3}{6} + \frac{\ep^2}{12} u u_2) \dd{x} \in \wh{\mc{F}}^{[0]}. \]
+    Now we can compute
+    \begin{align*}
+        \pdv{u}{t} &= K \qty(\pdv{\ol{h}}{t}) \\
+        &= \partial_x \qty(\frac{u^2}{2} + \frac{\ep^2}{24} u_2 + \partial_x^2 \qty(\frac{\ep^2}{2u}u)) \\
+        &= \partial_x \qty(\frac{u^2}{2} + \frac{\ep^2}{12} u_2),
+    \end{align*}
+    which is exactly the differential polynomial we want.
+\end{exm}
+
+We now want to lift $K^{\alpha\beta}$ to a map
+\[ \wh{\mc{A}} \times \wh{\mc{F}} \to \wh{\mc{A}}. \]
+There is a standard way to do such a thing by taking
+\[ \qty{f, \ol{g}} = \sum_{k \geq 0} \pdv{f}{u_k^{\alpha}} \partial_x^k \qty(K^{\alpha\beta} \qty(\pdv{\ol{g}}{u^{\beta}})). \]
+In \Cref{exm:kdv}, we computed the vector field $K \qty(\pdv{\ol{h}}{u}) = \qty{u, \ol{h}}$.
+
+\begin{exm}[2-KdV equation]
+    Consider $\mc{P} = \qty{u \colon S^1 \to \C^2}$ and the Hamiltonian
+    \[ \ol{h} = \int \frac{(u^1)^2}{2} u^2 + \frac{(u^2)^4}{36} + \qty(-\frac{1}{2} (u_1^1)^2 - \frac{1}{24} u^2 (u_1^2)^2)\ep^2 + \frac{1}{432} (u_2^2)^2 \ep^4 \dd{x}. \]
+    Also, consider the Poisson operator
+    \[ K = \mqty(0 & 1 \\ 1 & 0) \partial_x. \]
+    The resulting PDE is called the 2-KdV equation.
+\end{exm}
+
+
+\chapter{Airy ideals and topological recursion: an investigative tool for enumerative geometry, VOAs, and gauge theories (Vincent Bouchard)}%
+
+Topological recursion was invented by Eynard-Orantin in their work~\cite{toprecursion} on matrix models in 2007 and then reformulated in terms of Airy structures (or Airy ideals) by Kontsevich-Soibelman~\cite{airytoprec} in 2017. This is a correspondence between geometry, algebra, and differential equations.
+
+\section{Witten's conjecture}
+
+This story began with theories of 2d quantum gravity.
+Define the \textit{partition function}
+\[ \mc{Z} = \exp \qty(\sum_{\substack{g=0 \\ n=1 \\ 2g-2+n>0}}^{\infty} \frac{\hslash^{2g-2+n}}{n!} \sum_{k_1, \ldots, k_n} F_{g,n}[k_1, \ldots, k_n] t_{k_1} \cdots t_{k_n}), \]
+where we define
+\[ F_{g,n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g,n}} \psi_1^{k_1} \cdots \psi_n^{k_n}. \]
+To simplify our notation, we will write
+\[ \mc{Z} = \exp \qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(t_A)). \]
+
+\begin{thm}[\cite{wittenconj}]\label{thm:witten}
+    The function
+    \[ u(t_0, t_1, \ldots) = \pdv[2]{t_0} \log \mc{Z} \]
+    is the unique solution to the KdV hierarchy with initial condition $u(t_0, 0, \ldots) = t_0$.
+\end{thm}
+
+\subsection{Reformulation as differential constraints for $\mc{Z}$}
+
+For $k \geq -1$, define the operator
+\[ L_k = J_{k+1} - \frac{1}{2} \sum_{m+n=k-1} :J_m J_n: - \delta_{k,0} \frac{\hslash^2}{8}, \]
+where
+\[ J_m = \hslash \pdv{t_m}, m \geq 0 \qquad J_{-m} = \hslash(2m-1)t_{m-1}, m \geq 1. \]
+Now we can reformulate~\Cref{thm:witten} as
+\begin{thm*}
+    $\mc{Z}$ is the unique solution to the constraints $L_k \mc{Z} = 0$ for all $k \geq -1$.
+\end{thm*}
+
+Note that the $L_k$ satisfy the relation
+\[ [L_i, L_j] = \hslash^2(i-j)L_{i+j}. \]
+Thus we have a representation of a subalgebra of the Virasoro algebra, which is defined by
+\[ [L_i, L_j] = \hslash^2(i-j)L_{i+j} \frac{\hslash^4 c}{12} i^2(i-1) \delta_{i, -j} \]
+Note that $L_k$ has the expansion
+\[ L_k = \hslash \pdv{t_{k+1}} + O(\hslash^2), \]
+which makes it easy to see uniqueness once we have existence.
+
+\subsection{Potential generalizations}
+
+The first possible generalization is the Virasoro conjecture~\cite{virasoroconj}, where we remove uniqueness of the solution and preserve the geometry (using Gromov-Witten theory of projective varieties) and the Virasoro algebra. This has been proved in several cases, including toric varieties~\cites{virasorofanotoric}{virasorotoric}, flag varieties~\cite{virasoroflag}, Grassmannians~\cite{virasorograss}, varieties with semisimple quantum cohomology~\cite{2dsscohft}, Calabi-Yau varieties~\cite{virasorogw}, and toric bundles over varieties satisfying the Virasoro conjecture~\cite{virasorotoricbundle}. There is also progress on Virasoro constraints for sheaf-counting theories, see~\cite{virasoropt}.
+
+The second possible generalization is to keep existence and uniqueness of the solution $\mc{Z}$ to the constraints $H_i \mc{Z} = 0$. More precisely, we want to find constraints on $H_i$ such that $H_i \mc{Z} = 0$ always has a unique solution of the form
+\[ \mc{Z} = \exp \qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A)) \]
+with the initial condition $\mc{Z} \_{x_A = 0} = 1$. This is the generalization that we will take.
+
+\section{Airy structures}
+
+\subsection{Weyl algebra and modules}
+
+Let $A$ be a (possibly infinite) indexing set. The \textit{Weyl algebra} $\mc{D}_A$ is defined as 
+\[ \mc{D}_A = \C[x_A] \ev{\partial_A} / ([\partial_i, x_j] = \delta_{ij}). \]
+This is only a filtered algebra, so it is difficult to form power series. We will use the \textit{Rees construction} to turn it into a graded algebra.
+
+Here, we will use the filtration
+\[ \qty{0} \subseteq F_0 \mc{D}_A \subseteq F_1 \mc{D}_A \subseteq \cdots \subseteq \mc{D}_A, \]
+where
+\[ F_i \mc{D}_A = \qty{\sum_{m+k\leq i} P_{a_1, \ldots, a_m}^{(k)}(x_A) \partial_{a_1} \cdots \partial_{a_m}}. \]
+For example, $F_2 \mc{D}_A$ contains terms like $x_1$ and $x_1 \partial_2$ but not terms like $x_1^2 \partial_2$.
+
+Now we may define the \textit{Rees Weyl algebra}
+\[ \mc{D}_A^{\hslash} = \bigoplus_{k=0}^{\infty} \hslash^k F_k \mc{D}_A, \]
+where $\deg \hslash = 1$, and the completion
+\[ \wh{\mc{D}}_A^{\hslash} = \prod_{k=0}^{\infty} \hslash^k F_k \mc{D}_A. \]
+This is in fact a good way to handle power series, and we will consider $H_i \in \wh{\mc{D}}_A^{\hslash}$.
+
+We will now consider the polynomial module $\mc{M}_A$, which has the following properties: 
+\begin{itemize}
+    \item $\mc{M}_A$ is generated by $1 \in \mc{M}_A$; 
+    \item The annihilator $\on{Ann}_{\mc{D}_A}(1)$ is the left ideal generated by $\partial_i$; 
+    \item We recover 
+        \[ \mc{D}_A / \on{Ann}_{\mc{D}_A}(1) \simeq \mc{M}_A. \]
+\end{itemize}
+We can now introduce $\hslash$ directly into our module, but we need a filtration on $\mc{M}$ such that
+\[ F_i \mc{D} \cdot F_j \mc{M} \subset F_{i+j} \mc{M}. \]
+A natural choice is to let $F_i \mc{M}_A$ be polynomials of degree at most $i$. We can now repeat the Rees construction by considering
+\[ \mc{M}_A^{\hslash} = \bigoplus_{k=0}^{\infty} \hslash^k F_k \mc{M}_A, \qquad \wh{\mc{M}}_A^{\hslash} = \prod_{k=0}^{\infty} \hslash^k F_k \mc{M}_A. \]
+The partition function $\mc{Z}$ will live in a twist of $\wh{\mc{M}}_A^{\hslash}$ rather than in the module itself. Some properties of $\hslash$ are as follows:
+\begin{itemize}
+    \item $\wh{\mc{M}}_A^{\hslash}$ is a cyclic left $\wh{\mc{D}}_A^{\hslash}$-module generated by $1$;
+    \item $\on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(1)$ is the left ideal $\mc{I}_{\mr{can}}$ generated by $\hslash \partial_i$;
+    \item We can recover the module by
+        \[ \wh{\mc{D}}_A^{\hslash}/\mc{I}_{\mr{can}} = \wh{\mc{M}}_A^{\hslash}. \]
+\end{itemize}
+
+We can now reformulate our problem as
+\begin{prob}
+    What conditions should a left ideal $\mc{I} \subset \wh{\mc{D}}_A^{\hslash}$ satisfy such that $\mc{I} \cdot \mc{Z}$ has a unique solution of the form
+    \[ \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A))? \]
+\end{prob}
+
+\subsection{Characterization of ideals solving our problem}
+
+From our expression for $\mc{Z}$, it is clear that the operators
+\[ \ol{H}_i = \hslash \partial_i - \sum_{k=1}^{\infty} \hslash^{k+1} \partial_i q^{(k+2)}(x_A) \]
+satisfy $\ol{H}_i \mc{Z} = 0$. Denote the ideal generated by the $\ol{H}_i$ by $\ol{\mc{I}}$, which is in fact $\on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(\mc{Z})$.
+
+\begin{defn}
+    Define an automorphism $\Phi \colon \wh{\mc{D}}_A^{\hslash} \to \wh{\mc{D}}_A^{\hslash}$ by
+    \[ \Phi \colon (\hslash, \hslash x_i, \hslash \partial_i) \mapsto \qty(\hslash, \hslash x_i, \hslash \partial_i - \sum_{k=1}^{\infty} \hslash^{k+1} \partial_i q^{(k+2)}(x_A)). \]
+    Note that this is a valid construction because $[\ol{H}_i, \hslash x_j] = \hslash^2 \delta_{ij}$ and $[\ol{H}_i, \ol{H}_j] = 0$.
+\end{defn}
+
+Given the twist $\Phi$, define the twisted module ${}^{\Phi}\wh{\mc{M}}_A^{\hslash}$ by the twisted product
+\[ \wh{\mc{D}}_A^{\hslash} \cdot^{\Phi} \wh{\mc{M}}_A^{\hslash} \to \wh{\mc{M}}_A^{\hslash} \qquad P \cdot^{\Phi} f = \Phi^{-1}(P) \cdot f. \]
+This satisfies the same properties as the untwisted version. Because $\Phi(P) = \mc{Z} \cdot P \cdot \mc{Z}^{-1}$, we can define a \textit{module of exponential type} by $\mc{Z} \wh{\mc{M}_A^{\hslash}}$, which is cyclic and generated by $\mc{Z}$. Clearly we have
+\[ \on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(\mc{Z}) = \Phi(\mc{I}_{\mr{can}}) = \ol{\mc{I}}. \]
+
+\printbibliography
+
+\end{document} 
