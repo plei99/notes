@@ -48,6 +48,7 @@
 \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
 \usepackage{xpatch}
 \xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\crefname{equation}{}{}
 
 % other formatting packages
 \usepackage{float}
@@ -1103,7 +1104,7 @@ such that if we insert the relative conditions in the $A_r$-fibration, all contr
 Vanishing is easier in cohomology~\cite{qgqc}, but is more difficult in K-theory. The reason for this is that vanishing in $K$-theory is usually proved using rigidity (properness, which implies the result is a polynomial in $a$, and a degree bound, which implies the result has negative degree).
 
 The stable envelope is supported on the full attracting locus inside $Y \times Y^a$ (or repelling for $\on{Unstab}$), which gives properness. For degree bounds, the Newton polygon
-\[ \mr{deg}\qty(\on{Stab}|_{F_j \times F_i}) \]
+\[ \deg\qty(\on{Stab}|_{F_j \times F_i}) \]
 is contained a fixed polygon.
 
 \begin{rmk}
@@ -1174,7 +1175,7 @@ of quasimaps (or for a general Nakajima variety) has evaluation maps
 This gives us a push-pull morphism
 \begin{equation*}
 \begin{tikzcd}
-    K(\text{ambient stack}) & & & K(\Hilb) \ar[swap]{lll}{\on{ev}_0(\wh{\mc{O}}^{\mr{vir}} \otimes \on{ev}_{\infty} \cdot z^{\mr{deg}})} \\
+    K(\text{ambient stack}) & & & K(\Hilb) \ar[swap]{lll}{\on{ev}_0(\wh{\mc{O}}^{\mr{vir}} \otimes \on{ev}_{\infty} \cdot z^{\deg})} \\
     \ms{Ell}() \ar{u}{\frac{\Gamma_q}{\Gamma_q}} & & & \ms{Ell}(\Hilb) \ar{u}{\frac{\Gamma_q}{\Gamma_q}} \ar{lll}{!}.
 \end{tikzcd}
 \end{equation*}
@@ -1400,7 +1401,9 @@ The case of one marked point and one relative point is rational in $z$~\cite{rat
     \item In the $a \to 0$ limit, the fundamental solution for the $q$-difference equation becomes the product of an explicit fusion operator and two fundamental solutions.
 \end{enumerate}
 
-\chapter{Double ramification cycles and integrable hierarches (Paolo Rossi)}%
+\chapter{Double ramification cycles and integrable hierarches (Paolo Rossi and Alexandr Buryak)}%
+
+\textbf{Note:} see~\cite{rossisurvey} for a complete discussion.
 
 \section{Integrable systems}
 
@@ -1438,7 +1441,7 @@ Here, the $p_b^{\alpha}$ are the Fourier coordinates. We force the coefficients 
 We will now place a Poisson structure
 \[ \qty{-,-} \colon \wh{\mc{F}} \times \wh{\mc{F}} \to \wh{\mc{F}} \]
 on $\mc{P}$ or equivalently on $\wh{\mc{F}}$. Here, we take
-\[ \qty(\int f \dd{x}, \int g \dd{x}) \mapsto \int \pdv{\ol{f}}{u^{\alpha}} K^{\alpha\beta} \qty(\pdv{\ol{g}}{u^{\beta}}) \dd{x}, \]
+\[ \qty(\int f \dd{x}, \int g \dd{x}) \mapsto \int \fdv{\ol{f}}{u^{\alpha}} K^{\alpha\beta} \qty(\fdv{\ol{g}}{u^{\beta}}) \dd{x}, \]
 where $\ol{f} = \int f \dd{x}$ and the \textit{variational derivatives} are defined by
 \[ \pdv{\ol{f}}{u^{\alpha}} = \sum_{k \geq 0} (-\partial_x)^k \pdv{f}{u_k^{\alpha}} \colon \wh{\mc{F}} \to \wh{\mc{A}} \] 
 and the Poisson operator $K^{\alpha\beta}$ is defined by
@@ -1452,7 +1455,7 @@ A \textit{system of evolutionary PDEs} (or a vector field on $\mc{P}$) is a diff
 where $Q^{\alpha}$ is a differential polynomial. Analogously, recall that a vector field $X$ on a finite-dimensional manifold can be written as either
 \[ X = X^{\alpha} \pdv{x^{\alpha}} \]
 or as 
-\[ \dv{x^{\alpha}}{t} = X^{\alpha(x^1, \ldots, x^n)}. \]
+\[ \dv{x^{\alpha}}{t} = X^{\alpha}(x^1, \ldots, x^n). \]
 
 Define the operator
 \[ L_{\nu}^{\beta} = \sum_{s \geq 0} (-\partial_x)^s \circ \pdv{\wt{u}^{\beta}}{u_s^{\nu}} \]
@@ -1488,7 +1491,7 @@ This is related to coordinate transformations on tensors by the formula
 We now want to lift $K^{\alpha\beta}$ to a map
 \[ \wh{\mc{A}} \times \wh{\mc{F}} \to \wh{\mc{A}}. \]
 There is a standard way to do such a thing by taking
-\[ \qty{f, \ol{g}} = \sum_{k \geq 0} \pdv{f}{u_k^{\alpha}} \partial_x^k \qty(K^{\alpha\beta} \qty(\pdv{\ol{g}}{u^{\beta}})). \]
+\[ \qty{f, \ol{g}} = \sum_{k \geq 0} \pdv{f}{u_k^{\alpha}} \partial_x^k \qty(K^{\alpha\beta} \qty(\fdv{\ol{g}}{u^{\beta}})). \]
 In \Cref{exm:kdv}, we computed the vector field $K \qty(\pdv{\ol{h}}{u}) = \qty{u, \ol{h}}$.
 
 \begin{exm}[2-KdV equation]
@@ -1499,6 +1502,343 @@ In \Cref{exm:kdv}, we computed the vector field $K \qty(\pdv{\ol{h}}{u}) = \qty{
     The resulting PDE is called the 2-KdV equation.
 \end{exm}
 
+\subsection{Integrable systems and tau-structures}
+
+Consider a collection of Hamiltonians
+\[ \qty{\ol{h}_{\alpha, d}}_{\substack{\alpha = 1, \ldots, N \\ d \geq 0}} \]
+that commute with respect to the Poisson structure, i.e.
+\[ \qty{\ol{h}_{\alpha_1, d_1}, \ol{h}_{\alpha_2, d_2}} = 0 \]
+for all $\alpha_1, \alpha_2 = 1, \ldots, N$ and $d_1, d_2 \geq 0$. We obtain the differential equation
+\[ \pdv{u^{\alpha}}{t_{d_1}^{\alpha_1}}{t_{d_2}^{\alpha_2}} = \pdv{u^{\alpha}}{t_{d_2}^{\alpha_2}}{t_{d_1}^{\alpha_1}}, \]
+or symmetry of the mixed partials. Then our differential equations can be written as
+\[ \pdv{u^{\alpha}}{t_d^{\beta}} = \qty{u^{\alpha}, \ol{h}_{\beta, d}}, \qquad \Vectorstack{{\alpha, \beta = 1, \ldots, N} {d \geq 0}}. \]
+Commutativity guarantees the existence of a formal solution
+\[ u^{\alpha}(x, t_*^*, \ep) \in \C[[x, t_*^*, \ep]] \]
+with the initial condition
+\[ u^{\alpha}(x, t_*^* = 0, \ep) = \ol{u}(x, \ep). \]
+
+We will now discuss $\tau$-structures. Assume that 
+\[ \partial_{t_0^1} u^{\alpha} = K^{\alpha\mu} \fdv{\ol{h}_{1,0}}{u^{\mu}} = u_x^{\alpha}. \]
+Then a \textit{$\tau$-structure} is a choice of $h_{\beta, d} \in \wh{\mc{A}}^{[0]}$ for $\beta = 1, \ldots, N$ and $d \geq -1$ such that
+\begin{enumerate}
+    \item $K^{\alpha\mu} \fdv{\ol{h}_{\beta,-1}}{u^{\mu}} = 0$ for all $\beta, \alpha = 1, \ldots, N$;
+    \item The integrals of the $h_{\beta, d}$ satisfy
+        \[ \int h_{\beta, d} \dd{x} = \ol{h}_{\beta, d}. \]
+    \item There is an equality of Poisson brackets
+        \[ \qty{h_{\beta_1, d_1-1}, \ol{h}_{\beta_2, d_2}} = \qty{h_{\beta_2, d_2-1}, \ol{h}_{\beta_1, d_1}} \]
+        for all $\beta_1, \beta_2 d_1, d_2$.
+\end{enumerate}
+
+Assuming that a tau-structure exists, we see that
+\[ \qty{h_{\beta_1, d_1-1}, \ol{h}_{\beta_2, d_2}} = \partial_x \Omega_{\beta_1, d_1; \beta_2, d_2} \in \wh{\mc{A}}^{[0]}. \]
+The third condition implies that
+\[ \Omega_{\beta_1, d_1; \beta_2, d_2} = \Omega_{\beta_2, d_2; \beta_1, d_1}. \]
+
+\begin{rmk}
+    For all solutions
+    \[ u^{\alpha}(x, t_*^*, \ep) \in \C[[x, t_*^*, \ep]] \]
+    of the integrable system, there exists a unique $F \in \C[[t_*^*, \ep]]$ such that
+    \[ \Omega_{\beta_1, d_1; \beta_2, d_2} |_{u^*=u^*(x, t_*^*, \ep)} |_{x=0} = \pdv{F(t_*^*, \ep)}{t_{d_1}^{\beta_1}}{t_{d_2}^{\beta_2}}. \]
+\end{rmk}
+
+For example, the definition of the tau-structure tells us that
+\begin{align*} 
+    \partial_x \Omega_{\beta_1, d_1; 1, 0} &= \pdv{h_{\beta_1, d_1-1}}{t_0^1} \\
+    &= \partial_x h_{\beta_1, d_1-1}.
+\end{align*}
+In particular, we obtain
+\[ \Omega_{\beta_1, d_1; 1, 0} = h_{\beta_1, d_1-1}. \]
+
+Assume that $K_u^{\alpha\beta}|_{\ep = 0} = \eta^{\alpha\beta} \partial_x$. Then
+\[ h_{\beta, -1} |_{\ep = 0} = \eta_{\beta \mu} u^{\mu}, \]
+so in particular
+\[ h_{\beta, -1} = \eta_{\beta \mu} u^{\mu} + O(\ep). \]
+
+\begin{defn}
+    Given a tau-structure, its system of \textit{normal coordinates} is
+    \[ \wt{u}^{\alpha} = \eta^{\alpha \mu} h_{\mu, -1}(u_*^*, \ep) = u^{\alpha} + O(\ep). \]
+    Note that
+    \[ \eta_{\alpha\mu} \wt{u}^{\mu} |_{u^*=u^*(x,t_*^*,\ep)} |_{x=0} = \pdv{F}{t_0^1}{t_0^{\alpha}}. \]
+\end{defn}
+
+\subsection{KdV hierarchy revisited}
+
+Recall the Hamiltonian
+\[ \ol{h} = \int \qty(\frac{u^3}{6} + \frac{\ep^2}{24} uu_2) \dd{x}, \]
+and consider $K = \partial_x$. Then we see that
+\[ u_t = u u_x + \frac{\ep^2}{12} u_{x x x}. \]
+We will now give a new construction of the KdV hierarchy.
+
+\begin{thm}[\cite{recdrhierarchy}]
+    Define $g_d \in \wh{\mc{A}}^{[0]}$ for $d \geq -1$ via $g_{-1} = u$ and
+    \[ \partial_x (D-1) g_{d+1} = \qty{g_d, \ol{h}}, \]
+    where we choose
+    \[ D = \ep \pdv{\ep} + \sum_{k \geq 0} u_k \pdv{u_k}. \]
+    Then
+    \[ \qty{\ol{g}_{d_1}, \ol{g}_{d_2}} = 0. \]
+    Note that
+    \[ \ol{g}_0 = \int \frac{u^2}{2} \dd{x}. \]
+\end{thm}
+
+\begin{lem}
+    Let $K^{\alpha\beta} = \eta^{\alpha\beta} \partial_x$ be in the full Getzler normal form and
+    \[ \ol{g}_{\alpha,d} = \pdv{g_{\alpha,d+1}}{u^1}. \]
+    Then 
+    \[ h_d \coloneqq \fdv{\ol{g}_{d+1}}{u} \]
+    is a tau-structure.
+\end{lem}
+
+\begin{proof}
+    We will suppress the Greek indices. We now compute
+    \begin{align*}
+        0 &= \pdv{u} \qty{\ol{g}_{d_1}, \ol{g}_{d_2}} \\
+        &= \qty{\pdv{\ol{g_{d_1}}}{u}, \ol{g}_{d_2}} + \qty{\ol{g}_{d_1}, \pdv{\ol{g}_{d_2}}{u}} \\
+        &= \qty{h_{d_1-1}, \ol{h}_{d_2}} + \qty{\ol{h}_{d_1}, h_{d_2-1}}.
+    \end{align*}
+    By antisymmetry, we obtain a tau-structure.
+\end{proof}
+
+Using this tau-structure, we can write the following well-known result:
+\begin{thm}[\cite{wittenconj}]
+    The $\tau$-function $F(t_*, \ep)$ for the solution of the KdV hierarchy with initial condition
+    \[ u(x, t_* = 0, \ep) = X \]
+    is
+    \[ F(t_*, \ep) = \sum \frac{\ep^{2g}}{n!} \int{\ol{\mc{M}}_{g, n}} \psi_1^{d_1} \cdots \psi_n^{d_n} t_{d_1} \cdots t_{d_n}. \]
+\end{thm}
+
+We would like to consider changes of coordinates that preserve tau-structures. These are called \textit{normal Miura transformations}. Let 
+\[ \qty{h_{\alpha,d}, \qty{-,-}}_{\substack{\alpha = 1,\ldots,N \\ d \geq -1}} \]
+be an integrable system with tau-structure. Recall that we have normal coordinates
+\[ \wt{\mu}^{\alpha} = \eta^{\alpha \mu} h_{\mu,-1}. \]
+Fix a differential polynomial $P \in \wh{\mc{A}}^{[-2]}$. The \textit{normal Miura transformation} generated by $P$ is
+\begin{align*}
+    \wt{\wt{u}}^{\alpha} &= \wt{u}^{\alpha} + \eta^{\alpha \mu} \partial_x \qty{P, \ol{h}_{\mu, 0}} \\
+    &= \wt{\mu}^{\alpha} + \eta^{\alpha \mu} \pdv{P}{x}{t_0^{\mu}}.
+\end{align*}
+Then
+\begin{align*}
+    h'_{\alpha,d} &= h_{\alpha,d} + \partial_x \qty{P, \ol{h}_{\alpha,d+1}} \\
+    &= h_{\alpha,d} + \pdv{P}{x}{t_{d+1}^{\alpha}}
+\end{align*}
+is a tau-structure for
+\[ \qty{h'_{\alpha, d} |_{\wt{\mu}(\wt{\wt{u}}_*^*, \ep)}, K_{\wt{\wt{u}}}}. \]
+
+\begin{rmk}
+    Note that for all solutions, the tau-function changes under normal Miura transformations as
+    \[ \wt{F}(t_*^*, \ep) = F(T_*^*, \ep) + P|_{\wt{u} = \wt{u}(x, t_*^*, \ep)}|_{x=0}. \]
+\end{rmk}
+
+
+\section{Double ramification hierarchy}
+
+Recall that if $K^{\alpha\beta} = \eta^{\alpha\beta} \partial_x + O(\ep)$, then
+\begin{align*}
+    \qty{\ol{h}_{\alpha_1, d_1}, \ol{h}_{\alpha_2, d_2}} &= \int \fdv{\ol{h}_{\alpha_1, d_1}}{u^{\mu}} (\eta^{\mu \nu} \partial_x + O(\ep)) \fdv{\ol{h}_{\alpha_2, d_2}}{u^{\nu}} \dd{x} \\
+    &= \int \qty(\pdv{h_{\alpha_1, d_1}^{[0]}}{u^{\mu}} \eta^{\mu\nu} \pdv{h_{\alpha_2, d_2}^{[0]}}{u^{\nu}} + O(\ep)) \dd{x}.
+\end{align*}
+Because the integrand is now a total derivative in $x$, commutativity of the Hamiltonians (in the dispersionless limit) requires that
+\[ \pdv{h^{[0]}_{\alpha_1, d_1}}{u^{\beta}}{u^{\mu}} \eta^{\mu \nu} \pdv{h_{\alpha_2, d_2}^{[0]}}{u^{\nu}}{u^{\gamma}} \]
+is invariant under exchanging $\beta, \gamma$. This encodes relations on $\ol{\mc{M}}_{0, 4}$, where points $2, 3$ have insertions $\psi^{d_1}, \psi^{d_2}$, which should be invariant under exchange of $1, 4$. Therefore, we should think of commutativity under exchange of indices as the WDVV equation. However, this approach only works in genus $0$.
+
+We will now define
+\[ \ol{h}_d^{[0]} = \sum_{n \geq 2} \frac{1}{n!} \qty(\int_{\ol{\mc{M}}_{0,1+n}} \psi_1^d) u^n \]
+and for any cohomological field theory,
+\[ \ol{h}_{\alpha, d}^{[0]} = \sum_{n \geq 2} \frac{1}{n!} \qty(\int_{\ol{\mc{M}}_{0, 1+n}}C_{0, 1+n}\qty(e_{\alpha} \otimes \bigotimes_{i=1}^n e_{\alpha_i})) u^{\alpha_1} \cdots u^{\alpha_n}. \]
+
+\subsection{Double ramification cycle}
+
+Define the \textit{double ramification cycle} $\mr{DR}_g(a_1, \ldots, a_n) \in \mc{R}^g \subset H^{2g}(\ol{\mc{M}}_{g, n}, \C)$ as follows. First, define
+\[ \ol{\mc{M}}_{g, n}^{\sim}(\P^1, A) = \qty{\Sigma \to (\P^1, 0, \infty)} / \C^{\times}. \]
+This has a morphism
+\[ p \colon \ol{\mc{M}}_{g, n}^{\sim}(\P^1, A) \to \ol{\mc{M}}_{g, n}, \]
+and so we may define
+\[ \mr{DR}_g(A) \coloneqq p_* [\ol{\mc{M}}_{g, n}^{\sim}(\P^1, A)]^{\mr{vir}}. \]
+This is a tautological cycle, and $\mr{DR}_g(A) = 0$ unless $\sum a_i = 0$. Recently, an explicit formula was found by Janda-Pandharipande-Pixton-Zvonkine~\cite{drcycles}.
+
+Now define a compact type version
+\begin{align*} 
+    \mr{DR}_g^{\mr{ct}}(A) &= \frac{1}{g!} \Theta^g \\
+    &= \frac{1}{g!} \qty(-\frac{1}{4} \sum_{J \subset \qty{1, \ldots, n}} \sum_{h=0}^g a_J^2 \delta_h^J)^g,
+\end{align*}
+where $a_J = \sum_{i \in J} a_i$ and $\delta_h^J$ is the cycle corresponding to the stable graph with genus $h$ with $J$ marked points and genus $g-h$ with $J^c$ marked points. Note $\delta_0^{\qty{i}} = - \psi_i$. Also note that
+\[ \lambda_g \mr{DR}_g(A) = \lambda_g \mr{DR}_g^{\mr{ct}}(A). \]
+
+Instead of working with $\ol{\mc{M}_{0, n}}$, we need to work with the Losev-Manin compactification
+\[ \mc{LM}_{0, \abs{\text{ramification}}} \]
+of the moduli space of curves. Now we have a diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \ol{\mc{M}}_{g, n}^{\sim}(\P^1, A) \ar{dl}{b_{\gamma}} \ar{dr}{p} \\
+    \mc{LM}_{0,-} & & \ol{\mc{M}}_{g, n}.
+\end{tikzcd}
+\end{equation*}
+The Losev-Manin compactifications still have the WDVV equation, so we have the formula
+\begin{align*}
+    0 &= p_* b_{\gamma}^* (\mr{WDVV}) \\
+    &= \sum_{\substack{I \sqcup J = \qty{1, \ldots,n} \\ g_1+g_2+r-1=g}} \mr{DR}_{g_1}(0_x, A_I, \kappa_1, \ldots, \kappa_r) \boxtimes \mr{DR}_{g_2}(0_y, A_J, -\kappa_1, \ldots, -\kappa_r)\frac{\kappa_1 \cdots \kappa_r}{r!}.
+\end{align*}
+Here, $x, y$ are internal marked points on the two components, and our expression must be invariant under exchanging $x, y$.
+
+\subsection{Formation of integrable hierarchy}
+
+We are now ready to define
+\[ \ol{g}_{\alpha, d} = \sum \frac{(-\ep^2)^g}{n!} \qty(\int_{\ol{\mc{M}}_{g, n}} \mr{DR}_g(0, a_1, \ldots, a_n) \psi^d C_{g, n}\qty(e_{\alpha} \otimes \bigotimes_{i=1}^n e_{\alpha_i})) \prod_{i=1}^n p_{a_i}^{\alpha_i} \]
+for any cohomological field theory. We now attach the Poisson structure
+\[ \qty{p_a^{\alpha}, p_b^{\beta}} = a \delta_{a+b} \eta^{\alpha\beta}. \]
+We can see that
+\[ \qty{\ol{g}_{\alpha, d}, \ol{g}_{\beta, d}} = k \pdv{\ol{g}_{\alpha, d}}{p_k^{\mu}} \eta^{\mu\nu} \pdv{\ol{g}_{\beta,d}}{p_{-k}^{\nu}} \]
+It is unclear that this vanishes, and in fact we will need to quantize our integrable hierarchy or correct our formulas. 
+
+To make corrections in the classical case, we will add $\lambda$-classes to the WDVV equation as follows:
+\[ \sum_{\substack{I \sqcup J = \qty{1, \ldots,n} \\ g_1+g_2+r-1=g}} \lambda_{g_1} \mr{DR}_{g_1}(0_x, A_I, \kappa_1, \ldots, \kappa_r) \boxtimes \lambda_{g_2} \mr{DR}_{g_2}(0_y, A_J, -\kappa_1, \ldots, -\kappa_r)\frac{\kappa_1 \cdots \kappa_r}{r!}. \]
+Then our Hamiltonians become
+\[ \ol{g}_{\alpha, d} = \sum \frac{(-\ep^2)^g}{n!} \qty(\int_{\ol{\mc{M}}_{g, n}} \lambda_g \mr{DR}_g(0, a_1, \ldots, a_n) \psi^d C_{g, n}\qty(e_{\alpha} \otimes \bigotimes_{i=1}^n e_{\alpha_i})) \prod_{i=1}^n p_{a_i}^{\alpha_i}. \]
+
+Our system is related to the formalism of the previous section by taking the Fourier expansion
+\[ u^{\alpha} = \sum_{a \in \Z} p_a^{\alpha} e^{iax}. \]
+Now our Poisson bracket takes the form
+\[ K^{\alpha\beta} = \eta^{\alpha\beta} \partial_x. \]
+We may now rewrite our Hamiltonians as differential polynomials by
+\[ \ol{g}_{\alpha, d} \sum \frac{\ep^{2g}}{n!} \qty[a_1^{k_1} \cdots a_n^{k_n}] \qty(\int_{\ol{\mc{M}}_{g, n}} \lambda_g \mr{DR}_g(0, a_1, \ldots, a_n) \psi^d C_{g, n}\qty(e_{\alpha} \otimes \bigotimes_{i=1}^n e_{\alpha_i})) u_{k_1}^{\alpha_1} \cdots u_{k_n}^{\alpha_n}. \]
+Note here that $\lambda_g \mr{DR}_g(a_1, \ldots, a_n) \in \mc{R}^g[a_1, \ldots, a_n]^{2g}$.
+
+\begin{lem}
+    If $C_{g, n}$ is a cohomological field theory with unit $e_1$, then
+    \[ \pdv{\ol{g}_{d+1}}{u^1} = \ol{g}_d. \]
+\end{lem}
+
+\begin{cor}
+    The DR hierarchy is $\tau$-symmetric with
+    \[ h_{\alpha, d} = \fdv{\ol{g}_{\alpha,d+1}}{u^1}. \]
+\end{cor}
+
+This leads naturally to the following conjecture:
+\begin{conj}[\cite{taudrhierarchy}]\label{conj:drdz}
+    The DR hierarchy is normal Miura equivalent to the Dubrovin-Zhang hierarchy.
+\end{conj}
+
+\subsection{Quantization}
+
+Define
+\[ \ol{G}_{\alpha, d} = \sum \frac{\hslash^g}{n!} \qty(\int_{\ol{\mc{M}}_{g, n}} \Lambda \qty(\frac{-\ep^2}{\hslash}) \mr{DR}_g(0, A) \psi_1^d C_{g,n+1}(e_{\alpha} \otimes e_B))p_A^B. \]
+The Poisson bracket is defined by
+\[ \qty[p_a^{\alpha}, p_b^{\beta}] = \eta^{\alpha\beta} a \delta_{a+b,0} \hslash. \]
+To compute the commutator of two local functionals, we need to take a deformation of the Moyal product for the old Poisson structure as follows:
+\[ \ol{f} \star \ol{g} = \ol{f} \qty(e^{\sum_{k \in \Z} \hslash^2 k \overset{\shortleftarrow}{\partial}_{p_{-k}} \vec{\partial}_{p_k}}) \ol{g} \]
+and then take
+\[ [\ol{f}, \ol{g}] = \ol{f} \star \ol{g} - \ol{g} \star \ol{f}. \]
+
+\begin{thm}
+    The Hamiltonians $\ol{G}_{\alpha, d}$ commute:
+    \[ \qty[\ol{G}_{\alpha_1, d_1}, \ol{G}_{\alpha_2, d_2}] = 0. \]
+\end{thm}
+
+\subsection{DR hierarchy for DR cycles}
+
+Recall that the double ramification cycles satisfy the following properties:
+\begin{itemize}
+    \item $\mr{DR}_0(a_1, \ldots, a_n) = 1 \in H^0(\ol{\mc{M}}_{g, n})$. Therefore, $\mr{DR}_0(a, b, 0) = \delta_{a+b,0} \in H^0(\ol{\mc{M}}_{0,3})$;
+    \item $\mr{DR}_g(0, \ldots, 0) = (-1)^g \lambda_g$;
+    \item If $\pi \colon \ol{\mc{M}}_{g, n+1} \to \ol{\mc{M}}_{g, n}$ is the forgetful map, then
+        \[ \mr{DR}_{g}(a_1, \ldots, a_n, 0) = \pi^* \mr{DR}_g(a_1, \ldots, a_n); \]
+    \item If $\on{gl} \colon \ol{\mc{M}}_{g_1, n_1+1} \times \ol{ \mc{M}}_{g_2, n_2+1}  \to \ol{\mc{M}}_{g,n}$ is the gluing map, then
+        \[ \on{gl}^* \mr{DR}_g(a_1, \ldots, a_n) = \mr{DR}_{g_1}\qty(a_{i_1}, \ldots, a_{i_{n_1}}, -\sum a_{i_k}) \otimes \mr{DR}_{g_2}\qty(a_{j_1} \ldots, a_{j_{n_2}}, -\sum a_{j_k}). \]
+\end{itemize}
+
+We would now like to compute the flows corresponding to this partial CohFT. Here, set
+\begin{align*} 
+    \ol{g}_{0,1} &= \sum_{g, n} \frac{(-\ep^2)^g}{n!} \sum_{\alpha_i, a_i} \qty[\int_{\ol{\mc{M}}_{g, n+1}} \psi_1 \lambda_g C_{g, n+1}\qty(e_0 \otimes \bigotimes_{i=1}^n e_{\alpha_i}) \mr{DR}_g(0, a_1, \ldots, a_n)] p_{a_1}^{\alpha_1} \cdots p_{a_n}^{\alpha_n} \\
+    &= \sum_{g, n} \frac{(-\ep^2)^g}{n!}(2g-2+n) \int_{\ol{\mc{M}}_{g, n}} \lambda_g C_{g, n}\qty(\bigotimes_{i=1}^n e_{\alpha_i}) \mr{DR}_g(a_1, \ldots, a_n) p_{a_1}^{\alpha_1} \cdots p_{a_n}^{\alpha_n}.
+\end{align*}
+Substituting our double ramification cycles for the $C_{g, n}$ terms, this integral vanishes unless $n=3$.
+
+\begin{thm}[\cite{drnckdv}]
+    There is the explicit formula
+    \[ \int_{\ol{\mc{M}}_{g, 3}} \lambda_g \mr{DR}_g(a_1, a_2, a_3) \mr{DR}_g(b_1,b_2, b_3) = \frac{(a_1b_2 - a_2 b_1)^{2g}}{2^{3g}g!(2g+1)!!} \]
+    for all $g \geq 0$.
+\end{thm}
+
+\begin{proof}
+    We will begin with Hain's formula
+    \[ \mr{DR}_g(a_1, \ldots, a_n) |_{\mc{M}_{g, n}^{\mr{ct}}} = \frac{1}{g!} \Theta(a_1, \ldots, a_n)^g|_{\mc{M}_{g, n}^{\mr{ct}}}, \]
+    where
+    \[ \Theta(a_1, \ldots, a_n) = \sum_{j=1}^n \frac{a_j^2 \psi_j}{2} - \frac{1}{4} \sum_{h=0}^g \sum_{J \subset [h]} a_J^2 \delta_h^J. \]
+    Moreover, we have
+    \[ \Theta(a_1, \ldots, a_n)^{g+1} |_{\mc{M}_{g, n}^{\mr{ct}}} = 0. \]
+    Then the Hodge classes vanish outside of the compact type locus, so we now need to prove that
+    \[ f_{g}(\ol{a}, \ol{b}) \coloneqq \int_{\ol{\mc{M}}_{g,3}} \lambda_g \Theta(\ol{a})^g \mr{DR}_g(\ol{b}) =\frac{(a_1b_2 - a_2 b_1)^{2g}}{2^{3g}g!(2g+1)!!}. \]
+    Our main tool is an explicit formula for $a_s \psi_s \mr{DR}_g(a_1, \ldots, a_n)$ analogous to our formula for the WDVV equation:
+    \begin{align*} 
+        a_s \psi_s \mr{DR}_g(a_1, \ldots, a_n) ={} & \sum_{\substack{I \sqcup J = [n] \\ a_I > 0}} \sum_{p \geq 1} \sum_{g_1+g_2+p-1 = g} \sum_{k_1,\ldots,k_p \geq 1} \frac{\rho}{2g-2+n} \frac{\prod_{i=1}^p k_i}{p!} \times \\
+        & \times \mr{DR}_{g_1}(A_I, -k_1, \ldots, -k_p) \boxtimes \mr{DR}_{g_2}(A_J, k_1, \ldots, k_p),
+    \end{align*}
+    where
+    \[ \rho = \begin{cases}
+        2g_2-2+\abs{J}+p & s \in I \\
+        2g_1 - 2 + \abs{I} + p & s \in J.
+    \end{cases}
+    \]
+    If we add Hodge classes, this formula simplifies to become
+    \[ \lambda_g a_s \psi_s \mr{DR}_g(a_1, \ldots, a_n) = \sum_{\substack{I \sqcup J = [n] \\ s \in I}} \sum_{g_1+g_2 = g} \frac{2g_2-1+\abs{J}}{2g-2+n} a_I \lambda_{g_1} \mr{DR}_{g_1}(A_I, -a_I) \boxtimes \lambda_{g_2}\mr{DR}_{g_2}(A_J, a_I). \]
+    We are now ready to compute
+    \begin{align*} 
+        \int_{\ol{\mc{M}}_{g,3}} \Theta(\ol{a})^{g-1} &\lambda_g \psi_i \mr{DR}_g(\ol{b}) =  \\
+        ={}& \frac{2g-1}{2g+1} \sum_{g_1+g_2=g} \int_{\ol{\mc{M}}_{g,3}} \lambda_g \Theta(\ol{a})^{g-1} \mr{DR}_{g_1}(b_i,-b_i) \boxtimes \mr{DR}_{g_2}(b_j,b_k, b_i) \\
+        & -\frac{2}{2g+1} \sum_{g_1+g_2 = g} \frac{b_j}{b_i} \int_{\ol{\mc{M}}_{g,3}} \lambda_g \Theta(\ol{a})^{g-1} \mr{DR}_{g_1}(b_i,b_j,b_j) \boxtimes \mr{DR}_{g_2}(b_j,-b_j) \\
+        & -\frac{2}{2g+1} \sum_{g_1 + g_2 = g} \frac{b_k}{b_i}\int_{\ol{\mc{M}}_{g,3}} \lambda_g \Theta(\ol{a})^{g-1} \mr{DR}_{g_1}(b_i, b_j, b_j) \boxtimes \mr{DR}_{g_2}(b_k,-b_k).
+    \end{align*}
+    The first term becomes
+    \[ \sum_{\substack{h_1+h_2 = g-1 \\ g_1+g_2 =  g}} \binom{g-1}{h_1} \int \qty(\Theta(a_i,-a_i)^{h_1} \lambda_{g_1} \mr{DR}_{g_1}(b_i,-b_i)) \boxtimes (\Theta(a_j, a_j, a_i)^{h_2} \lambda_{g_2} \mr{DR}_{g_2}(b_j, b_k, b_i)). \]
+    The integral splits as
+    \[ \qty[\int_{\ol{\mc{M}}_{g_1, 2}} \Theta(a_i,-a_i)^{h_i} \lambda_{g_1} \mr{DR}_{g_1}(b_i,-b_i)]\qty[\int_{\ol{\mc{M}}_{g_2,3}} \Theta(a_j, a_k, a_i)^{h_2} \lambda_{g_2} \mr{DR}_{g_2}(b_j, b_k, b_i)]. \] 
+    The first integral in this product vanishes unless $h_1=g_1-1, h_1 = 0$, in which case it is is
+    \[ a_i^{2h_1} \Theta(1,-1)^{h_1} \lambda_{g_1} b_i^{2g_1} \Theta(1, 01)^{g_1}, \]
+    and therefore the overall integral becomes
+    \[ \qty[\int_{\ol{\mc{M}}_{1,2}}\lambda_1 \mr{DR}(b_i, -b_i)] \qty[\int_{\ol{\mc{M}}_{g-1,3}}\Theta(a_j, a_k, a_i)^{g-1} \lambda_{g-1}\mr{DR}_{g-1}(b_j, b_k, b_i)] = \frac{b_i^2}{24} f_{g-1}(\ol{a}, \ol{b}). \]
+    We can use the same ideas for the other terms, and we obtain
+    \[ \int_{\ol{\mc{M}}_{g, 3}} \Theta(\ol{a})^{g-1}\lambda_g \psi_i \mr{DR}_g(\ol{b}) = \frac{(2g+1)b_i^2 - 6 b_jb_k}{24(2g+1)}f_{g-1}(\ol{a}, \ol{b}). \]
+    We can use the same ideas to compute
+    \[ \int_{\ol{\mc{M}}_{g,3}}\lambda_g \Theta(\ol{a})^{g-1} \delta_h^J \mr{DR}_g(\ol{b}). \]
+    Finishing the computation, we obtain
+    \[ f_g(a, b) = \frac{(a_1b_2 - a_2 b_1)^2}{8(2g+1)} f_{g-1}(a,b). \qedhere \]
+\end{proof}
+
+For any $a \in \Z$, we now obtain
+\begin{align*}
+    \pdv{u^a}{t_1^0} &= \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2} \sum_{a_1+a_2=a} \sum_{d_1+d_2 = 2g} [b_1^{d_1} b_2^{d_2}] \qty(\int_{\ol{\mc{M}}_{g,n}} \psi_1 \lambda_g) \\
+    &= \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2} \sum \sum [b_1^{d_1} b_2^{d_2}] \qty[\frac{(a_1b_2 - a_2 b_1)^{2g}}{2^{3g}g! (2g-1)!!} u_{d_1}^{a_1} u_{d_2}^{a_2}] \\
+    &= \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2} \sum \sum [b_1^{d_1} b_2^{d_2}] \qty[\frac{(a_1b_2 - a_2 b_1)^{2g}}{2^{2g}(2g)!!}] u_{d_1}^{a_1} u_{d_2}^{a_2} \\
+    &= \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2 \cdot 2^{2g}} [b_1^{d_1} b_2^{d_2}] \qty[\sum h_1+h_2=2g \frac{1}{h_1! h_2!}(a_1b_2)^{h_1}(-a_2b_1)^{h_2}] u_{d_1}^{a_1} u_{d_2}^{a_2} \\
+    &= \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2 \cdot 2^{2g}} \sum h_1+h_2=2g \frac{1}{h_1! h_2!} a_1^{h_1}(-a_2)^{h_2} (\partial_x^{h_2}u^{a_1})(\partial_x^{h_1} u^{a_2}).
+\end{align*}
+Using the Fourier expansion, we now obtain
+\begin{align*}
+    \pdv{u^a}{t_1^0} &= \frac{1}{2} \partial_x \sum_{g \geq 0} \frac{\ep^{2g}}{2^{2g}} \sum_{h_1+h_2=2g} \frac{1}{h_1!}{h_2!} a_1^{h_1}(-a_2)^{h_2} (\partial_x^{h_2}u^{a_1}) e^{ia_1y} (\partial_x^{h_1} u^{a_2}) e^{ia_2 y}  \\
+    &= \frac{1}{2} \partial_x \sum_{g \geq 0} \frac{1}{2^{2g}} \sum_{h_1+h_2=2g} \frac{(i\ep)^{2g}}{h_1! h_2!}(-1)^{h_2} (\partial_x^{h_2} \partial_y^{h_1} u)(\partial_x^{h_1} \partial_y^{h_2}u).  \\
+\end{align*}
+Here, we see the Moyal star-product
+\[ f \star_{\hslash} g = f \exp\qty(\frac{i\hslash}{2} (\overset{\shortleftarrow}{\partial}_x \vec{\partial}_y - \overset{\shortleftarrow}{\partial_y} \vec{\partial}_x))g, \]
+and therefore we obtain
+\[ \pdv{u}{t_1^0} = \frac{1}{2} \partial_x (u \star_{\ep} u). \]
+More generally, we have
+\[ \pdv{u}{t_d^0} = \frac{1}{(d+1)!} \partial_x \qty(\underbrace{u \star_{\ep} \cdots \star_{\ep} u}_{d+1\text{ times}}). \]
+
+\subsection{Noncommutative integrable hierarchy}
+
+We now want to consider
+\[ C_{g,n}\qty(\bigotimes e_{a_i}) = \exp(\mu^2 \Theta(a_1, \ldots, a_n)). \]
+Then the flows $\pdv{t_d^0}$ of the DR hierarchy begin with
+\[ \pdv{u}{t_1^0} = \frac{1}{2} \partial_x(u \star_{\ep\mu} u) + \frac{\ep^2}{12} u_{x x x}, \]
+which is a kind of noncommutative KdV equation. The higher flows are the higher flows of the ncKdV hierarchy, which can be described using the Lax representation. This leads naturally to the next problem:
+
+\begin{prob}
+    How can we describe the flows $\pdv{t_d^{\alpha}}$ with $\alpha \neq 0$?
+\end{prob}
+
+There are of course other questions, including the relationship with the Dubrovin-Zhang hierarchy as in~\Cref{conj:drdz}, which implies the following conjecture.
+\begin{conj}[\cite{nckdvpixton}]
+    Intersection numbers with Pixton's class give a solution of the noncommutative KdV hierarchy.
+\end{conj}
 
 \chapter{Airy ideals and topological recursion: an investigative tool for enumerative geometry, VOAs, and gauge theories (Vincent Bouchard)}%
 
@@ -1547,7 +1887,7 @@ The second possible generalization is to keep existence and uniqueness of the so
 \[ \mc{Z} = \exp \qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A)) \]
 with the initial condition $\mc{Z} \_{x_A = 0} = 1$. This is the generalization that we will take.
 
-\section{Airy structures}
+\section{Airy ideals}
 
 \subsection{Weyl algebra and modules}
 
@@ -1589,7 +1929,9 @@ The partition function $\mc{Z}$ will live in a twist of $\wh{\mc{M}}_A^{\hslash}
 We can now reformulate our problem as
 \begin{prob}
     What conditions should a left ideal $\mc{I} \subset \wh{\mc{D}}_A^{\hslash}$ satisfy such that $\mc{I} \cdot \mc{Z}$ has a unique solution of the form
-    \[ \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A))? \]
+    \begin{equation}\label{eqn:desiredsoln}
+        \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A))? 
+    \end{equation}
 \end{prob}
 
 \subsection{Characterization of ideals solving our problem}
@@ -1609,6 +1951,348 @@ Given the twist $\Phi$, define the twisted module ${}^{\Phi}\wh{\mc{M}}_A^{\hsla
 This satisfies the same properties as the untwisted version. Because $\Phi(P) = \mc{Z} \cdot P \cdot \mc{Z}^{-1}$, we can define a \textit{module of exponential type} by $\mc{Z} \wh{\mc{M}_A^{\hslash}}$, which is cyclic and generated by $\mc{Z}$. Clearly we have
 \[ \on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(\mc{Z}) = \Phi(\mc{I}_{\mr{can}}) = \ol{\mc{I}}. \]
 
+\begin{defn}[Airy ideal]
+    Let $\ol{\mc{I}} \subseteq \wh{\mc{D}}_A^{\hslash}$ be a left ideal. It is \textit{Airy} if it is generated by $(\ol{H}_i)_{i \in A}$.
+\end{defn}
+
+\begin{thm}
+    The function $\mc{Z}$ defined in~\Cref{eqn:desiredsoln} is the unique solution to $\ol{\mc{I}} \cdot \mc{Z} = 0$ with $\mc{Z} |_{x_A = 0} = 1$.
+\end{thm}
+
+Of course, any ideal can have many different generating sets. How can we recognize Airy ideals in a more intrinsic manner?
+
+\begin{thm}{\cite{airytoprec}}\label{thm:charairy}
+    Let $\mc{I} \subseteq \wh{\mc{D}}_A^{\hslash}$ be a left ideal. Suppose that:
+    \begin{enumerate}
+        \item $\mc{I}$ is generated by $(H_i)_{i \in A}$ such that $H_i = \hslash \partial_i + O(\hslash^2)$;
+        \item $[\mc{I}, \mc{I}] \subset \hslash^2 \mc{I}$.
+    \end{enumerate}
+    Then $\mc{I}$ is Airy.
+\end{thm}
+
+\begin{rmk}
+    Clearly $[\mc{I}, \mc{I}] \subseteq \mc{I}$ for any left ideal $\mc{I}$. In addition, in our situation we always have $[\mc{I}, \mc{I}] \subseteq \hslash^2 \wh{\mc{D}}_A^{\hslash}$. However, in general we do \textbf{not} have $[\mc{I}, \mc{I}] \subset \hslash^2 \mc{I}$.
+\end{rmk}
+
+\begin{exm}
+    Let $\mc{I} \subset \wh{\mc{D}}_A^{\hslash}$ be the ideal generated by the Kontsevich-Witten differential operators
+    \[ H_i = L_{i-1} = \hslash \partial_i + O(\hslash^2). \]
+    For the second condition, note the (shifted) Virasoro relations
+    \[ [H_i, H_j] = \hslash^2 (i-j) H_{i+j-1}. \]
+    Computing the full commutator of any $A, B \in \mc{I}$, we have
+    \[ \qty[\sum_i a_i H_i, \sum_j b_j H_j] = \sum_{i,j} \qty(a_i [H_i, b_j] H_j + a_i b_i [H_i, H_j] + [a_i, b_j]H_i H_j + b_j [a_i, H_j] H_i), \]
+    and clearly this lands in $\hslash^2 \mc{I}$.
+\end{exm}
+
+\begin{proof}[Sketch of proof of~\Cref{thm:charairy}]
+    We need to prove that there exists a generating set $(\ol{H})_{i \in A}$ taking the desired form.
+    \begin{enumerate}
+        \item First, we find $\ol{H}_i \in \mc{I}$ of the form
+            \[ \ol{H}_i = \hslash \partial_i + \sum_{k=2}^{\infty} \hslash^k p_i^{(k)}(x_A). \]
+        \item Next, if $\ol{\mc{I}}$ is the ideal generated by the $\ol{H}_i$, we need to show that $\mc{I} \subseteq \ol{\mc{I}}$. Therefore, $\mc{I} = \ol{\mc{I}}$.
+        \item Finally, we prove that $[\ol{H}_i, \ol{H}_j] = 0$ for all $i, j$.
+    \end{enumerate}
+
+    To complete the first step, start with the $H_i = \hslash \partial_i + O(\hslash^2)$. We can then replace
+    \[ \hslash \partial_i \mapsto H_i + O(\hslash^2) \]
+    for the right-most derivative, and now we have
+    \[ H_i = \hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_i^{(k+1)}(x_A) + Q, \]
+    where $Q \in \mc{I}$. Simply set $\ol{H}_i$ to be the first two terms of $H_i$.
+
+    To complete the second step, consider the original generators $H_i = \hslash_i + O(\hslash^2)$. Then replace
+    \[ \hslash \partial_i \mapsto \ol{H}_i + O(\hslash^2) \]
+    and so $H_i$ is the sum of a polynomial and $\ol{Q}$, where $\ol{Q} \in \ol{I}$. The following lemma completes this step:
+    \begin{lem}
+        There are no nonzero polynomials in $\mc{I}$.
+    \end{lem}
+    
+    To complete the third step, we use brute force to obtain
+    \begin{align*}
+        [\ol{H}_i, \ol{H}_j] &= \qty[\hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_i^{(k+1)}(x_A), \hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_j^{(k+1)}(x_A)] \\
+        &= \hslash^2 \sum_{k=1}^{\infty} \hslash^k \qty(\partial_i p_j^{(k+1)} - \partial_j p_i^{(k+1)}).
+    \end{align*}
+    By the lemma, we are finished.
+\end{proof}
+
+Trivially, we see that
+\begin{itemize}
+    \item $\mc{I} = \Phi(\mc{I}_{\mr{can}})$ for some transvection $\Phi$;
+    \item $\wh{\mc{D}}_A^{\hslash} / \mc{I} \simeq {}^{\Phi}\mc{M}_A^{\hslash} \simeq \mc{M}_A^{\hslash} \mc{Z}$;
+    \item $\mc{Z}$ is uniquely determined with $\mc{Z} |_{x_A = 0} = 1$.
+\end{itemize}
+
+\subsection{Are Airy ideals interesting?}
+
+Returning to the algebra-geometry-integrable systems correspondence, we want either that $\mc{Z}$ is the $\tau$-function for some integrable system or that $F_{g,n}$ are some kind of interesting enumerative invariants.
+
+\begin{defn}
+    We say that an Airy ideal $\mc{I} \subseteq \wh{\mc{D}}_A^{\hslash}$ is \textit{$\hslash$-polynomial} if it is generated by $(H_i)_{i \in A}$ that are $\hslash$-polynomial. In addition, we say that $\mc{I}$ is \textit{$\hslash$-finite} if there exists $N \in \mathbb{N}$ such that the $\hslash$-degree of all $H_i$ is at most $N$.
+\end{defn}
+
+Airy ideals are integrable when they are $\hslash$-finite. If
+\[ H_i = \hslash \partial_i + \sum_{k=1}^N \hslash^{k+1} p_i^{(k+1)}(x_A) + \mr{derivatives}, \]
+then $H_i \mc{Z} = 0$ has the solution
+\[ \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A)). \]
+
+\begin{exm}
+    Suppose that $\mc{I}$ has degree $2$. Then we can write
+    \[ H_i = \hslash \partial_i - \hslash^2 \qty[\frac{1}{2} A_{ijk} x_j x_k + B_{ijk} x_j \partial_k + \frac{1}{2} C_{ijk} \partial_j \partial_j + D_i]. \]
+    Because $[\mc{I}, \mc{I}] \subseteq \hslash^2 \mc{I}$, we see that
+    \[ [H_i, H_j] = \hslash^2 c_{ijk} H_k \]
+    and therefire the $H_i$ are a representation of a Lie algebra. We can write an explicit recursive formula for $\mc{Z}$, which is of the form
+    \[ \mc{Z} = \exp \qty(\sum_{\substack{g=0 \\ n=1 \\ 2g-2+n > 0}} \frac{\hslash^{2g-2+n}}{n!} \sum_{k_1, \ldots, k_n} F_{g,n}[k_1, \ldots, k_n] x_{k_1} \cdots x_{k_n}). \]
+    The $F_{g,n}$ satisfy a \textit{topological recursion}, with the formula
+    \begin{align*}
+        F_{g,n}[k_1, \ldots, k_n] =&{} \sum_{m=2}^{\infty} B_{k_1k_ma} F_{g, n-1}[a, k_2, \ldots, \wh{k}_m, \ldots, k_n] \\
+        &+ \frac{1}{2} C_{k_1 ab} \qty{F_{g-1,n+2}[a,b,k_2,\ldots,k_n] + \sum_{\substack{g_1+g_2=g \\ I \cup J = \qty{k_2,\ldots,k_m}}} F_{g_1,\abs{I}+1}[a, I] F_{g_2,\abs{J}+1}[b, J]}.
+    \end{align*}
+    Here, we impose the initial conditions
+    \[ F_{0,3}[k_1, k_2, k_3] = A_{k_1 k_2 k_3} \qquad F_{1,1} = D_k. \]
+\end{exm}
+
+\subsection{Where we can find Airy ideals}
+
+Let $A = \qty{1, \ldots, n}$. We are interested in a classification of quadratic Airy ideals.
+
+\begin{exm}
+    Consider the Lie algebra $\mf{sl}_2(\C)$ which is generated by $E, H, F$ satisfying the relations
+    \[ [H, E] = 2E, \qquad [H, F] = -2F \qquad, [E, F] = H. \]
+    This does have a representation that is an Airy ideal, which is of the form
+    \begin{align*}
+        H &= \hslash \partial_1 - \hslash^2(-) \\
+        E &= \hslash \partial_2 - \hslash^2(-) \\
+        F &= \hslash \partial_3 - \hslash^2(-).
+    \end{align*}
+    See~\cite{abcdtoprec} for details.
+\end{exm}
+
+Unfortunately, $\mf{sl}_2$ is one of the rare simple Lie algebras admitting a representation that generates an Airy ideal in finitely many variables.
+\begin{prop}[{\cite[Proposition 6.9]{abcdtoprec}}]
+    The following Lie algebras do \textbf{not} admit a representation in finitely many variables generating an Airy ideal:
+    \begin{itemize}
+        \item $A_n$ for $n \notin \qty{1, 5}$;
+        \item $C_n$ for $n \geq 6$;
+        \item $D_n$ for $n \geq 4$;
+        \item $E_6, E_7, E_8$.
+    \end{itemize}
+\end{prop}
+
+\section{Applications}
+
+We will give some examples of Airy ideals that arise as representations of infinite-dimensional algebras and attempt to give them an interpretation in terms of enumerative geomtry. We will consider $\mc{W}$-algebras or vertex operator algebras as our algebras and then consider the algebra of modes. Then we want to realize our vertex operator algebras as sub-VOAs of the Heisenberg VOA. Roughly, a $\mc{W}$-algebra is a generalization of the Virasoro algebra, but we will not give a precise definition.
+
+\begin{exm}
+    $\mc{W}(\mf{sl}_2)$ is the Virasoro algebra and is generated by a single field 
+    \[ W^2(z) = \sum_{n \in \Z} W_n^2 z^{-n-2}, \]
+    where $W_n^2 = L_n$.
+\end{exm}
+
+\subsection{Kontsevich-Witten partition function}
+
+\begin{exm}
+    The algebra $\mc{W}(\mf{gl}_2)$ is generated by two fields
+    \[ W_1(z) = \sum W_n^1 z^{-n-1}, \qquad W^2(z) = \sum W_n^2 z^{-n-2}. \]
+\end{exm}
+
+We would like to find expressions for our $\mc{W}$-algebra fields as differential operators, which will create Airy ideals for us. We would like to realize $\mc{W}(\mf{gl}_2)$ as a subalgebra of the rank 2 Heisenberg algebra, which is defined by
+\[ [J_m, J_n] = m \delta_{m,-n}. \]
+One basic representation is
+\[ J_m = \hslash \partial_m, \qquad J_{-m} = m x_m, \qquad J_0 = 0. \]
+More precisely, we can start with any module for the Heisenberg algebra.
+
+We begin with the $Z_2$-twisted representation for the rank $2$ Heisenberg algebra. This gives us the following formulae for $W(\mf{gl}_2)$:
+\begin{align*}
+    W_k^1 &= \hslash J_{2k} \\
+    W_k^2 &= \hslash^2 \qty(-\frac{1}{2} \sum_{m+n=2k} :J_m J_n: - \frac{1}{8} \delta_{k,0}).
+\end{align*}
+We now want to fix a subset of modes such that
+\[ [H_i, H_j] = \hslash^2 \sum_k c_{ijk} H_k \]
+and then consider a dilaton shift, which breaks $\hslash$-homogeneity.
+
+We will first choose modes $W_k^1$ for $k \geq 1$ and $W_k^2$ for $k \geq -1$. Recall that the $W_k^2$ are Virasoro modes, so we have no problems there. To break homogeneity, we will shift
+\[ J_{-3} \mapsto J_{-3} - \frac{1}{\hslash}, \]
+and this gives us
+\[ W_k^2 = \hslash J_{2k+3} + \hslash^2(\cdots). \]
+If we compute the partition function $\mc{Z}$, we obtain the Kontsevich-Witten partition function, which is defined by
+\[ F_{g,n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g, n}} \psi_1^{k_1} \cdots \psi_n^{k_n}. \]
+
+Instead of choosing $W_k^2$ for $k \geq -1$, we can take $k \geq 0$ (so we delete $W_{-1}^2$). The old dilaton shift does not work for indexing reasons, so we take
+\[ J_{-1} \mapsto J_{-1} - \frac{1}{\hslash}. \]
+We then obtain
+\[ W_k^2 = \hslash J_{2k+1} - \hslash^2(\cdots). \]
+The resulting $\mc{Z}$ is the BGW $\tau$-function for the KdV hierarchy, where our new initial condition is
+\[ u(x_1, 0, \ldots) = \frac{1}{8(1-x_1)^2}, \]
+where
+\[ u = \pdv[2]{x_1} \log \mc{Z}. \]
+This $\mc{Z}$ is defined by
+\[ F_{g, n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g, n}} \Theta_{g,n} \psi_1^{k_1} \cdots \psi_n^{k_n} \]
+where $\Theta_{g,n}$ is the Norbury/Chiodo class~\cite{northetaclass}.
+
+\subsection{The example of $W(\mf{gl}_r)$}
+
+The algebra $\mc{W}(\mf{gl}_r)$ is generated by $W^1(z), \ldots, W^r(z)$. There is a natural embedding
+\[ \mc{W}(\mf{gl}_r) \subset \mc{H}_r \]
+into the rank $r$ Heisenberg algebra. We of course consider the $\Z_r$ twisted module for $\mc{H}_r$. 
+
+We want to classify subsets of modes such that there is a valid dilaton shift subject to including all non-negative modes. These are indexed by
+\[ \qty{s \in \qty{1, \ldots, r+1} \mid r \equiv \pm 1 \pmod{s}} \]
+and were computed in~\cite{airywliealg}.
+For example, if $s = r+1$, we choose $W_k^i$ for all $k \geq -i + 1 + \delta_{i, 1}$ and if $s = 1$, we choose all $W_k^i$ for $k \geq 0 + \delta_{i,1}$. Then our dilaton shift must be
+\[ J_{-s} \mapsto J_{-s} - \frac{1}{\hslash}. \]
+
+When $s = r+1$, then $F_{g, n}$ are the $r$-spin intersection numbers and $\mc{Z}$ is the $\tau$-function for the $r$-KdV hierarchy. This recovers the $W$-constraints for $\mc{Z}$. It is unclear what happens for other $s$. There is a natural candidate, which is called the Chiodo class. This is only known to work for $s=r-1$ by work of Chidambaram--Garcia-Falide--Giachetto~\cite{negrspin}.
+
+We may instead consider the permutation $\sigma = (1 \cdots r-1)(r)$ and consider the $\sigma$-twisted module for $\mc{H}_r$. We then obtain a choice of some $s \in \qty{1, \ldots, r}$. When $r=3$ and $s=r$, we recover the $W_3$ constraints of Alexandrov~\cite{openintnumber} for open intersection numbers. Conjecturally, when $r > 3$ and $s = r$, we should recover the open $r$-spin intersection numbers. For other choices of $s$, it is unclear what we obtain.
+
+\subsection{Other examples coming from Lie algebras}
+
+For any $\mf{g}$, we can construct the $\mc{W}$-algebra $\mc{W}(\g)$. For some choices of embeddings into the Heisenberg algebra and twists, Airy structures have been constructed for $\mc{W}(\mf{so}_{2n}), \mc{W}(\mf{e}_k), \mc{W}(\mf{sp}_{2n})$, see~\cites{airywliealg}{airysp2n}.
+
+\subsection{Whittaker vectors}
+
+We want to find a state such that
+\[ L_k \ket{\wedge} = \delta_{k, 1} \Lambda \ket{\wedge} \]
+for all $k \geq 1$. These states are called \textit{Whittaker vectors}. These can be computed in our formalism (see~\cite{whittakervectoprec}).
+
+
+\section{Spectral curve topological recursion}
+
+\subsection{Spectral curves}
+
+\begin{defn}
+    A \textit{spectral curve} is a quadruple $S = (\Sigma, x, y, B)$ such that
+    \begin{itemize}
+        \item $\Sigma$ is a Riemann surface;
+        \item $x, y$ are functions on $\Sigma$ that are holomorphic except potentially at a finite number of points;
+        \item $B$ is a symmetric differential $\Sigma \times \Sigma$ with a double pole on the diagonal and biresidue $1$.
+    \end{itemize}
+\end{defn}
+
+For example, we can take $\Sigma = \P^1$ and
+\[ B(z_1, z_2) = \frac{\dd{z_1} \dd{z_2}}{(z_1-z_2)^2}. \]
+
+\begin{defn}
+    A spectral curve $S$ is \textit{meromorphic} if $x, y$ are meromorphic on $\Sigma$ and is \textit{compact} if $\Sigma$ is compact.
+\end{defn}
+
+Note that if $x$ is meromorphic and $\Sigma$ is compact, then $x$ is a finite branched covering of $\P^1$. In general, we can consider infinite-degree covers. In any case, consider the ramification locus $R \subset \Sigma$. For any $a \in R$, we can write, we can write equations like
+\[ x = x(a) + \varphi^{r_a}, \qquad x = \frac{1}{\varphi^{r_a}}. \]
+
+\begin{defn}
+    A spectral curve $S$ is \textit{admissible} if at all $a \in R$, $r_a = \pm 1 \pmod{s_a}$, where roughly we have the behavior
+    \[ y \sim S^{s_a-r_a} \]
+    near each ramification point $a$. Here, $s_a \in \qty{1, \ldots, r_a+1}$.
+\end{defn}
+
+In general, suppose we have some equation $P(x,y) = 0$. Of course, if $S$ is compact and meromorphic, then $P$ is polynomial and $S$ is a compactification of $P(x,y) = 0$.
+
+\begin{exm}
+    Let $\Sigma = \P^1$ and 
+    \[ x = z^r, \qquad y = z^{s-r}, \]
+    where $s \in \qty{1, \ldots, r+1}$ such that $r = \pm 1 \pmod s$. Then
+    \[ P(x,y) = \begin{cases}
+        y^r-x & s = r+1 \\
+        x^{r-s}y^r - 1 & s < r.
+    \end{cases}
+    \]
+    These $(r,s)$-curves recover the $(r,s)$-partition functions discussed previously.
+\end{exm}
+
+\begin{exm}
+    Let $\Sigma = \C \setminus \mr{cut}$ and
+    \[ x = z + \frac{1}{z}, \qquad y = \log z. \]
+    Then 
+    \[ P(x,y) = x - e^y - e^{-y} = 0, \]
+    and this spectral curve recovers the stationary Gromov-Witten theory of $\P^1$.
+\end{exm}
+
+\begin{exm}
+    Let $\Sigma = \C$ and
+    \[ x = ze^{-z^r}, \qquad y = e^{z^r}. \]
+    These satisfy the equation
+    \[ P(x,y) = y-e^{x^r y^r} = 0. \]
+    This example reproduces the $r$-spin Hurwitz number and if $\Sigma = \C_{\infty}$, then we recover the Atlantes Hurwitz numbers.
+\end{exm}
+
+\begin{exm}
+    Let $f \in \Z$ and consider the curve
+    \[ e^x + e^{fy} + e^{(f+1)y} = 0. \]
+    This produces the open Gromov-Witten theorey of $\C^3$. More generally, if we take the toric web diagram of a toric Calabi-Yau threefold $X$, we can produce the mirror spectral curve of $X$, which recovers the open Gromov-Witten theory of $X$.
+\end{exm}
+
+\subsection{Topological recursion}
+
+Topological recursion is a machine that produces symmetric differentials
+\[ \omega_{g,n}(z_1, \ldots, z_n) \]
+on $\Sigma^n$ from the initial data
+\[ \omega_{0,1}(z) = y \dd{x}, \qquad \omega_{0,2} = B. \]
+This is done by performing local analysis around the ramification points.
+
+For simplicity, we will assume that all $a \in R$ are have simple ramification, so $x = x(a) + \varphi^2$, and that $\Sigma$ has genus $0$. Then the formula becomes
+\[
+\begin{split}
+    \omega_{g, n+1}(z_0, \vec{z}) ={} &\sum_{a \in R} \Res_{z = a}\Bigg[\qty(\dd{z_0}{z-z_0}) \frac{1}{\omega_{0,1}(z) - \omega_{0,z}(\sigma_a(z))} \Bigg(\omega_{g-1, n+2}(z, \sigma_a(z), \vec{z})  \\ 
+    &+ \left. \left. \sum_{\substack{g_1+g_2=g \\ I \sqcup J = \qty{z_1,\ldots,z_n}}} \omega_{g_1, \abs{I}+1}(z, I) \omega_{g_2, \abs{J}+1}(\sigma_a(z), J)\right)\right].
+\end{split}
+\]
+
+This is related to our Airy structures as follows. Consider all $a \in R$ and attach a copy of $\mc{W}(\mf{gl}_{r_a})$. We then consider the $(r_a, s_a)$-representation constructed previously, and the partition function $\mc{Z}$ of this Airy ideal is the same as the expresssion computed by topological recursion. Choose $a \in R$ and write
+\[ x = x(a) + \varphi^{r_a}. \]
+Choose the vector space
+\[ V = \qty{\omega \in \C((\varphi)) \dd{\varphi} \mid \Res_{\varphi=0} \omega(\varphi) = 0}. \]
+There is a positive subspace $V^+ \subseteq V$ with basis $\dd{\xi_k} = \varphi^{k-1} \dd{\varphi}$. The choice of $V^-$ is dictated by $B$. There is a symplectic pairing
+\[ \Omega(\dd{f_1}, \dd{f_2}) = \Res_{\varphi = 0} f_1 \dd{f_2}. \]
+Thus we can choose $V^- \subset V$ with basis $\dd{\xi_{-k}}$ such that
+\[ \Omega(\dd{\xi_e}, \dd{\xi_m}) = \frac{1}{e} \delta_{e, -m}. \]
+The simplest choice is the standard polarization
+\[ \dd{\xi_{-e}} = \varphi^{-e-1} \dd{\varphi}. \]
+This can be deformed into
+\begin{align*}
+    \dd{\xi_{-e}^{(\varphi')}} &= \Res_{\varphi=0} \qty[\int_0^{\varphi} B(-, \varphi') \frac{\dd{\varphi}}{\varphi^{e+1}}] \\
+    &= \qty(\frac{1}{\varphi^{e+1}} + \mr{regular}) \dd{\varphi}.
+\end{align*}
+
+We can now write
+\[ \omega_{g, n}(z_1, \ldots, z_n) = \sum_{\alpha_1, \ldots, \alpha_n=1}^{\infty} \sum_{k_1, \ldots, k_n = 1}^{\infty} F_{g,n}
+\begin{bsmallmatrix}
+    \alpha_1 & \cdots & \alpha_n \\
+    k_1 & \cdots & k_n
+\end{bsmallmatrix} \dd{\xi_{-k_1}}^{\alpha_1}(z_1) \cdots \dd{\xi_{-k_n}^{\alpha_n}}.
+\]
+
+\begin{thm}
+    The partition function $\mc{Z}$ defined by the $F_{g,n}$ is a solution to the Airy ideal defined by the representations of $\mc{W}(\mf{gl}_{r_i})$.
+\end{thm}
+
+\subsection{Enumerative applications}
+
+Note that the Airy ideals only see the local structure of the spectral curve topological recursion. However, the differential forms are globally defined, and this gives interesting structure.
+
+\begin{exm}
+    Consider the example of the Gromov-Witten theory of $\P^1$. Then there is a mixing operator $\wh{P}$ such that
+    \[ \mc{Z} = \wh{P} \qty[\mc{Z}^{(2,3)} \cdot \mc{Z}^{(2,3)}]. \]
+    The way to obtain the Gromov-Witten invariants of $\P^1$ is to consider expansions of $\omega_{g, n}$ at the punctures of $\Sigma$:
+    \[ \omega_{g, n}(z_1, \ldots, z_n) = \sum_{k_1, \ldots, k_n}^{\infty}H_{g,n}[k_1, \ldots, k_n] \frac{\dd{x_1}}{x_1^{h_1+1}} \cdots \frac{\dd{x_n}}{x_n^{h_n+1}}. \]
+    Then the Gromov-Witten theory of $\P^1$ will come from the punctures.
+\end{exm}
+
+In general, expansions at the ramification points will give us integrals over $\ol{\mc{M}}_{g, n}$ (or $r$-spin versions), while expansions at the punctures will give enumerative invariants like the Gromov-Witten theory of $\P^1$, Gromov-Witten theory of of a toric Calabi-Yau threefold, or Hurwitz numbers.
+
+\subsection{Some open questions}
+
+\begin{enumerate}
+    \item Can we do spectral curve topological recursion for other Airy ideals? We only considered fully twisted representations of $\mc{W}(\mf{gl}_r)$. The global structure contains more information, so we would like to find a global structure in some cases.
+    \item Is there some way to globalize the notion of Airy structures? We would like to consider so-called ``$x$-twisted modules'' for the Heisenberg algebra, which will gives information about $\mc{W}(\mf{gl}_r)$.
+    \item If we begin with a spectral curve, can we construct a quantum version?
+    \item There is a conjectural relationship between knot theory and topological recursion, where the Jones and HOMFLY polynomials should be constructed using topological recursion.
+    \item If I have a family of spectral curves, what happens in the limit? For example, consider
+        \[ x = z^r - \ep z, \qquad y = z^{s-r}. \]
+        Is there some kind of limit
+        \[ \lim_{\ep \to 0} \omega_{g, n}[S_{\ep}] \overset{?}{=} \omega_{g, n}[S_0]? \]
+\end{enumerate}
+
+
 \printbibliography
+
 
 \end{document} 
