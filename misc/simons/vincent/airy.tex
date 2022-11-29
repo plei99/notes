@@ -1,0 +1,848 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\crefname{equation}{}{}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
+\begin{filecontents}{biblio.bib}
+@misc{virasoropt,
+  doi = {10.48550/ARXIV.2008.12514},
+  author = {Moreira, Miguel and Oblomkov, Alexei and Okounkov, Andrei and Pandharipande, Rahul},
+  title = {Virasoro constraints for stable pairs on toric 3-folds},
+  publisher = {arXiv},
+  year = {2020},
+}
+
+@misc{northetaclass,
+  doi = {10.48550/ARXIV.1712.03662},
+  author = {Norbury, Paul},
+  title = {A new cohomology class on the moduli space of curves},
+  publisher = {arXiv},
+  year = {2017},
+}
+
+@misc{negrspin,
+  doi = {10.48550/ARXIV.2205.15621},
+  author = {Chidambaram, Nitin Kumar and Garcia-Failde, Elba and Giacchetto, Alessandro},
+  title = {Relations on $\overline{\mathcal{M}}_{g,n}$ and the negative $r$-spin Witten conjecture},
+  publisher = {arXiv},
+  year = {2022},
+}
+
+@article{openintnumber,
+    author={Alexandrov, Alexander},
+    title={Open intersection numbers, Kontsevich-Penner model and cut-and-join operators},
+    journaltitle={J. High Energ. Phys.},
+    volume={28},
+    year={2015},
+}
+
+@misc{airywliealg,
+  doi = {10.48550/ARXIV.1812.08738},
+  author = {Borot, Gaëtan and Bouchard, Vincent and Chidambaram, Nitin K. and Creutzig, Thomas and Noshchenko, Dmitry},
+  title = {Higher Airy structures, W algebras and topological recursion},
+  publisher = {arXiv},
+  year = {2018},
+}
+
+@misc{airysp2n,
+  doi = {10.48550/ARXIV.2207.04336},
+  author = {Bouchard, Vincent and Creutzig, Thomas and Joshi, Aniket},
+  title = {Airy ideals, transvections and $\mathcal{W}(\mathfrak{sp}_{2N})$-algebras},
+  publisher = {arXiv},
+  year = {2022},
+}
+
+@misc{whittakervectoprec,
+  doi = {10.48550/ARXIV.2104.04516},
+  author = {Borot, Gaëtan and Bouchard, Vincent and Chidambaram, Nitin Kumar and Creutzig, Thomas},
+  title = {Whittaker vectors for $\mathcal{W}$-algebras from topological recursion},
+  publisher = {arXiv},
+  year = {2021},
+}
+    
+@article{virasorofanotoric,
+    author={Givental, Alexander},
+    title={Gromov-Witten invariants and quantizations of quadratic Hamiltonians},
+    journaltitle={Mosc. Math. J.},
+    volume={1},
+    number={4},
+    year={2001},
+    pages={551--568}
+}
+
+@article{virasorotoric,
+    author={Iritani, Hiroshi},
+    title={Convergence of quantum cohomology by quantum Lefschetz},
+    journaltitle={J. reine angew. Math.},
+    volume={610},
+    year={2007},
+    pages={29--69}
+}
+
+@article{virasoroflag,
+    author={Joe, Dosang and Kim, Bumsig},
+    title={Equivariant mirrors and the Virasoro conjecture for flag manifolds},
+    journaltitle={Int. Math. Res. Not.},
+    volume={2003},
+    number={15},
+    year={2020},
+    pages={859--882}
+}
+
+@article{virasorograss,
+    author={Two proofs of a conjecture of Hori and Vafa},
+    title={Bertram, Aaron and Ciocan-Fontaine, Ionu{\c{t}} and Kim, Bumsig},
+    journaltitle={Duke Math. J.},
+    volume={126},
+    number={1},
+    year={2005},
+    pages={101--136}
+}
+
+@article{2dsscohft,
+    author={Teleman, Constantin},
+    title={The structure of 2D semi-simple field theories},
+    journaltitle={Invent. Math.},
+    volume={188},
+    year={2012},
+    pages={525--588}
+}
+
+@article{virasorocurve,
+    author={Okounkov, Andrei and Pandharipande, Rahul},
+    title={Virasoro constraints for target curves},
+    journaltitle={Invent. Math.},
+    volume={163},
+    year={2006},
+    pages={47--108}
+}
+
+@article{virasoroconj,
+    author={Eguchi, Tohru and Hori, Kentaro and Xiong, Chuan-Sheng},
+    title={Quantum cohomology and Virasoro algebra},
+    journaltitle={Phys. Lett. B},
+    volume={402},
+    number={1},
+    year={1997},
+    pages={71--80}
+}
+
+@misc{virasorotoricbundle,
+  doi = {10.48550/ARXIV.1508.06282},
+  author = {Coates, Tom and Givental, Alexander and Tseng, Hsian-Hua},
+  title = {Virasoro Constraints for Toric Bundles},
+  publisher = {arXiv},
+  year = {2015},
+}
+
+@incollection{virasorogw,
+    AUTHOR = {Getzler, Ezra},
+     TITLE = {The {V}irasoro conjecture for {G}romov-{W}itten invariants},
+ BOOKTITLE = {Algebraic geometry: {H}irzebruch 70 ({W}arsaw, 1998)},
+    SERIES = {Contemp. Math.},
+    VOLUME = {241},
+     PAGES = {147--176},
+ PUBLISHER = {Amer. Math. Soc.},
+    location={Providence},
+      YEAR = {1999},
+}
+
+@misc{abcdtoprec,
+  doi = {10.48550/ARXIV.1703.03307},
+  author = {Andersen, Jorgen Ellegaard and Borot, Gaëtan and Chekhov, Leonid O. and Orantin, Nicolas},
+  title = {The ABCD of topological recursion},
+  publisher = {arXiv},
+  year = {2017},
+}
+
+@article{toprecursion,
+    author={Eynard, Bertrand and Orantin, Nicolas},
+    title={Invariants of algebraic curves and topological expansion},
+    journaltitle={Commun. Number Theory Phys.},
+    volume={1},
+    number={2},
+    year={2007},
+    pages={347--452}
+}
+
+@incollection{airytoprec,
+    author={Kontsevich, Maxim and Soibelman, Yan},
+    title={Airy structures and symplectic geometry of topological recursion},
+    booktitle={Topological recursion and its influence in analysis, geometry, and topology},
+    year={2018},
+    pages={433--490},
+    editor={Liu, Chiu-Chu Melissa and Mulase, Motohico},
+    publisher={American Mathematical Society},
+    series={Proceedings of symposia in pure mathematics},
+    volume={100},
+    location={Providence}
+}
+
+@article{wittenconj,
+    author={Kontsevich, Maxim},
+    title={Intersection theory on the moduli spaces of curves and the matrix Airy function},
+    journaltitle={Commun. Math. Phys.},
+    volume={147},
+    number={1},
+    year={1992},
+    pages={1--23}
+}
+\end{filecontents}
+
+\addbibresource{biblio.bib}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title[Airy ideals and topological recursion]{Airy ideals and topological recursion: an investigative tool for enumerative geometry, VOAs, and gauge theories}%
+\author{Vincent Bouchard}
+\date{\today}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    The Chekhov-Eynard-Orantin topological recursion is an abstract framework that appears in many contexts, from enumerative geometry to mathematical physics. In these lectures I will introduce the concept of Airy ideals in the Rees Weyl algebra, which provides a clean reformulation of the topological recursion in the language of D-modules. After introducing the foundations of the theory, including the existence and uniqueness theorem originally proved by Kontsevich and Soibelman, I will focus on applications in enumerative geometry, VOAs and gauge theories. Such applications include the construction of Whittaker vectors for various W-algebras and Gaiotto vectors for supersymmetric gauge theories, ELSV-type formulae for Hurwitz numbers, W-constraints for various enumerative invariants, etc. The lectures are meant to be introductory; my hope is to convey why I believe that the formalism of topological recursion and Airy ideals should be in the toolbox of all geometers and mathematical physicists!
+\end{abstract}
+
+
+
+Topological recursion was invented by Eynard-Orantin in their work~\cite{toprecursion} on matrix models in 2007 and then reformulated in terms of Airy structures (or Airy ideals) by Kontsevich-Soibelman~\cite{airytoprec} in 2017. This is a correspondence between geometry, algebra, and differential equations.
+
+\section{Witten's conjecture}
+
+This story began with theories of 2d quantum gravity.
+Define the \textit{partition function}
+\[ \mc{Z} = \exp \qty(\sum_{\substack{g=0 \\ n=1 \\ 2g-2+n>0}}^{\infty} \frac{\hslash^{2g-2+n}}{n!} \sum_{k_1, \ldots, k_n} F_{g,n}[k_1, \ldots, k_n] t_{k_1} \cdots t_{k_n}), \]
+where we define
+\[ F_{g,n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g,n}} \psi_1^{k_1} \cdots \psi_n^{k_n}. \]
+To simplify our notation, we will write
+\[ \mc{Z} = \exp \qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(t_A)). \]
+
+\begin{thm}[\cite{wittenconj}]\label{thm:witten}
+    The function
+    \[ u(t_0, t_1, \ldots) = \pdv[2]{t_0} \log \mc{Z} \]
+    is the unique solution to the KdV hierarchy with initial condition $u(t_0, 0, \ldots) = t_0$.
+\end{thm}
+
+\subsection{Reformulation as differential constraints for $\mc{Z}$}
+
+For $k \geq -1$, define the operator
+\[ L_k = J_{k+1} - \frac{1}{2} \sum_{m+n=k-1} :J_m J_n: - \delta_{k,0} \frac{\hslash^2}{8}, \]
+where
+\[ J_m = \hslash \pdv{t_m}, m \geq 0 \qquad J_{-m} = \hslash(2m-1)t_{m-1}, m \geq 1. \]
+Now we can reformulate~\Cref{thm:witten} as
+\begin{thm*}
+    $\mc{Z}$ is the unique solution to the constraints $L_k \mc{Z} = 0$ for all $k \geq -1$.
+\end{thm*}
+
+Note that the $L_k$ satisfy the relation
+\[ [L_i, L_j] = \hslash^2(i-j)L_{i+j}. \]
+Thus we have a representation of a subalgebra of the Virasoro algebra, which is defined by
+\[ [L_i, L_j] = \hslash^2(i-j)L_{i+j} \frac{\hslash^4 c}{12} i^2(i-1) \delta_{i, -j} \]
+Note that $L_k$ has the expansion
+\[ L_k = \hslash \pdv{t_{k+1}} + O(\hslash^2), \]
+which makes it easy to see uniqueness once we have existence.
+
+\subsection{Potential generalizations}
+
+The first possible generalization is the Virasoro conjecture~\cite{virasoroconj}, where we remove uniqueness of the solution and preserve the geometry (using Gromov-Witten theory of projective varieties) and the Virasoro algebra. This has been proved in several cases, including toric varieties~\cites{virasorofanotoric}{virasorotoric}, flag varieties~\cite{virasoroflag}, Grassmannians~\cite{virasorograss}, varieties with semisimple quantum cohomology~\cite{2dsscohft}, Calabi-Yau varieties~\cite{virasorogw}, and toric bundles over varieties satisfying the Virasoro conjecture~\cite{virasorotoricbundle}. There is also progress on Virasoro constraints for sheaf-counting theories, see~\cite{virasoropt}.
+
+The second possible generalization is to keep existence and uniqueness of the solution $\mc{Z}$ to the constraints $H_i \mc{Z} = 0$. More precisely, we want to find constraints on $H_i$ such that $H_i \mc{Z} = 0$ always has a unique solution of the form
+\[ \mc{Z} = \exp \qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A)) \]
+with the initial condition $\mc{Z} \_{x_A = 0} = 1$. This is the generalization that we will take.
+
+\section{Airy ideals}
+
+\subsection{Weyl algebra and modules}
+
+Let $A$ be a (possibly infinite) indexing set. The \textit{Weyl algebra} $\mc{D}_A$ is defined as 
+\[ \mc{D}_A = \C[x_A] \ev{\partial_A} / ([\partial_i, x_j] = \delta_{ij}). \]
+This is only a filtered algebra, so it is difficult to form power series. We will use the \textit{Rees construction} to turn it into a graded algebra.
+
+Here, we will use the filtration
+\[ \qty{0} \subseteq F_0 \mc{D}_A \subseteq F_1 \mc{D}_A \subseteq \cdots \subseteq \mc{D}_A, \]
+where
+\[ F_i \mc{D}_A = \qty{\sum_{m+k\leq i} P_{a_1, \ldots, a_m}^{(k)}(x_A) \partial_{a_1} \cdots \partial_{a_m}}. \]
+For example, $F_2 \mc{D}_A$ contains terms like $x_1$ and $x_1 \partial_2$ but not terms like $x_1^2 \partial_2$.
+
+Now we may define the \textit{Rees Weyl algebra}
+\[ \mc{D}_A^{\hslash} = \bigoplus_{k=0}^{\infty} \hslash^k F_k \mc{D}_A, \]
+where $\deg \hslash = 1$, and the completion
+\[ \wh{\mc{D}}_A^{\hslash} = \prod_{k=0}^{\infty} \hslash^k F_k \mc{D}_A. \]
+This is in fact a good way to handle power series, and we will consider $H_i \in \wh{\mc{D}}_A^{\hslash}$.
+
+We will now consider the polynomial module $\mc{M}_A$, which has the following properties: 
+\begin{itemize}
+    \item $\mc{M}_A$ is generated by $1 \in \mc{M}_A$; 
+    \item The annihilator $\on{Ann}_{\mc{D}_A}(1)$ is the left ideal generated by $\partial_i$; 
+    \item We recover 
+        \[ \mc{D}_A / \on{Ann}_{\mc{D}_A}(1) \simeq \mc{M}_A. \]
+\end{itemize}
+We can now introduce $\hslash$ directly into our module, but we need a filtration on $\mc{M}$ such that
+\[ F_i \mc{D} \cdot F_j \mc{M} \subset F_{i+j} \mc{M}. \]
+A natural choice is to let $F_i \mc{M}_A$ be polynomials of degree at most $i$. We can now repeat the Rees construction by considering
+\[ \mc{M}_A^{\hslash} = \bigoplus_{k=0}^{\infty} \hslash^k F_k \mc{M}_A, \qquad \wh{\mc{M}}_A^{\hslash} = \prod_{k=0}^{\infty} \hslash^k F_k \mc{M}_A. \]
+The partition function $\mc{Z}$ will live in a twist of $\wh{\mc{M}}_A^{\hslash}$ rather than in the module itself. Some properties of $\hslash$ are as follows:
+\begin{itemize}
+    \item $\wh{\mc{M}}_A^{\hslash}$ is a cyclic left $\wh{\mc{D}}_A^{\hslash}$-module generated by $1$;
+    \item $\on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(1)$ is the left ideal $\mc{I}_{\mr{can}}$ generated by $\hslash \partial_i$;
+    \item We can recover the module by
+        \[ \wh{\mc{D}}_A^{\hslash}/\mc{I}_{\mr{can}} = \wh{\mc{M}}_A^{\hslash}. \]
+\end{itemize}
+
+We can now reformulate our problem as
+\begin{prob}
+    What conditions should a left ideal $\mc{I} \subset \wh{\mc{D}}_A^{\hslash}$ satisfy such that $\mc{I} \cdot \mc{Z}$ has a unique solution of the form
+    \begin{equation}\label{eqn:desiredsoln}
+        \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A))? 
+    \end{equation}
+\end{prob}
+
+\subsection{Characterization of ideals solving our problem}
+
+From our expression for $\mc{Z}$, it is clear that the operators
+\[ \ol{H}_i = \hslash \partial_i - \sum_{k=1}^{\infty} \hslash^{k+1} \partial_i q^{(k+2)}(x_A) \]
+satisfy $\ol{H}_i \mc{Z} = 0$. Denote the ideal generated by the $\ol{H}_i$ by $\ol{\mc{I}}$, which is in fact $\on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(\mc{Z})$.
+
+\begin{defn}
+    Define an automorphism $\Phi \colon \wh{\mc{D}}_A^{\hslash} \to \wh{\mc{D}}_A^{\hslash}$ by
+    \[ \Phi \colon (\hslash, \hslash x_i, \hslash \partial_i) \mapsto \qty(\hslash, \hslash x_i, \hslash \partial_i - \sum_{k=1}^{\infty} \hslash^{k+1} \partial_i q^{(k+2)}(x_A)). \]
+    Note that this is a valid construction because $[\ol{H}_i, \hslash x_j] = \hslash^2 \delta_{ij}$ and $[\ol{H}_i, \ol{H}_j] = 0$.
+\end{defn}
+
+Given the twist $\Phi$, define the twisted module ${}^{\Phi}\wh{\mc{M}}_A^{\hslash}$ by the twisted product
+\[ \wh{\mc{D}}_A^{\hslash} \cdot^{\Phi} \wh{\mc{M}}_A^{\hslash} \to \wh{\mc{M}}_A^{\hslash} \qquad P \cdot^{\Phi} f = \Phi^{-1}(P) \cdot f. \]
+This satisfies the same properties as the untwisted version. Because $\Phi(P) = \mc{Z} \cdot P \cdot \mc{Z}^{-1}$, we can define a \textit{module of exponential type} by $\mc{Z} \wh{\mc{M}_A^{\hslash}}$, which is cyclic and generated by $\mc{Z}$. Clearly we have
+\[ \on{Ann}_{\wh{\mc{D}}_A^{\hslash}}(\mc{Z}) = \Phi(\mc{I}_{\mr{can}}) = \ol{\mc{I}}. \]
+
+\begin{defn}[Airy ideal]
+    Let $\ol{\mc{I}} \subseteq \wh{\mc{D}}_A^{\hslash}$ be a left ideal. It is \textit{Airy} if it is generated by $(\ol{H}_i)_{i \in A}$.
+\end{defn}
+
+\begin{thm}
+    The function $\mc{Z}$ defined in~\Cref{eqn:desiredsoln} is the unique solution to $\ol{\mc{I}} \cdot \mc{Z} = 0$ with $\mc{Z} |_{x_A = 0} = 1$.
+\end{thm}
+
+Of course, any ideal can have many different generating sets. How can we recognize Airy ideals in a more intrinsic manner?
+
+\begin{thm}{\cite{airytoprec}}\label{thm:charairy}
+    Let $\mc{I} \subseteq \wh{\mc{D}}_A^{\hslash}$ be a left ideal. Suppose that:
+    \begin{enumerate}
+        \item $\mc{I}$ is generated by $(H_i)_{i \in A}$ such that $H_i = \hslash \partial_i + O(\hslash^2)$;
+        \item $[\mc{I}, \mc{I}] \subset \hslash^2 \mc{I}$.
+    \end{enumerate}
+    Then $\mc{I}$ is Airy.
+\end{thm}
+
+\begin{rmk}
+    Clearly $[\mc{I}, \mc{I}] \subseteq \mc{I}$ for any left ideal $\mc{I}$. In addition, in our situation we always have $[\mc{I}, \mc{I}] \subseteq \hslash^2 \wh{\mc{D}}_A^{\hslash}$. However, in general we do \textbf{not} have $[\mc{I}, \mc{I}] \subset \hslash^2 \mc{I}$.
+\end{rmk}
+
+\begin{exm}
+    Let $\mc{I} \subset \wh{\mc{D}}_A^{\hslash}$ be the ideal generated by the Kontsevich-Witten differential operators
+    \[ H_i = L_{i-1} = \hslash \partial_i + O(\hslash^2). \]
+    For the second condition, note the (shifted) Virasoro relations
+    \[ [H_i, H_j] = \hslash^2 (i-j) H_{i+j-1}. \]
+    Computing the full commutator of any $A, B \in \mc{I}$, we have
+    \begin{align*}
+        \Bigg[\sum_i a_i H_i, &\sum_j b_j H_j\Bigg] = \\
+        &= \sum_{i,j} \qty(a_i [H_i, b_j] H_j + a_i b_i [H_i, H_j] + [a_i, b_j]H_i H_j + b_j [a_i, H_j] H_i), 
+    \end{align*}
+    and clearly this lands in $\hslash^2 \mc{I}$.
+\end{exm}
+
+\begin{proof}[Sketch of proof of~\Cref{thm:charairy}]
+    We need to prove that there exists a generating set $(\ol{H})_{i \in A}$ taking the desired form.
+    \begin{enumerate}
+        \item First, we find $\ol{H}_i \in \mc{I}$ of the form
+            \[ \ol{H}_i = \hslash \partial_i + \sum_{k=2}^{\infty} \hslash^k p_i^{(k)}(x_A). \]
+        \item Next, if $\ol{\mc{I}}$ is the ideal generated by the $\ol{H}_i$, we need to show that $\mc{I} \subseteq \ol{\mc{I}}$. Therefore, $\mc{I} = \ol{\mc{I}}$.
+        \item Finally, we prove that $[\ol{H}_i, \ol{H}_j] = 0$ for all $i, j$.
+    \end{enumerate}
+
+    To complete the first step, start with the $H_i = \hslash \partial_i + O(\hslash^2)$. We can then replace
+    \[ \hslash \partial_i \mapsto H_i + O(\hslash^2) \]
+    for the right-most derivative, and now we have
+    \[ H_i = \hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_i^{(k+1)}(x_A) + Q, \]
+    where $Q \in \mc{I}$. Simply set $\ol{H}_i$ to be the first two terms of $H_i$.
+
+    To complete the second step, consider the original generators $H_i = \hslash_i + O(\hslash^2)$. Then replace
+    \[ \hslash \partial_i \mapsto \ol{H}_i + O(\hslash^2) \]
+    and so $H_i$ is the sum of a polynomial and $\ol{Q}$, where $\ol{Q} \in \ol{I}$. The following lemma completes this step:
+    \begin{lem}
+        There are no nonzero polynomials in $\mc{I}$.
+    \end{lem}
+    
+    To complete the third step, we use brute force to obtain
+    \begin{align*}
+        [\ol{H}_i, \ol{H}_j] &= \qty[\hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_i^{(k+1)}(x_A), \hslash \partial_i + \sum_{k=1}^{\infty} \hslash^{k+1} p_j^{(k+1)}(x_A)] \\
+        &= \hslash^2 \sum_{k=1}^{\infty} \hslash^k \qty(\partial_i p_j^{(k+1)} - \partial_j p_i^{(k+1)}).
+    \end{align*}
+    By the lemma, we are finished.
+\end{proof}
+
+Trivially, we see that
+\begin{itemize}
+    \item $\mc{I} = \Phi(\mc{I}_{\mr{can}})$ for some transvection $\Phi$;
+    \item $\wh{\mc{D}}_A^{\hslash} / \mc{I} \simeq {}^{\Phi}\mc{M}_A^{\hslash} \simeq \mc{M}_A^{\hslash} \mc{Z}$;
+    \item $\mc{Z}$ is uniquely determined with $\mc{Z} |_{x_A = 0} = 1$.
+\end{itemize}
+
+\subsection{Are Airy ideals interesting?}
+
+Returning to the algebra-geometry-integrable systems correspondence, we want either that $\mc{Z}$ is the $\tau$-function for some integrable system or that $F_{g,n}$ are some kind of interesting enumerative invariants.
+
+\begin{defn}
+    We say that an Airy ideal $\mc{I} \subseteq \wh{\mc{D}}_A^{\hslash}$ is \textit{$\hslash$-polynomial} if it is generated by $(H_i)_{i \in A}$ that are $\hslash$-polynomial. In addition, we say that $\mc{I}$ is \textit{$\hslash$-finite} if there exists $N \in \mathbb{N}$ such that the $\hslash$-degree of all $H_i$ is at most $N$.
+\end{defn}
+
+Airy ideals are integrable when they are $\hslash$-finite. If
+\[ H_i = \hslash \partial_i + \sum_{k=1}^N \hslash^{k+1} p_i^{(k+1)}(x_A) + \mr{derivatives}, \]
+then $H_i \mc{Z} = 0$ has the solution
+\[ \mc{Z} = \exp\qty(\sum_{k=1}^{\infty} \hslash^k q^{(k+2)}(x_A)). \]
+
+\begin{exm}
+    Suppose that $\mc{I}$ has degree $2$. Then we can write
+    \[ H_i = \hslash \partial_i - \hslash^2 \qty[\frac{1}{2} A_{ijk} x_j x_k + B_{ijk} x_j \partial_k + \frac{1}{2} C_{ijk} \partial_j \partial_j + D_i]. \]
+    Because $[\mc{I}, \mc{I}] \subseteq \hslash^2 \mc{I}$, we see that
+    \[ [H_i, H_j] = \hslash^2 c_{ijk} H_k \]
+    and therefire the $H_i$ are a representation of a Lie algebra. We can write an explicit recursive formula for $\mc{Z}$, which is of the form
+    \[ \mc{Z} = \exp \qty(\sum_{\substack{g=0 \\ n=1 \\ 2g-2+n > 0}} \frac{\hslash^{2g-2+n}}{n!} \sum_{k_1, \ldots, k_n} F_{g,n}[k_1, \ldots, k_n] x_{k_1} \cdots x_{k_n}). \]
+    The $F_{g,n}$ satisfy a \textit{topological recursion}, with the formula
+    \begin{align*}
+        &F_{g,n}[k_1, \ldots, k_n] = \sum_{m=2}^{\infty} B_{k_1k_ma} F_{g, n-1}[a, k_2, \ldots, \wh{k}_m, \ldots, k_n] \\
+        &+ \frac{1}{2} C_{k_1 ab} \qty{F_{g-1,n+2}[a,b,k_2,\ldots,k_n] + \sum_{\substack{g_1+g_2=g \\ I \cup J = \qty{k_2,\ldots,k_m}}} F_{g_1,\abs{I}+1}[a, I] F_{g_2,\abs{J}+1}[b, J]}.
+    \end{align*}
+    Here, we impose the initial conditions
+    \[ F_{0,3}[k_1, k_2, k_3] = A_{k_1 k_2 k_3} \qquad F_{1,1} = D_k. \]
+\end{exm}
+
+\subsection{Where we can find Airy ideals}
+
+Let $A = \qty{1, \ldots, n}$. We are interested in a classification of quadratic Airy ideals.
+
+\begin{exm}
+    Consider the Lie algebra $\mf{sl}_2(\C)$ which is generated by $E, H, F$ satisfying the relations
+    \[ [H, E] = 2E, \qquad [H, F] = -2F \qquad, [E, F] = H. \]
+    This does have a representation that is an Airy ideal, which is of the form
+    \begin{align*}
+        H &= \hslash \partial_1 - \hslash^2(-) \\
+        E &= \hslash \partial_2 - \hslash^2(-) \\
+        F &= \hslash \partial_3 - \hslash^2(-).
+    \end{align*}
+    See~\cite{abcdtoprec} for details.
+\end{exm}
+
+Unfortunately, $\mf{sl}_2$ is one of the rare simple Lie algebras admitting a representation that generates an Airy ideal in finitely many variables.
+\begin{prop}[{\cite[Proposition 6.9]{abcdtoprec}}]
+    The following Lie algebras do \textbf{not} admit a representation in finitely many variables generating an Airy ideal:
+    \begin{itemize}
+        \item $A_n$ for $n \notin \qty{1, 5}$;
+        \item $C_n$ for $n \geq 6$;
+        \item $D_n$ for $n \geq 4$;
+        \item $E_6, E_7, E_8$.
+    \end{itemize}
+\end{prop}
+
+\section{Applications}
+
+We will give some examples of Airy ideals that arise as representations of infinite-dimensional algebras and attempt to give them an interpretation in terms of enumerative geomtry. We will consider $\mc{W}$-algebras or vertex operator algebras as our algebras and then consider the algebra of modes. Then we want to realize our vertex operator algebras as sub-VOAs of the Heisenberg VOA. Roughly, a $\mc{W}$-algebra is a generalization of the Virasoro algebra, but we will not give a precise definition.
+
+\begin{exm}
+    $\mc{W}(\mf{sl}_2)$ is the Virasoro algebra and is generated by a single field 
+    \[ W^2(z) = \sum_{n \in \Z} W_n^2 z^{-n-2}, \]
+    where $W_n^2 = L_n$.
+\end{exm}
+
+\subsection{Kontsevich-Witten partition function}
+
+\begin{exm}
+    The algebra $\mc{W}(\mf{gl}_2)$ is generated by two fields
+    \[ W_1(z) = \sum W_n^1 z^{-n-1}, \qquad W^2(z) = \sum W_n^2 z^{-n-2}. \]
+\end{exm}
+
+We would like to find expressions for our $\mc{W}$-algebra fields as differential operators, which will create Airy ideals for us. We would like to realize $\mc{W}(\mf{gl}_2)$ as a subalgebra of the rank 2 Heisenberg algebra, which is defined by
+\[ [J_m, J_n] = m \delta_{m,-n}. \]
+One basic representation is
+\[ J_m = \hslash \partial_m, \qquad J_{-m} = m x_m, \qquad J_0 = 0. \]
+More precisely, we can start with any module for the Heisenberg algebra.
+
+We begin with the $Z_2$-twisted representation for the rank $2$ Heisenberg algebra. This gives us the following formulae for $W(\mf{gl}_2)$:
+\begin{align*}
+    W_k^1 &= \hslash J_{2k} \\
+    W_k^2 &= \hslash^2 \qty(-\frac{1}{2} \sum_{m+n=2k} :J_m J_n: - \frac{1}{8} \delta_{k,0}).
+\end{align*}
+We now want to fix a subset of modes such that
+\[ [H_i, H_j] = \hslash^2 \sum_k c_{ijk} H_k \]
+and then consider a dilaton shift, which breaks $\hslash$-homogeneity.
+
+We will first choose modes $W_k^1$ for $k \geq 1$ and $W_k^2$ for $k \geq -1$. Recall that the $W_k^2$ are Virasoro modes, so we have no problems there. To break homogeneity, we will shift
+\[ J_{-3} \mapsto J_{-3} - \frac{1}{\hslash}, \]
+and this gives us
+\[ W_k^2 = \hslash J_{2k+3} + \hslash^2(\cdots). \]
+If we compute the partition function $\mc{Z}$, we obtain the Kontsevich-Witten partition function, which is defined by
+\[ F_{g,n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g, n}} \psi_1^{k_1} \cdots \psi_n^{k_n}. \]
+
+Instead of choosing $W_k^2$ for $k \geq -1$, we can take $k \geq 0$ (so we delete $W_{-1}^2$). The old dilaton shift does not work for indexing reasons, so we take
+\[ J_{-1} \mapsto J_{-1} - \frac{1}{\hslash}. \]
+We then obtain
+\[ W_k^2 = \hslash J_{2k+1} - \hslash^2(\cdots). \]
+The resulting $\mc{Z}$ is the BGW $\tau$-function for the KdV hierarchy, where our new initial condition is
+\[ u(x_1, 0, \ldots) = \frac{1}{8(1-x_1)^2}, \]
+where
+\[ u = \pdv[2]{x_1} \log \mc{Z}. \]
+This $\mc{Z}$ is defined by
+\[ F_{g, n}[k_1, \ldots, k_n] = \int_{\ol{\mc{M}}_{g, n}} \Theta_{g,n} \psi_1^{k_1} \cdots \psi_n^{k_n} \]
+where $\Theta_{g,n}$ is the Norbury/Chiodo class~\cite{northetaclass}.
+
+\subsection{The example of $W(\mf{gl}_r)$}
+
+The algebra $\mc{W}(\mf{gl}_r)$ is generated by $W^1(z), \ldots, W^r(z)$. There is a natural embedding
+\[ \mc{W}(\mf{gl}_r) \subset \mc{H}_r \]
+into the rank $r$ Heisenberg algebra. We of course consider the $\Z_r$ twisted module for $\mc{H}_r$. 
+
+We want to classify subsets of modes such that there is a valid dilaton shift subject to including all non-negative modes. These are indexed by
+\[ \qty{s \in \qty{1, \ldots, r+1} \mid r \equiv \pm 1 \pmod{s}} \]
+and were computed in~\cite{airywliealg}.
+For example, if $s = r+1$, we choose $W_k^i$ for all $k \geq -i + 1 + \delta_{i, 1}$ and if $s = 1$, we choose all $W_k^i$ for $k \geq 0 + \delta_{i,1}$. Then our dilaton shift must be
+\[ J_{-s} \mapsto J_{-s} - \frac{1}{\hslash}. \]
+
+When $s = r+1$, then $F_{g, n}$ are the $r$-spin intersection numbers and $\mc{Z}$ is the $\tau$-function for the $r$-KdV hierarchy. This recovers the $W$-constraints for $\mc{Z}$. It is unclear what happens for other $s$. There is a natural candidate, which is called the Chiodo class. This is only known to work for $s=r-1$ by work of Chidambaram--Garcia-Falide--Giachetto~\cite{negrspin}.
+
+We may instead consider the permutation $\sigma = (1 \cdots r-1)(r)$ and consider the $\sigma$-twisted module for $\mc{H}_r$. We then obtain a choice of some $s \in \qty{1, \ldots, r}$. When $r=3$ and $s=r$, we recover the $W_3$ constraints of Alexandrov~\cite{openintnumber} for open intersection numbers. Conjecturally, when $r > 3$ and $s = r$, we should recover the open $r$-spin intersection numbers. For other choices of $s$, it is unclear what we obtain.
+
+\subsection{Other examples coming from Lie algebras}
+
+For any $\mf{g}$, we can construct the $\mc{W}$-algebra $\mc{W}(\g)$. For some choices of embeddings into the Heisenberg algebra and twists, Airy structures have been constructed for $\mc{W}(\mf{so}_{2n}), \mc{W}(\mf{e}_k), \mc{W}(\mf{sp}_{2n})$, see~\cites{airywliealg}{airysp2n}.
+
+\subsection{Whittaker vectors}
+
+We want to find a state such that
+\[ L_k \ket{\wedge} = \delta_{k, 1} \Lambda \ket{\wedge} \]
+for all $k \geq 1$. These states are called \textit{Whittaker vectors}. These can be computed in our formalism (see~\cite{whittakervectoprec}).
+
+
+\section{Spectral curve topological recursion}
+
+\subsection{Spectral curves}
+
+\begin{defn}
+    A \textit{spectral curve} is a quadruple $S = (\Sigma, x, y, B)$ such that
+    \begin{itemize}
+        \item $\Sigma$ is a Riemann surface;
+        \item $x, y$ are functions on $\Sigma$ that are holomorphic except potentially at a finite number of points;
+        \item $B$ is a symmetric differential $\Sigma \times \Sigma$ with a double pole on the diagonal and biresidue $1$.
+    \end{itemize}
+\end{defn}
+
+For example, we can take $\Sigma = \P^1$ and
+\[ B(z_1, z_2) = \frac{\dd{z_1} \dd{z_2}}{(z_1-z_2)^2}. \]
+
+\begin{defn}
+    A spectral curve $S$ is \textit{meromorphic} if $x, y$ are meromorphic on $\Sigma$ and is \textit{compact} if $\Sigma$ is compact.
+\end{defn}
+
+Note that if $x$ is meromorphic and $\Sigma$ is compact, then $x$ is a finite branched covering of $\P^1$. In general, we can consider infinite-degree covers. In any case, consider the ramification locus $R \subset \Sigma$. For any $a \in R$, we can write, we can write equations like
+\[ x = x(a) + \varphi^{r_a}, \qquad x = \frac{1}{\varphi^{r_a}}. \]
+
+\begin{defn}
+    A spectral curve $S$ is \textit{admissible} if at all $a \in R$, $r_a = \pm 1 \pmod{s_a}$, where roughly we have the behavior
+    \[ y \sim S^{s_a-r_a} \]
+    near each ramification point $a$. Here, $s_a \in \qty{1, \ldots, r_a+1}$.
+\end{defn}
+
+In general, suppose we have some equation $P(x,y) = 0$. Of course, if $S$ is compact and meromorphic, then $P$ is polynomial and $S$ is a compactification of $P(x,y) = 0$.
+
+\begin{exm}
+    Let $\Sigma = \P^1$ and 
+    \[ x = z^r, \qquad y = z^{s-r}, \]
+    where $s \in \qty{1, \ldots, r+1}$ such that $r = \pm 1 \pmod s$. Then
+    \[ P(x,y) = \begin{cases}
+        y^r-x & s = r+1 \\
+        x^{r-s}y^r - 1 & s < r.
+    \end{cases}
+    \]
+    These $(r,s)$-curves recover the $(r,s)$-partition functions discussed previously.
+\end{exm}
+
+\begin{exm}
+    Let $\Sigma = \C \setminus \mr{cut}$ and
+    \[ x = z + \frac{1}{z}, \qquad y = \log z. \]
+    Then 
+    \[ P(x,y) = x - e^y - e^{-y} = 0, \]
+    and this spectral curve recovers the stationary Gromov-Witten theory of $\P^1$.
+\end{exm}
+
+\begin{exm}
+    Let $\Sigma = \C$ and
+    \[ x = ze^{-z^r}, \qquad y = e^{z^r}. \]
+    These satisfy the equation
+    \[ P(x,y) = y-e^{x^r y^r} = 0. \]
+    This example reproduces the $r$-spin Hurwitz number and if $\Sigma = \C_{\infty}$, then we recover the Atlantes Hurwitz numbers.
+\end{exm}
+
+\begin{exm}
+    Let $f \in \Z$ and consider the curve
+    \[ e^x + e^{fy} + e^{(f+1)y} = 0. \]
+    This produces the open Gromov-Witten theorey of $\C^3$. More generally, if we take the toric web diagram of a toric Calabi-Yau threefold $X$, we can produce the mirror spectral curve of $X$, which recovers the open Gromov-Witten theory of $X$.
+\end{exm}
+
+\subsection{Topological recursion}
+
+Topological recursion is a machine that produces symmetric differentials
+\[ \omega_{g,n}(z_1, \ldots, z_n) \]
+on $\Sigma^n$ from the initial data
+\[ \omega_{0,1}(z) = y \dd{x}, \qquad \omega_{0,2} = B. \]
+This is done by performing local analysis around the ramification points.
+
+For simplicity, we will assume that all $a \in R$ are have simple ramification, so $x = x(a) + \varphi^2$, and that $\Sigma$ has genus $0$. Then the formula becomes
+\[
+\begin{split}
+    \omega_{g, n+1}(&z_0, \vec{z}) = \\
+    &= \sum_{a \in R} \Res_{z = a}\Bigg[\qty(\dd{z_0}{z-z_0}) \frac{1}{\omega_{0,1}(z) - \omega_{0,z}(\sigma_a(z))} \Bigg(\omega_{g-1, n+2}(z, \sigma_a(z), \vec{z})  \\ 
+    &+ \left. \left. \sum_{\substack{g_1+g_2=g \\ I \sqcup J = \qty{z_1,\ldots,z_n}}} \omega_{g_1, \abs{I}+1}(z, I) \omega_{g_2, \abs{J}+1}(\sigma_a(z), J)\right)\right].
+\end{split}
+\]
+
+This is related to our Airy structures as follows. Consider all $a \in R$ and attach a copy of $\mc{W}(\mf{gl}_{r_a})$. We then consider the $(r_a, s_a)$-representation constructed previously, and the partition function $\mc{Z}$ of this Airy ideal is the same as the expresssion computed by topological recursion. Choose $a \in R$ and write
+\[ x = x(a) + \varphi^{r_a}. \]
+Choose the vector space
+\[ V = \qty{\omega \in \C((\varphi)) \dd{\varphi} \mid \Res_{\varphi=0} \omega(\varphi) = 0}. \]
+There is a positive subspace $V^+ \subseteq V$ with basis $\dd{\xi_k} = \varphi^{k-1} \dd{\varphi}$. The choice of $V^-$ is dictated by $B$. There is a symplectic pairing
+\[ \Omega(\dd{f_1}, \dd{f_2}) = \Res_{\varphi = 0} f_1 \dd{f_2}. \]
+Thus we can choose $V^- \subset V$ with basis $\dd{\xi_{-k}}$ such that
+\[ \Omega(\dd{\xi_e}, \dd{\xi_m}) = \frac{1}{e} \delta_{e, -m}. \]
+The simplest choice is the standard polarization
+\[ \dd{\xi_{-e}} = \varphi^{-e-1} \dd{\varphi}. \]
+This can be deformed into
+\begin{align*}
+    \dd{\xi_{-e}^{(\varphi')}} &= \Res_{\varphi=0} \qty[\int_0^{\varphi} B(-, \varphi') \frac{\dd{\varphi}}{\varphi^{e+1}}] \\
+    &= \qty(\frac{1}{\varphi^{e+1}} + \mr{regular}) \dd{\varphi}.
+\end{align*}
+
+We can now write
+\[ \omega_{g, n}(z_1, \ldots, z_n) = \sum_{\alpha_1, \ldots, \alpha_n=1}^{\infty} \sum_{k_1, \ldots, k_n = 1}^{\infty} F_{g,n}
+\begin{bsmallmatrix}
+    \alpha_1 & \cdots & \alpha_n \\
+    k_1 & \cdots & k_n
+\end{bsmallmatrix} \dd{\xi_{-k_1}}^{\alpha_1}(z_1) \cdots \dd{\xi_{-k_n}^{\alpha_n}}.
+\]
+
+\begin{thm}
+    The partition function $\mc{Z}$ defined by the $F_{g,n}$ is a solution to the Airy ideal defined by the representations of $\mc{W}(\mf{gl}_{r_i})$.
+\end{thm}
+
+\subsection{Enumerative applications}
+
+Note that the Airy ideals only see the local structure of the spectral curve topological recursion. However, the differential forms are globally defined, and this gives interesting structure.
+
+\begin{exm}
+    Consider the example of the Gromov-Witten theory of $\P^1$. Then there is a mixing operator $\wh{P}$ such that
+    \[ \mc{Z} = \wh{P} \qty[\mc{Z}^{(2,3)} \cdot \mc{Z}^{(2,3)}]. \]
+    The way to obtain the Gromov-Witten invariants of $\P^1$ is to consider expansions of $\omega_{g, n}$ at the punctures of $\Sigma$:
+    \[ \omega_{g, n}(z_1, \ldots, z_n) = \sum_{k_1, \ldots, k_n}^{\infty}H_{g,n}[k_1, \ldots, k_n] \frac{\dd{x_1}}{x_1^{h_1+1}} \cdots \frac{\dd{x_n}}{x_n^{h_n+1}}. \]
+    Then the Gromov-Witten theory of $\P^1$ will come from the punctures.
+\end{exm}
+
+In general, expansions at the ramification points will give us integrals over $\ol{\mc{M}}_{g, n}$ (or $r$-spin versions), while expansions at the punctures will give enumerative invariants like the Gromov-Witten theory of $\P^1$, Gromov-Witten theory of of a toric Calabi-Yau threefold, or Hurwitz numbers.
+
+\subsection{Some open questions}
+
+\begin{enumerate}
+    \item Can we do spectral curve topological recursion for other Airy ideals? We only considered fully twisted representations of $\mc{W}(\mf{gl}_r)$. The global structure contains more information, so we would like to find a global structure in some cases.
+    \item Is there some way to globalize the notion of Airy structures? We would like to consider so-called ``$x$-twisted modules'' for the Heisenberg algebra, which will gives information about $\mc{W}(\mf{gl}_r)$.
+    \item If we begin with a spectral curve, can we construct a quantum version?
+    \item There is a conjectural relationship between knot theory and topological recursion, where the Jones and HOMFLY polynomials should be constructed using topological recursion.
+    \item If I have a family of spectral curves, what happens in the limit? For example, consider
+        \[ x = z^r - \ep z, \qquad y = z^{s-r}. \]
+        Is there some kind of limit
+        \[ \lim_{\ep \to 0} \omega_{g, n}[S_{\ep}] \overset{?}{=} \omega_{g, n}[S_0]? \]
+\end{enumerate}
+
+
+\printbibliography
+
+
+\printbibliography
+
+\end{document}
