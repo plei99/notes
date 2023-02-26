@@ -1,0 +1,310 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+% \usepackage[backend=biber, style=alphabetic]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{A Kleiman criterion for stack quotients}
+\author{Patrick Lei}
+\date{February 1, 2023}
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    This is a talk about~\href{https://arxiv.org/pdf/2211.09218.pdf}{\texttt{2211.09218}} in the \href{https://www.math.columbia.edu/~tpad/preprintS2023.html}{preprint seminar} at Columbia University. 
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Classical Kleiman criterion} The Kleiman criterion determines when a divisor on a projective variety $X$ is ample in terms of its intersections with curves in $X$.
+
+\begin{thm}[Kleiman]
+    Let $X$ be a projective variety over $\C$. Then let $\mr{NE}(X)$ be the cone spanned by effective curve classes in $N_1(X)_{\R}$. A divisor $D$ on $X$ is ample if and only if
+    \[ D \cdot \gamma > 0 \]
+    for all $\gamma \in \ol{ \mr{NE}(X) } \setminus 0$.
+\end{thm}
+
+This theorem says that the ample cone is the interior of the the nef cone. If $\gamma$ is represented by a smooth curve $C$, then $\mc{O}_X(D)$ is ample on $C$, so its higher cohomology vanishes, and then the Riemann-Roch formula reduces to
+\[ h^0(\mc{O}_C(D)) = \deg_C D - g(C) + 1 > 0, \]
+and so $D$ has positive degree on $C$.
+
+\subsection{Variation of GIT}
+
+Let $G$ be a reductive group acting on $X$. If we want to construct a ``quotient'' of $X$ by $G$ as a scheme, we must fix a $G$-equivariant line bundle and consider the GIT quotient
+\[ X \sslash_L G \coloneqq X^{\mr{ss}}(L) \sslash G. \]
+Clearly if $L, L'$ have the same semistable locus, then the GIT quotient (schemes) are isomorphic, but the converse is not necessarily true.
+
+\begin{exm}
+    Consider the action of $(\C^{\times})^2$ on $\C^3$ by
+    \[ t \cdot x = (t_1^2 x_1, t_1 t_2 x_2, t_2 x_3). \]
+    Now let $\theta_1 = (4,2)$ and $\theta_2 = (2,4)$. In the first case, the semistable locus has either $(x,y) \neq (0,0)$ or $(x,z) \neq (0,0)$, so we remove the $y$ and $z$ axes and obtain the GIT quotient stack
+    \[ [\C^3 \sslash_{\theta_1} (\C^{\times})^2] = [\P^1 / \mu_2]. \]
+    In the second case, the semistable locus has either $(x,z) \neq (0,0)$ or $(y, z) \neq (0,0)$, so we remove the $x$ and $y$ axes and obtain the GIT quotient stack
+    \[ [\C^3 \sslash_{\theta_2} (\C^{\times})^2] = \P(2,1). \]
+    Both stacks have coarse moduli space $\P^1$, so the GIT quotient varieties $\C^3 \sslash_{\theta_i} (\C^{\times})^2$ are isomorphic for $i = 1,2$.
+\end{exm}
+
+
+We will now establish some notation. Recall that there is an equivariant first Chern class $c_1^G$ which sits inside the exact sequence
+\[ 0 \to \Pic_0(X) \to \Pic^G(X) \xrightarrow{c_1^G} H^2_G(X, \Z) \]
+and denote $\NS^G(X) \coloneqq \Pic^G(X)/\Pic_0(X)$. Note that if $L$ and $L'$ determine the same class in $\NS^G(X)$, then they have the same semistable locus, which can be seen using localization.
+
+Denote the ample cone of $G$-linearized ample line bundles by $\mr{Amp}^G(X) \subset \NS^G(X)_{\Q}$ and then denote by $C^G(X)$ the cone containing $G$-linearized ample line bundles with $X^{\mr{ss}}(L)$ nonempty. We will call these classes \textit{$G$-ample}. Now, for $L \in C^G(X)$, define
+\[ C(L) \coloneqq \qty{L' \in C^G(X) \mid X^{\mr{ss}}(L) \subset X^{\mr{ss}}(L')} \]
+and its relative interior (due to Ressayre)
+\[ C^{\circ}(L) \coloneqq \qty{L' \in C^G(X) \mid X^{\mr{ss}}(L) = X^{\mr{ss}}(L)}. \]
+
+\section{Quasimaps}
+
+Let $L \in \Pic^G(X)$ be ample.
+\begin{defn}
+    An \textit{$L$-stable quasimap} from a smooth curve $C$ to $[X/G]$ is a morphism
+    \[ f \colon C \to [X/G] \]
+    such that $f^{-1}([X^{\mr{ss}}/L])$ is dense.
+\end{defn}
+
+Given such a quasimap, for any $G$-equivariant line bundle $N$ on $X$, we can consider the degree
+\[ \deg f^*([N/G]), \]
+and the map
+\[ (N \mapsto \deg f^*([N/G])) \in \Hom(\NS^G(X), \Z) \]
+is called the \textit{degree} of $f$. We will call the cone generated by all $\beta \in \Hom(\NS^G(X), \Z)$ that can be realized as degrees of $L$-stable quasimaps
+\[ \mr{NE}(L) \subset \Hom(\NS^G(X), \Q). \]
+
+\begin{prop}
+    If $f \colon C \to [X/G]$ is an $L$-stable quasimap, then $\deg f^* [L/G] \geq 0$.
+\end{prop}
+
+\begin{proof}
+    We can assume that $C$ is connected. Then there exists $c \in C$ mapping to $[X^{\mr{ss}}(L)/G]$. We can then lift $f(c)$ to $x \in X^{\mr{ss}}(L)$. But now by definition of semistability, there exists some $m > 0$ and $s \in \Gamma(X, L^m)^G$ such that $s(x) \neq 0$. But now 
+    \[ f^* [L^m/G] \]
+    has a nonzero section $f^*(s)$, and thus it has non-negative degree on $C$.
+\end{proof}
+
+\begin{cor}
+    $C(L) \subset \mr{NE}(L)^{\vee}$.
+\end{cor}
+
+
+\section{Main result}
+
+\subsection{For projective $X$}
+
+Now we want to relate the weights $\mu^L(x, \lambda)$ to the degrees of quasimaps. Fix $\lambda \colon \C^{\times} \to G$ and a semistable point $x \in X^{\mr{ss}}(L)$. Because $X$ is proper, there exists a morphism $\ol{\lambda} \colon \C \to X$ extending $t \mapsto \lambda(t) x$. Now define the map
+\[ \wt{\phi}_{\lambda, x} \colon \C^2 \setminus \qty{0} \to X \qquad (s,t) \mapsto \ol{\lambda}(t). \]
+This is clearly $\C^{\times}$-equivariant (with respect to the scaling action on $\C^2$ and the action of $\lambda$ on $X$), and so we obtain a stable quasimap
+\[ \phi_{\lambda, x} \colon \P^1 \to [X/G]. \]
+
+\begin{lem}
+    For any $N \in \Pic^G(X)$, 
+    \[ \deg \phi^*_{\lambda, x}(N) = \mu^N(x, \lambda). \]
+\end{lem}
+
+\begin{proof}
+    Note that $\phi_{\lambda, x}$ factors through the projection onto the second factor $\pi_2 \colon \C^2 \setminus 0 \to \C$, and then we simply need to compute the weight of the action of $\C^{\times}$ on $N$ at the origin of $[\C / \C^{\times}]$.
+\end{proof}
+
+\begin{prop}
+    Suppose $L, N \in \mr{Amp}^G(X)$ such that $N \notin C(L)$. Then there exists an $L$-stable quasimap $f \colon C \to [X/G]$ such that $\deg f^* [N/G] < 0$.
+\end{prop}
+
+\begin{proof}
+    Consider the morphism $\phi_{\lambda, x}$ for some $x \in X^{\mr{ss}}(L) \setminus X^{\mr{ss}}(N)$.
+\end{proof}
+
+Now we may state the main result, which is proven using the preceeding discussion.
+
+\begin{thm}
+    Let $L$ be a $G$-ample line bundle on $X$. Then
+    \[ C^{\circ}(L) = \mr{relint}(\mr{NE}(L)^{\vee}) \cap \mr{Amp}^G(X). \]
+\end{thm}
+
+\subsection{Quotients of vector spaces}
+
+We can extend these results to quotients of vector spaces by embedding $V \subset \P(V \oplus \C)$, where the extra copy of $\C$ carries the trivial representation of $G$. Then for a character $\theta \in \Hom(G, \C^{\times})$, denote its GIT equivalence class by $A(\theta)$. The main result in the context of quotients of vector spaces is stated below.
+
+\begin{prop}
+    Suppose that $(\on{Sym}^{\bullet} V^{\vee})^G = \C$. Then for any $\theta \in \Hom(G, \C^{\times})$, 
+    \[ A(\theta) = \on{relint}(\on{NE}(\theta)^{\vee}). \]
+\end{prop}
+
+
+
+\end{document}
