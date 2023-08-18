@@ -1,0 +1,514 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage[normalem]{ulem} 
+\usepackage{stackengine}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\crefname{equation}{}{}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{parskip}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bir}{\sim_{\mr{bir}}}
+\newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
+\newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Def}{Def}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Hilb}{Hilb}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Simons Math Summer Workshop 2023}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Simons Center for Geometry and Physics}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\addbibresource{../../math.bib}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These are my notes from the second and third weeks of the 2023 Simons Math Summer Workshop.
+
+These notes were taken during the lectures using \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differe between lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\section*{Acknowledgements}
+
+I would like to thank Mark Gross, Mark McLean, Simon Donaldson, Kenji Fukaya, John Pardon, and the Simons Center for organizing the workshop.
+
+\vspace*{1cm}
+
+\noindent\textbf{Program Website:}  \url{https://scgp.stonybrook.edu/archives/39185}
+\newpage
+
+\tableofcontents
+
+\chapter{Degenerations of holomorphic curves, tropical geometry, gluing theorems, and exploded manifolds (Brett Parker)}%
+\label{cha:degenerations}
+
+\section{Geometry of holomorphic curves}
+
+Consider a map $f \colon \Sigma \to M$, where $\Sigma$ is a Riemann surface and $M$ is a manifold with metrics $g_{\Sigma}, g_M$ respectively.
+
+\begin{defn}
+    The \textit{$L^2$ energy} of $f$ is given by
+    \[ L^2(f) \coloneqq \int_{\Sigma} \frac{1}{2} \abs{Df}^2 \dd{A}, \]
+    where $\abs{Df}$ is defined using $g_{\Sigma}$ and $g_M$ on $T^*\Sigma \otimes TM$.
+\end{defn}
+
+This is conformally invariant, as can be seen by computing the energy after scaling $g_{\Sigma}$. This is also analogous to the definition of geodesics, where we consider stationary points of
+\[ L(\gamma) = \int \frac{1}{2} \abs{\dot{\gamma}}^2 \dd{t}. \]
+
+We really want to consider holomorphic maps, so we choose an almost complex structure $J \in \End(TM)$ such that
+\[ g(J-, J-) = g(-,-). \]
+This defines a 2-form by
+\[ \omega(v,w) \coloneqq g(Jv, w), \]
+which is not necessarily closed. We also choose a complex structure $j$ on $\Sigma$.
+
+\begin{lem}
+    The $L^2$ energy of $f$ satisfies the inequality
+    \[ L^2(f) \geq \on{Area}(f) \geq \int_{\Sigma} f^* \omega \]
+    with inequality if and only if $\dd{f} \circ j = J \circ \dd{f}$ (meaning that $f$ is holomorphic).
+\end{lem}
+
+Locally, if we choose coordinates $x,y$ such that the complex structure is $x+iy$, then
+\begin{align*} 
+    \int_{\Sigma} f^* \omega &= \int_{\Sigma} g(J f_x, f_y) \dd{x} \wedge \dd{y} \\
+    &\leq \int_{\Sigma} \qty(\frac{1}{2} \abs{f_x}^2 + \frac{1}{2} \abs{f_y}^2) \dd{x} \dd{y},
+\end{align*}
+with equality if and only if $f$ is holomorphic.
+
+\begin{rmk}
+    It is tempting to consider just the area in the inequality, but that would not tell us how to parameterize the curve, just like how defining geodesics by minimizing length doesn't tell us how to parameterize the geodesic.
+\end{rmk}
+
+If $\omega$ is closed, then $E_{\omega}(f) = \int_{\Sigma} f^*\omega$ is deformation invariant, so $f$ is holomorphic if and only if $f$ minimizes $L^2$-energy and $L^2(f) = E_{\omega}(f)$.
+
+\subsection{Regularity}
+
+
+\begin{lem}[Monotonicity]
+    Consider a ball of radius $R$ such that a nonconstant holomorphic curve $f$ passes through its center. Then
+    \[ L^2\qty(f|_{f^{-1}(B_R(f(z_0)))}) \geq \ep_R, \]
+    where $\ep_R$ depends on $g_M$ and $R$.
+\end{lem}
+
+Morally, we should think that it takes some amount of energy for our curve to escape the ball.
+
+Now note that the Cauchy-Riemann equation is elliptic, so we have elliptic regularity. Specifically, we have
+\[ \sup_{B_{\frac{1}{2}}(0)} \abs{D^k f} \leq c_k \sup_{B_1(0)} \abs{Df}, \]
+which gives us bounds on all higher derivatives, so solutions are smooth. Unfortunately, $L^2$ energy bounds do not guarantee derivative bounds.
+
+\begin{thm}[Removable singularity]
+    If $L^2(f) < \infty$ then $f \colon \Sigma \setminus p$ extends over $p$.
+\end{thm}
+
+\begin{lem}
+    Consider $f \colon B_1(0) \to M$. If $L^2(f)$ is small, then
+    \[ \abs{Df(0)} \leq c. \]
+\end{lem}
+
+\subsection{Think-thin decomposition of the domain}
+
+For a holomorphic curve $f \colon \Sigma \to M$ with $E_{\omega}(f) < \omega$, our goal is to decompose $\Sigma$ into long thin annuli $A$ with low energy and ``thick'' regions $C_i$ such that
+\begin{itemize}
+    \item $E_{\omega}(f|_A) < \ep_0$;
+    \item $\abs{df}$ is bounded on $C$;
+    \item The diameters of the $C_i$ are bounded;
+    \item Either $\chi(C_i) < 0$ or $E_{\omega}(f|_{C_i}) > \ep_0$.
+\end{itemize}
+
+\begin{rmk}
+    This requires changing the metric in the same conformal class to eliminate bubbling.
+\end{rmk}
+
+Taking the limit as the lengths of the annuli go to infinity, we obtain a degerated holomorphic curve with many components.
+
+\subsection{Noncompact stuff}
+
+Some examples of noncompact manifolds we want to consider are $N \times \underbrace{\R \times S^1}_{\C^{\times}}$, where $N$ is compact, or $(\C^{\times})^k \rtimes N$, where the fibers are holomorphic and $J, g$ are $\C^{\times}$-invariant. In the first case, we are using a $\C^{\times}$-invariant metric, so the manifold really does look like a cylinder. A third case we will consider are those which are asymptotically cylindrical, for example $M \setminus D$, where $M$ is a complex manifold and $D$ is a normal crossings divisor.
+
+In these cases, we must use a different taming form $\omega$, so $g \neq \omega(-, J-)$. For example, in the cylindrical case we can consider
+\[ \omega = \omega_N + \sum_h \dd{\rho_h(t_h)} \alpha_h, \]
+$\alpha_h$ is a connection form, $t, \theta$ are coordinates on $\R \times S^1$, and $\rho_h$ looks like a smoothed step function. We obtain the inequality
+\[ E_{\omega} \geq L^2(\text{$f$ projected to $N$}) \]
+or we consider the $L^2$ energy of $f$ locally on $(\C^{\times})^k \rtimes N$. Unfortunately, this means we only have local energy bounds.
+
+\begin{exer}
+    Let $f \colon A \to \C^{\times}$ be holomorphic with $\abs{\frac{\dd{f}}{f}} < c_0$. Write $A = \qty{e^{-T} \leq \abs{z} \leq e^T}$. Show that
+    \begin{enumerate}[(a)]
+        \item $\abs{\frac{\dd{f(z)}}{(f(z))} - \frac{\dd{f(1)}}{f(1)}} \leq e^{-T} c_0\qty(\abs{z} + \frac{1}{\abs{z}})$;
+        \item $f(z) = e^{h(z)} a z^m$ with $h(z) \leq 2 \qty(\abs{z} + \frac{1}{\abs{z}}) e^{-T} c_0$.
+    \end{enumerate}
+\end{exer}
+
+Therefore, in logarithmic coordinates, a holomorphic curve in $(\C^{\times})^2$ has its thin regions travelling in straight lines and the thick regions are very small. In the tropical limit, we obtain a piecewise-linear curve.
+
+In all of these cases, we can replace the RHS of the first part of the exercise with
+\[ e^{-\delta T} c_0 \qty(\abs{z_0}^{\delta} + \frac{1}{\abs{z_0}^{\delta}}), \]
+where $0 < \delta < 1$.
+
+\chapter{Logarithmic and punctured Gromov-Witten invariants, tropicalization, and gluing formalism (Bernd Siebert)}%
+
+\section{Introduction to log geometry}
+
+We will be relatively liberal in the category we work in. We may consider either algebraic varieties or complex manifolds/analytic spaces. These get generalized to algebraic stacks (or analytic stacks), which we will consider later.
+
+\subsection{Normal crossings divisors}
+
+Let $X$ be smooth and $D \subseteq X$ be a divisor such that locally, $D = V(z_1 \cdots z_k)$, where $z_1, \ldots, z_n$ are local coordinates. This is really bad for algebraic geometry. Instead, we may consider
+
+\begin{defn}
+    A \textit{simple normal crossings} divisor is such that there exists $U \subseteq X$ open and a smooth $\pi \colon U \to \A^r$ such that $D \cap U = \pi^{-1}(V(z_1 \cdots z_r))$.
+\end{defn}
+
+All such $D$ can be written as $D = \bigcup D_i$, where the $D_i \subseteq X$ are smooth divisors intersecting transversely. In general, we need an \'etale $U \to X$ such that the preimage of $D$ is a simple normal crossings divisor.
+
+For a simple normal crossings divisor $D = \bigcup D_i$, we obtain line bundles $L_i$ with sections $s_i$ and corresponding sheaves $\mc{L}_i = \mc{O}_X(D_i)$. Every section $s_i$ is a map $\mc{O}_X \to \mc{O}_X(D_i)$, or equivalently, a map $\mc{O}_X(-D_i) \to \mc{O}_X$. In addition, the normal bundles of $D_i \subseteq X$ is
+\[ \mc{N}_{D_i/X} = \mc{O}_{D_i}(D_i) = \mc{L}_i |_{D_i}. \]
+
+Iterating, we see that $D_i \cap D \subseteq D_j$ is a simple normal crossings in $D_i$ with normal bundle
+\[ \mc{N}_{D_i \cap D_j/X} = \mc{N}_{D_i \cap D_j / D_i} \oplus \mc{N}_{D_i/X}. \]
+All of this is contained in $\mc{M}_X \coloneqq \mc{O}_{X/D}^{\times} \cap \mc{O}_X \hookrightarrow \mc{O}_X$. Unfortunately, this is a sheaf of multiplicative monoids and has no additional structure.
+
+\begin{exm}
+    Consider $\A^2_{z,w}$ with $D = V(zw)$. If we consider the sheaf $\mc{M}_X$, away from $D$ we see all $h \in \mc{O}^{\times}$, on the $z$-axis we have $h \cdot w^b, h \in \mc{O}^{\times}$, and at the origin we see $h \cdot z^a w^b$. As a monoid, we have
+    \[ \mc{M}_{X,0} \simeq \N^2 \times \mc{O}_{X,0}^{\times}. \]
+\end{exm}
+
+We can then take the associated abelian sheaf $\mc{M}_X^{\mr{gp}}$, which replaces the $\N$-factors by $\Z$-factors. This has a discrete part $\ol{\mc{M}}_X = \mc{M}_X/\mc{O}_X^{\times}$ with quotient map $\kappa$. In general, in the simple normal crossings case, we have
+\[ \ol{\mc{M}}_X = \bigoplus_i \N_{D_i}. \]
+We may recover the line bundles in the simple normal crossings case. Taking the groupification, we obtain
+\[ 1 \to \mc{O}_X^{\times} \to \mc{M}_X^{\mr{gp}} \to \ol{\mc{M}}_X^{\mr{gp}} \to 0, \]
+and thus $\mc{M}_X^{\mr{gp}}$ is a $\mc{O}_X^{\times}$-torsor. Considering $\mc{T} \coloneqq \kappa^{-1}((a_1, \ldots, a_r))$, we can brute force the sheaf
+\[ (\mc{T} \oplus \mc{O}_X) / \mc{O}_X^{\times} = \mc{O}_X\qty(-\sum a_i D_i). \]
+
+\subsection{Toric geometries}
+
+Consider a finitely generated submonoid $P \subseteq (\Z^n, +)$. Explicitly, we can write $P = \N m_1 + \cdots + \N m_r$. The most imporant case is when we take $\sigma^{\vee} \cap \Z^n$, where $\sigma \subseteq (\R^n)^*$ is a rational polyhedral cone. It is customary to write $(\R^n)^* \simeq N \otimes \R$ and $P \subseteq M$ for the two different $\Z^n$.
+
+Using $P$, we obtain a finitely-generated $\C$-algebra $\C[P] = \qty{\sum_{m \in P} a_m z^m}$, where the sums are finite. Explicitly, we can consider the map
+\[ \varphi \colon \C[u_1, \ldots, u_r] \twoheadrightarrow \C[P] \qquad u_i \mapsto z^{m_i}, \]
+which give equations for the ring. The relations always come from relations in $P$, so $\ker \varphi$ is generated by binomial equations $z^{m_1} z^{m_2} = z^{m_1'} z^{m_2'}$ (in the saturated case). Applying the $\Spec$ functor, we obtain
+\[ \Spec \C[P] \hookrightarrow \A^r. \]
+
+In fact, we always have $P \subseteq \sigma^{\vee} \cap M$ with $\sigma = \Hom(P, \R_{\geq 0})$ with equality if and only if $P$ is saturated.
+
+\begin{exm}
+    Consider $P \subseteq \N \cdot 2 + \N \cdot 3 \subseteq \Z = M$. Then $\C[P] = \C[x,y]/(x^3-y^2)$.
+\end{exm}
+
+\begin{exms}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Consider the cone generated by $(0,1)$ and $(k,1)$ in $N_{\R}$. Then the dual cone is generated by $(-1,k)$ and $(1,0)$ over $\R$, and the monoid $P = \sigma^{\vee} \cap M$ is generated by $(1,0), (0,1)$, and $(-1, k)$. Writing the corresponding variables as $z,w,t$, we obtain
+            \[ C[P] = \C[z,w,t]/(zw-t^k), \]
+            which is the $A_{k-1}$ singularity. Note that this is the base change under $t \mapsto t^k$ of the normal crossings degeneration $(zw-t)$.
+        \item Let $\sigma^{\vee}$ be the cone over the convex hull of the square $\qty{(0,0), (1,0), (1,1), (0,1)}$. Then 
+            \[ \C[\sigma^{\vee} \cap M] \simeq \C[x,y,z,w] / (xy-zw) \]
+            is a tensor product
+            \[ \C[x,y] \otimes_{\C[t]} \C[z,w] \qquad xy \mapsfrom t \mapsto zw. \]
+    \end{enumerate}
+\end{exms}
+
+Because we have $P = \sigma^{\vee} \cap M$, we obtain $\C[P] \subseteq \C[M]$. This gives us an $M$-grading, which induces a $(\C^{\times})^n$-equivariant embedding
+\[ (\C^{\times})^n = \Spec \C[M] \hookrightarrow \Spec \C[P] = \on{TV}(\sigma). \]
+
+\begin{defn}
+    A \textit{toric variety} is a $(\C^{\times})^n$-equivariant partial compactification of $(\C^{\times})^n$.
+\end{defn}
+
+\begin{rmk}
+    We will want $P$ to be saturated, which corresponds to the toric variety being normal.
+\end{rmk}
+
+\begin{defn}
+    The \textit{toric divisor} is the complement $\on{TV}(\sigma) \setminus (\C^{\times})^n$, and its components $D_i$ can be read off from the facets of $P$ (or $P_{\R} = \R_{\geq 0} \cdot P$).
+\end{defn}
+
+An alternative construction of toric varieties is as follows. Consider $N \simeq \Z^n$. Then let $\sigma(1)$ be the set of rays, labelled $\rho_1, \ldots, \rho_r$. Then we define the \textit{Cox ring} to be
+\[ R \coloneqq \C[\on{Map}(\sigma(1), \N)] = \C[\chi_1, \ldots, \chi_r]. \]
+Then there is a map $M \to \on{Map}(\sigma(1), \Z)$ given by $m \mapsto (\rho_i \mapsto \ev{m, n_i})$, where $n_i$ is the primitive generator of $\rho_i$. Grading $R$ by $\Gamma = \on{Map}(\sigma(1), \Z)/M$, we obtain an action of $(\C^{\times})^{r-n}$-action on $R$. Taking the categorical quotient $\Spec R^{\Gamma}$, we obtain $\on{TV}(\sigma)$.
+
+\begin{exer}
+    Show that $R^{\Gamma} = \C[P]$ where $P = \sigma^{\vee} \cap M$.
+\end{exer}
+
+The upshot is that an affine toric variety can be written as $\Spec \C[P] = \A^r \sslash_0 (\C^{\times})^{r-n}$.
+
+In this case, if $X = \on{TV}(\sigma)$, then generalizing $\mc{M}_{\A^n} = \mc{O}_{\A^n \setminus V(z_1\cdots z_n)} \cap \mc{O}_{\A^n} \hookrightarrow \mc{O}_{\A^n}$, we can write
+\[ \mc{M}_X \coloneqq \mc{O}_{X\setminus D}^{\times} \hookrightarrow \mc{O}_X. \]
+As long as $0$ is the only invertible element of $P$, we have
+\[ \ol{\mc{M}}_{X,0} = P. \]
+Now we have an embedding
+\[ \Gamma(\ol{\mc{M}}_{X}^{\mr{gp}}) \hookrightarrow \Z^r \qquad f \mapsto (\on{ord}_{D_1} f, \ldots, \on{ord}_{D_r} f). \]
+The image corresponds to principal Cartier divisors.
+
+\begin{exm}
+    If $\sigma$ is the cone over the square, then $D = \sum a_i D_i$ is Cartier if and only if $a_1+a_3 = a_2 + a_4$.
+\end{exm}
+
+\subsection{Abstract log structures}
+Consider $\alpha \colon \mc{M}_X \to \mc{O}_X$ in the \'etale topology such that $\alpha^{-1}(\mc{O}_X^{\times}) \xrightarrow[\alpha]{\simeq} \mc{O}_X^{\times}$. This definition is useless in this generality, but it does automatically provide us with
+\[ \ol{\mc{M}}_X, \mc{M}_X^{\mr{gp}}, \kappa \]
+as before.
+
+We will instead provide an alternative point of view, due to Deligne-Faltings. We want the following data:
+\begin{itemize}
+    \item A sheaf of finitely generated $\ol{\mc{M}}$ inside $\ol{\mc{M}}_X^{\mr{gp}}$ constructible;
+    \item For all $U \subseteq X$, a map 
+        \[ \ol{\mc{M}}(U) \to \on{\mc{D}iv}(U) = \qty{(\text{line bundle, section}) \text{ on }U} \qquad \ol{m} \mapsto (\alpha_{\ol{m}} \colon \kappa^{-1}(\ol{m}) \to \mc{O}_X)^{\vee}. \]
+    \item We have compatibility $\ol{\mc{M}} \to \on{\mc{D}iv}_X$ which is morally a symmetric monoidal functor.%\footnote{The reference with the answers is {\href{this paper}{https://www.sciencedirect.com/science/article/pii/S0001870812002368}} by Borne-Vistoli}
+\end{itemize}
+
+\begin{exms}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Consider \textit{log points}, which are given by $\Spec(Q \to \C) = (\Spec \C, Q \oplus \C^{\times})$. Here, we need $Q$ a finitely generated monoid with $Q^{\times} = \qty{0}$, and we have
+            \[ \alpha(q,a) = \begin{cases}
+                0 & q \neq 0 \\
+                a & q = 0.
+            \end{cases}
+            \]
+        \item We can consider \textit{pullback log structures} for morphisms $f \colon Y \to X$ with a log structure $\mc{M}_X$ on $X$. We obtain a log structure on $Y$ by writing
+            \[ f^* \mc{M}_X = (f^{-1} \mc{M}_X \oplus \mc{O}_Y^{\times}) / f^{-1} \mc{O}_X^{\times} \]
+            and send $(s,h) \mapsto f^*\alpha(s) \cdot h$.
+    \end{enumerate}
+\end{exms}
+
+Note that if $Q = \sigma^{\vee} \cap M$ and $0 \hookrightarrow \on{TV}(\sigma)$ is the inclusion of a $0$-dimensional orbit, the pullback log structure is $f^* \mc{M}_{\on{TV}(\sigma)} = \Spec(Q \to \C)$.
+
+An important class of examples are those with charts. Consider an open set $U \subseteq X$ (maybe in the \'etale topology) and a map $f \colon U \to \Spec \C[P]$, where $P$ is as in the previous subsection, with isomorphisms $\mc{M}_X|_U \simeq f^* \mc{M}_{\Spec \C[P]}$. The \textit{fine log structures} are those with local charts and a \textit{fine saturated log structure} is one with $P$ saturated.
+
+\begin{defn}
+    A \textit{log morphism} $f \colon (X, \mc{M}_X) \to (Y, \mc{M}_Y)$ is a map $f \colon X \to Y$ (which gives us $f^{\sharp} \colon f^{-1}\mc{O}_Y \to \mc{O}_X)$ and a morphism of sheaves $f^{\flat} \colon f^{-1} \mc{M}_Y \to \mc{M_X}$ making the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        f^{-1}\mc{M}_Y \ar{r}{f^{\flat}} \ar[swap]{d}{f^{-1}\alpha_Y} & \mc{M}_X \ar{d}{\alpha_X} \\
+        f^{-1} \mc{O}_Y \ar{r}{f^{\sharp}} & \mc{O}_X
+    \end{tikzcd}
+    \end{equation*}
+    commute.
+\end{defn}
+
+We will refer to $\ol{\mc{M}}$ as the \textit{ghost sheaf}. Others call it the \textit{characteristic sheaf}, but Bernd prefers to call it the ghost sheaf.
+
+
+\end{document} 

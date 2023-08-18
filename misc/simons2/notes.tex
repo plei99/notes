@@ -1,0 +1,1818 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage[normalem]{ulem} 
+\usepackage{stackengine}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=red,citecolor=magenta,filecolor=black,urlcolor=red}
+\usepackage{cleveref}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\crefname{equation}{}{}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{parskip}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bir}{\sim_{\mr{bir}}}
+\newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
+\newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Def}{Def}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Hilb}{Hilb}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Simons Math Summer Workshop 2023}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Simons Center for Geometry and Physics}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\addbibresource{../../math.bib}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These are my notes from the second and third weeks of the 2023 Simons Math Summer Workshop.
+
+These notes were taken during the lectures using \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differe between lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\section*{Acknowledgements}
+
+I would like to thank Mark Gross, Mark McLean, Simon Donaldson, Kenji Fukaya, John Pardon, and the Simons Center for organizing the workshop.
+
+\vspace*{1cm}
+
+\noindent\textbf{Program Website:}  \url{https://scgp.stonybrook.edu/archives/39185}
+\newpage
+
+\tableofcontents
+
+\chapter{Degenerations of holomorphic curves, tropical geometry, gluing theorems, and exploded manifolds (Brett Parker)}%
+\label{cha:degenerations}
+
+\section{Geometry of holomorphic curves}
+
+Consider a map $f \colon \Sigma \to M$, where $\Sigma$ is a Riemann surface and $M$ is a manifold with metrics $g_{\Sigma}, g_M$ respectively.
+
+\begin{defn}
+    The \textit{$L^2$ energy} of $f$ is given by
+    \[ L^2(f) \coloneqq \int_{\Sigma} \frac{1}{2} \abs{Df}^2 \dd{A}, \]
+    where $\abs{Df}$ is defined using $g_{\Sigma}$ and $g_M$ on $T^*\Sigma \otimes TM$.
+\end{defn}
+
+This is conformally invariant, as can be seen by computing the energy after scaling $g_{\Sigma}$. This is also analogous to the definition of geodesics, where we consider stationary points of
+\[ L(\gamma) = \int \frac{1}{2} \abs{\dot{\gamma}}^2 \dd{t}. \]
+
+We really want to consider holomorphic maps, so we choose an almost complex structure $J \in \End(TM)$ such that
+\[ g(J-, J-) = g(-,-). \]
+This defines a 2-form by
+\[ \omega(v,w) \coloneqq g(Jv, w), \]
+which is not necessarily closed. We also choose a complex structure $j$ on $\Sigma$.
+
+\begin{lem}
+    The $L^2$ energy of $f$ satisfies the inequality
+    \[ L^2(f) \geq \on{Area}(f) \geq \int_{\Sigma} f^* \omega \]
+    with inequality if and only if $\dd{f} \circ j = J \circ \dd{f}$ (meaning that $f$ is holomorphic).
+\end{lem}
+
+Locally, if we choose coordinates $x,y$ such that the complex structure is $x+iy$, then
+\begin{align*} 
+    \int_{\Sigma} f^* \omega &= \int_{\Sigma} g(J f_x, f_y) \dd{x} \wedge \dd{y} \\
+    &\leq \int_{\Sigma} \qty(\frac{1}{2} \abs{f_x}^2 + \frac{1}{2} \abs{f_y}^2) \dd{x} \dd{y},
+\end{align*}
+with equality if and only if $f$ is holomorphic.
+
+\begin{rmk}
+    It is tempting to consider just the area in the inequality, but that would not tell us how to parameterize the curve, just like how defining geodesics by minimizing length doesn't tell us how to parameterize the geodesic.
+\end{rmk}
+
+If $\omega$ is closed, then $E_{\omega}(f) = \int_{\Sigma} f^*\omega$ is deformation invariant, so $f$ is holomorphic if and only if $f$ minimizes $L^2$-energy and $L^2(f) = E_{\omega}(f)$.
+
+\subsection{Regularity}
+
+
+\begin{lem}[Monotonicity]
+    Consider a ball of radius $R$ such that a nonconstant holomorphic curve $f$ passes through its center. Then
+    \[ L^2\qty(f|_{f^{-1}(B_R(f(z_0)))}) \geq \ep_R, \]
+    where $\ep_R$ depends on $g_M$ and $R$.
+\end{lem}
+
+Morally, we should think that it takes some amount of energy for our curve to escape the ball.
+
+Now note that the Cauchy-Riemann equation is elliptic, so we have elliptic regularity. Specifically, we have
+\[ \sup_{B_{\frac{1}{2}}(0)} \abs{D^k f} \leq c_k \sup_{B_1(0)} \abs{Df}, \]
+which gives us bounds on all higher derivatives, so solutions are smooth. Unfortunately, $L^2$ energy bounds do not guarantee derivative bounds.
+
+\begin{thm}[Removable singularity]
+    If $L^2(f) < \infty$ then $f \colon \Sigma \setminus p$ extends over $p$.
+\end{thm}
+
+\begin{lem}
+    Consider $f \colon B_1(0) \to M$. If $L^2(f)$ is small, then
+    \[ \abs{Df(0)} \leq c. \]
+\end{lem}
+
+\subsection{Think-thin decomposition of the domain}
+
+For a holomorphic curve $f \colon \Sigma \to M$ with $E_{\omega}(f) < \omega$, our goal is to decompose $\Sigma$ into long thin annuli $A$ with low energy and ``thick'' regions $C_i$ such that
+\begin{itemize}
+    \item $E_{\omega}(f|_A) < \ep_0$;
+    \item $\abs{df}$ is bounded on $C$;
+    \item The diameters of the $C_i$ are bounded;
+    \item Either $\chi(C_i) < 0$ or $E_{\omega}(f|_{C_i}) > \ep_0$.
+\end{itemize}
+
+\begin{rmk}
+    This requires changing the metric in the same conformal class to eliminate bubbling.
+\end{rmk}
+
+Taking the limit as the lengths of the annuli go to infinity, we obtain a degerated holomorphic curve with many components.
+
+\subsection{Noncompact stuff}
+
+Some examples of noncompact manifolds we want to consider are $N \times \underbrace{\R \times S^1}_{\C^{\times}}$, where $N$ is compact, or $(\C^{\times})^k \rtimes N$, where the fibers are holomorphic and $J, g$ are $\C^{\times}$-invariant. In the first case, we are using a $\C^{\times}$-invariant metric, so the manifold really does look like a cylinder. A third case we will consider are those which are asymptotically cylindrical, for example $M \setminus D$, where $M$ is a complex manifold and $D$ is a normal crossings divisor.
+
+In these cases, we must use a different taming form $\omega$, so $g \neq \omega(-, J-)$. For example, in the cylindrical case we can consider
+\[ \omega = \omega_N + \sum_h \dd{\rho_h(t_h)} \alpha_h, \]
+$\alpha_h$ is a connection form, $t, \theta$ are coordinates on $\R \times S^1$, and $\rho_h$ looks like a smoothed step function. We obtain the inequality
+\[ E_{\omega} \geq L^2(\text{$f$ projected to $N$}) \]
+or we consider the $L^2$ energy of $f$ locally on $(\C^{\times})^k \rtimes N$. Unfortunately, this means we only have local energy bounds.
+
+\begin{exer}
+    Let $f \colon A \to \C^{\times}$ be holomorphic with $\abs{\frac{\dd{f}}{f}} < c_0$. Write $A = \qty{e^{-T} \leq \abs{z} \leq e^T}$. Show that
+    \begin{enumerate}[(a)]
+        \item $\abs{\frac{\dd{f(z)}}{(f(z))} - \frac{\dd{f(1)}}{f(1)}} \leq e^{-T} c_0\qty(\abs{z} + \frac{1}{\abs{z}})$;
+        \item $f(z) = e^{h(z)} a z^m$ with $h(z) \leq 2 \qty(\abs{z} + \frac{1}{\abs{z}}) e^{-T} c_0$.
+    \end{enumerate}
+\end{exer}
+
+Therefore, in logarithmic coordinates, a holomorphic curve in $(\C^{\times})^2$ has its thin regions travelling in straight lines and the thick regions are very small. In the tropical limit, we obtain a piecewise-linear curve.
+
+In all of these cases, we can replace the RHS of the first part of the exercise with
+\[ e^{-\delta T} c_0 \qty(\abs{z_0}^{\delta} + \frac{1}{\abs{z_0}^{\delta}}), \]
+where $0 < \delta < 1$.
+
+\section{Exploded manifolds}
+\label{sec:exploded}
+
+One of the problems that we have is dealing with what happens in our moduli spaces as things go off to infinity. Of course, the moduli space of the tropical curves is not compact, but it is relatively nice. To deal with the problem in the usual geometry, we will develop the formalism of exploded manifolds.
+
+\subsection{Explosion}
+\label{subsec:explosion}
+
+Let $R$ be a ring. The \textit{exploded semiring} is $Rt^{\R}$ with multiplication given by
+\[ c_1 t^{a_1} c_2 t^{a_2} = c_1c_2 t^{a_1+a_2} \]
+and addition given by
+\[ c_1 t^{a_1} + c_2 t^{a_2} = \begin{cases}
+                                 c_1 t^{a_1} & a_1 < a_2 \\
+                                 (c_1 + c_2) t^{a_1} & a_1 = a_2 \\
+                                 c_2 t^{a_2} & a_1 > a_2.
+                               \end{cases}
+\]
+
+If $R$ is the ring with one element, then we get the tropical numbers. Then there is a \textit{tropical part homomorphism}
+\[ R t^{\R} \to t^{\R} \qquad \ul{ct^a} = a, \]
+where $a$ represents the tropical number $0t^a \in t^{\R}$. There is also a \textit{smooth part homomorphism}
+\[ R t^{[0, \infty)} \to R \qquad \ceil{ct^a} = c \delta_{a,0}. \]
+
+The goal is to define the functor
+\[ \ms{Expl} \colon \ms{log} \to \ms{Exploded\ manifolds}. \]
+First, we will define the \textit{exploded point}
+\[ p^{\dag} = \Spec([0, \infty) \to \C) = (\Spec \C, \C^{\times}t^{[0, \infty)}). \]
+For any log-scheme $X^{\dag}$, we will define
+\[ \ms{Expl}(X^{\dag}) = X^{\dag} \times p^{\dag} = (X, \mc{M}_X t^{[0, \infty)}). \]
+Here, the structure morphisms to $\mc{O}_X$ are as expected. A \textit{holomorphic morphism} of these exploded objects is simply a morphism $X^{\dag} \times p^{\dag} \to Y^{\dag} \times p^{\dag}$ over $p^{\dag}$.
+
+\begin{exm}
+  We will now consider the points $p^{\dag} \to \ms{Expl}(\C, 0)$. These correspond to morphisms
+  \begin{equation}
+    \begin{tikzcd}
+      \mc{M}_{(C, 0)} t^{[0, \infty)} \ar{d}{h} \ar{r} & \mc{O}_{\C} \ar{d} \\
+      \C^{\times} t^{[0, \infty)} \ar{r} & \C.
+    \end{tikzcd}
+  \end{equation}
+  This is determined by the value $h(zt^0) \in \C^{\times}t^{[0, \infty)}$. We may now consider a new coordinate $\wt{z}$ on $\ms{Expl}(\C, 0)$. Thus, as a set, we have
+  \[ \ms{Expl}(\C, 0) = \C^{\times}t^{[0, \infty)}. \]
+  This will admit the notion of a tangent space and a metric, and geometrically we will see $\C \setminus 0$ with a cylindrical end at $0$ and then infinitely many cylindrical ends in the $[0, \infty)$ direction.
+\end{exm}
+
+\subsection{Exploded manifolds}
+\label{subsec:exploded_mflds}
+
+Changing perspective, we will consider $\ms{Expl}(\C, 0)$ as an exploded manifold. We will have
+\begin{itemize}
+\item A set of points $\C^{\times}t^{[0, \infty)}$;
+\item A topology induced from the analytic topology on $\C$ using the smooth part homomorphism;
+\item A sheaf of functions valued in $\C^{\times}t^{\R}$. These functions will look something like $f(\ceil{\wt{z}}) \wt{z}^m t^a$, where $m \in \Z$, $a \in \R$, and $f \colon \C \to \C^{\times}$ which is regular in some sense.
+\end{itemize}
+
+Here, regular could mean holomorphic, smooth, $C^k$, or another form of regularity known as $C^{\infty, \ul{1}}$. This means that for all $\delta < 1$, the function $\abs{f(z) - f(0)} \abs{z}^{-\delta}$ extends to be continuous at $0$ and so do all of its derivatives $\abs{D^kf(z)} \abs{z}^{-\delta}$, where the deriatives are defined using the real or imaginary parts of $z \pdv{z}$.
+
+\begin{defn}
+  An \textit{exploded space} $B$ is a set $B$ equipped with
+  \begin{itemize}
+  \item A topology induced from a surjective map $B \to \ceil{B}$, where $\ceil{B}$ is Hausdorff;
+  \item A sheaf of $\C^{\times} t^{\R}$-valued functions $\mc{E}^{\times}(B)$ containing constants.
+  \end{itemize}
+\end{defn}
+
+\begin{exm}
+For the exploded manifold $\ms{Expl}(X^{\dag})$, then the set $B$ is the set of maps $p^{\dag} \to X^{\dag}$, the smooth part is $\ceil{\ms{Expl}(X^{\dag})} = X$ with the analytic topology, and $\mc{E}^{\times}(\ms{Expl}(X^{\dag})) = \mc{M}_X^{\mr{gp}} t^{\R}$.
+\end{exm}
+
+\begin{exm}
+We will consider an important non-logarithmic example. We will consider $\mathbb{T} = \C^{\times}t^{\R}$ with $\ceil{\mathbb{T}} = \mr{pt}$ and $\mc{E}^{\times}(\mathbb{T})$ the set of monomials $ct^az^m$.
+\end{exm}
+
+\begin{exer}
+Show that for any exploded space $B$, maps $B \to \T$ correspond to sections of $\mc{E}^{\times}(B)$.
+\end{exer}
+
+\begin{exm}
+  The most general example will be $\mathbb{T}^m_P$, where $P \subset \R^m$ is an integral affine polytope defined by inequalities of the form $\alpha \cdot x + a \geq 0$, where $\alpha \in \Z^m$ and $a \in \R$. We also allow strict inequalities. We will define the set $\mathbb{T}^m_P \subset (\C^{\times}t^{\R})^m$ as the points whose tropical part lie in $P$.
+
+  We will now set 
+  \[ M = \Hom(P, [0, \infty))/ \Hom(P, (0, \infty)) \]
+  to be the quotient of integral affine maps on $\R^m$ that are nonnegative on $P$ by those which are strictly positive. As a log scheme, this is
+  \[ \Spec(\Hom(P, [0, \infty)) \to \C[M]). \]
+  Note that $M$ is finitely generated. Writing an integral affine map $\alpha \cdot x + a$, we can write the monomial $z^{\alpha}t^a$, and this gives us $\zeta = \ceil{z^{\alpha}t^a}$. Choosing generators for $M$, we have a map $\mathbb{T}_P \to \C^k$ given by $(\zeta_1, \ldots, \zeta_k)$. The image of this map will be called $\ceil{\mathbb{T}_P}$.
+
+  Finally, we can write
+  \[ \mc{E}^{\times}(T^m_P) = \qty{h(\zeta_1, \ldots, \zeta_k)z^{\alpha}t^a}, \]
+  where $h \colon \C^k \to \C^{\times}$ is regular.
+\end{exm}
+
+More generally, our coordinate charts for exploded manifolds will be $\R^k \times \mathbb{T}_P^m$, where the smooth part and sheaf of exploded functions are as expected.
+
+\begin{exm}
+  One relatively simple example is $\T^m_{[0, \infty)^m} = \ms{Expl}(\C, 0)^m$.
+\end{exm}
+
+\begin{exm}
+Another simple example is $\T^1_{(0, \infty)} = \ms{Expl}(\Spec \N \to \C)$.
+\end{exm}
+
+\begin{defn}
+An \textit{exploded manifold} is an exploded space which is locally isomorphic to $\R^k \times \mathbb{T}_P^m$.
+\end{defn}
+
+\begin{exer}\leavevmode
+  \begin{enumerate}[(a)]
+  \item Maps $f \colon B \to \T_Q^n$ correspond to $n$-tuples $f_1, \ldots, f_n \in \mc{E}^{\times}(B)$ such that $(\ul{f}) \in Q$;
+  \item Maps $\T_P^m \to \T_Q^n$ correspond to integral maps $f \colon P \to Q$;
+    \item Maps $f \colon B \to \R$ correspond to global sections $f^{-1}(e^xt^0) \in \mc{E}^{\times}(B)$ valued in $\R^{>0}t^0$, which are the same as regular maps $\ceil{B} \to \R$.
+  \end{enumerate}
+\end{exer}
+
+\begin{exm}
+  We will now consider the example of a compact polytope. As a set, we have
+  \[ \T^1_{[0,\ell]} = \C^{\times}t^{[0,\ell]}. \]
+  Geometrically, the copies of the $\C^{\times}$ will be asympotically cylindrical only at one end. Note that the $M$ here is generated by two elements (zero at one of the two endpoints), where $\zeta_1 = \ceil{z}$ and $\zeta_2 = \ceil{z^{-1}t^{\ell}}$. Next, we note that
+  \[ \ceil{\T^1_{[0,1]}} = (\zeta_1 \zeta_2 = 0) \subset \C^2, \]
+  which is the model for a node.
+\end{exm}
+
+\begin{exer}
+Show that $\mathbb{T}^1_{[0,\ell]} = \qty{z_1z_2 = t^{\ell}} \subseteq \mathbb{T}^2_{[0, \infty)} = \ms{Expl}(\C, 0)^2$.
+\end{exer}
+Note that there is a map $\ms{Expl}(\C, 0)^2 \xrightarrow{z_1z_2} \ms{Expl}(\C, 0)$, and so we see $\T^1_{[0,1]}$ as a fiber of this map.
+
+\subsection{Geometric structures}
+\label{subsec:geometry}
+
+
+
+As usual, vector fields will correspond to real derivations on $\mc{E}(B)$, which is a sheaf of (semi)-rings. Recall that a derivation $v$ must be linear and satisfy the Leibniz rule:
+\begin{align*}
+  v(f+g) &= v(f) + v(g) \\
+  v(fg) &= v(f) g + f v(g).
+\end{align*}
+Then the condition of being real means that if $f$ is $\R t^{\R}$-values, so is $v(f)$. We also require that
+\[ v(ct^a) = 0 t^a \]
+for constant functions. For example, there is an isomorphism
+\[ T \T_P^m \cong \R^{2m} \times \T_P^m \]
+generated by the vector fields
+\[ \Re \qty[z_i \pdv{z_i}], \Im \qty[z_i \pdv{z_i}]. \]
+
+\begin{defn}
+  A vector $v \in {}^{\Z}T_p B \subset T_p B$ is \textit{integral} if $\frac{vf}{f} \in \Z$ for all $f \in \E^{\times}(B)$.
+\end{defn}
+
+\begin{defn}
+An \textit{almost complex structure} $J$ is a regular section of $T^*B \otimes TB$ such that $J^2 = - \mr{Id}$ and $(Jv) f = i(vf)$ for any $v \in {}^{\Z}T_p B$.
+\end{defn}
+
+\begin{defn}
+An exploded manifold $B$ is \textit{complete} if $\ceil{B}$ is compact and locally isomorphic to $\R^n \times \T_p^m$ for a closed polytope $P$.
+\end{defn}
+
+\section{Families of exploded curves}
+\label{sec:families}
+
+\subsection{Exploded curves}
+\label{subsec:curves}
+
+\begin{defn}
+A \textit{curve} $C$ is a complete, $2$-dimensional exploded manifold with an almost complex structure. A \textit{regular curve} in an almost complex exploded manifold $(B, J)$ is a regular map $f \colon C \to B$ from a curve. Such an $f$ is \textit{holomorphic} if $\dd{f} \circ j = J \circ \dd{f}$.
+\end{defn}
+
+The local models for exploded curves are open subsets of:
+\begin{itemize}
+\item $\C$, corresponding to regular points;
+\item $\T^1_{[0, \ell]}$, corresponding to nodes;
+\item $\T^1_{[0, \infty)}$, corresponding to ends.
+\end{itemize}
+The underlying topological space $\ceil{C}$ is simply a nodal curve, while the tropical part will have vertices corresponding to smooth components, edges corresponding to nodes, and infinite legs corresponding to the ends. At every node, we will have an extra choice of $\C^{\times} t^{(0, \infty)}$ gluing information, which makes the tropical part a metric graph.
+
+Automorphisms of holomorphic curves are holomorphic automorphisms $h \colon C \to C$ which commute with $f$. These induce automorphisms of $\ceil{f}$, but not every automorphism of $\ceil{f}$ respects the gluing data, so they may not lift. Thus there are exploded curves with finite automorphism group as curves, but whose underlying curves are not stable.
+
+\begin{defn}
+A curve $f$ is \textit{stable} if the automorphism group $\Aut \ceil{f}$ is finite.\footnote{This is automatically satisfied if $C = \T$.}
+\end{defn}
+
+\subsection{Families}
+\label{subsec:families}
+
+\begin{defn}
+  A \textit{family} $\Pi \colon \wh{B} \to B_0$ is a complete map such that for all $p \in \wh{B}$, the maps
+  \[ T_p \Pi \colon T_p \wh{B} \to T_p B_0, \qquad T_p \Pi \colon {}^{\Z}T_p \wh{B} \to {}^{\Z}T_p B_0 \]
+  are surjective.
+\end{defn}
+
+For example, the explosion of any normal crossings degeneration is a family in our sense.
+
+\begin{defn}
+  A \textit{regular family} of curves $\wh{f}$ in a family $\wh{B}$ is a regular commutative diagram
+  \begin{equation*}
+    \begin{tikzcd}
+      (C(\wh{f}), j) \ar{r}{\wh{f}} \ar{d} & (\wh{B}, J) \ar{d} \\
+      F(\wh{f}) \ar{r} & B_0
+    \end{tikzcd}
+  \end{equation*}
+  such that the left arrow is a family whose fibers are curves.
+  A \textit{morphism} $\alpha \colon \wh{g} \to \wh{f}$ is a pullback diagram
+  \begin{equation*}
+    \begin{tikzcd}
+      C(\wh{g}) \ar{d} \ar{r} \ar[bend left=20]{rr}{\wh{g}} & C(\wh{f}) \ar{d} \ar[swap]{r}{\wh{f}} & \wh{B} \ar{d} \\
+      F(\wh{g}) \ar{r} & F(\wh{f}) \ar{r} & B_0.
+    \end{tikzcd}
+  \end{equation*}
+\end{defn}
+
+Using this, we may define the moduli stack $\mc{M}^{\infty, 1}(B)$ of $C^{\infty, 1}$ curves in $B$. Then there is a sequence of inclusions
+\[ \mc{M} \overset{\text{closed}}{\subset} \mc{M}^{\mr{st}} \overset{\text{open}}{\subset} \mc{M}^{\infty, 1}(B), \]
+where $\mc{M}$ is stable holomorphic curves and $\mc{M}^{\mr{st}}$ is $C^{\infty, 1}$ stable curves. This carries a topology, where an open substack $U \subset \mc{M}^{\infty, 1}$ is such that its preimage $U(\wh{f}) \subset F(\wh{f})$ is open and for any morphism $\alpha \colon \wh{f} \to \wh{g}$, $F(\alpha)^{-1} U(\wh{g}) = U(\wh{f})$.
+
+\subsection{Gromov compactness}
+\label{subsec:gromov_compactness}
+
+Given an appropriate taming form $\omega$ on $B$, the open substack
+\[ \mc{M}_{g, n, E} \subset \mc{M}^{\infty,1} \]
+of stable curves with at most a prescribed energy $E$ is in fact compact. Equivalently, any sequence of $\mc{M}_{g, n, E}$ has a subsequence $f_i$ such that there exists a regular family $\wh{f}$ and maps $\alpha_i \colon f_i \to \wh{f}$ such that $\ceil{ F(\alpha) } \subset \ceil{ F(\wh{f}) }$ converges.
+
+\subsection{Kuranishi structure}
+\label{subsec:kuranishi}
+
+Recall that $T_f \mc{M}^{\mr{st}}$ give first-order deformations of $f$. We can also consider
+\[ \ol{\partial} f = \frac{1}{2}(\dd{f} + J \circ \dd{f} \circ j), \]
+which is a section of $Y(f) = (T^* C \otimes f^* TB)^{0,1}$ that vanishes on the edges of $C$. We will call the sections of this $\mc{Y}(f)$ and this is a vector bundle on $\mc{M}^{\mr{st}}$. For any holomorphic $f$, we obtain a linearization
+\[ D_f \ol{\partial} \colon T_f \mc{M}^{\mr{st}} \to \mc{Y}(f) \]
+of the $\ol{\partial}$-equation.
+
+\begin{thm}
+If $D_f \ol{\partial}$ is surjective, then there exists an open neighborhood $U \subset \mc{M}^{\mr{st}}$ of $f$ and a regular family $\wh{f} \subset U$ with finite automorphism group $G$ such that $\mc{M} \cap U = \wh{f} / G$.
+\end{thm}
+Therefore, when we have transversality, the moduli space is an exploded orbifold. Unfortunately, this does not always hold.
+
+\begin{thm}
+For an arbitrary $f \in \mc{M}$, there exists an open $U \subset \mc{M}^{\mr{st}}$ and a nice finite rank $V \subset \mc{Y}$ over $U$, $\wh{f} \subset U$, and $G$ as above such that $\ol{\partial}^{-1}(V) = \wh{f} / G$ and and $\mc{M} \cap U = \ol{\partial}^{-1}(0)$.
+\end{thm}
+
+\subsection{Refinements}
+\label{subsec:label}
+
+\begin{defn}
+A \textit{refinement} of an exploded manifold $B$ is a complete, bijective submersion $B' \to B$.\footnote{Note that for ordinary manifolds, this is simply a diffeomorphism.}
+\end{defn}
+
+If we consider the fiber product diagram
+\begin{equation*}
+  \begin{tikzcd}
+    B' \ar{d}{\mr{id}} \ar{r}{\mr{id}} & B' \ar{d} \\
+    B' \ar{r} & B,
+  \end{tikzcd}
+\end{equation*}
+of a refinement with itself, it must always look like the above.
+
+\begin{exm}
+  Let $(X^n, D)$ be a compact toric variety. Then there is a refinement map
+  \[ \ms{Expl}(X, D) \to \T^n \]
+  whose tropical part is the toric fan of $X$ in $\R^n$.
+\end{exm}
+
+If we do a subdivision of the tropical part of an exploded manifold, then on the smooth part we obtain some kind of degeneration. For example, refining the toric fan of $\P^2$ as gives a new scheme. Importantly for us, the virtual fundamental class $[\mc{M}(B')]^{\mr{vir}}$ is a refinement of $[\mc{M}(B)]^{\mr{vir}}$.
+
+Finally, we would like to discuss the relationships between various moduli spaces. There is a diagram as follows:
+\begin{equation*}
+  \begin{tikzcd}
+    \mr{log} \ar[hookrightarrow]{r}{\ms{Expl}} & \mc{M} \ar{d}{\text{Tehrani}} \ar{r}{\text{Ionel}} & \ceil{\mc{M}'} \\
+    & \ceil{\mc{M}}.
+  \end{tikzcd}
+\end{equation*}
+
+\begin{exm}
+Consider the example of lines in $\P^2$. If we move a general line into one of the boundary divisors, the tropical picture gets shifted in the direction we move in. Rescaling (following Ionel), we can produce a new rubber, and the curve then lives in the rubber, as in~\Cref{fig:trop_shift}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick,red] (1,1) -- (0,0);
+    \draw[thick,red] (0,-1) -- (0,0);
+    \draw[thick,red] (-1,0) -- (0,0);
+    \draw[->] (0.5,0.3) -- (0.9,0.7);
+    \node (A) at (1,0) {$\rightsquigarrow$};
+    \draw[thick] (3.5,1) -- (2.5,0);
+    \draw[thick] (2.5,-1) -- (2.5,0);
+    \draw[thick] (1.5,0) -- (2.5,0);
+    \draw[thick,red] (3.8,1.3) -- (2.8,0.3);
+    \draw[thick,red] (2.8,-0.7) -- (2.8,0.3);
+    \draw[thick,red] (1.8,0.3) -- (2.8,0.3);
+    \node (A2) at (3.5,0) {$\rightsquigarrow$};
+    \draw[thick] (4,1) -- (4,-1) -- (6,-1) -- cycle;
+    \draw[thick] (5.5,-1) -- (4,0.5);
+    \draw[thick,red] (5.75,-1) to [bend left=10] (5,0);
+    \draw[thick,red] (4,0.75) to [bend right=10] (5,0);
+    \draw[dashed,thick,blue] (2.8,0.3) -- (2.8,-1);
+    \draw[dashed,thick,blue] (2.8,0.3) -- (1.5,0.3);
+  \end{tikzpicture}
+  \caption{Tropical shift}
+  \label{fig:trop_shift}
+\end{figure}
+
+A more complicated example is shown in~\Cref{fig:trop_shift2}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick,red] (1,1) -- (0,0);
+    \draw[thick,red] (0,-1) -- (0,0);
+    \draw[thick,red] (-1,0) -- (0,0);
+    \draw[->] (0.4,0.2) -- (0.8,0.4);
+    \node (A) at (1,0) {$\rightsquigarrow$};
+    \draw[thick] (3.5,1) -- (2.5,0);
+    \draw[thick] (2.5,-1) -- (2.5,0);
+    \draw[thick] (1.5,0) -- (2.5,0);
+    \draw[thick,red] (4.2,1.3) -- (3.2,0.3);
+    \draw[thick,red] (3.2,-0.7) -- (3.2,0.3);
+    \draw[thick,red] (2.2,0.3) -- (3.2,0.3);
+    \draw[thick,red] (4.5,1) -- (3.5,0);
+    \draw[thick,red] (2.5,0) -- (3.5,0);
+    \draw[thick,red] (3.5,-1) -- (3.5,0);
+    \node (A2) at (4.5,0) {$\rightsquigarrow$};
+    \draw[dashed,thick,blue] (3.2,0.7) -- (3.2,-1);
+    \draw[dashed,thick,blue] (3.2,0.7) -- (1.5,0.7);
+    \draw[dashed,thick,blue] (3.2,0.3) -- (1.5,0.3);
+    \draw[dashed,thick,blue] (4.2,1.3) -- (2.5,-0.4);
+    \draw[dashed,thick,blue] (1.4,-0.4) -- (2.5,-0.4);
+    \draw[dashed,thick,blue] (2.8,0.3) -- (2.8,-1);
+    \draw[thick] (5,1) -- (5,-1) -- (7,-1) -- cycle;
+    \draw[thick] (6.5,-1) -- (5,0.5);
+    \draw[thick] (6.75,-1) -- (5,0.75);
+    \draw[thick] (5,-0.5) -- (6.5,-0.5);
+    \draw[thick,red] (6.875,-1) to [bend left=10] (6.75,-0.75);
+    \draw[thick,red] (6.25,-0.5) to [bend right=10] (6.75,-0.75);
+    \draw[thick,red] (6.875,-1) to [bend right=5] (6.25,-0.5);
+    \draw[thick,red] (6.25,-0.5) to [bend left=5] (5,0.625);
+  \end{tikzpicture}
+  \caption{More interesting tropical shift}
+  \label{fig:trop_shift2}
+\end{figure}
+
+The moduli space is simply $\mc{M}(\T^2) = \T^2$, and after the refinement, we obtain that $\mc{M}(\P^2)$ has tropical part the toric fan of $\P^2$ blown up at the three fixed points. The smooth part is simply $\P^2$ blown up at $3$ points, and the moduli space itself is its explosion. As in the case of relative enumerative geometry, the rubber components need to be quotiented out by symmetries in the approaches of Ionel and Tehrani. However, we should note differences in the two approaches, as seen in~\Cref{fig:comparison}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,-2) -- (4,-2) -- (0,2) -- cycle;
+    \draw[thick] (0.5,-2) -- (0.5,1.5);
+    \draw[thick] (1,-2) -- (1,1);
+    \draw[thick] (1.5,-2) -- (1.5,0.5);
+    \draw[thick] (0,-1.5) -- (3.5,-1.5);
+    \draw[thick] (0,-1) -- (3,-1);
+    \draw[red,thick] (0.75,-2) to [bend left=10] (1,-1.5);
+    \draw[red,thick] (0.75,-2) to [bend right=10] (0.5,-1.5);
+    \draw[red,thick] (0.5,-1.5) to [bend right=30] (1,-1.5);
+    \draw[red,thick] (0.5,-1.5) to [bend right=10] (0,-1.25);
+    \draw[red,thick] (0.25,-1) to [bend left=30] (0,-1.25);
+    \draw[red,thick] (0.5,-1.5) to [bend left=10] (0.25,-1);
+    \draw[red,thick] (1,-1.5) to [bend left=10] (1.5,-1.25);
+    \draw[red,thick] (1.25,-1) to [bend right=30] (1.5,-1.25);
+    \draw[red,thick] (1,-1.5) to [bend right=10] (1.25,-1);
+    \draw[red,thick] (0.25,-1) to [bend right=10] (0,2);
+    \draw[red,thick] (1.25,-1) to [bend right=10] (1,1);
+    \draw[red,thick] (1.5,-1.25) to [bend left=10] (3.5,-1.5);
+    \draw[thick] (5,0) -- (7,0);
+    \draw[thick] (7,-2) -- (7,0);
+    \draw[thick] (7,0) -- (9,2);
+    \draw[thick,red] (5.5,1.5) -- (5.5,-0.5) -- (6,-1) -- (6.5,-0.5) -- (6.5,1.5);
+    \draw[thick,red] (6,-1) -- (6,-2);
+    \draw[thick,red] (6.5,-0.5) -- (8.5,-0.5);
+    \draw[thick,red] (5.5,-0.5) -- (5,-0.5);
+    \draw[thick,dashed,blue] (5,-1) -- (7,-1) -- (9,1);
+    \draw[thick,dashed,blue] (5,-0.5) -- (7,-0.5) -- (9,1.5);
+    \draw[thick,dashed,blue] (5.5,-2) -- (5.5,0) -- (7.5,2);
+    \draw[thick,dashed,blue] (6,-2) -- (6,0) -- (8,2);
+    \draw[thick,dashed,blue] (6.5,-2) -- (6.5,0) -- (8.5,2);
+    \draw[thick] (0,-7) -- (4,-7) -- (0,-3) -- cycle;
+    \draw[thick] (0.5,-7) -- (0.5,-3.5);
+    \draw[thick] (1,-7) -- (1,-4);
+    \draw[thick] (1.5,-7) -- (1.5,-4.5);
+    \draw[thick] (0,-6.5) -- (3.5,-6.5);
+    \draw[thick] (0,-6) -- (3,-6);
+    \draw[thick] (0,-5.5) -- (2.5,-5.5);
+    \draw[red,thick] (0.75,-7) to [bend left=10] (1,-6.5);
+    \draw[red,thick] (0.75,-7) to [bend right=10] (0.5,-6.5);
+    \draw[red,thick] (0.5,-6.5) to [bend right=30] (1,-6.5);
+    \draw[red,thick] (0.5,-6) to [bend right=10] (0,-5.75);
+    \draw[red,thick] (0.25,-5.5) to [bend left=30] (0,-5.75);
+    \draw[red,thick] (0.5,-6) to [bend left=10] (0.25,-5.5);
+    \draw[red,thick] (1,-6.5) to [bend left=10] (1.5,-6.25);
+    \draw[red,thick] (1.25,-6) to [bend right=30] (1.5,-6.25);
+    \draw[red,thick] (1,-6.5) to [bend right=10] (1.25,-6);
+    \draw[red,thick] (0.25,-5.5) to [bend right=10] (0,-3);
+    \draw[red,thick] (1.25,-6) to [bend right=10] (1,-4);
+    \draw[red,thick] (1.5,-6.25) to [bend left=10] (3.5,-6.5);
+    \draw[red,thick] (0.5,-6.5) -- (0.5,-6);
+    \draw[thick] (5,-5) -- (7,-5);
+    \draw[thick] (7,-7) -- (7,-5);
+    \draw[thick] (7,-5) -- (9,-3);
+    \draw[thick,red] (5.5,-3.5) -- (5.5,-5.5) -- (6,-6.5) -- (6.5,-6) -- (6.5,-3.5);
+    \draw[thick,red] (6,-6.5) -- (6,-7);
+    \draw[thick,red] (6.5,-6) -- (8.5,-6);
+    \draw[thick,red] (5.5,-5.5) -- (5,-5.5);
+    \draw[thick,dashed,blue] (5,-6) -- (7,-6) -- (9,-4);
+    \draw[thick,dashed,blue] (5,-5.5) -- (7,-5.5) -- (9,-3.5);
+    \draw[thick,dashed,blue] (5,-6.5) -- (7,-6.5) -- (9,-4.5);
+    \draw[thick,dashed,blue] (5.5,-7) -- (5.5,-5) -- (7.5,-3);
+    \draw[thick,dashed,blue] (6,-7) -- (6,-5) -- (8,-3);
+    \draw[thick,dashed,blue] (6.5,-7) -- (6.5,-5) -- (8.5,-3);
+  \end{tikzpicture}
+  \caption{Ionel's approach can distinguish between the two situations, Tehrani's cannot.}
+  \label{fig:comparison}
+\end{figure}
+\end{exm}
+
+\section{Computations with Calabi-Yau manifolds}
+\label{sec:CY_computations}
+
+We will do another example of a surface, and then we will move on to threefolds. Consider $X = \Bl_{(0,1)} (\P^1 \times \P^1)$ with the strict transform of the toric divisor. Our goal is to compute the number $n_d$ of degree $d$ covers of the exceptional divisor $E$. The blowup modifies our integral affine structure by introducing a cut as in~\Cref{fig:cut}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,-1) -- (0,1);
+    \draw[thick] (-1,0) -- (1,0);
+    \draw[->] (-1,-0.2) -- (-1,0) -- (-0.8,0.2);
+    \node (C) at (-1.5,0) {cut};
+  \end{tikzpicture}
+  \caption{Cut}
+  \label{fig:cut}
+\end{figure}
+
+We can compute $n_1$ by using the gluing formula for a tropical invariant as in~\Cref{fig:n1}:
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,-1) -- (0,1);
+    \draw[thick] (-1,0) -- (1,0);
+    \node (E) at (1.5,0) {$=$};
+    \draw[thick] (3,-1) -- (3,1);
+    \draw[thick] (2,0) -- (4,0);
+    \draw[red, thick] (0.5,-1) -- (0.5,1);
+    \draw[red, thick] (2.5,-1) -- (2.5,1);
+    \draw[red, thick] (2.5,0) -- (3,0);
+  \end{tikzpicture}
+  \caption{Computing $n_1$}
+  \label{fig:n1}
+\end{figure}
+We then see that $1 = 1 \times n_1$, so $n_1 = 1$.
+
+To compute $n_d$, we obtain the picture in~\Cref{fig:nd}, which gives us
+\[ \sum_{\abs{\lambda} = k} \frac{\prod \lambda_i n_{\lambda_i}}{\Aut \lambda} = 0. \]
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,-1) -- (0,1);
+    \draw[thick] (-1,0) -- (1,0);
+    \node (E) at (1.5,0) {$=$};
+    \draw[thick] (3,-1) -- (3,1);
+    \draw[thick] (2,0) -- (4,0);
+    \draw[red, thick] (-1,0.5) -- (-0.5,0);
+    \draw[red, thick] (-0.5,0) -- (-0.5,-1);
+    \draw[red, thick] (-0.5,0) -- (0,0);
+    \draw[red, thick] (3.5,-1) -- (3.5,0);
+    \draw[red, thick] (3.5,0) -- (3.2,0.3);
+    \node[anchor=south] (Q) at (3.2,0.3) {$?$};
+  \end{tikzpicture}
+  \caption{Computing $n_d$}
+  \label{fig:nd}
+\end{figure}
+If you are a combinatorialist, it is easy to obtain
+\[ n_d = \frac{(-1)^{d+1}}{d^2}. \]
+
+We will now consider some threefold examples. Let $B$ be a Calabi-Yau 3-exploded manifold. Then $\ul{B}$ is a $3$-dimensional integral affine manifold with codimension $2$ singular locus $\Gamma$. In some sense, we generically expect that $\Gamma$ has
+\begin{itemize}
+\item Edges (span a wall coming out of the edge where holomorphic curves can go);
+\item Framing changes (where the edge changes the direction by the wall does not);
+\item Positive vertices where three edges meet with the sum of their normal directions is $0$;
+\item Negative vertices whose normal directions are all the same.
+\end{itemize}
+In principle, we can compute invariants for all of these local models, but this is actually very difficult.
+
+The nonsingular case is simply $\T^3$. There are inward arrows $v, w, -v-w$ and we obtain (via a quantum deformation)
+\[ [\mc{M}_{[\gamma],n}]^{\mr{vir}} = \sum_g [\mc{M}_{[\gamma],g,n}]^{\mr{vir}} \hslash^{2g-2+n}. \]
+We then obtain
+\[ [\mc{M}_{[\gamma]}]^{\mr{vir}} = [\T^3] \frac{[n]_q}{n}, \qquad [n]_q = \frac{q^{\frac{n}{2}} - q^{\frac{-n}{2}}}{i}, \]
+where $q^{\frac{1}{2}} = e^{\frac{i\hslash}{2}}$. 
+
+We will now consider $\ms{Expl}(X, D) \times \T$ (the edge). In fact the picture in~\Cref{fig:n1} is still valid, but instead we obtain $1 = [1]_q \times n_1$, so $n_1 = \frac{1}{[1]_q}$. To compute $n_d$, we have the formula
+\[ \sum_{\abs{\lambda} = k} \frac{\prod [ \lambda_i ]_q n_{\lambda_i}}{\Aut \lambda} = 0, \]
+which yields us
+\[ n_d = \frac{(-1)^{d+1}}{d[d]_q}. \]
+
+We will now consider the case of curves lying on a wall. For each edge on the singular locus, we need to glue over $\ms{Expl}(X, D)$. Fortunately gluing constrained to the wall factors through intersection with $E$, so we obtain a Fock space $H_{\ell}$ associated with the edge.
+
+In any situation as in~\Cref{fig:operator}, we obtain an operator $W_{v, \ell} \colon H_{\ell} \to H_{\ell}$. These satisfy the commutation relation
+\[ [ W_{v,\ell}, W_{w, \ell} ] = [v \wedge w]_{q} W_{v+w, \ell} + c_{\ell}(v) \delta_{-v,w}. \]
+These are the relations for the quantum torus $W_{1,\infty}$.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1, transform shape]
+    \draw (-2,0) -- (2,0);
+    \draw[thick,red] (-1,0) -- (1,0);
+    \draw[thick,red,->] (-0.5,-1) -- (0,0);
+    \node (v) at (0,-0.5) {$v$};
+    \node[anchor=south] (h1) at (-0.5,0) {$H_{\ell}$};
+    \node[anchor=south] (h2) at (0.5,0) {$H_{\ell}$};
+  \end{tikzpicture}
+  \caption{Obtaining an operator}
+  \label{fig:operator}
+\end{figure}
+
+Performing another tropical computation as in~\Cref{fig:wall}, we obtain the formula
+\[ W_{v, \ell} \circ W_{w,\ell} = W_{w,\ell} \circ W_{v,\ell} + [v \wedge w]_q W_{v+w,\ell}. \]
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,0) -- (3,0);
+    \draw[thick,red,->] (0,-1) -- (1,0);
+    \node[anchor=north] (v1) at (0,-1) {$v$};
+    \draw[thick,red,->] (3,-1) -- (2,0);
+    \node[anchor=north] (w1) at (3,-1) {$w$};
+    \node (E) at (3.5,0) {$=$};
+    \draw[thick] (4,0) -- (7,0);
+    \draw[thick,red,->] (4,-1) -- (6,0);
+    \node[anchor=north] (v2) at (4,-1) {$v$};
+    \draw[thick,red,->] (7,-1) -- (5,0);
+    \node[anchor=north] (w2) at (7,-1) {$w$};
+    \node (P) at (7.5,0) {$+$};
+    \draw[thick] (8,0) -- (11,0);
+    \draw[thick,red,->] (9.5,-0.5) -- (9.5,0);
+    \node[anchor=west] (vw) at (9.5,-0.25) {$v+w$};
+    \draw (9,-1) -- (9.5,-0.5);
+    \draw (10,-1) -- (9.5,-0.5);
+    \node[anchor=north] at (9.5,-1) {$[v \wedge w]$};
+  \end{tikzpicture}
+  \caption{On the wall}
+  \label{fig:wall}
+\end{figure}
+
+
+Moving on to the framing change, let the legs be $\ell_1$ and $\ell_2$. The framing change is a map
+\[ F \colon \mc{H}_{\ell_1} \to \mc{H}_{\ell_2} \]
+which is in fact an isomorphism of representations of $W_{1, \infty}$. To show this, we consider the tropical picture in~\Cref{fig:framing}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \node[anchor=south west] (F1) at (0,0) {$F$};
+    \draw[thick] (-1,0) -- (0,0);
+    \draw[thick] (0,0) -- (1,-1);
+    \draw[->,thick,red] (0,-1) -- (0.5,-0.5);
+    \node (C1) at (0.2,-0.6) {$v$};
+    \node (E) at (1.5,0) {$=$};
+    \node[anchor=south west] (F2) at (3,0) {$F$};
+    \draw[thick] (2,0) -- (3,0);
+    \draw[thick] (3,0) -- (4,-1);
+    \draw[->,thick,red] (2,-0.5) -- (2.5,0);
+    \node (C1) at (2.3,-0.4) {$v$};
+  \end{tikzpicture}
+  \caption{Framing change}
+  \label{fig:framing}
+\end{figure}
+
+
+Now we consider the positive vertex. We will have $\ell_1, \ell_2$ pointing inward and $\ell_3$ pointing out. The vertex will be an intertwiner
+\[ T \colon H_{\ell_1} \otimes H_{\ell_2} \to H_{\ell_3} \]
+of representations of the quantum torus. The pictures are as in~\Cref{fig:posvert}.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (-1,1) -- (0,0);
+    \draw[thick] (0,-1) -- (0,0);
+    \draw[thick] (1,0) -- (0,0);
+    \draw[->,thick,red] (-1,0) -- (-0.5,0.5);
+    \node (C1) at (-0.8,0.4) {$v$};
+    \node (E) at (1.5,0) {$=$};
+    \draw[thick] (2,1) -- (3,0);
+    \draw[thick] (3,-1) -- (3,0);
+    \draw[thick] (4,0) -- (3,0);
+    \draw[->,thick,red] (2.5,-1) -- (3,-0.5);
+    \node (C2) at (2.7,-0.6) {$v$};
+    \draw[thick] (4,1) -- (5,0);
+    \draw[thick] (5,-1) -- (5,0);
+    \draw[thick] (6,0) -- (5,0);
+    \draw[->,thick,red] (4.5,-1) -- (5.5,0);
+    \node (C3) at (4.7,-0.6) {$v$};
+    \node (D) at (4.25,0) {$\cdot$};
+  \end{tikzpicture}
+  \caption{Positive vertex}
+  \label{fig:posvert}
+\end{figure}
+
+In the case of the negative vertex (point all edges inwards), the operator $N$ diagonalizes as
+\[ N = \sum_{\lambda} c^{\abs{\lambda}} q^{c(\lambda)} \prod_{\square \in \lambda} [h \square]_q \ul{\lambda} \otimes \ul{\lambda} \otimes \ul{\lambda}. \]
+There is a nice interpretation of this due to Bryan-Pandharipande in terms of representations of the symmetric group as usual.
+
+\chapter{Logarithmic and punctured Gromov-Witten invariants, tropicalization, and gluing formalism (Bernd Siebert)}%
+
+\section{Introduction to log geometry}
+
+We will be relatively liberal in the category we work in. We may consider either algebraic varieties or complex manifolds/analytic spaces. These get generalized to algebraic stacks (or analytic stacks), which we will consider later.
+
+\subsection{Normal crossings divisors}
+
+Let $X$ be smooth and $D \subseteq X$ be a divisor such that locally, $D = V(z_1 \cdots z_k)$, where $z_1, \ldots, z_n$ are local coordinates. This is really bad for algebraic geometry. Instead, we may consider
+
+\begin{defn}
+    A \textit{simple normal crossings} divisor is such that there exists $U \subseteq X$ open and a smooth $\pi \colon U \to \A^r$ such that $D \cap U = \pi^{-1}(V(z_1 \cdots z_r))$.
+\end{defn}
+
+All such $D$ can be written as $D = \bigcup D_i$, where the $D_i \subseteq X$ are smooth divisors intersecting transversely. In general, we need an \'etale $U \to X$ such that the preimage of $D$ is a simple normal crossings divisor.
+
+For a simple normal crossings divisor $D = \bigcup D_i$, we obtain line bundles $L_i$ with sections $s_i$ and corresponding sheaves $\mc{L}_i = \mc{O}_X(D_i)$. Every section $s_i$ is a map $\mc{O}_X \to \mc{O}_X(D_i)$, or equivalently, a map $\mc{O}_X(-D_i) \to \mc{O}_X$. In addition, the normal bundles of $D_i \subseteq X$ is
+\[ \mc{N}_{D_i/X} = \mc{O}_{D_i}(D_i) = \mc{L}_i |_{D_i}. \]
+
+Iterating, we see that $D_i \cap D \subseteq D_j$ is a simple normal crossings in $D_i$ with normal bundle
+\[ \mc{N}_{D_i \cap D_j/X} = \mc{N}_{D_i \cap D_j / D_i} \oplus \mc{N}_{D_i/X}. \]
+All of this is contained in $\mc{M}_X \coloneqq \mc{O}_{X/D}^{\times} \cap \mc{O}_X \hookrightarrow \mc{O}_X$. Unfortunately, this is a sheaf of multiplicative monoids and has no additional structure.
+
+\begin{exm}
+    Consider $\A^2_{z,w}$ with $D = V(zw)$. If we consider the sheaf $\mc{M}_X$, away from $D$ we see all $h \in \mc{O}^{\times}$, on the $z$-axis we have $h \cdot w^b, h \in \mc{O}^{\times}$, and at the origin we see $h \cdot z^a w^b$. As a monoid, we have
+    \[ \mc{M}_{X,0} \simeq \N^2 \times \mc{O}_{X,0}^{\times}. \]
+\end{exm}
+
+We can then take the associated abelian sheaf $\mc{M}_X^{\mr{gp}}$, which replaces the $\N$-factors by $\Z$-factors. This has a discrete part $\ol{\mc{M}}_X = \mc{M}_X/\mc{O}_X^{\times}$ with quotient map $\kappa$. In general, in the simple normal crossings case, we have
+\[ \ol{\mc{M}}_X = \bigoplus_i \N_{D_i}. \]
+We may recover the line bundles in the simple normal crossings case. Taking the groupification, we obtain
+\[ 1 \to \mc{O}_X^{\times} \to \mc{M}_X^{\mr{gp}} \to \ol{\mc{M}}_X^{\mr{gp}} \to 0, \]
+and thus $\mc{M}_X^{\mr{gp}}$ is a $\mc{O}_X^{\times}$-torsor. Considering $\mc{T} \coloneqq \kappa^{-1}((a_1, \ldots, a_r))$, we can brute force the sheaf
+\[ (\mc{T} \oplus \mc{O}_X) / \mc{O}_X^{\times} = \mc{O}_X\qty(-\sum a_i D_i). \]
+
+\subsection{Toric geometries}
+
+Consider a finitely generated submonoid $P \subseteq (\Z^n, +)$. Explicitly, we can write $P = \N m_1 + \cdots + \N m_r$. The most imporant case is when we take $\sigma^{\vee} \cap \Z^n$, where $\sigma \subseteq (\R^n)^*$ is a rational polyhedral cone. It is customary to write $(\R^n)^* \simeq N \otimes \R$ and $P \subseteq M$ for the two different $\Z^n$.
+
+Using $P$, we obtain a finitely-generated $\C$-algebra $\C[P] = \qty{\sum_{m \in P} a_m z^m}$, where the sums are finite. Explicitly, we can consider the map
+\[ \varphi \colon \C[u_1, \ldots, u_r] \twoheadrightarrow \C[P] \qquad u_i \mapsto z^{m_i}, \]
+which give equations for the ring. The relations always come from relations in $P$, so $\ker \varphi$ is generated by binomial equations $z^{m_1} z^{m_2} = z^{m_1'} z^{m_2'}$ (in the saturated case). Applying the $\Spec$ functor, we obtain
+\[ \Spec \C[P] \hookrightarrow \A^r. \]
+
+In fact, we always have $P \subseteq \sigma^{\vee} \cap M$ with $\sigma = \Hom(P, \R_{\geq 0})$ with equality if and only if $P$ is saturated.
+
+\begin{exm}
+    Consider $P \subseteq \N \cdot 2 + \N \cdot 3 \subseteq \Z = M$. Then $\C[P] = \C[x,y]/(x^3-y^2)$.
+\end{exm}
+
+\begin{exms}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Consider the cone generated by $(0,1)$ and $(k,1)$ in $N_{\R}$. Then the dual cone is generated by $(-1,k)$ and $(1,0)$ over $\R$, and the monoid $P = \sigma^{\vee} \cap M$ is generated by $(1,0), (0,1)$, and $(-1, k)$. Writing the corresponding variables as $z,w,t$, we obtain
+            \[ C[P] = \C[z,w,t]/(zw-t^k), \]
+            which is the $A_{k-1}$ singularity. Note that this is the base change under $t \mapsto t^k$ of the normal crossings degeneration $(zw-t)$.
+        \item Let $\sigma^{\vee}$ be the cone over the convex hull of the square $\qty{(0,0), (1,0), (1,1), (0,1)}$. Then 
+            \[ \C[\sigma^{\vee} \cap M] \simeq \C[x,y,z,w] / (xy-zw) \]
+            is a tensor product
+            \[ \C[x,y] \otimes_{\C[t]} \C[z,w] \qquad xy \mapsfrom t \mapsto zw. \]
+    \end{enumerate}
+\end{exms}
+
+Because we have $P = \sigma^{\vee} \cap M$, we obtain $\C[P] \subseteq \C[M]$. This gives us an $M$-grading, which induces a $(\C^{\times})^n$-equivariant embedding
+\[ (\C^{\times})^n = \Spec \C[M] \hookrightarrow \Spec \C[P] = X_{\sigma}. \]
+
+\begin{defn}
+    A \textit{toric variety} is a $(\C^{\times})^n$-equivariant partial compactification of $(\C^{\times})^n$.
+\end{defn}
+
+\begin{rmk}
+    We will want $P$ to be saturated, which corresponds to the toric variety being normal.
+\end{rmk}
+
+\begin{defn}
+    The \textit{toric divisor} is the complement $x_{\sigma} \setminus (\C^{\times})^n$, and its components $D_i$ can be read off from the facets of $P$ (or $P_{\R} = \R_{\geq 0} \cdot P$).
+\end{defn}
+
+An alternative construction of toric varieties is as follows. Consider $N \simeq \Z^n$. Then let $\sigma(1)$ be the set of rays, labelled $\rho_1, \ldots, \rho_r$. Then we define the \textit{Cox ring} to be
+\[ R \coloneqq \C[\on{Map}(\sigma(1), \N)] = \C[\chi_1, \ldots, \chi_r]. \]
+Then there is a map $M \to \on{Map}(\sigma(1), \Z)$ given by $m \mapsto (\rho_i \mapsto \ev{m, n_i})$, where $n_i$ is the primitive generator of $\rho_i$. Grading $R$ by $\Gamma = \on{Map}(\sigma(1), \Z)/M$, we obtain an action of $(\C^{\times})^{r-n}$-action on $R$. Taking the categorical quotient $\Spec R^{\Gamma}$, we obtain $X_{\sigma}$.
+
+\begin{exer}
+    Show that $R^{\Gamma} = \C[P]$ where $P = \sigma^{\vee} \cap M$.
+\end{exer}
+
+The upshot is that an affine toric variety can be written as $\Spec \C[P] = \A^r \sslash_0 (\C^{\times})^{r-n}$.
+
+In this case, if $X = X_{\sigma}$, then generalizing $\mc{M}_{\A^n} = \mc{O}_{\A^n \setminus V(z_1\cdots z_n)} \cap \mc{O}_{\A^n} \hookrightarrow \mc{O}_{\A^n}$, we can write
+\[ \mc{M}_X \coloneqq \mc{O}_{X\setminus D}^{\times} \hookrightarrow \mc{O}_X. \]
+As long as $0$ is the only invertible element of $P$, we have
+\[ \ol{\mc{M}}_{X,0} = P. \]
+Now we have an embedding
+\[ \Gamma(\ol{\mc{M}}_{X}^{\mr{gp}}) \hookrightarrow \Z^r \qquad f \mapsto (\on{ord}_{D_1} f, \ldots, \on{ord}_{D_r} f). \]
+The image corresponds to principal Cartier divisors.
+
+\begin{exm}
+    If $\sigma$ is the cone over the square, then $D = \sum a_i D_i$ is Cartier if and only if $a_1+a_3 = a_2 + a_4$.
+\end{exm}
+
+\subsection{Abstract log structures}
+Consider $\alpha \colon \mc{M}_X \to \mc{O}_X$ in the \'etale topology such that $\alpha^{-1}(\mc{O}_X^{\times}) \xrightarrow[\alpha]{\simeq} \mc{O}_X^{\times}$. This definition is useless in this generality, but it does automatically provide us with
+\[ \ol{\mc{M}}_X, \mc{M}_X^{\mr{gp}}, \kappa \]
+as before.
+
+We will instead provide an alternative point of view, due to Deligne-Faltings. We want the following data:
+\begin{itemize}
+    \item A sheaf of finitely generated $\ol{\mc{M}}$ inside $\ol{\mc{M}}_X^{\mr{gp}}$ constructible;
+    \item For all $U \subseteq X$, a map 
+        \[ \ol{\mc{M}}(U) \to \on{\mc{D}iv}(U) = \qty{(\text{line bundle, section}) \text{ on }U} \qquad \ol{m} \mapsto (\alpha_{\ol{m}} \colon \kappa^{-1}(\ol{m}) \to \mc{O}_X)^{\vee}. \]
+    \item We have compatibility $\ol{\mc{M}} \to \on{\mc{D}iv}_X$ which is morally a symmetric monoidal functor.%\footnote{The reference with the answers is {\href{this paper}{https://www.sciencedirect.com/science/article/pii/S0001870812002368}} by Borne-Vistoli}
+\end{itemize}
+
+\begin{exms}\leavevmode
+    \begin{enumerate}[(a)]
+        \item Consider \textit{log points}, which are given by $\Spec(Q \to \C) = (\Spec \C, Q \oplus \C^{\times})$. Here, we need $Q$ a finitely generated monoid with $Q^{\times} = \qty{0}$, and we have
+            \[ \alpha(q,a) = \begin{cases}
+                0 & q \neq 0 \\
+                a & q = 0.
+            \end{cases}
+            \]
+        \item We can consider \textit{pullback log structures} for morphisms $f \colon Y \to X$ with a log structure $\mc{M}_X$ on $X$. We obtain a log structure on $Y$ by writing
+            \[ f^* \mc{M}_X = (f^{-1} \mc{M}_X \oplus \mc{O}_Y^{\times}) / f^{-1} \mc{O}_X^{\times} \]
+            and send $(s,h) \mapsto f^*\alpha(s) \cdot h$.
+    \end{enumerate}
+\end{exms}
+
+Note that if $Q = \sigma^{\vee} \cap M$ and $0 \hookrightarrow X_{\sigma}$ is the inclusion of a $0$-dimensional orbit, the pullback log structure is $f^* \mc{M}_{X_{\sigma}} = \Spec(Q \to \C)$.
+
+An important class of examples are those with charts. Consider an open set $U \subseteq X$ (maybe in the \'etale topology) and a map $f \colon U \to \Spec \C[P]$, where $P$ is as in the previous subsection, with isomorphisms $\mc{M}_X|_U \simeq f^* \mc{M}_{\Spec \C[P]}$. The \textit{fine log structures} are those with local charts and a \textit{fine saturated log structure} is one with $P$ saturated.
+
+\begin{defn}
+    A \textit{log morphism} $f \colon (X, \mc{M}_X) \to (Y, \mc{M}_Y)$ is a map $f \colon X \to Y$ (which gives us $f^{\sharp} \colon f^{-1}\mc{O}_Y \to \mc{O}_X)$ and a morphism of sheaves $f^{\flat} \colon f^{-1} \mc{M}_Y \to \mc{M_X}$ making the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        f^{-1}\mc{M}_Y \ar{r}{f^{\flat}} \ar[swap]{d}{f^{-1}\alpha_Y} & \mc{M}_X \ar{d}{\alpha_X} \\
+        f^{-1} \mc{O}_Y \ar{r}{f^{\sharp}} & \mc{O}_X
+    \end{tikzcd}
+    \end{equation*}
+    commute.
+\end{defn}
+
+We will refer to $\ol{\mc{M}}$ as the \textit{ghost sheaf}. Others call it the \textit{characteristic sheaf}, but Bernd prefers to call it the ghost sheaf.
+
+\subsection{Log smooth morphisms}
+\label{subsec:log_smooth}
+
+These morphisms are locally given by toric morphisms. Suppose we have a morphism $Q \to P$ of monoids. Then we require the existence of a diagram
+\begin{equation*}
+  \begin{tikzcd}
+    X \ar{r}{\text{smooth}} \ar{dr}{f} & Y \times_{A_Q} A_P \ar{r}{\varphi} \ar{d} & \Spec \C[P] = A_P \ar{d} \\
+    & Y \ar{r} & \Spec \C[Q]
+  \end{tikzcd}
+\end{equation*}
+
+\begin{exm}
+  The basic example is the diagram
+\begin{equation*}
+  \begin{tikzcd}
+    X \ar{r} \ar{dr}{f} & Y \times_{\A^1} \A^r \ar{r}{\varphi} \ar{d} & \A^r\ar{d}{\prod z_i} \\
+    & Y \ar{r} & \A^1
+  \end{tikzcd}
+\end{equation*}
+\end{exm}
+
+\begin{exms}\leavevmode
+\begin{enumerate}[(a)]
+\item We can allow $Q = 0$. Then we require the existence of a divisor $D \subseteq X$ such that $(X, D)$ is a toroidal pair.
+\item If we consider $Q = \N$ and $P = \N^r$ with the map $1 \mapsto (1, \ldots, 1)$, these are base changes of normal crossings degenerations.
+\item Let $0^{\dag} = \Spec (\N \to \C)$ be the standard log point. Then if $Y$ is a curve, the central fiber
+  \begin{equation*}
+    \begin{tikzcd}
+      X_0 \ar[hookrightarrow]{r} \ar{d} & X \ar{d} \\
+      0^{\dag} \ar[hookrightarrow]{r} & Y
+    \end{tikzcd}
+  \end{equation*}
+  is a normal crossings degeneration.
+\item Let $f \in \C[z_0, \ldots, z_3]$ be homogeneous of degree $4$. Define
+  \[ X' = V(tf(z_1, \ldots, z_3) + z_0 \cdots z_3) \subseteq \A^1_t \times \P^3_{z_0 \ldots z_3}. \]
+  This is singular, where the singular locus $(X_0')_{\mr{sing}} \cap V(f)$ consists of $24$ $A_1$ singularities. If we consider $X_0' \subseteq X'$, this is a very bad at the singularities, meaning they are not fine. To resolve this, we can simply blow up the singularities in some order to obtain a smooth total space $X$ which is a normal crossings degeneration and hence log smooth.
+
+  Suppose we have a normal crossings degeneration $X_0 \subseteq X$. Then this $X_0$ is $d$-semistable in the sense of Friedman. What this means is that
+  \[ \on{\mc{E}xt}^1(\Omega^1_{X_0}) \in \Pic((X_0)_{\mr{sing}}) \]
+  is a trivial bundle. He proved that a $d$-semistable K3 surface is smoothable. In higher dimension, this is very tricky.
+
+  This story can be reinterpreted in terms of log geometry following Kawamata and Namikawa. They showed that a normal crossings variety $X_0$ is $d$-semistable if and only if there exists a log structure $\mc{M}_{X_0}$ and a log smooth morphism
+  \[ (X_0, \mc{M}_{X_0}) \to \Spec (\N \to \C). \]
+
+  All of this has a symplectic analogue due to McLean-Tehrani-Zinger, which states that symplectically $d$-semistable implies symplectically smoothable.
+\end{enumerate}
+\end{exms}
+
+\subsection{Kato-Nakayama spaces}
+\label{subsec:knspace}
+
+For any $(X, \mc{M}_X)$, this is a topological space $(X, \mc{M}_X)^{\mr{KN}} \to X$ which provides a ``topological smoothing'', where if we have a diagram
+\begin{equation*}
+  \begin{tikzcd}
+    X_0 \ar[hookrightarrow]{r} \ar{d} & X \ar{d}{\pi} \\
+    \Spec(\N \to \C) \ar[hookrightarrow]{r} & S,
+  \end{tikzcd}
+\end{equation*}
+then the KN functor will give us a map $X_0^{\mr{KN}} \to S^1$ which should be thought of as a restriction of $\pi$ to the locus lying over a small circle.
+
+\section{Tropicalization}
+\label{sec:tropicalization}
+
+Traditionally, we would begin with a valued $\C$-algebra, for example
+\[ K = \C \{\{t\}\} = \bigcup_{k > 0} \C((t^{1/k}). \]
+If we choose an ideal $I \subseteq K[z_1^{\pm}, \ldots z_n^{\pm}]$, we obtain an algebraic subvariety $V(I) \subseteq (K^{\times})^n$. Applying the valuation
+\[ \on{val} \colon (K^{\times})^n \to \R^n, \]
+we can define the \textit{tropicalization} in various ways:
+\begin{align*}
+\ms{Trop}(X) &= \ol{\on{val}(V(I))} \\
+             &= \qty{w \in \R^n \mid \on{in}_w(I) \neq (1)} \\
+             &= V(\ms{trop}(I)),
+\end{align*}
+where $\ms{trop}(I) \subseteq (\R, \max, +)[x_1^{\pm}, \ldots, x_n^{\pm}]$ is the tropicalization of $I$.
+
+If we have convergent Puiseux series, we can consider $(X_t)_{t \neq 0} \subseteq (\C^{\times})^n$, and then take
+\[ \log_t(X_t) \xrightarrow{t \to 0} \ms{Trop}(X). \]
+
+\subsection{Tropicalization in log geometry}
+\label{subsec:trop_log}
+
+Consider a fine log space $X = (\ul{X}, \ms{M}_X)$. For all $x \in X$, we will write $P_x = \ol{\mc{M}}_{X,x}$. This is a finitely generated monoid with $P_x^{\times} = \qty{0}$. In algebraic geometry, if $y \in X$ is a non-closed point and $x$ is a specialization of $Y$, then there is a \textit{generization map}
+\[ P_x \twoheadrightarrow P_y = (P_x + F^{\mr{gp}})/ F^{\mr{gp}}. \]
+Here, $F \subseteq P_x$ is a face $\qty{p \mid \alpha(p) \in \mc{O}_{X,y}^{\times}}$.
+
+In the analytic world, we can instead find an open set $U$ around $x$ such that $\ol{\mc{M}}_X(U) \to \ol{\mc{M}}_{X,x} = P_x$ is an isomorphism. Then, we have a diagram
+\begin{equation*}
+  \begin{tikzcd}
+    \ol{\mc{M}}_X(U) \ar{r}{\simeq} \ar[twoheadrightarrow]{dr} & P_X \ar[dashrightarrow]{d} \\
+    & P_Y
+  \end{tikzcd}
+\end{equation*}
+defining the generization map.
+
+Dualizing, consider the rational polyhedral cone $\sigma_x = \Hom(P_x, (\R_{\geq 0}, +))$. Because we have the surjective generization map which is projection along a face $F$, we have
+\[ \sigma_y \xrightarrow{\simeq} \sigma_X \cap F^{\perp} \hookrightarrow \sigma_x. \]
+In the case of $\P^1 \times \P^1$, we can recover the correspondence between orbits and the fan, and finally we set
+\[ \on{\ms{Trop} X} \coloneqq \varinjlim_{x \in X} \sigma_x. \]
+
+\begin{prop}
+If $X$ is the toric variety corresponding to a fan $\Sigma$, then $\on{\ms{Trop}} X = \Sigma$ with the embedding into $N_{\R}$ forgotten.
+\end{prop}
+
+\begin{warn}
+  It should be noted that if $X = \Bl_1(\P^1 \times \P^1)$ and $D = \bigcup_4 \P^1$, then
+  \[ \on{\ms{Trop}} X = \on{\ms{Trop}} \P^1 \times \P^1. \]
+  In fact, if we take any toric surface with four boundary divisors (for example a Hirzebruch surface), we obtain the same tropicalization. This is in fact a \textbf{feature} of the theory.
+\end{warn}
+
+\begin{exm}[Whitney umbrella]
+  Consider coordinates $x,y,z$ on $\A^3$ and consider $\wt{D} = V(xy)$. Consider the $\Z/2\Z$ action given by
+  \[ (x,y,z) \mapsto (y,x,-z). \]
+  Taking the quotient, we obtain
+  \[ \wt{D} / (\Z/2\Z) \simeq V(uv^2-w^2) \subseteq \A^3. \]
+  Removing the origin, we can set $X = \A^3 \setminus \qty{0}$ with divisor $\wt{D}/(\Z/2\Z)$. If we consider $\wt{\ell}$ to be the $z$-axis, we note that
+  \[ \mc{M}_(\A^3, \wt{D})|_{\ell} = \ul{\N^2}, \]
+  so $\mc{M}_{X}|_{\ell}$ is locally constant (it sees the monodromy of swapping $x$ and $y$). Finally, we get that $\on{\ms{Trop}}(X)$ is the generalized cone complex (locally a limit of cone complexes) shown in~\Cref{fig:whitney}.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1, transform shape]
+      \node (L) at (0,0) {$\varinjlim$};
+      \fill[fill=cyan] (0.8,-1) rectangle (2.8,1);
+      \fill[fill=cyan] (5.2,-1) rectangle (7.2,1);
+      \draw[thick] (0.8,1) -- (0.8,-1) -- (2.8,-1);
+      \draw[thick] (5.2,1) -- (5.2,-1) -- (7.2,-1);
+      \draw[thick,->] (3,0.5) -- (5,0.5);
+      \draw[thick,->] (3,-0.5) -- (5,-0.5);
+      \node (I) at (4, -0.8) {$\mr{id}$};
+      \node (S) at (4, 0.8) {$(a,b) \mapsto (b,a)$};
+      \fill[fill=cyan] (9.2,1) -- (9.2,-1) -- (11.2,1) -- cycle;
+      \draw[thick] (9.2,1) -- (9.2, -1);
+      \draw[thick,dashed] (11.2,-1) -- (9.2,-1) -- (11.2, 1);
+      \node (E) at (8.2, 0) {$=$};
+      \draw[thick] (0.5,0) arc[start angle=180, end angle=160,radius=4];
+      \draw[thick] (0.5,0) arc[start angle=180, end angle=200,radius=4];
+      \draw[thick] (7.5,0) arc[start angle=0, end angle=-20,radius=4];
+      \draw[thick] (7.5,0) arc[start angle=0, end angle=20,radius=4];
+    \end{tikzpicture}
+    \caption{Tropicalization of the Whitney umbrella}
+    \label{fig:whitney}
+  \end{figure}
+\end{exm}
+
+\section{Log smooth curves}
+\label{sec:log_smooth_curves}
+
+These are simply normal crossings degenerations of smooth curves with marked points. These will be domains for stable log maps, which will define logarithmic Gromov-Witten theory. There are three types of local models for $\mc{M}_C |_{C_0}$. Let $z$ be the fiber direction and $t$ be the base direction.
+\begin{itemize}
+\item At the generic points $\eta$ of $C_0$, the map is given by $(z,t) \mapsto t$, so
+  \[ \ol{\mc{M}}_{C_0, \eta} = \N = \ev{t}. \]
+\item At a marked point $p$ of $C_0$, we can see both the base and fiber directions, so we obtain
+  \[ \ol{\mc{M}}_{C_0, p} = \N \oplus \N = \ev{z,t}. \]
+  Here, this receives a map from $\N$ going into the first factor.
+\item At a node $q$, we have $(z,w) \mapsto zw = t$, and thus
+  \[ \ol{\mc{M}}_{C_0, q} = \N^2 = \ev{z,w}. \]
+  This receives a map from $\N$ where $1 \mapsto (1,1)$.
+\end{itemize}
+
+Generally, we want to consider curves $C \to \Spec(\N \to \C)$ which are log smooth, integral, have $\ul{C}$ reduced, have fine separated log structures, and are of relative dimension $1$. In this case, $C$ is a nodal curve, and locally on $C$:
+\begin{itemize}
+\item At $\eta$, $\ol{\mc{M}}_{C, \eta} = Q$;
+\item At $p$, $\ol{\mc{M}}_{C, p} = Q \oplus \N$;
+\item At $q$, $\ol{\mc{M}}_{C, q} = Q \oplus_{\N} \N^2$. Here, the map from $\N$ is given by $1 \mapsto (s, (1,1))$. We should note that
+  \[ Q \oplus_{\N} \N^2 = (Q \oplus \N^2) / ((s, (0,0)) \sim (0, (1,1))). \]
+\end{itemize}
+
+In the universal case, we have $Q = \N^{\text{number of nodes}}$. Interpreting this as a (semi-)universal deformation, where each node gets smoothed in a different direction. The log structure is then given by
+\begin{align*}
+\ol{\mc{M}}_{C, \eta} &= \N^{r = \text{number of nodes}} \\
+\ol{\mc{M}}_{C, p} &= \N^{r} \oplus \N \\
+\ol{\mc{M}}_{C, 1} &= \N^{r} \oplus_{\N} \N^2 
+\end{align*}
+
+If the curve is stable, we obtain the moduli space $\ol{\mc{M}}_{g,k}$ with universal curve $\mc{C}_{g,k}$. Considering the nodal locus $D_{g,k}$, we also have normal crossings divisors (in the sense of Deligne-Mumford stacks) $\wh{D}_{g,k} \cup \Gamma_k$, where the $\Gamma_k$ are the marked points. This gives us a log smooth smooth morphism
+\[ (\mc{C}_{g,k}, \mc{M}_{\mc{C}_{g,k}}) \to (\ol{\mc{M}}_{g,k}, \mc{M}_{\ol{\mc{M}}_{g,k}}). \]
+Restricting to one fiber, we obtain the universal log structure on stable curves.
+
+\subsection{Tropicalization of log curves}
+\label{subsec:tropicalization_2}
+
+Over the standard log point, consider a curve $C \xrightarrow{\pi} 0^{\dag}$. Tropicalization will give us a tropical curve
+\[ \Sigma_C \xrightarrow{\pi^{\mr{trop}}} \Sigma_{0^{\dag}} = \R_{\geq 0}. \]
+In fact, if $\Gamma$ denotes the fiber over $1$, then in fact $\Sigma_C$ is the cone over $\Gamma$ as a polyhedral complex.
+\begin{itemize}
+\item At $\eta$, we obtain a vertex $V_{\eta}$ of $\Gamma$. Note that $\Hom(\ol{\mc{M}}_{C,\eta}, \R_{\geq 0}) = \R_{\geq 0}$, so we get a copy of a line.
+\item At a node $q$, we have
+  \[ \N \oplus_{\N} \N^2 \simeq \ev{(1,0), (0, 1), (k, -1)} \eqqcolon \sigma^{\vee} \cap \Z^2 \qquad (a, (b,c)) \mapsto (a+bk, c-b). \]
+  Therefore, we can consider the two projections $x_1$ (to the $y$-axis) and $x_2$. Dualizing, $\sigma$ is the cone generated by $(1,0)$ and $(1,k)$, and so $\pi^{\mr{trop}}$ is the projection to the first coordinate. Therefore, we obtain an interval of length $k$.
+\item At a marked point $p$, we obtain a copy of $\R_{\geq 0}$.
+\end{itemize}
+The upshot is that $\Gamma$ is the dual graph of $C$ with vertices corresponding to components, edges corresponding to nodes, and legs corresponding to marked points. We also give $\Gamma$ a $\Z$-affine structure, which means that each of the edges have a length $k$, which corresponds to the local equation of the node (an $A_{k-1}$ singularity).
+
+Over a more general log point $\Spec(Q \to \C)$, the tropicalization $\Sigma_C$ lives over the cone $\tau = \Hom(Q, \R_{\geq 0})$. Note that faces of $\tau$ corespond to collapsing some edges. In the universal case, then $\tau = \R_{\geq 0}^{\text{number of nodes}}$.
+
+\section{Logarithmic Gromov-Witten invariants}
+\label{sec:log_gw}
+
+\subsection{Stable log maps}
+\label{subsec:stable_maps}
+
+As in the case of (non-logarithmic) stable maps, we can simply write down the definition as expected (although the automorphisms of the underlying map need to be finite). The targets will be a fine separated log scheme $X = (\ul{X}, \mc{M}_X)$, and later we will require our target to be log smooth and projective.
+
+Over a log point $W \coloneqq \Spec(Q \to \C)$, we will have a map $f \colon C \to X$, where $C$ is a log curve over $W$. Note that we need $Q \neq 0$ to allow nodal domains. The stability condition is that $\ul{C} \to \ul{X}$ is a stable map in the ordinary sense.
+
+\begin{prob}
+The set of possible values for $Q$ are not bounded. This is common in log moduli problems, so we need to use the geometry of the moduli problem to constrain the choice of $Q$. For example, for nodal curves, we will choose $Q = \N^{\text{number of nodes}}$.
+\end{prob}
+
+The solution here is to consider basic stable log maps. If we consider the tropicalization
+\begin{equation*}
+  \begin{tikzcd}
+    \Sigma_C \ar{r} \ar{d} & \Sigma_X \\
+    \tau,
+  \end{tikzcd}
+\end{equation*}
+this is something called a \textit{tropical stable map}. Now for all $s \in \tau^{\circ}$, the map
+\[ h_s \colon \Gamma_s \to \Gamma_X \]
+has the same type, which is given by
+\begin{itemize}
+\item The \emph{combinatorial type} of $\Gamma_s$. In other words, no contraction of edges is allowed;
+\item The \emph{smallest cells} $\sigma(-)$ of $\Sigma_X$ containing $h(V_{\eta}), h(E_q), h(L_p)$;
+\item The \emph{contact orders} $u_p$ at $L_p$ and $u_q$ at $E_q$. For example, at a marked point, $h_s$ maps the ray $L_p$ (with endpoint $V_{\eta}$) to a ray inside $\sigma(p)$ starting somewhere on $\sigma(\eta)$. Then the unit vector along this ray is called $u_p$. For an edge, the story is similar, but it depends on an implicit orientation of $E_q$.
+\end{itemize}
+
+We now obtain a (local) \textit{tropical moduli space} of type
+\[ \tau = (\Gamma, \ul{\sigma} = \qty{\sigma(p), \ldots}, \ul{u} = \qty{u_p, \ldots}), \]
+where $\tau$ is also a rational polyhedral cone. The moduli space parameterizes tropical space maps of a given type.
+
+
+\begin{exms}\leavevmode
+\begin{enumerate}
+\item Let $X = \P^2$ with the toric log structure and $C$ be a line. We will take the rays of $\Sigma_{\P^2}$ to be the opposite of the usual ones and suppose that $u_{p_1} = (1,1), u_{p_2} = (-1,0), u_{p_3} = (-1, -1)$ as in~\Cref{fig:generic}. We then obtain
+  \[ \tau = \qty{(a,b \in \R)} = \R^2_{\geq 0}. \]
+  This forces the curve to have two components, where the one containing $p_3$ maps to the vertical divisor and the one containing $p_1, p_2$ is collapsed to a point.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (-2,0) -- (0,0) -- (0,-2) -- (0,0) -- (2,2);
+      \draw[thick,red,->] (-1,1) -- (-2,1);
+      \draw[thick,red,->] (-1,1) -- (-1,-2);
+      \draw[thick,red,->] (-1,1) -- (0,2);
+      \node[anchor=south] (a) at (-0.5,0) {$a$};
+      \node[anchor=west] (b) at (-1,0.5) {$b$};
+      \node[anchor=east] (eq) at (-1,0.5) {$E_q$};
+      \node[anchor=south] (up2) at (-2,1) {$u_{p_2} = (-1,0)$};
+      \node[anchor=south] (up1) at (0,2) {$u_{p_1} = (1,1)$};
+      \node[anchor=north] (up3) at (-1,-2) {$u_{p_3} = (-1,-1)$};
+      \node[circle,fill=red,scale=0.5] (n) at (-1,0) {};
+      \draw[thick] (3,-2) -- (7,-2) -- (3,2) -- cycle;
+      \draw[red,thick] (3,2) -- (3,-2);
+      \node[circle,fill=red,scale=0.5] (n) at (3,-2) {};
+      \node[circle,fill=red,scale=0.5] (n) at (3,2) {};
+      \node[anchor=south] (p12) at (3,2) {$1,2$};
+      \node[anchor=north] (p3) at (3,-2) {$3$};
+    \end{tikzpicture}
+    \caption{Most generic (tropically) case}
+    \label{fig:generic}
+  \end{figure}
+
+  Taking the $a \to 0$ limit as in~\Cref{fig:limit1}, then $\tau = \R_{\geq 0}$ and the image of $p_3$ moves along the bottom divisor. In the $b \to 0$ limit, shown in~\Cref{fig:limit2}, we unbreak the curve, and taking the total limit as $(a,b) \to (0,0)$ (see~\Cref{fig:limit3}), we obtain the most general (in the geometric sense) situation.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (-2,0) -- (0,0) -- (0,-2) -- (0,0) -- (2,2);
+      \draw[thick,red,->] (0,1) -- (-2,1);
+      \draw[thick,red,->] (0,1) -- (0,-2);
+      \draw[thick,red,->] (0,1) -- (1,2);
+      \node[anchor=east] (b) at (0,0.5) {$b$};
+      \node[circle,fill=red,scale=0.5] (n) at (0,0) {};
+      \draw[thick] (3,-2) -- (7,-2) -- (3,2) -- cycle;
+      \draw[red,thick] (3,2) -- (5,-2);
+      \node[circle,fill=red,scale=0.5] (n) at (5,-2) {};
+      \node[circle,fill=red,scale=0.5] (n) at (3,2) {};
+      \node[anchor=south] (p12) at (3,2) {$1,2$};
+      \node[anchor=north] (p3) at (5,-2) {$3$};
+    \end{tikzpicture}
+    \caption{$a\to 0$ limit of the previous example}
+    \label{fig:limit1}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (-2,0) -- (0,0) -- (0,-2) -- (0,0) -- (2,2);
+      \draw[thick,red,->] (-1,0) -- (-2,0);
+      \draw[thick,red,->] (-1,0) -- (-1,-2);
+      \draw[thick,red,->] (-1,0) -- (1,2);
+      \node[anchor=south] (a) at (-0.5,0) {$a$};
+      \draw[thick] (3,-2) -- (7,-2) -- (3,2) -- cycle;
+      \draw[red,thick] (3,2) -- (3,-2);
+      \node[circle,fill=red,scale=0.5] (n) at (3,-2) {};
+      \node[circle,fill=red,scale=0.5] (n) at (3,0) {};
+      \node[circle,fill=red,scale=0.5] (n) at (3,2) {};
+      \node[anchor=south] (p1) at (3,2) {$1$};
+      \node[anchor=east] (p2) at (3,0) {$2$};
+      \node[anchor=north] (p3) at (3,-2) {$3$};
+    \end{tikzpicture}
+    \caption{$b\to 0$ limit of the previous example}
+    \label{fig:limit2}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick,red] (-2,0) -- (0,0) -- (0,-2) -- (0,0) -- (2,2);
+      \draw[red,thick] (3,2) -- (3,-2);
+      \draw[thick] (3,-2) -- (7,-2) -- (3,2) -- cycle;
+      \node[circle,fill=red,scale=0.5] (n) at (3,-1) {};
+      \node[circle,fill=red,scale=0.5] (n) at (5,0) {};
+      \node[circle,fill=red,scale=0.5] (n) at (4,-2) {};
+      \node[anchor=east] (p1) at (3,-1) {$1$};
+      \node[anchor=west] (p2) at (5,0) {$2$};
+      \node[anchor=north] (p3) at (4,-2) {$3$};
+      \draw[thick,red] (3,-1) -- (4,-1) -- (4,-2) -- (4,-1) -- (5,0);
+    \end{tikzpicture}
+    \caption{$(a,b)\to (0,0)$ limit of the previous example}
+    \label{fig:limit3}
+  \end{figure}
+  This appears from a degenerating family of general lines. If we consider a family $C \to \A^1_t$ with maps $C \to \P^2$, then $\Sigma_{C_0}$ can be any of the possibilities we discussed before.
+
+
+Recall that the expanded degneration is point of view was done originally by Jun Li in the case of a smooth divisor and by Ranganathan for a general divisor. In our world, $\ms{Trop}(C)$ defines a cone subdivision $\Sigma$ of $\Sigma_X \times \R_{\geq 0}$ (if $\dim X > 2$, choose a subdivision such that $\Gamma \subset \Sigma(1)$).
+
+In the previous example, let $X = X_{\Sigma}$, which is a blowup of $\P^2 \times \A^1$. Then over $\A^1 \setminus \qty{0}$, we simply obtain $\P^2 \times \A^1 \setminus \qty{0}$, but
+\[ X_0 = \bigcup_{\rho \in \Sigma(1)} X_{\Sigma_{\rho}}, \]
+where $\Sigma_{\rho}$ is some fan. In the dual picture, we obtain a polyhedral decomposition. Therefore, we obtain a morphism from the expanded degeneration moduli space to our moduli space. An example expanded degeneration is shown in~\Cref{fig:expanded}.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,2) -- (0,-2) -- (4,-2) -- cycle;
+    \draw[thick] (0,0) -- (2,0) -- (2,-2);
+    \draw[red,thick] (1,-2) -- (1,0);
+    \draw[red,thick] (1,0) to [bend left=20] (1,1);
+    \draw[red,thick] (1,1) to [bend left=20] (0,1);
+    \draw[red,thick] (0,1) to [bend left=20] (1,0);
+    \node[anchor=north east] at (0,-2) {$\P^1 \times \P^1$};
+    \node[anchor=east] at (0,2) {$\P^2$};
+    \node[anchor=west] at (4,-2) {$\P^2$};
+  \end{tikzpicture}
+  \caption{Example of an expanded degeneration}
+  \label{fig:expanded}
+\end{figure}
+
+\item This example will have $\tau \neq \R_{\geq 0}^k$. We will choose $X = (\P^1, 0)$ and suppose $C$ has five components in a chain with $C_2, C_3, C_4$ each containing one marked point. Then the contact orders $L_{p_1}, L_{p_2}$ are vertical while $L_{p_3}$ is finite. In the end, we obtain
+\[ \tau = \qty{(a,b,c,d) \mid a+b=c+d}. \]
+\end{enumerate}
+\end{exms}
+
+
+\begin{defn}
+  A stable log map
+  \begin{equation*}
+    \begin{tikzcd}
+      C \ar{d} \ar{r} & X \\
+      \Spec (Q \to \C)
+    \end{tikzcd}
+  \end{equation*}
+  is \textit{basic} if and only if $\Sigma_C \to \Sigma_X$ is the universal tropical stable map of some type.
+\end{defn}
+
+\subsection{Moduli spaces}
+\label{subsec:moduli}
+
+\begin{thm}[Abramovich-Chen, Gross-Siebert]
+  There exists a good moduli space of \textbf{basic} stable log maps which is a Deligne-Mumford stack (with log structure) locally of finite type over $\C$ that fulfills the valuative criterion of properness and has a perfect obstruction theory to the stack $\mf{M}$ of log curves with any fine separated log structure on the base. Fixing the topological data
+  \[ \beta = (g, \ul{n}, A \in H_2(X)), \]
+  the stack is proper and we obtain a virtual fundamental class $[\mc{M}(X, \beta)]^{\mr{vir}}$.
+\end{thm}
+
+\section{Artin fans}
+\label{sec:artin_fans}
+
+Consider $P = \sigma^{\vee} \cap M$. Suppose that $X_{\sigma}$ has dimension $n$, and then we will define the \textit{toric stack}
+\[ \mc{A}_{\sigma} = [X_{\sigma} / \G_m^n]. \]
+For any scheme $W$, any map $W \to \mc{A}_{\sigma}$ is a diagram
+\begin{equation*}
+  \begin{tikzcd}
+    Y \ar{r} \ar{d} & X_{\sigma} \ar{d} \\
+    W \ar{r} & \mc{A}_{\sigma}
+  \end{tikzcd}
+\end{equation*}
+of a $\G_m^n$-bundle $Y \to W$ and an equivariant map $Y \to X_{\sigma}$.
+
+This has the property that if $\tau \subseteq \sigma$ is a face, then $\mc{A}_{\tau} \subseteq \mc{A}_{\sigma}$ is an open substack. Recall that
+\[ \tau^{\vee} \cap M_{\tau} = ((\sigma^{\vee} \cap M) + \tau^{\perp}) / \tau^{\perp}, \]
+and therefore $X_{\tau} \times (\C^{\times})^{\codim} \subseteq X_{\sigma}$ is open. For example, we can consider
+\[ [\A^1/\G_m] = [\A^1 \times \G_m / \G_m^2] \subseteq [\A^2 / \G_m^2]. \]
+Now for any $X = (\ul{X}, \mc{M}_X)$, we obtain a diagram of cones $\Sigma_X$.
+
+\begin{defn}
+  The \textit{Artin fan} of $X$ is the algebraic stack
+  \[ \mc{X} \coloneqq \varinjlim_{\sigma \in \Sigma_X} \mc{A}_{\sigma}. \]
+\end{defn}
+
+The Artin fan algebraizes tropical geometry in the following precise sense.
+
+\begin{prop}
+  Assume that $\mc{X}$ has a Zariski covering by various $\mc{A}_{\sigma}$ (for example if $X$ is a Zariski fine separated log scheme which is log-smooth over $\C$). Then for all finite separated log-schemes $T$, there is a canonical bijection
+  \[ \Hom_{\ms{log}}(T, \mc{X}) = \Hom_{\ms{cone\ complexes}}(\Sigma_T, \Sigma_X). \]
+\end{prop}
+
+As an application, we may define the algebraic stack $\mc{M}(\mc{X})$ of log maps into $\mc{X}$, whose data consists of a domain $C \to \Spec(Q \to \C)$ and a tropical stable map
+\begin{equation*}
+  \begin{tikzcd}
+    \Sigma_C \ar{r} \ar{d} & \Sigma_X \\
+    \Hom(Q, \R_{\geq 0}).
+  \end{tikzcd}
+\end{equation*}
+
+\section{Log Gromov-Witten invariants of fixed type}
+\label{sec:fixed_type}
+
+Let $\tau$ be the type of tropical stable maps to $\Sigma_{\mc{X}} = \Sigma_X$.
+
+\begin{defn}
+  A \textit{marking} of a stable log map
+  \begin{equation*}
+    \begin{tikzcd}
+      C \ar{r} \ar{d} & X \\
+      \Spec(Q \to \C)
+    \end{tikzcd}
+  \end{equation*}
+  by $\tau$ is an identification of $\tau$ with a face of
+  \begin{equation*}
+  \begin{tikzcd}
+      \Sigma_C \ar{r} \ar{d} & \Sigma_X \\
+      \Hom(Q, \R_{\geq 0}).
+  \end{tikzcd}
+  \end{equation*}
+\end{defn}
+
+These markings define closed substacks $\mc{M}(\mc{X}, \tau) \subseteq \mc{M}(\mc{X})$. Pulling back to $X$, we obtain the Cartesian diagram
+\begin{equation*}
+  \begin{tikzcd}
+    \mc{M}(X, \tau) \ar{r} \ar{d}{\ep} & \mc{M}(X) \ar{d} \\
+    \mc{M}(\mc{X}, \tau) \ar[hookrightarrow]{r} & \mc{M}(\mc{X}).
+  \end{tikzcd}
+\end{equation*}
+
+In order to have Gromov-Witten invariants, we need a virtual fundamental class. We need the following:
+\begin{itemize}
+\item The stack $\mc{M}(\mc{X}, \tau)$ is pure-dimensional of dimension $3g-3+k+\dim B - \dim \tau$;
+\item The morphism $\mc{M}(X) \to \mc{M}(\mc{X})$ is virtually smooth, so $\mc{M}(X, \tau) \to \mc{M}(\mc{X}, \tau)$ is as well.
+\end{itemize}
+
+Now we can define
+\[ [ \mc{M}(X, \tau) ]^{\mr{vir}} \coloneqq \ep^{!} [\mc{M}(\mc{X}, \tau)]. \]
+
+\section{Punctured Gromov-Witten invariants and the gluing formalism}
+\label{sec:punctured}
+
+\subsection{Rigid tropical curves and virtual decomposition}
+\label{subsec:rigid_trop}
+
+\begin{exm}
+Let $X' = V(tf_3(z_0,z_1,z_2,z_3) + z_0 \cdots z_2) \subseteq \P^3_{z_0,\ldots,z_3} \times \A^1_t$ be a degeneration of cubic surfaces. We resolve $X'$ to obtain $X$, whose central fiber $X_0$ is a union $\bigcup_3 \Bl_3 \P^2$, as displayed in~\Cref{fig:central_fiber}. Then $\Sigma(X) = \Sigma(X_0)$ is the cone over the unit right triangle.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,2) -- (2,0) -- (-2,-2) -- cycle;
+    \draw[thick] (0,2) -- (0,0) -- (-2,-2) -- (0,0) -- (2,0);
+    \draw (0,0.5) -- (0.3,0.5);
+    \draw (0,1) -- (0.3,1);
+    \draw (0,1.5) -- (0.3,1.5);
+    \draw (0.5,0) -- (0.5,0.3);
+    \draw (1,0) -- (1,0.3);
+    \draw (1.5,0) -- (1.5,0.3);
+    \draw (-0.4,-0.4) -- (-0.2,-0.6);
+    \draw (-0.8,-0.8) -- (-0.6,-1);
+    \draw (-1.2,-1.2) -- (-1,-1.4);
+    \node[fill,circle,scale=0.4] (d1) at (0.5,0.5) {};
+    \node[fill,circle,scale=0.4] (d2) at (0,-0.5) {};
+    \node[anchor=south west] (p1) at (0.5,0.5) {$p_1$};
+    \node[anchor=west] (p2) at (0,-0.5) {$p_2$};
+  \end{tikzpicture}
+  \caption{Central fiber $X_0$}
+  \label{fig:central_fiber}
+\end{figure}
+
+Now consider the invariant of $g=0$ curves of degree $d=3$ passing through $p_1, p_2$. There are $12=9+3$ such curves. The two possibilities are shown in~\Cref{fig:posibilities}. The first gives $3 \cdot 3 = 9$ and the second gives $3$ possibilities.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape]
+    \draw[thick] (0,2) -- (2,0) -- (-2,-2) -- cycle;
+    \draw[thick] (0,2) -- (0,0) -- (-2,-2) -- (0,0) -- (2,0);
+    \draw (0,0.5) -- (0.3,0.5);
+    \draw (0,1) -- (0.3,1);
+    \draw (0,1.5) -- (0.3,1.5);
+    \draw (0.5,0) -- (0.5,0.3);
+    \draw (1,0) -- (1,0.3);
+    \draw (1.5,0) -- (1.5,0.3);
+    \draw (-0.5,-0.5) -- (-0.3,-0.5);
+    \draw[thick,red] (-1,-1) -- (-0.6,-1);
+    \draw (-1.5,-1.5) -- (-1.3,-1.5);
+    \node[fill,circle,scale=0.4] (d1) at (0.5,0.5) {};
+    \node[fill,circle,scale=0.4] (d2) at (0,-0.5) {};
+    \node[anchor=south west] (p1) at (0.5,0.5) {$p_1$};
+    \node[anchor=west] (p2) at (0,-0.5) {$p_2$};
+    \draw[red,thick] (-1,-1) -- (1,0) -- (0,1) -- (-1,-1); 
+    \draw[thick] (5,1) -- (7,1) -- (7,-1) -- cycle;
+    \draw[red,thick] (7,-2) -- (3,2) -- (8,2) -- (8,-2);
+    \node[fill=red,circle,scale=0.4] (e) at (7,-2) {};
+    \node[anchor=north] (f) at (7,-2) {$E$};
+    \node[fill=red,circle,scale=0.4] (q1) at (8,-0) {};
+    \node[fill=red,circle,scale=0.4] (q2) at (6,2) {};
+    \node[anchor=south] (p22) at (6,2) {$p_2$};
+    \node[anchor=west] (p12) at (8,0) {$p_1$};
+    \draw[thick] (0,-4) -- (2,-6) -- (-2,-8) -- cycle;
+    \draw[thick] (0,-4) -- (0,-6) -- (-2,-8) -- (0,-6) -- (2,-6);
+    \draw (0,-5.5) -- (0.3,-5.5);
+    \draw (0,-5) -- (0.3,-5);
+    \draw (0,-4.5) -- (0.3,-4.5);
+    \draw (0.5,-6) -- (0.5,-5.7);
+    \draw (1,-6) -- (1,-5.7);
+    \draw (1.5,-6) -- (1.5,-5.7);
+    \draw (-0.5,-6.5) -- (-0.3,-6.5);
+    \draw (-1,-7) -- (-0.8,-7);
+    \draw (-1.5,-7.5) -- (-1.3,-7.5);
+    \node[fill,circle,scale=0.4] (d13) at (0.5,-5.5) {};
+    \node[fill,circle,scale=0.4] (d23) at (0,-6.5) {};
+    \node[anchor=south west] (p13) at (0.5,-5.5) {$p_1$};
+    \node[anchor=west] (p23) at (0,-6.5) {$p_2$};
+    \draw[thick,red] (0,-6) -- (1,-5);
+    \draw[thick,red] (0,-6) -- (-1,-6);
+    \draw[thick,red] (0,-6) -- (0,-7);
+    \draw[thick] (5,-5) -- (7,-5) -- (7,-7) -- cycle;
+    \node[fill=red,circle,scale=0.4] (b) at (6.5,-5.5) {};
+    \draw[thick,red] (6.5,-5.5) -- (5,-5);
+    \draw[thick,red] (6.5,-5.5) -- (7,-5);
+    \draw[thick,red] (6.5,-5.5) -- (7,-7);
+    \node[fill=red,circle,scale=0.4] (d14) at (7,-5) {};
+    \node[fill=red,circle,scale=0.4] (d24) at (7,-7) {};
+    \node[anchor=west] (p14) at (7,-5) {$p_1$};
+    \node[anchor=west] (p24) at (7,-7) {$p_2$};
+  \end{tikzpicture}
+  \caption{Two possibilities (above and below)}
+  \label{fig:posibilities}
+\end{figure}
+
+We have the decomposition result
+\[ [\mc{M}(X_0,\beta)]^{\mr{vir}} = \sum_{\tau\ \text{rigid}} \frac{m_{\tau}}{\abs{\Aut(\tau)}} [\mc{M}(X_0, \tau)]^{\mr{vir}}. \]
+In this example, we obtain $12 = (3+3+3)+3$.
+\end{exm}
+
+\subsection{Splitting}
+\label{subsec:splitting}
+
+Now we will consider $X \to B$ where $B$ is a point or a curve over a log point. Our goal is now to compute
+\[ [\mc{M}(X, \tau)]^{\mr{vir}} \]
+(whether or not $\tau$ is rigid) by splitting $\tau$ along edges.
+
+\begin{exm}
+  We will consider the splittings as in~\Cref{fig:splittings}. Split edges give a pair of ``punctured points'' which in turn produce punctured stable maps.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (0,0) -- (2,0) -- (2,-2) -- cycle;
+      \draw[thick,->] (2.4,-1) -- (3.4,-1);
+      \node[anchor=north] at (2.9,-1) {split};
+      \draw[thick] (3,0) -- (5,0) -- (5,-2) -- cycle;
+      \draw[thick] (6,0) -- (8,0) -- (8,-2) -- cycle;
+      \draw[thick] (9,0) -- (11,0) -- (11,-2) -- cycle;
+      \draw[thick] (12,0) -- (14,0) -- (14,-2) -- cycle;
+      \node[fill=red,circle,scale=0.4] at (1.5,-0.5) {};
+      \node[fill=red,circle,scale=0.4] at (0,0) {};
+      \node[fill=red,circle,scale=0.4] at (2,-2) {};
+      \node[fill=red,circle,scale=0.4] at (2,0) {};
+      \node[fill=red,circle,scale=0.4] at (3,0) {};
+      \node[fill=red,circle,scale=0.4] at (8,0) {};
+      \node[fill=red,circle,scale=0.4] at (11,-2) {};
+      \node[fill=red,circle,scale=0.4] at (13.5,-0.5) {};
+      \draw[thick,red] (1.5,-0.5) -- (0,0);
+      \draw[thick,red] (1.5,-0.5) -- (2,0);
+      \draw[thick,red] (1.5,-0.5) -- (2,-2);
+      \draw[thick,red,->] (3,0) -- (5,-1);
+      \draw[thick,red,->] (8,0) -- (7,-1);
+      \draw[thick,red,->] (11,-2) -- (10,0);
+      \draw[thick,red,->] (13.5,-0.5) -- (12,0);
+      \draw[thick,red,->] (13.5,-0.5) -- (14,0);
+      \draw[thick,red,->] (13.5,-0.5) -- (14,-2);
+    \end{tikzpicture}
+    \caption{Splittings $\tau_1, \tau_2, \tau_3, \tau_4$ of $\tau$}
+    \label{fig:splittings}
+  \end{figure}
+\end{exm}
+
+\begin{thm}
+  There is a Cartesian diagram
+  \begin{equation*}
+    \begin{tikzcd}
+      \mc{M}(X, \tau) \ar{r} \ar{d} & \prod_i \mc{M}(X, \tau_i) \ar{d} \\
+      \mc{M}^{\mr{ev}}(\mc{X}, \tau) \ar{r}{\delta^{\mr{ev}}} & \prod_i \mc{M}^{\mr{ev}}(\mc{X}, \tau_i)
+    \end{tikzcd}
+  \end{equation*}
+  where the vertical arrows are virtually smooth. The ``ev'' makes the bottom arrow representable and finite, and is defined by
+  \[ \mc{M}^{\mr{ev}}(\mc{X}, \tau) = \mc{M}(\mc{X}, \tau) \times_{\mc{X}^k} X^k, \]
+  where there is one choice for each puncture from splitting or node to split. We should note that the morphism $X \to \mc{X}$ is smooth (in the ordinary sense), so the fiber product is a harmless operation.
+\end{thm}
+
+\begin{cor}
+If we know $\delta^{\mr{ev}}_* [\mc{M}^{\mr{ev}}(\mc{X}, \tau)]$ on $\prod_i \mc{M}^{\mr{ev}}(\mc{X}, \tau_i)$, we obtain a gluing formula $\on{GW}(\tau) = F(\on{GW}(\tau_i))$.
+\end{cor}
+
+\begin{thm}[Gluing theorem]
+  There is an fs-Cartesian diagram
+  \begin{equation*}
+    \begin{tikzcd}
+      \wt{\mc{M}'}^{\mr{ev}}(\mc{X}, \tau) \ar{r} \ar{d}{\mr{ev}} & \prod_i \wt{\mc{M}'}^{\mr{ev}}(\mc{X}, \tau_i) \ar{d}{\mr{ev}} \\
+      X^k \ar{r}{\Delta} & X^k \times X^k.
+    \end{tikzcd}
+  \end{equation*}
+  Here, the tilde gives a bigger log structure, and the prime changes the non-reduced structure. Finally, fs-Cartesian means that the fiber product is modeled on the fiber product of cones in the following sense for toric varieties:
+  \[ X_{\sigma_1} \times^{\mr{fs}}_{X_{\tau}} X_{\sigma_2} = X_{\sigma_1 \times_{\tau} \sigma_2}. \]
+  For example, if $X_{\tau} = \A^2$ and $X_{\sigma_1}, X_{\sigma_2}$ are lines with different slopes, then the fs-fiber product is empty.
+\end{thm}
+
+By work of Yixian Wu, the gluing stratum of $X$ (contained in type $\tau$) are \textbf{toric}, so we obtain the gluing formula
+\[ \delta_*^{\mr{ev}}[\mc{M}^{\mr{ev}}(\mc{X}, \tau)] = \sum_{\omega = (\omega_i) \supseteq \tau_i} (\text{tropical multiplicity}) \cdot \prod_i [\mc{M}^{\mr{ev}}(\mc{X}, \omega_i)]. \]
+The $\omega$ are obtained as solutions to perturbation problems for $\tau$ via displacement along edges. There is a similar formula in a different setting due to Venugopalan-Woodward.
+
+\begin{exm}
+  Consider a degeneration of $\P^1 \times \P^1$ to $\bigcup_2 \P^2$ via the cone over the skeleton in~\Cref{fig:skeleton}.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (-1,0) -- (0,0) -- (0,-1) -- (0,0) -- (1,1) -- (2,1) -- (1,1) -- (1,2);
+    \end{tikzpicture}
+    \caption{Skeleton}
+    \label{fig:skeleton}
+  \end{figure}
+  If we consider curves of bidegree $(1,1)$, then $\tau$ is simply the skeleton. We can split along the diagonal edge and then perturb by the tangent vector $\xi = (1,0)$. The possibilities for $\omega_1, \omega_2$ are shown in~\Cref{fig:perturb}.
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (-1,0) -- (0,0) -- (0,-1) -- (0,0) -- (1,1) -- (2,1) -- (1,1) -- (1,2);
+      \node[circle,fill=red,scale=0.4] (a) at (0.5,0.5) {};
+      \node[circle,draw=red,scale=0.4] (b) at (1,0.5) {};
+      \draw[thick,red] (-1,0) -- (0,0) -- (0,-1) -- (0,0) -- (0.5,0.5);
+      \draw[thick,red] (b) -- (1.5,1) -- (2.5,1) -- (1.5,1) -- (1.5,2);
+      \draw[->] (a) -- (b);
+      \node[anchor=north] at (0.75,0.5) {$\xi$};
+      \draw[thick] (4,0) -- (5,0) -- (5,-1) -- (5,0) -- (6,1) -- (7,1) -- (6,1) -- (6,2);
+      \node[circle,fill=red,scale=0.4] (c) at (5,0.5) {};
+      \node[circle,draw=red,scale=0.4] (d) at (5.5,0.5) {};
+      \draw[thick,red] (3.5,0) -- (4.5,0) -- (4.5,-1) -- (4.5,0) -- (5,0.5);
+      \draw[thick,red] (d) -- (6,1) -- (7,1) -- (6,1) -- (6,2);
+      \draw[->] (c) -- (d);
+      \node[anchor=south] at (5.25,0.5) {$\xi$};
+    \end{tikzpicture}
+    \caption{Possible perturbations of the skeleton}
+    \label{fig:perturb}
+  \end{figure}
+\end{exm}
+
+\subsection{Punctured curves and punctured GW invariants}
+\label{subsec:punctured}
+
+\begin{defn}
+A \textit{punctured curve} $C^{\circ} = (\ul{C}, \mc{M}_{C^{\circ}}) \to \Spec(Q \to \C)$ is defined almost as a log curve is before, but instead of $Q \oplus \N$ at marked points, we admit submonoids $Q^{\circ} \subseteq Q \oplus \Z$ such that $Q \oplus \N \subseteq Q^{\circ}$ and for any $(g,k)$ with $k < 0$ implies that $\alpha(q,k) = 0$. This is a fine log structure, but is not separated.
+\end{defn}
+
+\begin{exm}
+  Let $C = C_1 \cup C_2$ with node $q$. Let $\iota \colon C_1 \hookrightarrow C$ and $q = \iota(p)$. Then
+  \[ \mc{M}_{C^{\circ}} = \iota^* \mc{M}_C \]
+  is a puncturing at $p$.
+\end{exm}
+
+\begin{defn}
+A \textit{stable punctured map} is a stable map $C^{\circ} \to X$ such that $\ol{\mc{M}}_{C^{\circ}, p}$ is generated by $Q \oplus \N$ and $\ol{f}^{\flat}(\ol{\mc{M}}_{X,f(p)})$ for all punctures $p$.
+\end{defn}
+
+The second condition on generation of $\ol{\mc{M}}_{C^{\circ},p}$ is equivalent tropically to saying that the bounded leg $L_p$ for the punctured point $p$ extends \textbf{as far as} possible. After some work, we may define tropical punctured maps, their types, and moduli spaces of punctured stable maps as before.
+
+\begin{exm}
+  Recall the example of $\Bl_1(\P^1 \times \P^1)$, where we blow up on the interior of one of the boundary divisors. Then we consider a line degenerating to the strict transform of the blown up boundary divisor. We will have two marked points and one puncture which moves to the exceptional divisor. The classical and tropical pictures are shown in~\Cref{fig:punctured}.
+  \begin{figure}[hptb]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape]
+      \draw[thick] (0,2) -- (0,-2);
+      \draw[thick] (2,0) -- (-2,0);
+      \fill[fill=black] (0,0) -- (-1,2) -- (0,2) -- cycle;
+      \draw[thick] (0,0) -- (-1,2);
+      \draw[red,thick] (1,-2) -- (1,2);
+      \draw[->] (0.8,0.5) -- (0.2,0.5);
+      \draw[red,thick] (-1,-2) -- (-1,0) -- (-2,2);
+      \draw[orange,thick,->] (-1,0) -- (0,0);
+      \node[circle,draw=blue,scale=0.5] at (-1,0) {};
+      \draw[thick] (4,2) -- (8,2) -- (8,-2) -- (4,-2);
+      \draw[thick,red] (7,-2.5) -- (7,2.5);
+      \draw[thick,red] (4,-2.5) -- (4,2.5);
+      \node[circle,fill=red,scale=0.4] at (7,2) {};
+      \node[circle,fill=red,scale=0.4] at (7,-2) {};
+      \node[circle,draw=blue,scale=0.5] at (7,0) {};
+      \node[circle,draw=blue,scale=0.5] at (4,0) {};
+      \node[circle,fill=red,scale=0.4] at (4,2) {};
+      \node[circle,fill=red,scale=0.4] at (4,-2) {};
+      \draw[->] (6.5,0) -- (5.5,0);
+      \draw[thick,orange] (3.5,0) -- (5,0);
+      \node[anchor=west] at (5,0) {$E$};
+    \end{tikzpicture}
+    \caption{A comparison of punctured and unpunctured invariants. Punctures are blue and the exceptional divisor is orange.}
+    \label{fig:punctured}
+  \end{figure}
+
+  The virtual dimension is $0$, and in fact we have
+  \[ \deg [\mc{M}(X, \tau)]^{\mr{vir}} = 1. \]
+\end{exm}
+
+As an application, we may consider a degeneration $X \to S$ of a Calabi-Yau or $(X,D)$ a log Calabi-Yau. Let $B \subseteq \Sigma(X)$ be the Kontsevich-Soibelman skeleton, which is an integral affine manifold. From $1$-punctured invariants, we obtain a wall structure on $B$ (for example in the previous example, consider $E$) with walls swept out by images of tropical punctured maps of wall type, which are not defined here. From the wall structure, we produce an intrinsic mirror ring from $1$-punctured invariants with up to $2$ marked points. Then the formula of Yixian Wu tells us that enumerative and algebraic wall crossings are the same. For a reference, see \textit{The canonical wall structure and intrinsic mirror symmetry} by Gross and Siebert.
+
+
+\end{document} 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
