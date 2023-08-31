@@ -12,18 +12,29 @@ even if you treat them together as a single text (for example, some
 definitions that were included as remarks during class and I was already
 comfortable with at the time are deliberately omitted).
 
-Some notes:
+Please note that the overall exposition of some of the 
+courses/seminars/individual lectures was not very good.
 
-- The overall exposition in the algebraic geometry course at Columbia was
-  not very good. Individual topics were explained reasonably well though.
-- As much as I like Andrei, the exposition in the Lie groups classes at
-  Columbia is all over the place.
-- The exposition in my representation theory class from UMass is
-  notoriously horrible, as much as I like Ivan, and the content about Lie
-  algebras should be considered superseded by the Lie algebras class at
-  UMass and the Lie groups classes at Columbia.
 
 ## Mathematical programs and workshops
+These are contained in the `misc/` directory.
+
+- **Simons summer math workshop** 
+  [program](https://scgp.stonybrook.edu/archives/39185) organized by [Mark
+  Gross](https://www.dpmms.cam.ac.uk/~mg475/), [Mark
+  McLean](https://www.math.stonybrook.edu/~markmclean/), [Simon
+  Donaldson](https://scgp.stonybrook.edu/people/faculty/bios/simon-donaldson),
+  [Kenji
+  Fukaya](https://scgp.stonybrook.edu/people/faculty/bios/kenji-fukaya),
+  and [John
+  Pardon](https://scgp.stonybrook.edu/people/faculty/bios/john-pardon)
+  (`SSMW/`)
+  
+  Logarithmic geometry, logarithmic Gromov-Witten theory, exploded
+  manifolds, exploded stable maps, tropicalization, Hurwitz and spin
+  Hurwitz theory, spin ELSV formula, topological recursion, spin
+  Gromov-Witten theory, classification of semisimple cohomological field
+  theories.
 
 - **Integrable systems, enumerative geometry, and quantization**
   [program](https://scgp.stonybrook.edu/archives/33309) organized by
