@@ -1,0 +1,587 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage{fouriernc}
+% \usepackage{eulervm}
+% \usepackage[scaled=0.86]{berasans}
+\usepackage[scaled=0.83]{helvet}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber,style=numeric,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\crefname{equation}{}{}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
+
+\addbibresource{biblio.bib}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+\usepackage{parskip}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\Sch}{\ms{Sch}}
+\newcommand{\fppf}{\mr{fppf}}
+\newcommand{\opp}{\mr{op}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+
+\title{Algebraic stacks for dummies}%
+\author{Patrick Lei}
+\date{\today}
+
+\begin{document}
+    
+\maketitle
+
+\section{Introduction}
+
+The goal of this note is to find the shortest possible path from an undergraduate knowledge of mathematics to the definition of an algebraic stack. I assume that the reader is familiar with rings, ideals, and modules; categories, functors, and natural transformations; and topological spaces and continuous maps between them. As a consequence of the goals and in the interest of space, some terrible choices were made, generally in the direction of unnecessary abstraction:
+
+\begin{enumerate}
+    \item I define sheaves directly on sites, and then a sheaf on a space is simply a sheaf on the poset of open subsets thought of as a site.
+    \item The tensor product of modules is defined to be the adjoint of internal hom rather than either of the other definitions.
+    \item I give the absolute minimum (or as close to it as I can get) number of definitions possible to be logically self-contained. To actually understand what is going on requires extensive study.
+    \item The point of studying schemes, algebraic spaces, stacks, etc.\ is to do \textit{geometry}. This note contains no geometry whatsoever. If you are looking for actual geometry, see my notes~\cite{hk,git,mmp,deformation,hodge,hyperbolicity,ieg,intersection}.
+\end{enumerate}
+
+
+\section{Preliminaries}
+
+\subsection{Commutative algebra}
+
+\begin{defn}[{\cite[Section 1.2]{canotes}}]
+    Let $R$ be a commutative ring and $S$ be a multiplicative subset, i.e.\ $S$ contains $1$ and is closed under multiplication. Then the \textit{localization} $S^{-1}R$ is the set of equivalence classes on $R \times S$ under the relation that $(r_1,s_1) \sim (r_2,s_2)$ if there exists $r \in R$ such that $r(r_1 s_2 - r_2 s_1) = 0$. We write the element $(r,s)$ as $\frac{r}{s}$ and the operations of addition and multiplication are as one expects from primary school.
+\end{defn}
+
+One principle in commutative algebra is that rings can be studied by considering their modules, which are like vector spaces, but for a general commutative ring.
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/00DE}{Tag 00DE}]{stacks}}]
+    Given any two $R$-modules $M$ and $N$, the abelian group $\Hom_R(M,N)$ of homomorphisms of $R$-modules may be given an $R$ module structure by the formula
+    \[ (rf)(m) = r (f(m)) \]
+    for any $r \in R, f \in \Hom_R(M,N), m \in M$. The \textit{tensor product} $M \otimes_R N$ is defined by the universal property that for any $R$-modules $P$, there is a natural isomorphism
+    \[ \Hom_R(M \otimes_R N, P) \cong \Hom_R(M, \Hom_R(N, P)). \]
+    If $R$ is a commutative ring, then $M \otimes_R N \cong N \otimes_R M$, so the tensor product is symmetric. If the base ring $R$ is clear from context, we will omit the subscript in the tensor product and simply write $M \otimes N$.
+\end{defn}
+
+
+\begin{defn}[{\cite[Definition 2.1.3, Theorem 2.2.9]{canotes}}]
+    Let $R$ be a commutative ring and $M$ be an $R$-module. Then $M$ is \textit{flat} if the functor $- \otimes M$ is exact, i.e.\ for any exact sequence
+    \[ 0 \to N_1 \to N_2 \to N_3 \to 0 \]
+    of $R$-modules, the sequence
+    \[ 0 \to N_1 \otimes M \to N_2 \otimes M \to N_3 \otimes M \to 0 \]
+    is exact. $M$ is \textit{faithfully flat} if for all nonzero $R$-modules $N$, the tensor product $M \otimes N$ is nonzero.
+\end{defn}
+
+
+The commutative rings that are not fields which have the best theory are the so-called local rings. We will also need a bit of dimension theory.
+\begin{defn}[{\cite[Definition 1.3.4]{canotes}}]
+    A commutative ring $R$ is a \textit{local ring} if it has only one maximal ideal.
+\end{defn}
+
+\begin{defn}[{\cite[Proposition 1.4.5]{canotes}}]
+    Let $R$ be a ring. Then $R$ is \textit{Noetherian} if any ideal of $R$ is finitely generated.
+\end{defn}
+
+
+\begin{defn}[{\cite[Section 3.2]{canotes}}]
+    Let $R$ be a ring. Then the \textit{Krull dimension} of $R$ is defined to be the supremum of the lengths of all chains of prime ideals, if it is finite.\footnote{Every ring with finite Krull dimension is Noetherian.}
+\end{defn}
+
+\begin{defn}[{\cite[Definition 1.4.23]{canotes}}]
+    Let $R$ be a ring. An $R$-module $M$ is \textit{of finite length} if there exists a finite decreasing submodules
+    \[ M = M_0 \supsetneq M_1 \supsetneq \cdots \supsetneq M_{n+1} = 0 \]
+    such that $M_i/M_{i+1}$ has no nontrivial proper submodules for $i=0,\ldots,n$.
+\end{defn}
+
+
+\begin{defn}[{\cite[Definition 3.2.15, Definition 3.2.16]{canotes}}]
+    A Noetherian local ring $R$ is \textit{regular} if there is a set of elements $x_1, \ldots, x_s$ such that
+    \begin{itemize}
+        \item $R / (x_1, \ldots, x_s)$ is of finite length;
+        \item $s = \dim R$;
+        \item $x_1, \ldots, x_s$ generate the maximal ideal of $R$.
+    \end{itemize}
+\end{defn}
+
+
+
+\subsection{Grothendieck topologies}
+
+We begin with some basic limits in category theory.
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/001V}{Tag 001V}, \href{https://stacks.math.columbia.edu/tag/08N0}{Tag 08N0}]{stacks}}]
+    Let $\mc{C}$ be a category and $X \to Z, Y \to Z$ be morphisms in $\mc{C}$. Then the fiber product $X \times_Z Y$ is defined by the universal property that for any object $W \in \mc{C}$ and morphisms $W \to X, W \to Y$ such that $W \to X \to Z = W \to Y \to Z$, there exists a unique morphism $W \to X \times_Z Y$ such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        W \ar{drr} \ar[dashrightarrow]{dr} \ar{ddr} \\
+        & X \times_Z Y \ar{r} \ar{d} & Y \ar{d} \\
+        & X \ar{r} & Z
+    \end{tikzcd}
+    \end{equation*}
+    commutes. In the situation where $W =X=Y$, the two morphisms $X \to Z$ are equal, and $W \to X, W \to Y$ are both the identity, the dashed arrow is called the \textit{diagonal morphism} and denoted by $\Delta \colon X \to X \times_Z X$.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/0027}{Tag 0027}]{stacks}}]
+    Let $\mc{C}$ be a category and $X,Y \in \mc{C}$. Then for any $f,g \colon X \to Y$ the \textit{equalizer} $\mr{Eq}(f,g) \to X$ is defined by the universal property that for any $Z \in \mc{C}$ and morphism $h \colon Z \to X$ such that $f \circ h = g \circ h$, then there exists a unique morphism $Z \to \mr{Eq}(f,g)$ such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mr{Eq}(f,g) \ar{r} & X \ar[shift left=1]{r}{f} \ar[shift right=1,swap]{r}{g} & Y \\
+        Z \ar[dashrightarrow]{u} \ar{ur}{h}
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{defn}
+
+
+In order to make sense of sheaves and stacks, we need to form some kind of topology on our category.
+\begin{defn}[{\cite[Definition 1.2.1]{fganotes}}]
+    Let $\mc{C}$ be a category with fiber products. A \textit{Grothendieck topology} on $\mc{C}$ is a specification of coverings $\ab\{U_i \to U\}$ for every $U \in \mc{C}$ satisfying:
+    \begin{enumerate}
+        \item If $V \to U$ is an isomorphism, then $\ab\{V \to U\}$ is a covering;
+        \item If $\ab\{U_i \to U\}$ is a covering and $V \to U$ is any morphism, then the fiber products $\ab\{V \times_U U_i \to V\}$ form a covering of $V$;
+        \item If $\ab\{U_i \to U\}$ is a covering and $\ab\{V_{ij} \to U_i\}$ are coverings for all $i$, then $\ab\{V_{ij} \to U\}$ is a covering.
+    \end{enumerate}
+    A category with a Grothendieck topology is a \textit{site}.
+\end{defn}
+
+\begin{exm}[{\cite[Example 1.2.2]{fganotes}}]
+    If $X$ is a topological space, then there is a site given by the poset category of open sets on $X$, where arrows are inclusions, coverings are the usual open covers, and fiber products are intersections.
+\end{exm}
+
+More examples will be given later when we define algebraic spaces and stacks. We will now move on to presheaves, sheaves, fibered categories, and stacks.
+
+\subsection{Sheaves}%
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/00V3}{Tag 00V3}]{stacks}}]
+    Let $\mc{C}, \mc{A}$ be categories. A \textit{presheaf} on $\mc{C}$ with values in $\mc{A}$ is a functor $F \colon \mc{C}^{\opp} \to \mc{A}$. A morphism of presheaves is a natural transformation.
+\end{defn}
+
+\begin{defn}[{\cite[Definition 1.3.1]{fganotes}}]
+    Let $\mc{C}$ be a site. A presheaf $F \colon \mc{C}^{\opp} \to \mc{A}$ is a \textit{sheaf} if for all coverings $\ab\{U_i \to U\}$ the natural diagram
+    \[ F(U) \to \prod_i F (U_i) \rightrightarrows \prod_{i,j} F(U_i \times_U U_j) \]
+    is an equalizer. A morphism of sheaves is a morphism of presheaves.
+\end{defn}
+
+\begin{rmk}
+    The category of presheaves has all fiber products, and so does the (smaller) category of sheaves.
+\end{rmk}
+
+
+
+The following lemma will be useful when we want to make sense of schemes as sheaves on the fppf site, and in particular as algebraic spaces.
+
+\begin{lem}[Yoneda, {\cite[Lemma 1.1.2]{fganotes}}]
+    Let $\mc{C}$ be a category and $x \in \mc{C}$ be an object. Define the functor $h_x \colon \mc{C}^{\opp} \to \ms{Set}$ by $h_x \coloneqq \Hom_{\mc{C}}(-,x)$. If $F$ is any functor $\mc{C}^{\opp} \to \ms{Set}$, then there is a natural bijection $\Hom(h_x, F) \cong F(x)$. Functors of the form $h_x$ are called \textit{representable}.
+\end{lem}
+
+The following is a relative version of the above.
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/0023}{Tag 0023}]{stacks}}]
+    A morphism $F \to G$ of presheaves is \textit{representable} if for all $U \in \mc{C}$ and $\xi \in G(U)$, the fiber product $F \times_G h_U$ is representable.
+\end{defn}
+
+\subsection{Fibered categories and stacks}%
+
+
+In order to define stacks, the language of sheaves is not so convenient, so instead we work with fibered categories. We will now consider functors $p \colon \mc{X} \to \mc{C}$.
+
+\begin{defn}[{\cite[Definition 2.2.1]{fganotes}}]
+    A morphism $\phi \colon \xi \to \eta$ in $\mc{X}$ is \textit{cartesian} if for every $\psi \colon \zeta \to \eta$ and $h \colon p(\zeta) \to p(\eta)$ such that $h = p(\psi)$, there exists a unique morphism $\theta \colon \zeta \to \xi$ such that $\psi = \phi \circ \theta$ and $h = p(\phi) \circ p(\theta)$.\footnote{Note that the definition in~\cite{fganotes} has many typos.}
+\end{defn}
+
+
+\begin{defn}[{\cite[Definition 2.2.2]{fganotes}, \cite[\href{https://stacks.math.columbia.edu/tag/02XP}{Tag 02XP}]{stacks}}]
+    A \textit{fibered category} is a functor $p \colon \mc{X} \to \mc{C}$ such that for any $f \colon U \to V$ in $\mc{C}$ and $\eta \in \mc{X}$ with $p(\eta) = V$, then there exists a cartesian arrow $\phi \colon \xi \to \eta$ such that $p(\phi) = f$. We define $\mc{X}(U)$ to be the subcategory of $\mc{X}$ mapping down to $U$. 
+
+    A $1$-morphism of fibered categories is a functor $F \colon \mc{X} \to \mc{Y}$ such that $p_{\mc{Y}} \circ F = p_{\mc{X}}$ and $F$ preserves cartesian arrows. A $2$-morphism $\tau \colon F \to G$ of $1$-morphisms $F,G \colon \mc{X} \to \mc{Y}$ is a natural transformation $\tau \colon F \to G$ such that $p_{\mc{Y}}(\tau_x) = \mr{id}_{p_{\mc{X}}(x)}$ for all objects $x \in \mc{X}$.
+\end{defn}
+
+\begin{defn}[{\cite[Definition 5.4.3]{fganotes}}]
+    A fibered category $\mc{X} \to \mc{C}$ is \textit{fibered in groupoids} if $\mc{X}(U)$ is a groupoid for all $U \in \mc{C}$. Similarly, $\mc{X} \to \mc{C}$ is \textit{fibered in sets} if $\mc{X}(U)$ is a set for all $U \in \mc{C}$.
+\end{defn}
+
+
+In order to define (pre)-stacks, we need the notion of descent.
+
+\begin{defn}[{\cite[Definition 6.1.3]{fganotes}}]
+    Let $\mc{X} \to \mc{C}$ be a fibered category. An \textit{object with descent data} is a collection $\ab(\ab\{\ep_i\}, \ab\{\phi_{ij}\})$ for a cover $\ab\{U_i \to U \}$ such that $\ep_i \in \mc{X}(U_i)$ and $\phi_{ij} \colon \pi_2^*(\ep_j) \simeq \pi_1^*(\ep_i)$. Here, $\pi_1 \colon U_i \times_U U_j \to U_i$ and $\pi_2 \colon U_i \times_U U_j \to U_j$ are the projection morphisms.
+\end{defn}
+
+\begin{defn}[{\cite[Section 6.1]{fganotes}}]
+    Let $\ab\{U_i \to U\}$ be a covering. Then we define the category $\mc{X}\ab(\ab\{U_i \to U\})$ to be the category whose objects are objects with descent data and whose morphisms are collections of morphisms $\alpha_i \to \eta_i$ such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \pi_2^* \ep_j \ar{d}{\phi_{ij}} \ar{r}{\pi_2^* \alpha_j} & \pi_2^* \eta_j \ar{d}{\psi_{ij}} \\
+        \pi_1^* \ep_i \ar{r}{\pi_1^* \alpha_i} & \pi_1^* \eta_i
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{defn}
+
+\begin{defn}[{\cite[Definition 6.1.5]{fganotes}}]
+    A fibered category $\mc{X} \to \mc{C}$ is a \textit{prestack} if for each covering $\ab\{U_i \to U\}$, the functor $\mc{X}(U) \to \mc{X}\ab(\ab\{U_i \to U\})$ is fully faithful. $\mc{X}$ is a \textit{stack} if this functor is an equivalence.
+\end{defn}
+
+The following lemma will allow us to view sheaves as stacks, and in particular view schemes and algebraic spaces as stacks.
+
+\begin{lem}[$2$-Yoneda, {\cite[Lemma 5.3.2]{fganotes}}]\label{lem:2yoneda}
+    Let $F \colon \mc{C}^{\opp} \to \ms{Set}$ be a presheaf. Then there is a fibered category $\mc{X}_F \to \mc{C}$ whose objects are pairs $(U,\xi)$, where $U \in \mc{C}$ and $\xi \in F(U)$. For any $U \in \mc{C}$, we denote the image of $h_U$ under this construction by $\mc{C}/U$. If $\mc{X} \to \mc{C}$ is any fibered category, then there is an equivalence of categories $\Hom(\mc{C}/U, \mc{X}) \simeq \mc{X}(U)$.
+\end{lem}
+
+\begin{thm}[{\cite[Theorem 5.4.2]{fganotes}}]
+    The functor from presheaves to categories fibered in sets defined in the previous lemma is an equivalence.
+\end{thm}
+
+\subsection{Locally ringed spaces}
+
+Now that we have a definition of sheaves on a topological space, we are now ready to define locally ringed spaces.
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/0078}{Tag 0078}]{stacks}}]
+    Let $F$ be a sheaf on a topological space $X$. Then for any $x \in X$, the \textit{stalk} $F_x$ is defined as the limit
+    \[ \varprojlim_{x \in U} F(U). \]
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/008C}{Tag 008C}, \href{https://stacks.math.columbia.edu/tag/008F}{Tag 008F}]{stacks}}]
+    Let $f \colon X \to Y$ be a continuous map and $F$ be a sheaf on $X$. Then the \textit{pushforward} $f_* F$ is a sheaf on $Y$ defined by
+    \[ f_* F(V) \coloneqq F(f^{-1}(V)) \]
+    for all open $V \subseteq Y$. If $G$ is a sheaf on $Y$, the \textit{inverse image} $f^{-1} G$ is a sheaf on $X$ defined by
+    \[ f^{-1} G(U) \coloneqq \varprojlim_{V \supset f(U)} G(V) \]
+    for all open $U \subset X$.
+\end{defn}
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/01HB}{Tag 01HB}]{stacks}}]
+    A \textit{locally ringed space} is a pair $(X,\mc{O}_X)$ of a topological space $X$ and a sheaf $\mc{O}_X$ of rings such that all stalks $\mc{O}_{X,x}$ are local rings. A morphism $(X, \mc{O}_X) \to (Y,\mc{O}_Y)$ of locally ringed spaces consists of a continuous map $f \colon X \to Y$ and a morphism $f^{\sharp} \colon \mc{O}_Y \to f_* \mc{O}_X$ such that the induced map of stalks $\mc{O}_{Y,f(x)} \to \mc{O}_{X,x}$ is a morphism of local rings, i.e.\ that the maximal ideal of $\mc{O}_{Y,f(x)}$ is sent to the maximal ideal of $\mc{O}_{X,x}$.
+\end{defn}
+
+\section{Schemes}
+
+\subsection{The definition of a scheme}
+
+\begin{defn}[{\cite[Definition 1.1.23]{schemesnotes}}]
+    Let $R$ be a commutative ring. Then the \textit{affine scheme} $\Spec R$ is the locally ringed space $(X, \mc{O}_X)$ with
+    \begin{enumerate}
+        \item The underlying set of points $X$ is the set of prime ideals $\mf{p} \subset R$;
+        \item The topology is the \textit{Zariski topology}, which is given by declaring the closed sets to be
+            \[ V(I) \coloneqq \ab\{ \mf{p} \supseteq I \} \]
+            for ideals $I \subseteq R$. Proof that this forms a topology is left as an exercise. There are distinguished open sets
+            \[ D_f \coloneqq X \setminus V(f) \]
+            for elements $f \in R$, which form a basis for the topology.
+        \item The sheaf of rings is defined on distinguished open sets by
+            \[ \mc{O}_X(D_f) \coloneqq R_f, \]
+            where $R_f$ is the localization of $R$ at the set $S = \ab\{1,f,f^2,\ldots\}$. For any other open set $U$, we define
+            \[ \mc{O}_X(U) \coloneqq \varprojlim_{D_f \supset U} \mc{O}_X(D_f) \]
+            following the discussion in~\cite[Subsection 1.1.3]{schemesnotes}.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}[{\cite[Definition 1.2.1]{schemesnotes}}]
+    A \textit{scheme} is a locally ringed space $(X, \mc{O}_X)$ such that there exists an open cover $\ab\{U_i\}$ of $X$ such that $(U_i, \mc{O}_X|_{U_i})$ is an affine scheme. A morphism of schemes is a morphism of locally ringed spaces.
+\end{defn}
+
+\begin{rmk}
+    If $X \to Z, Y \to Z$ are morphisms of schemes, the fiber product $X \times_Z Y$ exists in the category of schemes, see~\cite[\href{https://stacks.math.columbia.edu/tag/01JM}{Tag 01JM}]{stacks}.
+\end{rmk}
+
+
+\subsection{Morphisms of schemes}
+
+In this subsection, we will do just enough to define the fppf site as well as smooth and \'etale morphisms, which are all that is necessary to define algebraic spaces and stacks.
+
+\begin{defn}[{\cite[Definition 2.6.1]{schemesnotes}}]
+    A morphism of schemes $f \colon X \to Y$ is \textit{(faithfully) flat} if $\mc{O}_{X,x}$ is a (faithfully) flat $\mc{O}_{Y,f(x)}$-module for all $x \in X$.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/01TQ}{Tag 01TQ}]{stacks}}]
+    A morphism $f \colon X \to Y$ of schemes is \textit{locally of finite presentation} if for all affine opens $V \subset Y$ and $U \subset X$ such that $f(U) \subseteq V$, $\mc{O}_X(U)$ is a finitely presented $\mc{O}_Y(V)$-algebra.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/005A}{Tag 005A}, \href{https://stacks.math.columbia.edu/tag/01K3}{Tag 01K3}]{stacks}}]
+    A topological space $X$ is \textit{quasi-compact} if for every open cover of $X$ has a finite subcover. A continuous map $f \colon X \to Y$ of topological spaces is \textit{quasi-compact} if for every quasi-compact open set $V \subset Y$, $f^{-1}(V)$ is quasi-compact. A morphism of schemes is \textit{quasi-compact} if the underlying map of topological spaces is quasi-compact.
+\end{defn}
+
+\begin{defn}[{\cite[Definition 1.8.4]{schemesnotes}}]
+    A morphism $f \colon X \to Y$ of schemes is \textit{quasi-separated} if $\Delta_f \colon X \to X \times_Y X$ is quasi-compact.
+\end{defn}
+
+\begin{defn}[{\cite[Theorem 1.3.15]{schemesnotes}}]
+    A scheme is \textit{locally Noetherian} if for all $x \in X$, there exists an affine neighborhood $x \in \Spec R$ such that $R$ is a Noetherian ring.
+\end{defn}
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/038T}{Tag 038T}, \href{https://stacks.math.columbia.edu/tag/02IR}{Tag 02IR}]{stacks}}]
+    A scheme is \textit{regular} if it is locally Noetherian and all of its local rings are regular. A scheme $X/\Spec k$ over a field $k$ is \textit{geometrically regular} if $X \times_k k'$ is regular for all finite extensions $k'/k$.
+\end{defn}
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/01TP}{Tag 01TP}]{stacks}}]
+    A morphism of schemes is of \textit{finite presentation} if it is locally of finite presentation, quasi-separated, and quasi-compact.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/01UR}{Tag 01UR}]{stacks}}]
+    Let $f \colon X \to Y$ be a morphism of schemes. The \textit{sheaf of K\"ahler differentials} $\Omega_{X/Y}$ is defined by the universal property that for any sheaf $F$ on $X$, there is a natural isomorphism
+    \[ \Hom_{\mc{O}_X}(\Omega_{X/Y},F) \cong \mr{Der}_{f^{-1}\mc{O}_S}(\mc{O}_X, F). \]
+\end{defn}
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/00TC}{Tag 00TC}, \href{https://stacks.math.columbia.edu/tag/07EL}{Tag 07EL}, \href{https://stacks.math.columbia.edu/tag/07VH}{Tag 07VH}, \href{https://stacks.math.columbia.edu/tag/01V8}{Tag 01V8}]{stacks}}]
+    A morphism $f \colon X \to Y$ is \textit{smooth} if $f$ is flat, locally of finite presentation, and all fibers $f^{-1}(y)$ are geometrically regular.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/02G2}{Tag 02G2}]{stacks}}]
+    A morphism of schemes $f \colon X \to Y$ is \textit{smooth of relative dimension $d$} if $f$ is smooth and $\Omega_{X/S}$ is locally free of rank $d$, i.e.\ locally isomorphic to $\mc{O}_X^{\oplus d}$.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/02GK}{Tag 02GK}]{stacks}}]
+    A morpshism of schemes is \textit{\'etale} if it is smooth of relative dimension $0$.
+\end{defn}
+
+\section{Algebraic spaces}
+
+We will first define the fppf site.
+
+\begin{defn}[{\cite[Example 1.2.2 (4)]{fganotes}}]
+    Let $S$ be a scheme. Define the \textit{fppf site} on $\Sch/S$ to be the site whose coverings $\ab\{U_i \to U\}$ are those where the map $\bigsqcup U_i \to U$ is surjective, faithfully flat, and of finite presentation.
+\end{defn}
+
+The following implies that we can think about schemes as fppf sheaves:
+
+\begin{thm}[Grothendieck, {\cite[Theorem 1.3.2]{fganotes}}]
+    Any representable functor on $\Sch/S$ is a sheaf in the fppf topology.\footnote{In fact, it is a sheaf in the fpqc topology, which is finer than the fppf topology.}
+\end{thm}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/025V}{Tag 025V}]{stacks}}]
+    A representable morphism $F \to G$ of presheaves of sets on $\Sch/S$ is \textit{smooth (resp. \'etale)} if for every scheme $U$ and $\xi \in G(U)$, the induced morphism $F \times_G U \to U$ of schemes is smooth (resp. \'etale). 
+\end{defn}
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/025Y}{Tag 025Y}]{stacks}}]
+    Let $S$ be a scheme. An \textit{algebraic space} over $S$ is a sheaf of sets
+    \[ F \colon (\Sch/S)^{\opp}_{\fppf} \to \ms{Set} \]
+    such that 
+    \begin{enumerate}
+        \item The diagonal $\Delta \colon F \to F \times F$ is representable by schemes;
+        \item There exists a scheme $U$ and a morphism $U \to F$ which is surjective and \'etale.
+    \end{enumerate}
+    Note that the first condition automatically implies that any morphism $U \to F$ from a scheme is representable, see~\cite[\href{https://stacks.math.columbia.edu/tag/025W}{Tag 025W}]{stacks}. A morphism of algebraic spaces is a morphism of sheaves.
+\end{defn}
+
+\begin{rmk}
+    If $X \to Z$ and $Y \to Z$ are morphisms of algebraic spaces, the fiber product $X \times_Z Y$ (\textit{a priori} an fppf sheaf) is an algebraic space, see~\cite[\href{https://stacks.math.columbia.edu/tag/04T9}{Tag 04T9}]{stacks}.
+\end{rmk}
+
+We need some properties of morphisms of algebraic spaces in order to define algebraic stacks, but not too many.
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/03MJ}{Tag 03MJ}, \href{https://stacks.math.columbia.edu/tag/04R3}{Tag 04R3}]{stacks}}]
+    A morphism $f \colon X \to Y$ of algebraic spaces is \textit{smooth (resp. \'etale)} for any diagram of the form
+    \begin{equation*}
+    \begin{tikzcd}
+        U \ar{r}{h} \ar{d}{a} & V \ar{d}{b} \\
+        X \ar{r}{f} & Y
+    \end{tikzcd}
+    \end{equation*}
+    where $U$ and $V$ are schemes and $a$ and $b$ are \'etale, the morphism $h \colon U \to V$ of schemes is smooth (resp. \'etale).
+\end{defn}
+
+
+\section{Algebraic stacks}
+
+We will now consider categories fibered in groupoids over $\ms{Sch}/S$.
+
+\begin{rmk}
+    The ($2$)-category of categories has all fiber products, see~\cite[\href{https://stacks.math.columbia.edu/tag/02X9}{Tag 02X9}]{stacks}. Therefore, it makes sense to talk about fiber products of fibered categories.
+\end{rmk}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/02ZW}{Tag 02ZW}]{stacks}}]
+    A morphism $\mc{X} \to \mc{Y}$ of categories fibered in groupoids over $\Sch/S$ is \textit{representable by algebraic spaces} if for any scheme $U$ and morphism $y \in \mc{Y}(U)$, the fibered category $U \times_{\mc{Y}} \mc{X}$ is representable by an algebraic space via the construction in~\Cref{lem:2yoneda}.
+\end{defn}
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/03YK}{Tag 03YK}, \href{https://stacks.math.columbia.edu/tag/0429}{Tag 0429}, \href{https://stacks.math.columbia.edu/tag/042B}{Tag 042B}]{stacks}}]
+    Let $f \colon \mc{X} \to \mc{Y}$ be a $1$-morphism of categories fibered in groupoids over $\Sch/S$ which is representable by algebraic spaces. Then $f$ is \textit{smooth (resp. \'etale)} if for every scheme $U$ and $y \in \mc{Y}(U)$, the induced morphism $\mc{X} \times_{\mc{Y}} U \to U$ of algebraic spaces is smooth (resp. \'etale).
+\end{defn}
+
+
+
+\begin{defn}[{\cite[\href{https://stacks.math.columbia.edu/tag/026O}{Tag 026O}]{stacks}}]
+    Let $S$ be a scheme. An \textit{algebraic stack (resp. Deligne-Mumford stack)} over $S$ is a stack of groupoids
+    \[ \mc{X} \to (\Sch/S)_{\fppf} \]
+    such that
+    \begin{enumerate}
+        \item The diagonal $\Delta \colon \mc{X} \to \mc{X} \times_S \mc{X}$ is representable by algebraic spaces;
+        \item There exists a scheme $U$ and a morphism $U \to \mc{X}$ which is smooth (resp. \'etale) and surjective.
+    \end{enumerate}
+    Note that the first condition automatically implies that any morphism $U \to \mc{X}$ from a scheme is representable by algebraic spaces, see~\cite[\href{https://stacks.math.columbia.edu/tag/045G}{Tag 045G}]{stacks}.
+\end{defn}
+
+
+
+\printbibliography
+
+
+\end{document}
