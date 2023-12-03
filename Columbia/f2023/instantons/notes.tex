@@ -929,12 +929,12 @@ and thus splits
 and $\alpha$ are the Chern roots of $TN$. This exactly reproduces the $\hat{A}$-genus.
 The Atiyah-Singer normalized integral has an extra factor of $\frac{1}{\prod_s \beta^{\frac{\dim M}{2}}}$.
 
-\chapter{Duality}%
+\section{Duality}%
 \label{cha:duality}
 
 There are two main examples: $T$-duality in $2$d sigma-models and $S$-duality in $4$d gauge theories.
 
-\section{$p$-form generalized gauge theory}
+\subsection{$p$-form generalized gauge theory}
 
 We will begin with $p$-form generalized gauge theory in $D$ spacetime dimensions. For some $A \in \Omega^p(M^D)$, define
 \[ \mc{L} = \int_{M^D} \dd{A} \wedge * \dd{A}. \]
@@ -996,7 +996,7 @@ This is defined for $\Re s \gg 0$, and taking the analytic continuation, we defi
 \[ \mc{N}(G,h) \coloneqq \exp \frac{1}{2} \zeta'_{{\Delta}}(0). \]
 We may need to assume that $D = 2(p+1)$. For example, if $D=2$, then the $\ev{c^i, * c^j}$ term knows only about the conformal structure of $M^2$. Finally, $H^{p+1}(M^D, \Gamma)$ is taken modulo torsion.
 
-\section{Duality}
+\subsection{Duality}
 
 The duality is given by inverting 
 \[ \tau \coloneqq iG + B \]
@@ -1046,6 +1046,138 @@ then $\theta$ is the analogue of $(B_{ij})$. Then if the standard symplectic for
 $E^2$ quantizes to $-\partial_t^2 = \wh{H}$, and the spectrum of this operator is given by
 \[ E_n = (n+\theta)^2, \qquad n \in \Z. \]
 For example, if $E_n = 0$, then $n$ and $-n$ have the same eigenvalues, if $\theta = \frac{1}{2}$, then the spectrum is doubly degenerate, and for any other value of $\theta$ the spectrum is simple. Therefore, the duality exchanges the electric and magnetic fields whenever $D = 2(p+1)$.
+
+\chapter{Instantons}%
+\label{cha:Instantons}
+
+There are three main approaches:
+\begin{itemize}
+    \item Morse theory;
+    \item Twisted supersymmetric $\sigma$-models;
+    \item Twisted supersymmetric gauge theory.
+\end{itemize}
+
+These have a Hamiltonian and Lagrangian approach, and the latter will motivate the study of integrals on moduli spaces of instantons.
+
+\section{Morse theory}
+
+Note that this is not the same as what topologists call Morse theory. Let $(M,g)$ be a compact Riemannian manifold and $f \colon M \to \R$. Suppose all $x$ such that $\dd{f}_x = 0$ have nondegenerate Hessian, or in other words,
+\[ \det \qty(\pdv[2]{f}{x^i}{x^j}) \neq 0. \]
+We will consider $\Omega^*(M)$ with the differential
+\[ D \coloneqq \dd + \dd{f} \wedge \colon \Omega^*(M) \to \Omega^{*+1}(M). \]
+Using the standard scalar form
+\[ (\alpha,\beta)_g = \int_M \alpha \wedge * \beta, \]
+we define the adjoint
+\[ D^* = \dd^* + \iota_{\nabla f}. \]
+Physicists refer to the study of this package as \textit{supersymmetric quantum mechanics}. Here, the Hamiltonian is
+\begin{align*}
+    H &= DD^* + D^*D \\
+    &= -\Delta_{\dd} + \ms{Lie}_{\nabla f} + \ms{Lie}^*_{\nabla f} + g(\nabla f, \nabla f).
+\end{align*}
+Note that $\ker H \cong H^*(M)$, and if $H\psi = 0$, then
+\begin{align*}
+    0 &= (\psi, H \psi) \\
+    &= (D\psi, D\psi) + (D^* \psi, D^*\psi),
+\end{align*}
+so we see that $H\psi = 0$ if and only if $D \Psi = D^*\psi = 0$.
+
+There are also excited states where $H \psi_i = E_i \psi_i$ for $E_i > 0$. Then we compute
+\begin{align*}
+    H D\psi_i &= DD^* D\psi_i \\
+    &= D(H \psi_i - DD^* \psi_i) \\
+    &= D(E_i \psi_i) \\
+    &= E_i D \psi_i,
+\end{align*}
+so the states $D\psi_i$, $D^*\psi_i$, and $DD^* \psi_i$ are also eigenstates with eigenvalue $E_i$.
+
+There is then the following trick. If $f \mapsto t f$ and $g$ is fixed for $t \gg 0$, then
+\[ H = -\Delta_g + t^2 \norm{\nabla f}^2 + t (\cdots) \]
+where $\norm{\nabla f}^2$ is a very large potential outside of the critical locus of $f$. We also have
+\[ D_t = e^{-tf} \dd{e^{tf}} \]
+on the ground states, which are isomorphic to $H^*(M)$. More generally, we note that
+\begin{align*}
+    D_t &= \dd + t \dd{f} \wedge \\
+    D_t^* &= t^{-1} \dd^* + \iota_{\nabla f}.
+\end{align*}
+Ignoring the $t^{-1} \dd^*$ term, the Hamiltonian becomes
+\[ \ms{Lie}_{\nabla f} + t \norm{\nabla f}^2 = e^{-tf}(\ms{Lie}_{\nabla f})e^{tf}. \]
+
+In the world where $f \mapsto tf$ and $g \mapsto tg$, we obtain states
+\begin{align*}
+    \psi &\to e^{-tf} \psi \eqqcolon \psi_{\mr{out}} \\
+    \psi &\to e^{tf} \psi \eqqcolon \psi_{\mr{in}}.
+\end{align*}
+As $t \to \infty$, we obtain $H_{\mr{in}}$ and $H_{\mr{out}}$, which are distributions.
+
+\begin{exm}
+    Now consider $M = \R$ and $f = \frac{\omega x^2}{2}$. Note in this case we need to use $L^2$ differential forms. Then we have basic operators
+    \begin{align*}
+        H_0 &\coloneqq -\partial_x^2 + \omega^2 x^2 + \omega \\
+        &= (-\partial_x + \omega x)(\partial_x + \omega x) \\
+        H^i &\coloneqq -\partial_x^2 + \omega^2 x^2 + \omega \\
+        &= (\partial_x + \omega x)(-\partial_x + \omega x).
+    \end{align*}
+    Finally, we set $\alpha = \psi(x) \dd{x}$.
+
+    The spectrum is given in the following way. If $H\psi = 0$, then the equality $(\partial_x + \omega x)\psi = 0$ implies that $\psi = e^{-f}$, which is fine if $\omega > 0$ and bad if $\omega < 0$. Then suppose there is $\psi_n$ such that $H \psi_n = n \abs{\omega} \psi_n$. Then we obtain
+    \[ \psi_n = \begin{cases}
+        (-\partial_x + \omega x)^n \qty(e^{-\frac{\omega x^2}{2}}) & \omega > 0 \\
+        (\partial_x + \omega x)^{n-1} \qty(e^{\frac{\omega x^2}{2}}) & \omega < 0 .
+    \end{cases}
+    \]
+    Then if $P$ is a polynomial,
+    \[ P(\partial_x) e^{-t \abs{\omega}x^2} \to P(\partial_x) \delta(x) \]
+    as $t \to \infty$ (here $t$ scales $\omega$). This tells us that $H_{\mr{in}}^0 \cong H^1_{\mr{out}}$ are regular functions, while eigenstates of $H_{\infty}$ are monomials. Similarly, $H^1_{\mr{in}} \cong H^0_{\mr{out}}$ are distributions supported at $x=0$, while the eigenstates of $H_{\infty}$ are those of the form $\partial_x^n \delta(x)$. Observe that
+    \[ H_{\infty} = \ms{Lie}_{x \dv{x}}. \]
+    Then, note that $\delta(x) \dd{x}$ is an invariant distribution-valued $1$-form. The pairing between the in and out states must be the usual pairing between functions and distributions.
+\end{exm}
+
+In higher dimensions, there will be both attracting and repelling states, so we can consider something like
+\[ f = \sum_{i=1}^{d-m} \frac{x_i^2}{2} - \sum_{j=d-m+1}^d \frac{x_j^2}{2} \]
+and i the end $\psi_{\mr{in}}$ is a distribution supported on the attracting manifold. This concludes the study of the local picture.
+
+However, we must consider the compact picture. For example, consider $S^1 = \R \cup \infty$ where the Morse function $f$ is attracting at $x=0$ and repelling at $x=\infty$. Then near $\infty$, the states  corresponding to monomials will look like $\on{P.V.}x^n$. Applying $x \dv{x}$ and expanding
+\[ \psi = \psi_{\infty} + \frac{1}{x}\psi_{\infty}^{(1)} + \cdots + \frac{1}{x^{n+1}} \psi_{\infty}^{(n+1)} + \cdots, \]
+then the scaling $x \to tx, \ep to t\ep$ gives us correction terms of $\log \ep$ and $\log t$ to $\psi_{\infty}^{(n+1)}$. Here, the principal value
+\begin{align*}
+    (x^n,\psi) &= \on{P.V.} \int_{\R} x^n \psi \dd{x}
+\end{align*}
+is the finite part in the $\ep$-expansion of
+\[ \int_{-\frac{1}{\ep}}^{\frac{1}{\ep}} x^n \psi \dd{x}. \]
+Therefore, we see that critical points can talk to each other via excited states.
+
+\section{$\sigma$-models}
+
+We will consider maps $\Sigma \to (X,\omega)$ from a Riemann surface to a symplectic manifold. We will also choose an almost complex structure $J$ which is tame with respect to $\omega$. If we consider the functional
+\[ \mathbb{S} = \frac{1}{2} \int_{\Sigma} g(\dd{\phi}, *_h \dd{\phi}) + i \int_{\Sigma} \phi^* \omega, \]
+its critical points are simply harmonic maps.
+
+In the Hammiltonian formalism, consider $M = LX$. If $\xi \in T_{\ell} LX$, then
+\[ \dd{f}(\xi) = \int_{S^1} \omega(\xi, \dot{\ell}). \]
+Note that
+\[ g(\dd{\phi}, * \dd{\phi}) = \omega(J \dd{\phi}, *_h \dd{\phi}) \]
+and
+\[ \dd{\phi} = \frac{1+iJ}{2} \dd{\phi} + \frac{1-iJ}{2} \dd{\phi}. \]
+Then $\mathbb{S}$ can be rewritten as
+\[ \mathbb{S} = \int \phi^*(\pm \omega + iB) + \norm{\frac{1-iJ}{2} (\partial \text{ or }\ol{\partial})\phi}^2, \]
+where $B$ is the $B$-field, satisfying $\dd{B} = 0$. Therefore, the absolute minima are solutions to the PDE
+\[ \frac{1-iJ}{2} \ol{\partial}\phi = 0. \]
+
+\begin{exm}
+    Consider $X = \R^2$ with the standard symplectic form and complex structure. Let
+    \[ f = \int_{S^1} p \dd{q}. \]
+    Let $t$ be the loop variable and $s$ be the noncompact direction. Then we obtain the equations
+    \begin{align*}
+        \dv{p}{s} &= -\fdv{f}{p} = -\dv{q}{t} \\
+        \dv{q}{s} &= -\fdv{f}{q} = -\dv{p}{t},
+    \end{align*}
+    which are the Cauchy-Riemann equations. If $z = s + it$ and $w = \exp(z)$, the Cauchy-Riemann equations give
+    \[ \ol{\partial}_{\ol{z}} (q+ip) = 0. \]
+\end{exm}
+
+
+
+
 
 
 
