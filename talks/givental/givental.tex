@@ -210,19 +210,131 @@
 
 % \addbibresource{../../notes/math.bib}
 
-\title{The Givental formalism}
+\title{Packaging of Gromov-Witten invariants}
 \author{Patrick Lei}
 \date{\today}
 
 \begin{document}
     
 \begin{abstract}
-    I will attempt to make the Givental formalism in Gromov-Witten theory less intimidating to the audience.
+    The goal of this lecture is to explain, in increasing level of difficulty, how to package Gromov-Witten invariants.
 \end{abstract}
 
 \maketitle
 
 \tableofcontents
+
+\section{Introduction}
+
+I apologize in advance if most of this talk is basic to the audience, but we do need to be on a common footing. 
+
+Let $X$ be a smooth projective variety. Then for any $g,n \in \Z_{\geq 0}, \beta \in H_2(X,\Z)$, there exists a moduli space $\Mbar_{g,n}(X,\beta)$ (Givental's notation is $X_{g,n,\beta}$) of \textit{stable maps} $f \colon C \to X$ from genus-$g$, $n$-marked prestable curves to $X$ with $f_*[C] = \beta$. It is well-known that $\Mbar_{g,n}(X,\beta)$ has a virtual fundamental class
+\[ [\Mbar_{g,n}(X,\beta)]^{\mr{vir}} \in A_{\delta}(\Mbar_{g,n}(X,\beta)), \qquad \delta = \int_{\beta} c_1(X) + (\dim X - 3)(1-g) + 3. \]
+In addition, there is a universal curve and sections
+\begin{equation*}
+\begin{tikzcd}
+    \mc{C} \ar[shift left=1]{r}{\pi} & \Mbar_{g,n}(X,\beta) \ar[shift left=1]{l}{\sigma_i}.
+\end{tikzcd}
+\end{equation*}
+In this setup, there are tautological classes
+\[ \psi_i \coloneqq c_1(\sigma_i^* \omega_{\pi}) \in H^2(\Mbar_{g,n}(X,\beta)). \]
+This allows us to define individual Gromov-Witten invariants by
+\[ \ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X = \int_{[\Mbar_{g,n}(X,\beta)]^{\mr{vir}}} \prod_{i=1}^n \on{ev}_i^* \phi_i \cdot \psi_i^{a_i}. \]
+These invariants satisfy various relations. The first is the \textit{string equation:}
+\[ \ab<\tau_0(1) \tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X = \sum_{i=1}^n \ab<\tau_{a_i-1}(\phi_i)\prod_{j\neq i} \tau_{a_j}(\phi_j)>_{g,n,\beta}^X. \]
+The next is the \textit{dilaton equation:}
+\[ \ab<\tau_1(1) \tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X = (2g-2+n)\ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X. \]
+Finally, we have the \textit{divisor equation} when one insertion is a divisor $D \in H^2(X)$:
+\begin{align*}
+    \ab<\tau_0(D)\tau_{a_1}(\phi_1)\cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X =&{} \ab(\int_{\beta} D) \cdot \ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X \\
+    &+ \sum_{i=1}^n \ab<\tau_{a_i-1}(\phi_i \cdot D)\prod_{j\neq i} \tau_{a_j}(\phi_j)>_{g,n,\beta}^X.
+\end{align*}
+
+It is often useful to package Gromov-Witten invariants into various generating series.
+
+\begin{defn}
+    The \textit{quantum cohomology} $QH^*(X)$ of $X$ is defined by the formula
+    \[ (a \star_t b, c) \coloneqq \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<a,b,c,t,\ldots,t>_{0,3+n,\beta}^X \]
+    for any $t \in H^*(X)$. This is a commutative and associative product.
+\end{defn}
+The \textit{small quantum cohomology} is obtained by setting $t=0$ and the ordinary cohomology is obtained by further setting $Q=0$.
+\begin{rmk}
+    Convergence of the formula does not hold in general, so quantum cohomology needs to be treated as a formal object.
+\end{rmk}
+
+\begin{defn}
+    Let $\phi_i$ be a basis of $H^*(X)$ and $\phi^i$ be the dual basis. Then the \textit{$J$-function} of $X$ is the cohomology-valued function
+    \[ J^X(t,z) \coloneqq z + t + \sum_i \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<\frac{\phi_i}{z-\psi}, t, \ldots, t>_{0,n+1,\beta}^X \phi^i. \]
+\end{defn}
+
+\begin{defn}
+    The \textit{genus-$0$ GW potential} of $X$ is the (formal) function
+    \[ \mc{F}^X(t(z)) = \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<t(\psi), \ldots, t(\psi)>_{0,n,\beta}^X. \]
+\end{defn}
+
+The associativity of the quantum product is equivalent to the PDE
+\[ \sum_{e,f} \mc{F}^X_{abe} \eta^{ef} \mc{F}_{cdf} = \sum_{e,f} \mc{F}^X_{ade} \eta^{ef} \mc{F}^X_{bcf} \]
+for any $a,b,c,d$, which are known as the \textit{WDVV equations}. Here, we choose coordinates on $H^*(X)$.
+
+
+\section{Frobenius manifolds}
+
+A Frobenius manifold can be thought of as a formalization of the WDVV equations.
+
+\begin{defn}
+    A \textit{Frobenius manifold} is a complex manifold $M$ with a flat symmetric bilinear form $\ab<-,->$ (meaning that the Levi-Civita connection has zero curvature) on $TM$ and a holomorphic system of (commutative, associative) products $\star_t$ on $T_t M$ satisfying:
+    \begin{enumerate}
+        \item The unit vector field $\mbf{1}$ is flat: $\nabla \mbf{1} = 0$;
+        \item For any $t$ and $a,b,c \in T_t M$, $\ab<a \star_t b, c> = \ab<a, b \star_t c>$;
+        \item If $c(u,v,w) \coloneqq \ab<u \star_t v, w>$, then the tensor $(\nabla_z c)(u,v,w)$ is symmetric in $u,v,w,z \in T_t M$.
+    \end{enumerate}
+    If there exists a vector field $E$ such that $\nabla \nabla E = 0$ and complex number $d$ such that:
+    \begin{enumerate}
+        \item $\nabla \nabla E = 0$;
+        \item $\mc{L}_E(u \star v) - \mc{L}_E u \star v - u \star \mc{L}_E v = u \star v$ for all vector fields $u,v$;
+        \item $\mc{L}_E \ab<u,v> - \ab<\mc{L}_E u,v> - \ab<u,\mc{L}_E v> = (2-d) \ab<u,v>$ for all vector fields $u,v$,
+    \end{enumerate}
+    then $E$ is called an \textit{Euler vector field} and the Frobenius manifold $M$ is called \textit{conformal}.
+\end{defn}
+
+\begin{exm}
+    Let $X$ be a smooth projective variety. Then we can give $H^*(X)$ the structure of a Frobenius algebra with the Poincar\'e pairing and the quantum product. Note that the quantum product does not converge in general, so we must treat this as a formal object. The Euler vector field is given by
+    \[ E_X = c_1(X) + \sum_i \ab(1-\frac{\deg \phi_i}{2})t^i \phi_i, \]
+    where a general element of $H^*(X)$ is given by $t = \sum_i t^i \phi_i$. We will also impose that $\phi_1 = \mbf{1}$. There is another very important structure, the \textit{quantum connection}, which is given by the formula
+    \begin{align*}
+        \nabla_{t^i} &\coloneqq \partial_{t^i} + \frac{1}{z} \phi_i \star_t \\
+        \nabla_{z \odv{}{z}} &\coloneqq z \odv{}{z} - \frac{1}{z} E_X \star_t + \mu_X.
+    \end{align*}
+    Here, $\mu_X$ is the \textit{grading operator}, defined for pure degree classes $\phi \in H^*(X)$ by
+    \[ \mu_X(\phi) = \frac{\deg \phi - \dim X}{2} \phi. \]
+    Finally, in the direction of the Novikov variables, we have
+    \[ \nabla_{\xi Q \partial_Q} = \xi Q \partial_Q + \frac{1}{z} \xi \star_t. \]
+\end{exm}
+
+\begin{defn}
+    The \textit{quantum $D$-module} of $X$ is the module $H^*(X)[z]\llbracket Q,t\rrbracket$ with the quantum connection defined above.
+\end{defn}
+
+\begin{rmk}
+    It is important to note that the quantum connection has a fundamental solution matrix $S^X(t,z)$ given by
+    \[ S^X(t,z) \phi = \phi + \sum_{i} \sum_{n,\beta} \frac{Q^{\beta}}{n!} \phi^i \ab<\frac{\phi_i}{z-\psi},\phi,t,\ldots,t>_{0,n+2,\beta}^X. \]
+    Using this formalism, the $J$-function is given by $S^X(t,z) \mbf{1} = z^{-1} J^X(t,z)$.
+\end{rmk}
+
+
+\section{Givental formalism}
+
+The Givental formalism is a geometric way to package enumerative (CohFT) invariants cleanly. We begin by defining the symplectic space
+\[ \mc{H} \coloneqq H^*(X, \Lambda)\llparenthesis z^{-1}\rrparenthesis \]
+with the symplectic form
+\[ \Omega(f,g) \coloneqq \on{Res}_{z=0} f(-z)g(z). \]
+This has a polarization by Lagrangian subspaces
+\[ \mc{H}_+ \coloneqq H^*(X,\Lambda)[z], \qquad \mc{H}_- \coloneqq z^{-1} H^*(X,\Lambda)\llbracket z^{-1} \rrbracket \]
+giving $\mc{H} \cong T^* \mc{H}_+$ as symplectic vector spaces. 
+
+Taking the \textit{dilaton shift}
+\[ q(z) = t(z) - z = -z + t_0 + t_1 z + t_2 z^2 + \cdots, \]
+we can now think of $\mc{F}^X$ has a formal function on $\mc{H}_+$ near $q = -z$. This convention is called the \textit{dilaton shift}.
 
 
 \end{document}
