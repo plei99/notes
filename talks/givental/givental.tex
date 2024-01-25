@@ -264,7 +264,7 @@ The \textit{small quantum cohomology} is obtained by setting $t=0$ and the ordin
 
 \begin{defn}
     Let $\phi_i$ be a basis of $H^*(X)$ and $\phi^i$ be the dual basis. Then the \textit{$J$-function} of $X$ is the cohomology-valued function
-    \[ J^X(t,z) \coloneqq z + t + \sum_i \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<\frac{\phi_i}{z-\psi}, t, \ldots, t>_{0,n+1,\beta}^X \phi^i. \]
+    \[ J_X(t,z) \coloneqq z + t + \sum_i \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<\frac{\phi_i}{z-\psi}, t, \ldots, t>_{0,n+1,\beta}^X \phi^i. \]
 \end{defn}
 
 \begin{defn}
@@ -274,7 +274,7 @@ The \textit{small quantum cohomology} is obtained by setting $t=0$ and the ordin
 
 The associativity of the quantum product is equivalent to the PDE
 \[ \sum_{e,f} \mc{F}^X_{abe} \eta^{ef} \mc{F}_{cdf} = \sum_{e,f} \mc{F}^X_{ade} \eta^{ef} \mc{F}^X_{bcf} \]
-for any $a,b,c,d$, which are known as the \textit{WDVV equations}. Here, we choose coordinates on $H^*(X)$.
+for any $a,b,c,d$, which are known as the \textit{WDVV equations}. Here, we choose coordinates on $H^*(X)$ and set $z=0$ (only consider primary insertions). In addition, set $\eta_{ef}$ to be the components of the Poincar\'e pairing and let $\eta^{ef}$ be the inverse matrix.
 
 
 \section{Frobenius manifolds}
@@ -311,14 +311,25 @@ A Frobenius manifold can be thought of as a formalization of the WDVV equations.
     \[ \nabla_{\xi Q \partial_Q} = \xi Q \partial_Q + \frac{1}{z} \xi \star_t. \]
 \end{exm}
 
+\begin{rmk}
+    For a general conformal Frobenius manifold $(H, (-,-), \star, E)$, there is still a \textit{deformed flat connection} or \textit{Dubrovin connection} given by
+    \begin{align*}
+        \nabla_{t^i} &\coloneqq \pdv{}{t^i} + \frac{1}{z} \phi_i \star \\
+        \nabla_{z \odv{}{z}} &\coloneqq z \odv{}{z} - \frac{1}{z} E \star.
+    \end{align*}
+\end{rmk}
+
+
 \begin{defn}
     The \textit{quantum $D$-module} of $X$ is the module $H^*(X)[z]\llbracket Q,t\rrbracket$ with the quantum connection defined above.
 \end{defn}
 
 \begin{rmk}
     It is important to note that the quantum connection has a fundamental solution matrix $S^X(t,z)$ given by
-    \[ S^X(t,z) \phi = \phi + \sum_{i} \sum_{n,\beta} \frac{Q^{\beta}}{n!} \phi^i \ab<\frac{\phi_i}{z-\psi},\phi,t,\ldots,t>_{0,n+2,\beta}^X. \]
-    Using this formalism, the $J$-function is given by $S^X(t,z) \mbf{1} = z^{-1} J^X(t,z)$.
+    \[ S_X(t,z) \phi = \phi + \sum_{i} \sum_{n,\beta} \frac{Q^{\beta}}{n!} \phi^i \ab<\frac{\phi_i}{z-\psi},\phi,t,\ldots,t>_{0,n+2,\beta}^X. \]
+    It satisfies the important equation
+    \[ S_X^*(-z) S(Z) = 1. \]
+    Using this formalism, the $J$-function is given by $S^X(t,z)^* \mbf{1} = z^{-1} J_X(t,z)$.
 \end{rmk}
 
 
@@ -330,11 +341,95 @@ with the symplectic form
 \[ \Omega(f,g) \coloneqq \on{Res}_{z=0} f(-z)g(z). \]
 This has a polarization by Lagrangian subspaces
 \[ \mc{H}_+ \coloneqq H^*(X,\Lambda)[z], \qquad \mc{H}_- \coloneqq z^{-1} H^*(X,\Lambda)\llbracket z^{-1} \rrbracket \]
-giving $\mc{H} \cong T^* \mc{H}_+$ as symplectic vector spaces. 
+giving $\mc{H} \cong T^* \mc{H}_+$ as symplectic vector spaces. Choose Darboux coordinates $\ul{p}, \ul{q}$ on $\mc{H}$. For example, there is a choice in Coates's thesis which gives a general element of $\mc{H}$ as
+\[ \sum_{k \geq 0} \sum_i q_k^i \phi_i z^k + \sum_{\ell \geq 0} \sum_j p_{\ell}^j \phi^j (-z)^{-\ell-1}. \]
 
 Taking the \textit{dilaton shift}
 \[ q(z) = t(z) - z = -z + t_0 + t_1 z + t_2 z^2 + \cdots, \]
 we can now think of $\mc{F}^X$ has a formal function on $\mc{H}_+$ near $q = -z$. This convention is called the \textit{dilaton shift}.
+
+Before we continue, we need to recast the string and dilaton equations in terms of $\mc{F}^X$. Write $t_x = \sum t_k^i \phi_i$. Then the string equation becomes
+\[ \partial_0^1 \mc{F}(t) = \frac{1}{2} (t_0, t_0) + \sum_{n=0}^{\infty} \sum_{j} t_{n+1}^{\nu} \partial_n^{j} \mc{F}(t) \]
+and the dilaton equation becomes
+\[ \partial_1^1 \mc{F}(t) = \sum_{n=0}^{\infty} t_n^j \partial_n^j \mc{F}(t) - 2 \mc{F}(t). \]
+There are also an infinite series of topological recursion relations
+\[ \partial_{k+1}^i \partial_{\ell}^j \partial_{m}^k \mc{F}(t) = \sum_{a,b} \partial_k^i \partial_0^a \mc{F}(t) \eta^{ab} \partial_0^b \partial_{\ell}^j \partial_m^k \mc{F}(t). \]
+We can make sense of these three relations for any (formal) function $\mc{F}$ on $\mc{H}_+$.
+
+Now let
+\[ \mc{L} = \ab\{(\ul{p}, \ul{q}) \in \mc{H} \mid \ul{p} = \d_{\ul{q}} \mc{F}\} \]
+be the graph of $\d \mc{F}$. This is a formal germ at $q=-z$ of a Lagrangian section of the cotangent bundle $T^* \mc{H}_+$ and is therefore a formal germ of a Lagrangian submanifold in $\mc{H}$.
+
+\begin{thm}
+    The function $\mc{F}$ satisfies the string equation, dilaton equation, and topological recursion relations if and only if $\mc{L}$ is a Lagrangian cone with vertex at the origin $q=0$ such that its tangent spaces $L$ are tangent to $\mc{L}$ exactly along $z L$.
+\end{thm}
+
+Because of this theorem, $\mc{L}$ is known as the \textit{Lagrangian cone}. It can be recovered from the $J$-function by the following procedure. First consider $\mc{L} \cap (-z + z \mc{H}_-)$. Via the projection to $-z + H$ along $\mc{H}_-$, this can be considered as the graph of the $J$-function. Next, we consider the derivatives $\pdv{J}{t^i}$, which form a basis of $L \cap z \mc{H}_-$, which is a complement to $zL$ in $L$. Then we know that
+\[ z \pdv{J}{t^i} \in z L \subset \mc{L}, \]
+so 
+\[ z \pdv{J}{t^i,t^j} \in L \cap z \mc{H}_-. \]
+Writing these in terms of the first derivatives $\pdv{J}{t^i}$ and using the fact that $J$ is a solution of the quantum connection, so we recover the Frobenius structure of quantum cohomology.
+
+We will now express some classical results in this formalism. Let $X$ be a toric variety with toric divisors $D_1, \ldots, D_N$ such that $D_1, \ldots, D_k$ form a basis of $H^2(X)$ and Picard rank $k$. Then define the \textit{$I$-function}
+\[ I_X = z e^{\sum_{j=1}^k t_i D_i} \sum_{\beta} Q^{\beta} \frac{\prod_{j=1}^N \prod_{m=-\infty}^0 (D_j+mz)}{\prod_{j=1}^N \prod_{m=-\infty}^{\ab<D_j, \beta>}(D_j + mz)}. \]
+
+\begin{thm}[Mirror theorem]
+    The formal functions $I_X$ and $J_X$ coincide up to some change of variables, which if $c_1(X)$ is semi-positive is given by components of the $I$-function.
+\end{thm}
+
+
+\begin{thm}[Mirror theorem in this formalism]
+    For any $t$, we have
+    \[ I_X(t, z) \in \mc{L}. \]
+\end{thm}
+
+Another direction in Gromov-Witten theory is the Virasoro constraints. In the original formulation, these involved very complicated explicit differential operators, but in the Givental formalism, there is a very compact formulation.
+
+Define $\ell^{-1} = z^{-1}$ and
+\[ \ell_0 = z \odv{}{z} + \frac{1}{2} + \mu + \frac{c_1(X) \cup -}{z}. \]
+Then define 
+\[ \ell_n = \ell_0 (z \ell_0)^n. \]
+
+\begin{thm}[Genus-$0$ Virasoro constraints]
+    Suppose the vector field on $\mc{H}$ defined by $\ell_0$ is tangent to $\mc{L}$. Then the same is true for the vector fields defined by $\ell_n$ for any $n \geq 1$.
+\end{thm}
+
+\begin{proof}
+    Let $L$ be a tangent space to $\mc{L}$. Then if $f \in zL \subset \mc{L}$, the assumption gives us $\ell_0 f \in L$. But then $z \ell_0 f \in zL$, so $\ell_0 z \ell_0 f = \ell_1 f \in L$. Continuing, we obtain $\ell_n f \in L$ for all $n$.
+\end{proof}
+
+Next week, we will learn that the Quantum Riemann-Roch theorem can be stated in this formalism. Let $\mc{L}^{\mr{tw}}$ be the twisted Lagrangian cone (where the twisted theory will be defined next week).
+\begin{thm}[Quantum Riemann-Roch]
+    For some explicit linear symplectic transformaiton $\Delta$, we have $\mc{L}^{\mr{tw}} = \Delta \mc{L}$.
+\end{thm}
+
+
+
+
+\section{Quantization}
+
+In the last part of the talk, we will briefly discuss the quantization formalism, which encodes the higher-genus theory. In Darboux coordinates $p_a, q_b$, we will quantize symplectic transformations by the standard rules
+\[ \wh{{q_a q_b}} = \frac{q_a q_b}{\hslash}, \qquad \wh{q_a p_b} = q_a \pdv{}{q_b}, \qquad \wh{p_a p_b} = \hslash \pdv{}{q_a,q_b}. \]
+This determines a differential operator acting on functions on $\mc{H}_+$.
+
+We also need the genus-$g$ potential
+\[ \mc{F}_g \coloneqq \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<t(\psi), \ldots, t(\psi)>_{g,n,\beta}^X \]
+and the \textit{total descendent potential}
+\[ \mc{D} \coloneqq \exp\ab(\sum_{g \geq 0} \hslash^{g-1} \mc{F}_g). \]
+
+In this formalism, the Virasoro conjecture can be expressed as follows. Let $L_n = \wh{\ell}_n + c_n$, where $c_n$ is a carefully chosen constant.
+
+\begin{conj}[Virasoro conjecture]
+    If $L_{-1} \mc{D} = L_0 \mc{D} = 0$, then $L_n \mc{D} = 0$ for all $n \geq 1$.
+\end{conj}
+
+In this formalism, the higher-genus version of the Quantum Riemann-Roch theorem takes the very simple form
+\begin{thm}[Quantum Riemann-Roch]
+    Let $\mc{D}^{\mr{tw}}$ be the twisted descendent potential. Then
+    \[ \mc{D}^{\mr{tw}} = \wh{\Delta} \mc{D}. \]
+\end{thm}
+
+
 
 
 \end{document}
