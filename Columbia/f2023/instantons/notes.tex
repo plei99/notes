@@ -1441,10 +1441,99 @@ There is one important change to the whole story when $M$ is not compact; in oth
 
 Since we want $\phi$ to approach a constant $a$, $\overline{\phi} \to \overline{a}$, such that $[a, \overline{a}]= 0$, we only use those gauge transformations which approach unity sufficiently fast at infinity. The rate at which they go to 1 is fixed by the requirement that $||\dd\phi||^{2} < \infty$. The result of that is that a finite dimensional group of those gauge transformations preserved now acts as a global symmetry! Instead of integrals over the moduli space of instantons of closed differential forms, one passes to equivariant differential forms for the moduli space of \textbf{framed} instantons, where framed means the vanishing condition above.
 
+\chapter{Gauge-theoretic instanton counting}
 
+The difference between mathematicians and physicists is that mathematicians like closed $4$-manifolds while physicists like $\R^4$. For mathematical precision, we will let $M^4$ be a compact Riemannian manifold and $\mc{P} \to M$ be a principal $G$-bundle for some compact Lie group $G$. These are classsified by the second Chern class
+\[ k \coloneqq c_2(\mc{P}) \in H^4(M^4, \Z), \]
+which physicists call the \textit{instanton charge}. We are looking for connections $\nabla = \dd + A$ whose curvature satisfies
+\[ F_{\nabla} = - \star F_{\nabla}, \]
+which are called \textit{instantons}. This equation in fact only depends on the conformal class of the metric.
 
+Being anti-self-dual implies that the connection gives a minimum of the Yang-Mills action
+\[ S = \int_{M^4} \Tr F_{\nabla} \wedge \star F_{\nabla}. \]
+If $M^4$ is a complex surface and the metric $g$ is Hermitian, then $F_{\nabla}^{0,2} = 0$, which is equivalent to requiring that that $\ol{\partial}_A^2 = 0$. Therefore, any representation $E$ of $G$ gives rise to a holomorphic vector bundle $\mc{E}$ on $M^4$. This will come into play later when we cheat by replacing instantons with torsion-free sheaves.
 
+The \textit{moduli space} of such instantons is
+\[ \mc{M}_{\mc{P}} = \qty{\nabla \mid F_{\nabla}^+ = 0} / \mc{G}_{\mc{P}}, \]
+where $\mc{G}_{\mc{P}}$ is the group of sections of the associated $\Ad_{\mc{G}}$-bundle acting by
+\[ A \mapsto g^{-1} A g + g^{-1} \dd g. \]
+For generic metrics $g$, this is a manifold of dimension
+\[ 4 h^{\vee} k - \frac{\chi + \sigma}{2} \dim G, \]
+where $h^{\vee}$ is the dual Coxeter number. We should note that even though $\mc{M}_k$ as a space depends only on the conformal class of the metric, the metric depends on $g$ itself. It also lives inside the space $\mc{A}_{\mc{P}}/\mc{G}_{\mc{P}}$ of all connections on $\mc{P}$. Our aim is to understand the infinite-dimensional integral
+\[ \sum_{[\mc{P}], c_2(\mc{P}) = -k} e^{- \vartheta k} \int_{\mc{A}_{\mc{P}}/\mc{G}_{\mc{P}}} [\mc{D}A] e^{-\frac{1}{4g^2} S_{\mr{YM}}}. \]
+Here, $\vartheta$ is valued on $S^1$. In the $g^2 \to 0$ limit, the asymptotics of the integral should become
+\[ \sum_k q^k \int_{\mc{M}_k} \dd{\mu} (1 + O(g)), \]
+where $q = e^{-\frac{8\pi^2}{g^2} + i\vartheta}$ and the measure is obtained by regularity and determinants of $\delta S_{\mr{YM}}$.
 
+Instead of trying to understand this very complicated measure $\mu$, we can try to study simpler but still interesting integrals. For examples, Donaldson invariants are defined as integrals over $\mc{M}_k$ of cohomology classes associated to $2$-cycles $\Sigma_i$ and $0$-cycles $p$ on $M^4$. The problem is that $\mc{M}_k$ is non-compact because of the conformal invariance of the equations leading to delta-function solutions. Uhlenbeck discovered that via a complicated system of gauge transformations, these points can be filled in by ideal solutions, so there is the \textit{Uhlenbeck compactification}
+\begin{align*}
+    \ol{\mc{M}}_k &= \qty{(\nabla, x_1, \ldots, x_{\ell}) \mid c_2(\wt{\mc{P}}) - c_2(\mc{P}) = \ell} \\
+    &= \mc{M}_k \cup \mc{M}_{k-1} \times M^4 \cup \mc{M}_{k-2} \times \on{Sym}^2 M^4 \cup  \cdots \cup \mc{M}_0 \times \on{Sym}^k M^4.
+\end{align*}
+
+\section{The case of $\R^4$}
+
+This is the case that physicists are worried about. The problem is of course that $\R^4$ is non-compact, so we can view either $\R^4 = S^4 \setminus \infty$ or $\R^4 = \C^2 = \P^2 \setminus \P^1_{\infty}$. There are already interesting solutions in this case, but because our metric is singular at infinity, we will consider the moduli space
+\[ \mc{M}_k^{\mr{framed}} = \qty{\nabla \mid F_{\nabla}^+ = 0} / \mc{G}_{\mc{P}}^{\infty}, \]
+where $\mc{G}_{\mc{P}}^{\infty} \subset \mc{G}_{\mc{P}}$ is the set of those elements satisfying $g(x) \to 1$ as $x \to \infty$. This is a hyperk\"ahler manifold of dimension $4kN$ when $G = SU(N)$.
+
+It is well-known that this (or a slight modification $\wt{\mc{M}}_k^{\mr{framed}})$ is a Nakajima quiver variety corresponding to the quiver data
+\begin{equation*}
+\begin{tikzcd}
+    k \ar[shift left=1]{d}{J} \arrow[out=0,in=30,loop,swap,"B_2"] \arrow[out=90,in=120,loop,swap,"B_1"]\\
+    N \ar[shift left=1]{u}{I}
+\end{tikzcd}
+\end{equation*}
+Here, we need to modify the instanton equations to
+\begin{align*}
+    [B_1, B_2] + IJ &= 0 \\
+    [B_1, B_1^+] + [B_2, B_2^+] + I I^+ - J^+ J &= \zeta \cdot 1_k,
+\end{align*}
+which in algebraic geometry corresponds to changing the value of the moment map.
+
+This moduli space has an instanton interpretation if we replace $\R^4$ by a noncommutative $\R^4_{\zeta}$, which has coordinates $z_1, z_2, \ol{z}_1, \ol{z}_2$ with commutators
+\[ [z_1, \ol{z}_1] = -\frac{\zeta}{2} = [z_2, \ol{z}_2]. \]
+In the $N=2$ case, we have $\mc{M}_2^{\mr{framed}} = \R^4 \times (\R^4 \setminus 0)/\Z_2$ while $\ol{\mc{M}}_k^{\mr{framed}} = \R^4 \times \R^4/\Z_2$ and $\wt{\mc{M}}_k^{\mr{framed}} = \R^4 \times T^* S^2$.
+
+There is also an action of $U(2) \times SU(N)$, where for elements
+\[ a = \mqty(\dmat{a_1,\ddots,a_N}) \in \on{\ms{Lie}} U(N) \otimes \C \]
+and
+\[\ep = \mqty(0 & \ep_1 \\ -\ep_1 & 0 \\ & & 0 & \ep_2 \\ & & -\ep_2 & 0) \in \on{\ms{Lie}} U(2) \otimes \C, \]
+the corresponding vector field is denoted by $V(a,\ep)$. Given a choice of
+\[ \lambda_{\ol{a}, \ol{\ep}} = G_{\wt{\mc{M}}}(V(\ol{a}, \ol{\ep}), -), \]
+the partition function is
+\[ Z_k = \int_{\wt{\mc{M}}_k^{\mr{framed}}} \exp \qty(-G_{\wt{\mc{M}}}(V(a,\ep), V(\ol{a}, \ol{\ep}))) \frac{1}{(2kN)!} (\dd \lambda_{\ol{a}, \ol{\ep}})^{2kN}. \]
+This is not the most general formulation, but it is a distilled version of Yang-Mills with some supersymmetry. It turns out that $Z_k$ is actually a rational function of degree $-2kN$ in $a$ and $\ep$.
+
+One generalization of this is
+\[ Z(a,\ep,\Lambda) = Z^{\mr{part}} \times \sum_{k=0}^{\infty} \Lambda^{2kN} Z_k(a,e), \]
+where
+\[ Z^{\mr{part}}(a,\ep) = \prod_{i \neq j} \Gamma_2(a_i-a_j; \ep_1, \ep_2). \]
+Here, $\Gamma_2$ has the asymptotics
+\[ \Gamma_2(x; \ep_1, \ep_2) \sim \prod_{n,m \geq 1}(x+\ep_1 n + \ep_2 m) \]
+and solves the equation
+\[ \frac{\Gamma_2(x+\ep_1) \Gamma_2(x+\ep_2)}{\Gamma_2(x) \Gamma_2(x+\ep_1+\ep_2)} = x. \]
+In the limit as $\ep_1, \ep_2 \to 0$, we expect the asymptotics
+\[ \exp\qty(\frac{1}{\ep_1 \ep_2} \mc{F}(a,\Lambda) + \cdots), \]
+so the question now is to evaluate $\mc{F}(a, \Lambda)$. In the case when $G = SU(N)$, we can do it by localization.
+
+A standard computation tells us that
+\[ Z_k(a,\ep) = \sum_{\substack{(\lambda^{(1)}, \ldots, \lambda^{(k)}) \\ \abs{\lambda^{(1)}} + \cdots + \abs{\lambda^{(k)}} = k}} \frac{1}{\prod_{i,j=1}^N \qty( \prod_{\square \in \lambda^{(i)}} (a_i-a_j + f(\ep_1, \ep_2))) \qty(\prod_{\blacksquare \in \lambda^{(j)}} ( a_j - a_i + g(\ep_1, \ep_2) ))}, \]
+where $f$ and $g$ are defined using the (relative) arms and legs of the two Young diagrams. For example, when $i=j$, we end up with $f = \ep_1(\mr{arm}_{\square}+1)-\ep_2 \mr{leg}_{\square}$ and $g = -\ep_1 \mr{arm}_{\square} + \ep_2(\mr{leg}_{\square}+1)$.
+
+Treating $Z_k$ as a probability measure on the set of Young diagrams, we obtain the observables
+\[ Y(x)[\lambda^{(1)}, \ldots, \lambda^{(N)}] = \prod_{\alpha =1}^N \frac{\prod_{\square \in \partial_+ \lambda^{(\alpha)}}(x-a_{\alpha}-c_{\square})}{\prod_{\blacksquare \in \partial_- \lambda^{(\alpha)}}(x-a_{\alpha}-c_{\blacksquare}-\ep_1-\ep_2)}. \]
+This function knows essentially everything about the shape of the diagrams, and its vacuum expectation is
+\[ \ev{Y(x)} = \frac{1}{Z} \sum_{\vec{\lambda}} Y(x)[\vec{\lambda}] \mu_{\vec{\lambda}}(a,\ep) \Lambda^{2N\abs{\vec{\lambda}}}. \]
+It satisfies the property that
+\[ \ev{Y(x+\ep_1 + \ep_2) + \frac{\Lambda^{2N}}{Y(x)}} \]
+has no poles in $x$ and is in fact a polynomial of degree $N$. Physically, this is interpreted as an interaction between two neighboring instanton sectors.
+
+If we send $\ep_1, \ep_2 \to 0$, then $\ev{Y(x)} = \mc{Y}(x)$ we then obtain the algebraic equation
+\[ \mc{Y}(x) + \frac{\Lambda^{2N}}{\mc{Y}(x)} = T(x), \]
+where the coefficients of $T(x)$ are defined by
+\[ \oint_{A_i} x \frac{\dd Y}{Y} \sim a_i. \]
+This is a hyperelliptic curve.
 
 
 

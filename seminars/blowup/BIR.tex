@@ -1,0 +1,484 @@
+\documentclass[leqno, openany]{memoir}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\setlrmarginsandblock{3cm}{3.5cm}{*}
+\checkandfixthelayout
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs} 
+\usepackage[normalem]{ulem} 
+\usepackage{stackengine}
+\usepackage{bbm}
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{eulervm}
+\usepackage[scaled=0.86]{berasans}
+\usepackage{inconsolata}
+\usepackage{microtype}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\crefname{equation}{}{}
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{parskip}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\overline{M}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bir}{\sim_{\mr{bir}}}
+\newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
+\newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Def}{Def}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Hilb}{Hilb}
+
+% Section formatting
+\titleformat{\section}
+    {\Large\sffamily\scshape\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[runin]
+    {\large\sffamily\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\title{COURSE TITLE}
+\author{Lectures by INSTRUCTOR, Notes by NOTETAKER}
+\date{SEMESTER}
+
+\newcommand*{\titleSW}
+    {\begingroup% Story of Writing
+    \raggedleft
+    \vspace*{\baselineskip}
+    {\Huge\itshape Enumerative invariants and birational geometry\\ Spring 2024}\\[\baselineskip]
+    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\Large Lectures by Various}\par
+    \vfill
+    {\Large \sffamily Columbia University}
+    \vspace*{\baselineskip}
+\endgroup}
+\pagestyle{simple}
+
+\chapterstyle{ell}
+
+
+%\renewcommand{\cftchapterpagefont}{}
+\renewcommand\cftchapterfont{\sffamily}
+\renewcommand\cftsectionfont{\scshape}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\addbibresource{../../math.bib}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+
+\begin{document}
+    
+\begin{titlingpage}
+\titleSW
+\end{titlingpage}
+
+\thispagestyle{empty}
+\section*{Disclaimer}%
+\label{sec:disclaimer}
+
+These notes were taken during the lectures using \texttt{neovim}. 
+Any errors are mine and not the speakers'. 
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differe between lecturers.
+If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+\section*{Acknowledgements}
+I would like to thank Shaoyun Bai for co-organizing the seminar with me.
+
+\vspace*{1cm}
+
+\noindent\textbf{Seminar Website:}  \url{https://math.columbia.edu/~plei/s24-birat.html}
+\newpage
+
+\tableofcontents
+
+\chapter{Preliminaries}%
+\label{cha:Preliminaries}
+
+\section{Givental formalism (Patrick, Feb 01)}
+
+\subsection{Introduction}
+
+Let $X$ be a smooth projective variety. Then for any $g,n \in \Z_{\geq 0}, \beta \in H_2(X,\Z)$, there exists a moduli space $\Mbar_{g,n}(X,\beta)$ (Givental's notation is $X_{g,n,\beta}$) of \textit{stable maps} $f \colon C \to X$ from genus-$g$, $n$-marked prestable curves to $X$ with $f_*[C] = \beta$. It is well-known that $\Mbar_{g,n}(X,\beta)$ has a virtual fundamental class
+\[ [\Mbar_{g,n}(X,\beta)]^{\mr{vir}} \in A_{\delta}(\Mbar_{g,n}(X,\beta)), \qquad \delta = \int_{\beta} c_1(X) + (\dim X - 3)(1-g) + 3. \]
+In addition, there is a universal curve and sections
+\begin{equation*}
+\begin{tikzcd}
+    \mc{C} \ar[shift left=1]{r}{\pi} & \Mbar_{g,n}(X,\beta) \ar[shift left=1]{l}{\sigma_i}.
+\end{tikzcd}
+\end{equation*}
+In this setup, there are tautological classes
+\[ \psi_i \coloneqq c_1(\sigma_i^* \omega_{\pi}) \in H^2(\Mbar_{g,n}(X,\beta)). \]
+This allows us to define individual Gromov-Witten invariants by
+\[ \ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X = \int_{[\Mbar_{g,n}(X,\beta)]^{\mr{vir}}} \prod_{i=1}^n \on{ev}_i^* \phi_i \cdot \psi_i^{a_i}. \]
+These invariants satisfy various relations. The first is the \textit{string equation:}
+\[ \ab<\tau_0(1) \tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X = \sum_{i=1}^n \ab<\tau_{a_i-1}(\phi_i)\prod_{j\neq i} \tau_{a_j}(\phi_j)>_{g,n,\beta}^X. \]
+The next is the \textit{dilaton equation:}
+\[ \ab<\tau_1(1) \tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X = (2g-2+n)\ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X. \]
+Finally, we have the \textit{divisor equation} when one insertion is a divisor $D \in H^2(X)$:
+\begin{align*}
+    \ab<\tau_0(D)\tau_{a_1}(\phi_1)\cdots \tau_{a_n}(\phi_n)>_{g,n+1,\beta}^X =&{} \ab(\int_{\beta} D) \cdot \ab<\tau_{a_1}(\phi_1) \cdots \tau_{a_n}(\phi_n)>_{g,n,\beta}^X \\
+    &+ \sum_{i=1}^n \ab<\tau_{a_i-1}(\phi_i \cdot D)\prod_{j\neq i} \tau_{a_j}(\phi_j)>_{g,n,\beta}^X.
+\end{align*}
+
+It is often useful to package Gromov-Witten invariants into various generating series.
+
+\begin{defn}
+    The \textit{quantum cohomology} $QH^*(X)$ of $X$ is defined by the formula
+    \[ (a \star_t b, c) \coloneqq \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<a,b,c,t,\ldots,t>_{0,3+n,\beta}^X \]
+    for any $t \in H^*(X)$. This is a commutative and associative product.
+\end{defn}
+The \textit{small quantum cohomology} is obtained by setting $t=0$ and the ordinary cohomology is obtained by further setting $Q=0$.
+\begin{rmk}
+    Convergence of the formula does not hold in general, so quantum cohomology needs to be treated as a formal object.
+\end{rmk}
+
+\begin{defn}
+    Let $\phi_i$ be a basis of $H^*(X)$ and $\phi^i$ be the dual basis. Then the \textit{$J$-function} of $X$ is the cohomology-valued function
+    \[ J_X(t,z) \coloneqq z + t + \sum_i \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<\frac{\phi_i}{z-\psi}, t, \ldots, t>_{0,n+1,\beta}^X \phi^i. \]
+\end{defn}
+
+\begin{defn}
+    The \textit{genus-$0$ GW potential} of $X$ is the (formal) function
+    \[ \mc{F}^X(t(z)) = \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<t(\psi), \ldots, t(\psi)>_{0,n,\beta}^X. \]
+\end{defn}
+
+The associativity of the quantum product is equivalent to the PDE
+\[ \sum_{e,f} \mc{F}^X_{abe} \eta^{ef} \mc{F}_{cdf} = \sum_{e,f} \mc{F}^X_{ade} \eta^{ef} \mc{F}^X_{bcf} \]
+for any $a,b,c,d$, which are known as the \textit{WDVV equations}. Here, we choose coordinates on $H^*(X)$ and set $z=0$ (only consider primary insertions). In addition, set $\eta_{ef}$ to be the components of the Poincar\'e pairing and let $\eta^{ef}$ be the inverse matrix.
+
+
+\subsection{Frobenius manifolds}
+
+A Frobenius manifold can be thought of as a formalization of the WDVV equations.
+
+\begin{defn}
+    A \textit{Frobenius manifold} is a complex manifold $M$ with a flat symmetric bilinear form $\ab<-,->$ (meaning that the Levi-Civita connection has zero curvature) on $TM$ and a holomorphic system of (commutative, associative) products $\star_t$ on $T_t M$ satisfying:
+    \begin{enumerate}
+        \item The unit vector field $\mbf{1}$ is flat: $\nabla \mbf{1} = 0$;
+        \item For any $t$ and $a,b,c \in T_t M$, $\ab<a \star_t b, c> = \ab<a, b \star_t c>$;
+        \item If $c(u,v,w) \coloneqq \ab<u \star_t v, w>$, then the tensor $(\nabla_z c)(u,v,w)$ is symmetric in $u,v,w,z \in T_t M$.
+    \end{enumerate}
+    If there exists a vector field $E$ such that $\nabla \nabla E = 0$ and complex number $d$ such that:
+    \begin{enumerate}
+        \item $\nabla \nabla E = 0$;
+        \item $\mc{L}_E(u \star v) - \mc{L}_E u \star v - u \star \mc{L}_E v = u \star v$ for all vector fields $u,v$;
+        \item $\mc{L}_E \ab<u,v> - \ab<\mc{L}_E u,v> - \ab<u,\mc{L}_E v> = (2-d) \ab<u,v>$ for all vector fields $u,v$,
+    \end{enumerate}
+    then $E$ is called an \textit{Euler vector field} and the Frobenius manifold $M$ is called \textit{conformal}.
+\end{defn}
+
+\begin{exm}
+    Let $X$ be a smooth projective variety. Then we can give $H^*(X)$ the structure of a Frobenius algebra with the Poincar\'e pairing and the quantum product. Note that the quantum product does not converge in general, so we must treat this as a formal object. The Euler vector field is given by
+    \[ E_X = c_1(X) + \sum_i \ab(1-\frac{\deg \phi_i}{2})t^i \phi_i, \]
+    where a general element of $H^*(X)$ is given by $t = \sum_i t^i \phi_i$. We will also impose that $\phi_1 = \mbf{1}$. There is another very important structure, the \textit{quantum connection}, which is given by the formula
+    \begin{align*}
+        \nabla_{t^i} &\coloneqq \partial_{t^i} + \frac{1}{z} \phi_i \star_t \\
+        \nabla_{z \odv{}{z}} &\coloneqq z \odv{}{z} - \frac{1}{z} E_X \star_t + \mu_X.
+    \end{align*}
+    Here, $\mu_X$ is the \textit{grading operator}, defined for pure degree classes $\phi \in H^*(X)$ by
+    \[ \mu_X(\phi) = \frac{\deg \phi - \dim X}{2} \phi. \]
+    Finally, in the direction of the Novikov variables, we have
+    \[ \nabla_{\xi Q \partial_Q} = \xi Q \partial_Q + \frac{1}{z} \xi \star_t. \]
+\end{exm}
+
+\begin{rmk}
+    For a general conformal Frobenius manifold $(H, (-,-), \star, E)$, there is still a \textit{deformed flat connection} or \textit{Dubrovin connection} given by
+    \begin{align*}
+        \nabla_{t^i} &\coloneqq \pdv{}{t^i} + \frac{1}{z} \phi_i \star \\
+        \nabla_{z \odv{}{z}} &\coloneqq z \odv{}{z} - \frac{1}{z} E \star.
+    \end{align*}
+\end{rmk}
+
+
+\begin{defn}
+    The \textit{quantum $D$-module} of $X$ is the module $H^*(X)[z]\llbracket Q,t\rrbracket$ with the quantum connection defined above.
+\end{defn}
+
+\begin{rmk}
+    It is important to note that the quantum connection has a fundamental solution matrix $S^X(t,z)$ given by
+    \[ S_X(t,z) \phi = \phi + \sum_{i} \sum_{n,\beta} \frac{Q^{\beta}}{n!} \phi^i \ab<\frac{\phi_i}{z-\psi},\phi,t,\ldots,t>_{0,n+2,\beta}^X. \]
+    It satisfies the important equation
+    \[ S_X^*(t,-z) S(t,z) = 1. \]
+    Using this formalism, the $J$-function is given by $S_X^*(t,z) \mbf{1} = z^{-1} J_X(t,z)$.
+\end{rmk}
+
+
+\subsection{Givental formalism}
+
+The Givental formalism is a geometric way to package enumerative (CohFT) invariants cleanly. We begin by defining the symplectic space
+\[ \mc{H} \coloneqq H^*(X, \Lambda)\llparenthesis z^{-1}\rrparenthesis \]
+with the symplectic form
+\[ \Omega(f,g) \coloneqq \on{Res}_{z=0} f(-z)g(z). \]
+This has a polarization by Lagrangian subspaces
+\[ \mc{H}_+ \coloneqq H^*(X,\Lambda)[z], \qquad \mc{H}_- \coloneqq z^{-1} H^*(X,\Lambda)\llbracket z^{-1} \rrbracket \]
+giving $\mc{H} \cong T^* \mc{H}_+$ as symplectic vector spaces. Choose Darboux coordinates $\ul{p}, \ul{q}$ on $\mc{H}$. For example, there is a choice in Coates's thesis which gives a general element of $\mc{H}$ as
+\[ \sum_{k \geq 0} \sum_i q_k^i \phi_i z^k + \sum_{\ell \geq 0} \sum_j p_{\ell}^j \phi^j (-z)^{-\ell-1}. \]
+
+Taking the \textit{dilaton shift}
+\[ q(z) = t(z) - z = -z + t_0 + t_1 z + t_2 z^2 + \cdots, \]
+we can now think of $\mc{F}^X$ has a formal function on $\mc{H}_+$ near $q = -z$. This convention is called the \textit{dilaton shift}.
+
+Before we continue, we need to recast the string and dilaton equations in terms of $\mc{F}^X$. Write $t_x = \sum t_k^i \phi_i$. Then the string equation becomes
+\[ \partial_0^1 \mc{F}(t) = \frac{1}{2} (t_0, t_0) + \sum_{n=0}^{\infty} \sum_{j} t_{n+1}^{j} \partial_n^{j} \mc{F}(t) \]
+and the dilaton equation becomes
+\[ \partial_1^1 \mc{F}(t) = \sum_{n=0}^{\infty} t_n^j \partial_n^j \mc{F}(t) - 2 \mc{F}(t). \]
+There are also an infinite series of topological recursion relations
+\[ \partial_{k+1}^i \partial_{\ell}^j \partial_{m}^k \mc{F}(t) = \sum_{a,b} \partial_k^i \partial_0^a \mc{F}(t) \eta^{ab} \partial_0^b \partial_{\ell}^j \partial_m^k \mc{F}(t). \]
+We can make sense of these three relations for any (formal) function $\mc{F}$ on $\mc{H}_+$.
+
+Now let
+\[ \mc{L} = \ab\{(\ul{p}, \ul{q}) \in \mc{H} \mid \ul{p} = \d_{\ul{q}} \mc{F}\} \]
+be the graph of $\d \mc{F}$. This is a formal germ at $q=-z$ of a Lagrangian section of the cotangent bundle $T^* \mc{H}_+$ and is therefore a formal germ of a Lagrangian submanifold in $\mc{H}$.
+
+\begin{thm}
+    The function $\mc{F}$ satisfies the string equation, dilaton equation, and topological recursion relations if and only if $\mc{L}$ is a Lagrangian cone with vertex at the origin $q=0$ such that its tangent spaces $L$ are tangent to $\mc{L}$ exactly along $z L$.
+\end{thm}
+
+Because of this theorem, $\mc{L}$ is known as the \textit{Lagrangian cone}. It can be recovered from the $J$-function by the following procedure. First consider $\mc{L} \cap (-z + z \mc{H}_-)$. Via the projection to $-z + H$ along $\mc{H}_-$, this can be considered as the graph of the $J$-function. Next, we consider the derivatives $\pdv{J}{t^i}$, which form a basis of $L \cap z \mc{H}_-$, which is a complement to $zL$ in $L$. Then we know that
+\[ z \pdv{J}{t^i} \in z L \subset \mc{L}, \]
+so 
+\[ z \pdv{J}{t^i,t^j} \in L \cap z \mc{H}_-. \]
+Writing these in terms of the first derivatives $\pdv{J}{t^i}$ and using the fact that $J$ is a solution of the quantum connection, so we recover the Frobenius structure of quantum cohomology.
+
+We will now express some classical results in this formalism. Let $X$ be a toric variety with toric divisors $D_1, \ldots, D_N$ such that $D_1, \ldots, D_k$ form a basis of $H^2(X)$ and Picard rank $k$. Then define the \textit{$I$-function}
+\[ I_X = z e^{\sum_{j=1}^k t_i D_i} \sum_{\beta} Q^{\beta} \frac{\prod_{j=1}^N \prod_{m=-\infty}^0 (D_j+mz)}{\prod_{j=1}^N \prod_{m=-\infty}^{\ab<D_j, \beta>}(D_j + mz)}. \]
+
+\begin{thm}[Mirror theorem]
+    The formal functions $I_X$ and $J_X$ coincide up to some change of variables, which if $c_1(X)$ is semi-positive is given by components of the $I$-function.
+\end{thm}
+
+
+\begin{thm}[Mirror theorem in this formalism]
+    For any $t$, we have
+    \[ I_X(t, z) \in \mc{L}. \]
+\end{thm}
+
+Another direction in Gromov-Witten theory is the Virasoro constraints. In the original formulation, these involved very complicated explicit differential operators, but in the Givental formalism, there is a very compact formulation.
+
+Define $\ell^{-1} = z^{-1}$ and
+\[ \ell_0 = z \odv{}{z} + \frac{1}{2} + \mu + \frac{c_1(X) \cup -}{z}. \]
+Then define 
+\[ \ell_n = \ell_0 (z \ell_0)^n. \]
+
+\begin{thm}[Genus-$0$ Virasoro constraints]
+    Suppose the vector field on $\mc{H}$ defined by $\ell_0$ is tangent to $\mc{L}$. Then the same is true for the vector fields defined by $\ell_n$ for any $n \geq 1$.
+\end{thm}
+
+\begin{proof}
+    Let $L$ be a tangent space to $\mc{L}$. Then if $f \in zL \subset \mc{L}$, the assumption gives us $\ell_0 f \in L$. But then $z \ell_0 f \in zL$, so $\ell_0 z \ell_0 f = \ell_1 f \in L$. Continuing, we obtain $\ell_n f \in L$ for all $n$.
+\end{proof}
+
+Next week, we will learn that the Quantum Riemann-Roch theorem can be stated in this formalism. Let $\mc{L}^{\mr{tw}}$ be the twisted Lagrangian cone (where the twisted theory will be defined next week).
+\begin{thm}[Quantum Riemann-Roch]
+    For some explicit linear symplectic transformaiton $\Delta$, we have $\mc{L}^{\mr{tw}} = \Delta \mc{L}$.
+\end{thm}
+
+
+
+
+\subsection{Quantization}
+
+In the last part of the talk, we will briefly discuss the quantization formalism, which encodes the higher-genus theory. In Darboux coordinates $p_a, q_b$, we will quantize symplectic transformations by the standard rules
+\[ \wh{{q_a q_b}} = \frac{q_a q_b}{\hslash}, \qquad \wh{q_a p_b} = q_a \pdv{}{q_b}, \qquad \wh{p_a p_b} = \hslash \pdv{}{q_a,q_b}. \]
+This determines a differential operator acting on functions on $\mc{H}_+$.
+
+We also need the genus-$g$ potential
+\[ \mc{F}_g^X \coloneqq \sum_{\beta, n} \frac{Q^{\beta}}{n!} \ab<t(\psi), \ldots, t(\psi)>_{g,n,\beta}^X \]
+and the \textit{total descendent potential}
+\[ \mc{D} \coloneqq \exp\ab(\sum_{g \geq 0} \hslash^{g-1} \mc{F}_g^X). \]
+
+In this formalism, the Virasoro conjecture can be expressed as follows. Let $L_n = \wh{\ell}_n + c_n$, where $c_n$ is a carefully chosen constant.
+
+\begin{conj}[Virasoro conjecture]
+    If $L_{-1} \mc{D} = L_0 \mc{D} = 0$, then $L_n \mc{D} = 0$ for all $n \geq 1$.
+\end{conj}
+
+In this formalism, the higher-genus version of the Quantum Riemann-Roch theorem takes the very simple form
+\begin{thm}[Quantum Riemann-Roch]
+    Let $\mc{D}^{\mr{tw}}$ be the twisted descendent potential. Then
+    \[ \mc{D}^{\mr{tw}} = \wh{\Delta} \mc{D}. \]
+\end{thm}
+
+
+
+\end{document} 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
