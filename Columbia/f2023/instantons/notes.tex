@@ -47,9 +47,9 @@
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
 \usepackage{cleveref}
-\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
 \usepackage{xpatch}
-\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+% \xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
 \crefname{equation}{}{}
 
 % other formatting packages
@@ -132,6 +132,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
+\newcommand{\K}{\mathbb{K}}
 \renewcommand{\k}{\Bbbk}
 \renewcommand{\L}{\mathbb{L}}
 \renewcommand{\P}{\mathbb{P}}
@@ -232,11 +233,11 @@
 \maxsecnumdepth{subsection}
 \settocdepth{subsection}
 
-\addbibresource{../../math.bib}
-\DefineBibliographyStrings{english}{
-    backrefpage={$\leftarrow$},
-    backrefpages={$\leftarrow$},
-}
+% \addbibresource{../../math.bib}
+% \DefineBibliographyStrings{english}{
+%     backrefpage={$\leftarrow$},
+%     backrefpages={$\leftarrow$},
+% }
 
 \begin{document}
     
@@ -1611,6 +1612,9 @@ We have therefore proven the following theorem:
     and the fixed points are given by $\qty{0} \times (0,\ldots,1,\ldots,0)$.
 \end{exm}
 
+\subsection{Explicit localization computation}%
+\label{sub:Explicit localization computation}
+
 In order to compute our integrals using equivariant localization, we need to compute
 \[ T_{\ul{\lambda}} \ol{\mc{M}}_k^{\mr{framed}}(N) = \bigoplus_w \C_w \]
 as a representation of the maximal torus $\T$. Its equivariant Chern character (also the character of the representation) is given by
@@ -1623,16 +1627,129 @@ must satisfy
 \[ [B_1, \delta B_2] + [\delta B_1, B_2] + I \delta J = 0 \]
 up to
 \[ \delta B_1 = [B_1, \phi], \qquad \delta B_2 = [B_2, \phi], \qquad \delta I = - \phi I, \qquad \delta J = J \phi = 0. \]
-Therefore, $T_{\ul{\lambda}} \ol{\mc{M}}_k^{\mr{framed}}(N)$ is the cohomology of a complex
-\[ \End(\C^k) \to \End(\C^k) \oplus \End(\C^k) \oplus \Hom(\C^N, \C^k) \oplus \Hom(\C^k) \oplus \C^N \to \End(\C^k), \]
+Therefore, $T_{\ul{\lambda}} \ol{\mc{M}}_k^{\mr{framed}}(N)$ is the $H^1$ of a complex
+\[ \mc{T} = \End(\C^k) \to \End(\C^k) \oplus \End(\C^k) \oplus \Hom(\C^N, \C^k) \oplus \Hom(\C^k, \C^N) \to \End(\C^k) \otimes \Lambda^2 \C^2, \]
 where the two arrows are given by
 \begin{align*}
-    d_1(\phi) &= ([B_1, \phi], [B_2, \phi], -\phi I, 0) \\
-    d_2(\delta B_1, \delta B_2, \delta I, \delta J) &= [B_1, \delta B_2] + [\delta B_1, B_2] + I \delta J.
+    d_1(\phi) &= ([B_1, \phi], [B_2, \phi], -\phi I, J \phi) \\
+    d_2(\delta B_1, \delta B_2, \delta I, \delta J) &= [B_1, \delta B_2] + [\delta B_1, B_2] + I \delta J + \delta I J.
 \end{align*}
 
+\begin{lem}
+    We have $H^0(\mc{T}) = H^2(\mc{T}) = 0$.
+\end{lem}
 
+\begin{proof}
+    Suppose $\gamma \in \ker d_1$. Then 
+    \[ \gamma (\C[B_1, B_2] I(\C^N)) = 0. \]
+    But this space is all of $\C^k$, so $\gamma = 0$.
 
+    Now suppose there exists $\wt{\gamma} \in \End \C^k$ such that
+    \[ \Tr (\wt{\gamma} d_2(\beta_1, \beta_2, i,j)) = 0 \]
+    for all $(\beta_1, \beta_2, i, j)$. But this implies that
+    \[ \Tr (\wt{\gamma} I)j + \Tr (J \wt{\gamma}) i + \Tr [B_1, \wt{\gamma}] \beta_2 + \Tr [B_2, \wt{\gamma}] \beta_1 = 0, \]
+    which is exactly $\dd_1(\wt{\gamma}) = 0$, which implies $\wt{\gamma} = 0$.
+\end{proof}
+
+To compute the character, we note that
+\begin{align*}
+    \chi_{\ul{\lambda}}(q_1, q_2; w_1, \ldots, w_n) &= \on{Ch} H^1(\mc{T}) \\
+    &= - \chi_{\T}(\mc{T}) \\
+    &= - \sum (-1)^i \on{Ch} H^i(\mc{T}) \\
+    &= - \sum (-1)^i \on{Ch} C^i(\mc{T}).
+\end{align*}
+We also know that
+\begin{align*}
+    \N \coloneqq \on{Ch} \C^N &= \sum_{\alpha = 1}^n w_{\alpha} \\
+    \mathbb{K} \coloneqq \on{Ch} \C^k &= \sum_{\alpha=1}^n w_{\alpha} K_{\alpha}(q_1, q_2),
+\end{align*}
+where
+\[ K_{\alpha}(q_1, q_2) = \sum_{(i,j) \in \lambda^{(\alpha)}} q_1^{i-1} q_2^{j-1}. \]
+This also gives us
+\begin{align*}
+    \N^* &= \sum_{\alpha} w_{\alpha}^{-1} \\
+    \mathbb{K}^* &= \sum_{\alpha} w_{\alpha}^{-1} K_{\alpha}(q_1^{-1}, q_2^{-1}).
+\end{align*}
+
+We are now able to compute
+\[ \on{Ch} \End(\C^k) = \mathbb{K} \mathbb{K}^*. \]
+It is also easy to see that
+\[ \on{Ch} C^1(\mc{T}) = \mathbb{K} \mathbb{K}^* (q_1 + q_2) + \N \mathbb{K}^* + \mathbb{K} \N^* q_1 q_2 \]
+and
+\[ \on{Ch} C^2(\mc{T}) = \mathbb{K} \mathbb{K}^* q_1 q_2, \]
+so
+\[ \chi_{\ul{\lambda}}(q_1, q_2l w_1, \ldots, w_n) = \N \mathbb{K}^* + \N^* \mathbb{K} q_1 q_2 - (1-q_1)(1-q_2) \mathbb{K} \K^*. \]
+This is not obviously a pure character, but taking its dual gives us
+\begin{align*}
+    \chi_{\ul{\lambda}}^* &= \N^* \K + \N \K^* q_1^{-1} q_2^{-1} - q_1^{-1}q_2^{-1}(1-q_1)(1-q_2) \K \K^* \\
+    &= q_1^{-1} q_2^{-1} \chi_{\ul{\lambda}}.
+\end{align*}
+Rewriting
+\[ \chi_{\ul{\lambda}} = \sum_{\alpha,\beta=1}^N w_{\alpha}w_{\beta}^{-1 \mc{T}_{\alpha\beta}}(q_1, q_2) \]
+and noting that
+\[ \mc{T}_{\alpha\beta} = q_1q_2 \mc{T}_{\beta \alpha}^*, \]
+we can compute
+\begin{align*}
+    \mc{T}_{\alpha\beta}(q_1, q_2) &= \mc{T}_{\alpha\beta}^{q_1>0} + \mc{T}_{\alpha\beta}^{q_1 \leq 0} \\
+    &= K_{\beta}^* + K_{\alpha} q_1q_2 - (1-q_1)(1-q_2)K_{\alpha}K_{\beta}^*. 
+\end{align*}
+We then see that
+\begin{align*}
+    (1-q_2) K_{\alpha} &= \sum_{i=1}^{\ell_{\lambda^{(\alpha)}}} q_1^{i-1}(1-q_2^{\lambda_i^{\alpha}}) \\
+    (1-q_1) K_{\beta}^* &= - q_1 \sum_{j=1}^{\lambda_1^{(\beta)}} q_2^{1-j} (1-q_1^{-\lambda_j^{(\beta) t}}).
+\end{align*}
+Taking only the nonpositive part, we obtain
+\begin{align*}
+    \mc{T}_{\alpha\beta}^{q_1^{\leq 0}} &= K_{\beta}^* - ((1-q_1)(1-q_2) K_{\alpha} K_{\beta}^*)^{q_1^{\leq 0}} \\
+    &= \sum_{(i,j) \in \lambda^{(\beta)}} q_1^{i-\lambda_j^{(\beta) t}} q_2^{\lambda_i^{(\alpha)}+1-j} \\
+    &= \sum_{\square \in \lambda^{(\beta)}} q_1^{-\ell_{\square}^{(\beta)}} q_2^{1+a_{\square}^{(\alpha)}}.
+\end{align*}
+Putting it all together, we obtain
+\[ \chi_{\ul{\lambda}} = \sum_{\alpha,\beta=1}^N w_{\alpha}w_{\beta}^{-1} \qty(\sum_{\square \in \lambda^{(\beta)}} q_1^{-\ell_{\square}^{(\beta)}} q_2^{1+a_{\square}^{(\alpha)}} + \sum_{\square \in \lambda^{(\alpha)}} q_1^{\ell_{\square}^{( \alpha )}+1} q_2^{-a_{\square}^{(\beta)}}). \]
+
+We are now able to compute the integrals we wanted as
+\begin{align*}
+    &\int_{\ol{\mc{M}}_k(N)} \Omega^{(4Nk)} =\\
+    &=\sum_{\abs{\ul{\lambda}} = k} \frac{\Omega^{(0)}|_{\ul{\lambda}}}{\displaystyle\prod_{\alpha,\beta=1}^N \prod_{\box \in \lambda^{(\beta)}}(a_{\alpha}-a_{\beta} - \ep_1 \ell_{\square}^{(\beta)}+ \ep_2 (1+a_{\square}^{(\alpha)})) \prod_{\square \in \lambda^{(\alpha)}} (a_{\alpha}-a_{\beta}+\ep_1 (\ell_{\square}^{(\alpha)}+1) - \ep_2 a_{\square}^{(\beta)})}.
+\end{align*}
+
+We now consider the \textit{tautological complex}
+\[ \mc{S}_z = [0 \to \C^k \xrightarrow{\delta_1} \C^k \otimes \C^2 \oplus \C^N \xrightarrow{\delta_2} \C^k \to 0], \]
+which should be thought of as a holomorphic square root of the tangent complex. This is given by the formulae
+\begin{align*}
+    \delta_1(\kappa) &= ((B_1-z_1) \kappa, (B_2 - z_2) \kappa, J \kappa) \\
+    \delta_2(\kappa_1, \kappa_2, \nu) &= (B_1 - z_1) \kappa_2 - (B_2 - z_2) \kappa_1 + I \nu. 
+\end{align*}
+In fact, the ADHM equation is equivalent to this being a complex for all $z \in \C^2$. We see what happens when $z=0$. In this case, we see that if $\wt{\kappa} \in \on{coker} \delta_2$, then
+\[ \wt{\kappa}^{\dag}(B_1 \kappa_2- B_2 \kappa_1 + I \nu) = 0 \]
+for all $(\kappa_1, \kappa_2, \nu)$, so it annihilates all of $B_1, B_2, I$, and thus $\wt{\kappa} = 0$. Therefore
+\[ \mc{H}^1(\mc{S}_0) = 0. \]
+
+However, in general, this complex has both $H^0$ and $H^1$. We will compute these over $\ul{\lambda}$. We can explicitly see that
+\[ H^0(\mc{S}_0) \]
+is the space of corners. We will compute the character of the $H^1$ using the equation
+\begin{align*}
+    \on{Ch} H^0(\mc{S}_0) - \on{Ch} H^1(\mc{S}_0) &= \on{Ch} C^0(\mc{S}_0) - \on{Ch} C^1(\mc{S}_0) + \on{Ch} C^2(\mc{S}_0) \\
+    &= \sum_{\alpha} w_{\alpha}(K_{\alpha} - K_{\alpha}(q_1 + q_2) - 1 + K_{\alpha} q_1q_2) \\
+    &= -\sum_{\alpha} w_{\alpha}(1-(1-q_1)(1-q_2) K_{\alpha}).
+\end{align*}
+If we note that
+\[ \on{Ch} \C[q_1, q_2] = \frac{1}{(1-q_1)(1-q_2)}, \]
+we see that
+\[ \frac{1}{(1-q_1)(1-q_2)} - K_{\alpha} = \on{Ch} \mc{I}_{\alpha} \]
+is the character of the ideal corresponding to $\lambda^{(\alpha)}$.
+Therefore, the coefficient of $w_{\alpha}$ is simply
+\[ \sum_{\square \in \partial_+\lambda} q_{\square} - q_{12} \sum_{\square \in \partial_- \lambda} q_{\square}, \]
+and the first term yields $\on{Ch} H^1$ while the second term yields $\on{Ch} H^0$.
+
+To see how this works in practice, fix $N=1$. Then $\mc{I}$ is a codimension $k$ ideal in $\C[z_1, z_2]$. We are looking for 
+\[ f(z_1, z_2) = z_1 \kappa_2(z_1, z_2) - z_2 \kappa_1(z_1, z_2) + \nu \in \mc{I}, \]
+and this is given by
+\begin{align*}
+    \nu &= f(0,0) \\
+    \kappa_1 &=  \frac{f(0,0) - f(0,z_2)}{z_2} \\
+    \kappa_2 &= \frac{f(z_1, z_2) - f(0, z_2)}{z_1}.
+\end{align*}
 
 
 

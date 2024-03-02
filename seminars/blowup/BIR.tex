@@ -193,6 +193,7 @@
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\ev}{ev}
 \DeclareMathOperator{\Hilb}{Hilb}
+\DeclareMathOperator{\QDM}{QDM}
 
 % Section formatting
 \titleformat{\section}
@@ -310,7 +311,7 @@ The \textit{small quantum cohomology} is obtained by setting $t=0$ and the ordin
     Convergence of the formula does not hold in general, so quantum cohomology needs to be treated as a formal object.
 \end{rmk}
 
-\begin{defn}
+\begin{defn}\label{defn:jfunction}
     Let $\phi_i$ be a basis of $H^*(X)$ and $\phi^i$ be the dual basis. Then the \textit{$J$-function} of $X$ is the cohomology-valued function
     \[ J_X(t,z) \coloneqq z + t + \sum_i \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<\frac{\phi_i}{z-\psi}, t, \ldots, t>_{0,n+1,\beta}^X \phi^i. \]
 \end{defn}
@@ -408,7 +409,7 @@ Now let
 \[ \mc{L} = \ab\{(\ul{p}, \ul{q}) \in \mc{H} \mid \ul{p} = \d_{\ul{q}} \mc{F}\} \]
 be the graph of $\d \mc{F}$. This is a formal germ at $q=-z$ of a Lagrangian section of the cotangent bundle $T^* \mc{H}_+$ and is therefore a formal germ of a Lagrangian submanifold in $\mc{H}$.
 
-\begin{thm}
+\begin{thm}\label{thm:overruled}
     The function $\mc{F}$ satisfies the string equation, dilaton equation, and topological recursion relations if and only if $\mc{L}$ is a Lagrangian cone with vertex at the origin $q=0$ such that its tangent spaces $L$ are tangent to $\mc{L}$ exactly along $z L$.
 \end{thm}
 
@@ -446,7 +447,7 @@ Then define
     Let $L$ be a tangent space to $\mc{L}$. Then if $f \in zL \subset \mc{L}$, the assumption gives us $\ell_0 f \in L$. But then $z \ell_0 f \in zL$, so $\ell_0 z \ell_0 f = \ell_1 f \in L$. Continuing, we obtain $\ell_n f \in L$ for all $n$.
 \end{proof}
 
-Next week, we will learn that the Quantum Riemann-Roch theorem can be stated in this formalism. Let $\mc{L}^{\mr{tw}}$ be the twisted Lagrangian cone (where the twisted theory will be defined next week).
+Later, we will learn that the Quantum Riemann-Roch theorem can be stated in this formalism. Let $\mc{L}^{\mr{tw}}$ be the twisted Lagrangian cone (where the twisted theory will be defined next week).
 \begin{thm}[Quantum Riemann-Roch]
     For some explicit linear symplectic transformaiton $\Delta$, we have $\mc{L}^{\mr{tw}} = \Delta \mc{L}$.
 \end{thm}
@@ -735,6 +736,344 @@ This gives the virtual normal bundle, and using virtual localization, we obtain
 where
 \[ M'(\tau', z) = \Phi_k \circ M(\tau, z) \circ \Phi_k^{-1}. \]
 Using the unitarity property of $M$, we obtain the desired result.
+
+\chapter{Quantum cohomology of projective bundles}%
+\label{cha:Quantum cohomology of projective bundles}
+
+\section{Mirror theorem (Che, Feb 22)}%
+\label{sec:Mirror theorem}
+
+\subsection{Setup}%
+\label{sub:Setup}
+
+Let $X$ be a smooth projective variety, $\ab\{ \phi_i\}_{i=0}^s$ be a basis of $H^*(X)$, $\ab\{\phi^i\}_{i=0}^s$ be the dual basis, and 
+\[ \tau = \sum_{i=0}^s \tau^i \phi_i \in H^*(X). \]
+We will let
+\[ J_X(\tau) = 1 + \frac{\tau}{z} + z^{-1} \sum_{d,n} \sum_{j=0}^s \ab<\tau, \ldots, \tau \frac{\phi_j}{z-\psi}>_{0,n+1,d}^X \frac{Q^d}{n!}, \]
+which is the $J$-function in~\Cref{defn:jfunction} multiplied by $z^{-1}$.\footnote{This is in fact the older definition of the $J$-function, but the one in~\Cref{defn:jfunction} lies on the Lagrangian cone}. Also, recall the inverse of the fundamental solution of the quantum D-module
+\[ M_X(\tau) \in \End(H^*(X))[z^{-1}]\llbracket Q,\tau \rrbracket, \]
+which is defined by
+\[ (\M_X(\tau) \phi_i, \phi_j) = (\phi_i, \phi_j)_X + \sum_{d,n} \ab<\phi_i,\tau, \ldots, \tau, \frac{\phi_j}{z-\psi}>_{0,n+2,d}^X \frac{Q^d}{n!}. \]
+
+\begin{rmk}
+    By the string equation, we have
+    \[ J_X(\tau) = M_X(\tau) \cdot 1. \]
+\end{rmk}
+
+\subsection{The vector bundle case}%
+\label{sub:The vector bundle case}
+
+
+Now let $V \to B$ be a vector bundle with $\on{rk} V \geq 2$. This has an action of $\C^{\times}$ scaling the fibers. Then we have
+\[ H_{\C^{\times}}^*(V) = H^*(B) \otimes \C[\lambda]. \]
+Now we may take $\tau^0, \ldots, \tau^s$ to be $\C[\lambda]$-valued coordinates.
+
+\begin{rmk}
+    Equivariant localization is required to define the Gromov-Witten invariants of $V$, which lie in $\C[\lambda, \lambda^{-1}]$.
+\end{rmk}
+
+In order to avoid this issue, we will assume that $V^{\vee}$ is globally generated. This implies that $V$ is semiprojective, meaning that the evaluation maps $\on{ev} \colon V_{0,n,d} \to V$ are proper. As before, we may define the fundamental solution
+\[ M_V(\tau) \in \End(H^*(B))[\lambda, z^{-1}] \llbracket Q, \tau \rrbracket \]
+and the $J$-function
+\[ J_V^{\lambda}(\tau) = M_V(\tau) \cdot 1. \]
+Because the evaluation maps are proper, they can be defined without localization.
+
+\subsection{Statement and discussion of the mirror theorem}%
+\label{sub:Statement and discussion of the mirror theorem}
+
+
+\begin{thm}\label{thm:projbundlemirror}
+    Define the $H^*(\P(V))$-valued function
+    \[ I_{\P(V)}(\tau, t) = \sum_{k=0}^{\infty} \frac{e^{pt/z} q^k e^{kt}}{\prod_{c=1}^k \prod_{\delta} (p+\delta  + cz)} J_V^{p+kz}(\tau), \]
+    where $\delta$ are the Chern roots of $V$, $q$ is the Novikov variable, and $p = c_1(\mc{O}_{\P(V)}(1))$. Then $z I_{\P(V)}(\tau, t)$ lies on the Lagrangian cone of $\P(V)$.
+\end{thm}
+
+Let $\mc{L}_X^{\mr{orig}}$ be the Lagrangian cone for $X$, which has the explicit form
+\begin{equation}\label{eqn:lagcone}
+    -z + t(z) + \sum_{d,n} \sum_{k\geq 0} \sum_{i=0}^s \frac{\phi^i}{(-z)^{k+1}} \ab<t(\psi), \ldots, t(\psi), \phi_i \psi^k>_{0,n+1,d}^X \frac{Q^d}{n!}. 
+\end{equation}
+
+\begin{defn}
+    For a set of variables $x = (x_1, x_2, \ldots)$, we say that $f \in \mc{H}_X \llbracket x \rrbracket$ is a \textit{$\C\llbracket Q,x \rrbracket$-valued point} on $\mc{L}_X^{\mr{orig}}$ if $f$ is of the form~\ref{eqn:lagcone} for some $t(z) \in \mc{H}_+ \llbracket x \rrbracket$ with $t(z)|_{Q=x=0} = 0$.
+\end{defn}
+
+\begin{exm}
+    The point $z J_X(\tau)|_{z \mapsto -z}$ is a $\C\llbracket Q,\tau \rrbracket$-valued point on $\mc{L}_X^{\mr{orig}}$.
+\end{exm}
+
+Given this, define $\mc{L}_X \coloneqq \mc{L}_X^{\mr{orig}}|_{z \mapsto -z}$. By~\Cref{thm:overruled}, we obtain
+\[ L_X = \bigcup_{\tau} z M_X(\tau) \mc{H}_+, \]
+which means that any $\C\llbracket Q,x \rrbracket$-valued point on $\mc{L}_X$ can be written as $z M_X(\tau) f$ for some $\tau \in H^*(X) \llbracket Q,x \rrbracket$ and $f \in \mc{H}_+ \llbracket x \rrbracket$ such that $\tau |_{Q=x=0} = 0$ and $f |_{Q=x=0} = 1$. This property will be used to construct the Fourier transform later.
+
+\subsection{Proof of~\Cref{thm:projbundlemirror}}%
+\label{sub:Proof of the mirror theorem}
+
+We will now sketch a proof of~\Cref{thm:projbundlemirror}. First, we will need Quantum-Riemann-Roch for a vector bundle $W \to X$ in two cases:
+\begin{enumerate}[(a)]
+    \item When the vector bundle $W$ is convex, which means that $H^1(C, f^*W) = 0$ for all stable maps $f \colon C \to X$ of genus $0$, and $\mbf{c} = e(\lambda)$ is the equivariant Euler class, which corresponds to setting
+        \[ s_k = \begin{cases}
+            \log \lambda & k=0 \\
+            (-1)^{k-1} (k-1)! \lambda^{-k} & k > 0 .
+        \end{cases}
+        \]
+    \item When $W$ is globally generated and $\mbf{c} = e_{\lambda}^{-1}$.
+\end{enumerate}
+
+In the first case, we obtain the Gromov-Witten invariants of the zeroes of a regular section $Z \subset X$ of $W$ via
+\[ \lim_{\lambda \to 0} \ab< \alpha_1 \psi^{k_1},\ldots,\alpha_n \psi^{k_n}>_{0,n,d}^{X,(W,e_{\lambda})} = \sum_{i_* d' = d} \ab<i^* \alpha_1 \psi_1^{k_1},\ldots,\alpha_n \psi_n^{k_n}>_{0,n,d'}^Z. \]
+In the second case, we obtain the Gromov-Witten invariants of $W$ via
+\[ \ab< \alpha_1 \psi^{k_1},\ldots,\alpha_n \psi^{k_n}>_{0,n,d}^{X,(W,e_{\lambda}^{-1})} = \ab<i^* \alpha_1 \psi_1^{k_1},\ldots,\alpha_n \psi_n^{k_n}>_{0,n,d}^W. \]
+
+We are now ready to begin the proof. Because $V^{\vee}$ is globally generated, there is a surjection
+\[ \mc{O}^{\oplus N} \to V^{\vee}. \]
+This gives an exact sequence
+\[ 0 \to V \to \mc{O}^{\oplus N} \to Q \to 0 \]
+embedding $\P(V) \hookrightarrow B \times \P^{N-1}$. By a result of Brown-Elezi, we have
+\[ J_{B \times \P^{N-1}}(\tau, t) = \sum_{k=0}^{\infty} \frac{e^{pt/z} q^k e^{kt}}{\prod_{c=1}^k (p+cz)^N} J_B(\tau). \]
+Now define
+\[ Q(1) \coloneqq \pi_1^* Q \otimes \pi_2^* \mc{O}(1) \]
+on $B \times \P^1$. This has a section $s$ given by
+\[ \pi_2^* \mc{O}(-1) \to \mc{O}_{B \times \P^{N-1}}^{\oplus N} \to \pi_1^* Q \]
+which satisfies $s^{-1}(0) = \P(V)$. Because $Q(1)$ is convex, we use Quantum-Riemann-Roch in case (a) to relate the Gromov-Witten theory of $\P(V)$ to the $(Q(1), e_{\lambda})$-twisted Gromov-Witten theory. We now require two more techinical ingredients.
+
+\subsubsection{Moving points on the Lagrangian cone via differential operators}%
+\label{ssub:Moving points on the Lagrangian cone via differential operators}
+
+
+\begin{lem}\label{lem:1}
+    Let $x=(x_1,x_2,\ldots)$ and $y=(y_1,y_2,\ldots)$ be formal variables. Let 
+    \[ F \in \C[z] \llbracket x \rrbracket \ab<z \partial_{x_1}, z \partial_{x_2},\ldots> \llbracket Q,y \rrbracket \]
+    be a differential operator. Then $\exp(F/z)$ preserves $\C \llbracket Q,x,y \rrbracket$-valued points on $\mc{L}_X$.
+\end{lem}
+
+\begin{defn}
+    A $\C\llbracket Q,\tau,y \rrbracket$-valued point $f$ on $\mc{L}_X$ is called a \textit{miniversal slice} if
+    \[ f |_{Q=y=0} = z + \tau + \mc{O}(z^{-1}). \]
+\end{defn}
+
+For example, the $J$-function is a miniversal slice.
+
+\begin{lem}\label{lem:2}
+    Any miniversal slice on $\mc{L}_X$ can be obtained from $z J_X(\tau)$ be applying $\exp(F/z)$ for some differential operator $F$ as in the previous lemma satisfying $F|_{Q=y=0} = 0$.
+\end{lem}
+
+\subsubsection{The rest of the proof (ignoring convergence issues)}%
+\label{ssub:The rest of the proof ignoring convergence issues}
+
+First, we introduce
+\[ \Delta_W^{\lambda} \coloneqq e^{\on{rk}(W) (\lambda \log \lambda - \lambda)/z} \Delta_{(W,e_{\lambda}^{-1})}. \]
+Because $\log \Delta_W^{\lambda}$ and $\log \Gamma(x)$ have similar asymptotic expansions, we have
+\[ \Delta_W^{\lambda + kz} / \Delta_W^{\lambda} = \prod_{c=1}^k \prod_{\delta} (\lambda + \delta + cz). \]
+Using the exact sequence
+\[ 0 \to V \to \mc{O}^{\oplus N} \to Q \to 0, \]
+we see that
+\[ \Delta_V^{\lambda} \Delta_Q^{\lambda} = \Delta_{\mc{O}^{\oplus N}}^{\lambda}, \]
+which preserves the Lagrangian cone $\mc{L}_B$. We see that
+\[ \Delta_Q^{\lambda} \colon \mc{L}_{B,(V, e_{\lambda}^{-1})} \to \mc{L}_B. \]
+Applying Quantum-Riemann-Roch in case (b), we see that
+\[ z J_V^{\lambda}(z) \in L_{B,(V, e_{\lambda}^{-1})}, \]
+and thus
+\[ \Delta_Q^{\lambda} z J_F^{\lambda}(z) \in \mc{L}_B. \]
+By~\Cref{lem:2}, there exists $F$ such that
+\[ \Delta_Q^{\lambda} z J_V^{\lambda}(z) = e^{F(\lambda)/z} z J_B(\tau). \]
+By~\Cref{lem:1}, we obtain
+\[ e^{F(\lambda + z \partial_t)/z} J_{B \times \P^{N-1}}(\tau, t) \in \mc{L}_{B \times \P^{N-1}}. \]
+
+Now we compute
+\begin{align*} 
+    I^{\lambda}(\tau, t) &\coloneqq (\Delta_{Q(1)}^{\lambda})^{-1} e^{F(\lambda + z \partial_t)/z} J_{B \times \P^{N-1}}(tau) \\
+    &= \sum_{k=0} \frac{e^{pt/z} q^k e^{kt}}{\prod_{c=1}^k (p+cz)^N} (\Delta_{Q(1)}^{\lambda})^{-1} e^{F(\lambda + p + kz)} J_B(\tau) \\
+    &=\sum_{k=0} \frac{e^{pt/z} q^k e^{kt}}{\prod_{c=1}^k (p+cz)^N} (\Delta_{Q(1)}^{\lambda})^{-1} (\Delta_Q^{\lambda + p})^{-1} \Delta_Q^{\lambda+p+kz} J_V^{\lambda + p + kz} \\
+    &= \sum_{k \geq 0}e^{pt/z}q^k e^{kt} \frac{\prod_{c=1}^k \prod_{\ep}(\lambda + p + \ep + cz)}{\prod_{c=1}^k (p+cz)^N} J_V^{\lambda + p + kz},
+\end{align*}
+where $\ep$ runs over the Chern roots of $Q$. Taking the non-equivariant limit $\lambda \to 0$, we obtain the $I(\tau, t)$ in the statement of~\Cref{thm:projbundlemirror}.
+
+\section{Fourier transform (Kostya, Feb 29)}%
+\label{sec:Fourier transform Kostya Feb 29}
+
+Technically, there are two different Fourier transforms:
+\begin{enumerate}
+    \item The discrete Fourier transform $\on{QDM}_{S^1}(V) \xrightarrow{\mr{FT}} \on{QDM}(\P(V))$;
+    \item The continuous Fourier transform $\QDM(\P(V))_{\mr{loc}} \to \bigoplus_{i=0}^{r-1} \QDM(B)$.
+\end{enumerate}
+
+\subsection{Quantum $D$-modules and symplectic spaces}%
+\label{sub:Quantum D modules and symplectic spaces}
+
+
+Let $V \to B$ be a rank $r$ vector bundle. The quantum $D$-module of $V$ will be
+\[ H^*_{S^1}(V) \otimes \C[z,\lambda] \llbracket Q,\bm{\tau} \rrbracket, \]
+where $\lambda$ is the equivariant variable, $Q$ is the Novikov variable, and $\bm{\tau} = \ab\{ \tau^{i,k}\}$ for $i$ counting a basis of $H^*(V)$ and $k$ records the degree of $\lambda$. It is equipped with the Dubrovin connection
+\[ \nabla \colon \QDM_{S^1}(V) \to z^{-1} \QDM_{S^1}(V) \]
+given by
+\begin{align*}
+    \nabla_{\tau^{i,k}} &= \pdv{}{\tau^{i,k}} + z^{-1} \lambda^k (\phi_i \star - ) \\
+    \nabla_{\xi Q \partial_Q} &= \xi Q \partial_Q + z^{-1} (\xi \star -) \\
+    \nabla_{z \partial_z} &= z \partial_z - z^{-1} (E_{S^1} \star -) + \mu_{S^1}.
+\end{align*}
+Note the last line is only $\C$-linear. Recall the fundamental solution $M^{-1}_V(\bm{\tau}, z)$ is a fundamental solution in the cohomology directions (but not the conformal direction) in the sense that
+\begin{align*}
+    \partial_{\tau^{i,k}} M_V &= M_V \nabla_{\tau^{i,k}} \\
+    (\ep Q \partial_Q + z^{-1 \xi}) M_V &= M_V \nabla_{\ep Q \partial_Q} 
+\end{align*}
+and intertwines the shift operator by
+\[ \mc{S} M_V = M_V \mathbb{S}(\bm{\tau}), \]
+where
+\[ \mc{S} = e_{\lambda}(V) e^{z \partial_{\lambda}}. \]
+
+Now, the symplectic space for $V$ is
+\[ \mc{H}_V^{S^1} \coloneqq H^*_{S^1}(V) \llparenthesis z^{-1} \rrparenthesis \llbracket Q,\tau \rrbracket \]
+with its Lagrangian cone $\mc{L}_V$. It has the important property that $f(\bm{\tau})$ is in $\mc{L}_V$ means that there exists $\wh{\tau}(\bm{\tau})$ and $\wt{f} \in \QDM_{S^1}(V)$ such that 
+\[ f = z M_V(\wh{\tau}(\bm{\tau}), z) \wt{f}, \]
+which can be seen as a Birkhoff factorization.
+
+We now turn to $\P(V)$. There is a decomposition
+\[ H^*(\P(V)) = H^*(V)[p] / \prod_{\delta} (\delta + p), \]
+where $\delta$ runs over the Chern roots of $V$. This receives the Kirwan map
+\[ \kappa \colon H_{S^1}^*(V) \twoheadrightarrow H^*(\P(V)), \qquad \kappa (\lambda) = p. \]
+Thus the quantum $D$-module for $\P(V)$ is
+\[ \QDM(\P(V)) = H^*(\P(V)) \otimes \C[z,q] \llbracket Q, \wh{\bm{\tau}} \rrbracket, \]
+where $\wh{\bm{\tau}} = \ab\{ \wh{\tau}_i\}$ is a basis for $H^*(\P(V))$ and $q$ is the Novikov variable of the fiber curve class. It is equipped with the connections $\nabla_{\wh{\tau}_i}, \nabla_{\xi Q \partial_Q}, \nabla_{q \partial_q}, \nabla_{z \partial_z}$.
+
+\begin{rmk}
+    Note there are no shift operators, but there is an additional $q$-direction in the quantum $D$-module for $\P(V)$
+\end{rmk}
+
+We also have the symplectic space $\mc{H}_{\P(V)}$, the Lagrangian cone $\mc{L}_{\P(V)}$, and the fundamental solution $M_{\P(V)}(\wh{\bm{\tau}}, z)$. Finally, we will recall the mirror theorem in the form that
+\[ I_{\P(V)} = \sum_{k \geq 0} \kappa(\mc{S}^{-k} J^{\lambda + kz}) q^k \]
+lies on $\mc{L}_{\P(V)}$.
+
+\subsection{Discrete Fourier transform}%
+\label{sub:Discrete Fourier transform}
+
+\begin{defn}
+    The \textit{discrete Fourier transform} $\mc{H}_V \to \mc{H}_{\P(V)}$ is the transform
+    \[ J^{\lambda} \mapsto \wh{J} = \sum_{k \geq 0} \kappa(\mc{S}^{-k J^{\lambda + kz}}) q^k. \]
+\end{defn}
+
+In this framing, the mirror theorem states that the discrete Fourier transform of the $J$-function of $V$ lies on the Lagrangian cone of $\P(V)$.
+
+\begin{thm}
+    There exists a ``mirror map'' 
+    \[ \wh{\bm{\tau}} = \wh{\bm{\tau}}(\bm{\tau}) \in H^*(\P(V))[q] \llbracket Q,\tau \rrbracket \]
+    and an isomorphism
+    \[ \on{FT} \colon \QDM_{S^1}(V) \to \wh{\bm{\tau}}^* \QDM(\P(V)) \]
+    of $\C[z] \llbracket Q,\bm{\tau} \rrbracket$-modules intertwining the connections in the natural ways.
+\end{thm}
+
+\begin{rmk}
+    One has to be careful with the Novikov variables and think about approximately eight other points of the theorem, but we will ignore these for now.
+\end{rmk}
+
+Because the Fourier transform intertwines the connections, we have the commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    \QDM_{S^1}(V) \ar{r}{\mr{FT}} \ar{d}{M_V(\bm{\tau})} & \bm{\tau}^* \QDM(\P(V)) \ar{d}{M_{\P(V)}(\wh{\bm{\tau}}(\bm{\tau}))} \\
+    \mc{H}_V \ar{r}{J \to \wh{J}} & \mc{H}_{\P(V)}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{proof}[Idea of proof]
+    The idea of the proof is to start from the mirror theorem (the bottom row) and apply Birkhoff factorization. The mirror theorem states that
+    \[ (M_V(\bm{\tau}) 1)^{\wedge} = M(\wh{\bm{\tau}}(\bm{\tau})) \Upsilon \in \mc{L}_{\P(V)} \]
+    for some mirror map $\wh{\bm{\tau}}(\bm{\tau})$ and $\Upsilon \in \QDM(\P(V))$. Using the intertwining properties of $M$, we see that
+    \[ (M_V(\bm{\tau})(\phi_i \lambda^k))^{\wedge} = M(\wh{\bm{\tau}}(\bm{\tau})) z \bm{\tau}^* \nabla_{\pdv{}{t^{i,k}}} \Upsilon. \]
+    Defining
+    \[ \on{FT}(\phi_i \lambda^k) \coloneqq z \bm{\tau}^* \nabla_{\partial_{\tau^{i,k}}} \Upsilon \]
+    and $\wh{\bm{\tau}}$ to be the mirror map appearing in the Birkhoff factorization, we are done.
+\end{proof}
+
+\begin{rmk}
+    The mirror map satisfies
+    \[ \wh{\bm{\tau}}(\bm{\tau})|_{q=Q=0} = \kappa(\bm{\tau}) \]
+    and the Fourier transform satisfies
+    \[ \on{FT}(\phi_i \lambda^k)|_{Q=\tau=0} = \phi_i p^k. \]
+\end{rmk}
+
+\begin{rmk}
+    The Fourier transform intertwines the natural pairings on the quantum $D$-modules.
+\end{rmk}
+
+
+\subsection{Continuous Fourier transform}%
+\label{sub:Continuous Fourier transform}
+
+\begin{defn}
+    Define
+    \[ \QDM(\P(V))_{\mr{loc}} \coloneqq \QDM(\P(V)) \otimes \C[z] \llparenthesis q^{-\frac{1}{r'}} \llbracket Q,\wh{\bm{\tau}} \rrbracket ,\]
+    where $r' = r \text{ or } 2r$ depending on parity.
+\end{defn}
+
+\begin{thm}
+    For $j = 0,\ldots,r-1$, there exist maps $H^*(\P(V)) \to H^*(B)$ given by
+    \[ \wh{\bm{\tau}} \mapsto \zeta_j(\wh{\bm{\tau}}) \in -c_1(V) \log \ab( e^{\frac{2\pi \sqrt{-1} j}{r}} q^{\frac{1}{r}} ) + H^*(B) \llparenthesis q^{-\frac{1}{r}} \llbracket Q,\wh{\bm{\tau}} \rrbracket \]
+    and an isomorphism 
+    \[ \Phi \colon \QDM(\P(V))_{\mr{loc}} \cong \bigoplus_{j=0}^{r-1} \zeta_j^* \QDM(B)_{\mr{loc}} \]
+    intertwining the pairings and quantum connections in a natural way, namely that
+    \[ \Phi \Delta = \bigoplus \zeta_j^* \Delta \Phi. \]
+    Writing $\Phi = (\Phi_0, \ldots, \Phi_j)$, we have
+    \[ \Phi_j (\phi_i p^k)|_{Q = \wh{\bm{\tau}} = 0} = \frac{1}{\sqrt{r}} \lambda_j^{k-\frac{r-1}{2}}(\phi_i + O(q^{-\frac{1}{r}})). \]
+\end{thm}
+
+\begin{proof}[Idea of proof]
+    We use another realization of the Fourier transform on $\QDM_{S^1}(V)$ and
+    \[ \on{FT} \colon \QDM_{S^1} \cong \wh{\bm{\tau}}^* \QDM(\P(V)). \]
+    If we consider $\Delta_V^{\lambda}$ arising from Quantum Riemann-Roch, it is given as
+    \[ \Delta_V^{\lambda} \asymp \prod_{\rho} \sqrt{\frac{z}{2\pi}} z^{\frac{\lambda + \rho}{z}} \Gamma\ab( \frac{\rho + \lambda}{z} + 1). \]
+    Shifting by $-z$, we see that
+    \[ \Delta_V^{\lambda - z} = \Delta_V^{\lambda} \prod_{\rho} \frac{1}{\rho + \lambda} = \Delta_V^{\lambda} \frac{1}{e_{S^1}(V)}. \]
+
+    We now consider the transformation
+    \[ s \mapsto \int  q^{\frac{\lambda}{z}} (\Delta_V^{\lambda})^{-1} M_V(\bm{\tau}) \cdot s \d \lambda \]
+    for $s \in \QDM_{S^1}(V)$.
+    Because this integral intertwines $\mathbb{S}$ with $q$ and $\lambda$ with $z \nabla_{q \partial_q}$, it formally gives a solution to $\QDM(\P(V))$.
+
+    To make sense of this terrible expression, we use the stationary phase expansion of the integral. Setting
+    \[ I(s) = \int e^{-\frac{\varphi(\lambda)}{z}} \lambda^{-\frac{c_1(V)}{z}} \lambda^{-\frac{r}{2}} (\wt{\Delta}_V^{\lambda})^{-1} J^{\lambda} \d \lambda, \]
+    where $\frac{\varphi(\lambda)}{z}$ is the Stirling asymptotics of $\Delta_V^{\lambda}$, given by
+    \[ \varphi(\lambda) = r (\lambda \log \lambda - \lambda) - \lambda \log q. \]
+    The critical points of $\varphi$ are given by
+    \[ \pdv{}{\lambda} \varphi(\lambda) = r (\log \lambda) - \log q = 0, \]
+    which tells us that $\lambda^r = q$. Thus, we obtain $r$ solutions
+    \[ \lambda_j=  e^{\frac{2\pi \sqrt{-1} j}{r}} q^{\frac{1}{r}}. \]
+    We now consider the formal expansions around $\lambda_j$. These produce a ``continuous Fourier transform''
+    \[ J \mapsto \mc{F}_j(J) \]
+    such that
+    \[ I(M^{-1} J) \asymp \sqrt{2 \pi z} e^{r \frac{\lambda_j}{z}} \mc{F}_j(J). \]
+    These intertwine the quantum connection and multiplication by $\lambda$, as in
+    \begin{align*}
+        \mc{F}_j(\lambda J) &= (\lambda_j + z q \partial_q) \mc{F}_j(J) \\
+        \mc{F}_j(\mc{S} J) = q \mc{F}_j(J),
+    \end{align*}
+    so $z \mc{F}_j(J_V(\bm{\tau}))$ is on the Lagrangian cone of $B$. We then use the following result:
+    \begin{prop}
+        We have
+        \[ \mc{F}_j(J_V(\bm{\tau})) = M_B(\sigma_j(\bm{{\tau}})) \nu_j \]
+        for some $\sigma_j, \nu_j$.
+    \end{prop}
+    Unfortunately, $\mc{F}_j$ does not intertwine $\nabla_{z \partial_z}$ correctly. To fix this, define
+    \[ \zeta_j (\wh{\bm{\tau}}) = \sigma_j(\bm{\tau}(\wh{\bm{\tau}})) + r \lambda_j \]
+    and $\Phi_j$ by a shift of $\nu_j$.
+\end{proof}
+
+\subsection{Discrete equals continuous}%
+\label{sub:Discrete equals continuous}
+
+\begin{warn}
+    \textbf{Everything in this subsection may be false.}
+\end{warn}
+
+Consider the Fourier transform
+\[ \int \prod_{\rho} \Gamma\ab(-\frac{\rho + \lambda}{z}) J_V^\lambda q^{\frac{\lambda}{z}} \d \lambda. \]
+This can be computed either using residues or using stationary phase asymptotics. Using residues, we obtain
+\begin{align*}
+    \sum_{k \geq 0} \on{Res}_{p=0} \Gamma\ab(-k-\frac{\rho + \lambda}{z}) J_V^{\lambda + kz} q^{\frac{p}{z}} q^k,
+\end{align*}
+which is precisely
+\[ \frac{1}{\prod_{c=0}^k e_{p+\lambda z}(V)} \Gamma\ab(-\frac{\rho-\lambda}{z}). \]
+Using stationary phase asymptotics, we obtain the $I(s)$ defined previously.
+
+
 
 
 
