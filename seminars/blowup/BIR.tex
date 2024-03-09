@@ -154,6 +154,7 @@
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\mt}[1]{\mathtt{#1}}
 \newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mb}[1]{\mathbb{#1}}
 \newcommand{\on}[1]{\operatorname{#1}}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\ul}[1]{\underline{#1}}
@@ -1074,8 +1075,269 @@ which is precisely
 Using stationary phase asymptotics, we obtain the $I(s)$ defined previously.
 
 
+\chapter{Quantum cohomology of blowups}%
+\label{cha:Quantum cohomology of blowups}
+
+\section{Setup (Kostya, Mar 07)}%
+\label{sec:Setup}
+
+Let $X$ be a smooth projective variety, $Z \subset X$ be a smooth closed subvariety of codimension $r$, and
+\[ \varphi \colon \wt{X} = \Bl_Z X \to X \]
+be the blowup of $X$ with center $Z$. Denote the exceptional divisor by
+\[ j \coloneqq D \cong \P(N_{Z/X}) \hookrightarrow \wt{X}. \]
+As a vector space, there is an isomorphicm
+\[ H^*(X) = H^*(X) \oplus \bigoplus_{i=0}^{r-2} H^*(Z). \]
+Our goal is to upgrade this to the level of quantum cohomology. However, this is very tricky because of convergence issues, so it will be a corollary of a decomposition theorem for quantum $D$-modules.
+
+Recall that the quantum $D$-module of $X$ is given by
+\[ \QDM(X) = H^*(X)[z] \llbracket Q, \tau \rrbracket \]
+with the Dubrovin connection 
+\[ \nabla_{\partial_{\tau}}, \nabla_{\xi Q \partial_Q}, \nabla_{z \partial_z} \]
+and pairing
+\[ (f(z), g(z)) = \int_X f(-z) g(z). \]
+
+\subsection{Statement of the theorem}%
+\label{sub:Compatibility of variables}
+
+The first problem we need to fix is that the cohomological and Novikov variables of $X, Z, \wt{X}$ are different.
+\begin{defn}
+    The \textit{extended Novikov ring} is defined as 
+    \[ \C\llbracket \mc{Q} \rrbracket \coloneqq \C \llbracket Q, xy^{-1}, Q^{\varphi_* \wt{d}} y^{-[D] \cdot \wt{d}} \rrbracket, \]
+    where $d \in \on{NE}_{\N}(X)$ and $\wt{d} \in \on{NE}_{\N}(\wt{X})$.
+\end{defn}
+
+Introducing another formal variable $q$, we can embed the Novikov rings of $Z, X, \wt{X}$ into $\C\llparenthesis q^{-\frac{1}{s}} \rrparenthesis\llbracket \mc{Q} \rrbracket$, where $s$ is either $r-1$ or $2(r-1)$ depending on the parity of $r$ (we want $s$ to be even):
+\begin{itemize}
+    \item $\C\llbracket Q \rrbracket$ embeds as $Q^d \mapsto Q^d$;
+    \item $\C \llbracket \wt{Q} \rrbracket$ embeds as $\wt{Q}^{\wt{d}} \mapsto Q^{\varphi_* \wt{d}} q^{-[D] \cdot \wt{d}}$;
+    \item $\C \llbracket Q_Z \rrbracket$ embeds as $Q_Z^d \mapsto Q^{\iota_* d} q^{-\frac{\rho_z \cdot d}{r-1}}$, where $\rho_Z = c_1(N_{Z/X})$.
+\end{itemize}
+Later, we will see that $q = yS^{-1}$, where $S^{-1}$ will be an equivariant variable for a $\C^*$ action. Denote
+\[ \QDM(X)^{\mr{La}} \coloneqq \QDM(X) \otimes_{\C\llbracket Q \rrbracket} \C \llbracket \mc{Q} \rrbracket. \]
+We can now state the main result.
+
+\begin{thm}\label{thm:blowup}
+    There exists a formal invertible change of variables
+    \[ H^*(\wt{X}) \to H^*(X) \oplus H^*(Z)^{\oplus r-1} \]
+    denoted by
+    \[ \wt{\tau} \to \ab(\tau(\wt{\tau}), \ab\{\zeta_j(\wt{\tau})\}_{j=0}^{r-2}) \]
+    and an isomorphism
+    \[ \Psi \colon \QDM^{\mr{La}}(\wt{X}) \xrightarrow{\cong} \tau^* \QDM(X)^{\mr{La}} \oplus \bigoplus_{j=0}^{r-2} \zeta_j^* \QDM(Z)^{\mr{La}} \]
+    such that $\Psi$ intertwines the quantum connections and the pairings.
+\end{thm}
+
+\subsection{The master space}%
+\label{sub:The master space}
+
+\begin{defn}
+    Define the \textit{master space} 
+    \[ W \coloneqq \Bl_{Z \times \ab\{0\}} X \times \P^1 \]
+    to be the degeneration to the normal cone of $Z \subset X$. This is endowed with a $T = \C^{\times}$-action
+    extending the action
+    \[ \lambda \cdot (x,u) = (x, \lambda u) \]
+    for $(x,u) \in X \times \P^1$. See~\Cref{fig:W} for a picture of $W$.
+\end{defn}
+
+\begin{figure}[htpb] 
+\centering 
+\begin{tikzpicture}[x=0.7cm, y=0.7cm]
+\draw (0,5) -- (8,5) -- (10,6) -- (2,6) -- (0,5);
+\draw (0,0) -- (8,0) -- (10,1) -- (5.6,1); 
+\draw (4.4,1) -- (2,1) -- (0,0);
+\filldraw (5,5.5) circle [radius=0.05]; 
+\draw[thick, dotted] (5,5.5) -- (5,4.9); 
+\draw (5,4.9) -- (5,3); 
+\filldraw (5,3) circle [radius =0.05]; 
+\draw[thick,dotted] (5.5,0.5) arc [x radius = 0.5, y radius =0.2, start angle=0, end angle =180];
+\draw[thick] (4.5,0.5) arc [x radius =0.5, y radius =0.2, start angle =180, end angle = 360]; 
+\draw (5,3) .. controls (4.6,2.9) .. (4.5,0.5) ;
+\draw (5,3) .. controls (5.4,2.9) .. (5.5,0.5) ;
+\draw (-0.5,0.5) node {$\wt{X}$}; 
+\draw (-1.5,5.5) node {$X= X\times \{\infty\}$}; 
+\draw (4,0.5) node {$D$}; 
+\draw (5,1.8) node {$\wh{D}$}; 
+\draw (4.3,3) node {$Z$}; 
+\draw (6,4.3) node {$Z\times \P^1$}; 
+\draw[->] (14,0)--(14,6.5); 
+\filldraw (14,5.5) circle [radius=0.05]; 
+\filldraw (14,3) circle [radius =0.05]; 
+\filldraw (14,0.5) circle [radius =0.05]; 
+\draw (14.3,5.5) node {$t$}; 
+\draw (14.3,3) node {$\epsilon$}; 
+\draw (14.3,0.5) node {$0$}; 
+% \draw (14.4,6.5) node {$\mu$};
+\draw[dotted] (10,5.5) -- (14,5.5); 
+\draw[dotted] (10,3) -- (14,3); 
+\draw[dotted] (10,0.5) -- (14,0.5); 
+\draw[->] (11,4) -- (12,4); 
+\draw (11.5,4.3) node {$\mu$}; 
+\end{tikzpicture} 
+\caption{$W = \Bl_{Z\times \{0\}} (X\times \P^1)$ and a moment map $\mu \colon W\to \R$}
+\label{fig:W}
+\end{figure} 
+
+The fixed locus of the $\C^*$-action is given by
+\[ W^{\C^*} = X \sqcup \wt{X} \sqcup Z. \]
+We can also see that
+\begin{align*} 
+    N_T^1(W) &= \wh{\varphi}^* N_T^1(X \times \P^1) \oplus \Z[\wt{D}]  \\
+    &\cong N^1(X) \oplus \Z^3 \ni (\omega, t, \ep, a).
+\end{align*}
+Note here that
+\[ N_T^1(X \times \P^1) = \on{pr}_1^* N^1(X) \oplus \Z[X] \oplus \Z \lambda, \]
+so a general class in $N_1^T(W)$ can be written as
+\[ \wh{\varphi}^* \on{pr}_1^* \omega + t [X] - \ep [\wh{D}] + a \cdot \lambda. \]
+The dual notion is the group of $1$-cycles, which is given by
+\[ N_1^T(W) \cong N_1(X) \oplus \Z^3 \ni (d, k, \ell, m) \eqqcolon \beta, \]
+whose Novikov variable is
+\[ Q^d x^k y^{\ell} S^m. \]
+Note that
+\[ [X] \cdot \beta = k, \qquad -[\wh{D}] \cdot \beta = \ell. \]
+The effective curve classes are those which are equivariant, so they either lie in the fixed loci or are $1$-dimensional orbits. There are classes $C_1$ lying entirely inside $X$, classes $C_2$, which are $x \times \P^1$ for $x \notin Z$, classes $C_3 \subset Z \times \P^1$, and classes $C_4 \subset \wh{D}$. The corresponding Novikov variables are $Q^d, x, xy^{-1}$, and $y$, respectively.
+
+\begin{lem}
+    The monoid of effective curve classes is generated by $C_1, C_2, C_3, C_4, S$.
+\end{lem}
+
+\begin{exm}
+    Let $X = \P^1 \times \P^1$ and $Z = (0,0)$. Then a toric diagram for $W$ with $C_1, C_2, C_3, C_4$ is given in~\Cref{fig:toric}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1]
+        \draw (0,0) -- (0,5);
+        \draw[dashed] (1,2) -- (1,7);
+        \draw[dashed, thick, blue] (0,0) -- (1,2);
+        \draw[thick,red] (5,1) -- (5,5);
+        \draw[thick,red] (1.5,1) -- (1.5,6);
+        \draw[thick,orange] (0,5) -- (1,7) -- (6,7) -- (5,5) -- (0,5);
+        \draw (6,7) -- (6,2);
+        \draw[dashed,thick,blue] (1,2) -- (6,2);
+        \draw[thick,blue] (0,0) -- (4,0);
+        \draw[thick,blue] (6,2) -- (5.25,0.5);
+        \fill[pink] (4,0) -- (5,1) -- (5.25,0.5) -- cycle;
+        \draw[thick,teal] (5.25,0.5) -- (4,0);
+        \draw[thick,red] (2,5.2) to [bend left=30] (4,6.8);
+        \draw[thick,red] (4,0) -- (5,1);
+        \node[text=blue] at (6,1) {$\wt{X}$};
+        \node[text=orange] at (3.5,7.2) {$X$};
+        \node[circle,fill=green,minimum size=5pt,inner sep=0pt] at (5,1) {};
+        \node[text=green] at (4.5,1) {$Z$};
+        \node[text=pink] at (5,0) {$\textcolor{teal}{D} \subset \wh{D}$};
+        \node[text=red] at (4.5,3.5) {$C_3 \subset Z \times \P^1$};
+        \node[text=red] at (3,6) {$C_1$};
+        \node[text=red] at (1.8, 3.5) {$C_2$}; 
+        \node[text=red] at (3.8, 0.3) {$C_4$};
+    \end{tikzpicture}
+    \end{center}
+    \caption{Toric diagram of $W$ for $X = \P^1$ and $Z = (0,0)$ with curve classes $C_1, C_2, C_3, C_4$.}%
+    \label{fig:toric}
+    \end{figure}
+\end{exm}
 
 
+The $T$-ample cone $C_T(W)$ of $W$ is the dual to the cone of effective curve classes. Then $\wh{\omega} \in C_T(W)$ if the set of $\wh{\omega}$-stable points under the $\C^*$-action is nonempty. Then there is a decomposition
+\[ \ol{C_T(W)} = \ol{C}_X \cup \ol{C}_{\wt{X}} \]
+into pieces where the GIT quotient
+\[ W \sslash_{\wh{\omega}} T \cong X \text{ or } \wt{X}, \]
+respectively. The stable points are
+\begin{itemize}
+    \item For $\wh{\omega} \in C_X$, the stable points are $X \times \C^*$;
+    \item For $\wh{\omega} \in C_{\wt{X}}$, the stable points are $\mc{O}_{\wt{X}}(-\wh{D}) \setminus \wh{X}$.
+\end{itemize}
+
+The dual cones $C_X^{\vee}$ and $C_{\wt{X}}^{\vee}$ correspond to embeddings of the effective cones of $X$ and $\wt{X}$, respectively, into the effective cone of $W$ as in~\Cref{fig:Mori_cones}.
+
+\begin{figure}[htpb]
+\centering 
+\begin{tikzpicture}[>=stealth, x=0.7cm, y=0.7cm]
+\draw (-5,0) -- (5,0); 
+\draw[->] (0,0) -- (-3,0); 
+\draw[->] (0,0) -- (3,0);
+\draw[->] (0,0) -- (0,3); 
+\draw[->] (0,0) -- (3,1.732);
+\draw[->] (0,0) --(-3,3);  
+\draw (0,3.5) node {\scriptsize $\on{NE}(W)$}; 
+\draw (-3,-0.4) node {\scriptsize $y S^{-1}$}; 
+\draw (3,-0.4) node {\scriptsize $y^{-1} S$}; 
+\draw (-3.3,3.2) node {\scriptsize $x S^{-1}$}; 
+\draw (3.3,1.8) node {\scriptsize $S$};
+
+\draw [<->] (-2.2,0) arc[start angle =  180, end angle = 30, radius = 2.2]; 
+\draw [<->] (1.7,0) arc[start angle =0, end angle = 135, radius = 1.7]; 
+\draw (-1,2.5) node {$\wt{X}$}; 
+\draw (0.55,1.2) node {$X$}; 
+\end{tikzpicture} 
+
+\caption{A schematic picture of the cones $C_X^{ \vee }$ and $C_{ \wt{X} }^{ \vee }$ in $N_1^T(W)$.} 
+\label{fig:Mori_cones} 
+\end{figure} 
+
+Recall the \textit{Kirwan map}
+\begin{align*}
+    \kappa_Y &\colon H_T^*(W) \twoheadrightarrow H_T^*(W^s) = H^*(Y) \\
+    \kappa_Y^* &\colon \on{NE}_{\N}(Y) \to N_1^T(W),
+\end{align*}
+where $Y$ is either $X$ or $\wt{X}$.
+
+Now consider the equivariant quantum $D$-module
+\[ QDM_T(W) = H_T^*(W)[z] \llbracket \mc{Q}, \theta \rrbracket \]
+endowed with the quantum connection and the action of the shift operators
+\[ \wh{\mb{S}}_{\beta}(\theta), \qquad \beta \in N_1^T(W) \cong N_1(X) \oplus \Z^3, \]
+which are defined by
+\[ \wh{\mb{S}}^{\beta}(\theta) = Q^d x^k y^{\ell} \mb{S}(\theta)^m, \]
+where $\beta$ is identified with $(d, k, \ell, m)$ under the factorization $N_1(X) \oplus \Z^3$.
+
+We can obtain the quantum $D$-modules for $X$ and $\wt{X}$ from the equivariant quantum $D$-module of $W$ by taking affine charts and completing. Here, we think of $\QDM_T(W)$ as a global K\"ahler moduli space.
+\begin{figure}[htpb] 
+\centering 
+\begin{tikzpicture}[x=0.7cm, y=0.7cm, >=stealth]
+\fill[brown, rotate=4,opacity=0.1] (1,0) ellipse [x radius =4, y radius =2];
+\fill[blue, rotate =2, opacity=0.15] (7,0) ellipse [x radius=4, y radius = 2]; 
+
+\draw[very thick] (-1,0).. controls (3,-0.2) and (6,-0.2) .. (10,0); 
+\draw[very thick, ->] (0,-1) .. controls (0,0.5) .. (-0.2,3); 
+\draw[very thick, ->] (1,1) .. controls (-0.5, -0.6) .. (-2,-2); 
+\draw[very thick,->] (3,-0.15)--(3.1,-0.15); 
+
+\draw[very thick,->] (9,-1) .. controls (9,0.5) .. (9.2,3); 
+\draw[very thick,->] (8.7,1) .. controls (9.1,-0.5) .. (9.8,-2);
+\draw[very thick,->] (6,-0.15) -- (5.9,-0.15); 
+
+\draw (3,-0.7) node {$q$}; 
+\draw (-2,-2.5) node {$xy^{-1}$}; 
+\draw (0,3.5) node {$y q^{-1}$}; 
+
+\draw (6,-0.7) node {$q^{-1}$}; 
+\draw (9.8,-2.5) node {$xy^{-1} q$}; 
+\draw (9.2,3.3) node {$y$}; 
+
+\draw (-1.2,0.7) node {$\mf{M}_{ \wt{X} }$}; 
+\draw (8,1.1) node {$\mf{M}_{X}$}; 
+\end{tikzpicture} 
+\caption{Global K\"ahler moduli space associated with $\QDM_T(W)$. See also Figure \ref{fig:Mori_cones}. }
+\label{fig:global}  
+\end{figure} 
+
+\subsection{Fourier transforms}%
+\label{sub:Fourier transforms}
+
+To construct the map in~\Cref{thm:blowup}, Iritani uses both the discrete and continuous Fourier transforms. For $f \in \mc{H}_W$, the discrete Fourier transform is given by
+\[ F_Y(f) \coloneqq \sum_{k \in \Z} S^k \kappa_Y(\mc{S}^{-k} f) \in \mc{H}_Y^{\mr{ext}}. \]
+The continuous Fourier transform for $Z \in \pi_0(W^T)$ is given by sending $f \in \mc{H}_W$ to the element of $\mc{H}_Z$ given by the formal asymptotic expansion of
+\[ \int e^{\lambda \log \frac{S}{z}} \Delta_Z^{-1} f|_{Z} \d \lambda. \]
+
+\begin{rmk}
+    We can think of $X$ and $\wt{X}$ either as fixed components $X, \wt{X} \in \pi_0(W^T)$ (corresponding to the continuous Fourier transform) or as GIT quotients $W \sslash_{\wh{\omega}} T$, corresponding to the discrete Fourier transform. These are in fact equal up to a factor.
+
+    Note that $Z$ is not a GIT quotient of $W$, but is a fixed component, so there is a continuous Fourier transform to $W$. In total, we have three morphisms
+    \begin{equation*}
+    \begin{tikzcd}
+        & \QDM(\wt{X}) \\
+        \QDM_T(W) \ar{ur}{\cong} \ar{r} \ar{dr}{r-1} & \QDM(X) \\
+        & \QDM(Z).
+    \end{tikzcd}
+    \end{equation*}
+\end{rmk}
 
 
 
