@@ -1131,7 +1131,7 @@ We can now state the main result.
 
 \begin{defn}
     Define the \textit{master space} 
-    \[ W \coloneqq \Bl_{Z \times \ab\{0\}} X \times \P^1 \]
+    \[ W \coloneqq \Bl_{Z \times \ab\{0\}} X \times \P^1 \xrightarrow{\wh{\varphi}} X \times \P^1 \]
     to be the degeneration to the normal cone of $Z \subset X$. This is endowed with a $T = \C^{\times}$-action
     extending the action
     \[ \lambda \cdot (x,u) = (x, \lambda u) \]
@@ -1204,13 +1204,13 @@ The effective curve classes are those which are equivariant, so they either lie 
     \begin{figure}[htpb]
     \begin{center}
     \begin{tikzpicture}[scale=1]
-        \draw (0,0) -- (0,5);
+        \draw[thick] (0,0) -- (0,5);
         \draw[dashed] (1,2) -- (1,7);
         \draw[dashed, thick, blue] (0,0) -- (1,2);
         \draw[thick,red] (5,1) -- (5,5);
         \draw[thick,red] (1.5,1) -- (1.5,6);
         \draw[thick,orange] (0,5) -- (1,7) -- (6,7) -- (5,5) -- (0,5);
-        \draw (6,7) -- (6,2);
+        \draw[thick] (6,7) -- (6,2);
         \draw[dashed,thick,blue] (1,2) -- (6,2);
         \draw[thick,blue] (0,0) -- (4,0);
         \draw[thick,blue] (6,2) -- (5.25,0.5);
@@ -1229,7 +1229,7 @@ The effective curve classes are those which are equivariant, so they either lie 
         \node[text=red] at (3.8, 0.3) {$C_4$};
     \end{tikzpicture}
     \end{center}
-    \caption{Toric diagram of $W$ for $X = \P^1$ and $Z = (0,0)$ with curve classes $C_1, C_2, C_3, C_4$.}%
+    \caption{Toric diagram of $W$ for $X = \P^1 \times \P^1$ and $Z = (0,0)$ with curve classes $C_1, C_2, C_3, C_4$.}%
     \label{fig:toric}
     \end{figure}
 \end{exm}
@@ -1338,6 +1338,212 @@ The continuous Fourier transform for $Z \in \pi_0(W^T)$ is given by sending $f \
     \end{tikzcd}
     \end{equation*}
 \end{rmk}
+
+\section{Fourier analysis for blowups (Sam, Mar 21)}%
+\label{sec:Fourier analysis for blowups}
+
+In this section, denote the Chern roots of $\mc{N}_{Z/X}$ by $\ep_1, \ldots, \ep_r$. 
+
+\subsection{Extended Kirwan maps}%
+\label{sub:Extended Kirwan maps}
+
+We will begin by describing the Kirwan maps in coordinates. On $H^2_T(W)$, we have
+\begin{align*}
+    \kappa_X \colon & \wh{\varphi}^* \on{pr}_1^* \alpha \mapsto \alpha \\
+    & [X] \mapsto 0 \\
+    & -[\wh{D}] \mapsto 0 \\
+    & \lambda \mapsto 0 
+\end{align*}
+for $Y = X$
+\begin{align*}
+    \kappa_{\wt{X}} \colon & \wh{\varphi}^* \on{pr}_1^* \alpha \mapsto \varphi^* \alpha \\
+    & [X] \mapsto 0 \\
+    & -[\wh{D}] \mapsto -[D] \\
+    & \lambda \mapsto [D]
+\end{align*}
+for $Y = \wt{X}$. The dual Kirwan maps on $N_1(Y)$ are given by
+\begin{align*}
+    \kappa_X^* \colon & N_1(X) \to N_1^T(W) \cong N_1(X) \oplus \Z \lambda^{\vee} \oplus \Z[X]^{\vee} \oplus \Z(-[\wh{D}])^{\vee} \\
+    & d \mapsto (d,0,0,0) \\
+    \kappa_{\wt{X}}^* \colon & N_1(\wt{X}) \to N_1^T(W) \cong N_1(X) \oplus \Z \lambda^{\vee} \oplus \Z[X]^{\vee} \oplus \Z(-[\wh{D}])^{\vee} \\
+    & \wt{d} \mapsto (\varphi_* \wt{d},0,-[D] \cdot \wt{d},[D] \cdot \wt{d})
+\end{align*}
+when $Y=X$ and $Y=\wt{X}$, respectively. It may appear that we don't see the equivariant parameters in the dual Kirwan map, but we will fix this.
+
+\begin{defn}
+    The \textit{extended Givental space} is
+    \[ \mc{H}_Y^{\mr{ext}} \coloneqq H^*(Y)[z^{\pm}] \llbracket C_{Y,N}^{\vee} \rrbracket, \]
+    which is a base change of $\mc{H}_Y$.
+\end{defn}
+
+The shift operators on $\mc{H}_W^{\mr{rat}} = H_{\mr{loc}}^*(W)[Z^{\pm}]\llbracket Q \rrbracket$ are now given by
+\[ \mc{S} \iota_* (f_X, f_Z, f_{\wt{X}}) = (\mc{S} f|_X, \mc{S}f|_Z, \mc{S} f|_{\wt{X}}),\]
+where
+\begin{align*}
+    \mc{S}^k f_X &= x^k \frac{\prod_{c=-\infty}^0 (-\lambda + cz)}{\prod_{c=-\infty}^k (-\lambda + cz)} e^{-kz \partial_{\lambda}} f_X \\
+    \mc{S}^k f_Z &= y^k \frac{\prod_{c=-\infty}^0 \prod_{i=1}^r (\ep_i-\lambda + cz) \prod_{c=-\infty}^0 (\lambda + cz)}{\prod_{c=-\infty}^k \prod_{i=1}^r (\ep_i-\lambda + cz) \prod_{c=-\infty}^k (\lambda + cz)} e^{-kz \partial_{\lambda}} f_X \\
+    \mc{S}^k f_{\wt{X}} &= \frac{\prod_{c=-\infty}^0 ([D] + \lambda + cz)}{\prod_{c=-\infty}^k ([D] + \lambda + cz)} e^{-kz \partial_{\lambda}} f_{\wt{X}}.
+\end{align*}
+
+\subsection{Discrete Fourier transform}%
+\label{sub:Discrete Fourier transform blowup}
+
+We are now able to make the following definition.
+
+\begin{defn}
+    The \textit{discrete Fourier transform} is
+    \[ F_Y \colon \mc{H}_W^{\mr{rat}}[Q^{-1}] \dashrightarrow \mc{H}_Y^{\mr{ext}}[Q^{-1}], \]
+    defined by
+    \[ F_Y(f) = \sum_{k \in \Z} S^k \kappa_Y (\mc{S}^{-k} f). \]
+\end{defn}
+
+Because we invert the equivariant parameters, this may not necessarily be well-defined. However, we do have the following result.
+
+\begin{prop}
+    The discrete Fourier transform $F_Y$ is well-defined on tangent spaces to $\mc{L}_W$.
+\end{prop}
+
+To prove this result, we need various ingredients:
+\begin{enumerate}
+    \item Some regularity at $\lambda = 0$, which follows from properness;
+    \item Not needing arbitrarily high powers of $Q^{-1}$ (landing in the target).
+\end{enumerate}
+
+As in the case of projective bundles, the shift operators satisfy various nice properties. For example, because
+\[ [\lambda, \mc{S}^k] = z^k \mc{S}, \]
+we obtain the formulae
+\begin{align*}
+    F_Y(\mc{S}^{\ell} f) &= S^{\ell} F_Y(f) \\
+    F_Y(\xi f) &= (z \xi Q \partial_Q + \kappa_Y(\xi)) F_Y(f)
+\end{align*}
+for any $\xi \in H_2^T(W)$.
+
+\subsection{Continuous Fourier transform}%
+\label{sub:Continuous Fourier transform blowup}
+
+Let $F \in \ab\{X, \wt{X}, Z\}$ be a fixed component in $W^T$. Denote the Chern roots of $\mc{N}_{F/W}$ by $\rho_1, \ldots, \rho_n$. Now define
+\[ G_F \coloneqq \prod_{\rho} \frac{1}{\sqrt{- 2\pi z}} (-z)^{-\frac{\rho}{z}} \Gamma\ab(\frac{-\rho}{z}). \]
+More specifically, for each individual fixed component, we have
+\begin{align*}
+    G_X &= \frac{1}{-2\pi z}(-z)^{\frac{\lambda}{z}} \Gamma \ab(\frac{\lambda}{z}) \\
+    G_Z &= \frac{1}{\sqrt{-2\pi z}^{r+1}} (-z)^{-\frac{\lambda}{z}} \Gamma\ab(\frac{-\lambda}{z}) \prod_{i=1}^r (-z)^{\frac{\lambda - \ep_i}{z}} \Gamma\ab(\frac{\lambda - \ep_i}{z}) \\
+    G_{\wt{X}} &= \frac{1}{\sqrt{-2\pi z}}(z)^{\frac{[D]-\lambda}{z}} \Gamma \ab(\frac{[D]-\lambda}{z}).
+\end{align*}
+This $G_F$ actually intertwines all $\wh{\mc{S}}^{\beta}$, which are defined for all
+\[ \beta \in N_1^T(W) \to H_2(BT) \ni \ol{\beta}. \]
+Given $F$, we have
+\[ \sigma_k(F) \in N_1(E_k) \to N_1^T(W), \]
+which are obtained by section classes on $E_k$ as in~\Cref{fig:toricEk}. Now $G_F$ satisfies the equation
+\[ G_F (\wh{\mc{S}}^{\beta}f)_F = (Q^{\beta + \sigma_F(-\ol{\beta})} e^{-z \ol{\beta} \partial_{\lambda}}) G_F f, \]
+which follows from the same argument as in the projective bundle case.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+    \draw[thick] (0,0) -- (0,5);
+    \draw[dashed, thick] (1,2) -- (1,7);
+    \draw[dashed, thick] (0,0) -- (1,2);
+    \draw[thick] (5,1) -- (5,5);
+    % \draw[thick] (1.5,1) -- (1.5,6);
+    \draw[thick] (0,5) -- (1,7) -- (6,7) -- (5,5) -- (0,5);
+    \draw[thick] (6,7) -- (6,2);
+    \draw[dashed,thick] (1,2) -- (6,2);
+    \draw[thick] (0,0) -- (4,0);
+    \draw[thick] (6,2) -- (5.25,0.5);
+    \fill[pink] (4,0) -- (5,1) -- (5.25,0.5) -- cycle;
+    \draw[thick] (5.25,0.5) -- (4,0);
+    \draw[thick] (4,0) -- (5,1);
+    \draw[thick] (5.25,0.5) -- (5,1);
+    % \node[circle,fill=blue,minimum size=5pt,inner sep=0pt] at (5,1) {};
+    \draw[thick] (10,0) -- (11,5) -- (13,7) -- (18,7) -- (16,5) -- (11,5);
+    \draw[dashed,thick] (10,0) -- (12,2) -- (17,2);
+    \draw[dashed,thick] (12,2) -- (13,7);
+    \draw[thick] (18,7) -- (17,2) -- (15.5,0.5);
+    \draw[thick] (10,0) -- (14,0);
+    \fill[pink] (14,0) -- (15.5,0.5) -- (15.2,1) -- cycle;
+    \draw[thick] (14,0) -- (15.5,0.5) -- (15.2,1) -- cycle;
+    \draw[thick] (16,5) -- (15.2,1);
+    % \node[circle,fill=blue,minimum size=5pt,inner sep=0pt] at (15.2,1) {};
+    \draw[blue, thick] (5,1) -- (15.2,1);
+    \node[text=blue] at (8,0.6) {$\sigma_k(Z)$};
+    \draw[red, thick] (3,1.5) -- (13,1.5);
+    \node[text=red] at (8,1.9) {$\sigma_k(\wt{X})$};
+    \draw[orange, thick] (4,6.5) -- (14,6.5);
+    \node[text=orange] at (8,6.9) {$\sigma_k(X)$};
+\end{tikzpicture}
+\end{center}
+\caption{Toric diagram of $E_k$ when $X, Z$ are as in~\Cref{fig:toric}.}%
+\label{fig:toricEk}
+\end{figure}
+
+We are now able to describe the continuous Fourier transform formally as an integral which has the same properties as the discrete one. Define
+\[ \mc{FT}^{\infty} \colon f \mapsto \int e^{\lambda \log \frac{S_f}{z}} G_F f_F \d \lambda, \]
+where $S_F = \sigma_1(F)$. Formally, we see that
+\begin{align*}
+    \mc{FT}^{\infty}(\wh{\mc{S}}^{\beta} f) &= \int e^{\lambda \log \frac{S_F}{z}} Q^{\beta + \sigma_1(-\ol{\beta})} e^{z \ol{\beta} \log \frac{S_F}{z}} G_F f_F \d \lambda \\
+    &= \wh{\mc{S}^{\beta}} \mc{FT}^{\infty}(f),
+\end{align*}
+which suggests that this is the right object to study the asymptotics of. Recall the Stirling approximation
+\begin{align*}
+    \log G_F &\asymp \sum_{\rho_i}- \frac{\rho_i \log \rho_i - \rho_i}{z} - \frac{1}{2}\log \rho_i - \sum_{n=2}^{\infty} \frac{B_n}{n(n-1)} \ab(\frac{z}{\rho_i})^{n-1}, \\
+    &= \sum_{\alpha \in \mr{wts}(\mc{N}_{F/W})} \ab(- r_{\alpha} \frac{\alpha \log \alpha - \alpha}{z} - \log \Delta_{\alpha}),
+\end{align*}
+where we have the decomposition
+\[ \mc{N}_{F/W} = \bigoplus_{\alpha} \mc{N}^{\alpha}, \]
+$\rho_{\alpha} = c_1(\mc{N}^{\alpha})$ is the first Chern class, $r_{\alpha} = \on{rk} \mc{N}^{\alpha}$, and $\Delta_{\alpha}$ is the quantum Riemann-Roch operator. We now obtain
+\begin{align*}
+    \mc{FT}^{\infty} &\asymp \int e^{\frac{\lambda \log S_F - \sum_{\alpha} r_{\alpha}(\alpha \log \alpha - \alpha)}{z}} \prod_{\alpha} \Delta_{\alpha}^{-1} f_F \d \lambda.
+\end{align*}
+We have a critical point
+\[ \lambda_0 = S_F^{\frac{1}{c}} \prod_{\alpha} w_{\alpha}^{-r_{\alpha} \frac{w_{\alpha}}{c_F}}, \]
+where
+\[ c_F = \begin{cases}
+    -1 & F=X \\
+    1 & F=\wt{X} \\
+    -(r-1) & F=Z.
+\end{cases}
+\]
+Also, for $j = 0, \ldots, \abs{c_F}-1$, we have critical points
+\[ \lambda_j = e^{\frac{2\pi \sqrt{-1} j}{c_F}} \lambda_0. \]
+
+\begin{defn}
+    The \textit{continuous Fourier transform} is given by the asymptotic expansion
+    \[ \int e^{\lambda \log \frac{S_F}{z}} G_F f_F \d \lambda \asymp \sqrt{2\pi z} e^{r\frac{\lambda_j}{z}} \mc{F}_{F,j}(f), \]
+    where we take the asymptotics as $z \to 0$ and substitute
+    \[ \lambda = \lambda_j \exp\ab(\frac{u}{\sqrt{c \lambda_j}}) \]
+    and expand in $u$-powers as $u \to 0$.
+\end{defn}
+
+Via taking a formal asymptotic analysis of what we did before, we have
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item The continuous Fourier transform intertwines the shift operators as
+            \[ \mc{F}_{F,j}(\wh{\mc{S}}^{\beta} f) = \wh{S}^{\beta} \mc{F}_{F,j}(f); \]
+        \item The continuous Fourier transform intertwines the equivariant parameter via
+            \[ \mc{F}_{F,j}(\lambda f) = (z S + \lambda_j) \mc{F}_{F,j}(f). \]
+        \item There is a similar property for the Euler vector field.
+    \end{enumerate}
+\end{prop}
+
+Now let
+\[ \wh{J}_{F,j}^{\mr{tw}} = \mc{F}_{F,j} (\iota_* J_F^{\mr{tw}}(t)). \]
+
+\begin{prop}
+    There exists 
+    \[ \tau(t) \in H^*(F) \llbracket S_F^{-\frac{1}{c}}, Q_F S^{-\frac{\rho_F}{c}}, tS_F^{\frac{*}{c}} \rrbracket \]
+    and
+    \[ v(t) \in H^*(F) [z] \llbracket S_F^{-\frac{1}{c}}, Q_F S^{-\frac{\rho_F}{c}}, tS_F^{\frac{*}{c}} \rrbracket \]
+    such that 
+    \[ \wh{J}_{F,j}^{\mr{tw}} = S_F^{-\frac{\rho_F}{cz}} M_F(\tau(t) Q_F S_F^{-\frac{\rho_F}{c}}) v. \]
+\end{prop}
+
+In other words, we can recover $\QDM_F$ from $\mc{F}_{F,j}$ after a change of basis and an \'etale cover of the K\"ahler moduli space.
+
+\begin{prop}
+    The discrete and continuous Fourier transforms agree for $Y \in \ab\{X, \wt{X} \}$. In other words, we have
+    \[ e^{S_Y^{\frac{1}{c_Y}}} \mc{F}_{Y,0}(f) = c_Y^{-1} S_Y^{-\frac{\rho_Y}{c_Y z}} F_Y(f). \]
+\end{prop}
+
 
 
 
