@@ -158,6 +158,7 @@
 \newcommand{\wh}[1]{\widehat{#1}}
 \renewcommand{\div}{\operatorname{div}}
 \newcommand{\bir}{\sim_{\mr{bir}}}
+\newcommand{\GL}{\mr{GL}}
 \newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
 \newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
 
@@ -205,7 +206,7 @@
     \raggedleft
     \vspace*{\baselineskip}
     {\Huge\itshape The Count of Instantons \\ 2023-24}\\[\baselineskip]
-    {\large\itshape Notes by Patrick Lei}\\[0.2\textheight]
+    {\large\itshape Notes by Patrick Lei and Davis Lazowski}\\[0.2\textheight]
     {\Large Lectures by Nikita Nekrasov}\par
     \vfill
     {\Large \sffamily Columbia University}
@@ -249,21 +250,21 @@
 \section*{Disclaimer}%
 \label{sec:disclaimer}
 
-These notes were taken during the lectures using \texttt{neovim}. 
+These notes were taken during the lectures using \texttt{neovim} (Patrick) and \texttt{VSCode} (Davis). 
 Any errors are mine and not the speakers'. 
-In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differe between lecturers.
+In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differ between lectures.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
 
-Unfortunately, I cannot guarantee that the notation in these notes is consistent.
+Unfortunately, I cannot guarantee that the notation in these notes is consistent. Please do not judge this too harshly.
 
 \section*{Description}
 
 Graduate level introduction to modern mathematical physics with the emphasis on the geometry and physics of quantum gauge theory and its connections to string theory.  We shall zoom in on a corner of the theory especially suitable for exploring non-perturbative aspects of gauge and string theory: the instanton contributions. Using a combination of methods from algebraic geometry, topology, representation theory and probability theory we shall derive a series of identities obeyed by generating functions of integrals over instanton moduli spaces, and discuss their symplectic, quantum, isomonodromic, and, more generally, representation-theoretic significance.
 
-Quantum and classical integrable systems, both finite and infinite-dimensional ones, will be a recurring cast of characters, along with the other (qq-) characters.
+Quantum and classical integrable systems, both finite and infinite-dimensional ones, will be a recurring cast of characters, along with the other ($qq$-) characters.
 
 \section*{Acknowledgements}
-I would like to thank Davis Lazowski for providing notes for the lecture on December 8.
+Notes were taken by Patrick Lei for all lectures until March 22, 2024 except for the lecture on December 8, 2023. Davis Lazowski provided notes for the lecture on December 8, 2023 and for all lectures from March 29, 2024 onwards. Slight edits (in form, not in content) were made to the notes taken by Davis to make them fit with Patrick's stylistic conventions.
 
 
 \newpage
@@ -1183,26 +1184,19 @@ where $B$ is the $B$-field, satisfying $\dd{B} = 0$. Therefore, the absolute min
 
 
 \section{$4$d supersymmetric Yang-Mills}
-\textit{Notes for this section were provided by Davis Lazowski. They are unchanged except for a bit of formatting.}
 
 The word symmetry here is actually a confusing one. There are two types of symmetries one encounters in physics, and one is \textbf{not} a symmetry. Sometimes what we mean by symmetry is a \textbf{redundancy}; mathematically what that means is that we're studying a quotient of some space $X$ by some symmetry $G$, $X/G$. This is a \textit{local symmetry}. The other type of symmetry is a \textit{global symmetry} where we really have $G$ acting on the space we are studying $X$.
-
 In the case of a local symmetry, platonically there is a space $X$ with action of $G$, but that space is not accessible to us. Rather we only can see $X/G$.
-
 Occasionally, it's the case that we find there exists $Y/H = X/G$. We call this a \textit{duality}.
 
 Because the groups we deal with in physics are typically infinite dimensional groups, for example $\ms{Maps}(M,G)$ of a manifold into a finite dimensional group, these groups typically have lots of normal subgroups.  Sometimes rather than the full $\ms{ Maps }(M,G)$, our local symmetry is some sort of normal subgroup that preserves additional structure: for example, possibly the normal subgroup that sends certain marked points $\{x_{i}\}$ of $M$ into certain subgroups $\{H_{i}\}$ of $G$.
-
 The global symmetry will then be whatever is left from $\ms{Maps}(M,G)$, for example in this case $\times_{i} G/H_{i}$.
 
-For example, say we are studying $(M,g)$ a smooth Riemannian 4-manifold, with $G$ a compact simple Lie group, and a principal $G$-bundle $\mathcal{P}$ over $M$. Let $\mathcal{A}_{\mathcal{P}}$ the affine space of $G$-connections on $\mathcal{P}$.  There is a group $g_{\mathcal{P}} := \Gamma(M^{4},G \times_{Ad} \mathcal{P})$ acting on $\mathcal{A}_{\mathcal{P}}$; what we really want to study is the quotient,
-
+For example, say we are studying $(M,g)$ a smooth Riemannian 4-manifold, with $G$ a compact simple Lie group, and a principal $G$-bundle $\mathcal{P}$ over $M$. Let $\mathcal{A}_{\mathcal{P}}$ the affine space of $G$-connections on $\mathcal{P}$.  There is a group $g_{\mathcal{P}} := \Gamma(M^{4},G \times_{Ad} \mathcal{P})$ acting on $\mathcal{A}_{\mathcal{P}}$; what we really want to study is the quotient
 \[
-B_{\mathcal{P}} := \mathcal{A}_{\mathcal{P}}/g_{\mathcal{P}}
+B_{\mathcal{P}} := \mathcal{A}_{\mathcal{P}}/g_{\mathcal{P}}.
 \]
-
 The functional we seek to integrate over $B_{\mathcal{P}}$ is
-
 \[
 \int_{B_{\mathcal{P}}} [D\mathcal{A}] e^{-\frac{1}{4c^{2}} \int_{M} \Tr F \wedge \star_{g} F +  \frac{i \theta}{2\pi} \int_{M} \Tr F \wedge F + \dots}
 \]
@@ -1218,63 +1212,51 @@ Since the second term is topological, we know eventually that our integral is eq
 \sum_{n \in \mathbb{Z}} e^{i n \theta} Z_{n}
 \]
 where $Z_{n}$ is the integral taken over bundles of Pontryagin class $n$.
-
   We could try to write this on a lattice, viewing $\mathcal{A}_{P}$ as the edges of a graph and $g_{\mathcal{P}}$ as the vertices. But if you did this naively you would find that the coupling has to go to zero.
-
   Instead, we can try a trick which we started to discuss last time. If we write
 \[
-F_{A}^{+} = \frac{1}{2} (F_{A} + \star F_{A})
+F_{A}^{+} = \frac{1}{2} (F_{A} + \star F_{A}),
 \]
-The Yang-mills term in the functional is equal to
+the Yang-mills term in the functional is equal to
 \[
-\norm{F_{A}^{+}}^{2} + \int \Tr F_{A} \wedge F_{A}
+\norm{F_{A}^{+}}^{2} + \int \Tr F_{A} \wedge F_{A}.
 \]
-
 Then we can rewrite the whole functional as
-
 \[
-e^{2\pi i \tau( -\frac{1}{8\pi^{2}} \int \Tr F_{A} \wedge F_{A} ) - \frac{1}{4c^{2}} \norm{F^{+}}^{2}}
+e^{2\pi i \tau( -\frac{1}{8\pi^{2}} \int \Tr F_{A} \wedge F_{A} ) - \frac{1}{4c^{2}} \norm{F^{+}}^{2}},
 \]
-
-Wherein
+where
 \[
 \tau = \frac{\vartheta}{2\pi} + \frac{4\pi i }{c^{2}}
 \]
 is some function in the upper half-space.
-
 We could try to study the limit $c^{2} \to 0$, while keeping $\tau$ finite.  In that limit the functional goes to
-
 \[
-\delta(F_{A}^{+}) e^{2\pi i \tau c_{2}\mathcal{P}}
+\delta(F_{A}^{+}) e^{2\pi i \tau c_{2}\mathcal{P}}.
 \]
 
 Studying the moduli space of $\mathcal{M}_{\mathcal{P}} := \{ A | F_{A}^{+} = 0\}/g_{\mathcal{P}}$,  which we roughly expect to be finite dimensional because $\Lambda^{2,+} \mathbb{R}^{4} \simeq \mathbb{R}^{3}$, we can at the very least compute its virtual dimension.
-
 To do so, assume
 \begin{itemize}
   \item $A_{0}$ is so that $F_{A_{0}}^{+} = 0$;
-  \item $A = A_{0} + \delta A$ so that $F_{A_{0} + \delta_{A}}^{+} = \dd_{A_{0}}^{+} \delta A$
-        \item wherein $\dd^{+}_{A_{0}} : \Omega^{1}(M) \otimes \ad\mathcal{P} \to \Omega^{2,+} (M) \otimes \ad \mathcal{P}$
+  \item $A = A_{0} + \delta A$ so that $F_{A_{0} + \delta_{A}}^{+} = \dd_{A_{0}}^{+} \delta A$;
+        \item wherein $\dd^{+}_{A_{0}} : \Omega^{1}(M) \otimes \ad\mathcal{P} \to \Omega^{2,+} (M) \otimes \ad \mathcal{P}$.
 \end{itemize}
 
 To the linear level, it suffices to computer $\ker \dd^{+}$. Since
-
 \[
-\dd^{+}_{A_{0}} \dd_{A_{0}} = \frac{1}{2} (1 + \star) \dd^{2}_{A_{0}}
+\dd^{+}_{A_{0}} \dd_{A_{0}} = \frac{1}{2} (1 + \star) \dd^{2}_{A_{0}},
 \]
-The virtual tangent bundle is
+the virtual tangent bundle is
 \[
-T_{vir} := \ker \dd_{A_{0}}^{+}/\Im \dd_{A_{0}}
+T_{vir} := \ker \dd_{A_{0}}^{+}/\Im \dd_{A_{0}},
 \]
-which is the first cohomology of the Atiyah-Hitchin-Singer complex:
+which is the first cohomology of the Atiyah-Hitchin-Singer complex
 \[
-\Omega^{0} \oplus \ad \mathcal{P} \to \Omega^{1} \otimes \ad \mathcal{P} \to \Omega^{2,+} \otimes \ad\mathcal{P}
+\Omega^{0} \oplus \ad \mathcal{P} \to \Omega^{1} \otimes \ad \mathcal{P} \to \Omega^{2,+} \otimes \ad\mathcal{P},
 \]
-wherein the maps are $\dd_{A_{0}}, \dd_{A_{0}}^{+}$
-
+wherein the maps are $\dd_{A_{0}}, \dd_{A_{0}}^{+}$.
 If $H^{0},H^{2}$ of this complex don't vanish, we could have singularities or obstructions and therefore trouble counting dimension.
-
-
 
 \subsection{``theory of differential forms on $\mathcal{M}_{\mathcal{P}}$''}
 We could try to overcome the infinite dimensionality of the problem by seeking to develop a theory of differential forms on $\mathcal{M}_{\mathcal{P}}$, the space of anti-self dual connections, i.e. those $A$ such that $F_{A}^{+} = 0$. To do so, we would need some notion of local coordinates on $\mathcal{M}_{\mathcal{P}}$. Let's first try to do this on the space of connections without the ASD condition.
@@ -1285,46 +1267,38 @@ Q = \dd_{\mr{DR}}
 \]
 on the space of connections $\mathcal{A}_{\mathcal{P}}$.  Then
 \[
-QA = \Psi \in \Omega^{1}(M) \otimes \prod  \ad  \mc{P}
+QA = \Psi \in \Omega^{1}(M) \otimes \prod  \ad  \mc{P}.
 \]
 This is a one-form, hence an 'odd' object, i.e. a fermion. So $Q$ meaps even to odd and vice versa.
 
 
-But remember that $A := A_{\mu} dx^{\mu}$ is a *redundant* description, because connections related by gauge transformation are the same.  To deal with this, rather than $d_{DR}$ we will deal with *equivariant differential forms*, and write
-
+But remember that $A := A_{\mu} dx^{\mu}$ is a \textbf{redundant} description, because connections related by gauge transformation are the same.  To deal with this, rather than $d_{DR}$ we will deal with *equivariant differential forms*, and write
 \[
 Q = \dd_{\mr{DR}} + \iota_{V\, \phi}
 \]
-On the Cartan model for equivariant cohomology, so that this differential is an operator on
-
+on the Cartan model for equivariant cohomology, so that this differential is an operator on
 \[
-(\Omega^{\bullet} (\mathcal{A} \times \ms{Lie}(g_{\mathcal{P}})) \times \ms{Fun}(\ms{Lie}(g_{\mathcal{P}})))^{g_{\mathcal{P}}}
+(\Omega^{\bullet} (\mathcal{A} \times \ms{Lie}(g_{\mathcal{P}})) \times \ms{Fun}(\ms{Lie}(g_{\mathcal{P}})))^{g_{\mathcal{P}}}.
 \]
-
 Since $H^{\bullet}( (M \times EG)/G) \simeq H^{\bullet}(M/G)$, if we want this relation not only at the level of chomology but also on the actual space of differential forms, it's enough to study invariant forms, hence why we're taking invariants by $g^{\mathcal{P}}$.
-
 This is like passing from $M/G \to M \times \mathfrak{g}/G$, which slightly improves the situation of stabilisers and therefore the space of equivariant differential forms.
-
 Then,
-
 \begin{align}
     QA &= \Psi
   \\
     Q\Psi &= d_{A} \phi, \phi \in \Gamma(\ad\mathcal{P}) = \ms{Lie}(g_{\mathcal{P}})
   \\
-    Q\phi &= 0
+    Q\phi &= 0.
 \end{align}
 The extra factor of the Lie algebra also defines an object $\overline{\phi}$, so that $Q \overline{\phi} = \eta$ where $Q \eta = [\phi, \overline{\phi}]$.  Here $\overline{\phi}$ lives in the $\ms{Lie}(g_{\mathcal{P}})$ inside our forms itself, whilst $\phi$ lives in the space $Fun(g_{\mathcal{P}})$ we tensor by.  Then
-
 \[
 Q = \dd_{\mr{DR}\ A} + \overline{\partial}_{\overline{\phi}} + \iota_{V(\phi)} + \iota_{[\phi,\overline{\phi}]} \partial_{\overline{\phi}}
 \]
-On the space of $g_{\mathcal{P}}$-invariant forms, $Q^{2} = 0$ since $Q$ is just the Lie derivative associated to transformation along $\phi$.
+on the space of $g_{\mathcal{P}}$-invariant forms, $Q^{2} = 0$ since $Q$ is just the Lie derivative associated to transformation along $\phi$.
 
 \subsection{Finite-dimensional model}
 
 Suppose we are in a similar finite dimensional situation.
-
 \begin{itemize}
   \item Suppose $G$ acts on a Riemannian manifold $(N,g)$;
   \item Suppose $f \in (\Omega^{\bullet} (N) \otimes \ms{Fun}(\ms{Lie}(G)))^{G}$;
@@ -1337,14 +1311,12 @@ Suppose we are in a similar finite dimensional situation.
     Further, characteristic classes of our bundle $N \to N/G$ are represented by invariant polynomials on our Lie algebra, $(S^{\bullet} \mathfrak{g}^{\vee})^{G}$. The functions $\phi$ should somehow correespond to these, `it looks too good to be a coincidence'. This consideration hits on the fact that we likely want to use a metric when we make this map.
 \end{rmk}
 Let's do what we already did a previously. Using the metric, we can build a one-form:
-
 \[
-g(V(\Phi),\bullet) := \theta \in \Omega^{1}(N)
+g(V(\Phi),\bullet) := \theta \in \Omega^{1}(N).
 \]
 It has the following useful property: if $Df =0$, we can multiply
-
 \[
-f \to f e^{D\theta} = f(t) e^{-g(V(\phi), V(\overline{\phi})) + \mathcal{O}_{n, \overline{\phi}} + \dd_{g} \mathcal{O}_{\overline{\phi}} }
+f \to f e^{D\theta} = f(t) e^{-g(V(\phi), V(\overline{\phi})) + \mathcal{O}_{n, \overline{\phi}} + \dd_{g} \mathcal{O}_{\overline{\phi}} }.
 \]
 This will \emph{not} change the cohomology class, but it will change the representative.  For example,
 \[
@@ -1352,41 +1324,35 @@ f \to \phi
 \]
 is given by
 \[
-\int_{\mathfrak{g}} f(t) e^{D\theta}
+\int_{\mathfrak{g}} f(t) e^{D\theta}.
 \]
 We can write this as
-
 \[
-\ \frac{f(\phi)}{\prod_{a}(\phi^{b}f_{ab} + \dots)}\overline{\omega}_{1} \wedge \dots \wedge \overline{\omega}_{\dim G} = \int_{\mathfrak{g}} f(t) e^{D\theta}
+\ \frac{f(\phi)}{\prod_{a}(\phi^{b}f_{ab} + \dots)}\overline{\omega}_{1} \wedge \dots \wedge \overline{\omega}_{\dim G} = \int_{\mathfrak{g}} f(t) e^{D\theta}.
 \]
-
 In order to not worry about contours, we treat $\phi, \overline{\phi}$ as complex conjugates. There is a canonical measure on $\ms{Lie}(G)$,
 \[
-[\dd\phi/\on{Vol}(G)]
+[\dd\phi/\on{Vol}(G)],
 \]
-Which is just the Haar measure which we have for free. Insert this into the integral $\int fe^{D\theta}$ as an additional term by which we integrate out $\phi$.
+which is just the Haar measure which we have for free. Insert this into the integral $\int fe^{D\theta}$ as an additional term by which we integrate out $\phi$.
 
 A procedure like this is `universal' in the sense that it produces a differential form on $N$. Because all the integrations I've done commute with $D$, this kind of averaging results in a form which is still equivariantly closed.
-
-
-The secret of Yang-Mills theory is that it does exactly that: it takes something simple on the space of connections and does some sort of integration like that to produce a form on the space of connections
+The secret of Yang-Mills theory is that it does exactly that: it takes something simple on the space of connections and does some sort of integration like that to produce a form on the space of connections.
 
 But there's a second piece, the \emph{anti self-dual condition}, which we did not consider.
-
 If we have $M = s^{-1}(0)/G$ for some section $s$ of a vector bundle $E \to N$, how do we restrict differential forms to the vanishing locus of this section? Naively the idea is to just send
 \[
 f \to \delta(s) f
 \]
 where $\delta$ is just a $\delta$ function or $\delta$ form.  To do this properly we need to add on a \emph{Koszul complex} into our complex of forms which effectively has $s$ as a differential.
 
-At the level of mysterious formulas, this is achieved in the following way. Extra complexes imply we have extra fields; introduce the field $\chi$ which for our purposes will be the self dual form $\chi \in \Omega^{2,+}(M) \otimes \prod \ad\mathcal{P}$. This $\chi$ represents the $(-1)$ term in the Koszul complex, so that the Koszul differential of $\chi$ is $\delta \chi := F_{A}^{+} = s$
+At the level of mysterious formulae, this is achieved in the following way. Extra complexes imply we have extra fields; introduce the field $\chi$ which for our purposes will be the self dual form $\chi \in \Omega^{2,+}(M) \otimes \prod \ad\mathcal{P}$. This $\chi$ represents the $(-1)$ term in the Koszul complex, so that the Koszul differential of $\chi$ is $\delta \chi := F_{A}^{+} = s$
 
-Then we have a vector bundle $E_{P}$ over $\mathcal{A}_{\mathcal{P}}$ with fibres
+Then we have a vector bundle $E_{P}$ over $\mathcal{A}_{\mathcal{P}}$ with fibers
 \[
-F = \Gamma\, (\Omega^{2,_+}(M) \otimes \ad \mathcal{P})
+F = \Gamma\, (\Omega^{2,_+}(M) \otimes \ad \mathcal{P}).
 \]
 Naively $Q^{2}$ is $d_{A}^{+}$, so not zero on the nose. This is fixed in the following way: we define \emph{another} field, $\chi \in \Omega^{2,+}(M) \otimes \prod \ad\mathcal{P}$, and a further field $H \in \Omega^{2,+}(M) \otimes \ad\mathcal{P}$, so that
-
 \begin{align}
     Q\chi &= H
   \\
@@ -1394,48 +1360,43 @@ Naively $Q^{2}$ is $d_{A}^{+}$, so not zero on the nose. This is fixed in the fo
 \end{align}
 Remember also that we had fields
 \begin{itemize}
-  \item $A$ a connection on $\mathcal{P}$
-  \item $\overline{\phi} \in \Omega^{0} \otimes \ad \mathcal{P}$
-  \item $\psi \in \Omega^{4}(M) \otimes \ad \mathcal{P}$
-  \item $\eta \in \Omega^{0} \otimes \ad\mathcal{P}$
-        \item $\phi \in \Omega^{0} \otimes \ad\mathcal{P}$
+  \item $A$ a connection on $\mathcal{P}$;
+  \item $\overline{\phi} \in \Omega^{0} \otimes \ad \mathcal{P}$;
+  \item $\psi \in \Omega^{4}(M) \otimes \ad \mathcal{P}$;
+  \item $\eta \in \Omega^{0} \otimes \ad\mathcal{P}$;
+        \item $\phi \in \Omega^{0} \otimes \ad\mathcal{P}$.
 \end{itemize}
 which is a minimal list of fields for Yang-Mills theory. $Q$ acted on these fields by
 
 \begin{itemize}
-  \item $Q\chi = H$
-  \item $QH = [\chi, \phi]$
-  \item $QA = \psi$
-  \item $Q\psi = d_{A} \phi$
-  \item $Q\overline{\phi} = \eta$
-  \item $Q\eta = [\phi,\overline{\phi}]$
-        \item $Q\phi = 0$
+  \item $Q\chi = H$;
+  \item $QH = [\chi, \phi]$;
+  \item $QA = \psi$;
+  \item $Q\psi = d_{A} \phi$;
+  \item $Q\overline{\phi} = \eta$;
+  \item $Q\eta = [\phi,\overline{\phi}]$;
+        \item $Q\phi = 0$.
 \end{itemize}
 Note that for all but $\phi$ there is a canonical pairing between fields just by their type, called \emph{Berezin measure}. This gives us a measure:
-
 \[
-[DA D\psi][D\chi DH] [D\overline{\phi} D\eta] \qty[\frac{D\phi}{\mr{vol}(G)}]
+[DA D\psi][D\chi DH] [D\overline{\phi} D\eta] \qty[\frac{D\phi}{\mr{vol}(G)}],
 \]
 where we have only `cheated' in the last term, whose definition leaves something to be said in the fully infinite dimensional setting.
 
 Consider the functional
-
 \[
-\exp Q \int_{M} \Tr X(F_{A}^{+} - \frac{1}{2} c^{2} H) + \Tr \psi \wedge \star \dd_{A} \overline{\phi} + \mr{vol}_{g}\Tr \eta[\phi,\overline{\phi}]
+\exp Q \int_{M} \Tr X(F_{A}^{+} - \frac{1}{2} c^{2} H) + \Tr \psi \wedge \star \dd_{A} \overline{\phi} + \mr{vol}_{g}\Tr \eta[\phi,\overline{\phi}].
 \]
 We got these terms from looking at our metric $g= \int \Tr(\delta A \wedge \star \delta A)$ and applying $Q$ to create the most general supersymmetric or $Q$-closed functional.
 This is the same as
 \[
-\exp  \int \Tr H F_{A}^{+} - c^{2} \int \Tr H\wedge \star H- \int \Tr \dd_{A} \phi \wedge \star \dd_{A} \overline{\phi} - \int \Tr[\phi, \overline{\phi}]^{c} \mr{vol}_{g} + \Tr(\chi \dd_{A}^{+} \psi + \dots)
+\exp  \int \Tr H F_{A}^{+} - c^{2} \int \Tr H\wedge \star H- \int \Tr \dd_{A} \phi \wedge \star \dd_{A} \overline{\phi} - \int \Tr[\phi, \overline{\phi}]^{c} \mr{vol}_{g} + \Tr(\chi \dd_{A}^{+} \psi + \dots).
 \]
 Since $H$ is quadratic, we could integrate it out.
 
 Also integrating $\chi,\eta$ out represents the Atiyah-Hitchin-Singer complex, because it imposes the conditions $\dd_{A}^{+}\psi = 0, \dd_{A}^{\star} \psi = 0$, equivalent to $\psi \in \ker \dd_{A}^{+}$, $\psi$ is orthogonal to $\Im(\dd_{A})$, which gives us the first cohomology of the AHS complex.
 
-
 The zero modes of $\chi$ correspond to the second cohomology of the AHS complex, and the zero modes of $\eta$ correspond to the first cohomology. It's something to keep in mind because zero modes are significant because they drop out of the exponential and so observables `have to provide the missing zero modes' for the fermionic integrations to be nonzero.
-
-
 Also, we could determine that the functional implies that $\phi$ is `the curvature of the universal bundle evaluated at the point x', but we would need to talk more about this later on.
 
 \subsection{When M is not compact}
@@ -1953,8 +1914,237 @@ This is invariant under swapping $\ep_3, \ep_4$ and $\ep_1, \ep_2$, which corres
 
 
 
+Previously, we were integrating over generalisations of $Hilb^n\mathbb{C}^2$. Today we will generalise even further, and integrate over products of such:
 
+\[
+\overline{\mathcal{M}}_{k_1}(n_1) \times \dots \times \overline{\mathcal{M}}_{k_r}(n_r)  
+\]
+ 
+\begin{defn}
+  We will call spaces like the above \emph{moduli spaces of quiver instantons}.
+\end{defn}
+
+\section{The theory for general quivers} 
+\begin{defn}
+Let $\Gamma = (V_\Gamma, E_\Gamma, s,t)$ be a \emph{quiver}, 
+wherein $V_\Gamma$ is its set of \emph{vertices}, $E_\Gamma$ its set of \emph{edges}, 
+and $s,t$ the source, target maps $E_\Gamma \to V_\Gamma$. sending an edge to where it starts or ends.
+\end{defn}
+
+\begin{defn}
+Let $\Gamma$ a quiver. Let $m : V_\Gamma \to \mathbb{Z}_{\geq 0}$ be its \emph{flavours}, and 
+$n: V_\Gamma \to \mathbb{Z}_{>0}$ its \emph{colours}. 
+Then the \emph{moduli space of quiver instantons} is
+\[
+\overline{\mathcal{M}}^\Gamma(n) = \sqcup_{k : V_\Gamma \to \mathbb{Z}_{\geq 0}} \prod{v \in V_\Gamma} \overline{\mathcal{M}}_{k(r)}(n(r))
+\]
+\end{defn}
+\begin{rmk}
+Each $\mathbb{C}^2$ is acted on by a torus $\mathbb{C}^\times \times \mathbb{C}^\times$. 
+Further, we can work equivariantly with respect to each $GL(n(v))$. 
+Define 
+\[
+\GL^\Gamma(n(v)) := \prod \GL(n(v)).
+\]
+\end{rmk}
+
+
+\begin{rmk}
+  Each $\overline{\mathcal{M}}_{k(v)}(n(v))$ has a tautological bundle, $K_v$. 
+We could choose a tuple of complex numbers $\vec{\mu^{(v)}}$, one for each vertex,
+and a tuple of complex numbers $\vec{\mu^{(e)}}$, one for each edge, and evaluate 
+\[
+\sum_{k : V_\gamma \to \mathbb{Z}_{\geq 0}} \prod_{v \in V_\Gamma} q_v^{k(v)}\int \prod_{v \in V_\Gamma} \prod_{f = 1}^{m(v)} c(K_v, \mu_f^{(v)}) \prod_{e \in E_\Gamma} c(\mathcal{E}_e, \mu^{(e)}_e).
+\]
+\end{rmk} 
+
+\begin{defn}
+Let $\mathcal{H}\mr{om}(\mathcal{F}_1,\mathcal{F}_2)$ denote the sheaf on 
+\[
+\mathbb{P}^2 \times \overline{\mathcal{M}}_{k(s(e))}(n(s(e)) \times \overline{\mathcal{M}}_{k(t(e))}(n(t(e)))
+\]
+parametrising the data of two points in our moduli space corresponding to two torsion-free sheaves. 
+Then define 
+\[
+\mathcal{E}_e := (R\pi)_\star \mathcal{H}\mr{om}(\mathcal{F}_1,\mathcal{F}_2)
+\]
+wherein $\pi$ is the projection map forgetting the $\mathbb{CP}^2$ factor. 
+\end{defn} 
+
+In principle, we could imagine integrating the above integral. However, not every $\Gamma$ leads to a nice story. 
+One possible restriction would be to hope that our integrals converge. A basic condition for that would be:
+\[
+\dim_{\mathbb{C}} \overline{\mathcal{M}_k}^\Gamma(n) \geq \sum_v m(v) k(v) + \sum_e \dots,
+\]
+that is, the dimension of our moduli space is at least the degree of the chern class of the bundle we're integrating over. 
+(The tautological bundle term is clear, and 
+\[
+\chi(\mathcal{E}_e) = \int_{\mathbb{P}^2} \on{ch}(\mathcal{F}_1^\vee) \on{ch}(\mathcal{F}_2) \on{Td}_{\mathbb{P}^2}
+\]
+gives a term like 
+\[
+\sum_e k(s(e))n(t(e)) + k(t(e)) n(s(e)).
+\]
+Also note 
+\[
+\dim_{\mathbb{C}} \overline{\mathcal{M}_k}^\Gamma(n) = \sum_v 2k(v)n(v).
+\]
+
+\begin{rmk}
+The above restriction is linear in $k$ on both sides. We could for the 
+restriction to be true for every $k$. 
+That leads to the condition that 
+\[
+\sum_v (2n(v) - m(v)) - \sum_e (n(s(e)) - n(t(e)) )\geq 0.
+\]
+\end{rmk}
+
+\begin{thm}
+Fix $\Gamma$. There exists $\vec{n}, \vec{m}$ satisfying the 
+above condition if either 
+\begin{enumerate}
+\item $\Gamma$ is an ADE Dynkin diagram as an unoriented graph;
+\item $\Gamma$ is an affine ADE Dynkin diagram as an unoriented graph, $m = 0$, and $n$ is related to the Dynkin indices.
+\end{enumerate}
+\end{thm}
+
+
+\begin{exm}
+Choose the quiver with one vertex and $\ell$ loops. 
+Then the inequality reads 
+\[
+2n -m \geq 2n \ell.
+\]
+This is satisfied if either 
+\begin{enumerate}
+\item $\ell = 0$, $m \geq 2n$ (the $A_1$ case);
+\item $\ell = 1, m = 0$ (the $\widehat{A}_0$ case).
+\end{enumerate}
+\end{exm}
+
+In more detail, the solutions are  (described here but not drawn due to the note-taker's inadequacy)
+\begin{enumerate}
+\item $\widehat{A}_r$: a cyclic graph with $r$ nodes, all with the mark $N$;
+\item $\widehat{D}_r$: a linear graph of $r-3$ nodes, with two additional nodes attached to the first and last nodes. The marks of the linear nodes are all $2N$; the marks of the additional nodes are all $N$.
+\item $\widehat{E}_r$: an exceptional series of graphs.
+\begin{enumerate}
+\item $\widehat{E}_6$, the graph with 7 vertices, a linear graph with three nodes with two chains of length two added at the end. Dynkin marks are $N,2N,3N$ on the linear part and then $2N,N$ on each chain.
+\item $\widehat{E}_8$, the graph with 9 vertices, namely a linear graph of length 7 with one additional node attached to the sixth node. The marks on the linear component are $N,2N,3N,4N,5N,6N,4N,2N$ and the added node has mark $3N$.
+\item $\widehat{E}_7$, left as an exercise. 
+\end{enumerate}
+\end{enumerate}
+
+\begin{rmk}
+In physics, this inequality is related to the condition of \emph{asymptotic freedom}
+for the gauge theory associated to the quiver. It's hard to explain this precisely.
+These integrals approximate the partition function of the gauge theory, which is a path integral over the space of all connections.
+You could try to define the path integral rigorously by discretising. Asymptotic freedom, in that picture, is an equation relating to when 
+the discretised path integral is a good approximation to our original path integral.
+\end{rmk}
+
+\begin{exm}
+The standard model could be related to the $A_3$ quiver with $m=0$ and $n = 1,2,3$ 
+(though we are of course modeling supersymmetric versions of the theory with our integrals.)
+\end{exm}
+
+\begin{rmk}  
+If you've found a solution of this inequality, you could take a limit: 
+\begin{align*}
+\mu^{(v)}_{m(v)} \to \infty 
+\\
+q_v \to 0 
+\end{align*}
+This limit is a finite dimensional shadow of \emph{renormalisation group flow}.
+Taking this limit removes one factor from our chern class; essentially it just removes one flavour.
+This means that, replacing $m \to m-1$, we could find a solution to the inequality for the new $m$.
+So it suffices to solve for solutions where the inequality is an equality:
+together with the trick of 'freezing' one of the nodes, this gives all solutions. 
+For example, we can get $A_r$ by freezing a node on $\widehat{A}_{r+1}$, sending $q_{r+1}\to0, q_0 \to 0$. 
+\end{rmk}
+
+\begin{rmk}
+We have parameters 
+\[
+q_v \in \mathbb{C}_{1 \cdot 1 <1}
+\]
+and
+\[
+\vec{a}^{(v)} := (a_1^{(v)},\dots,a_{n(v)})^{(v)})
+\]
+\end{rmk}
+
+\begin{exm}
+When we seek to get $A_r$ by freezing $\widehat{A}_{r+1}$ as above, after a little bit of computation we find that 
+\[
+\vec{a}^{(0)} = (\mu_1,\dots,\mu_N)
+\]
+and
+\[
+\vec{a}^{(r+1)} = (\mu_1^{(r)} + \epsilon_1 + \epsilon_2,\dots)
+\]
+\end{exm}
+
+Let's reiterate the idea of how we study integrals like the above, namely the use of $qq$-characters.
+Since there is some ADE structure to this story, it might not be so surprising that what we called $qq$-characters 
+have something to do with the characters of algebras related to the ADE series.
+Again $\int_{\overline{\mathcal{M}}^\Gamma(k)_n}$ will be related to a combinatorial sum,
+namely a sum over a doubly-indexed set of Young diagrams $\lambda^{v,\alpha}$, where $v \in V_\Gamma$ and $\alpha \in 1,\dots,n(v)$. 
+
+\begin{defn}
+Let 
+\[
+Y_v(x)_{|\lambda} = \prod_{\alpha = 1}^{n(v)} \prod_{\square \in \partial_+ \lambda^{(v,\alpha)}} \frac{\prod_{\square \in \partial_+ \lambda^{(v,\alpha)}} (x - a_\alpha^{(v)} - c_\square^{\epsilon_1,\epsilon_2})}{\prod_{\square \in \partial_- \lambda^{(v,\alpha)}} (x - a_\alpha^{(v)} - c_\square^{(\epsilon_1,\epsilon_2)})}
+\]
+Then start to define
+\begin{align*}
+    X_v(x) \coloneqq{}& Y_v(x + \epsilon_1 + \epsilon_2) \\
+    &+ q_v \frac{P_v(x)\prod_{e \in s^{-1}(v)} Y_{t(e)}(x +\mu_e) \prod_{e \in t^{-1}(v)} Y_{s(e)} (x + \epsilon_1 + \epsilon_2 - \mu_e)}{Y_v(x)} + \dots 
+\end{align*}
+\end{defn}
+
+\begin{thm}
+There is a completion of this sum such that $<X_v(x)>$ has no poles in $x$. 
+This has the same size as the sum defining characters of affine Kac-Moody groups. 
+\end{thm}
+\begin{exm}
+Let's study the $A_2$ case with marks $N,N$ and two framing nodes $N,N$.
+Redefine so $\mu_e = 0$ by rescaling. Then, 
+\begin{align*}
+Y_1(x + \epsilon_1 + \epsilon_2) + q_1 \frac{P_1(x) Y_2(x + \epsilon_1 + \epsilon_2)}{Y_1(x)} + q_1 q_2 \frac{P_1(x) P_2(x)}{Y_2(x)}
+\end{align*}
+Here, the term we needed to add was $q_1 q_2 \frac{P_1(x) P_2(x)}{Y_2(x)}$, and this 
+exactly cancels all remaining pools. So it stops after 3 terms. Why 3 terms? $A_2$ is related to $sl_3$.
+This looks like a character: a character of what?
+The large $x$ asymptotics are like 
+\[
+(1 + q_1 + q_1 q_2) x^N + \dots 
+\]
+There's something called a \emph{conformal extension} of a simple Lie group $G$. It has to do with the fact that 
+there's a centre. For any group with a centre, we can add a torus factor for every cyclic factor in the centre. 
+This relates, for example, $\mr{SL}$ to $\GL$. 
+\end{exm}
+
+\begin{rmk}
+The ``fundamental'' in $qq$-characters denotes that they're related to highest weight. 
+\end{rmk}
+
+\begin{defn}
+A \emph{general} $qq$-character depends on 
+\[
+\vec{\omega} \in \oplus_{v \in V_\Gamma} \mathbb{C}^{w(v)}
+\]
+For $w : V_\Gamma \to \mathbb{Z}_{\geq 0}$.
+We could try to define a $qq$-character $X_{\vec{\omega}}(x)$. It would look like 
+\[
+X_{\vec{\omega}}(x) = \prod_{v \in V_\Gamma} \prod_{a = 1}^{w(v)} Y_v(x + \omega^{(v)}_a + \epsilon_1 + \epsilon_2) + \dots 
+\]
+The point is that it's not \emph{just} the product of fundamental characters; there are corrections.
+You're trying to encode all orders of expansion of this function.
+\end{defn}
 \end{document} 
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
