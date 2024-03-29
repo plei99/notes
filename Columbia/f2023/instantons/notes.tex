@@ -125,7 +125,7 @@
 \newcommand{\Ima}{\mathrm{Im}}
 \newcommand{\A}{\mathbb{A}}
 \newcommand{\F}{\mathbb{F}}
-\newcommand{\E}{\mathcal{E}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\G}{\mathbb{G}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
@@ -249,10 +249,12 @@
 \section*{Disclaimer}%
 \label{sec:disclaimer}
 
-These notes were taken during the lectures using \texttt{emacs}. 
+These notes were taken during the lectures using \texttt{neovim}. 
 Any errors are mine and not the speakers'. 
 In addition, my notes are picture-free (but will include commutative diagrams) and are a mix of my mathematical style and that of the lecturers. Also, notation may differe between lecturers.
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
+
+Unfortunately, I cannot guarantee that the notation in these notes is consistent.
 
 \section*{Description}
 
@@ -1866,7 +1868,7 @@ The \textit{Barnes $2$-gamma} function will be defined the functional equation
 
 \begin{defn}
     The \textit{$A_1$ $qq$-character} is defined by the formula
-    \[ \chi_{\omega_1, \ldots, \omega_w}(x) \coloneqq \sum_{I \sqcup J = \qty{1,\ldots,w}} q^{\sharp J} \prod_{i \in I} Y(x + \omega_i + \ep_1 + \ep_2) \prod_{j \in J} \frac{P(x+\omega_j)}{Y(x+\omega_j)} \prod_{\substack{i \in I \\ j \in J}} S(\omega_i \omega_j), \]
+    \[ \chi_{\omega_1, \ldots, \omega_w}(x) \coloneqq \sum_{I \sqcup J = \qty{1,\ldots,w}} q^{\sharp J} \prod_{i \in I} Y(x + \omega_i + \ep_1 + \ep_2) \prod_{j \in J} \frac{P(x+\omega_j)}{Y(x+\omega_j)} \prod_{\substack{i \in I \\ j \in J}} S(\omega_i - \omega_j), \]
     where
     \[ S(x) = \frac{(x+\ep_1)(x+\ep_2)}{x(x+\ep_1+\ep_2)}. \]
 \end{defn}
@@ -1877,6 +1879,34 @@ The \textit{Barnes $2$-gamma} function will be defined the functional equation
     when we make the $\omega_i$ collide.
 \end{rmk}
 
+
+We would also like to discuss the expected value more precisely.
+\begin{defn}
+    The \textit{expectation value} of the $Y(x)$-observable is
+    \[ \ev{Y(x_1) Y(x_2) Y^{-1}(X_3)} \coloneqq \frac{1}{z} \sum_{k=0}^{\infty} q^j \int_{\ol{\mc{M}}_k(N)} Y(x_1) Y(x_2) Y(x_3) \Xi_k . \]
+\end{defn}
+
+Using equivariant localization, we see that
+\begin{align*}
+    \ev{Y(x_1) Y(x_2) Y(x_3)^{-1}} &= \frac{1}{Z} \sum_{\ul{\lambda}} q^{\abs{\ul{\lambda}}} \mu_{\ul{\lambda}}(\ul{a}, \ul{m}, \ul{\ep}) Y(x_1)|_{\ul{\lambda}} Y(x_2)|_{\ul{\lambda}} \frac{1}{Y(x_3)|_{\lambda}}.
+\end{align*}
+
+To speed up our calculations, we will express $Y(x)|_{\ul{\lambda}}$ as a plethystic exponential
+\[ Y(x)|_{\ul{\lambda}} = \E [-e^x S_{\ul{\lambda}}^*], \]
+where
+\[ \E\qty[\sum_{s \in S_+} e^{\eta_s^+} - \sum_{s \in S_-} e^{\eta_s^-}] = \frac{\prod_{s \in S_-} \eta_s^-}{\prod_{s \in S_+}\eta_s^+}. \]
+In addition, 
+\[ S_{\ul{\lambda}} = \sum_{\alpha=1}^N e^{a_{\alpha}} - (1-q_1)(1-q_2)K_{\ul{\lambda}}, \]
+where
+\[ K_{\ul{\lambda}} = \sum_{\alpha=1}^N e^{a_{\alpha}} \sum_{(i,j) \in \lambda^{(\alpha)}} q_1^{i-1} q_2^{j-1} \]
+is the character of $K$ at $\ul{\lambda}$. Using the plethystic exponential, we can write
+\begin{align*}
+    \mu_{\ul{\lambda}}(\ul{a}, \ul{m}, \ul{\ep}) &= \E \qty[- \frac{S_{\ul{\lambda}} S_{\ul{\lambda}}^* - NN^* - MS_{\ul{\lambda}}^*}{(1-q_1^{-1})(1-q_2)^{-1}}] \\
+    &= \E [N K_{\ul{\lambda}}^* + q_1 q_2 N^* K_{\ul{\lambda}} - (1-q_1)(1-q_2)K_{\ul{\lambda}}K_{\ul{\lambda}}^* - M K_{\ul{\lambda}}^*],
+\end{align*}
+where
+\[ M = \sum_{f=1}^N e^{m_f}. \]
+
 \begin{thm}
     The expected value
     \[ \ev{\chi_{\omega_1, \ldots, \omega_w}(x)} \]
@@ -1885,7 +1915,7 @@ The \textit{Barnes $2$-gamma} function will be defined the functional equation
 
 \begin{proof}[Sketch of proof for fundamental $qq$-character]
     We need to check pole cancellation for the expression
-    \[ \ev{Y}(x+\ep_1+\ep_2) + q P(x) \ev{Y(x)^{-1}}. \]
+    \[ \ev{Y(x+\ep_1+\ep_2)} + q P(x) \ev{Y(x)^{-1}}. \]
     Note that $x$ is a pole if there exists $\alpha \in \qty{1, \ldots, N}$ and $p, q \in \Z_{>0}$ such that
     \[ x = a_{\alpha} + \ep_1(p-1) + \ep_2(q-1) \]
     and $(p,q) \in \partial_- \lambda^{(\alpha)}$. Therefore, we have
@@ -1894,20 +1924,32 @@ The \textit{Barnes $2$-gamma} function will be defined the functional equation
     \[ \sum_s \mu_s q P(a_{\alpha} + \ep_1(p-1) + \ep_2(q-1)) \Res \frac{1}{Y(x)|_s}. \]
     The poles of this expression require $(p,q) \in \partial_+ \lambda^{(\alpha)}$. All of the combinatorics works out, so it remains to check that the measures work out, or more precisely that
     \[ \mu_{(\lambda^{(1)}, \ldots \wt{\lambda}^{(\alpha)}, \ldots, \lambda^{(N)})} \Res_{\substack{x=a_{\alpha} + c_{\blacksquare} \\ \blacksquare \in \partial_- \wt{\lambda}^{(\alpha)}}} = q P(a_{\alpha} + c_{\square}) \mu_{(\lambda^{(1)}, \ldots, \lambda^{(\alpha)}, \ldots, \lambda^{(N)})} \Res_{x = a_{\alpha} + c_{\square}} \frac{1}{Y(x)}. \]
+
+    Using the plethystic exponential and setting $\xi = e^{a_{\alpha} + c_{\square}}$, we can write
+    \begin{align*}
+        \mu_{\wt{\ul{\lambda}}} &= \mu_{\ul{\lambda}} \times \E[q_1 q_2 \xi S_{\ul{\lambda}}^* + \xi^{-1}S_{\ul{\lambda}} - 1 + q_1 + q_2 - q_1 q_2 - M \xi^{-1}] \\
+        &= \mu_{\ul{\lambda}} \frac{P(a_{\alpha} + c_{\square}) (-1)^N}{Y'_{\ul{\lambda}}(a_{\alpha} + c_{\square}) Y_{\ul{\lambda}}(a_{\alpha} + c_{\square} + \ep_1 + \ep_2)} \qty(\frac{\ep_1 + \ep_2}{\ep_1 \ep_2}).
+    \end{align*}
+    We are now able to evaluate the residue. We see that
+    \begin{align*}
+        \Res_{x = a_{\alpha}+ c_{\square}} & \ev{Y(x+\ep_1 + \ep_2) + q \frac{P(x)}{Y(x)}} \\ 
+        =&{} \frac{1}{Z} \sum_{\square \in \partial_+ \lambda^{(\alpha)}} q^{\abs{\ul{\lambda}}+1} \mu_{\ul{\lambda}} \frac{P(a_{\alpha} + c_{\square})}{Y'(a_{\alpha} + c_{\square})} + \frac{1}{Z} \sum_{\square \in \partial_- \wt{\lambda}^{\alpha}} q^{\abs{\wt{\ul{\lambda}}}} \mu_{\wt{\ul{\lambda}}} \Res_{x = a_{\alpha} + c_{\square}} Y(x + \ep_1 + \ep_2).
+    \end{align*}
+    The desired result follows from more computation, namely that
+    \[ \Res_{x = a_{\alpha} + c_{\square}} Y_{\wt{\ul{\lambda}}} (x+\ep_1 + \ep_2) = Y_{\ul{\lambda}}(a_{\alpha} + c_{\square} + \ep_1 + \ep_2) \frac{\ep_1 \ep_2}{\ep_1 +\ep_2} \]
+    and that
+    \[ \E[- \xi q_1 q_2 S_{\ul{\lambda}}^* - 1] = \Res_{x = a_{\alpha} + c_{\square}} Y_{\wt{\ul{\lambda}}}(x+\ep_1+\ep_2). \qedhere \]
 \end{proof}
 
-
-
-
-
-
-
-
-
-
-
-
-
+In the $\wh{A}_0$-theory, the partition function is defined to be
+\[ Z = \sum_k q^k \int_{\ol{\mc{C}}_k(N)} c(\ep_3, T^* \ol{\mc{M}}_k(N)), \]
+where we magically have new parameters $\ep_3$ and $\ep_4 = -(\ep_1 + \ep_2 + \ep_3)$. In this case, the measure is given by
+\[ \mu_{\ul{\lambda}}(\ul{a}, \ul{\ep}) = \E \qty[-\frac{1-q_3}{(1-q_1^{-1})(1-q_2^{-1})}(S_{\ul{\lambda}}S_{\ul{\lambda}}^* - NN^*)]. \]
+This is invariant under swapping $\ep_3, \ep_4$ and $\ep_1, \ep_2$, which corresponds to transposing $\ul{\lambda}$. In this case, the fundamental $qq$-character is given by
+\begin{align*}
+    &\chi(x) = Y(x+\ep_1 + \ep_2) + q \frac{Y(x-\ep_3)Y(x-\ep_4)}{Y(x)} + \cdots \\
+    =& \sum_{\mu} q^{\abs{\mu}} \frac{\displaystyle\prod_{\square \in \partial_+ \mu} Y(x+\ep_1+\ep_2+\sigma_{\square})}{\displaystyle\prod_{\blacksquare \in \partial_- \mu} Y(x + \sigma_{\blacksquare})} \prod_{\square \in \mu} \qty( 1 + \frac{\ep_1 \ep_2}{(\ep_3 h_{\square} + (\ep_1 + \ep_2) a_{\square})(\ep_3 h_{\square} + (\ep_1 + \ep_2)(a_{\square}+1))}).
+\end{align*}
 
 
 
