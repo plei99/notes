@@ -159,6 +159,7 @@
 \renewcommand{\div}{\operatorname{div}}
 \newcommand{\bir}{\sim_{\mr{bir}}}
 \newcommand{\GL}{\mr{GL}}
+\newcommand{\PGL}{\mr{PGL}}
 \newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
 \newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
 
@@ -189,6 +190,7 @@
 \DeclareMathOperator{\codim}{codim}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\Hilb}{Hilb}
+\DeclareMathOperator{\Lie}{\ms{Lie}}
 
 % Section formatting
 \titleformat{\section}
@@ -1933,7 +1935,7 @@ and $s,t$ the source, target maps $E_\Gamma \to V_\Gamma$. sending an edge to wh
 
 \begin{defn}
 Let $\Gamma$ a quiver. Let $m : V_\Gamma \to \mathbb{Z}_{\geq 0}$ be its \emph{flavours}, and 
-$n: V_\Gamma \to \mathbb{Z}_{>0}$ its \emph{colours}. 
+$n: V_\Gamma \to \mathbb{Z}_{>0}$ its \emph{colors}. 
 Then the \emph{moduli space of quiver instantons} is
 \[
 \overline{\mathcal{M}}^\Gamma(n) = \sqcup_{k : V_\Gamma \to \mathbb{Z}_{\geq 0}} \prod{v \in V_\Gamma} \overline{\mathcal{M}}_{k(r)}(n(r))
@@ -2128,6 +2130,9 @@ This relates, for example, $\mr{SL}$ to $\GL$.
 The ``fundamental'' in $qq$-characters denotes that they're related to highest weight. 
 \end{rmk}
 
+\section{General $qq$-characters}%
+\label{sec:General qq-characters}
+
 \begin{defn}
 A \emph{general} $qq$-character depends on 
 \[
@@ -2141,6 +2146,168 @@ X_{\vec{\omega}}(x) = \prod_{v \in V_\Gamma} \prod_{a = 1}^{w(v)} Y_v(x + \omega
 The point is that it's not \emph{just} the product of fundamental characters; there are corrections.
 You're trying to encode all orders of expansion of this function.
 \end{defn}
+
+Once we define a general qq-character, we'll then be able to set the stage for the limit shape story, that is, Seiberg-Witten geometry.
+
+\begin{rmk}
+Remember that a \emph{quiver} is an oriented connected finite graph, possibly with more than one arrow between nodes. 
+Then \emph{quiver gauge theory} depends on the data of $N_i, M_i$, vector spaces for each $i \in Vertices(Q)$.
+
+Recall there is an ADE classification given by imposing the condition that 
+\[
+2n_i - m_i = \sum_{a(e) = i} n_{t(e)} + \sum_{t(e) = i} n_{s(e)}
+\]
+The $N,M$ are discrete parameters of our theory, but there are also 
+continuous parameters $a^{(i)} \in \Lie(T) \subset Lie(\GL(N_i))$,
+and $m^{(i)} \in \Lie(T) \subset \Lie(\GL(M_i))$. 
+Further there are $q_i \in \mathbb{C}$, complex numbers of small absolute value.
+
+Finally there are parameters $m_e \in \mathbb{C}$, for $e \in E(\Gamma)$, and there are two parameters
+\[
+(\epsilon_1,\epsilon_2)\in \mathbb{C}^^2 \subset \Lie(T) \subset \Lie(\GL(2)).
+\]
+\end{rmk}
+
+\begin{defn}
+We may then define a partition function 
+\begin{align*}
+Z((a^{(i)},m^{(i)}, q_i)_{i \in V_\Gamma}, (m_e)_{e \in E_\Gamma},\epsilon_1,\epsilon_2) \coloneqq \sum_{\lambda^{i,\alpha}} \mu_\lambda(a,m,\epsilon_1,\epsilon_2) \prod_{i \in V_\Gamma} q_i^{\sum_\alpha |\lambda^{(i,\alpha)}|}
+\end{align*}
+wherein $\alpha$ is the color parameter, and runs from $1$ to $n_i$,
+and 
+\[
+S_{\lambda} = \{ a_\alpha^{(i)} + \epsilon_1(I -1) + \epsilon_2(J-1) | 1 \leq I \leq \lambda_J^{(i,\alpha),\vee}, 1 \leq J \leq \lambda_I^{(i,\alpha)}\}.
+\]
+\end{defn}
+
+\begin{rmk}
+There is some redundancy in this description. For $\mu_i \in \mathbb{C}$, $i \in V_\Gamma$, we may shift
+\begin{align*}
+    m_e &\to m_e + \mu_{t(e)} - \mu_{s(e)}
+\\
+    a^{(i)} &\to a^{(i)} + \mu_i
+\\
+    m^{(i)} &\to m^{(i)} + \mu_i 
+\end{align*}
+\end{rmk}
+
+\begin{rmk}
+There are physics expectations that as $\epsilon_1,\epsilon_2 \to 0$, or even just $\epsilon_2 \to 0$, the asymptotics might be computable.
+\end{rmk}
+
+To study all of this, we'll need another auxiliary object.
+\begin{defn}
+  A \textbf{Nakajima quiver variety} depends on the data of a quiver $Q$ and data defined by tuples of integers $\vec{v}_{i \in V_\Gamma}$, $\vec{w}_{i \in V_\Gamma}$. 
+  We want at least one $w_i > 0$ and the remaining $w_i$ to be positive. 
+  To this data, we assign complex vector spaces $V_i = \mathbb{C}^{v_i}, W_i = \mathbb{C}^{w_i}$. 
+  Then the Nakajima quiver variety is defined as
+  \[
+\mathcal{M}_Q(\vec{v},\vec{w}) := (T^\star \Hom(\vec{V},\vec{W}) \oplus T^\star \Hom_{i \to j}(V_i,V_j))\sslash\!\!\!\sslash GL(\vec{v}),
+  \]
+  where $\sslash\!\!\sslash$ denotes the symplectic quotient. 
+  We may estimate its dimension to be $2 \sum_i v_i(w_i - v_i) + 2 \sum_{i \to j} v_i v_j$.
+\end{defn}
+
+\begin{rmk}
+These spaces carry obvious \emph{tautological bundles} 
+\[
+V_i, W_i \to \mathcal{M}_Q(\vec{v},\vec{w})
+\]
+and hence a \emph{tautological complex} $C_i$:
+\[
+0 \to V_i \to W_i \oplus \bigoplus_{i \to j} V_j \bigoplus_{k \to i} V_k \to V_i \to 0
+\]
+wherein all the maps are the obvious ones given by the quiver representation. 
+The complex moment map condition is precisely the condition that this is a complex.
+\end{rmk}
+
+\begin{rmk}
+$\mathcal{M}_Q(\vec{v},\vec{w})$ has a $GL(\vec{w})$-global symmetry. 
+There is another symmetry factor, namely by permuting edges, and finally a $\mathbb{C}^\star_q$ which
+acts by scaling the moment map.
+There is some redundancy in this description.
+\end{rmk}
+
+\begin{defn}
+Let $Y_i(x)$ the observable defined by 
+\[
+Y_i(x)_{|\lambda} = \prod_{\alpha = 1}^N \frac{\prod_{\square \in \partial_+ \lambda^{(i,\alpha)}}(x - a_\alpha^i - \epsilon_1(I- 1) - \epsilon_2(J-1))}{\prod_{\square \in \partial_- \lambda^{(i,\alpha)}}(x - a_\alpha^i - \epsilon_1 I - \epsilon_2 J)}
+\]
+\end{defn} 
+
+We will now give a general formula for qq-characters. 
+Let's fix vectors 
+\[
+\vec{u} \in \vec{W},
+\]
+which we think of as equivariant parameters for $GL(\vec{W})$, and an equivariant parameter $-\frac{\epsilon_1 + \epsilon_2}{2}$ for $\mathbb{C}^\times_q$, and define 
+\begin{align*}
+    &\mathcal{X}_{\vec{u}}(x) \\&= \sum_{\vec{v} \in \mathbb{Z}^{V_\Gamma}_+}\prod_{i \in V_\Gamma} q_i^{v_i}  \int_{\mathcal{M}_Q(\vec{v},\vec{w})} c(T^\star \mathcal{M}_Q(\vec{v},\vec{w}, \epsilon_1) \prod_{i \in V_\Gamma} \prod_{b = 1}^{v_i} P_i(x + \xi_{i, b}) \prod_{i \in V_\Gamma} \frac{\prod_a Y_i (x + \epsilon_1 + \epsilon_2 + \epsilon_{ia}^+)}{\prod_b Y_i(x + \epsilon_1 + \epsilon_2 + \eta_{ib}^-)},
+\end{align*}
+where everything is taken equivariantly with respect to all symmetries listed above and
+\begin{align*}
+    \ch(V_i) &\coloneqq \sum_b^{v_i} e^{\xi_{i,b}}, \\
+    P_i(x) &= \prod_{f = 1}^{m_i} (x - m_f^{(i)}), \\
+    \ch(C_i^+) &= \sum_a e^{\eta_i^+,a}, \\
+    \ch(C_i^-) &=\sum_b e^{\eta^+_{ib} b}.
+\end{align*}
+
+
+\begin{defn}
+$\mathcal{X}_{\vec{u}}(x)$ is a fundamental $qq$-character. 
+\end{defn}
+\begin{prop}
+$\ev{ \mathcal{X}_{\vec{u}}(x) }$ has no poles in $x$.
+\end{prop}
+
+\begin{exm}
+    Let's recover the $\vec{A}_1$-case we studied earlier. Here, $\mc{M}_{A_1}(v,w) = T^\star Gr(v,w)$. The symmetry group is $\mr{PGL}(w) \times \mathbb{C}^\times$. 
+The maximal torus $T \subset \PGL(w) \times \mathbb{C}^\times$ acts with isolated fixed points, labeled by the $v$-dimensional planes spanned by the coordinate axes in the basis chosen by our choice of maximal torus. 
+In other words, fixed points are labelled by partitions of $\{1,\dots,w\} = \mathcal{I} \sqcup \mathcal{J}$ into two disjoint sets, so that $|\mathcal{I}| = v$. 
+
+In terms of the Nakajima data, let $I : W \to V, J : V \to W$, and impose the stability condition that $J$ is of maximal rank.
+Hence it's the space of operators 
+\[
+\{ I,J \mid IJ =0, J\text{ of maximal rank}\}/\GL(V),
+\]
+
+So the tangent space is 
+\[
+T\mathcal{M}_{A_1} = \{ \delta I, \delta J \mid  \delta I J + J \delta I = 0\}/(\delta I , \delta J) \sim (\delta I + \zeta I, \delta J  - J \zeta, \zeta \in End(V))
+\]
+At the fixed point $I = 0, Je_\gamma = e_{i_\gamma}$, we can identify the tangent space as 
+\[
+T = T^\star \Hom(V,W/V)
+\]
+Therefore, 
+\[
+\ch(T) = \sum_{i \in \mathcal{I}, j \in \mathcal{J}} e^{u_i - u_j} + e^{\epsilon_1 + \epsilon_2 + u_j - u_i}
+\]
+where the first summand comes from $TGr$, and the second from $T^\star Gr$.
+\end{exm}
+
+So the qq-character takes the form 
+\[
+\sum_{\mathcal{I} \sqcup \mathcal{J} = \{1,\dots,w\}} q^{|\mathcal{I}|} \frac{\prod_{i \in \mathcal{I},j \in \mathcal{J}}(u_i - u_j  + \epsilon_1)(-\epsilon_2 + u_j - u_i)}{\prod_{i \in \mathcal{I},j \in \mathcal{J}}(u_i - u_j)(-\epsilon_1 - \epsilon_2 + u_j - u_i)} \prod_{i \in \mathcal{I}} P(x + u_i) \times \Centerstack{{contribution from} {canonical complex}}
+\]
+Of course the canonical complex takes the form 
+\[
+V \to W \to V.
+\]
+Since $I = 0$ and $J$ is injective, up to equivariant weight,
+$C^+ = W.V$, and $\on{Ch}(C^+) = \sum_{j \in \mathcal{J}} e^{u_j}$, $\on{Ch}(C^-) = \sum_{i \in \mathcal{I}} e^{u_i - \epsilon_1 - \epsilon_2}$.
+
+Hence the final factor gives an overall answer of 
+\begin{align*}
+    \mathcal{X}_{\vec{u}} =&{} \sum_{\mathcal{I} \sqcup \mathcal{J} = \{1,\dots,w\}} q^{|\mathcal{I}|} \frac{\prod_{i \in \mathcal{I},j \in \mathcal{J}}(u_i - u_j  + \epsilon_1)(-\epsilon_2 + u_j - u_i)}{\prod_{i \in \mathcal{I},j \in \mathcal{J}}(u_i - u_j)(-\epsilon_1 - \epsilon_2 + u_j - u_i)} \prod_{i \in \mathcal{I}} P(x + u_i) \\ &\times \frac{\prod_{j \in \mathcal{J}} Y(x + u_j + \epsilon_1 + \epsilon_2)}{\prod_{i \in \mathcal{I}} Y(x + u_i)}
+\end{align*}
+
+This is the qq character for $A_1$-quiver theory, namely SQCD. It has $2^w$ terms. This formula is already indicative that not all such formulas come as rational expressions in the $Y$ whose arguments are just shifted.
+If we were to set for example $u_i = u_j$, we would have a smaller torus. The fixed point locus would not be isolated but it would still be compact. So this integral is finite. So even though there's terms like $u_i - u_j$, we should expect the limit as these two things approach to exist, but we might get some derivatives of $Y$ appearing.
+
+
+
+
 \end{document} 
 
 

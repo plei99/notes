@@ -31,7 +31,7 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[sc]{mathpazo}
+\usepackage{fourier}
 \usepackage{eucal}
 \usepackage[scaled=0.86]{berasans}
 \usepackage{inconsolata}
@@ -737,6 +737,202 @@ This gives the virtual normal bundle, and using virtual localization, we obtain
 where
 \[ M'(\tau', z) = \Phi_k \circ M(\tau, z) \circ \Phi_k^{-1}. \]
 Using the unitarity property of $M$, we obtain the desired result.
+
+\section{Orbifold stuff (Patrick, Apr 04)}%
+\label{sec:Orbifold stuff Patrick Apr 04}
+
+
+\subsection{Orbifold Gromov-Witten theory}%
+\label{sub:Orbifold Gromov-Witten theory}
+
+Let $X$ be a smooth and separated Deligne-Mumford stack of finite type over $\C$. 
+
+\begin{defn}
+    The \textit{inertia stack} of $X$ is the fiber product in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        IX \ar{r} \ar{d} & X \ar{d}{\Delta} \\
+        X \ar{r}{\Delta} & X \times X.
+    \end{tikzcd}
+    \end{equation*}
+\end{defn}
+More concretely, we may think about $IX$ as parameterizing pairs $(x,g)$, where $x\in X$ and $g \in \Aut(x)$. There is another description of $IX$ if $X$ lives over $\C$. In general, $IX$ is disconnected. We will write
+\[ IX = \bigsqcup_{i \in I} X_i. \]
+It also has an important morphism $\on{inv} \colon IX \to IX$ given by $(x,g) \mapsto (x,g^{-1})$.
+
+\begin{defn}
+    A morphism $X \to Y$ of algebraic stacks is \textit{representable} if for all schemes $S$ and morphisms $S \to Y$, the fiber product $X \times_S Y$ is an algebraic space.
+\end{defn}
+
+\begin{thm}
+    Let
+    \[ I_{\mu} X \coloneqq \bigsqcup_{r \geq 0} \Hom_{\mr{rep}}(B\mu_r, X) \]
+    denote the stack of representable morphisms from classifying stacks of roots of unity to $X$ (the \textit{cyclotomic inertia stack}). Then $I_{\mu} X \simeq IX$.
+\end{thm}
+
+We need to make one more definition, which will appear as a degree shift on cohomology. Let $(x,g) \in X_i$. Because $\ab<g> \subset \Aut(x)$ is cyclic, there is a decomposition
+\[ T_x X = \bigoplus_{0 \leq \ell < r_i} V_{\ell}, \]
+where $V_{\ell}$ is the eigenspace with eigenvalue $e^{2\pi \sqrt{-1} \frac{\ell}{r_i}}$ and $r_i$ is the order of $g$. Then the function
+\[ \on{age} \coloneqq \frac{1}{r_i} \sum_{0 \leq \ell < r_i} \ell \cdot \dim V_{\ell} \]
+is constant on $X_i$, so we denote its value by $\on{age}(X_i)$.
+
+Recall that by the Keel-Mori theorem, $X$ (which has finite inertia) has a coarse moduli space $\ab|X|$, which is an algebraic space satisfying two properties:
+\begin{itemize}
+    \item The morphism $\pi \colon X \to \ab|X|$ is bijective on $k$-points whenever $k$ is an algebraically closed field;
+    \item $\ab|X|$ is initial for morphisms from $X$ to any algebraic space.
+\end{itemize}
+From now on, we will assume that $\ab|X|$ is quasiprojective, and in particular that it is a scheme.
+
+\subsubsection{Moduli of stable maps}%
+\label{ssub:Moduli of stable maps}
+
+\begin{defn}
+    The moduli space of stable maps $\ol{\mc{M}}_{g,n}(X,\beta)$ parameterizes objects
+    \begin{equation*}
+    \begin{tikzcd}
+        \ab(C, \ab\{\Sigma_i\}) \ar{r}{f} \ar{d} & X \\
+        T,
+    \end{tikzcd}
+    \end{equation*}
+    where
+    \begin{enumerate}
+        \item $C$ is a prestable balanced twisted curve of genus $g$. This means that $C$ has stacky structure only at nodes and marked points, and the nodes are formally locally $[(\Spec \C[x,y]/xy)/\mu_r]$, where $\mu_r$ acts by $\zeta(x,y) = (\zeta x, \zeta^{-1} y)$;
+        \item $\Sigma_i \subset C$ is an \'etale cyclotomic gerbe over $T$ with a trivialization for all $i$;
+        \item $f \colon C \to X$ is representable and the induced morphism between coarse moduli spaces is a stable map of degree $\beta$ with $n$ marked points.
+    \end{enumerate}
+\end{defn}
+
+We see that $\ol{\mc{M}}_{g,n}(X,\beta)$ has evaluation maps $\on{ev}_i \colon \ol{\mc{M}}_{g,n}(X,\beta) \to IX$. It is also disconnected, with the connected components being indexed by components of $IX$. Let
+\[ \ol{\mc{M}}_{g,n}(X,\beta,i_1,\ldots,i_n) \coloneqq \bigcap_{j=1}^n \on{ev}_j^{-1}(X_{i_j}). \]
+Then
+\[ \ol{\mc{M}}_{g,n}(X,\beta) = \bigsqcup_{i_1, \ldots, i_n} \ol{\mc{M}}_{g,n}(X,\beta,i_1,\ldots,i_n). \]
+Each component has a virtual fundamental class
+\[ [\ol{\mc{M}}_{g,n}(X,\beta,i_1, \ldots i_n)]^{\vir} \in H_*(\ol{\mc{M}}_{g,n}(X,\beta,i_1,\ldots, i_n), \Q) \]
+of virtual dimension
+\[ \int_{\beta} c_1(X) + (1-g)(\dim X - 3) + n - \sum_{j=1}^n \on{age}(X_{i_j}). \]
+given by the relative perfect obstruction theory $(R \pi_* f^* TX)^{\vee}$, where $\pi \colon C \to \ol{\mc{M}}_{g,n}(X,\beta)$ is the universal curve, over the moduli stack $\mf{M}_{g,n}^{\mr{tw}}$ of prestable twisted curves. Because we chose to work with trivialized gerbe markings, we need to multiply the virtual fundamental class as follows. Note that the $j$-th marked point is 
+\[ \Sigma_{j} \cong \ol{\mc{M}}_{g,n}(X,\beta,i_1,\ldots,i_n) \times B\mu_{r_{i_j}}. \] 
+Here, if $x = [B\mu_r \to X] \in X_{i_j} \subset IX$, then $r_{i_j} = r$. Then set
+\[  [\ol{\mc{M}}_{g,n}(X,\beta,i_1, \ldots i_n)]^{w} \coloneqq \ab(\prod_{j=1}^n r_{i_j}) [\ol{\mc{M}}_{g,n}(X,\beta,i_1, \ldots i_n)]^{\vir}. \]
+
+Now consider the morphism $p \colon \ol{\mc{M}}_{g,n}(X,\beta) \to \ol{\mc{M}}_{g,n}(\ab|X|,\beta)$ given by taking the coarse moduli space. Let $C_{\ab|X|} \to \ol{\mc{M}}_{g,n}(\ab|X|,\beta)$ be the universal curve and $\sigma_{i,\ab|X|}$ be the marked points. Then the descendant classes\footnote{Most people call these $\ol{\psi}$, but I am extremely lazy.} are defined to be
+\[ \psi_j \coloneqq p^* c_1(\sigma_j^* \omega_{C_{\ab|X|} / \ol{\mc{M}}_{g,n}(\ab|X|,\beta)}). \]
+
+\subsubsection{Quantum cohomology}%
+\label{ssub:Quantum cohomology}
+
+We are now able to define Gromov-Witten invariants. Let $\alpha_j \in H^{p_j}(X_{i_j}, \C)$. Then define
+\[ \ab<\alpha_1 \psi^{k_1},\ldots,\alpha_n \psi^{k_n}>_{g,n,\beta}^X \coloneqq \int_{[ \ol{\mc{M}}_{g,n}(X,\beta,i_1,\ldots,i_n) ]^w} \prod_{j=1}^n \on{ev}_j^* \alpha_j \psi_j^{k_j}. \]
+We are still able to form generating series $\mc{F}_g, J_X,\ldots$ as before, and the invariants satisfy the string, dilaton, and divisor equations (although we have to be careful that the marked point we delete is a scheme point), so the orbifold Gromov-Witten theory has a Lagrangian cone $\mc{L}_X \subset \mc{H}$.
+
+The \textit{orbifold Poincar\'e pairing} is defined by the formula
+\[ (\alpha,\beta) \coloneqq \int_{IX} \alpha \cup \on{inv}^* \beta, \]
+where $\cup$ denotes the usual cup product. This is well-defined because of the formula
+\[ \on{age}(X_i) + \on{age}(X_{\on{inv}(i)}) = \dim X - \dim X_i \]
+when $X$ is proper. When $X$ is not proper, we will assume we are working equivariantly.
+Now we may define the \textit{quantum product} by the formula
+\[ (a \star_{\tau} b, c) \coloneqq \sum_{n,\beta} \frac{Q^{\beta}}{n!} \ab<a,b,c,\tau,\ldots,\tau>_{0,n+3,\beta}^X \]
+for $a,b,c,\tau \in H^*(IX, \C)$. Restricting to the degree $0$ part and setting $\tau = 0$, we obtain the \textit{orbifold cup product}, which is given by
+\[ (a \star b, c) = \ab<a,b,c>_{0,3,0}^X. \]
+Denote $H^*_{\mr{CR}}(X) \coloneqq (H^*(IX, \C), \star)$. The orbifold cup product is graded for the grading $\deg(a) = p + 2 \on{age}(X_i)$ for $a \in H^p(X_i)$. Using the quantum product, we may define the quantum connection and its fundamental solution.
+
+\subsection{Toric Deligne-Mumford stacks}%
+\label{sub:Toric Deligne-Mumford stacks}
+
+We will assume the reader is familiar with the fan presentation of a toric variety. If you are not, there are many references.
+
+\begin{defn}
+    An \textit{extended stacky fan} is a quadruple $\bm{\Sigma} = (N, \Sigma, \beta, S)$ of
+    \begin{enumerate}
+        \item A finitely generated abelian group $N$ of rank $n$;
+        \item A rational simplicial fan $\Sigma$ in $N_{\R} = N \otimes \R$;
+        \item A homomorphism $\beta \colon \Z^m \to N$. We will write $b_i = \beta(e_i) \in N$ for the image of the standard basis vector $e_i \in \Z^m$ and $\ol{b}_i$ for its image in $N_{\R}$;
+        \item A subset $S \subset \ab\{1,\ldots,m\}$
+    \end{enumerate}
+    satisfying the following conditions:
+    \begin{enumerate}
+        \item The set $\Sigma(1)$ of $1$-dimensional cones is exactly the set $\ab\{\R_{\geq 0} \cdot \ol{b}_i \mid i \notin S \}$;
+        \item For all $i \in S$, $\ol{b}_i \in \ab|\Sigma|$.
+    \end{enumerate}
+\end{defn}
+
+We will now assume that $\ab|\Sigma|$ is convex and full-dimensional and, that there is a strictly convex piecewise linear function $f \colon \ab|\Sigma| \to \R$ which is linear on each cone, and that $\beta$ is surjective. From this data, we will now obtain a GIT presentation. Define $\L$ by the exact sequence
+\[ 0 \to \L \xrightarrow{} \Z^m \xrightarrow{\beta} N \to 0. \]
+Then define $K \coloneqq \L \otimes \C^{\times}$. Then define $D_i \in \L^{\vee}$ to be the image of the $i$-th standard basis vector in $(\Z^m)^{\vee}$ under the last arrow in the exact sequence
+\[ 0 \to N^{\vee} \to (\Z^m)^{\vee} \to \L^{\vee} \]
+Finally, set
+\[ \mc{A}_{\omega} = \ab\{I \subset \ab\{1,\ldots,m\} \mid S \subset I, \sigma_{\ol{I}} \text{ is a cone of }\Sigma\}. \]
+Choose a stability condition
+\[ \omega \in C_{\omega} \coloneqq \bigcup_{I \in \mc{A}_{\omega}} \ab\{ \sum_{i \in I} a_i D_i \mid a_i \in \R_{>0}\}. \]
+Then we define
+\[ X_{\bm{\Sigma}} \coloneqq [(\C^m)^{s} / K]. \]
+
+The ample cone is $C'_{\omega} \subset \L^{\vee}_{\R} / \sum_{i \in S} \R D_i \cong H^2(X_{\bm{\Sigma}}, \R)$, which is defined in the same way as $C_{\omega}$ after deleting $S$ from the extended stacky fan, and the cone of effective curve classes is its dual.
+
+\subsubsection{Orbifold cohomology}%
+\label{ssub:Orbifold cohomology}
+
+First, we will describe the equivariant cohomology of $X_{\bm{\Sigma}}$. Let $\mc{Q} = (\C^{\times})^m/K$. Then if $u_i$ is Poincar\'e dual to $(x_i = 0 \subset (\C^m)^s)/K$, we have
+\[ H_{\mc{Q}}^*(X_{\bm{\Sigma}}, \C) = H_{\mc{Q}}^*(\mr{pt}, \C) [u_1, \ldots, u_m] / (\mf{I} + \mf{J}), \]
+where
+\begin{align*}
+    \mf{I} &\coloneqq \ab< \chi - \sum_{i=1}^m \ab<\chi, b_i>u_i \mid \chi \in N^{\vee}_{\C}> \\
+    \mf{J} &\coloneqq \ab<\prod_{i \notin I} u_i \mid I \notin \mc{A}_{\omega}>.
+\end{align*}
+
+There is a combinatorial description of the components of the inertia stack $IX_{\bm{\Sigma}}$. Because $X_{\bm{\Sigma}}$ is a global quotient, the components of the inertia stack correspond to elements $g \in K$ such that $( (\C^m)^s )^g$ is nonempty. Equivalently, if we define
+\[ \mathbb{K} \coloneqq \ab\{f \in \L \otimes \Q \mid \ab\{ i \in \ab\{1,\ldots,m\} \mid D_i \cdot f \in \Z\} \in \mc{A}_{\omega}\}, \]
+then the components of $IX_{\bm{\Sigma}}$ are in bijection with $\mathbb{K}/\L$. To give a description in terms of the fan, for any $\sigma \in \Sigma(n)$, define
+\[ \on{Box}(\sigma) \coloneqq \ab\{v \in N \mid \ol{v} = \sum_{\rho_i \subseteq \sigma} a_i \ol{b}_i \mid 0 \leq a_i < 1\}\]
+and then
+\[ \on{Box}(\bm{\Sigma}) \coloneqq \bigcup_{\sigma \in \Sigma(n)} \on{Box}(\sigma). \]
+Then there is a natural bijection $\mathbb{K}/\L \cong \on{Box}(\bm{\Sigma})$. For any $f \in \mathbb{K}/\L$, $X_f$ is a toric DM stack with $K, \L, \omega$ the same as for $X_{\omega}$ and characters $D_i$ for $i$ such that $D_i \cdot f \in \Z$. At the level of fans, this corresponds to killing the minimal cone of $\Sigma$ containing the corresponding $\ol{v}$.
+
+We will now give the orbifold cohomology of $X_{\bm{\Sigma}}$. Define the \textit{deformed group ring} $\C[N]^{\bm{\Sigma}}$ as the vector space $\C[N]$ with product given by
+\[ y^{c_1} \cdot y^{c_2} \coloneqq \begin{cases}
+    y^{c_1 + c_2} & \text{ there exists } \sigma \in \Sigma \text{ such that } \ol{c}_1, \ol{c}_2 \in \sigma \\
+    0 & \text{otherwise}.
+\end{cases}
+\]
+Then there is an isomorphism of rings
+\[ H^*_{\mr{CR}}(X_{\bm{\Sigma}}) \cong \frac{\C[N]^{\bm{\Sigma}}}{\ab<\sum_{i \notin S} \chi(b_i) y^{b_i} \mid \chi \in N^{\vee}>}. \]
+\begin{rmk}
+    This result also works in families over a base $B$, where $\C^m$ is replaced by a direct sum of $m$ line bundles on $B$. Then we need to add a $c_1(L_{\chi})$ to the relations and obtain
+    \[ H^*_{\mr{CR}}(X^B_{\bm{\Sigma}}) \coloneqq \frac{H^*(B)[N]^{\bm{\Sigma}}}{\ab<c_1(L_{\chi}) + \sum_{i \notin S} \chi(b_i) y^{b_i} \mid \chi \in N^{\vee}>}. \]
+\end{rmk}
+
+\section{Gamma-integral structure (Patrick, Apr 04)}%
+\label{sec:Gamma-integral structure}
+
+Let $IX = \bigsqcup_{v \in \ms{B}} X_v$ and $q_v \colon X_v \to X$ be the restriction of $IX \to X$. Let $E$ be a $T$-equivariant vector bundle on $X$. Recall that $v$ corresponds to some $g_v \in K$, so we obtain an eigenbundle decomposition
+\[ q_v^* E = \bigoplus_{0 \leq f < 1} E_{v,f}, \]
+where $E_{v,f}$ is the subbundle where $g_v$ acts by $e^{2 \pi i f}$. We now define the orbifold Chern character to be
+\[ \wt{\ch}(E) = \bigoplus_{v \in\ms{B}} \sum_{0 \leq f < 1} e^{2\pi i f} \ch(E_{v,f}). \]
+
+Now let $\delta_{v,f,j}$ be the Chern roots of $E_{v,f}$. We define the orbifold Todd class to be
+\[ \wt{\mr{Td}}(E) \coloneqq \bigoplus_{v \in \ms{B}} \ab(\prod_{0 < f < 1} \prod_{j} \frac{1}{1-e^{-2\pi i f - \delta_{v,f,j}}}) \prod_j \frac{\delta_{v,0,j}}{1-e^{-\delta_{v,0,j}}}. \]
+The $\wh{\Gamma}$-class should be a square root of this and is defined by
+\[ \wh{\Gamma}(E) = \bigoplus_{v \in \ms{B}} \prod_{0 \leq f < 1} \prod_j \Gamma(1-f+\delta_{v,f,j}), \]
+where we expand $\Gamma$ around $1-f$. The reflection formula for the $\Gamma$-function implies that the $X_v$-component of $\wh{\Gamma}(E^{\vee}) \cup \wh{\Gamma}(E)$ is given by
+\[ [\wh{\Gamma}(E^{\vee}) \cup \wh{\Gamma}(E)]_v = (2\pi i)^{\on{rk} (q_v^* E)^{\mr{mov}}} \ab[e^{-\pi i ( \on{age}(q^* E) + c_1(q^* E) )} (2\pi i)^{\frac{\deg_0}{2}} \wt{\mr{Td}}(E)]_{\on{inv}(v)}. \]
+Here, $\deg_0$ is the grading operator given by the degree without age shifting.
+
+\begin{defn}
+    Define the \textit{$K$-group framing} $\mf{s} \colon K_T(X) \to H^*_{\mr{CR},T}(X) \otimes_{R_T} R_T[\log z] \llparenthesis z^{-\frac{1}{k}} \rrparenthesis \llbracket Q,\tau \rrbracket$ by the formula
+    \[ \mf{s}(E)(\tau, z) \coloneqq \frac{1}{(2\pi)^{\frac{\dim X}{2}}} L(\tau, z) z^{-\mu} z^{\rho} \wh{\Gamma}_X \cup (2\pi i)^{\frac{\deg_0}{2}} \on{inv}^* \wt{\ch}(E), \]
+    where $L(\tau, z)$ is the fundamental solution to the quantum connection, $\mu$ is the usual grading operator given by $\frac{1}{2} (\deg - \dim X)$ on homogeneous elements, and $\rho = c_1(TX) \in H^2(X)$.
+\end{defn}
+
+\begin{prop}
+    Define the equivariant Euler pairing by
+    \[ \chi(E,F) \coloneqq \sum_{j} (-1)^k \ch^T(\Ext^k(E,F)) \]
+    and the modified version $\chi_z(E,F)$ by replacing the equivariant parameters $\lambda_j$ by $\frac{2\pi i \lambda_j}{z}$. Then
+    \[ (\mf{s}(E)(\tau, e^{-i\pi}z), \mf{s}(F)(\tau, z)) = \chi_z(E,F). \]
+\end{prop}
+
+\begin{rmk}
+    Everything we have discussed so far makes sense for toric DM stacks after specializing $Q=1$.
+\end{rmk}
 
 \chapter{Quantum cohomology of projective bundles}%
 \label{cha:Quantum cohomology of projective bundles}
@@ -1674,6 +1870,8 @@ intertwines the quantum connections up to a $\frac{1}{2}$ shift in $\mu_Z$. Comb
 \end{thm}
 
 
+\chapter{Crepant transformation conjecture for toric complete intersections}%
+\label{cha:Crepant transformation conjecture for toric complete intersections}
 
 
 
