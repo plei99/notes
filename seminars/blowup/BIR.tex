@@ -80,6 +80,7 @@
 \newtheorem{conj}[thm]{Conjecture}
 \newtheorem{quest}[thm]{Question}
 \newtheorem{prob}[thm]{Problem}
+\newtheorem{claim}[thm]{Claim}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
@@ -135,7 +136,7 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\bS}{\mathbb{S}}
-\renewcommand{\k}{\Bbbk}
+\renewcommand{\K}{\mathbb{K}}
 \renewcommand{\L}{\mathbb{L}}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\M}{\overline{M}}
@@ -1873,7 +1874,169 @@ intertwines the quantum connections up to a $\frac{1}{2}$ shift in $\mu_Z$. Comb
 \chapter{Crepant transformation conjecture for toric complete intersections}%
 \label{cha:Crepant transformation conjecture for toric complete intersections}
 
+\section{Toric wall-crossings in GW theory (Davis, Apr 11)}%
+\label{sec:Toric wall-crossings}
 
+
+Our goal is to study GIT wall-crossing in toric Gromov-Witten theory. For toric varieties $X_{\pm}$ related across a wall, we want to define $\mc{M} \supset U_{\pm}$ such that $X_{\pm} \in U_{\pm}$, as well as quantum connections on $U_{\pm}$ that restrict to $X_{\pm}$ appropriately.
+
+\subsection{GIT wall-crossing}%
+\label{sub:GIT wall-crossing}
+
+Recall that the data of an (extended) stacky fan is equivalent to GIT data consisting of
+\begin{enumerate}
+    \item A vector space $V$ of dimension $m$;
+    \item A torus $K$;
+    \item Characters $D_i \in \on{char}(K)$ for $i=1,\ldots,m$;
+    \item A stability condition $\omega \in \on{char}_{\R}(K)$;
+    \item A set of anticones $A_{\omega} = \ab\{I \subset \ab\{1,\ldots,m\}\mid \omega \in \sum_{i\in I} a_i D_i, a_i \in \R_{>0}\}$.
+\end{enumerate}
+
+\begin{rmk}
+    The DM stack $X_{\omega}$ is defined to be $[U_{\omega}/K]$, where
+    \[ U_{\omega} \coloneqq \bigcup_{I \in A_{\omega}} (\C^{\times})^I \times \C^{I^c} \]
+    is the semistable locus. Therefore, if $\omega_1, \ldots, \omega_2$ are stability conditions, there is a birational map $X_{\omega_1} \dashrightarrow X_{\omega_2}$ induced by identifying the dense open tori.
+\end{rmk}
+
+Suppose that $\omega_1 \in C_1, \omega_2 \in C_2$ are separated by a wall $W$ in the space of stability conditions. Choose $\omega_0 \in W \cap C_1 = W \cap C_2$ and let
+\[ X_0 = [U_{\omega_0}/K], \]
+which may not be Deligne-Mumford. Choose a resolution $\wt{X}$ of $X_{\omega_1}, X_{\omega_2}$ completing the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & X_0 \\
+    X_{\omega_1} \ar[hookrightarrow]{ur}{g_1} && X_{\omega_2} \ar[hookrightarrow]{ul}{g_2} \\
+    & \wt{X} \ar{ur}{f_2} \ar{ul}{f_1}.
+\end{tikzcd}
+\end{equation*}
+We will assume that $\sum_{i=1}^M D_i \in W$. Under this assumption, the wall-crossing is crepant:
+\[ f_1^* K_{X_{\omega_1}} = f_2^* K_{X_{\omega_2}}. \]
+
+\begin{exm}
+    If $e$ is a vector perpendicular to $W$, the $\mathbb{G}_m$ it generates may not be fixed. For example, let $K = \G_m^2$ and $V = \C^3$. Let $D_1 = (1,0)$, $D_2 = (1,2)$, and $D_3 = (0,2)$. Therefore, 
+    \[ \sum a_i D_i = (a_1 + a_2, 2a_2 + 2a_3). \]
+    Let $\omega \coloneqq (\omega_x, \omega_y)$. If $\omega_x, \omega_y > 0$, then $A_{\omega} \supset \ab\{\ab\{1,2,3\},\ab\{1,3\}\}$. Then $D_2$ appears if either
+    \begin{align*}
+        (\omega_x, \omega_y) &= a_1(1,0) + a_2 (1,2) \text{ if } \omega_x > \frac{\omega_y}{2} > 0 \\
+        (\omega_x, \omega_y) &= a_2 (1,2) + a_3(0,2) \text{ if } \frac{\omega_y}{2} > \omega_x > 0.
+    \end{align*}
+    Therefore, there is a wall givven by $2 \omega_x = \omega_y$. In the chamber $\omega_y > 2\omega_x > 0$, we have
+    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
+    and therefore $U_{\omega} = (\C^2 \setminus 0) \times \C^{\times}$. Taking the quotient, we see that
+    \[ U_{\omega} / K = \P^1 / B_{\mu_2}. \]
+    In the other chamber, we have
+    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{1,2\}\}, \]
+    which implies that $U_{\omega} = \C^{\times} \times (\C^2 \setminus 0)$, so
+    \[ X_{\omega} = \P(2,2). \]
+    For a stability condition $\omega_0$ on the wall, we will obtain
+    \[ U_0 = (\C^2 \setminus 0) \times \C^{\times} \cup \C^{\times} \times (\C^2 \setminus 0) \cup \C \times \C^{\times} \times \C. \]
+    The middle $\C^{\times}$ is fixed by the cocharacter $(2,-1)$, so $X_0$ is non-DM.
+\end{exm}
+
+\subsection{The secondary variety}%
+\label{sub:The secondary variety}
+
+\begin{defn}
+    The wall and chamber structure on $\on{char}_{\R}(K)$ defines a fan on $\on{char}_{\R}(K)$ called the \textit{secondary fan}. The associated toric variety is called the \textit{secondary toric variety}. For us, we will consider the subfan consisting of cones $C_{\omega_1}, C_{\omega_2}$, and their faces. Call the corresponding toric variety $\mc{M}$. This is a moduli space of Landau-Ginzburg models mirror to the $X_i$.
+\end{defn}
+
+Unfortunately, $\mc{M}$ is generally singular, so we will consider a smooth finite cover $\mc{M}_{\mr{reg}}$. Explicitly, we see that
+\[ M = \Spec \C[C_1^{\vee} \cap \on{cochar}(K)] \cup \Spec \C[C_2^{\vee} \cap \on{cochar}(K)]. \]
+Call the charts $U_+, U_-$. Define
+\[ \K_i \coloneqq \ab\{f \in \on{cochar}_{\Q}(K) \mid D_i f \in \Z \text{ for all } i \in I \Rightarrow I \in A_{\omega}\} \]
+and let $\wt{\L}_i$ be the free $\Z$-submodule of $\on{cochar}_{\Q}(K)$ generated by $\K_i$.
+
+\begin{exm}
+    Continung with the previous example, recall that
+    \[ A_{\omega_1} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
+    If we want $(f_x, f_y) \cdot (0,2) \in \Z$, then we see that $f_y \in \frac{1}{2} \Z$, so $\wt{\L}_1 = \Z \times \frac{1}{2} \Z$.
+\end{exm}
+
+\begin{rmk}
+    Recall that
+    \[ H^2(X_{\omega}, \R) \simeq \on{char}_{\R}(K) / \sum_{i \in S} \R D_i, \]
+    where 
+    \[ S = \ab\{ i \mid i^c \notin A_{\omega}} \]
+    is the set of indices contained in every anticone. Therefore, we can split
+    \[ \on{char}_{\R}(K) = \bigcap_{j \in S} \ker (\xi_j) \oplus \bigoplus_{j \in S} \R D_j. \]
+\end{rmk}
+
+\begin{claim}
+    There exist $\xi_j^{\pm}$ such that
+    \begin{enumerate}
+        \item $\xi_j^+|_W = \xi_j^-|_W$ for all $j \in S_+ \cap S_-$;
+        \item For all $j \in S_+ \Delta S_-$, $\xi_j^{\pm}|_W = 0$;
+        \item All $\xi_j^{\pm} \in \K_{\pm}$.
+    \end{enumerate}
+\end{claim}
+
+\begin{claim}
+    We have a decomposition
+    \[ \wt{\L}_{\pm}^{\vee} = (H^2(X_{\pm}, \R) \cap \wt{\L}_{\pm}^{\vee}) \oplus\bigoplus_{j \in S_{\pm}} \Z D_j. \]
+    Furthermore, $W \cap \wt{\L}_+^{\vee} = W \cap \wt{L}_-^{\vee}$.
+\end{claim}
+
+\begin{proof}
+    If $j \in S_+$, then $j \in I$ for all $I \in A_{\omega_+}$, so $D_j f \in \Z$. Thus $D_j \in \wt{L}_i^{+}$. In the other direction, if $v \in \wt{L}_+^{\vee}$, $v \xi_i \in \Z$ because $\xi_j \in \K_+$. Therefore,
+    \[ w = v - \sum_{i \in S_+} \ab<v,\xi_i> D_i \in \bigcap_{j \in S}\ker(\xi_j) \cap \wt{L}_+^{\vee}. \qedhere \]
+\end{proof}
+
+\begin{cor}
+    There exists an integral basis for $\wt{L}_i^{\vee}$ of the form
+    \[ \ab\{ p_1^{\pm}, \ldots, p_{\ell}^{\pm}\} \cup \ab\{D_j\}_{j \in S} \]
+    such that $p_k^{\pm} \in \ol{C}_{\pm}'$ live in the closure of the ample cones of $X_i$ and $p_k^+ = p_k^-$ as classes of $C'_W$.
+\end{cor}
+
+Now we have maps
+\[ \C[C_{\pm}^{\vee} \cap \on{cochar}(K)] \to \C[y_1^{\pm}, \ldots, y_{\ell_{\pm}}^{\pm}, \ab\{x_j\}_{j \in S}] \]
+given by the formulae
+\[ y^d \mapsto \prod_{j}^{\ell_{\pm}} y_j^{\pm p_j^{\pm \cdot d}} \prod_{j\in S} x_j^{D_j \cdot d} \]
+for cocharacters $d \in \on{cochar}(K)$.
+
+\begin{rmk}
+    We may reorder the basis $p_i$ as $\ab\{q_1, \ldots, q_r\}$ such that $q_r$ is the unique vector not on the wall $W$. Dually, we may write $\ab\{y_i, x_j\}$ as $\ab\{z_1, \ldots, z_r\}$ such that $z_r$ is dual to $q_r$. In these coordinates, we can write
+    \begin{align*}
+        U_+ &= \Spec \C[z_1^+, \ldots, z_{r-1}^+, z_r^{+ \frac{1}{B}}] \\
+        U_- &= \Spec \C[z_1^-, \ldots, z_{r-1}^-, z_r^{- \frac{1}{A}}] .
+    \end{align*}
+    Let $\wh{\mc{M}}_{\mr{reg}}$ be the analytification of $\mc{M}_{\mr{reg}} = U_+ \cup U_-$.
+\end{rmk}
+
+\subsection{Extending the $I$-functions}%
+\label{sub:Extending the $I$-functions}
+
+Let 
+\[ d = \ol{d} + \sum_{j \in S_{\pm}} (D_j, d) \xi_j \]
+be  the decomposition of some $d \in \on{cochar}(K)$. Then the $I$-functions of $X_{\pm}$ are given by
+\[ I_{\pm}^{\mr{temp}} = z e^{\frac{\sigma}{z}} \sum_{d \in \K_{\pm}}e^{\sigma \ol{d}} \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}). \]
+Precisely, we have
+\[ I_{\pm} \in H_{\mr{CR}, T}^*(X_{\omega_{\pm}}) \otimes_{R_T} R_T\llparenthesis z^{-1} \rrparenthesis [Q,\sigma,x]. \]
+In the above formula, we will make the substitutions $Q=1$ and
+\[ \sigma_{\pm} = \sum_{j=1}^{\ell_{\pm}} \theta^{\pm}(p_j^{\pm}) \log(y_j) - \sum_{j \in S_{\pm}} \lambda_j \log x_j + c_0 \lambda. \]
+Here, $\lambda_j = \theta^+(D_j)$, where $\theta^+$ is the restriction to $H^2$, and $c_0 \lambda = \sum \lambda_i$.
+
+A more explicit formula is given by
+\[ I_{+} = z e^{\frac{\sigma_+}{z}} \sum_{d \in \K_{+}}y^d \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}) \mathbb{1}_{[-d]}, \]
+where $[-d] \in \K/\L$ is the twisted sector.
+
+\begin{claim}
+    The $I$-function $I_+$ defines a convergent power series.
+\end{claim}
+
+\begin{proof}[Idea of proof]
+    Choose $f \in \K/\L$ and $d$ such that $[-d] = f$. Then $X_+^f \subset IX_+$ is a connected component and a closed substack of $X_+$. The restriction
+    \[ H_T^*(X_+^f) \to H_T^*(X_+^{f,T}) \]
+    is injective. Then
+    \[ I^+|_{X_f^T} \propto \Phi(\beta, X), \]
+    where $\beta_j = \frac{u_j}{z}$, $x = y_r^{p_r^+ \cdot e}$, and
+    \[ \Phi(\beta, x) = \sum_{k \in \Z} x^k \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}{\prod_{a \leq D_j \cdot d + k D_j \cdot e, \ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}. \]
+    For $k \ll 0$, because $R_j = \ab<D_j \cdot d> = 0$ for $j \in \delta \subset I_f$ and $D_j \cdot e > 0$, the $x^k$-term vanishes. Convergence follows by the ratio test.
+\end{proof}
+
+Because $\Phi$ solves an explicit differential equation\footnote{We can write the coefficient of $x^k$ as a ratio of products of gamma functions and then } with singularities only at $0, \infty, \prod (D_j \cdot e)^{D_j \cdot e}$, it can be analytically continued to
+\[ \wt{\mc{M}}_+ = (\wh{U}_+ \setminus \ab\{v^e = \mr{conifold}\} / \mr{Deck})^{\text{univ cover}}. \]
+For just $X_+$, there are differential operators $P_i$ such that
+\[ ( z^{-1}P_1 I_+, \ldots, z^{-1}P_2 I_+ , \ldots) = L^{-1} \Gamma, \]
+where $L^{-1} = 1 + O(z^{-1})$ annd $\Gamma = \mr{const} + O(z)$. Therefore, we may determine $L^{-1}$ by Birkhoff factorization. This gives us quantum connections on $\wt{M}_{\pm}$.
 
 
 

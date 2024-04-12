@@ -78,6 +78,7 @@
 \newtheorem{conj}[thm]{Conjecture}
 \newtheorem{quest}[thm]{Question}
 \newtheorem{prob}[thm]{Problem}
+\newtheorem{clm}[thm]{Claim}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
@@ -2305,6 +2306,196 @@ Hence the final factor gives an overall answer of
 This is the qq character for $A_1$-quiver theory, namely SQCD. It has $2^w$ terms. This formula is already indicative that not all such formulas come as rational expressions in the $Y$ whose arguments are just shifted.
 If we were to set for example $u_i = u_j$, we would have a smaller torus. The fixed point locus would not be isolated but it would still be compact. So this integral is finite. So even though there's terms like $u_i - u_j$, we should expect the limit as these two things approach to exist, but we might get some derivatives of $Y$ appearing.
 
+
+\section{Limit shapes}
+
+We've defined many partition functions 
+\[
+Z(\vec{a},\vec{m}, \vec{q}, \epsilon_1,\epsilon_2)
+\]
+dependent on many parameters. The parameters $\epsilon_i$ were special,
+recording the weights of $GL(2)$ symmetry for $\mathfrak{g}(\mathbb{CP}^2,\mathbb{CP}^1_\infty)$.
+These partition functions were essentially sums over infinite sets whose elements 
+are finite subsets of $\mathbb{C}$. So these subsets had the form 
+\[
+\vec{\lambda} = \qty{a^{(i)}_\alpha + \epsilon_1(I - 1) + \epsilon_2(J-1) \mid i \in V_\Gamma, \alpha = 1,\dots,n, (I,J) \in \lambda^{(i,\alpha)}}.
+\]
+Each such set carries a certain complex weight. There is a way to specify 
+all the parameters of the problem such that this weight is real and positive. In that case we could talk about the induced probability distribution.
+Then we could be interested in the limiting behaviour as $\epsilon_1,\epsilon_2 \to 0$. In this probablistic case that would 
+require us to find the limiting measure. 
+We can draw a curve which describes the boundary of these finite sets, 
+and seek its limiting shape as $\epsilon_1,\epsilon_2 \to 0$. 
+
+Physically, $\epsilon_1,\epsilon_2$ effectively confine instantons into a polydisc of volume $\approx (\epsilon_1 \epsilon_2)^{-1}$.
+Then taking the limit $\epsilon_1,\epsilon_2 \to 0$ is a \emph{thermoydynamic limit}. 
+We view $Z = exp( \epsilon_1^{-1} \epsilon_2^{-1} \mathcal{F}(\vec{a},\vec{m},\vec{q}) + \dots)$,
+and our goal is to extract the function $\mathcal{F}$. 
+The typical size of a partition will be 
+\[
+|\lambda^{(i,\alpha)}| \sim (\epsilon_1 \epsilon_2)^{-1} \#(\vec{a},\vec{m},\vec{q}).
+\]
+
+\begin{rmk}
+A probabilistic interpretation of $Z$ exists at all because the moduli space of instantons, 
+$\overline{\mathcal{M}}_k(n)$, is a complex symplectic manifold. So each tangent space is a symplectic vector space, and so the 
+weights of the symmetry group therefore split in pairs. So if $w$ appears in $T \overline{\mathcal{M}}_k(n)$, so does $\epsilon_1 + \epsilon_2 - w$. 
+That defines a symplectic form on $\overline{\mathcal{M}_k(n)}$, which roughly descends from that on the space of all connections:
+\[
+\int_{\mathbb{R}^4} \dd z_1 \wedge \dd z_2 \wedge \Tr \delta A \wedge JA.
+\]
+If we specialize $\epsilon_1 + \epsilon_2 = 0$, then 
+\[
+\mu_\lambda = \frac{\prod(\dots)}{\prod (-w^2)}.
+\]
+Each $w$ is a linear function of the $\vec{a},\vec{\epsilon}$ terms. Choosing $\epsilon_1 \in i \mathbb{R}, a_\alpha^{(i)} \in i \mathbb{R}$, 
+then $(-w^2) \in \mathbb{R}^+$. The numerator is trickier, but can also be made positive real by judicious specialisation of our parameters.
+\end{rmk}
+
+If we stay away from the locus wherein 
+\[
+a_\alpha^{(i)} - a_\beta^{(j)} \in \epsilon_1 \mathbb{Z}_+ + \epsilon_2 \mathbb{Z}_+,
+\]
+which is the locus wherein some of the weights could become 0 in the denominator,
+we won't have any convergence issues.
+
+\begin{rmk}
+Remember our 
+\[
+Y_i(z) = \exp\, \int_\mathbb{R} \rho_i(x) \dd x \log(z-x) = \prod_{\alpha = 1}^{n_i} \frac{\prod_{\square \in \partial_+ \lambda^{(i,\alpha)}} (z - a_\alpha^{(i)} - c_\square)}{\prod_{\square \in \partial_- \lambda^{(i,\alpha)} (z - a_\alpha^{(i)} - c_\square)}}
+\]
+has $\rho_i$ with compact support near $a_\alpha^{(i)}$, and we remember that 
+\[
+c_\square = \epsilon_1(I- 1) + \epsilon_2(J-1).
+\]
+Then 
+\[
+\rho_{i|\lambda} = \sum \pm \delta(x - a_\alpha^{(i)} - c_\square).
+\]
+All these $\delta$-functions have signs.  We should think that the density between these $\pm$ will concentrate,
+so we might thank that in the limit we might get a continuous function which equals zero almost everywhere except at a finite number of intervals where the $\pm$ signs concentrate.
+The question is: can we express $\mu$ in terms of this limiting function?
+
+We have 
+\begin{align*}
+    \mu_{\lambda}(\vec{a},\vec{m},q) =&{} \exp \hbar^{-2} \iint \dd x' \dd x'' \sum_{i \in V} \rho_1(x') \rho_2(x'') K(x' - x'') \\ 
+    &- \sum_{e \in E} \rho_{t(e)} (x') \rho_{s(e)}(x'') K(x' - x'' + m_e) \\
+    &+ \sum_i \rho_i(x) [ \frac{x^2}{2} \log q_i + \sum_{f= 1}^{m_i} K(x - \mu_f^{(i)})],
+\end{align*}
+wherein 
+\[
+K(x) = x^2/2 \qty( \log\qty(\frac{x}{\Lambda}) - 3/2)
+\]
+The advantage of writing it this way is that it's a quadratic functional, so extremising it is straightforward.
+\end{rmk}
+
+
+Now let's extremise $\mu_\lambda$ subject to the constraints that $\int_{I_{i,\alpha}} \rho_i(x) dx = 1$, $\int_{I_{i,\alpha}} x \rho_i(x) dx = a_\alpha^{(i)}$.
+Doing so, we will get linear equations on the $\rho_i$. 
+The most concise way to write those linear equations is via 
+\[
+Y_i^+(x) Y_i^-(x) = q_i P_i(x)  \prod_{e \in f'(i)} Y_{s(e)} (x + m_e) \prod_{e \in f'(i)} Y_{t(e)} (x - m_e)
+\]
+wherein $P_i(x) = \prod_{f = 1}^{m_i} (x - \mu_f^{(i)})$.
+
+After analytic continuation, the only thing we'll be able to control about the $Y_i$ are their moments
+\[
+(2\pi i )^{-1} \oint_{A_{i,\alpha}} \dd \log Y_i(x) = a_{i,\alpha}.
+\]
+Studying analytic continuation is related to the action of the Weyl group. 
+So to solve these equations, it suffices to find the invariants of the Weyl group action.
+So the strategy now is to find Weyl invariant functions of the $Y_i$. 
+
+\subsection{Review of Lie theory and Weyl groups}
+
+Let's review some Lie theory so that in the above formula for $Y^+Y^-$.
+You will recognise something of classical mechanics. 
+
+Let $Q^\vee = \text{coroot lattice} = Hom(\mathbb{C}^\star, T)$ wherein $T$ is our maximal torus. 
+The weights form the dual lattice $\Lambda \subset \mathfrak{h}^\star$ (they are subsets of the dual to the Cartan). It's formed by all elements 
+$\lambda$ so that $\lambda(\alpha^\vee) \in \mathbb{Z}$ for every coroot.
+We let 
+\[
+t^\lambda = \exp (2 \pi i \lambda(x))
+\]
+for $t \in T$. 
+
+\begin{rmk}
+In the lattice $Q^\vee$ of coroots, there is a basis of \emph{simple coroots} 
+$(\alpha_1^\vee,\dots,\alpha_r^\vee)$ such that the adjoint 
+action decomposes $ad_t(e_\alpha) = t^\alpha e_\alpha$, wherein $e_\alpha$ is a \emph{root} (it's a lattice of weights, namely the weights of the adjoint representation).
+This has a basis of roots, $\mathbb{Z}\alpha_1,\dots,\mathbb{Z}\alpha_r$. 
+Finally there is a lattice of coweights, 
+\[
+\Hom(\mathbb{G}_m, T/Z),
+\]
+wherein $Z$ is the centre of $G$. Also, $Z = \mr{Weights}/\mr{Roots}$.
+\end{rmk}
+
+\begin{defn}
+For $\xi \in \eta$, define simple reflection by $r_i(\xi) = \xi - \alpha_i(xi)\alpha_i^\vee$.
+It is an interesting theorem that $Weyl = \mathbb{W} = N(T)/T$ is the action generated by the $r_i$.
+This can of course also be defined in a multiplicative form. For $t \in T$, an element of the maximal torus, 
+we may parametrise $t = \prod z_i^{\alpha_i^\vee}$. 
+Applying $r_j$ to such an element, the coordinates $z_i$ of this torus will transform 
+in the following way: 
+\[
+\wt{z}_i = \delta_{i\neq j} z_i + \delta_{ij} z_j \prod_{k= 1}^r z_k^{-C_{jk}},
+\]
+wherein $C_{ij}$ is the Cartan matrix. My point is that if you look closely at this formula, you will 
+see that analytic continuation of the $Y_i$ across the cuts is 
+essentially the action of the Weyl group by simple reflections. 
+\end{defn}
+
+\begin{rmk}
+The more precise statement is the following. Let $g(x) \in \mathbb{C}G_\Gamma$, the group associated to the quiver somewhat extended. Specifically $\mathbb{C}G$ denotes the \emph{conformal extension} of our group, which is given by
+\[
+\mathbb{C}G = (\mathbb{G}_m)^{\#\text{cyclic factors in centre}} \times_{Z(G)} G 
+\]
+Essentially, it's where we replace all cyclic factors in the centre by $\mathbb{C}^\times$ factors.
+Write $g(x) = \prod_{I \in \wt{\mr{Vertices}}_\Gamma} Y_i(x + \mu_i)^{\alpha_i^\vee} P_i(x  + \mu_i)^{-\lambda_i^\vee} $, where $\wt{\mr{Vertices}}$ denotes that we need to take the universal cover.
+The claim is that under analytic continuation 
+\[
+g(x) \to r_i g(x) 
+\]
+\end{rmk}
+
+\begin{rmk}
+I don't know how well this is known in the case of matrix models, but at lesat for some matrix models, there is a very similar property where this is some combination of resolvents of densities
+of matrices which, continuing across the cuts, they transform in the vector representation of the Weyl group. Therefore what I'm about to say here also applies there.
+\end{rmk}
+
+\begin{clm}
+In any linear representation $V$, $\chi_V(g(x))$ is an analytic function of $x$.
+With proper normalisation, it is just a polynomial in $x$.
+\end{clm}
+
+\begin{clm}
+  Choose a fundamental representation of $G$. The equations 
+$\chi_i(g) = T_i(x)$ define curves in $(\mathbb{C}^\times)^r \times \mathbb{C}$.
+The tori give coordinates $Y_1,\dots,Y_r$; the last coordinate is $x$. 
+There is a Weyl group which acts on this vector space, under which the curve is Weyl invariant.
+This curve is called a \emph{Cameral curve}. Of course you have heard about spectral curves, which are curves you can assign to a matrix; its eigenvalues form a curve. That's what you would do in the case of $GL_n$. But in general these guys are subject to more intricate Weyl symmetries,
+so it's not really clear what sort of spectral object to consider.
+What one can do, for any $W' \subset W$, one can try to form a smaller curve by taking the quotient.
+\end{clm}
+
+\begin{exm}
+  Let's take the $A_r$ quiver, and take the case wherein we have fundamental matter fields at the first and last node and all labels are $N$.
+  Then $g = diag(z_1 \frac{Y_1}{P_1},\dots, z_r \frac{Y_r}{Y_{r-1}'}, z_{r+1} \frac{P_r}{Y_r}) \in GL(r+1)$.
+Then invariants are given by 
+\[
+\frac{1}{z_1 z_i} P_1(x) Tr_{\Lambda^i \mathbb{C}^{r+ i}}(g)
+\]
+the claim is this is a monic polynomial in $x$ of degree $n$. 
+
+This is an example of a Cameral curve. It maps $\mr{Cameral} \to \mathbb{C}_x$ with degree $(r+1)!$ since any permutation gives another solution of our equations.
+Now $\mr{Weyl} = S(r+1)$ acts on this curve, and inside we for example have a subgroup $S(r+1) \supset S(r)$. Now $\mr{Cameral}/S(r) = \mr{Spectral}$ is the spectral curve.
+It keeps track of one eigenvalue. However, for example, we could also consider $\mr{Cameral}/S(r-1)$ to remember two eigenvalues. 
+This special branched structure of course has to do with Gelfand-Tsetlin patterns and is special to $A$-type.
+\end{exm}
+
+Spaces of curves like this describe either monopoles in $\mathbb{R}^2 \times S^1$ for ADE type or instantons on $\mathbb{R}^2 \times T^2$ for affine ADE type. This curve in question is actually a quasimap of degree $n$ (in affine type at least) from $\mathbb{P}^1$ into the moduli spaces of $G$-bundles on an elliptic curve.
 
 
 
