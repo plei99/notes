@@ -2731,7 +2731,256 @@ depending on the scalar curvature.
 Having this scalar term with some coefficient modifies our computations, and can be fine-tuned to exactly reproduce our formula for $Z_{A_r}$.
 \end{rmk}
 
+\begin{rmk}
+Let us list the topics which we have not covered yet:
+\begin{enumerate}
+\item Spiked (and the special cases of crossed and folded) instanton moduli spaces. Their study goes under the name of \emph{gauge origami}. It's a kind of model-building 
+device which builds statistical models of random partitions which can also be interpreted as tools to produce natural 
+observables, e.g. $qq$-characters, defects, etc. 
+\item Compactness theorem (hence, regularity of expectation values of observables).
+\item $N > 1$ cases where one can write closed (system) of PDEs on 
+the partition function $Z$, or on some expectation values $\ev{\cdots}$. 
 
+It turns out these equations, which often are derived more-or-less combinatorially,
+are actually the same as the BPZ equations (Belavin-Polyakov-Zamolodchikov) in 2d CFT, 
+or the KZ equations (Knizhnik-Zamolodchikov). This is one 
+of the best incarnations of the somewhat mysterious, but 
+nowadays better understood, correspondence known as \emph{the BPS/CFT correspondence}.
+
+Since the world of CFT includes representation of things like 
+Kac-Moody algebras, and the BPS world includes things like Donaldson invariants,
+this is a very powerful relation. 
+\end{enumerate}
+\end{rmk}
+
+
+\section{Gauge origami}
+
+Previously, we explained that the basic example of the 
+$qq$-character is an observable in the statistical mechanical 
+model wherein we sum over $n$-tuples of partitions 
+\[
+\lambda^{(1)},\dots, \lambda^{(n)}
+\]
+which represent a subset of $\mathbb{C}$ of the form 
+$\{ a_\alpha + \epsilon_1(i - 1) + \epsilon_2 (j - 1) \mid \alpha \in 1,\dots, N ; (i,j) \in \lambda^{(\alpha)}\}$.
+
+We discovered that a $qq$-character $\chi(x)$, which is an observable 
+for this model, is described by a formula like 
+\[
+\sum_{\mu^{(0)}, \dots,\mu^{(N)}} \cdots
+\]
+wherein the sum labelled a subset of $\mathbb{C}$ of the form 
+\[
+\{ b_\beta + \epsilon_3(i-1) + \epsilon_4(j-1) \mid \beta \in 1,\dots, N ; (i,j) \in \mu^{(\beta)}\}.
+\]
+However, if we tried to trace the algebrogeometric origin of these 
+two subsets, it was different: 
+the first subset came by doing gauge theory on the plane described by $z_1 z_2$
+whilst the second subset was in fact derived 
+from a partition function on a transversal plane $z_3 z_4$. 
+
+The only connection between these two planes is that $\epsilon_1 + \epsilon_2 + \epsilon_3 + \epsilon_4 = 0$.
+So there's a 3d torus acting on a 4d space relating them. 
+We now aim to present a more unified story where we show that 
+the qq-character is the result of projecting a moduli space 
+involving both planes onto one of the planes. 
+Let us proceed to define that. Unfortunately, the story is local, 
+although there are many indications it can be globalised.
+
+\subsection{Local story}
+
+Think about the union of $\mathbb{C}^2_A = \cup_{A \in \sigma} n_A \mathbb{C}_A^2$
+wherein $A \in \{12,13,14,23,24,34\}$, $|A| = 6 $ labels the 6 coordinate 
+hyperplanes, and $n_A \geq 0$ are the possible integer multiplicities of the hyperplanes. 
+
+We view 
+\[
+\bigcup_\sigma n_A \mathbb{C}_A^2 \subset \mathbb{C}^4_{1234}
+\]
+and act on it with a 3d torus. We seek to understand the $n_A$ in 
+terms of certain sheaves.
+As before, fix $K = \mathbb{C}^k, N_a = \mathbb{C}^{n_A}$.
+Pictorially we can draw a tetrahedron with vertices $1,2,3,4$,
+so that the edges label pairs of vertices, hence 2d planes. 
+So attach to an edge $A$ the number $n_A$.  Within the tetrahedron
+draw an interior ball labelled by $K$ with arrows $I_{A},J_A$ from and to edges to the ball. 
+We also label endomorphisms of $K$, $B_i$. 
+
+This is some homogenised version of the ADHM construction, 
+however in the ADHM construction we only have one multiplit=cty 
+so in that setting one doesn't see the point of all the operators 
+we have introduced above.
+To start, let's define an operator for $A = ab$ with $a < b$:
+\[
+\mu_A = [B_a, B_b] + I_A J_A .
+\]
+Then the equations look like 
+\begin{align*}
+    \mu_{12} + \mu_{34}^+ &= 0 \\
+    \mu_{13} - \mu_{24}^+ &= 0 \\
+    \mu_{14} + \mu_{23}^+ &= 0. 
+\end{align*}
+These equations are valued in $\End(K) \otimes \mathbb{C}^3$,
+but we may also represent that as taking values in six copies of 
+$\Lie(U(k)) \otimes \mathbb{R}^6$ by endowing $K$ with Hermition structure. 
+The $\mathbb{R}^6$ here is actually an irreducible representation of $SU(4)$.
+
+Furthermore we will impose a unifying equation: 
+\[
+\sum_{a \in \{1,2,3,4\}} [B_a, B_a^\dag] + \sum_{A \in \{12,13,\dots\}} I_A I_A^\dag - J_A^\dag J_A = \zeta \mr{id}_{K}
+\]
+Why is seven important? It's $8 -1$. There are $8$ hermition 
+operators acting on $K$. Modding out by the action of $U(K)$ by 
+\[
+(B,I,J) \to (g^{-1} B g, g^{-1} I, J g),
+\]
+we seek to introduce as many equations as variables.
+
+
+The intuition is the following: if we draw a 'spiked' picture where 
+we connect the $z_{12}, z_{23}$ planes by another plane which bounds them, 
+the $I$ somehow 'injects' this plane. Since the $B_a$ are roughly 
+operators of multiplicationby the $z_a$. 
+You can ask: why are we writing the $\mu_i$ in a sort of strange way, 
+$mu_{12} + \mu_{34}^\dag = 0$?
+There is a vaninishing theorem which says
+
+\begin{thm}[Vanishing theorem]
+The $\mu_A = 0$ all vanish individually, the $B_a I_A = 0$ if $a \not \in A$, and $J_A b_a = 0$. 
+\end{thm}
+The way this is proven is by squaring the equations.
+To do everything algebraically, we would have to introduce derived geometry at this point.
+But the differential geometry is a little easier. 
+
+\begin{rmk}
+This story is a precursor to generalising Donaldson-Thomas theory to CY4s. It has 
+to do with how we really want to integrate the Pfaffian, and we somehow do this by imposing half the equations.
+\end{rmk}
+
+Ultimately, we find that 
+\[
+K = \sum_{a<b} \mathbb{C}[B_a,B_b] I_{ab}(N_{ab}) /GL(K).
+\]
+This is to be conmpared with the ordinary ADHM construction 
+\[
+\overline{\mathcal{M}}_k(n) = \{ (B_1,B_2,I_{12}, J_{12}) | \mu_{12} = 0, K = \mathbb{C}[B_1,B_2]I_{12}(N_{12})\}/GL(K).
+\]
+
+\begin{rmk}
+The subspaces $K_{ab} = \mathbb{C}[B_a,B_b] I_{ab}(N_{ab})$
+can overlap. 
+For example, $B_3 K_{12} = 0$, and $B_1 K_{12} = 0$, 
+so if $K_{34} \cap K_{12} \neq \emptyset$, the overlap (call it $\tilde{K}_{12,34}$) 
+must satisfy $B_3 \tilde{K}_{12,34} = 0$, etc.
+
+In a box picture, the corner boxes correspond to $\ker(B_1) \cap \ker(B_2)$. 
+So elements in $\tilde{K}_{12,34}$ must come from corner boxes. 
+The situation relevant for crossed instantons is when $n_{12} n_{34} \neq 0$, and rest $= 0$. 
+To take a shortcut, just look at the fixed points of the torus action 
+\[
+K_{12}= \on{span}( B_1^{i-1} B_2^{j-1} I_{12} (N_{12,\alpha})) = e_{ij, \alpha},
+\]
+which is associated to the box $ij \in \lambda^{(\alpha)}$.
+The vectors which conceivably could belong to $K_{12} \cap K_{34}$ here are those annihilated by $B_1,B_2$,
+again the corner boxes. 
+
+On the other hand, look at the corner boxes of $K_{34}$. 
+Generically these don't intersect, but \emph{nongenerically},
+these cornes can become 1 or become linearly dependent. 
+They will form a 'butterfly configuration' where some corner boxes overlap. 
+This will happen when we choose the equivariant torus to be a smaller subtorus, and 
+hence have some relation between the equivariant parameters. 
+That is, we have some equation like 
+\[
+a_\alpha + \epsilon_1 (i -1) + \epsilon_2(j-1) = b_\beta + \epsilon_3(i' - 1) + \epsilon_4(j' - 1),
+\]
+which is, notably, one of the conditions for a qq-character to have a pole. 
+\end{rmk}
+
+\begin{exm}
+Set $k = 1, n_{12} = n, n_{34} = m$. Then the $B_a \in \mathbb{C}$; since they are just 
+numbers, they drop out of our equations. 
+Therefore we just have equations 
+\begin{align*}
+    I_{12} J_{12} &= 0
+\\
+    I_{34} J_{34} &= 0,
+\end{align*}
+where $I_{12} : \mathbb{C}^2 \to \mathbb{C}, J_{12} : \mathbb{C} \to \mathbb{C}^n, I_{34} : \mathbb{C}^m \to \mathbb{C}, J_{34} : \mathbb{C} \to \mathbb{C}^m$.
+ Further there are lots of equations like $B_4 J_{12} = 0, \dots$. 
+ There is also a stability condition 
+ stating that there exist $\lambda,\mu \in \mathbb{C}$ so that $\lambda_{12} + \mu I_{34} \neq 0$. 
+
+Let's start by assuming that at least one of $B_1,B_2 \neq 0$. 
+On this branch, $J_{34}, I_{34} = 0$ by our assumption that one of the $B_i$ doesn't vanish.
+Hence the stability condition implies $I_{12} \neq 0$. 
+Working this out, we get a copy of $T^\star \mathbb{P}^{n-1}$. 
+So one branch of the moduli space is $\mathbb{C}^2_{(B_1,B_2)} \times T^\star \mathbb{P}^{n-1}$.
+The other branch of the moduli space comes when one of $(B_3,B_4) \neq 0$. On this branch, 
+\[
+\mathbb{C}^2_{(B_3,B_4)} \times T^\star \mathbb{P}^{m-1}.
+\]
+Further, there is another branch wherein all the $B_i$ are zero, and 
+we get a copy of $T^\star \mathbb{P}^{n+ m- 1}$ 
+which parametrises relations between the $I_{12}, I_{34}$. 
+\end{exm}
+
+\begin{rmk}
+In general, let $\overline{\mathcal{M}}_k(\vec{n})$ denote \emph{the moduli space of spiked instantons}
+which depends on $\vec{n} = (n_{12}, n_{13},\dots)$.
+
+There is then a function 
+\[
+\vec{k} : \overline{\mathcal{M}}_k (\vec{n}) \to \mathbb{Z}^b_{\geq 0}
+\]
+wherein $\vec{k}(B_i, I_A, J_A) = (k_{ab} =  \dim(K_{ab}))$.
+
+We can also map 
+\[
+\overline{\mathcal{M}}_k(\vec{n}) \to \prod_{\{a,b\} \in \{12,13,\dots\}} \overline{\mathcal{M}_{k_{ab}}}(n_{ab}).
+\]
+Then, 
+\[
+Z_{\widehat{A}_0} = \sum_{k = 0}^\infty q^k \int_{\overline{\mathcal{M}}_k(n)} c(T^\vee \overline{\mathcal{M}}_k(n), \epsilon_3) = \sum \int_{\overline{\mathcal{M}}_k(n,0,0,0,0,)}  q^k.
+\]
+
+Further, 
+\[
+\ev{\chi(x)} = \sum_{k} q^k \int_{\overline{\mathcal{M}}_k(n_{12} = n,0,0,0,0,n_{34} = 1)} 1
+\]
+Then what is the variable $x$? It has to do with the framing symmetry.
+We have groups $\prod_A U(n_A)$ which act only on the $(I,J)$. The diagonal subgroups act trivially except $x$ acts nontrivially. 
+Here $h$ in equivariant parameter.
+\end{rmk}
+\begin{rmk}
+  Consider $U(1)^3 \subset U(K)$ which acts by multiplying the $B_a \to e^{i\phi_a} B_a$. 
+Let 
+\[ 
+\mathbb{H} = \mathbb{P} \qty(\prod_A U(n_A)) \times G_{\mr{init}}.
+    \]
+\end{rmk}
+
+
+Consider the orbifold classification by $\Gamma \subset H$. We 
+get answers of type ADE. An interesting case is $\Gamma \subset SU(2)_{34}$. 
+To be specific, we need to embed $\Gamma$ into $H$ by specifying all the decompositions
+\[
+N_{12} = \oplus_{\omega \in \mathbb{C}^\vee} N_{12, \omega}\otimes R_{\omega_1},
+\]
+and similarly for $N_{34}$, 
+where $dim N{12,\omega} = \vec{n}_{12}$, for example. 
+Now $\overline{\mathcal{M}}_k$ is connected, but its fixed point locus might not be. It splits, 
+\[
+\overline{\mathcal{M}}_k^\Gamma = \bigcup_{\vec{k}} \mathcal{M}_{\vec{k}}^\Gamma (n_{12}, n_{34})
+\]
+which gives us more parameters for our basic counting problem. 
+That is, the generating function will now depend on many additional fugacities in addition to our other parameters: 
+\[
+    Z^\Gamma(q,a,\epsilon) = \sum_{\vec{k}} \prod_\omega q_\omega^{k_\omega} \int_{\mathcal{M}_{\vec{k}}^\Gamma} 1 = \ev{\text{general qq-character of quiver gauge theory}}.
+\]
+One can reverse the roles of $n_{12},n_{34}$. Then, the same calculation will be computing some integrals over the moduli space of instantons 
+related to the work of Kronheimer-Nakajima. 
 
 \end{document} 
 
