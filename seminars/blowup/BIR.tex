@@ -138,6 +138,7 @@
 \newcommand{\U}{\mathbb{U}}
 \newcommand{\bS}{\mathbb{S}}
 \newcommand{\K}{\mathbb{K}}
+\newcommand{\T}{\mathbb{T}}
 \renewcommand{\L}{\mathbb{L}}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\M}{\overline{M}}
@@ -150,7 +151,6 @@
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 \renewcommand{\abstractname}{Official Description}
 \newcommand{\mc}[1]{\mathcal{#1}}
-\newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
@@ -168,6 +168,8 @@
 \newcommand{\stacks}[1]{\href{https://stacks.math.columbia.edu/tag/#1}{#1}}
 \newcommand{\ostar}{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\star}{\bigcirc}}}
 \newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Def}{Def}
@@ -197,6 +199,7 @@
 \DeclareMathOperator{\ev}{ev}
 \DeclareMathOperator{\Hilb}{Hilb}
 \DeclareMathOperator{\QDM}{QDM}
+\DeclareMathOperator{\GL}{GL}
 
 % Section formatting
 \titleformat{\section}
@@ -264,11 +267,28 @@ In addition, my notes are picture-free (but will include commutative diagrams) a
 If you find any errors, please contact me at \texttt{plei@math.columbia.edu}.
 
 \section*{Acknowledgements}
-I would like to thank Shaoyun Bai for co-organizing the seminar with me.
+I would like to thank Shaoyun Bai for co-organizing the seminar with me. I would also like to thank Song Yu for bringing the works~\cite{wcfmgrassmannflop,ctcgrassmannianflop} about wall-crossing for Grassmannian flops to our attention.
 
 \vspace*{1cm}
 
 \noindent\textbf{Seminar Website:}  \url{https://math.columbia.edu/~plei/s24-birat.html}
+\newpage
+\section*{References used}%
+\label{sec:References used}
+
+We used the following references in the seminar:
+\begin{enumerate}
+    \item The main references for~\Cref{sec:Givental} are~\cite{symplfrob,geom2dtft,coatesthesis}.
+    \item The reference for~\Cref{sec:qrr} is~\cite{qrr}.
+    \item The reference for~\Cref{sec:shift_operators} is~\cite{shifttoricmirror}.
+    \item The main references for~\Cref{sec:Orbifold stuff Patrick Apr 04} are~\cite{ctctoricci,gwdmstack,orbqrr}
+    \item The reference for~\Cref{sec:Gamma-integral structure} is~\cite[Section 3]{ctctoricci}.
+    \item The reference for~\Cref{sec:Toric wall-crossings} and~\Cref{sec:Crepant transformation conjecture for toric ci} is~\cite{ctctoricci}.
+    \item The reference for~\Cref{sec:Wall-crossing for Grassmannian flops} is~\cite{wcfmgrassmannflop}. Also see the very similar~\cite{ctcgrassmannianflop}.
+    \item The reference for~\Cref{cha:Quantum cohomology of projective bundles} is~\cite{qcohprojbundle}.
+    \item The reference for~\Cref{cha:Quantum cohomology of blowups} is~\cite{qcohblowup}.
+\end{enumerate}
+
 \newpage
 
 \tableofcontents
@@ -277,6 +297,7 @@ I would like to thank Shaoyun Bai for co-organizing the seminar with me.
 \label{cha:Preliminaries}
 
 \section{Givental formalism (Patrick, Feb 01)}
+\label{sec:Givental}
 
 \subsection{Introduction}
 
@@ -425,7 +446,7 @@ Writing these in terms of the first derivatives $\pdv{J}{t^i}$ and using the fac
 We will now express some classical results in this formalism. Let $X$ be a toric variety with toric divisors $D_1, \ldots, D_N$ such that $D_1, \ldots, D_k$ form a basis of $H^2(X)$ and Picard rank $k$. Then define the \textit{$I$-function}
 \[ I_X = z e^{\sum_{j=1}^k t_i D_i} \sum_{\beta} Q^{\beta} \frac{\prod_{j=1}^N \prod_{m=-\infty}^0 (D_j+mz)}{\prod_{j=1}^N \prod_{m=-\infty}^{\ab<D_j, \beta>}(D_j + mz)}. \]
 
-\begin{thm}[Mirror theorem]
+\begin{thm}[{\cite{giventalmirror}}]
     The formal functions $I_X$ and $J_X$ coincide up to some change of variables, which if $c_1(X)$ is semi-positive is given by components of the $I$-function.
 \end{thm}
 
@@ -482,6 +503,7 @@ In this formalism, the higher-genus version of the Quantum Riemann-Roch theorem 
 \end{thm}
 
 \section{Quantum Riemann-Roch (Shaoyun, Feb 08)}
+\label{sec:qrr}
 
 We will state and prove the Quantum Riemann-Roch theorem in genus $0$, following Coates-Givental.
 
@@ -896,10 +918,10 @@ We will now give the orbifold cohomology of $X_{\bm{\Sigma}}$. Define the \texti
     0 & \text{otherwise}.
 \end{cases}
 \]
-Then there is an isomorphism of rings
+Then there is an isomorphism of rings~\cite{chowtoricdm}
 \[ H^*_{\mr{CR}}(X_{\bm{\Sigma}}) \cong \frac{\C[N]^{\bm{\Sigma}}}{\ab<\sum_{i \notin S} \chi(b_i) y^{b_i} \mid \chi \in N^{\vee}>}. \]
 \begin{rmk}
-    This result also works in families over a base $B$, where $\C^m$ is replaced by a direct sum of $m$ line bundles on $B$. Then we need to add a $c_1(L_{\chi})$ to the relations and obtain
+    This result also works in families over a base $B$~\cite{orbcohtoricstackbundle}, where $\C^m$ is replaced by a direct sum of $m$ line bundles on $B$. Then we need to add a $c_1(L_{\chi})$ to the relations and obtain
     \[ H^*_{\mr{CR}}(X^B_{\bm{\Sigma}}) \coloneqq \frac{H^*(B)[N]^{\bm{\Sigma}}}{\ab<c_1(L_{\chi}) + \sum_{i \notin S} \chi(b_i) y^{b_i} \mid \chi \in N^{\vee}>}. \]
 \end{rmk}
 
@@ -935,6 +957,496 @@ Here, $\deg_0$ is the grading operator given by the degree without age shifting.
 \begin{rmk}
     Everything we have discussed so far makes sense for toric DM stacks after specializing $Q=1$.
 \end{rmk}
+
+\chapter{Crepant transformation conjecture}%
+\label{cha:Crepant transformation conjecture}
+
+\section{Toric wall-crossings in GW theory (Davis, Apr 11)}%
+\label{sec:Toric wall-crossings}
+
+
+Our goal is to study GIT wall-crossing in toric Gromov-Witten theory. For toric varieties $X_{\pm}$ related across a wall, we want to define $\mc{M} \supset U_{\pm}$ such that $X_{\pm} \in U_{\pm}$, as well as quantum connections on $U_{\pm}$ that restrict to $X_{\pm}$ appropriately.
+
+\subsection{GIT wall-crossing}%
+\label{sub:GIT wall-crossing}
+
+Recall that the data of an (extended) stacky fan is equivalent to GIT data consisting of
+\begin{enumerate}
+    \item A vector space $V$ of dimension $m$;
+    \item A torus $K$;
+    \item Characters $D_i \in \on{char}(K)$ for $i=1,\ldots,m$;
+    \item A stability condition $\omega \in \on{char}_{\R}(K)$;
+    \item A set of anticones $A_{\omega} = \ab\{I \subset \ab\{1,\ldots,m\}\mid \omega \in \sum_{i\in I} a_i D_i, a_i \in \R_{>0}\}$.
+\end{enumerate}
+
+\begin{rmk}
+    The DM stack $X_{\omega}$ is defined to be $[U_{\omega}/K]$, where
+    \[ U_{\omega} \coloneqq \bigcup_{I \in A_{\omega}} (\C^{\times})^I \times \C^{I^c} \]
+    is the semistable locus. Therefore, if $\omega_1, \ldots, \omega_2$ are stability conditions, there is a birational map $X_{\omega_1} \dashrightarrow X_{\omega_2}$ induced by identifying the dense open tori.
+\end{rmk}
+
+Suppose that $\omega_1 \in C_1, \omega_2 \in C_2$ are separated by a wall $W$ in the space of stability conditions. Choose $\omega_0 \in W \cap C_1 = W \cap C_2$ and let
+\[ X_0 = [U_{\omega_0}/K], \]
+which may not be Deligne-Mumford. Choose a resolution $\wt{X}$ of $X_{\omega_1}, X_{\omega_2}$ completing the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & X_0 \\
+    X_{\omega_1} \ar[hookrightarrow]{ur}{g_1} && X_{\omega_2} \ar[hookrightarrow]{ul}{g_2} \\
+    & \wt{X} \ar{ur}{f_2} \ar{ul}{f_1}.
+\end{tikzcd}
+\end{equation*}
+We will assume that $\sum_{i=1}^M D_i \in W$. Under this assumption, the wall-crossing is crepant:
+\[ f_1^* K_{X_{\omega_1}} = f_2^* K_{X_{\omega_2}}. \]
+
+\begin{exm}
+    If $e$ is a vector perpendicular to $W$, the $\mathbb{G}_m$ it generates may not be fixed. For example, let $K = \G_m^2$ and $V = \C^3$. Let $D_1 = (1,0)$, $D_2 = (1,2)$, and $D_3 = (0,2)$. Therefore, 
+    \[ \sum a_i D_i = (a_1 + a_2, 2a_2 + 2a_3). \]
+    Let $\omega \coloneqq (\omega_x, \omega_y)$. If $\omega_x, \omega_y > 0$, then $A_{\omega} \supset \ab\{\ab\{1,2,3\},\ab\{1,3\}\}$. Then $D_2$ appears if either
+    \begin{align*}
+        (\omega_x, \omega_y) &= a_1(1,0) + a_2 (1,2) \text{ if } \omega_x > \frac{\omega_y}{2} > 0 \\
+        (\omega_x, \omega_y) &= a_2 (1,2) + a_3(0,2) \text{ if } \frac{\omega_y}{2} > \omega_x > 0.
+    \end{align*}
+    Therefore, there is a wall givven by $2 \omega_x = \omega_y$. In the chamber $\omega_y > 2\omega_x > 0$, we have
+    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
+    and therefore $U_{\omega} = (\C^2 \setminus 0) \times \C^{\times}$. Taking the quotient, we see that
+    \[ U_{\omega} / K = \P^1 / B_{\mu_2}. \]
+    In the other chamber, we have
+    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{1,2\}\}, \]
+    which implies that $U_{\omega} = \C^{\times} \times (\C^2 \setminus 0)$, so
+    \[ X_{\omega} = \P(2,2). \]
+    For a stability condition $\omega_0$ on the wall, we will obtain
+    \[ U_0 = (\C^2 \setminus 0) \times \C^{\times} \cup \C^{\times} \times (\C^2 \setminus 0) \cup \C \times \C^{\times} \times \C. \]
+    The middle $\C^{\times}$ is fixed by the cocharacter $(2,-1)$, so $X_0$ is non-DM.
+\end{exm}
+
+\subsection{The secondary variety}%
+\label{sub:The secondary variety}
+
+\begin{defn}
+    The wall and chamber structure on $\on{char}_{\R}(K)$ defines a fan on $\on{char}_{\R}(K)$ called the \textit{secondary fan}. The associated toric variety is called the \textit{secondary toric variety}. For us, we will consider the subfan consisting of cones $C_{\omega_1}, C_{\omega_2}$, and their faces. Call the corresponding toric variety $\mc{M}$. This is a moduli space of Landau-Ginzburg models mirror to the $X_i$.
+\end{defn}
+
+Unfortunately, $\mc{M}$ is generally singular, so we will consider a smooth finite cover $\mc{M}_{\mr{reg}}$. Explicitly, we see that
+\[ M = \Spec \C[C_1^{\vee} \cap \on{cochar}(K)] \cup \Spec \C[C_2^{\vee} \cap \on{cochar}(K)]. \]
+Call the charts $U_+, U_-$. Define
+\[ \K_i \coloneqq \ab\{f \in \on{cochar}_{\Q}(K) \mid D_i f \in \Z \text{ for all } i \in I \Rightarrow I \in A_{\omega}\} \]
+and let $\wt{\L}_i$ be the free $\Z$-submodule of $\on{cochar}_{\Q}(K)$ generated by $\K_i$.
+
+\begin{exm}
+    Continung with the previous example, recall that
+    \[ A_{\omega_1} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
+    If we want $(f_x, f_y) \cdot (0,2) \in \Z$, then we see that $f_y \in \frac{1}{2} \Z$, so $\wt{\L}_1 = \Z \times \frac{1}{2} \Z$.
+\end{exm}
+
+\begin{rmk}
+    Recall that
+    \[ H^2(X_{\omega}, \R) \simeq \on{char}_{\R}(K) / \sum_{i \in S} \R D_i, \]
+    where 
+    \[ S = \ab\{ i \mid i^c \notin A_{\omega}\} \]
+    is the set of indices contained in every anticone. Therefore, we can split
+    \[ \on{char}_{\R}(K) = \bigcap_{j \in S} \ker (\xi_j) \oplus \bigoplus_{j \in S} \R D_j. \]
+\end{rmk}
+
+\begin{claim}
+    There exist $\xi_j^{\pm}$ such that
+    \begin{enumerate}
+        \item $\xi_j^+|_W = \xi_j^-|_W$ for all $j \in S_+ \cap S_-$;
+        \item For all $j \in S_+ \Delta S_-$, $\xi_j^{\pm}|_W = 0$;
+        \item All $\xi_j^{\pm} \in \K_{\pm}$.
+    \end{enumerate}
+\end{claim}
+
+\begin{claim}
+    We have a decomposition
+    \[ \wt{\L}_{\pm}^{\vee} = (H^2(X_{\pm}, \R) \cap \wt{\L}_{\pm}^{\vee}) \oplus\bigoplus_{j \in S_{\pm}} \Z D_j. \]
+    Furthermore, $W \cap \wt{\L}_+^{\vee} = W \cap \wt{L}_-^{\vee}$.
+\end{claim}
+
+\begin{proof}
+    If $j \in S_+$, then $j \in I$ for all $I \in A_{\omega_+}$, so $D_j f \in \Z$. Thus $D_j \in \wt{L}_i^{+}$. In the other direction, if $v \in \wt{L}_+^{\vee}$, $v \xi_i \in \Z$ because $\xi_j \in \K_+$. Therefore,
+    \[ w = v - \sum_{i \in S_+} \ab<v,\xi_i> D_i \in \bigcap_{j \in S}\ker(\xi_j) \cap \wt{L}_+^{\vee}. \qedhere \]
+\end{proof}
+
+\begin{cor}
+    There exists an integral basis for $\wt{L}_i^{\vee}$ of the form
+    \[ \ab\{ p_1^{\pm}, \ldots, p_{\ell}^{\pm}\} \cup \ab\{D_j\}_{j \in S} \]
+    such that $p_k^{\pm} \in \ol{C}_{\pm}'$ live in the closure of the ample cones of $X_i$ and $p_k^+ = p_k^-$ as classes of $C'_W$.
+\end{cor}
+
+Now we have maps
+\[ \C[C_{\pm}^{\vee} \cap \on{cochar}(K)] \to \C[y_1^{\pm}, \ldots, y_{\ell_{\pm}}^{\pm}, \ab\{x_j\}_{j \in S}] \]
+given by the formulae
+\[ y^d \mapsto \prod_{j}^{\ell_{\pm}} y_j^{\pm p_j^{\pm \cdot d}} \prod_{j\in S} x_j^{D_j \cdot d} \]
+for cocharacters $d \in \on{cochar}(K)$.
+
+\begin{rmk}
+    We may reorder the basis $p_i$ as $\ab\{q_1, \ldots, q_r\}$ such that $q_r$ is the unique vector not on the wall $W$. Dually, we may write $\ab\{y_i, x_j\}$ as $\ab\{z_1, \ldots, z_r\}$ such that $z_r$ is dual to $q_r$. In these coordinates, we can write
+    \begin{align*}
+        U_+ &= \Spec \C[z_1^+, \ldots, z_{r-1}^+, z_r^{+ \frac{1}{B}}] \\
+        U_- &= \Spec \C[z_1^-, \ldots, z_{r-1}^-, z_r^{- \frac{1}{A}}] .
+    \end{align*}
+    Let $\wh{\mc{M}}_{\mr{reg}}$ be the analytification of $\mc{M}_{\mr{reg}} = U_+ \cup U_-$.
+\end{rmk}
+
+\subsection{Extending the $I$-functions}%
+\label{sub:Extending the I-functions}
+
+Let 
+\[ d = \ol{d} + \sum_{j \in S_{\pm}} (D_j, d) \xi_j \]
+be  the decomposition of some $d \in \on{cochar}(K)$. Then the $I$-functions of $X_{\pm}$ are given by
+\[ I_{\pm}^{\mr{temp}} = z e^{\frac{\sigma}{z}} \sum_{d \in \K_{\pm}}e^{\sigma \ol{d}} \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}). \]
+Precisely, we have
+\[ I_{\pm} \in H_{\mr{CR}, T}^*(X_{\omega_{\pm}}) \otimes_{R_T} R_T\llparenthesis z^{-1} \rrparenthesis [Q,\sigma,x]. \]
+In the above formula, we will make the substitutions $Q=1$ and
+\[ \sigma_{\pm} = \sum_{j=1}^{\ell_{\pm}} \theta^{\pm}(p_j^{\pm}) \log(y_j) - \sum_{j \in S_{\pm}} \lambda_j \log x_j + c_0 \lambda. \]
+Here, $\lambda_j = \theta^+(D_j)$, where $\theta^+$ is the restriction to $H^2$, and $c_0 \lambda = \sum \lambda_i$.
+
+A more explicit formula is given by
+\[ I_{+} = z e^{\frac{\sigma_+}{z}} \sum_{d \in \K_{+}}y^d \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}) \mathbb{1}_{[-d]}, \]
+where $[-d] \in \K/\L$ is the twisted sector.
+
+\begin{claim}
+    The $I$-function $I_+$ defines a convergent power series.
+\end{claim}
+
+\begin{proof}[Idea of proof]
+    Choose $f \in \K/\L$ and $d$ such that $[-d] = f$. Then $X_+^f \subset IX_+$ is a connected component and a closed substack of $X_+$. The restriction
+    \[ H_T^*(X_+^f) \to H_T^*(X_+^{f,T}) \]
+    is injective. Then
+    \[ I^+|_{X_f^T} \propto \Phi(\beta, X), \]
+    where $\beta_j = \frac{u_j}{z}$, $x = y_r^{p_r^+ \cdot e}$, and
+    \[ \Phi(\beta, x) = \sum_{k \in \Z} x^k \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}{\prod_{a \leq D_j \cdot d + k D_j \cdot e, \ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}. \]
+    For $k \ll 0$, because $R_j = \ab<D_j \cdot d> = 0$ for $j \in \delta \subset I_f$ and $D_j \cdot e > 0$, the $x^k$-term vanishes. Convergence follows by the ratio test.
+\end{proof}
+
+Because $\Phi$ solves an explicit differential equation\footnote{We can write the coefficient of $x^k$ as a ratio of products of gamma functions.} with singularities only at $0, \infty, \prod (D_j \cdot e)^{D_j \cdot e}$, it can be analytically continued to
+\[ \wt{\mc{M}}_+ = \ab(\wh{U}_+ \setminus \ab\{v^e = \mr{conifold}\} / \mr{Deck})^{\text{univ cover}}. \]
+For just $X_+$, there are differential operators $P_i$ such that
+\[ ( z^{-1}P_1 I_+, \ldots, z^{-1}P_2 I_+ , \ldots) = L^{-1} \Gamma, \]
+where $L^{-1} = 1 + O(z^{-1})$ and $\Gamma = \mr{const} + O(z)$. Therefore, we may determine $L^{-1}$ by Birkhoff factorization. This gives us quantum connections on $\wt{\mc{M}}_{\pm}$.
+
+\section{Crepant transformation conjecture for toric complete intersections (Davis, Apr 18)}%
+\label{sec:Crepant transformation conjecture for toric ci}
+
+Our goal is now to relate $I_{\pm}$ to each other. More precisely, they will differ by a gauge transformation, which is a Fourier-Mukai transform. The main tool will be to compute in localized equivariant cohomology. 
+
+\subsection{Gauge transformation}%
+\label{sub:Gauge transformation}
+
+First, we will rewrite the $I$-functions as ratios of $\Gamma$-functions:
+\[ I_+(y,z) = ze^{\frac{\sigma_+}{z}} \sum_{d \in \K_+} \frac{y^d}{z^{\sum D_i \cdot d}} \prod_{j=1}^m \frac{\Gamma\ab(1 + \frac{u_j}{z} - \ab<D_j \cdot d>)}{\Gamma\ab(1 + \frac{u_j}{z} + D_j \cdot d)} \frac{\mathbb{1}_{[-d]}}{z^{\iota_{[-d]}}}, \]
+where $\iota_{[-d]}$ is the age. We will not work directly with these. Instead, we will consider
+\[ H_+(y) = e^{(2\pi i)^{-1} \sigma_+} \Sigma_{d \in \K_+} y^d \prod_{j=1}^m \frac{1}{\Gamma(1 + u_j (2\pi i)^{-1} + D_j \cdot d)} \mathbb{1}_{[-d]}. \]
+Using the $\wh{\Gamma}$ class, it is related to the $I$-function by the formula
+\[z^{-1} I_+(y,z) = z^{\frac{-c_0 \lambda}{2\pi i} - \frac{\dim X_+}{2}} z^{-\mu^+} z^{\rho^+} (\wh{\Gamma}_{X_+} \cup (2\pi i)^{\frac{\deg_0}{2}} \on{inv}^* H_+(z^{-\frac{\deg(y)}{2}} y)). \]
+
+Recall that $T$-fixed points on $I_{X_+}$ correspond to pairs $(\delta, f)$, where $\delta$ is a minimal anticone and $f \in \K_+/\L$. Then we compute
+\begin{align*}
+    \iota^*_{(\delta, f)} H_+ &= \sum_{\substack{d \in \K_+ \\ [d] = f}} \frac{y^d}{\prod_{j \in \delta} \Gamma(1 + (2\pi i)^{-1}u_j ( \delta ) + D_j \cdot d)} \cdot \frac{e^{(2\pi i)^{-1} \sigma_+ \delta}}{\prod_{j \notin \delta} \Gamma(1 + (2\pi i)^{-1})u_j(\delta) + D_j \cdot d}.
+\end{align*}
+Note that for $j \in \delta$, $u_j(\delta) = 0$. In addition, $D_j \cdot d \in \Z$, so if it is negative, then the corresponding $\Gamma$-function vanishes. Therefore, we define
+\[ \delta^{\vee} \coloneqq \ab\{d \in \L_{\Q} \mid D_j \cdot d \in \Z_{\geq 0} \text{ for all } j \in \delta\} \]
+and the $I$-function becomes
+\begin{align*}
+    \iota^*_{(\delta, f)} H_+ &= \sum_{\substack{d \in \delta^{\vee} \\ [d] = f}} \frac{y^d}{\prod_{j \in \delta} \Gamma(1 + (2\pi i)^{-1}u_j ( \delta ) + D_j \cdot d)} \cdot \frac{e^{(2\pi i)^{-1} \sigma_+ \delta}}{\prod_{j \notin \delta} \Gamma(1 + (2\pi i)^{-1})u_j(\delta) + D_j \cdot d}.
+\end{align*}
+If $\delta \in \mc{A}_{\omega_+} \cap \mc{A}_{\omega_-}$, then $\iota^*(\delta,f) H_+ = \iota^*_{(\delta, f)} H_-$. Otherwise, $\delta$ has the form $\ab\{j_1, \ldots, j_{r-1}, j_+ \}$, where all $D_{j_i} \in W$ for $i < r$ and $D_{j_+} \cdot e > 0$ for the normal vector to $W$ pointing towards $\omega_+$.
+
+\begin{defn}
+    A pair $(\delta_{\pm} \in \mc{A}_{\omega_{\pm}})$ are \textit{next to each other} if both are of the form
+    \[ \delta_{\pm} = \ab\{j_1, \ldots, j_{r-1}, j_{\pm}\}, \]
+    where $\pm D_{j_\pm} \cdot e > 0$. Likewise, $(\delta_{\pm}, f_{\pm})$ are \textit{next to each other} if $(\delta_{\pm})$ are and $f_- = f_+ + \alpha e \in \L_{\Q}/\L$.
+\end{defn}
+
+\begin{lem}
+    If $\delta_+$ is next to $\delta_-$, for all $j$ and for any $j_- \in \delta_- \cap \delta_+^c$, 
+    \[ u_j(\delta_+) - u_j(\delta_-) = \frac{D_j \cdot e}{D_{j_-} \cdot e} u_{j_-}(\delta_+). \]
+\end{lem}
+
+\begin{proof}
+    Expand
+    \[ D_j = \sum_{i=1}^{r-1} c_j D_{j_i} + c_- D_{j_-}. \]
+    Then $D_j \cdot e = c_- D_{j_-} \cdot e$. Because
+    \begin{align*}
+        \theta(D_j) &= u_j - \lambda_j \\
+        &= \sum c_i(u_{j_i} - \lambda_{j_i}) + c_i (u_{j_-} - \lambda_{j_-})
+    \end{align*}
+    and $u_{j_-}(\delta_-) = 0$, we see that
+    \begin{align*}
+        u_j(\delta_+) - \lambda_j &= -\sum c_i \lambda_{j_i} + c_-(u_{j_-}(\delta_+) - \lambda_{j_-}) \\
+        u_j(\delta_-) - \lambda_j &= -\sum c_i \lambda_{j_i} + c_-(u_{j_-}(\delta_-) - \lambda_{j_-}).
+    \end{align*}
+    This implies that
+    \[ u_j(\delta_+) - u_j(\delta_-) = c_- u_{j_-}(\delta_+). \qedhere \]
+\end{proof}
+
+\begin{claim}
+    We have the formula
+    \[ \iota^*_{(\delta_+, f_+)} H_+ = \sum_{\substack{(\delta_-, f_-) \\ \text{next to}\\(\delta_+, f_+)}} c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{(\delta_-, f_-)}^* H_-, \]
+    where $c$ is some explicit matrix\footnote{The reason the formulae are so complicated is because we are using the wrong basis.} made of products of things like
+    \[ \prod_{\substack{j \mid D_j \cdot e < 0 \\ j \neq j_-}} \frac{\sin \pi ( (2\pi i)^{-1} u_j(\delta_+) + D_j \cdot f_+ )}{\sin \pi ((2\pi i)^{-1}u_j(\delta_-) + D_{j_-} \cdot f_-)}. \]
+\end{claim}
+
+\begin{proof}{Idea of proof}
+    If $d \in \delta_+$, then $D_j \cdot d \geq 0$ for all $j \in \delta_+$, so we can write $d = D_+ + k e$, where $d_+ \in \delta_+^{vee}$ and $D_+ - e \notin \delta_+^{\vee}$. We now obtain
+    \begin{align*}
+        \iota^*_{(\delta_+, f_+)} H_+ &= \sum_{d_+} y^{d_+} \sum_{k = 0}^{\infty} \frac{(y^e)^k e^{(2\pi i)^{-1} \sigma_+ \delta_+}}{\prod_{j=1}^m \Gamma(1+(2\pi i)^{-1} u_j(\delta_+) + D_j \cdot d_+ + k D_j \cdot e)}.
+    \end{align*}
+    Using the reflection formula
+    \begin{align*}
+        \Gamma(1+(2\pi i)^{-1}u_j(\delta_+) + D_j \cdot d_+ + k D_j \cdot e) =&{} (-1)^{k D_j \cdot e} \frac{\sin \pi(-(2\pi i)^{-1} u_j \delta_+ - D_j \cdot d_+)}{\pi} \\ &\times \Gamma(-(2\pi i)^{-1} u_j \delta_+ - D_j \cdot d_+ - k D_j \cdot e), 
+    \end{align*}
+    we may write
+    \[ \iota_{(\delta_+, f_+)}^* H_+ = \on{Res}_{s=k}(\cdots) \Gamma(s) \Gamma(1-s)\prod_{D_j \cdot e < 0} \Gamma(-(2\pi i)^{-1} u_j(\delta_+) - D_j \cdot d_+ - s D_j \cdot e). \]
+    We obtain poles at the following locations:
+    \begin{enumerate}[(1)]
+        \item $\Gamma(1-s)$ gives poles at $s=1,2,3,\ldots$;
+        \item $\Gamma(s)$ gives poles at $s=0,-1,-2,\ldots$;
+        \item The last term gives poles at $s=(-D_{j_-} \cdot e)^{-1} ((2\pi i)^{-1} u_j(\delta_+) + D_{j_-} \cdot d_+ - n)$.
+    \end{enumerate}
+    We can then rewrite this as a contour integral where the contour is such that all poles of type (1) are on the right and all poles of types (2) and (3) except the one at $0$ are on the left. For small $y$, we have
+    \[ \iota_{\delta_+, f_+}^* H_+ = \oint_{\mr{right}}, \]
+    and for large $y$, we have
+    \[ \iota_{\delta_+, f_+}^* H_+ = \oint_{\mr{left}} = \sum c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{\delta_-, f_-}^* H_-. \]
+    Choose some $j_-$ for which $D_{j_-} e < 0$, we obtain
+    \[ \on{Res}_{j_-} = \prod_{D_j \cdot e < 0, j \neq j_-} \frac{\Gamma}{\sin}. \]
+    Setting $\delta_- = \ab\{j_1, \ldots, j_{r-1}, j_- \}$ and 
+    \[ d_- = d_+ + \frac{D_{j_-} \cdot d_+ - 1}{- D_{j_i} \cdot e} e, \]
+    we use the lemma to rewrite some $\Gamma(\ldots u_j(\delta_+))$ in terms of $u_j(\delta_-)$ and conclude.
+\end{proof}
+
+We have therefore obtained the formula
+\[ \iota^*_{(\delta_+, f_+)} H_+ = \sum_{\substack{(\delta_-, f_-) \\ \text{next to}\\(\delta_+, f_+)}} \sum_{\substack{d_- \in \delta_-^{\vee} \\ \text{minimal}\\ [d_-] = f_-}} y^{d_-} \sum_{k=0}^{\infty} \frac{e^{(2\pi i)^{-1} \sigma_i \delta_- (y^e)^{-k}}}{\prod_{j=1}^m \Gamma(1+(2\pi i)^{-1} u_j(\delta_-) + D_j \cdot d_- - k D_j \cdot e)} c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{\delta_-,f_-}^* H_-. \]
+Now define
+\[ \mathbb{U}_H(\alpha) \coloneqq \sum_{\delta \in \mc{A}_+ \cap \mc{A_-}, f} (\iota^*_{\delta, f} \alpha) \frac{\mathbb{1}_{\delta, f}}{e^T(N_{\delta, f})} + \sum_{\delta_+, f_+} \sum_{\substack{\delta_-, f_- \\ \text{next to}\\ \delta_+, f_+}} c_{\delta_+,f_+}^{\delta_-,f_-} (\iota_{\delta_-, f_-}^* \alpha) \frac{\mathbb{1}_{\delta_-, f_-}}{e^T(N_{\delta_-, f_-})}. \]
+We have a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    H_T^*(IX_i)_{\mr{loc}}^{\mr{comp}} \ar{rr}{\mathbb{U}_H} \ar{d}{z^{-\mu_-} z^{-\rho_-} (\wh{\Gamma_{X_-} \cup (2\pi i)^{\frac{\deg_0}{2}}} \on{inv}^* \alpha)} & & H_T^*(IX_+)_{\mr{loc}}^{\mr{comp}} \ar{d} \\
+    H^*_{\mr{CR}, T}(X_-)_{\mr{loc}}[\log z]\llparenthesis z^{-\frac{1}{k}} \rrparenthesis \ar{rr}{\mathbb{U}} & & H^*_{\mr{CR}, T}(X_+)_{\mr{loc}}[\log z]\llparenthesis z^{-\frac{1}{k}} \rrparenthesis.
+\end{tikzcd}
+\end{equation*}
+
+\subsection{The Fourier-Mukai transform}%
+\label{sub:The Fourier-Mukai transform}
+We will now prove that $\mathbb{U}$ is given by the Fourier-Mukai transform. Here, let $\wt{X}$ be a common toric blowup of $X_{\pm}$ as in
+\begin{equation*}
+\begin{tikzcd}
+    & \wt{X} \ar{dl}{f_+} \ar{dr}{f_-} \\
+    X_+ & & X_-
+\end{tikzcd}
+\end{equation*}
+and $\on{\F M} \coloneqq (f_+)^* (f_-)^* \coloneqq K_T^0(X_-) \to K_T^0(X_+)$. We see that $K_T^0(X_{\pm})$ is generated by $[L_{\pm(\rho)}]$, where $\rho \in \on{char}(K)$ and $K_T^0(\wt{X})$ is generated by $[L_{\pm}(\rho, n)]$. We will now move to the fixed point basis and see that
+\[ e_{\delta, \rho} = L_{\pm}(\rho) \prod_{i \notin \delta}(1-L(D_i)^{-1} \otimes e^{-\lambda_i}). \]
+
+\begin{rmk}
+    Let $x_{\delta}$ be a fixed point of $X_{\pm}$ and $\rho$ be in its isotropy. Then $e_{\delta, \rho} = (\iota_{\delta})_* \rho$.
+\end{rmk}
+
+We now compute $\on{\F M}(e_{\delta, \rho})$.
+\begin{enumerate}
+    \item If $\delta \in \mc{A}_- \cap \mc{A}_+$, then $\on{\F M}(e_{\delta, \rho}) = e_{\delta, \rho}$;
+    \item Otherwise, we have a complicated formula.
+\end{enumerate}
+The computation involves doing localization and relating anticones of $X_{\pm}$ to those of $\wt{X}$. We then obtain a commutative diagram
+\begin{equation}\label{eqn:fmsympl}
+\begin{tikzcd}
+    K_T^0(X_-) \ar{r}{\on{\F M}} \ar[swap]{d}{\wt{\on{ch}}} & K_T^0(X_+) \ar{d}{\wt{\on{ch}}} \\
+    H_T^*(IX_i) \ar{r}{\mathbb{U}_H} & H_T^*(IX_+)
+\end{tikzcd}
+\end{equation}
+by direct computation.
+
+\subsection{Crepant transformation conjecture}%
+\label{sub:Crepant transformation conjecture}
+
+We are now ready to state the crepant transformation conjecture.
+\begin{thm}
+    Let $\mc{H}(X_{\pm}) \coloneqq H_{\mr{CR}, T}^*(X_{\pm}) \llparenthesis z^{-1} \rrparenthesis$. Then there exists a degree-preserving symplectic transformation
+    \[ \U \coloneqq \mc{H}(X_-) \to \mc{H}(X_+) \]
+    such that
+    \begin{enumerate}
+        \item $I_+ = \U I_-$ after analytic continuation;
+        \item If $g_{\pm} \colon X_{\pm} \ol{X}_=$ is the map to the toric blowdown, then
+            \[ \U \circ (g_-^* v \cup) = (g_+^* v \cup) \circ \U \]
+            for all $v \in H^2_T(\ol{X}_0)$;
+        \item $\U$ fits into the commutative diagram~\Cref{eqn:fmsympl}.
+    \end{enumerate}
+\end{thm}
+
+\begin{thm}[Crepant transformation conjecture for toric DM stacks]
+    Let $(F^{\pm}, E^{\pm}, \nabla^{\pm})$ be the quantum connections on $X_{\pm}$. Then there exists a gauge transformation
+    \[ \Theta \in \Hom(H_{\mr{CR}, T}^*(X_-), H_{\mr{CR}, T}^*(X_+)) \otimes_{R_T} ( \mc{O}_{U^0} \otimes R_T )[z]\llbracket y_1, \ldots, y_{r-1} \rrbracket \]
+    such that
+    \begin{enumerate}
+        \item $\nabla^+ \Theta = \Theta \nabla^-$;
+        \item $\Theta$ is homogeneous of degree $0$;
+        \item $\Theta$ preserves the orbifold Poincar\'e pairings.
+    \end{enumerate}
+\end{thm}
+
+The proof starts by applying differential operators to $\U I_- = I_+$ to obtain
+\[ z^{-1} \vec{P}_{\pm} I_{\pm} = e^{\frac{\sigma_{\pm}}{z}}L_{\pm}^{-1} \gamma_{\pm}. \]
+We then set $\Theta = \gamma_+ \gamma_-^{-1}$ and obtain
+\[ (e^{\frac{\sigma_+}{z}} L_+(y,z)^{-1}) \Theta(y,z) = \U (e^{\frac{\sigma_-}{z}}L_-(y,z)^{-1}). \]
+
+\section{Wall-crossing for Grassmannian flops (Kostya, Apr 25)}%
+\label{sec:Wall-crossing for Grassmannian flops}
+
+We will now consider a wall-crossing in a nonabelian situation. This relies on reducing to the abelian case and citing CIJ.
+
+\subsection{Geometric setup}%
+\label{sub:Geometric setup}
+
+Let $B$ be a smooth projective variety and let $E, F$ be vector bundles on $B$ which split as direct sums of line bundles
+\[ E = \bigoplus_{i=1}^n L_i, \qquad F = \bigoplus_{i=1}^n M_i. \]
+Now let 
+\[ V = \ul{\Hom}(F, \C^r) \oplus \ul{\Hom}(\C^r, E) \]
+and $G = GL_r$. $G$ acts on the total space of $V$ by the formula
+\[ (X,Y) \circ g = (g^{-1} X, Yg). \]
+Let $X_{\pm} = V \sslash_{\pm \det} G$ be the corresponding GIT quotients of $V$. We obtain
+\begin{equation*}
+\begin{tikzcd}
+    X_+ = \on{tot}(S_+ \otimes p^* F^{\vee}) \ar{r} & \on{Gr}(r, E) \ar{d}{p} \\
+    & B \\
+    X_- = \on{tot}(S_- \otimes p^* E) \ar{r} & \on{Gr}(r, F^{\vee}) \ar{u}{p}.
+\end{tikzcd}
+\end{equation*}
+The birational transformation here is known as a Grassmannian flop.
+
+\begin{exm}
+    Consider the quiver given by
+    \begin{equation*}
+    \begin{tikzcd}
+        \framebox{$k$} \ar{r} & \circled{$r$} \ar{r} & \circled{$k$} \ar{r} & \framebox{$n$}.
+    \end{tikzcd}
+    \end{equation*}
+    The corresponding moduli of semistable representations is
+    \[ (\C^k \to \C^r) \times (\C^r \times \C^k) \times (\C^k \to \C^n)\sslash \GL_r \times \GL_k. \]
+    Then
+    \[ X_+ = \on{tor}(\wh{S}_r^{\oplus k}) \to \on{Fl}(r,k,n), \qquad X_- = \on{tot}(\ol{S}_r^{\vee} \otimes S_k) \to \on{Gr}(r,k) \times \on{Gr}(k, n). \]
+\end{exm}
+
+There is an action of $\T = (\C^{\times})^{2n}$ on the total space of $E \oplus F$, which induces an action of $\T$ on $V$. Denote
+\begin{align*}
+    x_i = c_1^{\T}(L_i^{\vee}) \qquad z_i = c_1^{\T}(M_i^{\vee}).
+\end{align*}
+Let $R = \C^r$, viewed as a right $G$-representation. Then $R \times V \to V$ is a $G$-equivariant vector bundle on $V$ which descends to $X_{\pm}$ and are the pullbacks of $S_+^{\vee}$ and $S_-$, repsectively. Now denote by
+\[ y_1, \ldots, y_r \]
+the Chern roots of $R^{\vee}$. Then
+\[ H_{\T}^*(X_{\pm}) = H_{\T}^*(B)[X_i, z_i][Y_k]^{S_n} / I_{\pm}, \]
+where $I_+$ is the ideal given by
+\[ I_+ = \ab\{ \ab[\frac{\prod_{i=1}^n(1-x_i)}{\prod_{j=1}^r (1+y_j)}]_{\ell} \ \  \middle\vert\ \  \ell > n-r \} \]
+and $I_-$ is defined similarly. Let $R_{\T} = H_{\T}^*(\mr{pt})$ and $S_{\T} = R_{\T, \mr{loc}}$. Finally, let $\wh{S}_{\T}$ be a completion of $S_{\T}$ containing exponentials and $\Gamma$-functions. The $\T$-fixed loci in $X_{\pm}$ correspond to $r \times r$ minors of the corresponding Grassmannians. We encode them by
+\[ \delta \colon \ab\{1, \ldots, r\} \to \ab\{1, \ldots, n\} \]
+which are strictly order-preserving, as in $\delta_i \coloneqq \delta(i) < \delta(j) \eqqcolon \delta_j$ if $i < j$. In other words,
+\[ X_{\pm}^{\T} = \bigsqcup_{\delta^{\pm}} B_{\delta^{\pm}} \cong B. \]
+
+\begin{lem}
+    We have
+    \begin{align*}
+        R|_{B_{\delta^-}} &= \bigoplus_{i=1}^r M_{\delta^-_i}^{\vee} \\
+        R|_{B_{\delta^+}} &= \bigoplus_{i=1}^r L_{\delta^+_i}^{\vee}.
+    \end{align*}
+    This implies that
+    \begin{align*}
+        y_i|_{B_{\delta^-}} &= -z_{\delta_i^-} \\
+        y_i|_{B_{\delta^+}} &= -x_{\delta_i^+} .
+    \end{align*}
+\end{lem}
+
+\subsection{Abelianization}%
+\label{sub:Abelianization}
+
+Let $(C^{\times})^r \subset G = \GL_r$ be the maximal torus which acts diagonally on $\C^r$. Then the abelianized quotients are
+\begin{align*}
+    X_{T,-} &= V \sslash_{\theta_-} T \\
+    &= \on{tot}(\mc{O}_{\P(F^{\vee})}(-1) \otimes p^* E) \times_B \cdots \times_B \on{tot}(\mc{O}_{\P(F^{\vee})}(-1) \otimes p^* E) \\
+    X_{T,+} &= V \sslash_{\theta_+} T \\
+    &= \on{tot}(\mc{O}_{\P(E)}(-1) \otimes p^* F^{\vee}) \times_B \cdots \times_B \on{tot}(\mc{O}_{\P(E)}(-1) \otimes p^* F^{\vee}) .
+\end{align*}
+Note that $T$ has many more stability conditions than $T$. Denote
+\[ \theta_j \coloneqq \prod_{k=1}^j t_k \prod_{k=j+1}^r t_k^{-1} \]
+and the GIT quotient
+\[ X_{T,j} \coloneqq V \sslash_{ \theta_j } T. \]
+Therefore, $X_{T,0} = X_{T,-}$ and $X_{T,r} = X_{T,+}$.
+
+The cohomology of $X_{T,j}$ is given by
+\[ H_{\T}^0(X_{T,j}) = H_{\T}^*(B)[x_i, z_i][y_k] / I_j^{\mr{ab}}, \]
+where the ideal $I_j^{\mr{ab}}$ is given by
+\[ I_j^{\mr{ab}} = \ab\{ \prod_{i=1}^n (-x_i-y_k)\ \  \middle\vert\ \ 1 \leq k \leq j\} \cup \ab\{ \prod_{i=1}^n (z_i + y_k) \ \ \middle\vert\ \ j+1 \leq k \leq r \}.\]
+The $\T$-fixed loci are indexed by points in $\P^{n-1}$. These are denoted by arbitrary functions
+\[ f \colon \ab\{1, \ldots, r\} \to \ab\{1, \ldots, n \}. \]
+Note that $f$ is not required to be injective. Thus we have a decomposition
+\[ X_{T, j}^{\T} = \bigsqcup_f B_f \cong B. \]
+
+The first abelianization in cohomology is
+\[ H_{\T}^*(X_{\pm}) \cong H_{\T}^*(V^{\pm \mr{ss}} / T)^W. \]
+Next, note the diagram
+\begin{equation*}
+\begin{tikzcd}
+    X_{\pm} \\
+    V^{\pm \mr{ss}}(G)/T \ar[hookrightarrow]{r} \ar[twoheadrightarrow]{u} & X_{T,\pm} \ar[dashrightarrow]{ul}
+\end{tikzcd}
+\end{equation*}
+gives us a rational map between the abelian and nonabelian quotients. This gives us a surjection
+\[ H_{\T}^*(X_{T,\pm}) \twoheadrightarrow V^{\pm\mr{ss}}(G)/T. \]
+The kernel of this morphism are those $f$ which are not injective.
+
+\subsection{Fourier-Mukai transform}%
+\label{sub:Fourier-Mukai transform}
+
+Consider the mutual blowup
+\begin{equation*}
+\begin{tikzcd}
+    & \wt{X} \ar{dl}{f_+} \ar{dr}{f_-} \\
+    X_+ & & X_- \ar[dashrightarrow]{ll}
+\end{tikzcd}
+\end{equation*}
+and let
+\[ f_+ \coloneqq f_{+,*} f_-^* \colon K_{\T}(X_-) \to K_{\T}(X_+). \]
+Here,
+\[ \wt{X} = (F \to \C^r) \times (\C^r \to \C^r) \times (\C^r \to E) \sslash_{(\det^{-1},\det)} \GL_r^2. \]
+Then the morphisms are
+\[ f_+((X,U,Y), (g_1,g_2)) = ((X,YU), g_1), \qquad f_-((X,U,Y), (g_1, g_2)) = ((UX, Y), g_2). \]
+The fixed loci in $\wt{X}$ are indexed by $\delta^+, \delta^-$. 
+
+\begin{lem}
+    The projections $f_{\pm}$ map $B_{(\delta^+, \delta^-)}$ isomorphically to $B_{\delta^+}$ or $B_{\delta^-}$, respectively. Moreover,
+    \begin{align*}
+        R_1|_{B_{(\delta^+, \delta^-)}} &= \bigoplus_{i=1}^r M_{\delta^-_i}^{\vee} \\
+        R_2|_{B_{( \delta^+,\delta^- )}} &= \bigoplus_{i=1}^r L_{\delta^+_i}^{\vee}.
+    \end{align*}
+\end{lem}
+
+\begin{lem}
+    The localized $\T$-equivariant $K$-theory of $X_-$ is spanned by classes of the form
+    \[ \pi^*(A) \otimes e_{\delta_-} = \pi^* A \otimes \prod_{j \notin \delta^-} \Lambda^*(M_j^{\vee} \otimes R^{\vee})^{\vee} \]
+    for $A \in K(B)$ and similarly for $X_+$.
+\end{lem}
+
+\begin{lem}
+    We have
+    \[ \on{FM}(e_{\delta^-}) = \prod_{j \notin \delta^-} \Lambda^*(M_j^{\vee} \otimes R^{\vee})^{\vee} \in K_{\T}(X_+). \]
+\end{lem}
+
+\begin{prop}
+    The following diagram commutes:
+    \begin{equation*}
+    \begin{tikzcd}
+        K_{\T}(X_-) \ar{r}{\on{FM}} \ar{d}{\on{ch}^{\T}_-} & K_{\T}(X_+) \ar{d}{\on{ch}^{\T}_+} \\
+        H_{\T}^*(X_-) \otimes \wh{S}_{\T} \ar{r}{\mathbb{U}_H} & H^*(X_+) \otimes \wh{S}_{\T}.
+    \end{tikzcd}
+    \end{equation*}
+    Here, $\mathbb{U}_H$ is an explicit $\wh{S}_{\T}$-linear operator given by the formula
+    \begin{align*}
+        \mathbb{U}_H\ab(\frac{\alpha}{e_{\T}(N_{\delta^-})}) = \sum_{\delta^+} C_{\delta^-, \delta^+} \frac{\phi_{\delta^+, \delta^-}(\alpha)}{e_{\T}(N_{\delta^+})},
+    \end{align*}
+    where
+    \[ C_{\delta^-, \delta^+} = \prod_{i=1}^r e^{(n-r)(x_{\delta_i^+} - z_{\delta_i^-})/2} \prod_{j_- \in \delta^-} \frac{\sin \ab(\frac{x_{\delta_i^+} - z_{j_-}}{2i})}{\sin\ab(\frac{z_{\delta_i^-} - z_{j_-}}{2i})}. \]
+\end{prop}
+
+The strategy to prove this result is first to replace cohomology by the symplectic space and replace the Chern character by the $K$-group framing. Then we use abelianization for $I$-functions~\cite{abnonabifn} and repeatedly apply CIJ to each wall-crossing from the $X_j$. We then compose the symplectic transformations from CIJ and check that it equals the one given above. Finally, a statement about deforming the contour into the Weyl-invariant part gives the desired result.
 
 \chapter{Quantum cohomology of projective bundles}%
 \label{cha:Quantum cohomology of projective bundles}
@@ -1872,339 +2384,7 @@ intertwines the quantum connections up to a $\frac{1}{2}$ shift in $\mu_Z$. Comb
 \end{thm}
 
 
-\chapter{Crepant transformation conjecture for toric complete intersections}%
-\label{cha:Crepant transformation conjecture for toric complete intersections}
-
-\section{Toric wall-crossings in GW theory (Davis, Apr 11)}%
-\label{sec:Toric wall-crossings}
-
-
-Our goal is to study GIT wall-crossing in toric Gromov-Witten theory. For toric varieties $X_{\pm}$ related across a wall, we want to define $\mc{M} \supset U_{\pm}$ such that $X_{\pm} \in U_{\pm}$, as well as quantum connections on $U_{\pm}$ that restrict to $X_{\pm}$ appropriately.
-
-\subsection{GIT wall-crossing}%
-\label{sub:GIT wall-crossing}
-
-Recall that the data of an (extended) stacky fan is equivalent to GIT data consisting of
-\begin{enumerate}
-    \item A vector space $V$ of dimension $m$;
-    \item A torus $K$;
-    \item Characters $D_i \in \on{char}(K)$ for $i=1,\ldots,m$;
-    \item A stability condition $\omega \in \on{char}_{\R}(K)$;
-    \item A set of anticones $A_{\omega} = \ab\{I \subset \ab\{1,\ldots,m\}\mid \omega \in \sum_{i\in I} a_i D_i, a_i \in \R_{>0}\}$.
-\end{enumerate}
-
-\begin{rmk}
-    The DM stack $X_{\omega}$ is defined to be $[U_{\omega}/K]$, where
-    \[ U_{\omega} \coloneqq \bigcup_{I \in A_{\omega}} (\C^{\times})^I \times \C^{I^c} \]
-    is the semistable locus. Therefore, if $\omega_1, \ldots, \omega_2$ are stability conditions, there is a birational map $X_{\omega_1} \dashrightarrow X_{\omega_2}$ induced by identifying the dense open tori.
-\end{rmk}
-
-Suppose that $\omega_1 \in C_1, \omega_2 \in C_2$ are separated by a wall $W$ in the space of stability conditions. Choose $\omega_0 \in W \cap C_1 = W \cap C_2$ and let
-\[ X_0 = [U_{\omega_0}/K], \]
-which may not be Deligne-Mumford. Choose a resolution $\wt{X}$ of $X_{\omega_1}, X_{\omega_2}$ completing the diagram
-\begin{equation*}
-\begin{tikzcd}
-    & X_0 \\
-    X_{\omega_1} \ar[hookrightarrow]{ur}{g_1} && X_{\omega_2} \ar[hookrightarrow]{ul}{g_2} \\
-    & \wt{X} \ar{ur}{f_2} \ar{ul}{f_1}.
-\end{tikzcd}
-\end{equation*}
-We will assume that $\sum_{i=1}^M D_i \in W$. Under this assumption, the wall-crossing is crepant:
-\[ f_1^* K_{X_{\omega_1}} = f_2^* K_{X_{\omega_2}}. \]
-
-\begin{exm}
-    If $e$ is a vector perpendicular to $W$, the $\mathbb{G}_m$ it generates may not be fixed. For example, let $K = \G_m^2$ and $V = \C^3$. Let $D_1 = (1,0)$, $D_2 = (1,2)$, and $D_3 = (0,2)$. Therefore, 
-    \[ \sum a_i D_i = (a_1 + a_2, 2a_2 + 2a_3). \]
-    Let $\omega \coloneqq (\omega_x, \omega_y)$. If $\omega_x, \omega_y > 0$, then $A_{\omega} \supset \ab\{\ab\{1,2,3\},\ab\{1,3\}\}$. Then $D_2$ appears if either
-    \begin{align*}
-        (\omega_x, \omega_y) &= a_1(1,0) + a_2 (1,2) \text{ if } \omega_x > \frac{\omega_y}{2} > 0 \\
-        (\omega_x, \omega_y) &= a_2 (1,2) + a_3(0,2) \text{ if } \frac{\omega_y}{2} > \omega_x > 0.
-    \end{align*}
-    Therefore, there is a wall givven by $2 \omega_x = \omega_y$. In the chamber $\omega_y > 2\omega_x > 0$, we have
-    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
-    and therefore $U_{\omega} = (\C^2 \setminus 0) \times \C^{\times}$. Taking the quotient, we see that
-    \[ U_{\omega} / K = \P^1 / B_{\mu_2}. \]
-    In the other chamber, we have
-    \[ A_{\omega} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{1,2\}\}, \]
-    which implies that $U_{\omega} = \C^{\times} \times (\C^2 \setminus 0)$, so
-    \[ X_{\omega} = \P(2,2). \]
-    For a stability condition $\omega_0$ on the wall, we will obtain
-    \[ U_0 = (\C^2 \setminus 0) \times \C^{\times} \cup \C^{\times} \times (\C^2 \setminus 0) \cup \C \times \C^{\times} \times \C. \]
-    The middle $\C^{\times}$ is fixed by the cocharacter $(2,-1)$, so $X_0$ is non-DM.
-\end{exm}
-
-\subsection{The secondary variety}%
-\label{sub:The secondary variety}
-
-\begin{defn}
-    The wall and chamber structure on $\on{char}_{\R}(K)$ defines a fan on $\on{char}_{\R}(K)$ called the \textit{secondary fan}. The associated toric variety is called the \textit{secondary toric variety}. For us, we will consider the subfan consisting of cones $C_{\omega_1}, C_{\omega_2}$, and their faces. Call the corresponding toric variety $\mc{M}$. This is a moduli space of Landau-Ginzburg models mirror to the $X_i$.
-\end{defn}
-
-Unfortunately, $\mc{M}$ is generally singular, so we will consider a smooth finite cover $\mc{M}_{\mr{reg}}$. Explicitly, we see that
-\[ M = \Spec \C[C_1^{\vee} \cap \on{cochar}(K)] \cup \Spec \C[C_2^{\vee} \cap \on{cochar}(K)]. \]
-Call the charts $U_+, U_-$. Define
-\[ \K_i \coloneqq \ab\{f \in \on{cochar}_{\Q}(K) \mid D_i f \in \Z \text{ for all } i \in I \Rightarrow I \in A_{\omega}\} \]
-and let $\wt{\L}_i$ be the free $\Z$-submodule of $\on{cochar}_{\Q}(K)$ generated by $\K_i$.
-
-\begin{exm}
-    Continung with the previous example, recall that
-    \[ A_{\omega_1} = \ab\{\ab\{1,2,3\} \ab\{1,3\},\ab\{2,3\}\} \]
-    If we want $(f_x, f_y) \cdot (0,2) \in \Z$, then we see that $f_y \in \frac{1}{2} \Z$, so $\wt{\L}_1 = \Z \times \frac{1}{2} \Z$.
-\end{exm}
-
-\begin{rmk}
-    Recall that
-    \[ H^2(X_{\omega}, \R) \simeq \on{char}_{\R}(K) / \sum_{i \in S} \R D_i, \]
-    where 
-    \[ S = \ab\{ i \mid i^c \notin A_{\omega}\} \]
-    is the set of indices contained in every anticone. Therefore, we can split
-    \[ \on{char}_{\R}(K) = \bigcap_{j \in S} \ker (\xi_j) \oplus \bigoplus_{j \in S} \R D_j. \]
-\end{rmk}
-
-\begin{claim}
-    There exist $\xi_j^{\pm}$ such that
-    \begin{enumerate}
-        \item $\xi_j^+|_W = \xi_j^-|_W$ for all $j \in S_+ \cap S_-$;
-        \item For all $j \in S_+ \Delta S_-$, $\xi_j^{\pm}|_W = 0$;
-        \item All $\xi_j^{\pm} \in \K_{\pm}$.
-    \end{enumerate}
-\end{claim}
-
-\begin{claim}
-    We have a decomposition
-    \[ \wt{\L}_{\pm}^{\vee} = (H^2(X_{\pm}, \R) \cap \wt{\L}_{\pm}^{\vee}) \oplus\bigoplus_{j \in S_{\pm}} \Z D_j. \]
-    Furthermore, $W \cap \wt{\L}_+^{\vee} = W \cap \wt{L}_-^{\vee}$.
-\end{claim}
-
-\begin{proof}
-    If $j \in S_+$, then $j \in I$ for all $I \in A_{\omega_+}$, so $D_j f \in \Z$. Thus $D_j \in \wt{L}_i^{+}$. In the other direction, if $v \in \wt{L}_+^{\vee}$, $v \xi_i \in \Z$ because $\xi_j \in \K_+$. Therefore,
-    \[ w = v - \sum_{i \in S_+} \ab<v,\xi_i> D_i \in \bigcap_{j \in S}\ker(\xi_j) \cap \wt{L}_+^{\vee}. \qedhere \]
-\end{proof}
-
-\begin{cor}
-    There exists an integral basis for $\wt{L}_i^{\vee}$ of the form
-    \[ \ab\{ p_1^{\pm}, \ldots, p_{\ell}^{\pm}\} \cup \ab\{D_j\}_{j \in S} \]
-    such that $p_k^{\pm} \in \ol{C}_{\pm}'$ live in the closure of the ample cones of $X_i$ and $p_k^+ = p_k^-$ as classes of $C'_W$.
-\end{cor}
-
-Now we have maps
-\[ \C[C_{\pm}^{\vee} \cap \on{cochar}(K)] \to \C[y_1^{\pm}, \ldots, y_{\ell_{\pm}}^{\pm}, \ab\{x_j\}_{j \in S}] \]
-given by the formulae
-\[ y^d \mapsto \prod_{j}^{\ell_{\pm}} y_j^{\pm p_j^{\pm \cdot d}} \prod_{j\in S} x_j^{D_j \cdot d} \]
-for cocharacters $d \in \on{cochar}(K)$.
-
-\begin{rmk}
-    We may reorder the basis $p_i$ as $\ab\{q_1, \ldots, q_r\}$ such that $q_r$ is the unique vector not on the wall $W$. Dually, we may write $\ab\{y_i, x_j\}$ as $\ab\{z_1, \ldots, z_r\}$ such that $z_r$ is dual to $q_r$. In these coordinates, we can write
-    \begin{align*}
-        U_+ &= \Spec \C[z_1^+, \ldots, z_{r-1}^+, z_r^{+ \frac{1}{B}}] \\
-        U_- &= \Spec \C[z_1^-, \ldots, z_{r-1}^-, z_r^{- \frac{1}{A}}] .
-    \end{align*}
-    Let $\wh{\mc{M}}_{\mr{reg}}$ be the analytification of $\mc{M}_{\mr{reg}} = U_+ \cup U_-$.
-\end{rmk}
-
-\subsection{Extending the $I$-functions}%
-\label{sub:Extending the I-functions}
-
-Let 
-\[ d = \ol{d} + \sum_{j \in S_{\pm}} (D_j, d) \xi_j \]
-be  the decomposition of some $d \in \on{cochar}(K)$. Then the $I$-functions of $X_{\pm}$ are given by
-\[ I_{\pm}^{\mr{temp}} = z e^{\frac{\sigma}{z}} \sum_{d \in \K_{\pm}}e^{\sigma \ol{d}} \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}). \]
-Precisely, we have
-\[ I_{\pm} \in H_{\mr{CR}, T}^*(X_{\omega_{\pm}}) \otimes_{R_T} R_T\llparenthesis z^{-1} \rrparenthesis [Q,\sigma,x]. \]
-In the above formula, we will make the substitutions $Q=1$ and
-\[ \sigma_{\pm} = \sum_{j=1}^{\ell_{\pm}} \theta^{\pm}(p_j^{\pm}) \log(y_j) - \sum_{j \in S_{\pm}} \lambda_j \log x_j + c_0 \lambda. \]
-Here, $\lambda_j = \theta^+(D_j)$, where $\theta^+$ is the restriction to $H^2$, and $c_0 \lambda = \sum \lambda_i$.
-
-A more explicit formula is given by
-\[ I_{+} = z e^{\frac{\sigma_+}{z}} \sum_{d \in \K_{+}}y^d \prod_{j \in S_{\pm}} x_j^{D_j \cdot d} \ab(\prod_{j=1}^m \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(u_j + az)}{\prod_{a \leq D_j \cdot d, \ab<a> = \ab<D_j\cdot d>}(u_j + az)}) \mathbb{1}_{[-d]}, \]
-where $[-d] \in \K/\L$ is the twisted sector.
-
-\begin{claim}
-    The $I$-function $I_+$ defines a convergent power series.
-\end{claim}
-
-\begin{proof}[Idea of proof]
-    Choose $f \in \K/\L$ and $d$ such that $[-d] = f$. Then $X_+^f \subset IX_+$ is a connected component and a closed substack of $X_+$. The restriction
-    \[ H_T^*(X_+^f) \to H_T^*(X_+^{f,T}) \]
-    is injective. Then
-    \[ I^+|_{X_f^T} \propto \Phi(\beta, X), \]
-    where $\beta_j = \frac{u_j}{z}$, $x = y_r^{p_r^+ \cdot e}$, and
-    \[ \Phi(\beta, x) = \sum_{k \in \Z} x^k \frac{\prod_{a\leq 0,\ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}{\prod_{a \leq D_j \cdot d + k D_j \cdot e, \ab<a> = \ab<D_j\cdot d>}(\beta_j + a)}. \]
-    For $k \ll 0$, because $R_j = \ab<D_j \cdot d> = 0$ for $j \in \delta \subset I_f$ and $D_j \cdot e > 0$, the $x^k$-term vanishes. Convergence follows by the ratio test.
-\end{proof}
-
-Because $\Phi$ solves an explicit differential equation\footnote{We can write the coefficient of $x^k$ as a ratio of products of gamma functions.} with singularities only at $0, \infty, \prod (D_j \cdot e)^{D_j \cdot e}$, it can be analytically continued to
-\[ \wt{\mc{M}}_+ = \ab(\wh{U}_+ \setminus \ab\{v^e = \mr{conifold}\} / \mr{Deck})^{\text{univ cover}}. \]
-For just $X_+$, there are differential operators $P_i$ such that
-\[ ( z^{-1}P_1 I_+, \ldots, z^{-1}P_2 I_+ , \ldots) = L^{-1} \Gamma, \]
-where $L^{-1} = 1 + O(z^{-1})$ and $\Gamma = \mr{const} + O(z)$. Therefore, we may determine $L^{-1}$ by Birkhoff factorization. This gives us quantum connections on $\wt{\mc{M}}_{\pm}$.
-
-\section{Crepant transformation conjecture (Davis, Apr 18)}%
-\label{sec:Crepant transformation conjecture}
-
-Our goal is now to relate $I_{\pm}$ to each other. More precisely, they will differ by a gauge transformation, which is a Fourier-Mukai transform. The main tool will be to compute in localized equivariant cohomology. 
-
-\subsection{Gauge transformation}%
-\label{sub:Gauge transformation}
-
-First, we will rewrite the $I$-functions as ratios of $\Gamma$-functions:
-\[ I_+(y,z) = ze^{\frac{\sigma_+}{z}} \sum_{d \in \K_+} \frac{y^d}{z^{\sum D_i \cdot d}} \prod_{j=1}^m \frac{\Gamma\ab(1 + \frac{u_j}{z} - \ab<D_j \cdot d>)}{\Gamma\ab(1 + \frac{u_j}{z} + D_j \cdot d)} \frac{\mathbb{1}_{[-d]}}{z^{\iota_{[-d]}}}, \]
-where $\iota_{[-d]}$ is the age. We will not work directly with these. Instead, we will consider
-\[ H_+(y) = e^{(2\pi i)^{-1} \sigma_+} \Sigma_{d \in \K_+} y^d \prod_{j=1}^m \frac{1}{\Gamma(1 + u_j (2\pi i)^{-1} + D_j \cdot d)} \mathbb{1}_{[-d]}. \]
-Using the $\wh{\Gamma}$ class, it is related to the $I$-function by the formula
-\[z^{-1} I_+(y,z) = z^{\frac{-c_0 \lambda}{2\pi i} - \frac{\dim X_+}{2}} z^{-\mu^+} z^{\rho^+} (\wh{\Gamma}_{X_+} \cup (2\pi i)^{\frac{\deg_0}{2}} \on{inv}^* H_+(z^{-\frac{\deg(y)}{2}} y)). \]
-
-Recall that $T$-fixed points on $I_{X_+}$ correspond to pairs $(\delta, f)$, where $\delta$ is a minimal anticone and $f \in \K_+/\L$. Then we compute
-\begin{align*}
-    \iota^*_{(\delta, f)} H_+ &= \sum_{\substack{d \in \K_+ \\ [d] = f}} \frac{y^d}{\prod_{j \in \delta} \Gamma(1 + (2\pi i)^{-1}u_j ( \delta ) + D_j \cdot d)} \cdot \frac{e^{(2\pi i)^{-1} \sigma_+ \delta}}{\prod_{j \notin \delta} \Gamma(1 + (2\pi i)^{-1})u_j(\delta) + D_j \cdot d}.
-\end{align*}
-Note that for $j \in \delta$, $u_j(\delta) = 0$. In addition, $D_j \cdot d \in \Z$, so if it is negative, then the corresponding $\Gamma$-function vanishes. Therefore, we define
-\[ \delta^{\vee} \coloneqq \ab\{d \in \L_{\Q} \mid D_j \cdot d \in \Z_{\geq 0} \text{ for all } j \in \delta\} \]
-and the $I$-function becomes
-\begin{align*}
-    \iota^*_{(\delta, f)} H_+ &= \sum_{\substack{d \in \delta^{\vee} \\ [d] = f}} \frac{y^d}{\prod_{j \in \delta} \Gamma(1 + (2\pi i)^{-1}u_j ( \delta ) + D_j \cdot d)} \cdot \frac{e^{(2\pi i)^{-1} \sigma_+ \delta}}{\prod_{j \notin \delta} \Gamma(1 + (2\pi i)^{-1})u_j(\delta) + D_j \cdot d}.
-\end{align*}
-If $\delta \in \mc{A}_{\omega_+} \cap \mc{A}_{\omega_-}$, then $\iota^*(\delta,f) H_+ = \iota^*_{(\delta, f)} H_-$. Otherwise, $\delta$ has the form $\ab\{j_1, \ldots, j_{r-1}, j_+ \}$, where all $D_{j_i} \in W$ for $i < r$ and $D_{j_+} \cdot e > 0$ for the normal vector to $W$ pointing towards $\omega_+$.
-
-\begin{defn}
-    A pair $(\delta_{\pm} \in \mc{A}_{\omega_{\pm}})$ are \textit{next to each other} if both are of the form
-    \[ \delta_{\pm} = \ab\{j_1, \ldots, j_{r-1}, j_{\pm}\}, \]
-    where $\pm D_{j_\pm} \cdot e > 0$. Likewise, $(\delta_{\pm}, f_{\pm})$ are \textit{next to each other} if $(\delta_{\pm})$ are and $f_- = f_+ + \alpha e \in \L_{\Q}/\L$.
-\end{defn}
-
-\begin{lem}
-    If $\delta_+$ is next to $\delta_-$, for all $j$ and for any $j_- \in \delta_- \cap \delta_+^c$, 
-    \[ u_j(\delta_+) - u_j(\delta_-) = \frac{D_j \cdot e}{D_{j_-} \cdot e} u_{j_-}(\delta_+). \]
-\end{lem}
-
-\begin{proof}
-    Expand
-    \[ D_j = \sum_{i=1}^{r-1} c_j D_{j_i} + c_- D_{j_-}. \]
-    Then $D_j \cdot e = c_- D_{j_-} \cdot e$. Because
-    \begin{align*}
-        \theta(D_j) &= u_j - \lambda_j \\
-        &= \sum c_i(u_{j_i} - \lambda_{j_i}) + c_i (u_{j_-} - \lambda_{j_-})
-    \end{align*}
-    and $u_{j_-}(\delta_-) = 0$, we see that
-    \begin{align*}
-        u_j(\delta_+) - \lambda_j &= -\sum c_i \lambda_{j_i} + c_-(u_{j_-}(\delta_+) - \lambda_{j_-}) \\
-        u_j(\delta_-) - \lambda_j &= -\sum c_i \lambda_{j_i} + c_-(u_{j_-}(\delta_-) - \lambda_{j_-}).
-    \end{align*}
-    This implies that
-    \[ u_j(\delta_+) - u_j(\delta_-) = c_- u_{j_-}(\delta_+). \qedhere \]
-\end{proof}
-
-\begin{claim}
-    We have the formula
-    \[ \iota^*_{(\delta_+, f_+)} H_+ = \sum_{\substack{(\delta_-, f_-) \\ \text{next to}\\(\delta_+, f_+)}} c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{(\delta_-, f_-)}^* H_-, \]
-    where $c$ is some explicit matrix\footnote{The reason the formulae are so complicated is because we are using the wrong basis.} made of products of things like
-    \[ \prod_{\substack{j \mid D_j \cdot e < 0 \\ j \neq j_-}} \frac{\sin \pi ( (2\pi i)^{-1} u_j(\delta_+) + D_j \cdot f_+ )}{\sin \pi ((2\pi i)^{-1}u_j(\delta_-) + D_{j_-} \cdot f_-)}. \]
-\end{claim}
-
-\begin{proof}{Idea of proof}
-    If $d \in \delta_+$, then $D_j \cdot d \geq 0$ for all $j \in \delta_+$, so we can write $d = D_+ + k e$, where $d_+ \in \delta_+^{vee}$ and $D_+ - e \notin \delta_+^{\vee}$. We now obtain
-    \begin{align*}
-        \iota^*_{(\delta_+, f_+)} H_+ &= \sum_{d_+} y^{d_+} \sum_{k = 0}^{\infty} \frac{(y^e)^k e^{(2\pi i)^{-1} \sigma_+ \delta_+}}{\prod_{j=1}^m \Gamma(1+(2\pi i)^{-1} u_j(\delta_+) + D_j \cdot d_+ + k D_j \cdot e)}.
-    \end{align*}
-    Using the reflection formula
-    \begin{align*}
-        \Gamma(1+(2\pi i)^{-1}u_j(\delta_+) + D_j \cdot d_+ + k D_j \cdot e) =&{} (-1)^{k D_j \cdot e} \frac{\sin \pi(-(2\pi i)^{-1} u_j \delta_+ - D_j \cdot d_+)}{\pi} \\ &\times \Gamma(-(2\pi i)^{-1} u_j \delta_+ - D_j \cdot d_+ - k D_j \cdot e), 
-    \end{align*}
-    we may write
-    \[ \iota_{(\delta_+, f_+)}^* H_+ = \on{Res}_{s=k}(\cdots) \Gamma(s) \Gamma(1-s)\prod_{D_j \cdot e < 0} \Gamma(-(2\pi i)^{-1} u_j(\delta_+) - D_j \cdot d_+ - s D_j \cdot e). \]
-    We obtain poles at the following locations:
-    \begin{enumerate}[(1)]
-        \item $\Gamma(1-s)$ gives poles at $s=1,2,3,\ldots$;
-        \item $\Gamma(s)$ gives poles at $s=0,-1,-2,\ldots$;
-        \item The last term gives poles at $s=(-D_{j_-} \cdot e)^{-1} ((2\pi i)^{-1} u_j(\delta_+) + D_{j_-} \cdot d_+ - n)$.
-    \end{enumerate}
-    We can then rewrite this as a contour integral where the contour is such that all poles of type (1) are on the right and all poles of types (2) and (3) except the one at $0$ are on the left. For small $y$, we have
-    \[ \iota_{\delta_+, f_+}^* H_+ = \oint_{\mr{right}}, \]
-    and for large $y$, we have
-    \[ \iota_{\delta_+, f_+}^* H_+ = \oint_{\mr{left}} = \sum c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{\delta_-, f_-}^* H_-. \]
-    Choose some $j_-$ for which $D_{j_-} e < 0$, we obtain
-    \[ \on{Res}_{j_-} = \prod_{D_j \cdot e < 0, j \neq j_-} \frac{\Gamma}{\sin}. \]
-    Setting $\delta_- = \ab\{j_1, \ldots, j_{r-1}, j_- \}$ and 
-    \[ d_- = d_+ + \frac{D_{j_-} \cdot d_+ - 1}{- D_{j_i} \cdot e} e, \]
-    we use the lemma to rewrite some $\Gamma(\ldots u_j(\delta_+))$ in terms of $u_j(\delta_-)$ and conclude.
-\end{proof}
-
-We have therefore obtained the formula
-\[ \iota^*_{(\delta_+, f_+)} H_+ = \sum_{\substack{(\delta_-, f_-) \\ \text{next to}\\(\delta_+, f_+)}} \sum_{\substack{d_- \in \delta_-^{\vee} \\ \text{minimal}\\ [d_-] = f_-}} y^{d_-} \sum_{k=0}^{\infty} \frac{e^{(2\pi i)^{-1} \sigma_i \delta_- (y^e)^{-k}}}{\prod_{j=1}^m \Gamma(1+(2\pi i)^{-1} u_j(\delta_-) + D_j \cdot d_- - k D_j \cdot e)} c_{\delta_+, f_+}^{\delta_-, f_-} \iota_{\delta_-,f_-}^* H_-. \]
-Now define
-\[ \mathbb{U}_H(\alpha) \coloneqq \sum_{\delta \in \mc{A}_+ \cap \mc{A_-}, f} (\iota^*_{\delta, f} \alpha) \frac{\mathbb{1}_{\delta, f}}{e^T(N_{\delta, f})} + \sum_{\delta_+, f_+} \sum_{\substack{\delta_-, f_- \\ \text{next to}\\ \delta_+, f_+}} c_{\delta_+,f_+}^{\delta_-,f_-} (\iota_{\delta_-, f_-}^* \alpha) \frac{\mathbb{1}_{\delta_-, f_-}}{e^T(N_{\delta_-, f_-})}. \]
-We have a commutative diagram
-\begin{equation*}
-\begin{tikzcd}
-    H_T^*(IX_i)_{\mr{loc}}^{\mr{comp}} \ar{rr}{\mathbb{U}_H} \ar{d}{z^{-\mu_-} z^{-\rho_-} (\wh{\Gamma_{X_-} \cup (2\pi i)^{\frac{\deg_0}{2}}} \on{inv}^* \alpha)} & & H_T^*(IX_+)_{\mr{loc}}^{\mr{comp}} \ar{d} \\
-    H^*_{\mr{CR}, T}(X_-)_{\mr{loc}}[\log z]\llparenthesis z^{-\frac{1}{k}} \rrparenthesis \ar{rr}{\mathbb{U}} & & H^*_{\mr{CR}, T}(X_+)_{\mr{loc}}[\log z]\llparenthesis z^{-\frac{1}{k}} \rrparenthesis.
-\end{tikzcd}
-\end{equation*}
-
-\subsection{The Fourier-Mukai transform}%
-\label{sub:The Fourier-Mukai transform}
-We will now prove that $\mathbb{U}$ is given by the Fourier-Mukai transform. Here, let $\wt{X}$ be a common toric blowup of $X_{\pm}$ as in
-\begin{equation*}
-\begin{tikzcd}
-    & \wt{X} \ar{dl}{f_+} \ar{dr}{f_-} \\
-    X_+ & & X_-
-\end{tikzcd}
-\end{equation*}
-and $\on{\F M} \coloneqq (f_+)^* (f_-)^* \coloneqq K_T^0(X_-) \to K_T^0(X_+)$. We see that $K_T^0(X_{\pm})$ is generated by $[L_{\pm(\rho)}]$, where $\rho \in \on{char}(K)$ and $K_T^0(\wt{X})$ is generated by $[L_{\pm}(\rho, n)]$. We will now move to the fixed point basis and see that
-\[ e_{\delta, \rho} = L_{\pm}(\rho) \prod_{i \notin \delta}(1-L(D_i)^{-1} \otimes e^{-\lambda_i}). \]
-
-\begin{rmk}
-    Let $x_{\delta}$ be a fixed point of $X_{\pm}$ and $\rho$ be in its isotropy. Then $e_{\delta, \rho} = (\iota_{\delta})_* \rho$.
-\end{rmk}
-
-We now compute $\on{\F M}(e_{\delta, \rho})$.
-\begin{enumerate}
-    \item If $\delta \in \mc{A}_- \cap \mc{A}_+$, then $\on{\F M}(e_{\delta, \rho}) = e_{\delta, \rho}$;
-    \item Otherwise, we have a complicated formula.
-\end{enumerate}
-The computation involves doing localization and relating anticones of $X_{\pm}$ to those of $\wt{X}$. We then obtain a commutative diagram
-\begin{equation}\label{eqn:fmsympl}
-\begin{tikzcd}
-    K_T^0(X_-) \ar{r}{\on{\F M}} \ar[swap]{d}{\wt{\on{ch}}} & K_T^0(X_+) \ar{d}{\wt{\on{ch}}} \\
-    H_T^*(IX_i) \ar{r}{\mathbb{U}_H} & H_T^*(IX_+)
-\end{tikzcd}
-\end{equation}
-by direct computation.
-
-\subsection{Crepant transformation conjecture}%
-\label{sub:Crepant transformation conjecture}
-
-We are now ready to state the crepant transformation conjecture.
-\begin{thm}
-    Let $\mc{H}(X_{\pm}) \coloneqq H_{\mr{CR}, T}^*(X_{\pm}) \llparenthesis z^{-1} \rrparenthesis$. Then there exists a degree-preserving symplectic transformation
-    \[ \U \coloneqq \mc{H}(X_-) \to \mc{H}(X_+) \]
-    such that
-    \begin{enumerate}
-        \item $I_+ = \U I_-$ after analytic continuation;
-        \item If $g_{\pm} \colon X_{\pm} \ol{X}_=$ is the map to the toric blowdown, then
-            \[ \U \circ (g_-^* v \cup) = (g_+^* v \cup) \circ \U \]
-            for all $v \in H^2_T(\ol{X}_0)$;
-        \item $\U$ fits into the commutative diagram~\Cref{eqn:fmsympl}.
-    \end{enumerate}
-\end{thm}
-
-\begin{thm}[Crepant transformation conjecture for toric DM stacks]
-    Let $(F^{\pm}, E^{\pm}, \nabla^{\pm})$ be the quantum connections on $X_{\pm}$. Then there exists a gauge transformation
-    \[ \Theta \in \Hom(H_{\mr{CR}, T}^*(X_-), H_{\mr{CR}, T}^*(X_+)) \otimes_{R_T} ( \mc{O}_{U^0} \otimes R_T )[z]\llbracket y_1, \ldots, y_{r-1} \rrbracket \]
-    such that
-    \begin{enumerate}
-        \item $\nabla^+ \Theta = \Theta \nabla^-$;
-        \item $\Theta$ is homogeneous of degree $0$;
-        \item $\Theta$ preserves the orbifold Poincar\'e pairings.
-    \end{enumerate}
-\end{thm}
-
-The proof starts by applying differential operators to $\U I_- = I_+$ to obtain
-\[ z^{-1} \vec{P}_{\pm} I_{\pm} = e^{\frac{\sigma_{\pm}}{z}}L_{\pm}^{-1} \gamma_{\pm}. \]
-We then set $\Theta = \gamma_+ \gamma_-^{-1}$ and obtain
-\[ (e^{\frac{\sigma_+}{z}} L_+(y,z)^{-1}) \Theta(y,z) = \U (e^{\frac{\sigma_-}{z}}L_-(y,z)^{-1}). \]
-
-
+\printbibliography
 
 \end{document} 
 
