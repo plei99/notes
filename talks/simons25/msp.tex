@@ -1,0 +1,492 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+% \usepackage{euscript} 
+% \usepackage[mathcal]{eucal}
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{inconsolata}
+\usepackage{microtype}
+% \usepackage{fontspec} 
+% \setmainfont{Tex Gyre Pagella}
+\usepackage[OT1,euler-digits]{eulervm}
+% \usepackage{euler-math} 
+\usepackage[scaled=0.86]{berasans}
+% \let\sffamilyold\sffamily
+% \def\sffamily{\fontencoding{T1}\sffamilyold}
+% \setmonofont{Inconsolatazi4}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+% \usepackage[utf8]{inputenc} 
+% \usepackage[T1]{fontenc}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+% \usepackage{parskip}
+\newlist{mydescription}{description}{1}
+\setlist[mydescription]{style=nextline,
+                        font=\bfseries,
+                        % Tweak the next 4 options as needed:
+                        labelindent=1cm, 
+                        leftmargin =2cm,
+                        rightmargin=1cm,
+                        topsep     =1ex
+                       }
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{claim}[thm]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\bv}{\mbf{v}}
+\newcommand{\bq}{\mbf{q}}
+\newcommand{\bp}{\mbf{p}}
+\newcommand{\btau}{\bm{\tau}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\pre}{\mr{pre}}
+\newcommand{\vir}{\mr{vir}}
+\newcommand{\fl}{\mr{fl}}
+\newcommand{\tw}{\mr{tw}}
+\newcommand{\pt}{\mr{pt}}
+\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
+\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Cont}{Cont}
+
+% \addbibresource{../../notes/math.bib}
+
+\title[Finite generation]{Finite generation of GW potential of smooth CY hypersurfaces in (weighted) $\P^4$}
+\author{Patrick Lei}
+\date{January 14, 2025}
+\allowdisplaybreaks
+\setcounter{MaxMatrixCols}{12}
+
+\begin{document}
+    
+\begin{abstract}
+    I will explain the proof of the Yamaguchi-Yau finite generation conjecture for the Gromov-Witten theory of $Z_5 \subset \P^4$, $Z_6 \subset \P(1,1,1,1,2)$, $Z_8 \subset \P(1,1,1,1,4)$, and $Z_{10} \subset \P(1,1,1,2,5)$. The proof is due to Chang-Guo-Li in the case of the quintic and to the author in the other three examples.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+
+\section{MSP invariants}%
+\label{sub:MSP invariants}
+
+We will consider MSP moduli spaces $\mc{W}_{g,n,d}$ with $d_0 = d$, $d_{\infty} = 0$, only $(1,\rho)$ insertions, and arbitrary values of $N$. We first note that the MSP virtual localization formula is given by
+\begin{align*}
+    \frac{1}{e(N_{\Theta}^{\vir})} ={}& \prod_{v \in V_0} \prod_{\alpha=1}^N \frac{1}{e(R \pi_* f_v^* \mc{O}(1) \otimes t_{\alpha})} \\
+    & \cdot \prod_{\alpha=1}^N \prod_{v \in V_1^{\alpha}} \frac{5 t_{\alpha} \cdot e(\E^{\vee}\otimes (-t_{\alpha}))^5}{e(\E \otimes 5 t_{\alpha})\cdot (-t_{\alpha})^5} \frac{\prod_{\beta \neq \alpha} e(\E^{\vee} \otimes (t_{\beta} - t_{\alpha}))}{\prod_{\beta \neq \alpha} (t_{\beta} - t_{\alpha})} \\
+    &\cdot \ab( \prod_{v \in V_{\infty}} \cdots ) \cdot \prod_{e \in E} \cdots,
+\end{align*}
+where $t_{\alpha}$ are the equivariant variables and $V_1^{\alpha}$ denotes those vertices at level $1$ where the curve satisfies $\mu_{\alpha} \neq 0$ and $\mu_{\beta \neq \alpha} = 0$. In particular, define
+\begin{align*}
+    [\Mbar_{g,n}(Z,d)]^{\mr{top}} &= \frac{[\Mbar_{g,n}(Z,d)]^{\vir}}{e(R\pi_* f_v^* \mc{O}(1) \otimes t_{\alpha})} \\
+    &= (-t^N)^{d+1-g} [\Mbar_{g,n}(Z,d)]^{\vir} \\
+    [\Mbar_{g,n}]^{\alpha,\mr{top}} &= \ab(\frac{1}{5}N(-t_{\alpha})^{N+3})^{g-1} [\Mbar_{g,n}].
+\end{align*}
+These are the top degree part of the contribution to the virtual localization formula coming from a vertex $v$. We will denote the full contribution at level $1$ by $[\Mbar_{g,n}]^{\alpha,\tw}$. From now on, we will specialize our equivariant variables to roots of unity as $t_{\alpha} = -\zeta_N^{\alpha} t$. For convenience, we will also specialize $t$ such that $t^N = -1$.
+
+We may define MSP invariants using virtual localization. Note that by the condition that $\rho$ vanishes at the marked points, we have evaluation morphisms
+\[ \ev_i \colon \mc{W}_{g,n,d} \to \P^{4+N}, \]
+which restrict to
+\[ \ev_i \colon \mc{W}_{\Theta}^- \to (x_1^5 + \cdots + x_5^5 = 0)^{(\C^{\times})^N} = Z \sqcup \bigsqcup_{\alpha=1}^N \pt_{\alpha}, \]
+where $\mc{W}^-_{\Gamma}$ is the degeneracy locus of $\mc{W}_{\Gamma}$. Therefore, we may define MSP invariants with insertions from the state space
+\[ \mc{H} = H^*(Z) \oplus \bigoplus_{\alpha=1}^N H^*(\pt_{\alpha}). \]
+Using the vertex contributions to the virtual normal bundle, we define the pairing
+\begin{align*}
+    (x,y)^M &= \int_{Z} xy|_Z + \sum_{\alpha} \frac{5}{N t_{\alpha}^3} xy |_{\pt_{\alpha}}.
+\end{align*}
+
+The state space has several bases, which we will discuss now.
+\begin{itemize}
+    \item Let $p = c_1(\mc{O}_{\P^{4+N}}(1))$ be the equivariant ambient hyperplane class. Then we have the basis $\phi_i = p^i$ for $i=0,\ldots, N+3$;
+    \item There is the basis $\{ \1_Z,H,H^2,H^3 \}\cup \{ \1_{\alpha} \}_{\alpha=1}^N$;
+\end{itemize}
+
+The last kind of MSP invariant we need to define is the MSP $[0,1]$ invariant. Here, we simply consider the class
+\[ [\mc{W}]^{[0,1]} = \sum_{\Theta \in \Lambda^{[0,1]}} \frac{[\mc{W}_{\Theta}]^{\vir}}{e(N_{\Theta}^{\vir})}, \]
+where $\Lambda^{[0,1]}$ denotes the set of all graphs without any level $\infty$ vertices.
+
+\section{Genus zero MSP theory}%
+\label{sub:Genus zero MSP theory}
+
+In genus zero, the full MSP and the $[0,1]$ theory are equal. This follows from the following lemma:
+\begin{lem}
+    We have
+    \[ \mc{W}_{0,n,d} \cong \Mbar_{0,n}(\P^{4+N}, d) \]
+    and an equality
+    \[ [\mc{W}_{0,n,d}]^{\vir} = \pm e(R\pi_* f^* \mc{O}(5)) \cap [\Mbar_{0,n}(\P^{4+N},d)]^{\vir} \]
+    of virtual cycles.
+\end{lem}
+The lemma tells us that the genus-zero MSP invariants are the same as the GW invariants of a degree $5$ hypersurface in $\P^{4+N}$, which is in particular Fano. In particular,
+the MSP $I$-function is given by the formula
+\[ I^M(q,z) = z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d} (5p+mz)}{\prod_{m=1}^d (p+mz)^5 \prod_{m=1}^d ((p+mz)^N - t^N)}. \]
+This automatically implies the following result.
+
+\begin{lem}
+    We have
+    \[ J^M(0,q,z) = I^M(q,z) \]
+    whenever $N \geq 2$.
+\end{lem}
+
+The main result we need to know about genus zero MSP theory is the explicit form of the quantum connection. Let $D \coloneqq q \odv{}{q}$.
+\begin{lem}
+    The MSP $S$-matrix satisfies the differential equation
+    \[ (p + zD)S^M(z)^* = S^M(z) \cdot A^M, \]
+    where $A^M$ is given by the matrix
+    \[ \begin{bmatrix}
+        0 & & & & & & &  120 q \\
+        1 & 0 & & & & & & & 770 q \\
+        & 1 & 0 & & & & & & & 1345 q \\
+        & & 1 & 0 & & & & & & & 770 q \\
+        & & & 1 & 0 & & & & & & & 120 q + t^N \\
+        & & & & 1 & 0 \\
+        & & & & & 1 & 0 \\
+        & & & & & & 1 & 0 \\
+        & & & & & & & \cdots & \cdots \\
+        & & & & & & & & 1 & 0 \\
+        & & & & & & & & & 1 & 0 \\
+        & & & & & & & & & & 1 & 0 \\
+    \end{bmatrix}
+    \]
+    in the basis $\{ \phi_i \}$ for $N > 5$.
+\end{lem}
+
+\section{MSP $[0,1]$ CohFT}%
+\label{sub:MSP 01 CohFT}
+
+Define the MSP $R$-matrix by the Birkhoff factorization
+\[ S^M(z) \pdiagmat[empty={}]{\Delta^1,\ddots,\Delta^N,\mr{Id}} = R(z) \pdiagmat[empty={}]{S^{\pt_1},\ddots,S^{\pt_N},S^Z}, \]
+where
+\begin{align*}
+    &\Delta^{\alpha}(z) \\
+    &\coloneqq \exp \ab(\sum \frac{B_{2k}}{2k(2k-1)} \ab(\frac{5}{(-t_{\alpha})^{2k-1}} + \frac{1}{( 5t_{\alpha} )^{2k-1}} +\sum_{\beta\neq\alpha} \frac{1}{(t_{\beta}-t_{\alpha})^{2k-1}}) z^{2k-1}) 
+\end{align*}
+is defined using the quantum Riemann-Roch theorem. Here, we need to shift $S^Z$ to the point $\tau_Z = \frac{I_1}{I_0} H$, and
+\[ S^{\pt_{\alpha}} = e^{\frac{\tau_{\alpha}}{z}}, \]
+where
+\[ \tau_{\alpha} = - t_{\alpha} \int_0^q (L(x)-1) \frac{\d{x}}{x}. \]
+
+\begin{thm}
+    The MSP $[0,1]$ invariants come from a CohFT $\Omega^{[0,1]}$, which is defined by the formula
+    \[ \Omega^{[0,1]} = R . \ab(\Omega^Z \oplus \bigoplus_{\alpha=1}^N \omega^{\pt_{\alpha},\mr{top}}). \]
+\end{thm}
+
+\begin{rmk}
+    The normalized tail contribution at the isolated points is given by
+    \[ \tilde{T}_{\alpha}(z) = z (\1-L^{\frac{N+3}{2}} R(z)^{-1}\1) |_{\pt_{\alpha}} = O(z^2), \]
+    where $L = (1-5^5 q)^{\frac{1}{N}}$. In addition, when $N \gg 3g-3+n$, there is no tail contribution at level $0$.
+\end{rmk}
+
+\section{Degree bound for MSP theory}%
+\label{sub:Degree bound for MSP theory}
+
+In order to compute the invariants of a Calabi-Yau threefold using MSP theory, we need to control the MSP invariants. Our goal will be to control the MSP $[0,1]$ invariants, but these are defined as a mysterious sum of virtual localization contributions. First, we will control the full MSP invariants.
+
+\begin{lem}
+    The full MSP correlator
+    \[ \ab<p^{a_1} \bar{\psi}_1^{a_1}, \dots, p^{a_n} \bar{\psi}_n^{a_n}>_{0,n}^M \]
+    is a polynomial in $q$ of degree at most 
+    \[ g-1 + \frac{3g-3 + \sum a_i}{N}. \]
+\end{lem}
+This follows from the fact that the virtual dimension of the MSP moduli space is $N(d+1-g)+n$. To obtain the same degree bound for the $[0,1]$ correlators, we will need a decomposition formula for the full MSP theory in terms of the $[0,1]$ theory and the remaining contributions.
+
+\begin{lem}
+    We have the MSP decomposition formula
+    \begin{align*}
+        \ab<\tau_1 \bar{\psi}_1^{a_1},\dots,\tau_n \bar{\psi}_n^{a_n}>_{g,n}^{M} ={}& \sum_{\Gamma \in \Lambda^{\ms{bipartite}}} \frac{1}{\ab|\Aut \Gamma|} \prod_{v \in V_{\infty}} \Cont_{[v]}^{\infty}\ab(\bigotimes_{  i \in L_v^{\circ} } \bar{\psi}_{c(i)}^{a_i}) \cdot \\
+        &\cdot \prod_{v \in V_{[0,1]}} \ab< \bigotimes_{i \in L_v} \tau_i \bigotimes_{i \in L_v^{\circ}} \bar{\psi}_{c(i)}^{a_i} \bigotimes_{e \in E_v} \frac{\1^{\alpha_e}}{\frac{5 t_{\alpha_e}}{a_e} - \psi_{(e,v)}}>_{g_v, n_v}^{[0,1]}.
+    \end{align*}
+    Here, the contribution $\Cont_{[v]}^{\infty}$ of a vertex $v$ at level $\infty$ is a generating series of FJRW-like invariants, which is a polynomial in $q$ of degree at most
+    \[ d_{\infty[v]} + \frac{1}{5}\ab(2 g_v - 2 - \sum_{e \in E_v}(a_e - 1)). \]
+    In addition, $\Lambda^{\ms{bipartite}}$ is the set of \textbf{stable} bipartite graphs, $L_v^{\circ}$ is the set of legs which get contracted to $v$ after stabilization, and $c(i)$ is the stable vertex that $i$ gets contracted to after stabilization. 
+\end{lem}
+
+This lemma is proved by directly applying the virtual localization formula and then analyzing the following two situations:
+\begin{itemize}
+    \item What happens at a vertex at level $\infty$;
+    \item What happens when we split a graph at a vertex at level $1$.
+\end{itemize}
+
+By using the decomposition formula and a careful degree-counting argument, we obtain the following degree bound for the $[0,1]$ theory.
+\begin{lem}
+    The MSP $[0,1]$ correlator
+    \[ \ab<p^{a_1} \bar{\psi}_1^{a_1}, \dots, p^{a_n} \bar{\psi}_n^{a_n}>_{0,n}^{[0,1]} \]
+    is a polynomial in $q$ of degree at most 
+    \[ g-1 + \frac{3g-3 + \sum a_i}{N}. \]
+\end{lem}
+
+\section{Polynomiality}%
+\label{sub:Polynomiality}
+
+We first introduce the ring of five generators. Let
+\begin{align*}
+    I(q,z) &\coloneqq z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d (H+mz)^5} \\
+    &\eqqcolon I_0 z + I_1 H + I_2 \frac{H^2}{z} + I_3 \frac{H^3}{z^2}
+\end{align*}
+and define the following generators:
+\[ A_k \coloneqq \frac{D^k I_{11}}{I_{11}}, \qquad B_k \coloneqq \frac{D^k I_0}{I_0}, \qquad \text{and} \qquad Y = \frac{1}{1-5^5q}. \]
+Here, recall that $I_{11} = 1 + D\ab(\frac{I_1}{I_0})$.
+
+\begin{lem}[Yamaguchi-Yau]
+    The ring
+    \[ \mc{R} \coloneqq \Q[A_1, B_1, B_2, B_3, Y] \]
+    contains all $A_k$ and $B_k$.
+\end{lem}
+
+\begin{thm}\label{thm:finitegenerationmsp}
+    Introduce the series
+    \[ P_{g,n} \coloneqq \frac{(5Y)^{g-1} I_{11}^n}{I_0^{2g-2}} \ab(Q \odv{}{Q})^n F_g(Q) \Bigg|_{Q = qe^{\frac{I_1}{I_0}}}. \]
+    Then $P_{g,n} \in \mc{R}$ for all $g,n$ such that $2g-2+n > 0$.
+\end{thm}
+
+If we want to prove this result using the results we have already proved, then we need to prove a polynomiality result for the the entries of the $R$-matrix. At level $0$, we use the equation
+\[ (R(z)^{-1}x)|_Z = S^Z(q,z) (S^M(z)^{-1})|_Z \]
+and the explicit forms of the MSP quantum connection and the quantum connection for the quintic to obtain
+\begin{align*}
+    R(z)^* \1 |_Z &= I_0 + O(z^{N-3}) \\
+    R(z)^* p |_Z &= z D(I_0) + H I_0 I_{11} + O(z^{N-2}).
+\end{align*}
+To simplify what follows, define the normalized basis
+\[ \varphi_b = I_0 I_{11} \cdots I_{bb} H^b, \]
+where $I_{22}$ was defined previously and $I_{33} = I_{11}$. If we define
+\[ (R_k)_j^b \coloneqq (R_k \varphi^b, p^j)^M, \]
+then the recursive formula
+\[ (R_k)_j^b = (D+C+b)(R_{k-1})_{j-1}^b + (R_k)_{j-1}^{b-1} - c_j q (R_k)_{j-N}^b, \]
+where $C_b = D \log (I_0 \cdots I_{bb}) \in \mc{R}$ and $c_j = (0,\ldots,0,120,770,1345,770)$, yields the following result:
+\begin{lem}
+    If $j \not\equiv b+k \pmod{N}$, then $(R_k)_k^b = 0$. Otherwise, we have $(R_k)_{b+k}^b \in \mc{R}$ and $Y (R_k)_{b+N+k}^n \in \mc{R}$.
+\end{lem}
+
+At level $1$, define the normalized basis $\bar{\1}_{\alpha} = L^{-\frac{N+3}{2}}\1_{\alpha}$. Then define
+\[ (R_k)_j^{\alpha} \coloneqq L_{\alpha}^{-(j-k)} (R_k \bar{\1}^{\alpha}, p^j)^M, \]
+where $L_{\alpha} = -t_{\alpha} L$.
+\begin{lem}
+    The quantity $(R_k)_j^{\alpha}$ is independent of $\alpha$ and is a polynomial in $Y$ of degree at most $k + \floor*{\frac{j}{N}}$.
+\end{lem}
+
+The lemma is proved as follows:
+\begin{itemize}
+    \item Fix the case when $j=0$ by using the Picard-Fuchs equation and an oscillating integral;
+    \item Use the recursion
+        \begin{align*}
+            (R_k)_j^{\alpha} ={}& \ab(D - \frac{1}{N}\ab(\frac{N+3}{2} - j+k)(1-Y)) (R_{k-1})_{j-1}^{\alpha} \\
+            &+ (R_k)_{j-1}^{\alpha} + \frac{c_j}{5^5}(1-Y) (R_k)_{j-N}^{\alpha}
+        \end{align*}
+        to induct on $j$.
+\end{itemize}
+
+\begin{proof}[Proof of~\Cref{thm:finitegenerationmsp}]
+    First, note that we have the base cases $P_{0,3} = 1$ due to Zagier-Zinger and
+    \[ P_{1,1} = -\frac{1}{2} A_1 - \frac{31}{3} B_1 - \frac{1}{12} (1-Y) - \frac{25}{12} \]
+    due to Zinger. The relation 
+    \[ P_{g,n+1} = (D + (g-1)(2B_1+1-Y) - nA_1) P_{g,n} \]
+    implies that we only need to prove $P_{g \geq 2} \in \mc{R}$.
+
+    Consider the correlator $(5Y)^{g-1}\ab<\ >_{g,0}^{[0,1]}$, which is a polynomial in $Y$ of degree at most $g-1$. By the stable graph sum formula, we have
+    \[ (5Y)^{g-1}\ab<\ >_{g,0}^{[0,1]} = P_g + \sum_{\Gamma} \Cont_{\Gamma}. \]
+    For all non-leading graphs, we use the relation $\sum_v (g_v-1) + \ab|E| = g-1$ to assign powers of $Y$ to all of the edges. Then the contributions from vertices are given as follows:
+    \begin{itemize}
+        \item At a level $0$ vertex, the contributions are simply
+            \[ Y^{g_v-1} \ab<\varphi_{b_1} \bar{\psi}_1^{a_1}, \ldots, \varphi_{b_{n_v}} \bar{\psi}_{n_v}^{a_{n_v}}>^Z_{g_v, n_v}, \]
+            which reduces to $P_{g_v, m}$ by the string and dilaton equations. 
+        \item At a level $1$ vertex, the contribution is
+            \[ \sum_m \frac{L^{3(g_v-1)}}{m!}\ab<L_{\alpha}^{j_1-k_1}\bar{\psi}_1^{k_1}, \ldots, L_{\alpha}^{j_{n_v} - k_{n_v}} \bar{\psi}_{n_v}^{k_{n_v}}, \tilde{T}_{\alpha}^m>_{g_v, n_v+m}. \]
+            After summing over all $\alpha$, we see that this is nonzero only if the total power of $t_{\alpha}$ is a multiple of $N$ (here, we may want $N$ to be a prime number).
+    \end{itemize}
+    Using the fact that the contribution from an edge between two level $1$ vertices satisfies a balancing condition, the total factor of the $L_{\alpha}$ for the various $\alpha$ becomes $1$. This implies that $\Cont_{\Gamma} \in \mc{R}$ for any non-leading $\Gamma$, so we must have $P_g \in \mc{R}$.
+\end{proof}
+
+\begin{rmk}
+    We can recover the genus one mirror theorem very quickly using the results we have already proved. If we consider the correlator
+    \[ \ab<p>_{1,1}^{[0,1]} = \mr{const}, \]
+    there are only two stable graphs. The contribution of the stable graph with a genus $1$ vertex at the quintic is given by
+    \begin{align*}
+        \frac{1}{I_0}\ab<R(z)^{-1}p|_Z>_{1,1} &= \ab<-B_1\bar{\psi}_1 + I_{11}H>_{1,1} \\
+        &= P_{1,1} + \frac{200}{24} B.
+    \end{align*}
+    The other graph contributes
+    \[ \frac{1}{2}(A+4B + \frac{2}{5}(1-Y)) \]
+    at level $0$. Finally, we can prove that the total contribution from level $1$ is a degree $1$ polynomial in $Y$, so using the known values of $N_{1,1}$ and $\ab<H>_{1,1,0}$ fixes the two coefficients of $Y$.
+\end{rmk}
+
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

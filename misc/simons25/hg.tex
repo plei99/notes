@@ -48,13 +48,20 @@
 \usepackage[english]{babel} 
 % \usepackage[utf8]{inputenc} 
 % \usepackage[T1]{fontenc}
-% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
 \usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
 \hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
 \usepackage{cleveref}
 \crefname{equation}{}{}
 \usepackage{graphicx}
 \graphicspath{{./}}
+\usepackage{xpatch}
+\xpatchbibmacro{pageref}{parens}{backrefparens}{}{}
+\DefineBibliographyStrings{english}{
+    backrefpage={$\leftarrow$},
+    backrefpages={$\leftarrow$},
+}
+\usepackage{xcolor} 
 
 
 % other formatting packages
@@ -191,11 +198,15 @@
 \newcommand{\pre}{\mr{pre}}
 \newcommand{\vir}{\mr{vir}}
 \newcommand{\red}{\mr{red}}
+\newcommand{\pt}{\mr{pt}}
+\newcommand{\tw}{\mr{tw}}
 \newcommand{\fl}{\mr{fl}}
 \newcommand{\ps}[1]{\llbracket #1 \rrbracket}
 \newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
 \newcommand{\GW}{\ms{GW}}
+\newcommand{\FJRW}{\ms{FJRW}}
 \newcommand{\LG}{\ms{LG}}
+\newcommand{\CY}{\ms{CY}}
 \newcommand{\IIA}{\ms{IIA}}
 \newcommand{\IIB}{\ms{IIB}}
 \newcommand{\QM}{\ms{QM}}
@@ -230,12 +241,13 @@
 \DeclareMathOperator{\Cont}{Cont}
 \DeclareMathOperator{\Crit}{Crit}
 
-% \addbibresource{../../notes/math.bib}
+\addbibresource{./hg.bib}
 
 \title[Higher-genus GW of compact CY3]{Notes on the higher-genus Gromov-Witten theory of compact Calabi-Yau threefolds}
 \author{Patrick Lei}
 \date{January 2025}
 \allowdisplaybreaks
+\setcounter{MaxMatrixCols}{12}
 
 \begin{document}
     
@@ -252,17 +264,17 @@
 
 One of the oldest problems in Gromov-Witten theory is to compute the Gromov-Witten invariants of compact Calabi-Yau threefolds. While there are a variety of physical methods which have allowed physicists to make spectacular predictions in a wide range of examples, mathematical progress has often been frustratingly slow due to a lack of satisfactory tools to attack the problem with. To illustrate this, we will briefly outline some developments in mathematics regarding Calabi-Yau threefolds with $h^2 = 1$ which arise as complete intersections in weighted projective space.
 \begin{itemize}
-    \item For complete intersections in projective space, a genus-zero mirror theorem was proved by Givental in 1996 and Lian-Liu-Yau in 1997.
-    \item For complete intersections in weighted projective space, a genus-zero mirror theorem was proved by Coates-Corti-Lee-Tseng in 2006 in the convex case and by Jun Wang in 2019 in the non-convex case. The main difficulty in the non-convex case is the failure of the quantum Lefschetz theorem, which is the main tool used in the work of Givental, LLY, and CCLT.
-    \item Meanwhile, a genus-one mirror theorem was proved for the quintic by Zinger in 2007 and for complete intersections in projective space by Popa in 2010. This used the theory of reduced invariants developed by Vakil-Zinger, Li-Zinger, and various other authors, which is a technique of performing birational modifications to the main component of the moduli space of stable maps to force the quantum Lefschetz theorem to hold so that computations can be performed using virtual localization. Unfortunately, to this date no computations have been successfully performed using reduced invariants since.
-    \item Another way to force the quantum Lefschetz theorem to hold is to consider the theory of GLSMs, which were constructed by various authors during the 2010s. Unfortunately, the virtual cycle is supported on the moduli space of stable maps to the threefold, which does not carry a torus action.
-    \item For the quintic, the ambient space of the relevant GLSM is the total space of $\mc{O}_{\P^4}(-5)$. A cheap way to gain a torus action is to compactify the moduli space at infinity and consider relative (or logarithmic) invariants. This leads to the theory of logarithmic GLSMs, which was introduced by Chen-Janda-Ruan in 2019. Before this, Guo-Janda-Ruan used this theory, including a still conjectural virtual localization formula, to prove a genus-two mirror theorem for the quintic in 2017 (up to the fact that the moduli space used in their 2017 paper is still not defined) and to prove the Yamaguchi-Yau finite generation conjecture, holomorphic anomaly equations, and orbifold regularity (as well as the conifold gap condition in low genus) for the quintic.
-    \item Because a GLSM is an enumerative theory of a critical locus in a GIT quotient, it depends on a stability parameter. We can vary the stability parameter and construct a master theory following the master space construction of Thaddeus. This leads to the theory of Mixed-Spin-P fields, which was first constructed by Chang-Li-Li-Liu in 2015 (for the quintic only). Unfortunately, the original theory is impossible to compute with when $g \geq 2$, so a parameter $N$ was introduced by Chang-Guo-Li-Li in 2018. In the same year, Chang-Guo-Li proved the Yamaguchi-Yau finite generation conjecture, BCOV Feynman rule, and holomorphic anomaly equations for the quintic threefold. These results were generalized to hypersurfaces in weighted projective space by the author in 2024.
-    \item A genus-one mirror theorem for hypersurfaces in weighted projective space was finally proved in 2024 by the author using the theory of Mixed-Spin-P fields.
-    \item The Castelnuovo bound was proved in 2022 by Liu-Ruan for any Calabi-Yau threefold satisfying a conjectural Bogomolov-Gieseker-type inequality (which includes the quintic threefold) due to Bayer-Macri-Toda and a weaker version of the result was proved by Zhiyu Liu in 2024 without assuming the conjectural inequality. These results were obtained using the GW/DT correspondence, which was proved for complete intersections in products of projective spaces by Pandharipande-Pixton in 2012 and for all Calabi-Yau threefolds by Pardon in 2023.
+    \item For complete intersections in projective space, a genus-zero mirror theorem was proved by Givental in 1996 and Lian-Liu-Yau in 1997~\cite{eqgwinv,lly}.
+    \item For complete intersections in weighted projective space, a genus-zero mirror theorem was proved by Coates-Corti-Lee-Tseng in 2006 in the convex case and by Jun Wang in 2019 in the non-convex case~\cite{orbqcohwproj,mirrornonconvex}. The main difficulty in the non-convex case is the failure of the quantum Lefschetz theorem~\cite{qrr}, which is the main tool used in~\cite{eqgwinv,lly,orbqcohwproj}.
+    \item Meanwhile, a genus-one mirror theorem was proved for the quintic by Zinger in 2007 and for complete intersections in projective space by Popa in 2010~\cite{reducedgenus1,popagenus1ci}. This used the theory of reduced invariants developed by Vakil-Zinger and Li-Zinger~\cite{desingularizationgenusone,g1cilizinger}, which is a technique of performing birational modifications to the main component of the moduli space of stable maps to force the quantum Lefschetz theorem to hold so that computations can be performed using virtual localization~\cite{virtloc}. Unfortunately, to this date no computations have been successfully performed using reduced invariants since.
+    \item Another way to force the quantum Lefschetz theorem to hold is to consider the theory of GLSMs~\cite{mirrorandglsm}, which were constructed mathematically by various authors during the 2010s~\cite{glsm,faverokim}. Unfortunately, the virtual cycle is supported on the moduli space of stable maps to the threefold, which does not carry a torus action.
+    \item For the quintic, the ambient space of the relevant GLSM is the total space of $\mc{O}_{\P^4}(-5)$. A standard way to gain a torus action is to compactify the moduli space at infinity and consider relative (or logarithmic) invariants. This leads to the theory of logarithmic GLSMs, which was introduced by Chen-Janda-Ruan in 2019~\cite{logglsm}. Before this, Guo-Janda-Ruan used this theory~\cite{puncturedlogr}, including still conjectural foundational results~\cite{structurelog1,structurelog3}, to prove a genus-two mirror theorem for the quintic in 2017 (up to the fact that the moduli space used in their 2017 paper is still not defined) and to prove the Yamaguchi-Yau finite generation conjecture, holomorphic anomaly equations, and orbifold regularity (as well as the conifold gap condition in low genus) for the quintic~\cite{genus2logglsm,bcovlogglsm}.
+    \item Because a GLSM is an enumerative theory of a critical locus in a GIT quotient, it depends on a stability parameter. We can vary the stability parameter and construct a master theory following the master space construction of Thaddeus~\cite{gitflips}. This leads to the theory of Mixed-Spin-P fields, which was first constructed by Chang-Li-Li-Liu in 2015 (for the quintic only)~\cite{mspfermat,msp2}. Unfortunately, the original theory is impossible to compute with when $g \geq 2$, so a parameter $N$ was introduced by Chang-Guo-Li-Li in 2018~\cite{nmsp}. In the same year, Chang-Guo-Li proved the Yamaguchi-Yau finite generation conjecture, BCOV Feynman rule, and holomorphic anomaly equations for the quintic threefold~\cite{nmsp2,nmsp3}. These results were generalized to hypersurfaces in weighted projective space by the author in 2024~\cite{polynomiality,bcovme}.
+    \item A genus-one mirror theorem for hypersurfaces in weighted projective space was finally proved in 2024 by the author using the theory of Mixed-Spin-P fields~\cite{polynomiality}.
+    \item The Castelnuovo bound was proved in 2022 by Liu-Ruan~\cite{castelnuovoquintic} for any Calabi-Yau threefold satisfying a conjectural Bogomolov-Gieseker-type inequality (including the quintic) due to Bayer-Macri-Toda~\cite{bmt} and a weaker version of the result was proved by Zhiyu Liu in 2024~\cite{castelnuovogeneral} without assuming the conjectural inequality. These results were obtained using the GW/DT correspondence~\cite{mnop1,mnop2}, which was proved for complete intersections in products of projective spaces by Pandharipande-Pixton in 2012~\cite{ppquintic} and for all Calabi-Yau threefolds by Pardon in 2023~\cite{universalcount}.
 \end{itemize}
 
-These notes are about the techniques, namely log GLSMs and MSP fields, used to prove the most important conjectures which are provided to us by physicists, namely the Yamaguchi-Yau finite generation conjecture and the holomorphic anomaly equations.~\Cref{pt:prelim} covers the B-model topological string and the Givental formalism,~\Cref{pt:logglsm} covers log GLSMs, and~\Cref{pt:msp} covers Mixed-Spin-P fields. We will cover both the foundational theory and the calculations in both approaches. 
+As we can see, two major breakthroughs were made around the year 2018, when mathematicians discovered ways which make proving results about Gromov-Witten invariants in arbitrary genus tractable.\footnote{Considering that the progress had been approximately one genus every decade, the existence of such breakthroughs is implied by the existence of these notes prior to the year 2027, or really at all.} These notes explain how to use these new ideas to prove the most important conjectures which are provided to us by physicists, namely the Yamaguchi-Yau finite generation conjecture and the holomorphic anomaly equations.~\Cref{pt:prelim} covers the B-model topological string and the Givental formalism,~\Cref{pt:logglsm} covers log GLSMs, and~\Cref{pt:msp} covers Mixed-Spin-P fields. We will cover both the foundational theory and the calculations in both approaches -- in particular,~\Cref{sec:Foundationslogglsm} and~\Cref{sec:Prehistory} discuss the geometry of the log GLSM and MSP moduli spaces while~\Cref{sec:Calculationslogglsm} and~\Cref{sec:Applications to Gromov-Witten theory} discuss calculations. 
 
 \subsection*{Author's note}%
 \label{sub:Disclaimer}
@@ -271,16 +283,20 @@ In contrast to the genus zero situation, not much is known about higher-genus Gr
 
 All errors are the sole responsibility of the author. Please email me if you find any mistakes or typos in these notes.
 
-The names next to section titles indicate that the material in that part of the notes comes from talks given by that speaker. The notes from the lectures by Albrecht Klemm were taken partly during the lecture and partly by watching the videos on the SCGP website, the notes from my lectures are simply my lecture notes, and the notes from all other lectures were taken during the lecture, with some material being provided by the speakers after their lectures.
+The names next to section titles indicate that the material in that part of the notes comes from talks given by that speaker. The notes from the lectures by Albrecht Klemm were taken partly during the lecture and partly by watching the videos on the SCGP website, the notes from my lectures are slightly expanded versions of my lecture notes, and the notes from all other lectures were taken during the lecture, with some material being provided by the speakers after their lectures. All references were added after the lectures.
 
 \subsection*{Acknowledgements}%
 \label{sub:Acknowledgements}
 
-I would like to thank Qile Chen, Felix Janda, Sheldon Katz, Melissa Liu, John Pardon, and Rachel Webb for organizing the program. I would also like to thank Konstantin Aleshkin, Shuai Guo, Melissa Liu, and Dimitri Zvonkine for helpful discussions regarding the material in my lectures. Further thanks goes to Qile Chen for generously providing the notes from his lectures, Felix Janda for pointing out some subtleties and correcting some errors related to the material in his lectures, Sheldon Katz for pointing out that the K\"ahler structure bundle is the dual of the Hodge bundle, and the Simons Center for posting videos of all of the lectures.
+I would like to thank Qile Chen, Felix Janda, Sheldon Katz, Melissa Liu, John Pardon, and Rachel Webb for organizing the program. I would also like to thank Konstantin Aleshkin, Shuai Guo, Melissa Liu, and Dimitri Zvonkine for helpful discussions regarding the material in my lectures. Further thanks goes to Qile Chen for generously providing the notes from his lectures, Felix Janda for pointing out some subtleties and correcting some errors related to the material in his lectures, Sheldon Katz for pointing out that the K\"ahler structure bundle is the dual of the Hodge bundle, Yang Zhou for pointing out some typos, and the Simons Center for posting videos of all of the lectures.
 
 
 \part{Mathematical and physical preliminaries}
 \label{pt:prelim}
+
+We begin these notes with discussion of the topological B-model. Using mirror symmetry, physicists are able to transport questions in Gromov-Witten theory (the A-model) to the B-model, which lacks a satisfactory mathematical definition. The benefit of doing this is that it is easier to calculate in the B-model, where genus-zero invariants are simply period integrals. Using other B-model techniques,\footnote{They also have the advantage of not needing to prove any theorems rigorously.} physicists are able to make far-reaching predictions about the Gromov-Witten invariants of Calabi-Yau threefolds. Note that there are proposed mathematical definitions of the B-model -- the analytic approach of Costello-Li~\cite{mathbcov1,mathbcov2} and the categorical enumerative invariants of Caldararu-Tu~\cite{cei} -- but they are extremely difficult to compute with.
+
+We then proceed to a discussion of the mathematical prerequisites for the calculations which appear later in these notes. The most important tool for performing calculations in Gromov-Witten theory is the formalism introduced by Givental in a highly influential series of papers~\cite{ssfrobhg,virasorofanotoric,symplfrob} in the early 2000s. This formalism allows us to package large formulae, for example coming from virtual localization, in a compact way, which allows us to reason about higher-genus invariants in a relatively streamlined way. For example, polynomiality of GW generating series will be a direct corollary of polynomiality of the entries of an \textit{$R$-matrix} which plays a central role in Givental's formalism.
 
 \section{Introduction to the topological B-model (Albrecht Klemm)}%
 \label{sec:Introduction to the topological B-model (Albrecht Klemm)}
@@ -289,25 +305,25 @@ I would like to thank Qile Chen, Felix Janda, Sheldon Katz, Melissa Liu, John Pa
 \label{sub:Mirror symmetry and the role of Calabi-Yau threefolds}
 
 
-Let $X(\Omega, \omega)$ be a Calabi-Yau $n$-fold, where here $\Omega$ is a holomorphic $n$-form and $\omega$ is a K\"ahler form. Recall that this is equivalent to having $SU(n)$ holonomy or to $K_X = 0$. By a result of Yau, there exists a K\"ahler-Einstein metric $g$ in the class of $\omega$ with vanishing Ricci curvature. For our purposes, we will mostly consider the case when $n=3$.
+Let $X(\Omega, \omega)$ be a Calabi-Yau $n$-fold, where here $\Omega$ is a holomorphic $n$-form and $\omega$ is a K\"ahler form. Recall that this is equivalent to having $SU(n)$ holonomy or to $K_X = 0$. By a result of Yau~\cite{calabiconj}, there exists a K\"ahler-Einstein metric $g$ in the class of $\omega$ with vanishing Ricci curvature. For our purposes, we will mostly consider the case when $n=3$.
 
-We will really consider Families of Calabi-Yau varieties
+We will really consider families of Calabi-Yau varieties
 \[ \mc{X} \to X \to \mc{M}(\uz, \ut), \]
 where $\mc{M}(\uz, \ut)$ is parametrized by a combination of complex structure moduli $\uz$ and K\"ahler structure moduli $\ut_{\R}$ complexefied by a Neveu-Schwarz harmonic $2$-form $B$ to $\ut$. We will denote the fiber by
 \[ X(\Omega_{\uz}, \omega_{\ut}). \]
 
 On the moduli of complex structures $\mc{M}(\uz)$, the tangent space $H^{(0,1)}(X,T_X)$ has a basis given by harmonic forms
-\[ A^{(k)} = A_{\ol{i}}^{(k) j} \pdv{}{x^j} \d{x^{\ol{i}}} \]
+\[ A^{(k)} = A_{\bar{\imath}}^{(k) j} \pdv{}{x^j} \d{x^{\bar{\imath}}} \]
 for $k = 1, \ldots, h^{n-1,1}(X)$. Because we are in the Calabi-Yau setting, contracting with $\Omega$ gives us a basis
 \[ \chi^{(k)} = A^{(k)} \lrcorner \Omega \]
-of $H^{n-1,1}(X)$. By a theorem of Tian-Todorov, the moduli space is unobstructed. The B-model is built from mathematical structures on $\mc{M}(\uz)$.
+of $H^{n-1,1}(X)$. By a theorem of Tian-Todorov~\cite{tiandef,todorovdef}, the moduli space is unobstructed. The B-model is built from mathematical structures on $\mc{M}(\uz)$.
 
-There is a moduli space $\mc{M}_g$ parameterized by $\delta g$ subject to the condition
-\[ R_{i\ol{j}} (g+\delta g) = 0. \]
+There is a moduli space $\mc{M}_g$\footnote{This is a moduli space of metrics, not the moduli space of smooth genus $g$ curves.} parameterized by $\delta g$ subject to the condition
+\[ R_{i\bar{\jmath}} (g+\delta g) = 0. \]
 To first order, we have
 \[ \nabla^{\rho} \nabla_{\rho} \delta g_{\mu\nu} - 2 R_{\mu\nu}^{\kappa\sigma} \delta g_{k\sigma} = 0. \]
 The indices with pure Hodge type correspond to harmonic forms in $H^{(0,1)}(X, TX)$ with components
-\[ \delta g_{\ol{j}^{i}} = g^{i\ol{k}} \delta g_{\ol{k}\ol{j}} () \]
+\[ \delta g_{\bar{\jmath}}^{i} = g^{i\bar{k}} \delta g_{\bar{k}\bar{\jmath}}  \]
 yielding the Kuranishi family over $\mc{M}(\uz)$.
 The mixed indices correspond to real harmonic $(1,1)$-forms, and expanding the K\"ahler form linearly we obtain
 \[ \omega = \sum t_{\R}^k \omega^{(k)} \]
@@ -316,8 +332,8 @@ in terms of real K\"ahler parameters
 
 The K\"ahler moduli space $\mc{M}(\ut_{\R})$ is the real K\"ahler cone subject to positivity conditions from integration over $k$-dimensional holomorphic submanifolds, namely
 \[ \int_{\mc{D}^{(k)}} \omega^{\wedge k} > 0. \]
-The bosonic part of the string action contains the harmonic antisymmetric Neveu-Schwarz background field $b_{i\ol{j}}$
-\[ S_{\ms{bos}} =\frac{1}{2\pi\alpha'} \int_{\Sigma} \sqrt{h} (h^{ab} g_{i\ol{j}} + \sqrt{-1} b_{i\ol{j}}\ep^{ab}) \partial_{\sigma_a} x^i \partial_{\sigma_b} x^{ \ol{j} }, \]
+The bosonic part of the string action contains the harmonic antisymmetric Neveu-Schwarz background field $b_{i\bar{\jmath}}$
+\[ S_{\ms{bos}} =\frac{1}{2\pi\alpha'} \int_{\Sigma} \sqrt{h} (h^{ab} g_{i\bar{\jmath}} + \sqrt{-1} b_{i\bar{\jmath}}\ep^{ab}) \partial_{\sigma_a} x^i \partial_{\sigma_b} x^{ \bar{\jmath} }, \]
 where $\alpha'$ is the string coupling constant. Its critical values measure complexified volumes of holomorphic curves by
 \[ t^k = \int_{\mc{C}^k} (\omega + ib) = \Re(t^(k)) + \sqrt{-1} \Im(t^{(k)}). \]
 
@@ -339,7 +355,7 @@ One kind of mathematical structure is Hodge numbers. In the traditional picture 
 
 Superstring theory is defined by maps
 \[ X \colon \Sigma_g \to \mc{C}_{\beta} \subset \text{spacetime} \]
-weighted by an action $S$ which is a supersymmetric extension of the area of $\mc{C}_{\beta}$. It is easy to quaantize the Neveu-Schwarz-Ramond action, and the Green-Schwarz action incorporates the RR fields. The \textit{first quantized theory} is defined by a variatonal integral with partition function
+weighted by an action $S$ which is a supersymmetric extension of the area of $\mc{C}_{\beta}$. It is easy to quantize the Neveu-Schwarz-Ramond action, and the Green-Schwarz action incorporates the RR fields. The \textit{first quantized theory} is defined by a variatonal integral with partition function
 \[ Z(g,b,\phi) = \int \mc{D}X \mc{D}h \mc{D}\psi_{\ms{ferm}} e^{\frac{i}{\hbar} S_{\ms{NSR}}(X,h,\psi_{\ms{ferm}},g,b,\phi)}. \]
 
 Superstring theory is Weyl invariant in ten dimensions, or in other words
@@ -388,7 +404,7 @@ If $n$ is odd, we can fix an integral symplectic basis $\ul{\Gamma} = \{A_{\ell}
     and
     \[ \partial_z \Omega(z) \sim \frac{x\d{x}}{y}. \]
     Then the integrals 
-    \[ E_1(z) = \oint_A \qquad \text{and} \qquad E_2(z) = \oint_B \Omega \]
+    \[ E_1(z) = \oint_A \Omega \qquad \text{and} \qquad E_2(z) = \oint_B \Omega \]
     are elliptic integrals. The periods are annihilated by the Picard-Fuchs operator, and by definition thus satisfy the equation
     \[ \mc{L} \int_{\Gamma} \Omega = \ab[(1-z)\partial_z^2 + (1-2z) \partial_z - \frac{1}{4}] \int_{\Gamma} \Omega = 0. \]
 \end{exm}
@@ -403,7 +419,7 @@ on $\mc{M}[X](\uz)$. There are also holomorphic bilinear relations
     C_{\ell_n}(z) & \ell = n
 \end{cases}
 \]
-which follow from Griffiths transversality. Here, the integrand in the left hand side are arbitrary combinations of derivatives of $\Omega$ with respect to the $z_i$. We will see later that these give rise to propagators, the holomorphic anomaly equations, and other structures. The $C_{\ell_n}(z)$ are rational functions labelled by $\ell_n$ up to permutations.They are also determined by differential ideals $\mc{L}\vec{\Pi}$ also determine the $C_{\ell_n}(z)$ up to normalization.
+which follow from Griffiths transversality~\cite{periods1,periods2}. Here, the integrand in the left hand side are arbitrary combinations of derivatives of $\Omega$ with respect to the $z_i$. We will see later that these give rise to propagators, the holomorphic anomaly equations, and other structures. The $C_{\ell_n}(z)$ are rational functions labelled by $\ell_n$ up to permutations.They are also determined by differential ideals $\mc{L}\vec{\Pi}$ also determine the $C_{\ell_n}(z)$ up to normalization.
 
 \begin{rmk}
     In terms of the periods $\vec{\Pi}$, if we write them in a basis compatible with the intersection form $\Sigma$, the quantities in the relations may be written as
@@ -423,14 +439,17 @@ We want to find a basis where the monodromies around the singular points are int
 \[ \mc{P}\ab\{ \begin{matrix}
     0 & 5^{-5} & \infty & * \\
     0 & 0 & \frac{1}{5} \\
+    \\[-0.8em]
     0 & 1 & \frac{2}{5} & z \\
+    \\[-0.8em]
     0 & 2 & \frac{3}{5} \\
+    \\[-0.8em]
     0 & 1 & \frac{4}{5}
 \end{matrix}
 \}.\]
 Here, $z=0$ is a point of maximal unipotent monodromy, $z=\infty$ is the orbifold (or Landau/Ginzburg, or Gepner) point, and $z=5^{-5}$ is the conifold point. At a point of maximal unipotent monodromy, we can expand the mirror map and go to the large volume limit point in the $A$-model.
 
-Using special geometry, Bryant and Griffiths showed that the periods may actually be expressed using a prepotential $\mc{F}$ as
+Using special geometry, Bryant and Griffiths~\cite{bryantgriffiths} showed that the periods may actually be expressed using a prepotential $\mc{F}$ as
 \[ \begin{pmatrix}
     \int_{B_0} \Omega \\
     \int_{B_1} \Omega \\
@@ -452,7 +471,7 @@ These correspond to triple logarithmic, double logarithmic, analytic, and logari
 \[ \mc{F}(z) = \mc{F}_0(t(z)), \]
 where the mirror map is given by
 \[ t = \frac{X^1}{X^0} = \log(z) + \mc{O}(z). \]
-This was generalized to multi-parameter models by Hosono et. al, who related the classical terms to CTC Wall data $\kappa = D^3$ and $\sigma = \frac{\kappa \mod{2}}{2}$ in the formula
+This was generalized to multi-parameter models by Hosono et.~al~\cite{mirrormultiparam}, who related the classical terms to CTC Wall data $\kappa = D^3$ and $\sigma = \frac{\kappa \mod{2}}{2}$ in the formula
 \[ \mc{F} = - \frac{\kappa}{6} + \frac{\sigma}{2}t^2 + \frac{c_2 \cdot D}{24}t + \frac{\chi(M)}{2} \frac{\zeta(3)}{(2\pi i)^3} - \frac{1}{(2\pi i)^3}\sum_{\beta \neq 0} n_0^{\beta} \on{Li}_3(Q^{\beta}). \]
 Later, we will use this to find the integral symplectic basis without calculating any monodromy.
 
@@ -476,8 +495,8 @@ We now turn our attention to calculating the numbers $n_g^{\beta}$. We already s
     \end{tabular}
 \end{table}
 
-Physical predictions were made by Candelas et. al for $g=0$, Bershadsky et al. for $g \leq 3$, and Huang et al. for $g \leq 53$.
-The numbers $n_1^1$, $n_1^2$, and $n_1^3$ were calculated mathematically by Schubert, Katz, and Ellingsrud-Stromme, respectively. Kontsevich gave a mathematical proof of some numbers in $g=0$ before the genus-zero invariants were completely determined by Givental and Lian-Liu-Yau. The formula for the genus-one invariants was proved by Zinger.
+Physical predictions were made by Candelas et al.~\cite{cdgp} for $g=0$, Bershadsky et al.~\cite{bcov} for $g \leq 3$, and Huang et al.~\cite{hkq} for $g \leq 53$.
+The numbers $n_1^1$, $n_1^2$, and $n_1^3$ were calculated mathematically by Schubert, Katz~\cite{katz}, and Ellingsrud-Stromme, respectively. Kontsevich~\cite{enumtorus} gave a mathematical proof of some numbers in $g=0$ before the genus-zero invariants were completely determined by Givental and Lian-Liu-Yau~\cite{eqgwinv,lly}. The formula for the genus-one invariants was proved by Zinger~\cite{reducedgenus1}.
 
 \subsection{Fourteen one-parameter hypergeometric families}%
 \label{sub:Fourteen one-parameter hypergeometric families}
@@ -561,7 +580,7 @@ and at the conifold point, we have
 \]
 At $z=\infty$, we have $M_{\infty} = (M_0 M_{\mu})^{-1}$.
 
-The work of Alexandrov-Feyzbakhsh-Klemm-Pioline-Schimannek solves the topological string on these models up to $g_{\ms{mod}}$ given in~\Cref{tab:stateofart} using $D_4$ brane and wall-crossing.\footnote{There have since been more improvements found by adding more $D_4$ brane charges.} Note that $g_{\ms{avail}}$ is the maximum genus for which data appears at~\url{http://www.th.physik.uni-bonn.de/groups/klemm/data.php} and $g_{\ms{integ}}$ is the maximum genus solved by the work of Huang-Klemm-Quackenbush. 
+The work of Alexandrov-Feyzbakhsh-Klemm-Pioline-Schimannek~\cite{qgeommod} solves the topological string on these models up to $g_{\ms{mod}}$ given in~\Cref{tab:stateofart} using $D_4$ brane and wall-crossing.\footnote{There have since been more improvements found by adding more $D_4$ brane charges.} Note that $g_{\ms{avail}}$ is the maximum genus for which data appears at~\url{http://www.th.physik.uni-bonn.de/groups/klemm/data.php} and $g_{\ms{integ}}$ is the maximum genus solved by the work of Huang-Klemm-Quackenbush~\cite{hkq}. 
 \begin{table}[htpb]
     \centering
     \caption{Current state of the art in physics literature as of January 2023.}
@@ -643,7 +662,7 @@ Also note that the Yukawa couplings $C_{ijk}(\uz)$ are sections of
 \[ \mc{L}^2 \otimes \on{Sym}^3 T^* \mc{M}(\uz)^{1,0}, \]
 where $\mc{L}$ is the dual of the Hodge bundle.
 
-By the local Torelli theorem, the $X^I$ components of the period vector
+By the local Torelli theorem~\cite{periods1,periods2}, the $X^I$ components of the period vector
 \[ \begin{pmatrix}
     \int_{B_0} \Omega \\
     \vdots \\
@@ -733,7 +752,7 @@ where $C_{\bar{\jmath}}^{k\ell} = e^{2K} C_{\bar{\jmath}\bar{k}\bar{\ell}} G^{k\
 
 In a $(2,2)$ theory, the topological torus partition function is defined by
 \[ F(t, \bar{t}) = \frac{1}{2} \int_{\mc{F}_{\ms{fund}}} \frac{\d^2 \tau}{\Im \tau} \Tr(-1)^F F_L F_R q^H \bar{q}^{\bar{H}} \]
-as an integral of the fermion number projected partition function over the fundamental region of the torus. Using its relationship to the family index of Ray-Singer analytic torsion, it satisfies the holomorphic anomaly equation
+as an integral of the fermion number projected partition function over the fundamental region of the torus. Using its relationship to the family index of Ray-Singer analytic torsion~\cite{analytictorsion}, it satisfies the holomorphic anomaly equation
 \[ \partial_i \bar{\partial}_{\bar{\jmath}} F_1 = \frac{1}{2} C_{ijk} C_{\bar{\jmath}}^{k\ell} - \ab(\frac{\chi}{24}-1) G_{i\bar{\jmath}}. \]
 Using $G_{i\bar{\jmath}} = \partial_{\bar{\jmath}} \partial_i K = \partial_{\bar{\jmath}} K_i$ and the special geometry equation, we can integrate the holomorphic anomaly equation to obtain
 \begin{equation}\label{eqn:f1}
@@ -749,7 +768,7 @@ We can integrate the first equation using the special geometry equation and the 
 \[ S^{km} = C^{(i)k\ell} (\delta_{\ell}^m K_{(i)} + \delta_{(i)}^m K_{\ell} + \Gamma^m_{(i)\ell} + q_{(i)\ell}^m), \]
 where $q_{(i)\ell}^m$ is the holomorphic propagator ambiguity.
 
-Following Alim-L\"ange, it is convenient to shift the remaining propagators as
+Following Alim-L\"ange~\cite{alimlange}, it is convenient to shift the remaining propagators as
 \begin{align*}
     \tilde{S}^i &= S^i - S^{ij}K_j; \\
     \tilde{S} &= S - S^i K_i + \frac{1}{2} S^{ij} K_i K_j.
@@ -789,7 +808,7 @@ This can be rewritten as the system of equations
 assuming that $S^{ij}$, $S^i$, $S$, and $K$ are algebraically independent. Using the shifted propagators, we obtain $\pdv{F_g}{K_j} = 0$ and
 \[ \pdv{F_g}{S^{jk}} - \frac{1}{2} \pdv{F_g}{\tilde{S}^k} K_j - \frac{1}{2} \pdv{F_g}{\tilde{S}^j} + \frac{1}{2} \pdv{F_g}{\tilde{S}} K_j K_k + \frac{1}{2} D_j D_k F_{g-1} + \frac{1}{2} \sum_{h=1}^{g-1} D_j F_h D_k F_{g-h}. \]
 
-Using the method of direct integration, due to Yamaguchi-Yau, Grimm-Klemm-Mari\~{n}o-Weiss, and Alim-L\"ange, we obtain
+Using the method of direct integration, due to Yamaguchi-Yau, Grimm-Klemm-Mari\~{n}o-Weiss, and Alim-L\"ange~\cite{yy04,gkmw,alimlange}, we obtain
 \begin{align*}
     \pdv{F_g}{S^{ij}} ={}& \frac{1}{2} \partial_i (\partial_j' F_{g-1}) +\frac{1}{2} (C_{ij\ell}\tilde{S}^{\ell k} - q_{ij}^k) \partial_k' F_{g-1} + \frac{1}{2} (C_{ijk}\tilde{S}^k - q_{ij}) c_{g-1} \\
     &+ \sum_{h=1}^{g-1} \partial_i' F_h \partial_j' F_{g-h}; \\
@@ -825,7 +844,7 @@ where the number $c_{\infty}$ depends on the type of singularity at $z=\infty$. 
 \end{align*}
 The second equality requires the computation of degree-zero GW invariants due to Faber-Pandharipande.
 
-In the one-parameter case, the Castelnuovo bound implies that the GV invariants $n_g^d$ are nonzero only when the genus is strictly less than $g_{\max}(d) \leq \floor*{\frac{d^2}{2\kappa}+\frac{d}{2}}+1$ in general and $g_{\max}(d) \leq \floor*{\frac{2d^2}{3\kappa} + \frac{d}{3}}+1$ when $0 < d < \kappa$. This was first observed by Huang-Klemm-Quackenbush and proved in 2023 by Feyzbakhsh (in the paper of Alexandrov et. al). Because curves of degree $\beta$ of genus $g_{\max}(\beta)$ are smooth, the associated invariants may be obtained by the formula
+In the one-parameter case, the Castelnuovo bound implies that the GV invariants $n_g^d$ are nonzero only when the genus is strictly less than $g_{\max}(d) \leq \floor*{\frac{d^2}{2\kappa}+\frac{d}{2}}+1$ in general and $g_{\max}(d) \leq \floor*{\frac{2d^2}{3\kappa} + \frac{d}{3}}+1$ when $0 < d < \kappa$. This was first observed by Huang-Klemm-Quackenbush~\cite{hkq} and proved in 2023 by Feyzbakhsh (in the paper~\cite{qgeommod} of Alexandrov et. al). Because curves of degree $\beta$ of genus $g_{\max}(\beta)$ are smooth, the associated invariants may be obtained by the formula
 \[ n_{g,\beta} = (-1)^{\dim_{\C} \M_{\beta}} \chi(\M_{\beta}), \]
 where $\M_{\beta}$ denotes the deformation space of the curve. For the one-parameter hypergeometric cases, we obtain
 \[ n_{g_{\max}(\kappa d),\kappa d} = \begin{cases}
@@ -837,14 +856,6 @@ where $\M_{\beta}$ denotes the deformation space of the curve. For the one-param
 The most important boundary condition is the gap condition at the conifold point $z=\mu$, where a $3$-cycle with the topology of a lens space vanishes. Here, this says that we have
 \[ (X^0_{\ms{con}})^{2g-2}\mc{F}_g = \frac{(-1)^{g-1}B_{2g}}{2g(2g-2)} \ab(\frac{(2\pi i)^{\frac{1}{2}}}{t_{\ms{con}}})^{2g-2} + \mc{O}(t_{\ms{con}}^0) \]
 for all $g > 1$, where $t_{\ms{con}}$ is the local coordinate at the conifold point given by the ratio of a vanishing and non-vanishing period.
-
-
-
-
-
-
-
-
 
 
 \section{An axiomatic approach to enumerative geometry (Patrick Lei)}%
@@ -866,7 +877,7 @@ There is of course another interesting map, which is the forgetful map
 given by deleting the last marked point and then stabilizing. We are now able to define our enumerative theories of interest, which include Gromov-Witten theory.
 
 \begin{defn}
-    Given a vector space $V$ with a nondegenerate symmetric bilinear form $\eta$ and a unit element $\1 \in V$, a \textit{Cohomological Field Theory (CohFT)} $\Omega$ on $V$ is a collection $\Omega_{g,n}$ of $S_n$-equivariant linear maps
+    Given a vector space $V$ with a nondegenerate symmetric bilinear form $\eta$ and a unit element $\1 \in V$, a \textit{Cohomological Field Theory (CohFT)}~\cite{km94} $\Omega$ on $V$ is a collection $\Omega_{g,n}$ of $S_n$-equivariant linear maps
     \[ \Omega_{g,n} \colon V^{\otimes n} \to H^*(\Mbar_{g,n}) \]
     which satisfy the basic identity
     \[ \Omega_{0,3}(\1, u,v) = \eta(u,v) \]
@@ -900,7 +911,7 @@ All of this can be generalized to super vector spaces, but for simplicity we wil
 \end{exm}
 
 \begin{rmk}
-    We will see later that this is related to the GW CohFT of a point by the quantum Riemann-Roch theorem. 
+    We will see later that this is related to the GW CohFT of a point by the quantum Riemann-Roch theorem~\cite{qrr}. 
 \end{rmk}
 
 Given a CohFT $\Omega$, we may produce invariants by pairing the classes $\Omega_{g,n}(\bv)$ with various cohomology classes on $\Mbar_{g,n}$. The most important ones to consider are the classes
@@ -927,7 +938,7 @@ where $s_i \colon \Mbar_{g,n} \to \mc{C}_{g,n}$ is the $i$-th marked point.
     \[ \Omega_{g,n} = 1. \]
     Then we define the invariants
     \[ \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} \coloneqq \int_{\Mbar_{g,n}} \Omega_{g,n} \cdot \bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}. \]
-    \begin{thm}[Kontsevich]
+    \begin{thm}[{\cite{wittenconj}}]
         The function
         \[ \mc{D} \coloneqq \exp \ab(\sum_{g,n} \frac{\hbar^{g-1}}{n!}\sum_{a_1 + \cdots + a_n = n} \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} t_{a_1}\cdots t_{a_n}) \]
         is annihilated by the operators
@@ -947,7 +958,7 @@ where $s_i \colon \Mbar_{g,n} \to \mc{C}_{g,n}$ is the $i$-th marked point.
 \subsection{The genus-zero picture}%
 \label{sub:The genus-zero picture}
 
-A CohFT in genus zero defines a Frobenius manifold. In particular, there is a product structure defined by the formula
+A CohFT in genus zero defines a Frobenius manifold~\cite{geom2dtft}. In particular, there is a product structure defined by the formula
 \[ \eta(\tau_1 \star_{\tau} \tau_2, \tau_3) \coloneqq \sum_n \frac{1}{n!} p_* \ab<\tau_1, \tau_2, \tau_3, \tau,\ldots, \tau>_{0,3+n}^{\Omega} \]
 and the quantum connection, which is defined by the formula
 \[ \nabla_{\mu} \coloneqq \partial_{e_{\mu}} + \frac{1}{z} e_{\mu} \star_{\tau}. \]
@@ -961,7 +972,7 @@ To state the following result, we consider the infinite-dimensional vector space
 \[ (\mbf{f}(z), \mbf{g}(z)) \coloneqq \on{Res}_{z=0}\eta(\mbf{f}(-z), \mbf{g}(z)). \]
 We also consider the new variable\footnote{This is called the \textit{dilaton shift}.} $\bq = \bv - z$, so $\mc{F}_0$ is now a function near $\bq = -z$.
 
-\begin{thm}[Givental]
+\begin{thm}[{\cite{symplfrob}}]
     $\mc{F}$ satisfies the above PDEs if and only if the graph $\mc{L}$ of $\d{\mc{F}}$ is a Lagrangian cone with vertex at $\bq = 0$ such that its tangent spaces $L$ are tangent to $\mc{L}$ exactly along $zL \subset L$.
 \end{thm}
 
@@ -988,7 +999,7 @@ In Gromov-Witten theory, there is an explicit formula for the fundamental soluti
     \[ J(0,Q(q),z) = \frac{I(q,z)}{I_0(q)}. \]
     Because the mirror map $q \mapsto Q(q)$ corresponds to setting $\tau = \frac{I_1(q)}{I_0(q)} H$ by the divisor equation, we can use the mirror theorem to compute $\star_{\tau}$. Because of our nonstandard choice of the $I$-function, the quantum connection becomes the ODE
     \[ (H+zD) S_{\tau}(z)^* = S_{\tau}(z)^* \cdot I_{11} H \star_{\tau}, \]
-    where $D \coloneqq q \odv{}{q}$ (here, the coordinate is $\log q$) and $I_{11} \coloneqq 1 + D \ab(\frac{I_1(q)}{I_0(q)})$. An explicit computation using the mirror theorem and the results of Zagier-Zinger yields
+    where $D \coloneqq q \odv{}{q}$ (here, the coordinate is $\log q$) and $I_{11} \coloneqq 1 + D \ab(\frac{I_1(q)}{I_0(q)})$. An explicit computation using the mirror theorem and the results of Zagier-Zinger~\cite{zagierzinger} yields
     \begin{align*}
         I_{11} H + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} \1) \\
         \ab( 1 + D\ab(\frac{\frac{I_1}{I_0} + D \ab(\frac{I_2}{I_0})}{I_{11}}) ) H^2 + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} H) \\
@@ -1001,9 +1012,9 @@ In Gromov-Witten theory, there is an explicit formula for the fundamental soluti
 \subsection{$R$-matrix action}%
 \label{sub:R-matrix action}
 
-In the early 2000s, Givental discovered a remarkable property of axiomatic enumerative theories, namely that one can transform CohFTs by the action of matrices $R(z) = R_0 + R_1 z + R_2 z^2 + \cdots \in \Hom(V, V')\ps{z}$ which satisfy the property
+In the early 2000s, Givental~\cite{virasorofanotoric,symplfrob} discovered a remarkable property of axiomatic enumerative theories, namely that one can transform CohFTs by the action of matrices $R(z) = R_0 + R_1 z + R_2 z^2 + \cdots \in \Hom(V, V')\ps{z}$ which satisfy the property
 \[ R^*(-z) R(z) = \mr{Id}_V. \]
-Traditionally, the literature requires that $V = V'$ and $R_0 = \mr{Id}$, but the MSP group has removed this restriction and also allows $\dim V < \dim V'$.
+Traditionally, the literature~\cite{relationsvia3spin} requires that $V = V'$ and $R_0 = \mr{Id}$, but the MSP group~\cite{nmsp3} has removed this restriction and also allows $\dim V < \dim V'$.
 
 In order to define the action of $R$ on a CohFT $\Omega$ defined on $V$, we need to review some of the combinatorial structure of $\Mbar_{g,n}$. For a curve $C\in \Mbar_{g,n}(\C)$, we may consider the dual graph of $C$, which has vertices, edges, and legs, which are defined as follows:
 \begin{itemize}
@@ -1048,7 +1059,7 @@ where $\on{Cont}_{\Gamma}$ is defined by the following construction:
     \item At the $i$-th leg, we place the map 
         \[ R(-\bar{\psi}_i)^* \in \Hom(V',V) \ps{\bar{\psi}_i}; \]
     \item At every edge, we place the bivector
-        \[ V(\bar{\psi}_1, \bar{\psi}_2) \coloneqq \sum_{\mu} \frac{e_{\mu} \otimes e^{\mu} - R(-\bar{\psi}_1)^* e_{\mu} \otimes R(-\bar{\psi}_2)^* e^{\mu}}{\bar{\psi}_1 + \bar{\psi}_2}; \]
+        \[ V(\bar{\psi}_1, \bar{\psi}_2) \coloneqq  \frac{\sum_{\mu}e_{\mu} \otimes e^{\mu} - \sum_{\mu'} R(-\bar{\psi}_1)^* e_{\mu'} \otimes R(-\bar{\psi}_2)^* e^{\mu'}}{\bar{\psi}_1 + \bar{\psi}_2}; \]
     \item At every vertex, we place the linear map
         \[ \Omega_{g_v, n_v} \colon V^{\otimes n_v} \to H^*(\Mbar_{g_v, n_v}); \]
     \item Finally, we consider the pushforward in cohomology along the gluing morphism $\prod_v \Mbar_{g_v, n_v} \to \Mbar_{g,n}$.
@@ -1061,7 +1072,7 @@ where $\on{Cont}_{\Gamma}$ is defined by the following construction:
     \[ R.\Omega \coloneqq RT\Omega. \]
 \end{defn}
 
-\begin{thm}[Chang-Guo-Li]
+\begin{thm}[{\cite{nmsp3}}]
     Suppose we work with coefficients in $\C\ps{q}$. Then if
     \[ T_R \in z^2 V \ps{z} + zq V \ps{z}, \]
     $R.\Omega$ is a well-defined CohFT. Moreover, if $\dim V = \dim V'$, $\1'$ is a unit for $R.\Omega$.
@@ -1082,7 +1093,7 @@ whenever this makes sense.
 
 Recall that every CohFT defines a Frobenius algebra. We will call a CohFT \textit{semisimple} if the corresponding Frobenius algebra is semisimple.
 
-\begin{thm}[Teleman]
+\begin{thm}[{\cite{2dsscohft}}]
     Let $\Omega$ be a semisimple CohFT with flat unit and $\omega$ be its topological part. If $\Omega$ is semisimple, there exists a unique 
     \[ R = \mr{Id} + R_1 z + \cdots \in \End(V)\ps{z} \]
     such that
@@ -1144,7 +1155,7 @@ Then given such an asymptotic element of the Fock space, we will quantize (infin
 \[ \wh{p_a p_b} \coloneqq \hbar \partial_{q_a} \partial_{q_b}, \qquad \wh{p_a q_b} \coloneqq q_b \partial_{q_a}, \qquad \wh{q_a q_b} = \frac{q_a q_b}{\hbar}. \]
 In particular, this will allow us to understand expressions like $\hat{R} \mc{D}$. However, we need to be careful because our formulae will involve both the fundamental solution $S_{\tau}$ and the $R$-matrix, and $S_{\tau}$ is a power series in $z^{-1}$.\footnote{This is because we expand $\frac{1}{z-\psi} = \sum_{n=0}^{\infty} \psi^n z^{-n-1}$.}
 
-\begin{thm}[Givental]
+\begin{thm}[{\cite{virasorofanotoric}}]
     An operator of the form $S(z^{-1}) = \mr{Id} + S_1 z^{-1} + \cdots$ acts on (asymptotic) elements of the Fock space by the formula
     \[ \hat{S}^{-1} \mc{D}(\bq) = e^{\frac{1}{2\hbar}W(\bq,\bq)} \mc{D}([S \bq]_+), \]
     where $W = \sum \eta(W_{mn}q_m, q_n)$ is defined by the formula
@@ -1164,7 +1175,7 @@ A corollary of Teleman's reconstruction theorem is the formula
 for the Gromov-Witten theory of any smooth projective variety with semisimple quantum cohomology.
 
 \begin{exm}
-    As a final example, we will apply Teleman's theorem to compute $F_1$ of any semisimple CohFT. Let $e_{\mu}$ denote an idempotent basis for the quantum product. We will compute
+    As a final example, we will apply Teleman's theorem to compute $F_1$ of any semisimple CohFT. This result was first proved by Givental~\cite{ellgwmirror} for the equivariant Gromov-Witten theory of GKM orbifolds and extended to the orbifold case by Zong~\cite{zythesis}. The argument we give is due to Guo-Ross~\cite{g1mslg}. Let $e_{\mu}$ denote an idempotent basis for the quantum product. We will compute
     \[ \int_{\Mbar_{1,1}} \Omega_{1,1}(e_{\beta}). \]
     Using the reconstruction theorem, we obtain
     \begin{align*}
@@ -1181,20 +1192,79 @@ for the Gromov-Witten theory of any smooth projective variety with semisimple qu
         ={}& \frac{1}{24} \ab(\eta(e^{\beta}, R_1 \1) - \sum_{\mu} \eta(e^{\mu}, R_1 e_{\beta})) + \frac{1}{2} (R_1)_{\beta\beta}.
     \end{align*}
     Using the identities
-    \begin{align*}
+    \begin{equation}\label{eqn:m04identities}
+    \begin{aligned}
         \eta(R_1 \1, e^{\beta}) - \sum_{\mu} \eta(R_1 e_{\beta}, e^{\mu}) &= \sum_{\mu} \Delta_{\mu} \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \\
         &= -\frac{1}{2}\sum_{\mu} \Delta_{\mu} \partial_{u_{\beta}} \Delta_{\mu}^{-1} \\
         &= \frac{1}{2} \sum_{\mu} \partial_{u_{\beta}} \log \Delta_{\mu},
-    \end{align*}
+    \end{aligned}
+    \end{equation}
     where $\Delta_{\mu} \coloneqq \eta(e_{\mu}, e_{\mu})^{-1}$, we obtain the result
     \[ \int_{\Mbar_{1,1}} \Omega_{1,1} e_{\beta} = \frac{1}{48} \sum_{\mu} \partial_{u_{\mu}} \log \Delta_{\mu} + \frac{1}{2} (R_1)_{\beta\beta}, \]
     which can be placed in the suggestive form
     \[ \d{F_1^{\Omega}} = \sum_{\mu} \frac{\d{\log \Delta_{\mu}}}{48} + \frac{1}{2} (R_1)_{\mu\mu} \d{u_{\alpha}}. \]
-    This recovers a result which was already known to Givental.
+
+    We will now prove the identities in~\Cref{eqn:m04identities}. For the first identity, we will compute $\Omega_{0,4}$ using the reconstruction theorem. There are two stable graphs, given in~\Cref{fig:04graphs}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape, every loop/.style={}]
+    \node[circle,draw=black,thick] (B) at (-1,0) {$0$};
+    \draw[-,thick] (B) -- (-1,-0.6);
+    \draw[-,thick] (B) -- (-1,0.6);
+    \draw[-,thick] (B) -- (-1.6,0);
+    \draw[-,thick] (B) -- (-0.4,0);
+    \node[circle,draw=black,thick] (A) at (1,0) {$0$};
+    \node[circle,draw=black,thick] (C) at (2,0) {$0$};
+    \draw[-,thick] (A) -- (C);
+    \draw[-,thick] (A) -- (1,-0.6);
+    \draw[-,thick] (A) -- (1,0.6);
+    \draw[-,thick] (C) -- (2,-0.6);
+    \draw[-,thick] (C) -- (2,0.6);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Stable graphs for $g=0, n=4$}%
+    \label{fig:04graphs}
+    \end{figure}
+The first graph gives the contribution
+\begin{align*}
+    \Cont_1 ={}& T \omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) - 3 T_{\omega_{0,4}}(R_1 e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \bar{\psi}_1 \\ 
+    &- T \omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, R_1 e_{\beta}) \bar{\psi}_4 \\
+    ={}& \omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) + \omega_{0,5}(R_1 \1, e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \bar{\psi}_1 \\
+    &- 3 \omega_{0,4}(R_1 e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \bar{\psi}_1 - \omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, R_1 e_{\beta}) \bar{\psi}_4 \\
+    ={}& \delta_{\beta\mu} \Delta_{\mu} + \delta_{\beta\mu} \eta(R_1 \1, e_{\mu}) \bar{\psi}_1 - 3 \eta (R_1 e_{\mu}, e_{\beta}) \bar{\psi}_1 - \eta(e_{\mu}, R_1 e_{\beta}) \bar{\psi}_4.
+\end{align*}
+The second graph gives the contribution
+\begin{align*}
+    \Cont_2 ={}& \sum_{\nu} \omega_{0,3}(e_{\mu}, e_{\mu}, e^{\nu}) \omega_{0,3}(R_1 e_{\nu}, e_{\mu}, e_{\beta}) [\pt] \\
+    ={}& \eta(R_1 e_{\mu},e_{\beta}) [\pt].
+\end{align*}
+This has multiplicity $3$, so taking the sum and integrating over $\Mbar_{0,4} \cong \P^1$, we obtain
+\begin{align*}
+    \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) &= \delta_{\beta\mu} \eta(R_1 \1, e_{\mu}) - \eta(R_1 e_{\beta}, e_{\mu}) \\
+    &= \Delta_{\mu}^{-1} (\delta_{\beta\mu} \eta(R_1 \1, e^{\mu}) - \eta(R_1 e_{\beta}, e^{\mu})),
+\end{align*}
+where we have used the fact that
+\[ e^{\mu} = \frac{e_{\mu}}{\eta(e_{\mu}, e_{\mu})} = \Delta_{\mu} e_{\mu}. \]
+This proves the first identity.
+
+To prove the second equality in~\Cref{eqn:m04identities}, we note that
+\[ \Delta_{\mu}^{-1} = \Omega_{0,3}(\1, e_{\mu}, e_{\mu}) = \Omega_{0,3}(e_{\mu}, e_{\mu}, e_{\mu}) \]
+because $e_{\mu}$ is idempotent. Differentiating with respect to $u_{\beta}$, we obtain
+\[ \partial_{u_{\beta}} \Delta_{\mu}^{-1} = 2 \Omega_{0,3}(\1,e_{\mu}, \partial_{u_{\beta}} e_{\mu}) = 3 \Omega_{0,3}(e_{\mu}, e_{\mu}, \partial_{u_{\beta}}e_{\mu}) + \int_{\Mbar_{0,4}}\Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}). \]
+Using again the fact that $e_{\mu}$ is idempotent, we see that 
+\[ \Omega_{0,3}(\1, e_{\mu} \partial_{u_{\beta}} e_{\mu}) = \Omega_{0,3}(e_{\mu}, e_{\mu}, \partial_{u_{\beta}}e_{\mu}). \]
+This implies that
+\begin{align*}
+    0 &= \Omega_{0,3}(\1, e_{\mu} \partial_{u_{\beta}} e_{\mu}) + \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \\
+    &= \frac{1}{2} \partial_{u_{\beta}} \Delta_{\mu}^{-1} + \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}), 
+\end{align*}
+which proves the identity.
 \end{exm}
 
 \part{Higher-genus computations via logarithmic GLSMs}
 \label{pt:logglsm}
+
+In algebraic geometry, one profitable way to deal with non-compactness issues is to forcibly compactify our spaces and then understand the contributions coming from the divisor at infinity. For example, this technique was used by Deligne to construct mixed Hodge structures~\cite{ht2}. In enumerative geometry, one profitable application of this technique is the capped topological vertex~\cite{dtloccurve}, which calculates relative invariants of a (partial compactification) of $\C^3$ relative to the divisor at infinity and is related to the usual topological vertex by a capping operator. While Jun Li's technique of expanded degenerations~\cite{expdeg} allows us to calculate enumerative invariants relative to a smooth divisor, generalizing this to the case of a simple normal crossings divisor requires logarithmic geometry (at least if we want to do it using algebraic geometry). Now, Chen-Janda-Ruan~\cite{logglsm} have developed the theory of log GLSMs, which define stable map-type invariants for any GLSM-type theory defined over an arbitrary projective Deligne-Mumford stack (and resolves all compactness issues therein). This theory has been used by Guo-Janda-Ruan~\cite{bcovlogglsm} to prove finite generation, holomorphic anomaly equations, orbifold regularity, and the LG/CY correspondence for the quintic threefold and some other Calabi-Yau threefold complete intersections in projective space.
 
 \section{Geometry of log GLSM moduli spaces (Qile Chen and Felix Janda)}%
 \label{sec:Foundationslogglsm}
@@ -1205,7 +1275,7 @@ Our motivation is the quantum Lefschetz theorem. Here, we let $\mc{X}$ be a smoo
     Is there a way to compute the Gromov-Witten invariants of $\mc{Z}$ using the ambient data of $(\mc{X}, E)$, possibly involving some correction terms?
 \end{quest}
 
-While quantum Lefschetz holds in genus zero in the convex case, and the approach of desingularization of the moduli of stable maps to force quantum Lefschetz to hold works well in genus one, this is intractable in higher-genus. Instead, our approach will be to use GLSMs, which were introduced by Witten in the physics literature, and by Fan-Jarvis-Ruan and Kiem-Li, Chang-Li, Chang-Li-Li, and other authors in mathematics. We will combine this with the theory of punctured log maps due to Abramovich-Chen-Gross-Siebert to obtain the theory of log GLSM.
+While quantum Lefschetz holds in genus zero in the convex case, and the approach of desingularization of the moduli of stable maps to force quantum Lefschetz to hold works well in genus one, this is intractable in higher-genus. Instead, our approach will be to use GLSMs, which were introduced by Witten~\cite{mirrorandglsm} in the physics literature, and by Fan-Jarvis-Ruan and Kiem-Li, Chang-Li, Chang-Li-Li, and other authors in mathematics~\cite{glsm,cosection,pfieldschangli,wittencosection}. We will combine this with the theory of punctured log maps due to Abramovich-Chen-Gross-Siebert~\cite{puncturedlog} to obtain the theory of log GLSM.
 
 \subsection{$R$-maps and log targets}%
 \label{sub:R-maps}
@@ -1510,7 +1580,7 @@ The discrete data of punctured $R$-maps is
 \end{defn}
 
 
-Unfortunately, this is not the obstruction theory that we really want. We will consider the superpotential and then use the cosection localization technique of Kiem-Li. Here, we have the diagram
+Unfortunately, this is not the obstruction theory that we really want. We will consider the superpotential and then use the cosection localization technique of Kiem-Li~\cite{cosection}. Here, we have the diagram
 \begin{equation*}
 \begin{tikzcd}
     & \mf{P}^{\circ} \ar{r}{W} \ar{d} & \mc{L}_{\omega} \ar{dl} \\
@@ -1530,7 +1600,7 @@ which coincides with the canonical virtual cycle after pushing forward to the st
 \begin{rmk}
     In Gromov-Witten theory, the cosection localized virtual cycle satisfies the relation
     \[ [ \mc{R}_{g, \mc{C}}(\mf{P}^{\circ},\beta) ]^{\vir}_{\sigma_W} = \pm [\Mbar_{g,n}(Z,\beta)]^{\vir} \]
-    by work of Chang-Li, Chang-Li, Kim-Oh, Picciotto, and Chen-Janda-Webb.
+    by work of Chang-Li, Chang-Li, Kim-Oh, Picciotto, and Chen-Janda-Webb~\cite{pfieldschangli,clqmap,localizedchern,rpthesis,cjw}.
 \end{rmk}
 
 Of course, we have the problem that $\mc{R}_{g, \mc{C}}(\mf{P}^{\circ}, \beta)$ is not proper, so we need to find a way to extend the cosection along the boundary
@@ -1636,7 +1706,7 @@ and for $e_{\max} > 0$ is given by
 
 The virtual components of $\Delta_{g,\mc{C}}^{\curlywedge}$ are given by the formula
 \[ [\Delta_{g, \mc{C}}^{\curlywedge}(\mf{P}, \beta)]^{\on{red}} = \sum_{\btau_{\curlywedge}} \frac{\on{lcm}_{x\in E(G)} c(x)}{\ab|\Aut \btau_{\curlywedge}|} [\mc{U}(\mf{P}, \btau_{\curlywedge})]^{\on{red}} \]
-due to Abramovich-Chen-Gross-Siebert, where
+due to Abramovich-Chen-Gross-Siebert~\cite{puncturedlog}, where
 \[ \btau_{\curlywedge} = (\btau, V_{\max}(G)) \]
 is the tropical type of rigid tropical curves with uniform maximal degeneracy. Here, this implies that $\btau_{\curlywedge}$ is bipartite and rigidity means there is no deformation fixing $\btau$ and $V_{\max}(G)$ besides scaling $e_{\max}$
 
@@ -1896,7 +1966,7 @@ Our goal is now to proceed towards a virtual localization formula for log GLSM. 
 \begin{center}
 \begin{tikzpicture}[scale=1, transform shape]
     \node (red) at (0,0) {\Centerstack{ {$[\mc{U}]^{\red}$} GW/FJRW }};
-    \node (vir) at (4,2) {$[\mc{U}(\mc{P})]^{\vir}$};
+    \node (vir) at (4,2) {$[\mc{U}(\mf{P})]^{\vir}$};
     \node (eff) at (4,0) {\Centerstack{ {$[\mc{U}(\infty)]^{\red}$} effective }};
     \node (tw) at (4,-2) {\Centerstack{twisted GW/FJRW}};
     \draw[->,thick] (red) -- (vir); 
@@ -1934,7 +2004,7 @@ We now have a $\C_{\omega}^{\times}$ action on all moduli spaces that we conside
     A key input to this result is that the superpotential is $\C_{\omega}^{\times}$-equivariant. If it was in fact invariant, then there would be no need to develop the theory of log GLSM.
 \end{rmk}
 
-We may now apply the virtual localization theorem, proved in increasing strength by Graber-Pandharipande, Chang-Kiem-Li, and Aranha-Khan-Latyntsev-Park-Ravi to decompose the reduced virtual cycle as
+We may now apply the virtual localization theorem, proved in increasing strength by Graber-Pandharipande, Chang-Kiem-Li, and Aranha-Khan-Latyntsev-Park-Ravi~\cite{virtloc,locwccosection,virtloc2} to decompose the reduced virtual cycle as
 \[ [\mc{U}]^{\red} = \sum_F \iota_* \frac{[F]^{\red}}{e(N_{F/\mc[U]}^{\vir})}. \]
 
 
@@ -2031,7 +2101,7 @@ The goal is to prove the formula
 \begin{align}
     F_2^{\QM}(Q) ={}& \ab<\ >_2^{t,\QM} - \ab< \frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4t^{-1}}{(t-5H)(t-5H-\psi)}>_1^{t,\QM} \\
     &+ \frac{1}{2} \ab<\frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4 t^{-1}}{(t-5H)(t-5H-\psi)}, \frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4 t^{-1}}{(t-5H)(t-5H-\psi)}>_0^{t,\QM} \label{eqn:c} \\
-    &+ \frac{1}{2} \ab<\Delta_* \ab(\frac{\frac{5}{3} H^3 t^{-1}+ \frac{65}{8}H^4 t^{-2}}{(t-5H)^2(5-5H-\psi_1)(5-5H-\psi_2)})>_0^{t,\QM} \label{eqn:d} \\
+    &+ \frac{1}{2} \ab<\Delta_* \ab(\frac{\frac{5}{3} H^3 t^{-1}+ \frac{65}{8}H^4 t^{-2}}{(t-5H)^2(t-5H-\psi_1)(t-5H-\psi_2)})>_0^{t,\QM} \label{eqn:d} \\
     &+ F_2(Q=0)
 \end{align}
 for the quintic threefold.
@@ -2100,14 +2170,1610 @@ where $c^{\mr{eff}}$ is the effective invariant.
 
 
 To obtain a formula with five terms from all of our localization graphs, we will apply the shift $\mu = (1-I_0)\psi + I_1 H$ which comes from quasimap wall-crossing. Under the shift, the contribution of graph $E$ becomes the constant $F_2(Q=0)$, while the contributions from all other graphs vanish.
-    
 
+\subsection{Genus two mirror theorem}%
+\label{sub:Genus two mirror theorem}
+
+For convenience, we will set $t = 5s$. This will make the equivariant parameters the same for both the Gromov-Witten and FJRW calculations. This gives us
+\begin{align*}
+    F_2^{\QM}(Q) ={}& \ab<\ >_2^{s,\QM} - \ab< \frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4(5s)^{-1}}{(5s-5H)(5s-5H-\psi)}>_1^{s,\QM} \\
+    &+ \frac{1}{2} \ab<\frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4 (5s)^{-1}}{(5s-5H)(5s-5H-\psi)}, \frac{-\frac{5}{3}H^3 + \frac{5}{24}H^4 (5s)^{-1}}{(5s-5H)(5s-5H-\psi)}>_0^{s,\QM}  \\
+    &+ \frac{1}{2} \ab<\Delta_* \ab(\frac{\frac{5}{3} H^3 (5s)^{-1}+ \frac{65}{8}H^4 (5s)^{-2}}{(5s-5H)^2(5s-5H-\psi_1)(5s-5H-\psi_2)})>_0^{s,\QM}  \\
+    &+ F_2(Q=0).
+\end{align*}
+
+Because the twisted theory is semisimple, we can compute it using the Givental-Teleman reconstruction theorem~\cite{ssfrobhg,2dsscohft}. For a graph $\Gamma \in \ab\{A,B,C,D,E\}$, the first step is to write
+\begin{align*}
+    \ab<\alpha_1(\psi_1), \alpha_n(\psi_n)>^s &= \ab<[ S(\bar{\psi}_1)\alpha_1(\bar{\psi}_1 )]_+, [S(\bar{\psi}_n) \alpha_n(\bar{\psi}_n)]_+>_{g,n}^s
+\end{align*}
+using the descendant-ancestor correspondence of Kontsevich-Manin~\cite{descancestor}.
+The second step is to use the Givental-Teleman reconstruction theorem to compute the ancestor invariants by a stable graph sum.
+
+For simple reasons, we can rewrite $[S(\bar{\psi})\alpha(\bar{\psi})]_+ = S(5s-5H) \alpha_1(\bar{\psi})$. Both $S(5s-5H)$ and
+\[ R^{-1}(z) = \sum R_k z^k \]
+have entries in a ring
+\[ \tilde{\mc{R}} = \Q[\text{generators}] \]
+where the generators are defined using genus-zero invariants. Using the fact that
+\[ I^{X_5,s}(q,z)|_{z = 5s-5H} = 5s-5H, \]
+the mirror theorem, and $S^* 1 = z^{-1}J$, we see that $S^* 1 |_{z=5s-5H} = 1$. To compute the other entries, we use the quantum connection
+\[ z q \odv{}{z}S^{\tau,s} = \dot{\tau} \star S^{\tau,s}. \]
+Quantum multiplication by $\dot{\tau}$ is given by the matrix
+\[ A = \begin{pmatrix}
+    * & * \\
+    * & * & * \\
+    * & * & * & * \\
+    * & * & * & * & * \\
+    * & * & * & * & * 
+\end{pmatrix}, \]
+where the $*$ denote nonzero entries. However, the entries of $A$ and their derivatives lie in 
+\[ \tilde{\mc{R}} = \Q[\text{$9$ generators}]. \]
+Using a computer, we then get the exact formulae for
+\[ \Cont_{\Gamma} \in \tilde{R}. \]
+A miracle implies that
+\[ \sum_{\Gamma} \Cont_{\Gamma} \in \mc{R} = \Q[\text{$5$ generators}] \subset \tilde{\mc{R}}. \]
+
+If we recall that the physicists predicted that $F_g$ is a polynomial in five generators (which are exactly the same as the five generators here).
+
+\begin{rmk}
+    A similar calculation for FJRW theory yields similar formulae. For example, graph $B$ contributes
+    \[ \ab<\frac{5 \phi_{\frac{4}{5}}}{24s^2(s-\psi)} - \frac{200 \phi_{\frac{4}{5}}}{24s(s-\psi)^2}>_{1,1}^{s,\QM} \]
+    and graph $D$ contributes
+    \[ \ab<\frac{\frac{65}{8} \phi_{\frac{4}{5}} \otimes \phi_{\frac{4}{5}}}{s^2(s-\psi_1)s^2(s-\psi_2)} + \frac{\frac{5}{3} \phi_{\frac{4}{5}} \otimes \phi_{\frac{4}{5}}}{s(s-\psi)^2 s^2 (s-\psi_2)} + \frac{\frac{5}{3} \phi_{\frac{4}{5}} \otimes \phi_{\frac{4}{5}}}{s^2(s-\psi_1)s(s-\psi_2)^2}>_{0,2}^{s,\QM}. \]
+\end{rmk}
+
+\subsection{LG/CY correspondence for the quintic}%
+\label{sub:LG/CY correspondence for the quintic}
+
+Write
+\[ I^{\GW} = z I_0 + I_1 + I_2 \frac{H^2}{z} + I_3 \frac{H^3}{z^2}. \]
+Similarly, we can write
+\[ z I_0 \phi_{\frac{1}{5}} + I_1 \phi_{\frac{2}{5}} + I_2 \phi_{\frac{3}{5}} z^{-2} + I_3 \phi_{\frac{4}{5}} z^{-3}. \]
+
+We can then construct the generators for the FJRW theory of the quintic similarly to the generators for the GW theory of the quintic.
+\begin{thm}
+    Write
+    \begin{align*}
+        F_g^{\GW} &= P_g^{\ms{CY}} (\text{$9$ generators}) \\
+        F_g^{\FJRW} &= P_g^{\LG}(\text{$9$ generators}).
+    \end{align*}
+    Then after identification of the generators, we have
+    \[ P_g^{\ms{CY}} = P_g^{\LG}. \]
+\end{thm}
+
+The proof of this result is a direct matching of contributions from graphs in the virtual localization formula. It relies on the fact that $A^{\ms{CY}} = A^{\ms{LG}}$ under a suitable choice of basis, which also matches the identification of the generators. The tropical input from log GLSM is that the effective invariants are equal in both the CY and LG phases. Finally, we need to identify the insertions in the two phases, and this follows from a direct computation of the specialized $S$-matrix.
+
+\subsection{Geometry of LG/CY correspondence}%
+\label{sub:Geometry of LG/CY correspondence}
+
+Let $\bullet \in \{\LG,\CY\}$. Recall that
+\[ \mf{P}_{\CY, \C} = \P^4 \times \P^1 \]
+and $\infty_{\CY, \C} = \P^4$. The log target is $\mf{P}_{\LG, \C} = [\P^5/\mu_5]$, but the infinity-section os
+\[ \infty_{\LG} \cong \sqrt[5]{\P^4}. \]
+
+\begin{rmk}
+    There is a modification of the targets such that $\infty_{\CY} \cong \infty_{\LG}$.
+\end{rmk}
+
+The first step is to match the virtual localization formulae. In the LG phase, there are no curve classes at $0$, so we compensate for this by using insertions. Also, note that we need to consider the inertia stack
+\[ I B \mu_5 = \bigsqcup_{i=0}^5 B\mu_5, \]
+and in fact the contact orders determine the twisted sectors at the nodes. Then there is a bijection between the $\LG$ and $\CY$ decorated graphs. For example, we match the graphs in~\Cref{fig:graphlgcy}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (CY1) at (0,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (CY2) at (-0.5,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (CY3) at (0.5,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (LG1) at (4,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (LG2) at (3.5,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (LG3) at (4.5,0) {};
+    \node at (0,2.5) {\Centerstack{$g=4$ $\beta=1$}};
+    \node at (-0.5,-0.5) {\Centerstack{$g=0$ $\beta_1$}};
+    \node at (0.5,-0.5) {\Centerstack{$g=0$ $\beta_2$}};
+    \draw[-,thick] (CY2) -- (CY1) -- (CY3);
+    \draw[-,thick] (LG2) -- (LG1) -- (LG3);
+    \node at (4,2.5) {\Centerstack{$g=4$ $\beta_{\infty}=1$}};
+    \node at (3.5,-0.5) {$g=0$};
+    \node at (4.5,-0.5) {$g=0$};
+    \node at (-0.5,1) {$2$};
+    \node at (0.5,1) {$1$};
+    \node at (3.5,1) {$2$};
+    \node at (4.5,1) {$1$};
+    \node at (3.7,0.2) {$\frac{3}{5}$};
+    \node at (4.3,0.2) {$\frac{4}{5}$};
+    \node at (3.8,1.8) {$\frac{2}{5}$};
+    \node at (4.2,1.8) {$\frac{1}{5}$};
+    \draw[-,thick] (-2,-1) -- (5,-1);
+    \node at (0,-1.5) {$\CY$};
+    \node at (4,-1.5) {$\LG$};
+\end{tikzpicture}
+\end{center}
+\caption{Corresponding graphs in CY and LG phases.}%
+\label{fig:graphlgcy}
+\end{figure}
+
+Now let
+\[ \tau^{\bullet} = \frac{I_1^{\bullet}}{I_0^{\bullet}} \in \mc{H}^{\bullet}, \]
+where the state spaces are given by
+\[ \mc{H}^{\CY} = H^*(\P^4) \qquad \text{and} \qquad \mc{H}^{\LG} = \Q(s) \ab<\phi_{\frac{0}{5}},\phi_{\frac{1}{5}},\phi_{\frac{2}{5}},\phi_{ \frac{3}{5} },\phi_{\frac{4}{5}}>. \]
+Defining
+\[ \ev_{\infty} \colon \prod_{v \in V_{\infty}} \mc{U}_{g(v), e(v)}(\infty_{\bullet}, \beta(v)) \to (\bar{I}\infty_{\bullet,\C})^{\ab|E|} \to (\P^4)^{|E|}, \]
+we define
+\[ \Cont_{\Gamma,\bullet}^{\infty} = ( \ev_{\infty} )_* \ab(\prod_{v \in V_{\infty}} \frac{5s[\mc{U}_v]^{\red}}{-5s-\psi_{\min}}). \]
+We may also define the contribution $\Cont_{\Gamma}^{0,\tau} \colon (\mc{H}^{\bullet}\ps{\bar{\psi}})^{|E|} \to \Q$ of $0$ by
+\[ \{T_e(\bar{\psi})\}_{e \in E} \mapsto \prod_{v \in V_0} \ab<\{T_h(\bar{\psi})\}_{h \in H(v)}>^{s,\bullet,\tau}_{g(v), n(v)}. \]
+Finally, for any contact order $c \in \{1,2\}$, let
+\[ \mc{S}_{c,\tau}^{\bullet} \colon H^*(\P^4) \to \mc{H}^{\bullet} \]
+be defined by
+\[ \phi \mapsto \frac{\text{edge factor}(c)\cdot \phi}{\frac{ 5s-5H }{c}-\psi} \]
+in the CY case and
+\[ \phi \mapsto \int_{\P^4} \frac{\text{edge factor}(c) \cdot \phi}{\frac{ 5s-5H_{\infty} }{c}-\psi} \cdot \phi_{\frac{5-c}{5}} \]
+in the LG case.
+
+Putting these ingredients together, we obtain the following formula:
+\begin{thm}
+    We have the identity
+    \begin{align*}
+        F_g^{\bullet,\tau} = \sum_{\Gamma} \frac{1}{\ab|\Aut \Gamma|} \Cont_{\Gamma,\bullet}^{0\tau} \ab(\ab(\bigotimes_e \mc{S}_{c(e),\tau}^{\bullet}) \Cont_{\Gamma,\bullet}^{\infty}).
+    \end{align*}
+\end{thm}
+
+The proof of this theorem follows the following steps:
+\begin{enumerate}
+    \item Virtual localization;
+    \item Apply the shift coming from quasimap wall-crossing;
+    \item Keep track of signs and powers of $5$.
+\end{enumerate}
+
+It now remains to match the contributions. Here, the contributions $\Cont_{\Gamma,\bullet}^{\infty}$ match because of the geometric isomorphism $\infty_{\CY} \cong \infty_{\LG}$. The matching of the $\mc{S}_{c,\tau}^{\bullet}$ follows from a direct computation.
+
+\subsection{Twisted theories}%
+\label{sub:Twisted theory}
+
+Recall that the $\mc{O}(5)$-twisted GW theory of $\P^4$ is given by integrals against
+\[ e(R\pi_* f^* \mc{O}(5) \otimes \C_{5s}) \cap [\Mbar_{g,n}(\P^4, \beta)]^{\vir}. \]
+This is not very hard to compute with, so we add a torus action of $(\C^{\times})^5$ on $\P^4$. We will denote the equivariant parameters on the base by $\lambda_0, \ldots, \lambda_4$. This gives us a general $\mc{O}(5)$-twisted theory.
+
+Unfortunately, this is extremely complicated, but we consider the \textit{formal quintic} theory, which is given by setting $s=0$ and
+\[ \lambda_j = \zeta_j \lambda, \qquad \zeta = \exp\ab(\frac{2\pi i}{5}). \]
+Therefore, we have a theory with only one equivariant parameter $\lambda$. This theory (also called the \textit{$\lambda$-twisted theory}) has several advantages:
+\begin{itemize}
+    \item It has been studied before by Zinger, Kim-Lho, Lho-Pandharipande, and various other authors~\cite{reducedgenus1,kimlho,sqhae};
+    \item The $\lambda$-twisted $I$-function
+        \begin{align*}
+            I^{\lambda}&=  z \sum_{d \geq 0} q^d \frac{\prod_{i=1}^{5d} (5H+iz)}{\prod_{i=1}^d ((H+iz)^5 - \lambda^5)} \\
+            &= I^{\ms{quintic}} + O(z^{-4})
+        \end{align*}
+        is much nicer than the $s$-twisted $I$-function
+        \[ I^{s}=  z \sum_{d \geq 0} q^d \frac{\prod_{i=1}^{5d} (5H - 5s+iz)}{\prod_{i=1}^d (H+iz)^5}. \]
+        In particular, the appearance of $5s$ in the numerator of each term of $I^s$ is the reason for the appearance of extra generators for the $s$-twisted theory.
+\end{itemize}
+
+Our goal now is to rewrite log GLSM invariants using the $\lambda$-twisted theory. Using the tropical decomposition formula, we obtain
+\begin{align*}
+    \deg [\mc{U}(\mf{P})]^{\red} &= \sum_{\Gamma_{\ms{trop}}} \prod_{v \in V_0} \deg [\mc{U}(\mf{P})]^{\vir} \prod_{v \in V_{\infty}} \ms{effective}.
+\end{align*}
+Because the canonical virtual cycle does not depend on the equation of the quintic, we can compute
+\[ \deg [\mc{U}(\mf{P})]^{\vir} = \deg [\mc{U}(\mf{P})]^{\vir, (\C^{\times})^6} |_{s=0,\lambda_j = \zeta^j \lambda}. \]
+Using the log GLSM localization formula, we now obtain
+\[ \sum_{\Gamma_{\ms{loc}}} \prod_{v \in V_0} \Centerstack{\textsf{general} \textsf{twisted}} \prod_{v \in V_{\infty}} \deg [\mc{U}(\infty)]^{\vir, (\C^{\times})^6}. \]
+We will now apply operations to graphs as in~\Cref{fig:tripartite}.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A1) at (0,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A2) at (0,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B1) at (3,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B2) at (3,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C1) at (6,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C2) at (6,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C3) at (6,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D1) at (9,1) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D2) at (9,-2) {};
+    \draw[-,thick] (A1) -- (A2);
+    \draw[-,thick] (B1) -- (B2);
+    \draw[-,thick] (C1) -- (C2) -- (C3);
+    \draw[-,thick] (D1) -- (D2);
+    \node at (0,-0.5) {$g=2$};
+    \node at (0,2.5) {$g=1$};
+    \node at (3,0.5) {$g=1$};
+    \node at (3,-2.5) {$g=1$};
+    \node at (6,2.5) {$g=1$};
+    \node at (6,-2.5) {$g=1$};
+    \node at (6.7,0) {$g=1$};
+    \node at (9,1.5) {$g=2$};
+    \node at (9,-2.5) {$g=1$};
+    \node at (-0.7,1) {$\Gamma_{\ms{trop}}$}; 
+    \node at (2.3,-1) {$\Gamma_{\ms{loc}}$}; 
+    \node at (5.3,1) {$\Gamma_{\ms{tri}}$}; 
+    \node at (8.3,0) {$\Gamma_{\ms{bi}}$}; 
+    \node at (4.5,0) {$\implies$};
+    \node at (7.5,-1) {$\implies$};
+\end{tikzpicture}
+\end{center}
+\caption{Tropical graph, localization graph, and tripartite graph}%
+\label{fig:tripartite}
+\end{figure}
+
+We may then combine the two decompositions to form a tripartite graph. Using this, we then obtain
+\begin{align*}
+    \GW ={}& \sum_{\Gamma_{\ms{tri}}} \prod_{v \in V_{\ell}} \Centerstack{\textsf{general} \textsf{twisted}} \prod_{v \in V_m} \deg [\mc{U}(\infty)]^{\vir, (\C^{\times})^6} \cdot \prod_{v \in V_u} \ms{effective}  \\
+    ={}& \sum_{\Gamma_{\ms{bi}}} \prod_{v \in V_0} \Centerstack{\textsf{general} \textsf{twisted}} \prod_{v \in V_{\infty}} (s,\lambda)\ms{-effective} \\
+    ={}& \ab( \sum_{\Gamma_{\ms{bi}}} \prod_{v \in V_0} \lambda \ms{-twisted} \prod_{v \in V_{\infty}} \lambda\ms{-effective} )\Bigg|_{\lambda = 0}.
+\end{align*}
+Here, the second equality comes from combining the middle and upper layers of a tripartite graph.
+
+\begin{rmk}\leavevmode
+    \begin{enumerate}
+        \item It is not a priori clear that the specialization $s=0, \lambda_j = \zeta^j \lambda$ makes sense. However, we note that $H^5 = \lambda^5$, so $H^{-1} = \frac{H^4}{\lambda^5}$, so the specialization
+            \[ \frac{1}{5s - 5H - \psi_h} \to \frac{1}{-5H} - \psi_h \]
+            makes sense.
+        \item The graph $\Gamma_{\ms{bi}}$ may have contact orders $c \geq 3$.
+    \end{enumerate}
+\end{rmk}
+
+\subsection{Combinatorial structure theorem}%
+\label{sub:Combinatorial structure theorem}
+
+Recall that the $R$-matrix action was found by Givental as follows:
+\begin{itemize}
+    \item We will stabilize a localization graph to a stable graph. This involves contracting rational tails and chains:
+    \item The tails become the translation action;
+    \item The chains become edge contributions $V(z,w)$;
+    \item The ends become leg contributions $R(z)^{-1}$.
+\end{itemize}
+
+We will consider something similar in log GLSM. We will begin by stabilizing graphs $\Gamma_{\ms{bi}}$ as in~\Cref{fig:stabilization}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape, every loop/.style={}]
+    \node at (0,0) {$0$};
+    \node at (0,2) {$\infty$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A1) at (2,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A2) at (1.5,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A3) at (2.5,2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B1) at (5,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B2) at (5,2) {};
+    \draw[-,thick] (A2) -- (A1) -- (A3);
+    \draw[-,thick] (B1) edge[bend left=20] (B2);
+    \draw[-,thick] (B2) edge[bend left=20] (B1);
+    \node at (2,-0.5) {$g=0$};
+    \node at (1.5,2.5) {$g=1$};
+    \node at (2.5,2.5) {$g=1$};
+    \node at (5,-0.5) {$g=0$};
+    \node at (5,2.5) {$g=1$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C1) at (1.5,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C2) at (2.5,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D) at (5,-2) {};
+    \node at (1.5,-1.5) {$g=1$};
+    \node at (2.5,-1.5) {$g=1$};
+    \node at (5,-1.5) {$g=1$};
+    \draw[-,thick] (C2) -- (C1);
+    \draw[-,thick] (D) to[in=-60,out=-120,loop] (D);
+    \node[rotate=-90] at (3.5, -1) {$\Rightarrow$};
+\end{tikzpicture}
+\end{center}
+\caption{Stabilization of $\Gamma_{\ms{bi}}$}%
+\label{fig:stabilization}
+\end{figure}
+Applying Givental-Teleman to the vertices at level $0$, we see that there are $\infty\infty$ edges, $0\infty$ edges, and $00$ edges. There are also both $0$ and $\infty$ legs. This implies that
+\[ F_g = \hat{\mc{R}}(\omega^{\lambda} \oplus \omega^{\infty}), \]
+where $\mc{R}$ is generalized from the Givental formalism. It is given by
+\[ \mc{R} = \begin{cases}
+    R^{\lambda} & \text{label $0$} \\
+    \mc{S} & \text{label $\infty$}
+\end{cases} \]
+Also, the matrices $R$ and $S$ are determined from the quantum differential equation, which in the $\lambda$-twisted case are given by
+\[ A = \begin{pmatrix}
+    0 & I_{11} \\
+    & 0 & I_{22} \\
+    & & 0 & I_{33} \\
+    & & & 0 & I_{44} \\
+    I_0 & & & & 0
+\end{pmatrix}. \]
+
+\subsection{GW theory of the quintic}%
+\label{sub:GW theory of the quintic}
+
+We are now able to apply the combinatorial structure theorem.
+\begin{itemize}
+    \item We have a stable graph sum formula involving $\mc{R}$;
+    \item The entries of $\mc{R}$ are polynomials in the five generators, which are determined by $A$;
+    \item The generalized tail contribution
+        \[ \mc{T} = \begin{cases}
+            T & \text{label $0$} \\
+            J & \text{label $\infty$}
+        \end{cases}\]
+        is a polynomial in the holomorphic generator $X = \frac{1}{1-5^5 q}$.
+\end{itemize}
+
+To prove the holomorphic anomaly equation, consider differentiating by $S \in \{ A,B_1, B_2, B_3 \}$. We look directly at the stable graph localization formula. Differentiation comes from cutting edges as in~\Cref{fig:cutting}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \node at (1,-1) {\LARGE $\pdv{}{S}$};
+    \node at (4,-1) {$\implies$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A1) at (2,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A2) at (3,0) {};
+    \draw[-,thick] (A1) -- (A2);
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B1) at (5,0) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B2) at (6,0) {};
+    \draw[-,thick] (B1) -- (5.25,0);
+    \draw[-,thick] (B2) -- (5.75,0);
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C1) at (2,-1) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C2) at (3,-1) {};
+    \draw[-,thick] (C1) -- (C2);
+    \draw[-,thick] (C2) to[in=60,out=-60,loop] (C2);
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D1) at (5,-1) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D2) at (6,-1) {};
+    \draw[-,thick] (D1) -- (5.25,-1);
+    \draw[-,thick] (D2) -- (5.75,-1);
+    \draw[-,thick] (D2) to[in=60,out=-60,loop] (D2);
+    \node at (6.6,-1) {$+$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D3) at (7,-1) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D4) at (8,-1) {};
+    \draw[-,thick] (D3) -- (D4);
+    \draw[-,thick] (8.25,-1.25) -- (D4) -- (8.25,-0.75);
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (E1) at (2,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (E2) at (3,-2) {};
+    \draw[-,thick] (E1) -- (E2);
+    \draw[-,thick] (E2) to[in=60,out=-60,loop] (E2);
+    \draw[-,thick] (E1) to[in=120,out=-120,loop] (E1);
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F1) at (5,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F2) at (6,-2) {};
+    \draw[-,thick] (4.75,-2.25) -- (F1) -- (4.75,-1.75);
+    \draw[-,thick] (F1) -- (F2);
+    \draw[-,thick] (F2) to[in=60,out=-60,loop] (F2);
+    \node at (6.5,-2) {$+$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F3) at (7,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F4) at (8,-2) {};
+    \draw[-,thick] (F3) -- (7.25,-2);
+    \draw[-,thick] (F4) -- (7.75,-2);
+    \draw[-,thick] (F4) to[in=60,out=-60,loop] (F4);
+    \draw[-,thick] (F3) to[in=120,out=-120,loop] (F3);
+    \node at (8.5,-2) {$+$};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F5) at (9,-2) {};
+    \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F6) at (10,-2) {};
+    \draw[-,thick] (F5) -- (F6);
+    \draw[-,thick] (10.25,-2.25) -- (F6) -- (10.25,-1.75);
+    \draw[-,thick] (F5) to[in=120,out=-120,loop] (F5);
+\end{tikzpicture}
+\end{center}
+\caption{Cutting of edges.}%
+\label{fig:cutting}
+\end{figure}
+
+
+If a matrix $R$ satisfies the equation
+\[ \pdv{}{S} R^{-1} = R^{-1} \cdot \Lambda_S, \]
+then the $V$-tensor satisfies the equation
+\[ \pdv{}{S} V = R^{-1}(z) \otimes R^{-1}(w) (\Delta_S), \]
+where
+\[ \Delta_S = \frac{\Lambda_S(z) e^{\alpha} \otimes e_{\alpha} + e^{\alpha} \otimes \Lambda_S(w) e_{\alpha}}{z+w}. \]
+Therefore, when we compute $\pdv{}{S} F_g$, we place $\Delta_S$ at the nodes, and this will match the holomorphic anomaly equation.
+
+\begin{rmk}
+    This method also proves that for any extra generator $\mc{E}$, we have
+    \[ \pdv{}{\mc{E}} F_g = 0. \]
+    This implies that $F_g$ is independent of $\mc{E}$, so we reduce the nine generators to five generators.
+\end{rmk}
+
+\begin{rmk}
+    In fact, the holomorphic anomaly equations hold for arbitrary values of the effective invariants. In particular, if we define $F_g^c$ by the formal theory and effective invariants, then
+    \begin{enumerate}
+        \item The generating function $F_g^c$ satisfies the holomorphic anomaly equations;
+        \item $F_g^c$ has orbifold regularity.
+    \end{enumerate}
+    Orbifold regularity is proved by showing that every graph which appears in the graph sum for $F_g$ satisfies orbifold regularity.
+\end{rmk}
+
+The meaning of orbifold regularity is that if we replace $X,A_1, B_1, B_2, B_3$ by the LG versions $X^{\ms{orb}}, A_1^{\ms{orb}}, B_1^{\ms{orb}}, B_2^{\ms{orb}}, B_3^{\ms{orb}}$, then $F_g$ is a regular function near $q = \infty$.
+
+\begin{conj}[Conifold gap]
+    At the conifold point $q = 5^{-5}$, there is the \textit{conifold gap condition}
+    \[ F_g^{\ms{con}} = \frac{B_{2g}}{\Delta^{2g-2}} + \ms{regular}, \]
+    where $\Delta$ is the local flat coordinate near the conifold point.
+\end{conj}
+
+The conifold gap condition has been checked for $g \leq 5$ by computer. Unfortunately, a systematic way of proving the conjecture is not known.
 
 
 
 \part{See BCOV from the A-side: MSP fields}
 \label{pt:msp}
 
+Using the master space construction introduced by Thaddeus~\cite{gitflips} in the context of variation of GIT, Chang-Li-Li-Liu~\cite{mspfermat,msp2} defined the theory of \textit{Mixed-Spin-P fields}, which connects the Gromov-Witten and FJRW theories of the quintic threefold. The moduli space has a torus action, and one type of fixed point gives the Gromov-Witten theory of the quintic, which led to hope that the theory could be used to compute GW invariants of the quintic. However, the calculations quickly proved intractable, and an insight of Guo, which led to the creation of \textit{N-Mixed-Spin-P fields}~\cite{nmsp}, was required to resolve the difficulties. This led to the proof of the finite generation conjecture and holomorphic anomaly equations for the quintic threefold by Chang-Guo-Li~\cite{nmsp2,nmsp3}, which was generalized to hypersurfaces in weighted projective space by the author~\cite{polynomiality,bcovme}. More recently, a new stability condition for GLSMs was introduced by Chang-Guo-Li-Li-Zhou~\cite{generalmsp}, and this will enable the construction of MSP moduli spaces for other targets.
+
+\section{Geometry of MSP moduli spaces (Wei-Ping Li and Yang Zhou)}%
+\label{sec:Prehistory}
+
+The genus-zero Gromov-Witten invariants of the quintic were computed by Givental, Lian-Liu-Yau, and various other authors~\cite{eqgwinv,lly}. Their computation uses the fact that the moduli space
+\[ \Mbar_{0,n}(\P^4, \beta) \]
+is smooth and the obstruction sheaf corresponding to $\mc{O}(5)$ is a vector bundle. This fails, however in higher genus, and in genus one, the work of Zinger, Vakil-Zinger, and Li-Zinger~\cite{reducedgenus1,desingularizationgenusone,g1cilizinger} on reduced Gromov-Witten invariants desingularizes the moduli spaces and enables computation of the genus one invariants. This result was also recovered by Kim-Loh~\cite{kimlho} using quasimap wall-crossing~\cite{qmapwc}.
+
+There is also the approach of Maulik-Pandharipande~\cite{topviewofgw} using the degeneration formula, which in principle computes all of the invariants but is impossible to calculate with in practice. Finally, there is the approach of Fan-Lee~\cite{fanlee}.
+
+\subsection{$P$-field reformulation of GW and FJRW theory}%
+\label{sub:P fields}
+
+Let $F = x_1^N + \cdots + x_r^N$ be an arbitrary Fermat polynomial. The setup works in full generality, but the calculations can only be conducted for the quintic threefold. The first step is to construct the moduli space of $P$-fields following the work of Chang-Li~\cite{pfieldschangli}, which comes from the work of Guffin-Sharpe~\cite{guffin} in physics.
+
+Consider the vector space $\C^5 \times \C$ with the action of $\C^{\times}$ given by
+\[ t(x_1, \ldots, x_5, p) = (t x_1, \ldots, t x_5, t^{-5}p). \]
+The GIT quotient with the positive stability chamber is $K_{\P^4}$. We will consider the superpotential
+\[ p (x_1^5 + \cdots + x_5^5). \]
+A map $C \to K_{\P^4}$ is equivalent to the data
+\[ (C, \mc{L}, \varphi_1, \ldots, \varphi_5 \in H^0(\mc{L}), \rho \in \mc{L}^{-5}). \]
+This is just a stable map, and the $P$-field is given by modifying $\rho$ by $\omega_C$ to obtain
+\[ \xi = (C, \mc{L}, \varphi_1, \ldots, \varphi_5 \in H^0(\mc{L}), \rho \in \mc{L}^{-5}\otimes \omega_C). \]
+We will also require that $(\varphi_1, \ldots, \varphi_5)$ is nonzero, so it gives a stable map to $\P^4$.
+
+The moduli space $\M^p$ of such $\xi$ is noncompact. However, we can follow Kiem-Li~\cite{cosection} and use cosection localization for a cosection
+\[ \sigma \colon \ms{Ob} \to \mc{O}. \]
+The degeneracy locus is in fact
+\[ \sigma^{-1}(0) = \Mbar_g(Z,\beta). \]
+This gives a virtual cycle\footnote{The equality of virtual cycles was not proved by Chang-Li~\cite{pfieldschangli} as claimed in the talk. The first proof of the equality of virtual cycles is due to Kim-Oh~\cite{localizedchern}.}
+\[ [\M^p]^{\vir}_{\mr{loc}} = \pm [\Mbar_g(Z,\beta)]^{\vir}. \]
+
+
+FJRW invariants were originally defined using analysis. There are algebraic reformulations by Polishchuk-Vaintrob and by Chiodo~\cite{mfcohftFJRW,wittenkthy}. We once again consider $\C^5 \times \C$ with an action of $\C^{\times}$ given by
+\[ t(x_1, \ldots, x_5, p) = (t x_1, \ldots, t x_5, t^{-5}p). \]
+However, we use the negative stability chamber to obtain the quotient $[\C^5/\mu_5]$. The objects in our moduli space are given by
+\[ \eta = (C, \mc{L}, \varphi_1, \ldots, \varphi_5 \in H^0(\mc{L}), \rho \in \mc{L}^{-5}\otimes \omega_C) \]
+such that $\rho$ is nowhere zero. This implies that $\mc{L}^5 \cong \omega_C$. We will consider the same superpotential
+\[ p(x_1^5 + \cdots + x_5^5). \]
+
+The moduli space $\M^{\frac{1}{5},5p}$ of such $\eta$ is still noncompact, but cosection localization again provides a virtual cycle
+\[ [\M^{\frac{1}{5},5p}]^{\vir}_{\on{loc}} \]
+recovers the FJRW virtual cycle.
+
+\subsection{Master space and MSP fields}%
+\label{sub:Master space}
+
+Following the work of Thaddeus~\cite{gitflips} and various other authors, we are interested in a geometric lift of a path connecting two GIT quotients. Consider the space $\C^5 \times \C \times \P^1$ with the action of $\C^{\times}$ given by
+\[ t(x_1, \ldots, x_5, p, [u,v]) = (t x_1, \ldots, t x_5, t^{-5}p, [tu,v]). \]
+Now define the master space
+\[ (\C^5 \times \C \times \P^1 \setminus \{(0,0,0,0,p,[0,1])\} \cup \{(x_1,\ldots,x_5,0,[1,0])\}) / \C^{\times}. \]
+Because $\P^1$ is a GIT quotient, we can reformulate the GLSM for this target as being given by the data of
+\[\vartheta =  (C, \mc{L}, \mc{N}, \varphi_1, \ldots, \varphi_5 \in H^0(\mc{L}), \rho \in H^0(\mc{L}^{-5} \otimes \omega_C), \mu \in H^0(\mc{L} \otimes \mc{N}), \nu \in H^0(\mc{N})) \]
+such that $(\varphi_1, \ldots, \varphi_5, \mu)$ is nowhere zero, $(\rho, \nu)$ is nowhere zero, and $(\mu, \nu)$ is nowhere zero. We also require that $\Aut \vartheta$ is finite.
+
+\begin{rmk}
+    Because the target is a Deligne-Mumford stack, we will need to require the source curve to be a twisted curve. For orbifold markings, we require that $\mc{L}|_{\Sigma}$ is a nontrivial automorphism of $\Aut \Sigma$. For scheme markings we will consider either $(1,\rho)$ markings where we force $\rho = 0$ or $(1,\varphi)$ markings were we force $\varphi = 0$. These are required to construct the cosection. These markings are called \textit{narrow}, and all other markings are called \textit{broad}.
+\end{rmk}
+
+\subsection{Cosection localization and virtual cycle}%
+\label{sub:Cosection localization and virtual cycle}
+
+The numerical data is $g = g(C)$, $d_0 = \deg \mc{L} \otimes \mc{N}$, and $d_{\infty} = \deg \mc{N}$. This gives the moduli space
+\[ \mc{W}_{g,\vec{d}} \to \mc{D}_g = \{(C, \mc{L}, \mc{N})\} \]
+with a relative perfect obstruction theory
+\[ R \pi_* (\mc{L}^{\oplus 5} \oplus \mc{L}^{-5}\otimes \omega_C \oplus \mc{L} \otimes \mc{N} \oplus \mc{N}) \to \L^{\bullet}_{\mc{W}_{g,\vec{d}}/\mc{D}_g}. \]
+Here, $\pi \colon \mc{C} \to \mc{W}_{g,\vec{d}}$ is the universal curve.
+
+Fiberwise, the cosection is given by the following construction. Let\footnote{We are pretending to be physicists here.}
+\[ (\dot{\varphi}, \dot{\rho}, \dot{\mu}, \dot{\nu}) \in H^1(\mc{L}^{\oplus 5}) \oplus H^1(\mc{L}^{-5} \otimes \omega_C) \oplus H^1(\mc{L} \otimes \mc{N}) \oplus H^1(\mc{N}). \]
+Then the cosection is given by
+\[ \sigma = \dot{\rho}(\varphi_1^5 + \cdots + \varphi_5^5) + 5 \rho (\varphi_1^4 \dot{\varphi}_1 + \cdots + \varphi_5^4 \dot{\varphi}_5) \]
+and its image lies in $H^1(\omega_C)$.
+
+The degeneracy locus $\sigma^{-1}(0)$ is given by
+\begin{align*}
+    \sigma^{-1}(0) &= \ab\{ \rho \varphi_1^4 = \cdots = \rho \varphi_5^4 = \varphi_1^5 + \cdots + \varphi_5^5 = 0\} \\
+    &= \ab\{ \rho = \varphi_1^5 + \cdots + \varphi_5^5 = 0\} \cup \ab\{ \varphi = 0 \}.
+\end{align*}
+The first difficult step is to prove the properness of the degeneracy locus.
+
+\begin{thm}
+    The degeneracy locus $\sigma^{-1}(0)$ is proper in the narrow setting.
+\end{thm}
+
+\subsection{Virtual localization}%
+\label{sub:Torus action}
+
+There is a $\C^{\times}$-action on $\mc{W}$ which actually preserves $\sigma^{-1}(0)$ given by
+\[ t \cdot (C, \mc{L},\mc{N},\varphi,\rho,\mu,\nu) = (C, \mc{L},\mc{N},\varphi, \rho,t\mu,\nu). \]
+This allows us to compute MSP invariants using virtual localization.
+
+We will now relate the fixed loci to the previous moduli spaces.
+
+\begin{itemize}
+    \item Let $\vartheta \in \mc{W}$. If $\mu = 0$, the $\mc{N} = \mc{O}_C$ by the condition that $(\mu,\nu)$ is nowhere vanishing. This reduces the fields to $(\varphi, \rho)$, and we need $(\varphi_1, \ldots, \varphi_5)$ to be nowhere vanishing, so we obtain $P$-fields. We will call this level $0$
+    \item If we let $\nu = 0$, then the information of $\mu$ disappears and $\rho$ must be nowhere zero. This reduces us to FJRW theory. This is called level $\infty$.
+    \item Finally, if we set $\varphi = \rho = 0$, then both $\mu, \nu$ are required to be nowhere vanishing, so we only have the data of a curve. When we perform virtual localization, this will give us Hodge integrals. This is called level $1$.
+\end{itemize}
+
+Fixed loci $F \subset \mc{W}^{\C^{\times}}$ will be labelled by graphs. The problem is that there may be a situation of two edges $v_0 \to v_1 \to v_{\infty}$ where one edge has degree $d$ and the other edge has degree $-d$. While there is no geometric smoothing of the node (it is banned by the stability condition), there are nontrivial infinitesimal deformations, so we cannot decompose the virtual cycle. Fortunately, there is a significant simplification, which was first discovered by Chang-Li~\cite{msp3} for the quintic and should hold for all other Calabi-Yau threefolds.
+
+\begin{thm}[\cite{msp3}]
+    These graphs contribute $0$ to the MSP virtual localization formula.
+\end{thm}
+
+Let $\Lambda$ be the set of regular graphs. Then the virtual localization theorem for cosection localized virtual cycles due to Chang-Kiem-Li~\cite{locwccosection} gives
+\begin{align*}
+    [\mc{W}]^{\vir}_{\mr{loc}} &= \sum_{\Gamma \in \Lambda} (\iota_{\Gamma})_* \frac{[\mc{W}_{\Gamma}]^{\vir}_{\mr{loc}}}{e(N_{\Gamma}^{\vir})}.
+\end{align*}
+Because of irregular vanishing, we can decompose $[\mc{W}_{\Gamma}]^{\vir}_{\mr{loc}}$ along the vertices.
+
+\begin{itemize}
+    \item At a level $0$ vertex, we have
+        \[ [\mc{W}_{v_0}]_{\mr{loc}}^{\vir} = \pm [\Mbar_{g_{v_0}, n_{v_0}}(Z, d_{v_0})]^{\vir}, \]
+        where $Z$ is the quintic.
+    \item At a level $\infty$ vertex, we have
+        \[ [\mc{W}_{v_{\infty}}]_{\mr{loc}}^{\vir} = [\Mbar_{g_{v_{\infty}}, \gamma_{v_{\infty}}}^{\frac{1}{5},5p}]^{\vir}. \]
+    \item At a level $1$ vertex, we simply have
+        \[ [\mc{W}_{v_1}]_{\mr{loc}}^{\vir} = [\Mbar_{g_{v_1}, n_{v_1}}]. \]
+\end{itemize}
+
+
+\subsection{NMSP fields}%
+\label{sub:NMSP fields}
+
+The setup can calculate the genus $1$ Gromov-Witten invariants of the quintic, which was done by Chang-Guo-Li-Zhou~\cite{genusonemsp}, but the calculations are too complicated to perform more computations. However, an insight of Guo is to replace $\mu$ with
+\[ \mu = (\mu_1, \ldots, \mu_N) \in H^0(\mc{L}\oplus \mc{N})^{\oplus N} \]
+and consider an action of $(\C^{\times})^N$ scaling $\mu$ diagonally.
+
+\subsection{Reformulation of stability condition}%
+\label{sub:Reformulation of stability condition}
+
+Recall that the original MSP master space is given by a GIT quotient of $\C^5 \times \C \times \C \times \C$ with coordinates $x_1, \ldots, x_5, p, u,v$ by $(\C^{\times})^2$ acting with weights
+\[ \begin{bmatrix}
+    1 & 1 & 1 & 1 & 1 & -5 & 1 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 1 & 1
+\end{bmatrix} \]
+and the polarization $t_1 t_2^2$. This is a change of coordinates from the standard presentation
+\[ \begin{bmatrix}
+    1 & 1 & 1 & 1 & 1 & -5 & 1 & -1 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 1 & 1
+\end{bmatrix} \]
+and polarization $t_2$.
+
+Recall that a stable MSP field
+\[ \xi = (\mc{C}, \mc{L}, \mc{N}, \varphi_1, \ldots, \varphi_5, \rho, \mu, \nu) \]
+consists of the data of
+\begin{itemize}
+    \item A pointed twisted curve $\mc{C}$ -- the nodes are required to be balanced, which means that they locally look like
+        \[ \ab[\frac{\Spec \C[x,y]/(xy)}{(x,y) \mapsto (\zeta_r x, \zeta_r^{-1}y)}]. \]
+    \item $\mc{L}, \mc{N} \in \Pic \mc{C}$ are line bundles such that $\mc{L} \oplus \mc{N}$ is representable;
+    \item $\varphi_1, \ldots, \varphi_5 \in H^0(\mc{L})$, $\rho \in H^0(\mc{L}^{-5} \otimes \omega_{\mc{C}}^{\log})$, $\mu \in H^0(\mc{L} \otimes \mc{N})$, and $\nu \in H^0(\mc{N})$ are sections such that
+        \begin{itemize}
+            \item $(\varphi, \mu)$ is nonvanishing;
+            \item $(\rho, \nu)$ is nonvanishing;
+            \item $(\mu, \nu)$ is nonvanishing;
+            \item $|\Aut(\xi)|< \infty$.
+        \end{itemize}
+        We denote the nonvanishing condition by \textbf{MSP-Stab-I} and the finiteness of automorphisms by \textbf{MSP-Stab-II}.
+\end{itemize}
+There is a superpotential
+\[ p \sum_{i=1}^5 x_i^5 \colon [\C^8 / \C^{\times} \times \C^{\times}] \to \C \]
+with critical locus (see~\Cref{fig:crit})
+\begin{align*}
+    \on{Crit} \ab(p \sum_{i=1}^5 x_i^5) &= \ab(p = \sum_{i=1}^5 x_i^5) \cup (x_1 = \cdots = x_5 = 0) \\
+    &= \ms{Cone}(X_5) \cup \P(1,5).
+\end{align*}
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[-,thick] (0,0) -- (8,0) -- (8,4) -- (10,6) -- (10,2) -- (8,0);
+    \draw[-,thick] (0,0) -- (0,4) -- (2,6);
+    \draw[-,thick] (0,4) -- (8,4);
+    \draw[-,thick] (2,6) -- (10,6);
+    \draw[dashed,thick] (0,0) -- (2,2) -- (2,6);
+    \draw[dashed,thick] (2,2) -- (10,2);
+    \node at (0,-0.5) {$K_{\P^4}$};
+    \node at (8,-0.5) {$[\C^5/\mu_5]$};
+    \node[fill=blue,circle,minimum size=6pt,inner sep=0pt] at (9,3) {};
+    \node[fill=blue,circle,minimum size=6pt,inner sep=0pt] at (5,3) {};
+    \node[text=blue] at (7,2.5) {$\P(1,5)$};
+    \draw[-,thick,blue] (5,3) -- (9,3);
+    \draw[thick,blue] (1,3) ellipse (0.25 and 0.5);
+    \draw[-,thick] (0.5,1.5) -- (1.5,2.5) -- (1.5,4.5) -- (0.5,3.5) -- (0.5,1.5);
+    \draw[-,thick,blue] (5,3) -- (1,3.5);
+    \draw[-,thick,blue] (5,3) -- (1,2.5);
+    \node[text=blue] at (3,2.4) {$\ms{Cone}(X_5)$};
+    \node at (1.75,4.75) {$\P^4$};
+\end{tikzpicture}
+\end{center}
+\caption{Critical locus $\ms{Cone}(X_5) \cup \P(1,5)$}%
+\label{fig:crit}
+\end{figure}
+
+
+The degeneracy locus of the MSP moduli space (with reduced stack structure) consists of all $\xi$ such that $\mc{C}$ is mapped entirely into the critical locus. In other words, we require that
+\[ \ab(p = \sum_{i=1}^5 x_i^5) \cup (x_1 = \cdots = x_5 = 0) = \mc{C}. \]
+The upshot of this is that the critical locus is proper.
+
+\begin{thm}[\cite{mspfermat}]
+    Fixing the discrete data, the moduli of stable MSP fields is a separated DM stack of finite type and the degeneracy locus of the cosection is proper.
+\end{thm}
+
+Our goal is now to generalize the stability condition:
+\begin{itemize}
+    \item Stability should come from GIT with the $R$-charge (which gives the $\omega^{\log}$);
+    \item Properness should follow from properness of the target (or at least the critical locus).
+\end{itemize}
+
+\begin{lem}
+        Under \textbf{MSP-Stab-I}, the condition that $|\Aut \xi|<\infty$ is equivalent to the condition th
+        \[ (\mc{L} \otimes \mc{N}^2) \otimes ( \omega_{\mc{C}}^{\log} )^{\otimes A} > 0 \]
+        as $A \to \frac{1}{5} + 0^+$.
+\end{lem}
+
+Now note that the unstable locus is cut out by the functions
+\[ x_1 v^2, \ldots, x_5 v^2, uv, u^{10}p. \]
+This allows to reformulate \textbf{MSP-Stab-I} as the condition that the sections
+\[ \varphi_1 \nu^2, \ldots, \varphi_5 \nu^2, \mu\nu \in H^0(\mc{L} \otimes \mc{N}^2) \qquad \text{and} \qquad \mu^{10}\rho \in H^0(\mc{L}^5 \otimes \mc{N}^{10}\otimes \omega_{\mc{C}}^{\log}) \]
+have no common zeros. This reformulation allows us to give easier proofs of basic facts about MSP fields.
+
+\begin{cor}
+    Fixing the discrete data, stable MSP fields are bounded.
+\end{cor}
+
+\begin{proof}
+    We need to prove that
+    \begin{itemize}
+        \item There are finitely many irreducible components;
+        \item The degrees $\deg \mc{L}_{\mc{C}'}$ and $\deg \mc{N}|_{\mc{C}'}$ are uniformly bounded for irreducible components $\mc{C}' \subset \mc{C}$.
+    \end{itemize}
+    The first condition follows from positivity of the line bundle
+    \[ \mc{L} \otimes \mc{N}^2 \otimes (\omega_{\mc{C}}^{\log})^A. \]
+    
+    For the second condition, suppose for simplicity that $\mc{C}' = \mc{C}$. Then we vary the polarization to obtain the inequalities
+    \begin{align*}
+        A_2 &\leq \deg \mc{L} \otimes \mc{N}^2 \leq A_1; \\
+        A_3 &\leq \deg \mc{L} \otimes \mc{N}^3; \\
+        A_4 &\leq \deg \mc{L}^2 \otimes \mc{N}^3 .
+    \end{align*}
+    This gives a bounded region, and the denominators are bounded, so we are done.
+\end{proof}
+
+\begin{rmk}
+    In the nonabelian case, boundedness is much harder. See~\cite{bounded} for more details.  
+\end{rmk}
+
+\subsection{General setup}%
+\label{sub:General setup}
+
+The setup consists of the following data:
+\begin{itemize}
+    \item An extension
+        \begin{equation*}
+        \begin{tikzcd}
+            1 \ar{r} & G \ar{r} \ar[swap]{dr}{\theta} & \Gamma \ar{r}{\ep} \ar[dashrightarrow]{d}{\vartheta} & \C_R^{\times} \ar{r} & 1 \\
+            & & \C^{\times}
+        \end{tikzcd}
+        \end{equation*}
+        of reductive groups;
+    \item An affine scheme $V$ (think a vector space or critical locus) with an action of $\Gamma$ such that $V^s(\theta) = V^{\mr{ss}}(\theta) \neq \emptyset$;
+\end{itemize}
+\begin{rmk}
+    The lift $\vartheta$ of $\theta$ is not essential.
+\end{rmk}
+
+\begin{defn}
+    An \textit{LG-quaasimap} is a tuple
+    \[ \xi = (\mc{C}, u, \kappa), \]
+    where
+    \begin{enumerate}
+        \item $\mc{C}$ is a pointed twisted curve;
+        \item $u \colon \mc{C} \to [V/\Gamma]$ is representable such that the base locus $u^{-1}([V^{\mr{un}}(\theta).\Gamma])$ is discrete and disjoint from the special points;
+        \item $\kappa \colon u^* \xrightarrow{\cong} \omega_{\mc{C}}^{\log}$ is an isomorphism of line bundles.
+    \end{enumerate}
+\end{defn}
+
+\begin{exm}
+    In the MSP case, either $V = \C^8$ or $\on{Crit} \ab(p \sum x_i^5)$. We also have $\Gamma = (\C^{\times})^2 \times \C^{\times}_R$.
+    \begin{itemize}
+        \item A map $u \colon \mc{C} \to [V/\Gamma]$ is the data of $\mc{L}, \mc{N}, \mc{R} \in \Pic(\mc{C})$ and fields $\varphi_1, \ldots, \varphi_5, \rho, \mu, \nu$. Here, note that $\rho \in H^0(\mc{L}^{-5} \otimes \mc{R})$.
+        \item The data of $\kappa$ is an isomorphism $u^* L_{\ep} = \mc{R} \cong \omega_{\mc{C}}^{\log}$.
+    \end{itemize}
+\end{exm}
+
+A fancier way to write an LG-quasimap is as a commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    & & \mc{C} \ar[swap]{dl}{u} \ar[bend left=10,""{name=F}]{ddl}{\omega_{\mc{C}}^{\log}} \\
+    { [V/G] } \ar{r} \ar{d} & { [V/\Gamma] } \ar{d} \ar[Rightarrow,to=F,"\kappa"]  \\
+    \Spec \C \ar{r} & B \C^{\times}_R.
+\end{tikzcd}
+\end{equation*}
+
+\subsection{$\Omega$-stability}%
+\label{sub:Omega-stability}
+
+Define
+\begin{align*}
+    R_k &\coloneqq \ab\{ f \in \C[V] \mid g^* f = (\theta(g))^k f\text{ for all } g \in G \};\\
+    R_+ &\coloneqq \bigoplus_{k >0} R_k.
+\end{align*}
+Then recall that we have a morphism
+\[ V \sslash_{\theta} G = \Proj \bigoplus_{k \geq 0} R_k \to \Spec R_0 = V \sslash_0 G. \]
+
+\begin{lem}[\cite{glsm}]
+    Each $R_k$ is $\Gamma-invariant$. 
+\end{lem}
+Set
+\[ R_k = \bigoplus_{c \in \Z} R_{k,c}, \]
+where
+\[ R_{k,c} \coloneqq \ab\{ f \in \C[V] \mid \gamma^* f = (\vartheta(\gamma))^k (\ep(\gamma))^c f \text{ for all }\gamma \in \Gamma \}. \]
+
+\begin{defn}
+    An element $f \in R_{\bullet} = \bigoplus_{k \geq 0} R_k$ is \textit{homogeneous} if $0 \neq f \in R_{k,c}$ for some $k$ and $c$. We then define the \textit{$\theta$-weight} of $f$ by $k \eqqcolon \mr{wt}(f)$, the \textit{$R$-charge} of $f$ to be $c$, and the \textit{slope} of $f$ to be $\frac{c}{k}$.
+\end{defn}
+
+\begin{exm}
+    In the original MSP example, weights are given in~\Cref{tab:weights}.
+    \begin{table}[htpb]
+        \centering
+        \caption{Weights.}
+        \label{tab:weights}
+        \begin{tabular}{ccc}
+            \toprule
+            & $x_1 v^2$ & $u^{10} p$ \\
+            \midrule
+            Weight & $1$ & $5$ \\
+            $R$-charge & $0$ & $1$.\\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    In this example, we have
+    \[ u^* L_{k\vartheta+c\ep} = (\mc{L} \otimes \mc{N}^2)^{\otimes k} \otimes (\omega_{\mc{C}}^{\log})^{\otimes c}. \]
+\end{exm}
+
+In general, for $f \in R_{k,c}$ and a map $u \colon \mc{C} \to [V/\Gamma]$, we have
+\[ u^* f \in H^0(\mc{C}, u^*L_{k\vartheta + c\ep}). \]
+
+Now choose a package $\Omega = (S,A,\vartheta)$, where
+\begin{itemize}
+    \item $S \subset R_+$ is a finite set of homogeneous elements;
+    \item $A > \max_{f \in S} \ab\{\on{slope}(f) \}$.
+\end{itemize}
+
+\begin{defn}
+    A prestable LG-quasimap $\xi$ is \textit{$\Omega$-stable} if
+    \begin{description}
+        \item[$\Omega$-1] The base locus $u^{-1}( [ V(S)/\Gamma] )$ is discrete and disjoint from the markings and nodes;
+        \item[$\Omega$-2] For all non-special points $x \in \mc{C}^{\mr{sm}}$, we have
+            \[ \min_{f \in S} \ab\{ \frac{1}{\mr{wt}(f)} \on{ord}_x (u^* f) + \on{slope}(f)\} \leq A; \]
+        \item[$\Omega$-3] We have the ampleness condition
+            \[ u^* L_{\vartheta} \otimes (\omega_{\mc{C}}^{\log})^{\otimes A} > 0. \]
+    \end{description}
+\end{defn}
+
+\begin{rmk}\leavevmode
+    \begin{enumerate}
+        \item The $A$ here corresponds roughly to $\frac{1}{\ep}$ in the previous literature about quasimaps. Roughly, decreasing $A$ means attempting to force more of the curve to go into the stable locus;
+        \item $V(S)$ may be larger than the unstable locus $V^{\on{un}} = V(R_+)$;
+        \item If any irreducible component $\mc{C}' \subset \mc{C}$ satisfies $\omega_{\mc{C}}^{\log}|_{\mc{C}'} > 0$, then \textbf{$\Omega$-3} is implied by either \textbf{$\Omega$-1} or \textbf{$\Omega$-2};
+        \item In some way, $\Omega$-stability is independent of $\vartheta$ (up to changing the other data).
+    \end{enumerate}
+\end{rmk}
+
+\begin{thm}
+    Fixing $\deg u^*L_{\vartheta} = d$, the genus $g$, and the number $k$ of marked points, the stack
+    \[ \on{LGQ}^{\Omega}_{g,k}(X,d) \]
+    is a separated DM stack of finite type.
+\end{thm}
+
+\begin{thm}
+    Suppose that $X \sslash_{\theta} G$ is projective and $S$ is \textit{full} (which means that set-theoretically $V(S) = V^{\on{un}}(\theta)$). Then $\on{LGQ}^{\Omega}_{g,k}(X,d)$ is proper.
+\end{thm}
+
+\begin{exm}
+    In the original MSP example, $S$ is full. The element $u^{10}p \in S$ has slope $\frac{1}{5}$, so we need $A > \frac{1}{5}$. For any smooth point $q \in \mc{C}^{\mr{sm}}$, the conditions \textbf{$\Omega$-1} and \textbf{$\Omega$-2} are equivalent. In particular, they mean that one of the following three conditions is satisfied:
+    \begin{align*}
+        \on{ord}_q \varphi_i + 2 \on{ord}_q \nu &\leq A \\
+        \on{ord}_q \mu + \on{ord}_q \nu &\leq A \\
+        \frac{1}{5} \on{ord}_q \rho + 2 \on{ord}_q \mu &\leq A - \frac{1}{5}.
+    \end{align*}
+    As $A \to \frac{1}{5} + 0^+$, we see that the first inequality holds if and only if $\on{ord}_q \varphi_i = \on{ord}_q \nu = 0$, which is equivalent to nonvanishing of $\varphi_i \nu^2$. This recovers the original nonvanishing condition \textbf{MSP-Stab-I}.
+\end{exm}
+
+\subsection{More examples}%
+\label{sub:More examples}
+
+\begin{exm}
+    Consider $\P^N$ with an $R$-charge. This means that we take $\Gamma = \C^{\times} \times \C^{\times}_R$ and $V = \C^{N+1}$. We will have $\Gamma$ act with weights
+    \[ \begin{bmatrix}
+        1 & 1 & \cdots & 1 \\
+        c_0 & c_1 & \cdots & c_N
+    \end{bmatrix}. \]
+    For simplicity, assume that $c_0 \leq \cdots \leq c_N$.
+    In this model, an LG quasimap is a package
+    \[ \xi = (\mc{C}, \mc{L}, \varphi_i \in H^0(\mc{L} \otimes ( \omega_{\mc{C}}^{\log} )^{\otimes c_i})). \]
+    For the stability condition, we choose $S = \{x_0, \ldots, x_N \}$ and $A > c_N$.
+
+    The condition \textbf{$\Omega$-2} becomes the condition
+    \[ \min \ab\{ \on{ord}_x(\varphi_i) + c_i \} \leq A. \]
+    In general, we see that $\on{ord}_x(\varphi_i)$ is allowed to be positive. The condition \textbf{$\Omega$-3} becomes the positivity condition
+    \[ \mc{L} \otimes (\omega_{\mc{C}}^{\log})^A > 0. \]
+
+    For example, if $N = 1$, $c_0 = 0$, and $c_1 = 1$, then as $A \to 1^+$, \textbf{$\Omega$-2} becomes the condition that either $\varphi_1(x) \neq 0$ or $\on{ord}_x ( \varphi_0 ) \leq 1$ at any non-special point $x \in \mc{C}$. In particular, it is impossible to completely remove basepoints.
+\end{exm}
+
+\begin{exm}
+    We will now consider the LG phase for a complete intersection
+    \[ X_{d_1, d_2} \subset \P^N. \]
+    We will consider $V = \C^{N+1} \times \C \times \C$ and $\Gamma = \C^{\times} \times \C^{\times}_R$ acting on $V$ with weights
+    \[ \begin{bmatrix}
+        1 & \cdots & 1 & -d_1 & -d_2 \\
+        0 & \cdots & 0 & 1 & 1
+    \end{bmatrix}. \]
+    We will choose the character $(t_1, t_2) \mapsto t_1^{-1}$, and the corresponding GIT quotient is 
+    \[ [V \sslash_{\theta} G] = \on{Tot}(\mc{O}_{\P(d_1, d_2)}(-1)^{\oplus N+1}). \] 
+    An LG quasimap is given by the data
+    \[ \xi = (\mc{C}, \mc{L}, \varphi_0, \ldots, \varphi_N \in H^0(\mc{L}), \rho_1 \in \mc{L}^{-d_1} \otimes \omega_{\mc{C}}^{\log}, \rho_2 \in H^0(\mc{L}^{-d_2} \otimes \omega_{\mc{C}}^{\log})). \]
+    We choose $S = \ab\{p_1, p_2 \}$, and assuming that $d_1 \leq d_2$, we need to choose $A > \frac{1}{d_1}$.
+
+    The stability condition \textbf{$\Omega$-2} becomes
+    \[ \min \ab\{ \frac{\on{ord}_x(\rho_i)}{d_i} + \frac{1}{d_i}\} \leq A, \]
+    while \textbf{$\Omega$-3} becomes the positivity condition
+    \[ \mc{L}^{-1} \otimes (\omega_{\mc{C}}^{\log})^A > 0. \]
+
+    As $A \to \ab(\frac{1}{d_1})^+$, the condition \textbf{$\Omega$-2} becomes the condition that either $\rho_1(x) \neq 0$ or $\on{ord}_x(\rho_2) \leq \frac{d_2}{d_1} - 1$. Therefore, if $d_2 < 2 d_1$, then $\rho_1$ and $\rho_2$ have no common zeroes.
+\end{exm}
+
+\begin{rmk}
+    If $d_1 = d_2$, this hybrid model admits a good lift in the sense of Fan-Jarvis-Ruan and the theory was studied by Clader.
+\end{rmk}
+
+\begin{exm}
+    We will now consider MSP theory for $X_{3,3} \subset \P^2 \times \P^2$. The Calabi-Yau phase is given by $K_{\P^2 \times \P^2}$, which is a GIT quotient of $\C^3 \times \C^3 \times \C$ by $\C^{\times}\times \C^{\times}$ with weights
+    \[ \begin{bmatrix}
+        1 & 1 & 1 & 0 & 0 & 0 & -3 \\
+        0 & 0 & 0 & 1 & 1 & 1 & -3
+    \end{bmatrix}. \]
+    There are three phases for this model, which are given in~\Cref{fig:p2p2}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape]
+        \draw[-,thick] (0,0) -- (2,0);
+        \draw[-,thick] (0,0) -- (0,2);
+        \draw[-,thick] (0,0) -- (-2,-2);
+        \node at (1,1) {$K_{\P^2 \times \P^2}$};
+        \node at (-2,0.5) {$[ \on{Tot}(\mc{O}_{\P^2}(-1)^{\oplus 3}) / \mu_3 ]$};
+        \node at (1,-1) {$[ \on{Tot}(\mc{O}_{\P^2}(-1)^{\oplus 3}) / \mu_3 ]$};
+    \end{tikzpicture}
+    \end{center}
+    \caption{Phases of $X_{3,3} \subset \P^2 \times \P^2$.}%
+    \label{fig:p2p2}
+    \end{figure}
+    To construct the MSP moduli space involving all phases, consider the data 
+    \[ \ab[\begin{array}{cccccccccccc}
+        & x_1 & x_2 & x_3 & y_1 & y_2 & y_3 & p & u_1 & u_2 & v & \vartheta \\
+        \midrule
+        \C^{\times} & 1 & 1 & 1 & 0 & 0 & 0 & -3 & 1 & 0 & 0 & 1 \\
+        \C^{\times} & 0 & 0 & 0 & 1 & 1 & 1 & -3 & 1 & 0 & 0 & 1 \\
+        \midrule
+        \C^{\times}_R & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 3
+    \end{array}]. \]
+    We will choose the set
+    \[ S = \ab\{ xyv^3, xu_2 v^2, yu_1 v^2, u_1u_2 v, y^9 u_1^9 p^2, x^9 u_2^9 p^2, u_1^9 u_2^9 p\}. \]
+    The maximum slope is $\frac{2}{3}$, so we will choose $A = \frac{2}{3} + 0^+$. In particular, part of \textbf{$\Omega$-2} becomes the condition
+    \begin{align*}
+        \frac{1}{6} (9 \on{ord}(u_1) + 9 \on{ord}(u_2) + \on{ord}(p)) + \frac{1}{6} \leq \frac{2}{3} + 0^+,
+    \end{align*}
+    which is equivalent to
+    \[ 9 \on{ord}(u_1) + 9 \on{ord}(u_2) + \on{ord}(p) \leq 3. \]
+    This is equivalent to the condition that $u_1$ and $u_2$ are nonzero and $\on{ord}(\rho)\leq 3$. Putting all of the conditions together, we obtain the following nonvanishing conditions:
+    \begin{itemize}
+        \item $(u_1, u_2, v) \neq 0$;
+        \item $(y, u_2) \neq 0$;
+        \item $(x, u_1) \neq 0$;
+        \item Either $v \neq 0$ or $\on{ord}(\rho) \leq 3$.
+    \end{itemize}
+    Unfortunately, it is not possible to remove the basepoints.
+
+    Consider the action of $\C^{\times} \times \C^{\times}$ given by scaling $\mu$. A schematic diaagram of the the types of fixed loci is given in~\Cref{fig:p2p2loc}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape]
+        \node (A) at (0,0) {$K_{\P^2 \times \P^2}$};
+        \node (B) at (-2,2) {$\P^2$};
+        \node (C) at (2,2) {$\P^2$};
+        \node (D) at (0,2) {$\mr{pt}$};
+        \node (E) at (-4,4) {$[ \on{Tot}(\mc{O}_{\P^2}(-1)^{\oplus 3}) / \mu_3 ]$};
+        \node (F) at (4,4) {$[ \on{Tot}(\mc{O}_{\P^2}(-1)^{\oplus 3}) / \mu_3 ]$};
+        \node (G) at (0,4) {$\Vectorstack{{\mc{L}_1 \cong \mc{L}_2 \cong \mc{N}^{-1}} {\rho \in H^0(\mc{N}^6 \otimes \omega_{\mc{C}}^{\log})} {\on{ord}_x(\rho) \leq 3}}$};
+        \draw[-,thick] (A) -- (B) -- (D) -- (C) -- (A);
+        \draw[-,thick] (B) -- (E) -- (G) -- (F) -- (C);
+        \draw[-,thick] (G) -- (D);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Diagram of fixed loci for $X_{3,3} \in \P^2 \times \P^2$.}%
+    \label{fig:p2p2loc}
+    \end{figure}
+\end{exm}
+
+\begin{rmk}
+    There is a wall-and-chamber structure as we vary $A$. If we consider $A \to \infty$, the condition \textbf{$\Omega$-2} is always true, and \textbf{$\Omega$-3} bans all rational tails. This gives a stability condition similar to stable quasimaps which was already studied by Fan-Jarvis-Ruan. In addition, there should be a wall-crossing structure as we vary $A$ (which is desirable because we want to separate the different kinds of fixed points).
+\end{rmk}
+
+\begin{rmk}
+    $\Omega$-stability exhibits a phenomenon which is close to being independent of $S$. If $V$ is reduced and $V \sslash_{\theta} G$ is projective, then whenever $S$ is full, we have
+    \begin{itemize}
+        \item The quantity
+            \[ \max_{f \in S} \{ \on{slope}(f)\} \]
+            is independent of $S$;
+        \item Fixing $A$ and $\vartheta$, $\Omega = (S,A,\vartheta)$-stability is independent of $S$.
+    \end{itemize}
+\end{rmk}
+
+\subsection{Proof of key properties of the moduli space}%
+\label{sub:Proof of key properties of the moduli space}
+
+The idea of the proof is as follows:
+\begin{itemize}
+    \item First prove the $\P^N$ case;
+    \item Compare the general case to $\P^N$.
+\end{itemize}
+
+To warm up, we will review the proof of properness for stable maps to $\P^1$. A stable map to $\P^1$ is equivalent to the data 
+\[ (\mc{C}, \mc{L}, \varphi_1, \varphi_2 \in H^0(\mc{L})) \]
+such that there are no common zeroes and $\mc{L}|_{\mc{C}'} > 0$ whenever $\omega_{\mc{C}}^{\log}|_{\mc{C}'} < 0$. We will use the valuative criteria.
+
+Consider a family over a disk $\Delta_t$. We have two divisors $(\varphi_1 = 0)$ and $(\varphi_2 = 0)$, but they may meet on the central fiber. We can blow up the intersection point to separate the two divisors as in~\Cref{fig:blowup1}. Denote the blowup morphism by $\pi \colon \tilde{ \mc{C} } \to \mc{C}$. Then we actually have
+\[ \pi^* \varphi_1, \pi^* \varphi_2 \in H^0(\pi^* \mc{L}(-E)), \]
+where $E$ is the exceptional divisor. Then the stable limit is given by
+\[ (\tilde{\mc{C}}, \pi^* \mc{L}(-E), \pi^* \varphi_1, \pi^* \varphi_2). \]
+If $A > 1$, we simply keep the base point (and disallow the rational tail).
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (0,0) rectangle ++(2,2);
+    \draw[thick] (1,2) -- (1,0);
+    \node at (1,-0.5) {$\downarrow$};
+    \draw[thick] (0,-1) -- (2,-1);
+    \draw[thick] (1,-1.2) -- (1,-0.8);
+    \node at (1,-1.5) {$t=0$};
+    \node at (2.3,-1) {$\Delta_t$};
+    \draw[blue,thick] (0,0.5) -- (2,1.5);
+    \draw[red,thick] (2,0.5) -- (0,1.5);
+    \node[text=blue] at (2.7,1.5) {$\varphi_2=0$};
+    \node[text=red] at (2.7,0.5) {$\varphi_1=0$};
+    \node at (2.2,-0.2) {$\mc{C}$};
+    \draw[thick] (-4,0) rectangle ++(2,2);
+    \draw[thick] (-3,2) -- (-2.5,0.8);
+    \draw[thick] (-3,0) -- (-2.5,1.2);
+    \node at (-3,-0.5) {$\downarrow$};
+    \draw[thick] (-4,-1) -- (-2,-1);
+    \draw[thick] (-3,-1.2) -- (-3,-0.8);
+    \node at (-3,-1.5) {$t=0$};
+    \node at (-1.7,-1) {$\Delta_t$};
+    \node at (-3,2.3) {$E$};
+    \draw[blue,thick] (-4,1.25) -- (-2,1.5);
+    \draw[red,thick] (-2,1.75) -- (-4,1.5);
+    \node at (-1.8,-0.2) {$\tilde{\mc{C}}$};
+    \draw[->,thick] (-1.7,1) -- (-0.3,1);
+    \node at (-1,1.2) {$\pi$};
+\end{tikzpicture}
+\end{center}
+\caption{Stable limit of family of stable maps.}%
+\label{fig:blowup1}
+\end{figure}
+
+If we introduce an $R$-charge $0,c$, an LG quasimap is given by
+\[ (\mc{C}, \mc{L}, \varphi_1\in H^0(\mc{L}), \varphi_2 \in H^0(\mc{L} \otimes (\omega_{\mc{C}}^{\log})^{\otimes c})). \]
+Now $\pi^* \varphi_2$ vanishes to order $1+c$ on $E$. Blowing up again, the vanishing orders now become $(1,2c) \sim (0,2c-1)$, which seems worse. However, this can be resolved combinatorially to obtain a stable limit. See~\Cref{fig:blowup2} for an example.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape]
+    \draw[thick] (0,0) rectangle ++(2,2);
+    \draw[thick] (1,2) -- (1,0);
+    \node at (1,-0.5) {$\downarrow$};
+    \draw[thick] (0,-1) -- (2,-1);
+    \draw[thick] (1,-1.2) -- (1,-0.8);
+    \node at (1,-1.5) {$t=0$};
+    \node at (2.3,-1) {$\Delta_t$};
+    \draw[blue,thick] (0,0.5) -- (2,1.5);
+    \draw[red,thick] (2,0.5) -- (0,1.5);
+    \node[text=blue] at (2.7,1.5) {$\varphi_2=0$};
+    \node[text=red] at (2.7,0.5) {$\varphi_1=0$};
+    \node at (2.2,-0.2) {$\mc{C}$};
+    \draw[thick] (-4,0) rectangle ++(2,2);
+    \draw[thick] (-3,2) -- (-2.5,0.8);
+    \draw[thick] (-3,0) -- (-2.5,1.2);
+    \node at (-3,-0.5) {$\downarrow$};
+    \draw[thick] (-4,-1) -- (-2,-1);
+    \draw[thick] (-3,-1.2) -- (-3,-0.8);
+    \node at (-3,-1.5) {$t=0$};
+    \node at (-1.7,-1) {$\Delta_t$};
+    \node at (-3,2.3) {$E$};
+    \draw[blue,thick] (-4,1.25) -- (-2,1.5);
+    \draw[red,thick] (-2,1.75) -- (-4,1.5);
+    \node at (-1.8,-0.2) {$\tilde{\mc{C}}$};
+    \draw[->,thick] (-1.7,1) -- (-0.3,1);
+    \node at (-1,1.2) {$\pi$};
+    \draw[thick] (-8,0) rectangle ++(2,2);
+    \draw[thick] (-7,2) -- (-6.7,1.25);
+    \draw[thick] (-6.75,1.6) -- (-6.75,0.4);
+    \draw[thick] (-7,0) -- (-6.7,0.75);
+    \node at (-7,-0.5) {$\downarrow$};
+    \draw[thick] (-8,-1) -- (-6,-1);
+    \draw[thick] (-7,-1.2) -- (-7,-0.8);
+    \node at (-7,-1.5) {$t=0$};
+    \node at (-5.7,-1) {$\Delta_t$};
+    \draw[blue,thick] (-6,1)-- (-8,0.75);
+    \draw[red,thick] (-6,1.75) -- (-8,1.5);
+    \draw[->,thick] (-5.7,1) -- (-4.3,1);
+\end{tikzpicture}
+\end{center}
+\caption{Stable limit of family of LG quasimaps.}%
+\label{fig:blowup2}
+\end{figure}
+
+We will now study the general case. We will assume that $S = \{f_0, \ldots, f_N \}$ all of weight $1$. Then if we consider
+\begin{equation*}
+\begin{tikzcd}
+    V \ar{rr}{(f_0, \ldots, f_N)} \ar[loop below] & & \C^{N+1} \ar[loop below] \\
+    \Gamma \ar{rr}{\vartheta \times \ep} \ar{dr}{\vartheta} & & \C^{\times} \times \C^{\times}_R \ar{dl}{\mr{pr}_1} \\
+    & \C^{\times},
+\end{tikzcd}
+\end{equation*}
+This induces a cartesian diagram
+\begin{equation*}
+\begin{tikzcd}
+    \on{LGQ}(X) \ar{r}{\Phi} & \on{LGQ}(\P^N) \\
+    \on{LGQ}^{\Omega}(X) \ar{r} \ar[hookrightarrow]{u} & \on{LGQ}^{\Omega}(\P^N)\ar[hookrightarrow]{u}.
+\end{tikzcd}
+\end{equation*}
+Properness reduces to proving properness of the bottom morphism. Using the valuative criterion, consider a curve $\mc{C}^{\circ} \to \Delta^{\circ}$ and an LG quasimap
+\[\xi^{\circ} = (\mc{C}^{\circ},\ldots) \in \on{LGQ}^{\Omega}(\mc{C}^{\circ}, X). \]
+If we have an extension of $\Phi(\xi^{\circ})$ to
+\[ \xi = (\mc{C}, \mc{L}, \varphi_0, \ldots, \varphi_N) \in \on{LGQ}^{\Omega}(\ul{ \mc{C} }, \P^N), \]
+we need a unique extension $\xi$ of $\xi^{\circ}$ such that $\Phi(\xi) = \ul{\xi}$.
+
+Because the line bundle $\omega_{\mc{C}}^{\log}$ comes from the coarse moduli space, we can trivialize it locally. Working locally, any LG quasimap becomes a usual quasimap. First assume that there are no base points (we will deal with base points using Hartogs's theorem). We already have an extension to the coarse moduli space $\ul{X}$.
+
+\begin{lem}[\cite{av}]
+    Locally, given $\ul{\mc{C}} \to \ul{X}$, there exists a unique commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C} \ar{r} \ar{d} & X \ar{d} \\
+        \ul{\mc{C}} \ar{r} & \ul{X}.
+    \end{tikzcd}
+    \end{equation*}
+\end{lem}
+
+
+
+\section{Applications to Gromov-Witten theory (Shuai Guo and Patrick Lei)}%
+\label{sec:Applications to Gromov-Witten theory}
+
+\subsection{MSP invariants}%
+\label{sub:MSP invariants}
+
+We will consider MSP moduli spaces $\mc{W}_{g,n,d}$ with $d_0 = d$, $d_{\infty} = 0$, only $(1,\rho)$ insertions, and arbitrary values of $N$. We first note that the MSP virtual localization formula is given by
+\begin{align*}
+    \frac{1}{e(N_{\Theta}^{\vir})} ={}& \prod_{v \in V_0} \prod_{\alpha=1}^N \frac{1}{e(R \pi_* f_v^* \mc{O}(1) \otimes t_{\alpha})} \\
+    & \cdot \prod_{\alpha=1}^N \prod_{v \in V_1^{\alpha}} \frac{5 t_{\alpha} \cdot e(\E^{\vee}\otimes (-t_{\alpha}))^5}{e(\E \otimes 5 t_{\alpha})\cdot (-t_{\alpha})^5} \frac{\prod_{\beta \neq \alpha} e(\E^{\vee} \otimes (t_{\beta} - t_{\alpha}))}{\prod_{\beta \neq \alpha} (t_{\beta} - t_{\alpha})} \\
+    &\cdot \ab( \prod_{\mf{a} \in \mf{a}_{\infty}} \frac{1}{e(N_{\mf{a}}^{\vir})} ) \cdot \prod_{e \in E} A_e,
+\end{align*}
+where $t_{\alpha}$ are the equivariant variables and $V_1^{\alpha}$ denotes those vertices at level $1$ where the curve satisfies $\mu_{\alpha} \neq 0$ and $\mu_{\beta \neq \alpha} = 0$. Also, $\mf{a} \in \mf{a}_{\infty}$ are connected components of the level $\infty$ part of $\Theta$ and $A_e$ is the contribution of an edge. In particular, define
+\begin{align*}
+    [\Mbar_{g,n}(Z,d)]^{\mr{top}} &= \frac{[\Mbar_{g,n}(Z,d)]^{\vir}}{e(R\pi_* f_v^* \mc{O}(1) \otimes t_{\alpha})} \\
+    &= (-t^N)^{d+1-g} [\Mbar_{g,n}(Z,d)]^{\vir} \\
+    [\Mbar_{g,n}]^{\alpha,\mr{top}} &= \ab(\frac{1}{5}N(-t_{\alpha})^{N+3})^{g-1} [\Mbar_{g,n}].
+\end{align*}
+These are the top degree part of the contribution to the virtual localization formula coming from a vertex $v$. We will denote the full contribution at level $1$ by $[\Mbar_{g,n}]^{\alpha,\tw}$. From now on, we will specialize our equivariant variables to roots of unity as $t_{\alpha} = -\zeta_N^{\alpha} t$. For convenience, we will also specialize $t$ such that $t^N = -1$.
+
+We may define MSP invariants using virtual localization. Note that by the condition that $\rho$ vanishes at the marked points, we have evaluation morphisms
+\[ \ev_i \colon \mc{W}_{g,n,d} \to \P^{4+N}, \]
+which restrict to
+\[ \ev_i \colon \mc{W}_{\Theta}^- \to (x_1^5 + \cdots + x_5^5 = 0)^{(\C^{\times})^N} = Z \sqcup \bigsqcup_{\alpha=1}^N \pt_{\alpha}, \]
+where $\mc{W}^-_{\Gamma}$ is the degeneracy locus of $\mc{W}_{\Gamma}$. Therefore, we may define MSP invariants with insertions from the state space
+\[ \mc{H} = H^*(Z) \oplus \bigoplus_{\alpha=1}^N H^*(\pt_{\alpha}). \]
+Using the vertex contributions to the virtual normal bundle, we define the pairing
+\begin{align*}
+    (x,y)^M &= \int_{Z} xy|_Z + \sum_{\alpha} \frac{5}{N t_{\alpha}^3} xy |_{\pt_{\alpha}}.
+\end{align*}
+
+The state space has several bases, which we will discuss now.
+\begin{itemize}
+    \item Let $p = c_1(\mc{O}_{\P^{4+N}}(1))$ be the equivariant ambient hyperplane class. Then we have the basis $\phi_i = p^i$ for $i=0,\ldots, N+3$;
+    \item There is the basis $\{ \1_Z,H,H^2,H^3 \}\cup \{ \1_{\alpha} \}_{\alpha=1}^N$;
+\end{itemize}
+
+The last kind of MSP invariant we need to define is the MSP $[0,1]$ invariant. Here, we simply consider the class
+\[ [\mc{W}]^{[0,1]} = \sum_{\Theta \in \Lambda^{[0,1]}} \frac{[\mc{W}_{\Theta}]^{\vir}}{e(N_{\Theta}^{\vir})}, \]
+where $\Lambda^{[0,1]}$ denotes the set of all graphs without any level $\infty$ vertices.
+
+\subsection{Genus zero MSP theory}%
+\label{sub:Genus zero MSP theory}
+
+In genus zero, the full MSP and the $[0,1]$ theory are equal. This follows from the following lemma:
+\begin{lem}
+    We have
+    \[ \mc{W}_{0,n,d} \cong \Mbar_{0,n}(\P^{4+N}, d) \]
+    and an equality
+    \[ [\mc{W}_{0,n,d}]^{\vir} = \pm e(R\pi_* f^* \mc{O}(5)) \cap [\Mbar_{0,n}(\P^{4+N},d)]^{\vir} \]
+    of virtual cycles.
+\end{lem}
+The lemma tells us that the genus-zero MSP invariants are the same as the GW invariants of a degree $5$ hypersurface in $\P^{4+N}$, which is in particular Fano. In particular,
+the MSP $I$-function is given by the formula
+\[ I^M(q,z) = z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d} (5p+mz)}{\prod_{m=1}^d (p+mz)^5 \prod_{m=1}^d ((p+mz)^N - t^N)}. \]
+This automatically implies the following result.
+
+\begin{lem}
+    We have
+    \[ J^M(0,q,z) = I^M(q,z) \]
+    whenever $N \geq 2$.
+\end{lem}
+
+The main result we need to know about genus zero MSP theory is the explicit form of the quantum connection. Let $D \coloneqq q \odv{}{q}$.
+\begin{lem}
+    The MSP $S$-matrix satisfies the differential equation
+    \[ (p + zD)S^M(z)^* = S^M(z) \cdot A^M, \]
+    where $A^M$ is given by the matrix
+    \[ \begin{bmatrix}
+        0 & & & & & & &  120 q \\
+        1 & 0 & & & & & & & 770 q \\
+        & 1 & 0 & & & & & & & 1345 q \\
+        & & 1 & 0 & & & & & & & 770 q \\
+        & & & 1 & 0 & & & & & & & 120 q + t^N \\
+        & & & & 1 & 0 \\
+        & & & & & 1 & 0 \\
+        & & & & & & 1 & 0 \\
+        & & & & & & & \cdots & \cdots \\
+        & & & & & & & & 1 & 0 \\
+        & & & & & & & & & 1 & 0 \\
+        & & & & & & & & & & 1 & 0 \\
+    \end{bmatrix}
+    \]
+    in the basis $\{ \phi_i \}$ for $N > 5$.
+\end{lem}
+
+\subsection{MSP $[0,1]$ CohFT}%
+\label{sub:MSP 01 CohFT}
+
+Define the MSP $R$-matrix by the Birkhoff factorization
+\[ S^M(z) \pdiagmat[empty={}]{\Delta^1,\ddots,\Delta^N,\mr{Id}} = R(z) \pdiagmat[empty={}]{S^{\pt_1},\ddots,S^{\pt_N},S^Z}, \]
+where
+\begin{align*}
+    &\Delta^{\alpha}(z) \\
+    &\coloneqq \exp \ab(\sum \frac{B_{2k}}{2k(2k-1)} \ab(\frac{5}{(-t_{\alpha})^{2k-1}} + \frac{1}{( 5t_{\alpha} )^{2k-1}} +\sum_{\beta\neq\alpha} \frac{1}{(t_{\beta}-t_{\alpha})^{2k-1}}) z^{2k-1}) 
+\end{align*}
+is defined using the quantum Riemann-Roch theorem. Here, we need to shift $S^Z$ to the point $\tau_Z = \frac{I_1}{I_0} H$, and
+\[ S^{\pt_{\alpha}} = e^{\frac{\tau_{\alpha}}{z}}, \]
+where
+\[ \tau_{\alpha} = - t_{\alpha} \int_0^q (L(x)-1) \frac{\d{x}}{x}. \]
+Here, $L(q) \coloneqq (1-5^5q)^{\frac{1}{N}}$.
+
+\begin{thm}
+    The MSP $[0,1]$ invariants come from a CohFT $\Omega^{[0,1]}$, which is defined by the formula
+    \[ \Omega^{[0,1]} = R . \ab(\Omega^Z \oplus \bigoplus_{\alpha=1}^N \omega^{\pt_{\alpha},\mr{top}}). \]
+\end{thm}
+
+\begin{rmk}
+    The normalized tail contribution at the isolated points is given by
+    \[ \tilde{T}_{\alpha}(z) = z (\1-L^{\frac{N+3}{2}} R(z)^{-1}\1) |_{\pt_{\alpha}} = O(z^2) \]
+     In addition, when $N \gg 3g-3+n$, there is no tail contribution at level $0$.
+\end{rmk}
+
+\subsection{Degree bound for MSP theory}%
+\label{sub:Degree bound for MSP theory}
+
+In order to compute the invariants of a Calabi-Yau threefold using MSP theory, we need to control the MSP invariants. Our goal will be to control the MSP $[0,1]$ invariants, but these are defined as a mysterious sum of virtual localization contributions. First, we will control the full MSP invariants.
+
+\begin{lem}
+    The full MSP correlator
+    \[ \ab<p^{a_1} \bar{\psi}_1^{k_1}, \dots, p^{a_n} \bar{\psi}_n^{k_n}>_{g,n}^M \]
+    is a polynomial in $q$ of degree at most 
+    \[ g-1 + \frac{3g-3 + \sum a_i}{N}. \]
+\end{lem}
+This follows from the fact that the virtual dimension of the MSP moduli space is $N(d+1-g)+n$. To obtain the same degree bound for the $[0,1]$ correlators, we will need a decomposition formula for the full MSP theory in terms of the $[0,1]$ theory and the remaining contributions. First, we will construct bipartite graphs from localization graphs, where vertices are either $[0,1]$ vertices or $\infty$ vertices. For an example of this procedure, see~\Cref{fig:bifromloc}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape, every edge quotes/.style = {auto,inner sep=1pt, font=\footnotesize}]
+    \node[circle,fill,label=above:{$2$},minimum size=6pt,inner sep=0pt] (A2) at (0.5,2) {};
+    \node[circle,fill,label=above:{$1$},minimum size=6pt,inner sep=0pt] (B2) at (1.5,2) {};
+    \node[circle,fill,label=above:{$4$},minimum size=6pt,inner sep=0pt] (C2) at (3,2) {};
+    \node[circle,fill,label=left:{$0$},minimum size=6pt,inner sep=0pt] (A1) at (0.5,0) {};
+    \node[circle,fill,label=left:{$2$},minimum size=6pt,inner sep=0pt] (B1) at (2,0) {};
+    \node[circle,fill,label=left:{$1$},minimum size=6pt,inner sep=0pt] (C1) at (4,0) {};
+    \node[circle,fill,label=left:{$0$},minimum size=6pt,inner sep=0pt] (A0) at (0,-2) {};
+    \node[circle,fill,label=left:{$0$},minimum size=6pt,inner sep=0pt] (B0) at (1,-2) {};
+    \node[circle,fill,label=left:{$5$},minimum size=6pt,inner sep=0pt] (C0) at (3,-2) {};
+    \draw[-] (A0) -- (A1) -- (B0);
+    \draw[-] (A1) -- (A2) -- (B2) -- (B1) -- (C0) edge[bend left=20] (C1);
+    \draw[-] (C1) edge[bend left=20] (C0);
+    \draw[-] (C0) -- (3.5,-2);
+    \draw[-] (B1) -- (C2) -- (C1);
+    \node at (5,1) {$\implies$};
+    \node[circle,fill,label=above:{$3$},minimum size=6pt,inner sep=0pt] (AB) at (6,2) {};
+    \node[circle,fill,label=above:{$4$},minimum size=6pt,inner sep=0pt] (BB) at (7.5,2) {};
+    \node[circle,draw,label=left:{$9$},minimum size=6pt,inner sep=0pt] (AW) at (7,0) {};
+    \draw[-] (AB) -- (AW) edge[bend left=20] (BB);
+    \draw[-] (BB) edge[bend left=20] (AW);
+    \draw[-] (AW) -- (7.5,0);
+\end{tikzpicture}
+\end{center}
+\caption{Obtaining a bipartite graph from a localization graph.}%
+\label{fig:bifromloc}
+\end{figure}
+
+\begin{lem}
+    We have the MSP decomposition formula
+    \begin{align*}
+        \ab<\tau_1 \bar{\psi}_1^{a_1},\dots,\tau_n \bar{\psi}_n^{a_n}>_{g,n}^{M} ={}& \sum_{\Gamma \in \Lambda^{\ms{bipartite}}} \frac{1}{\ab|\Aut \Gamma|} \prod_{v \in V_{\infty}} \Cont_{[v]}^{\infty}\ab(\bigotimes_{  i \in L_v^{\circ} } \bar{\psi}_{c(i)}^{a_i}) \cdot \\
+        &\cdot \prod_{v \in V_{[0,1]}} \ab< \bigotimes_{i \in L_v} \tau_i \bigotimes_{i \in L_v^{\circ}} \bar{\psi}_{c(i)}^{a_i} \bigotimes_{e \in E_v} \frac{\1^{\alpha_e}}{\frac{5 t_{\alpha_e}}{a_e} - \psi_{(e,v)}}>_{g_v, n_v}^{[0,1]}.
+    \end{align*}
+    Here, the contribution $\Cont_{[v]}^{\infty}$ of a vertex $v$ at level $\infty$ is a generating series of FJRW-like invariants, which is a polynomial in $q$ of degree at most
+    \[ d_{\infty[v]} + \frac{1}{5}\ab(2 g_v - 2 - \sum_{e \in E_v}(a_e - 1)). \]
+    In addition, $\Lambda^{\ms{bipartite}}$ is the set of \textbf{stable} bipartite graphs, $L_v^{\circ}$ is the set of legs which get contracted to $v$ after stabilization, and $c(i)$ is the stable vertex that $i$ gets contracted to after stabilization. For an example of stabilization, see~\Cref{fig:stab}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape, every edge quotes/.style = {auto,inner sep=1pt, font=\footnotesize}]
+        \node[circle,fill,label=above:{$0$},minimum size=6pt,inner sep=0pt] (A) at (0.5,2) {};
+        \node[circle,fill,label=above:{$v_2,5$},minimum size=6pt,inner sep=0pt] (B) at (1.5,2) {};
+        \node[circle,draw,label=left:{$0$},minimum size=6pt,inner sep=0pt] (C) at (0,0) {};
+        \node[circle,draw,label=below:{$v_1, 2$},minimum size=6pt,inner sep=0pt] (D) at (1,0) {};
+        \node[circle,draw,label=right:{$0$},minimum size=6pt,inner sep=0pt] (E) at (2,0) {};
+        \node[circle,draw,label=right:{$v_3, 6$},minimum size=6pt,inner sep=0pt] (F) at (3,0) {};
+        \node (G) at (0,-0.7) {$\ell_1$};
+        \node (H) at (2,-0.7) {$\ell_2$};
+        \node (I) at (3,-0.7) {$\ell_3$};
+        \draw[-] (C) -- (A) edge["$e_1$" near start] (D);
+        \draw[-] (D) edge [bend left=20] (B);
+        \draw[-] (B) edge [bend left=20] (D);
+        \draw[-] (E) edge ["$e_2$" near start] (B);
+        \draw[-] (B) -- (F);
+        \draw[-] (C) -- (G);
+        \draw[-] (E) -- (H);
+        \draw[-] (F) -- (I);
+        \node at (4,1) {$\implies$};
+        \node[circle,fill,label=above:{$v_2,5$},minimum size=6pt,inner sep=0pt] (J) at (5.5,2) {};
+        \node[circle,draw,label=left:{$v_1,2$},minimum size=6pt,inner sep=0pt] (K) at (5.5,0) {};
+        \node[circle,draw,label=right:{$v_3,6$},minimum size=6pt,inner sep=0pt] (L) at (7,0) {};
+        \draw[-] (J) edge [bend left=20] (K);
+        \draw[-] (K) edge [bend left=20] (J);
+        \draw[-] (J) edge [bend left=20] (L);
+        \node (M) at (5.5,-0.7) {$\ell_1$};
+        \node (N) at (6.2,2) {$\ell_2$};
+        \node (O) at (7, -0.7) {$\ell_3$};
+        \draw[-] (K) -- (M);
+        \draw[-] (J) -- (N);
+        \draw[-] (L) -- (O);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Stabilization of a bipartite graph. In this example, we have $c(\ell_1) = (v_1, e_1)$, $c(\ell_2) = (e_2, v_2)$, and $c(\ell_3) = \ell_3$.}%
+    \label{fig:stab}
+    \end{figure}
+\end{lem}
+
+This lemma is proved by directly applying the virtual localization formula and then analyzing the following two situations:
+\begin{itemize}
+    \item What happens at a vertex at level $\infty$;
+    \item What happens when we split a graph at a vertex at level $1$.
+\end{itemize}
+
+By using the decomposition formula and a careful degree-counting argument, we obtain the following degree bound for the $[0,1]$ theory.
+\begin{lem}
+    The MSP $[0,1]$ correlator
+    \[ \ab<p^{a_1} \bar{\psi}_1^{k_1}, \dots, p^{a_n} \bar{\psi}_n^{k_n}>_{g,n}^{[0,1]} \]
+    is a polynomial in $q$ of degree at most 
+    \[ g-1 + \frac{3g-3 + \sum a_i}{N}. \]
+\end{lem}
+
+\subsection{Polynomiality}%
+\label{sub:Polynomiality}
+
+We first introduce the ring of five generators. Let
+\begin{align*}
+    I(q,z) &\coloneqq z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d (H+mz)^5} \\
+    &\eqqcolon I_0 z + I_1 H + I_2 \frac{H^2}{z} + I_3 \frac{H^3}{z^2}
+\end{align*}
+and define the following generators:
+\[ A_k \coloneqq \frac{D^k I_{11}}{I_{11}}, \qquad B_k \coloneqq \frac{D^k I_0}{I_0}, \qquad \text{and} \qquad Y = \frac{1}{1-5^5q}. \]
+Here, recall that $I_{11} = 1 + D\ab(\frac{I_1}{I_0})$.
+
+\begin{lem}[\cite{yy04}]
+    The ring
+    \[ \mc{R} \coloneqq \Q[A_1, B_1, B_2, B_3, Y] \]
+    contains all $A_k$ and $B_k$.
+\end{lem}
+
+\begin{thm}\label{thm:finitegenerationmsp}
+    Introduce the series
+    \[ P_{g,n} \coloneqq \frac{(5Y)^{g-1} I_{11}^n}{I_0^{2g-2}} \ab(Q \odv{}{Q})^n F_g(Q) \Bigg|_{Q = qe^{\frac{I_1}{I_0}}}. \]
+    Then $P_{g,n} \in \mc{R}$ for all $g,n$ such that $2g-2+n > 0$.
+\end{thm}
+
+If we want to prove this result using the results we have already proved, then we need to prove a polynomiality result for the the entries of the $R$-matrix. At level $0$, we use the equation
+\[ (R(z)^{-1}x)|_Z = S^Z(q,z) (S^M(z)^{-1})|_Z \]
+and the explicit forms of the MSP quantum connection and the quantum connection for the quintic to obtain
+\begin{align*}
+    R(z)^* \1 |_Z &= I_0 + O(z^{N-3}) \\
+    R(z)^* p |_Z &= z D(I_0) + H I_0 I_{11} + O(z^{N-2}).
+\end{align*}
+To simplify what follows, define the normalized basis
+\[ \varphi_b = I_0 I_{11} \cdots I_{bb} H^b, \]
+where $I_{22}$ was defined previously and $I_{33} = I_{11}$. If we define
+\[ (R_k)_j^b \coloneqq (R_k \varphi^b, p^j)^M, \]
+then the recursive formula
+\[ (R_k)_j^b = (D+C+b)(R_{k-1})_{j-1}^b + (R_k)_{j-1}^{b-1} - c_j q (R_k)_{j-N}^b, \]
+where $C_b = D \log (I_0 \cdots I_{bb}) \in \mc{R}$ and $c_j = (0,\ldots,0,120,770,1345,770)$, yields the following result:
+\begin{lem}
+    If $j \not\equiv b+k \pmod{N}$, then $(R_k)_k^b = 0$. Otherwise, we have $(R_k)_{b+k}^b \in \mc{R}$ and $Y (R_k)_{b+N+k}^n \in \mc{R}$.
+\end{lem}
+
+At level $1$, define the normalized basis $\bar{\1}_{\alpha} = L^{-\frac{N+3}{2}}\1_{\alpha}$. Then define
+\[ (R_k)_j^{\alpha} \coloneqq L_{\alpha}^{-(j-k)} (R_k \bar{\1}^{\alpha}, p^j)^M, \]
+where $L_{\alpha} = -t_{\alpha} L$.
+\begin{lem}
+    The quantity $(R_k)_j^{\alpha}$ is independent of $\alpha$ and is a polynomial in $Y$ of degree at most $k + \floor*{\frac{j}{N}}$.
+\end{lem}
+
+The lemma is proved as follows:
+\begin{itemize}
+    \item Fix the case when $j=0$ by using the Picard-Fuchs equation
+        \[ D_{L_{\alpha}}^5 (D_{L_{\alpha}}^N - t^N) - q \prod_{m=1}^5 (D_{L_{\alpha}} + mz) R(z)^* \1|_{\pt_{\alpha}} = 0 \]
+        and an oscillating integral. Solving the Picard-Fuchs equation expresses $R_k$ as an antiderivative of some polynomial in $R_{m < k}$ and their derivatives. To prove that the constants of integration are zero, we use the fact that $R(z)\1 |_{\pt_{\alpha}}$ can be computed from the asymptotic expansion of the oscillating integral
+        \[ \int_{\gamma_{\alpha}} e^{\frac{W}{z}} \frac{\d{x_0} \wedge \cdots \wedge \d{x_{N+3}}}{x_0 \cdots x_{N+3}}, \]
+        where
+        \[ W = \sum_{i=0}^{N+3} (x_i - \lambda_i \log x_i) - \ab( \frac{\prod_{i=0}^{N+3}x_i}{q} )^{\frac{1}{5}} \]
+        is the mirror superpotential and $\gamma_{\alpha}$ is the Lefschetz thimble near the critical point of $W$ corresponding to $\pt_{\alpha}$.
+    \item Use the recursion
+        \begin{align*}
+            (R_k)_j^{\alpha} ={}& \ab(D - \frac{1}{N}\ab(\frac{N+3}{2} - j+k)(1-Y)) (R_{k-1})_{j-1}^{\alpha} \\
+            &+ (R_k)_{j-1}^{\alpha} + \frac{c_j}{5^5}(1-Y) (R_k)_{j-N}^{\alpha}
+        \end{align*}
+        to induct on $j$.
+\end{itemize}
+
+\begin{proof}[Proof of~\Cref{thm:finitegenerationmsp}]
+    First, note that we have the base cases $P_{0,3} = 1$ due to Zagier-Zinger~\cite{zagierzinger} and
+    \[ P_{1,1} = -\frac{1}{2} A_1 - \frac{31}{3} B_1 - \frac{1}{12} (1-Y) - \frac{25}{12} \]
+    due to Zinger~\cite{reducedgenus1}. The relation 
+    \[ P_{g,n+1} = (D + (g-1)(2B_1+1-Y) - nA_1) P_{g,n} \]
+    implies that we only need to prove $P_{g \geq 2} \in \mc{R}$.
+
+    Consider the correlator $(5Y)^{g-1}\ab<\ >_{g,0}^{[0,1]}$, which is a polynomial in $Y$ of degree at most $g-1$. By the stable graph sum formula, we have
+    \[ (5Y)^{g-1}\ab<\ >_{g,0}^{[0,1]} = P_g + \sum_{\Gamma} \Cont_{\Gamma}. \]
+    For all non-leading graphs, we use the relation $\sum_v (g_v-1) + \ab|E| = g-1$ to assign powers of $Y$ to all of the edges. Then the contributions from vertices are given as follows:
+    \begin{itemize}
+        \item At a level $0$ vertex, the contributions are simply
+            \[ Y^{g_v-1} \ab<\varphi_{b_1} \bar{\psi}_1^{a_1}, \ldots, \varphi_{b_{n_v}} \bar{\psi}_{n_v}^{a_{n_v}}>^Z_{g_v, n_v}, \]
+            which reduces to $P_{g_v, m}$ by the string and dilaton equations. 
+        \item At a level $1$ vertex, the contribution is
+            \[ \sum_m \frac{L^{3(g_v-1)}}{m!}\ab<L_{\alpha}^{j_1-k_1}\bar{\psi}_1^{k_1}, \ldots, L_{\alpha}^{j_{n_v} - k_{n_v}} \bar{\psi}_{n_v}^{k_{n_v}}, \tilde{T}_{\alpha}^m>_{g_v, n_v+m}. \]
+            After summing over all $\alpha$, we see that this is nonzero only if the total power of $t_{\alpha}$ is a multiple of $N$ (here, we may want $N$ to be a prime number).
+    \end{itemize}
+    Using the fact that the contribution from an edge between two level $1$ vertices satisfies a balancing condition, the total factor of the $L_{\alpha}$ for the various $\alpha$ becomes $1$. This implies that $\Cont_{\Gamma} \in \mc{R}$ for any non-leading $\Gamma$, so we must have $P_g \in \mc{R}$.
+\end{proof}
+
+\begin{rmk}
+    We can recover the genus one mirror theorem very quickly using the results we have already proved. If we consider the correlator
+    \[ \ab<p>_{1,1}^{[0,1]} = \mr{const}, \]
+    there are only two stable graphs. The contribution of the stable graph with a genus $1$ vertex at the quintic is given by
+    \begin{align*}
+        \frac{1}{I_0}\ab<R(z)^{-1}p|_Z>_{1,1} &= \ab<-B_1\bar{\psi}_1 + I_{11}H>^Z_{1,1} \\
+        &= P_{1,1} + \frac{200}{24} B_1.
+    \end{align*}
+    The other graph contributes
+    \[ \frac{1}{2}(A_1+4B_1 + \frac{2}{5}(1-Y)) \]
+    at level $0$. Finally, we can prove that the total contribution from level $1$ is a degree $1$ polynomial in $Y$, so using the known values of $N_{1,1}$ and $\ab<H>^Z_{1,1,0}$ fixes the two coefficients of $Y$.
+\end{rmk}
+
+\begin{rmk}
+    The formula
+    \[ P_{1,1} = -\frac{1}{2} A_1 + \ab(\frac{\chi(Z)}{24} -2) B_1 - \frac{1}{12}(1-Y) - \frac{1}{24} \int_Z c_2(Z) \cdot H \]
+    is expected to hold for all of the examples in~\Cref{tab:oneparameter}. It has been proven for hypersurfaces in weighted projective space by the author~\cite{polynomiality}.
+\end{rmk}
+
+
+\subsection{Mirror symmetry picture}%
+\label{sub:Mirror symmetry picture}
+
+Recall that mirror symmetry is for families
+\begin{equation*}
+\begin{tikzcd}
+    \mc{Z} = (Z,\omega) \ar{d} & \mc{Z}^{\vee} = (Z^{\vee}, J) \\
+    \mc{M} \subset \Mbar \ni Q \ar[leftrightarrow]{r} & \M^{\vee} \subset \Mbar^{\vee} \ni q.
+\end{tikzcd}
+\end{equation*}
+On the A-side, if $h = h^{1,1}(Z)$, then we have bases $\phi_i \in H^{1,1}(Z)$ mirror to $e_i \in H^{2,1}(Z^{\vee})$. On the B-side, near the maximal unipotent monodromy point, we have periods
+\begin{align*}
+    I_0 &= \int_{\Gamma_0} \Omega(q) = 1 + O(q); \\
+    I_{1,i} &= \int_{\Gamma_i} \Omega(q) = \log q_i + \cdots.
+\end{align*}
+Then we will have the mirror map given by
+\[ Q_i = e^{\frac{I_{1,i}}{I_0}}, \]
+so we see that
+\[ \phi_j = \sum_i \pdv{\log Q_j}{\log q_i} e_i. \]
+
+Using the B-model basis, we define the Yukawa coupling
+\[ Y_{ijk} \coloneqq I_0^2 \ab<e_i, e_j, e_k>_{0,3}^Z, \]
+which is a rational function over $\bar{\M}$.
+
+\begin{rmk}
+    Physicists have more predictions about the Yukawa couplings, including pole orders.
+\end{rmk}
+
+In the case of the quintic $Z_5 \subset \P^4$, there is only one K\"ahler parameter, and the Yukawa coupling is simply
+\[ Y = \frac{1}{1-5^5 q}. \]
+For $Z_{3,3} \subset \P^2 \times \P^2$, the Yukawa couplings are symmetric under permuting $1$ and $2$ and are given by
+\begin{align*}
+    Y_{111} &= \frac{3^4 q_1 (2+3^3 q_1 + 3^3 q_2)}{\Delta}; \\
+    Y_{112} &= \frac{(1-3^3 q_1 - 3^3 q_2)(1+2 \cdot 3^3 q_1 - 3^3 q_2)}{\Delta},
+\end{align*}
+where the discriminant $\Delta$ is given by
+\[ \Delta = (1-3^3 q_1 - 3^3 q_2) - 3^9 q_1 q_2. \]
+
+In higher genus, we define
+\[ P_{g,\vec{a}} \coloneqq \frac{1}{I_0^{2g-2}} \ab<e_a, \ldots, e_{a_n}>_{g,n}^X. \]
+
+\begin{conj}[\cite{bcov}]
+    Define
+    \[ f_{g, \vec{a}} \coloneqq P_{g,\vec{a}} + \ms{lower\ order}, \]
+    where the lower order terms come from a sum over stable graphs. This $f_{g, \vec{a}}$ is a rational function in $q$ and after normalization by some power of the Yukawa couplings is a polynomial of degree at most $3g-3 + n$.
+\end{conj}
+
+\begin{exm}
+    In the case when $g=2$, the contributions to $f_2$ come from the graps in~\Cref{fig:stable graphs of genus 2}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape]
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$2$}] (A) at (0,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$1$}] (B) at (2,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$1$}] (C) at (3,0) {};
+        \draw[-,thick] (B) -- (C);
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$1$}] (D) at (5,0) {};
+        \draw[every loop/.style={-},thick] (D) edge[loop right]  (D);
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$1$}] (E) at (7,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (F) at (8,0) {};
+        \draw[-,thick] (E) -- (F);
+        \draw[every loop/.style={-},thick] (F) edge[loop right]  (F);
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (G) at (0,-2) {};
+        \draw[every loop/.style={-},thick] (G) edge[loop right]  (G);
+        \draw[every loop/.style={-},thick] (G) edge[loop left]  (G);
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (H) at (2,-2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (I) at (3,-2) {};
+        \draw[-,thick] (H) -- (I);
+        \draw[every loop/.style={-},thick] (H) edge[loop right]  (I);
+        \draw[every loop/.style={-},thick] (I) edge[loop left]  (H);
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (J) at (5,-2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt,label=below:{$0$}] (K) at (6,-2) {};
+        \draw[-,thick] (J) -- (K);
+        \draw[-,thick] (J) edge[bend left=20] (K);
+        \draw[-,thick] (J) edge[bend right=20] (K);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Stable graphs of genus $2$ with no marked points.}%
+    \label{fig:stable graphs of genus 2}
+    \end{figure}
+    We put $S^{ij}$ on each edge and at each vertex, we place
+    \[ \ab<e_{i_1}, \ldots, e_{i_n}>_{g,n}^{B} \coloneqq I_0^{-(2g-2)} \ab<>_{g,n}^A - (n-1)! \delta_{g,1} \delta_{\vec{\imath}, \vec{0}}, \]
+    where we replace all $e_0$ by $\bar{\psi}$ and there is a correction term in genus $1$ with only ancestor insertions. 
+\end{exm}
+
+This Feynman graph sum can be realized using geometric quantization. In particular, consider the matrix
+\[ R = \begin{pmatrix}
+    1 & z K_i & z^2 S^i & z^2 (S + S^i K_i) \\
+    & I & z S^{ij} & z^2 (\tilde{S}^i)^T \\
+    & & U & z K_i^T \\
+    & & & 1
+\end{pmatrix} = \begin{pmatrix}
+    A & C \\
+    & D
+\end{pmatrix}, \]
+which is explicitly defined using BCOV's propagators~\cite{bcov}. This is symplectic with respect to the pairing
+\[ \ab<f,g> = \on{Res}_{z=0} (f(-z), g(z)). \]
+Therefore, we may define its geometric quantization by
+\[ \hat{R} F(x) \coloneqq \int_{\R^{h+1} \times \R^{h+1}} e^{\frac{1}{2} Q(x',p') - x' \cdot p' + F(x')} \d{x} \d{p}, \]
+where $Q$ is a quadratic form given by
+\[ Q = \ab<p,D^{-1}x> - \frac{1}{2}\ab<p, D^{-1}C p>. \]
+
+We will view $R \in \End H_B$, where
+\[ H_B = \on{span} \ab\{ e^0 z^{-2}, e^i z^{-1}, e_i, e_0 z \}. \]
+It naturally acts on Givental's symplectic vector space, but we can restrict it to a finite-dimensional vector space $H_A$ (which is still larger than $H_B$). We will call it $R^A$ when acting on $H_A$ and $R^B$ when acting on $H^B$.
+
+\begin{rmk}
+    Note that Givental's graph sum contains more information than BCOV's graph sum coming from the extra basis elements.
+\end{rmk}
+
+\begin{thm}
+    Here, we restrict to the case of the quintic. Let $\bullet$ denote either $A$ or $B$. Denote
+    \[ f^{\bullet}(x,y) \coloneqq \hat{R}^{\bullet} F^{\bullet}(x,y), \]
+    where we define
+    \[ F^{\bullet}(x,y) \coloneqq \sum \hbar^{g-1} F_{g,m,n}^{\bullet} \frac{x^m y^n}{m! n!}. \]
+    Then we have the identity
+    \[ f_{g,m,n}^B = f_{g,m,n}^A - \delta_{g,1} \delta_{m,0} (n-1)!. \]
+    In other words, there is the commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        f_{g,m,n}^A \ar{rr}{-\delta_{g,1}\delta_{m,0}(n-1)!} & & f_{g,m,n}^B \\
+        F_{g,m,n}^A \ar{rr}{-\delta_{g,1} \delta_{m,0}(n-1)!} \ar{u}{\hat{R}^A} & & F_{g,m,n}^B \ar{u}{\hat{R}^B}.
+    \end{tikzcd}
+    \end{equation*}
+\end{thm}
+
+\subsection{MSP realization of the Feynman rule}%
+\label{sub:MSP realization of the Feynman rule}
+
+Recall that MSP for the quintic is given by the charges
+\[ \ab(\begin{array}{ccccccccc}
+    & \varphi_1 & \varphi_2 & \varphi_3 & \varphi_4 & \varphi_5 & \rho & \mu & \nu \\
+    \midrule
+    \mc{L} & 1 & 1 & 1 & 1 & 1 & -5 & 1 \\
+    \omega^{\log} & & & & & &  1 & &  \\
+    \mc{N} & & & & & & & 1 & 1
+\end{array}). \]
+Virtual localization gives us the fixed loci
+\[ W^{(\C^{\times})^N} = Z_5 \sqcup N\pt, \]
+where $W = (x_1^5 + \cdots +x_5^5 = 0) \subset \P^{4+N}$. At the level of CohFTs, recall that we had an identity
+\[ \Omega^{[0,1] = R . (\Omega^{Z_5} \oplus \Omega^{N\pt})}. \]
+
+One advantage of increasing $N$ is that it makes the Dijkgraaf-Witten map $\tau$ (which sends $I(-z)$ onto the slice of $\mc{L}^{\on{loc}}$ coming from $H^*(Z_5) \oplus H^*(N\pt)$) very nice. The actual values of $\tau$ on components were given in~\Cref{sub:MSP 01 CohFT}. If we compute the edge contribution $V^{00}$ connecting two vertices at level $0$, this will be exactly the propagators as $N \to \infty$.
+
+Our goal is to use the polynomiality of $\Omega^{[0,1]}$ to deduce polynomiality of the CohFT
+\[ R^A . \Omega^{Z_5}. \]
+We will consider the factorization
+\[ R = \G \cdot \begin{pmatrix}
+    R^A & \\
+    & I_{N \times N}
+\end{pmatrix}, \]
+which factorizes
+\[ \Omega^{[0,1]} = \G . (R^A . \Omega^{Z_5} \oplus \Omega^{N\pt}). \]
+It now suffices to prove that $\G$ preserves polynomiality, and in fact we see that the entries of $\G$ lie in $\Q[Y]$ with explicit degree bounds.
+
+\subsection{FJRW theory of the quintic}%
+\label{sub:FJRW theory of the quintic}
+
+The unfortunate issue with the MSP moduli space of the quintic is that there are $N$ vertices at level $\infty$. Instead, we will consider $N$ copies of the field $\nu$. To calculate FJRW invariants, we will set $d_0 = 0$ and $d_{\infty} = d$. One nice feature of this is that the moduli space has no vertices at level $0$, so we do not need to prove irregular vanishing.
+
+The ambient space of the target is
+$\on{Tot}(\mc{O}_{\P(1,\ldots, 1,5)}(-1)^{\oplus 5})$. 
+Virtual localization will give $N$ isolated points and the FJRW theory as fixed loci. When computing using MSP, there is a factorization $R = R^{\on{loc}} \Delta$, where $R^{\on{loc}}$ comes from virtual localization and $\Delta$ comes from Grothendieck-Riemann-Roch. In this model, neither step preserves the unit, but their composition does preserve the unit, and therefore we obtain
+\[ R.(\Omega^{\FJRW} \oplus \Omega^{N\pt}) = \Omega^{[1,\infty]}. \]
+
+\subsection{Multi-parameter models}%
+\label{sub:Multi-parameter models}
+
+We will consider only a $1$-parameter deformation of the GLSM for $Z_{3,3} \subset \P^2 \times \P^2$. This is given by the charges
+\[ \ab(\begin{array}{cccccccccc}
+    & \varphi_1 & \varphi_2 & \varphi_3 & \varphi_4 & \varphi_5 & \varphi_6 & \rho & \mu & \nu \\
+    \midrule
+    \mc{L}_1 & 1 & 1 & 1 & & & & -3 & 1 & 0 \\
+    \mc{L}_2 & & & & 1 & 1 & 1 & -3 & 0 & 0 \\
+    \omega_{\log} & & & & & & & 1 & & \\
+    \mc{N} & & & & & & & & 1 & 1
+\end{array}). \]
+The fixed loci are now $\LG$, $\P^2$, and $Z_{3,3}$. We then have the identities
+\begin{align*}
+    \Omega_1^{[0,1]} = R_1 . (\Omega^{Z_{3,3}} \oplus \Omega^{N\P^2}); \\ 
+    \Omega_2^{[0,1]} = R_2 . (\Omega^{Z_{3,3}} \oplus \Omega^{N\P^2}). 
+\end{align*}
+Note that $\Omega_1^{[0,1]}$ is polynomial only in $q_1$ and $\Omega_2^{[0,1]}$ is polynomial only in $q_2$. We then find that $R_1^A = R_2^A$, and so in fact we have
+\begin{align*}
+    \Omega_1^{[0,1]} = \G_1 . (R_A. \Omega^{Z_{3,3}} \oplus \Omega^{N\P^2}); \\ 
+    \Omega_2^{[0,1]} = \G_2 . (R_A .\Omega^{Z_{3,3}} \oplus \Omega^{N\P^2}), 
+\end{align*}
+where $\G_i$ is polynomial in $q_i$ (with no bound in the other K\"ahler parameter). The first identity gives polynomiality in $q_1$ and the second gives polynomiality in $q_2$.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape]
+        \draw[-,thick,gray] (3,-0.2) -- (3,3.2);
+        \draw[-,thick,gray] (-0.2,3) -- (3.2,3);
+        \node at (3.8,0) {$d_1$};
+        \node at (0,3.8) {$d_2$};
+        \fill[gray] (0,0) rectangle (3,3);
+        \draw[-,thick,blue] (-0.2,3.2) -- (3.2,-0.2);
+        \fill[blue] (0,0) -- (3,0) -- (0,3) -- cycle;
+        \draw[->,thick] (0,-0.5) -- (0,3.5);
+        \draw[->,thick] (-0.5,0) -- (3.5,0);
+        \node at (3.6,3.3) {$3g-3$};
+    \end{tikzpicture}
+    \end{center}
+    \caption{MSP bounds (gray) and sharp bounds (blue) for $Z_{3,3} \subset \P^2 \times \P^2$.}%
+    \label{fig:bounds}
+    \end{figure}
+
+\begin{rmk}
+    The bound obtained using MSP for this example is not sharp, for example see~\Cref{fig:bounds}.
+\end{rmk}
+
+\printbibliography
 
 \end{document}
 
