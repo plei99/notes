@@ -1,0 +1,422 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat,op.legacy}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+\usepackage{leftindex} 
+% \usepackage{euscript} 
+\usepackage[mathcal]{eucal}
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[lf]{ebgaramond}
+% \usepackage{mathpazo} 
+\usepackage{inconsolata}
+\usepackage[scaled]{helvet} 
+\usepackage{microtype}
+% \usepackage{fontspec} 
+% \setmainfont{Tex Gyre Pagella}
+% \usepackage[OT1,euler-digits]{eulervm}
+% \usepackage{euler-math} 
+% \usepackage[scaled=0.86]{berasans}
+% \let\sffamilyold\sffamily
+% \def\sffamily{\fontencoding{T1}\sffamilyold}
+% \setmonofont{Inconsolatazi4}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+% \usepackage[utf8]{inputenc} 
+% \usepackage[T1]{fontenc}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+% \usepackage{parskip}
+\newlist{mydescription}{description}{1}
+\setlist[mydescription]{style=nextline,
+                        font=\bfseries,
+                        % Tweak the next 4 options as needed:
+                        labelindent=1cm, 
+                        leftmargin =2cm,
+                        rightmargin=1cm,
+                        topsep     =1ex
+                       }
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{claim}[thm]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\sH}{\mathsf{H}}
+\newcommand{\pH}{\leftindex^p{\mathsf{H}}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\bv}{\mbf{v}}
+\newcommand{\bq}{\mbf{q}}
+\newcommand{\bp}{\mbf{p}}
+\newcommand{\btau}{\bm{\tau}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\pre}{\mr{pre}}
+\newcommand{\pt}{\mr{pt}}
+\newcommand{\vir}{\mr{vir}}
+\newcommand{\fl}{\mr{fl}}
+\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
+\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\iHom}{\ms{Hom}} 
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\IC}{IC}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Cont}{Cont}
+
+% \addbibresource{../../notes/math.bib}
+
+\title{Decomposition theorem and relative Hard Lefschetz theorem}
+\author{Patrick Lei}
+\date{February 21, 2025}
+\allowdisplaybreaks
+
+\begin{document}
+    
+\begin{abstract}
+    I will explain the decomposition theorem and the relative Hard Lefschetz theorem and then discuss some applications.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}%
+\label{sec:Introduction}
+
+In this talk, we will work with sheaves with coefficients in a field $\k$ of characteristic $0$. $X$ will be an algebraic variety over $\C$.
+Recall that the derived category $D^b_c(X)$ of constructible sheaves has a \textit{perverse $t$-structure} given by 
+\begin{align*}
+    \leftindex[I]^p D^b_c(X)^{\leq 0} &= \ab\{ \mc{F} \in D_c^b(X) \mid \dim \on{supp} \ms{H}^i(\mc{F}) \leq -i \text{ for all } i \}, \\
+    \leftindex[I]^p D^b_c(X)^{\geq 0} &= \ab\{ \mc{F} \in D_c^b(X) \mid \dim \on{supp} \ms{H}^i(\D\mc{F}) \leq -i \text{ for all } i \}, 
+\end{align*}
+where the Verdier duality functor is given by
+\[ \D \mc{F} \coloneqq \iHom(\mc{F}, \omega_X). \]
+Here, the \textit{dualizing complex} $\omega_X$ is given by
+\[ \omega_X \coloneqq (X \to \pt)^! \ul{\k}. \]
+The category $\ms{Perv}(X)$ of perverse sheaves is defined to be the heart of this $t$-structure.
+
+We will now introduce intersection cohomology (IC) complexes. 
+\begin{defn}
+    Let $j \colon Y \hookrightarrow X$ be a locally closed embedding. Then the \textit{intermediate extension} functor is given by
+    \[ j_{!*} \colon \ms{Perv}(Y) \to \ms{Perv}(X), \qquad \mc{F} \mapsto \Im (\leftindex^p \sH^0(j_! \mc{F}) \to \leftindex^p \sH^0(j_* \mc{F})). \]
+\end{defn}
+
+\begin{defn}
+    Let $j \colon Y \subset X$ be a smooth, locally closed subvariety and $\mc{L}$ be a local system on $Y$. Then the \textit{intersection cohomology complex} of $(Y, \mc{L})$ is the sheaf
+    \[ \on{IC}(Y, \mc{L}) \coloneqq j_{!*} \mc{L}[\dim Y]. \]
+    If $Y = X^{\ms{sm}}$ is the smooth locus of $X$ and $\mc{L} = \ul{\k}$ is the constant sheaf, then we abbreviate $\IC(X) \coloneqq \IC(X^{\ms{sm}}, \ul{\k})$.
+\end{defn}
+
+We are now ready to state the main results. Recall that simple objects in $\ms{Perv}(X)$ are IC complexes.
+
+\begin{thm}[Decomposition theorem]
+    Let $f \colon X \to Y$ be proper. Then if $\mc{F} \in \ms{Perv}(X)$ is semisimple, we have the following:
+    \begin{enumerate}
+        \item The pushforward $f_* \mc{F}$ decomposes as a direct sum
+            \[ f_* \mc{F} \cong \bigoplus_{i \in \Z} \leftindex^p \sH^i(f_* \mc{F})[-i]; \]
+        \item Each summand decomposes as a direct sum
+            \[ \leftindex^p \sH^i(f_* \mc{F}) \cong \bigoplus_{\beta} \IC(X_{\beta}, \mc{L}_{\beta}) \]
+            of IC sheaves.
+    \end{enumerate}
+\end{thm}
+
+This theorem was originally proved by Beilinson-Bernstein-Deligne(-Gabber) using an argument involving reduction to positive characteristic. However, they require that $\mc{F}$ satisfies a technical condition called being \textit{of geometric origin}. There is another proof given by Saito using mixed Hodge modules. Because these proofs are far beyond my mathematical ability, we will not discuss them.
+
+\section{Relative Hard Lefschetz}%
+\label{sec:Relative Hard Lefschetz}
+
+Recall that for a compact K\"ahler manifold $X$, the \textit{hard Lefschetz theorem} states that
+\[ \omega^k \colon H^{n-k}(X) \to H^{n+k}(X) \]
+is an isomorphism, where $\omega$ is the K\"ahler form and $n$ is the complex dimension of $X$. We will generalize this to projective morphisms of algebraic varieties.
+Recall that if $f \colon X \to Y$ is projective, it factors as
+\[ X \hookrightarrow Y \times \P^N \to Y. \]
+Then let $\eta \coloneqq c_1(\mc{O}(1)) \in H^2(Y \times \P^N, \Q)(1)$. By definition, this is a morphism $\eta \colon \ul{\Q}_X \to \ul{\Q}_X[2](1)$, so tensoring with $\mc{F}$ and pushing forward gives us a morphism
+\[ f_* (\eta \otimes \on{id}_{\mc{F}}) \colon f_* \mc{F} \to f_* \mc{F}[2](1), \]
+which by abuse of notation we will also call $\eta$.
+
+\begin{thm}[Relative Hard Lefschetz]
+    For any non-negative $k \geq 0$, the map
+    \[ \eta^k \colon \leftindex^p \sH^{-k}(f_* \mc{F}) \to \leftindex^p \sH^k (f_* \mc{F})(k) \]
+    is an isomorphism.
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    We will outline how to deduce this result from the decomposition theorem. The first simplification we make is that by using the projection formula for the pushforward along $g \colon X \hookrightarrow Y \times \P^N$, we obtain
+    \[ g_* (\eta \otimes \on{id}_{\mc{F}}) = \eta \otimes \on{id}_{g_* \mc{F}}. \]
+    Then define varieties
+    \begin{align*}
+        F &\coloneqq \ab\{(L, L') \in \P^N \times (\P^N)^{\vee} \mid L' \text{ annihilates } L \}, \\
+        S &\coloneqq (\P^N \times (\P^N)^{\vee}) \setminus F.
+    \end{align*}
+    Now consider the following diagram:
+    \begin{equation*}
+    \begin{tikzcd}
+        Y \times F \ar{r}{i} & Y \times \P^N \times (\P^N)^{\vee} \ar[swap]{dl}{p'} \ar[swap]{dr}{u'} & Y \times S \ar[crossing over]{dll}{q_2} \ar[swap]{l}{j} \ar{d}{q_1} \\
+        Y \times (\P^N)^{\vee} \ar{dr}{u} & & X = Y \times \P^N \ar{dl}{f} \\
+        & Y.
+    \end{tikzcd}
+    \end{equation*}
+    \begin{enumerate}
+        \item Consider $\eta$ as a class in $H^2(Y \times \P^N \times (\P^N)^{\vee}, \Q)(1)$. Alternatively, consider the divisor class
+            \[ \theta = \on{cl}(Y \times F) \in H^2(Y \times \P^N \times (\P^N)^{\vee}, \Q)(1). \]
+            Then for any $\mc{G} \in D^b_c(Y \times \P^N \times (\P^N)^{\vee})$, we have $\eta = \theta$ as maps
+            \[ \leftindex^p \sH^k(p'_* \mc{G}) \to \leftindex^p \sH^{k+2}(p'_* \mc{G})[2](1). \]
+            From now on, we will replace $\mc{F}$ with $(u')^* \mc{F}[N]$, which is fine because
+            \[ u^* f_* \mc{F} \cong p'_* (u')^* \mc{F} \]
+            by smooth base change.
+        \item Consider the diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                \mc{F} \ar{rr} \ar{dd}{\theta} & & i_* i^* \mc{F} \ar{dd}{\theta} \ar{dl}{\sim} \\
+                & i_* i^! \mc{F}[2](1) \ar{dl} \\
+                \mc{F}[2](1) \ar{rr} & & i_* i^* \mc{F}[2](1),
+            \end{tikzcd}
+            \end{equation*}
+            where all unlabelled arrows come from adjunctions. The fact that the first diagonal morphism exists and is an isomorphism is because the morphism $Y \times F \to X$ is smooth, and so in this case there is a natural isomorphism
+            $i^* \mc{F} \to i^! \mc{F}[2](1)$. Because the cycle class $\theta$ is defined by
+            \[ \ul{\Q} \to i_* i^*\ul{\Q} \cong i_* i^! \ul{\Q}[2](1) \to \ul{\Q}[2](1), \]
+            we see that the top left triangle commutes. Applying adjunction twice to see
+            \[ \Hom(i_* i^* \mc{F}, i_* i^* \mc{F}[2](1)) \cong \Hom(i^* \mc{F}, i^* \mc{F}[2](1)) \cong \Hom(\mc{F}, i_* i^* \mc{F}[2](1)), \]
+            we see that the bottom right triangle commutes. Then apply $p'_*$ and obtain the diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                p'_* \mc{F} \ar{r}{\alpha} \ar{d}{\theta} & p'_* i_* i^* \mc{F} \ar{d}{\theta} \ar{dl}{\beta} \\
+                p'_* \mc{F}[2](1) \ar{r}{\alpha} & p'_* i_* i^* \mc{F}[2](1).
+            \end{tikzcd}
+            \end{equation*}
+        \item Applying $p'_* = p'_!$ (here $p'$ is proper) to the distiguished triangle
+            \[ j_! j^* \to \mr{id} \to i_* i^* \xrightarrow{[1]} \]
+            yields the distinguished triangle
+            \[ (q_2)_! j^* \mc{F} \to p'_* \mc{F} \to p'_* i_* i^* \mc{F} \xrightarrow{[1]}. \]
+            Using the fact that $S$ is affine over both $\P^N$ and $(\P^N)^{\vee}$ and the fact that $j^* \mc{F}$ is perverse (compactly supported pushforward along affine morphisms is left exact in the perverse $t$-structure), the long exact sequence
+            \[ \cdots \to \leftindex^p \sH^{-1}((q_2)_! j^* \mc{F}) \to \leftindex^p \sH^{-1}(p'_* \mc{F}) \to \leftindex^p \sH^{-1} (p'_*i_* i^* \mc{F}) \to \leftindex^p \sH^{0}((q_2)_! j^* \mc{F}) \to \cdots \]
+            tells us that $\leftindex^p \sH^{-k}(\alpha)$ is an isomorphism for $k > 1$ and injective when $k = 1$. In fact, it identifies $\leftindex^p \sH^{-1}(p'_* \mc{F})$ with the largest subobject of $\leftindex^p \sH^{-1}(p'_* i_* i^* \mc{F})$ which lies in the essential image of $u^*[N]$.
+        \item By a similar argument, the map
+            \[ \leftindex^p \sH^{-1}(\beta) \colon \leftindex^p \sH^{-1}(p'_* i_* i^* \mc{F}) \to \leftindex^p \sH^1(p'_* \mc{F})(1) \]
+            is surjective and identifies $\pH^1(p'_* \mc{F})(1)$ with the largest quotient of $\pH^{-1}(p'_* i_* i^* \mc{F})$ which lies in the essential image of $u^*[N]$.
+        \item We need to prove that
+            \[ \eta^k \colon \leftindex^p \sH^{-k}(f_* \mc{F}) \to \leftindex^p \sH^k (f_* \mc{F})(k) \]
+            is an isomorphism. First note that $i^* \mc{F}[-1] = (u' \circ i)^* \mc{F}_X [N-1]$ is a semisimple perverse sheaf, so $i_* i^* \mc{F}[-1] \in \ms{Perv}(Y \times \P^N \times (\P^N)^{\vee})$ is also semisimple. We will now induct on $k$. When $k=0$, $\eta^0$ is the identity, so there is nothing to do.
+            When $k = 1$, note that $\pH^{-1}(p'_* i_* i^* \mc{F})$ is semisimple. But this identifies the images of $\pH^{-1}(\alpha)$ and $\pH^{-1}(\beta)$, so the desired result follows from the fact that $\theta = \beta \circ \alpha$. Finally, factorizing
+            \begin{align*}
+                \theta_{\mc{F}}^k &= \beta[2k-2] \circ \alpha[2k-2] \circ \cdots \circ \beta[2] \circ \alpha[2] \circ \beta \circ \alpha \\
+                &= \beta[2k-2] \circ \theta_{i_* i^* \mc{F}} \circ \alpha
+            \end{align*}
+            and using the inductive hypothesis gives the desired result. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\section{Example: toric varieties}%
+\label{sec:Example: toric varieties}
+
+
+\begin{defn}
+    If $P$ is a simplicial polytope of dimension $n$ with $f_k$ faces of dimension $k$ for all $k < n$, define the \textit{$h$-polynomial} $h(P,t) = \sum h_k(P) t^k$ of $P$ by
+    \[ h(P, t) \coloneqq (t-1)^n + f_0 (t-1)^{n-1} + \cdots + f_{n-1}. \]
+    Also define the \textit{$g$-polynomial} of $P$ by
+    \[ g(P,t) \coloneqq h_0 + \sum_{k=1}^{\floor{n/2}} (h_k - h_{k-1})t^{k-1}. \]
+\end{defn}
+
+A well-known result in combinatorics, proved in Fulton's book, is the following.
+\begin{thm}
+    Let $X_P$ (which is simplicial) denote the toric variety corresponding to $P$. Then $h^{2k}(X_P) = h_k(P)$ for all $0 \leq k \leq n$.
+\end{thm}
+
+As a corollary, the $g$-polynomial completely determines the $h$-polynomial and has positive coefficients. Here, use the fact that intersection cohomology and usual cohomology coincide for simplicial toric varieties and then use Poincar\'e duality and hard Lefschetz.
+
+\begin{defn}
+    For an arbitrary convex polytope, define $h(P,t)$ inductively by the formula
+    \[ h(P,t) \coloneqq \sum_{F < P} g(F,t)(t-1)^{n - 1 - \dim F}, \]
+    where we define $g(\emptyset, t) = h(\emptyset,t) = 1$ and the set of proper faces $F < P$ includes the empty set.
+\end{defn}
+
+\begin{thm}
+    If $P$ is any rational convex polytope, we have
+    \[ h_k(P) = \dim \mr{IH}^{2k}(X_P, \Q) \]
+    for $0 \leq k \leq n$.
+\end{thm}
+This result can be proved by using the decomposition theorem for a simplicial subdivision of $P$, but we will just illustrate it with an example.
+Let $\Delta$ be the three-dimensional cube and let $X$ be the corresponding toric variety, which has six singular points. We will consider the resolution $\tilde{X}$ of $X$ given by adding a new vertex at the center of each facet of $\Delta$ and taking the stellar subdivision. Call the resulting polytope $\tilde{\Delta}$. First note that
+\begin{align*}
+    h(\Delta, t) &= g(\emptyset, t) (t-1)^3 + 8 g(\mr{pt}, t)(t-1)^2 + 12 g([0,1], t) (t-1) + g([0,1]^2, t) \\
+    &= (t-1)^3 + 8(t-1)^2 + 12(t-1) + 6(t+1) \\
+    &= t^3 + 5t^2 + 5t + 1.
+\end{align*}
+On the other hand, for $\tilde{\Delta}$, we have $f_0 = 14$, $f_1 = 36$, and $f_2 = 24$. This implies that
+\[ h(\tilde{\Delta}, t) = (t-1)^3 + 14(t-1)^2 + 36(t-1) + 24 = t^3 + 11t^2 + 11t + 1. \]
+
+Geometrically, $f \colon \tilde{X} \to X$ blows up the six singular points of $X$ and replaces them with a copy of $\P^1 \times \P^1$ each. This implies that
+\[ f_* \ul{\Q}[3] = \bigoplus_{k=-1}^1 \pH^k(f_* \ul{\Q}[3]) = \on{IC}(X) \oplus \bigoplus_{i=1}^6 \ul{\Q}_{p_i}[1] \oplus \bigoplus_{i=1}^6 \ul{\Q}_{p_i}[-1]. \]
+This implies that $h^{k}(\tilde{\Delta}) = h^k(\Delta) + 6$ for $k = 2,4$, which is exactly what we calculated previously.
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
