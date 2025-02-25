@@ -19,6 +19,18 @@ courses/seminars/individual lectures was not very good.
 ## Mathematical programs and workshops
 These are contained in the `misc/` directory.
 
+- **Higher-genus curve counting**
+  [program](https://scgp.stonybrook.edu/archives/42649) organized by [Qile
+  Chen](https://sites.google.com/bc.edu/qile-chen/), [Felix
+  Janda](https://fjanda.web.illinois.edu/), [Sheldon
+  Katz](https://katzs.web.illinois.edu/), [Melissa
+  Liu](https://www.math.columbia.edu/~ccliu/), [John
+  Pardon](https://www.math.stonybrook.edu/~jpardon/), and [Rachel
+  Webb](https://sites.google.com/view/rachel-webb) (`simons25`)
+
+  Topological B-model, Givental formalism, and geometric foundations and
+  calculations in both log GLSM and MSP.
+
 - **Simons summer math workshop** 
   [program](https://scgp.stonybrook.edu/archives/39185) organized by [Mark
   Gross](https://www.dpmms.cam.ac.uk/~mg475/), [Mark
@@ -28,7 +40,7 @@ These are contained in the `misc/` directory.
   Fukaya](https://scgp.stonybrook.edu/people/faculty/bios/kenji-fukaya),
   and [John
   Pardon](https://scgp.stonybrook.edu/people/faculty/bios/john-pardon)
-  (`SSMW/`)
+  (`simons2/`)
   
   Logarithmic geometry, logarithmic Gromov-Witten theory, exploded
   manifolds, exploded stable maps, tropicalization, Hurwitz and spin
@@ -45,7 +57,7 @@ These are contained in the `misc/` directory.
   [Melissa Liu](https://www.math.columbia.edu/~ccliu/), [Nikita
   Nekrasov](https://scgp.stonybrook.edu/people/faculty/bios/nikita-nekrasov),
   [Paul Norbury](https://researchers.ms.unimelb.edu.au/~norbury@unimelb/),
-  and [Paolo Rossi](https://www.math.unipd.it/~rossip/) (`ISEG/`)
+  and [Paolo Rossi](https://www.math.unipd.it/~rossip/) (`simons/`)
 
   Gromov-Witten/Pandharipande-Thomas correspondence for toric threefolds,
   Gromov-Witten/Hurwitz correspondence for curves, Donaldson-Thomas/Hilb
@@ -57,6 +69,14 @@ These are contained in the `misc/` directory.
 
 These are learning seminars that I attended as a graduate student. Use
 the directory `seminars/`
+
+- **Enumerative geometry and birational invariants**
+  [seminar](https://www.math.columbia.edu/~plei/s24-birat.html) organized
+  by [Shaoyun Bai](https://math.mit.edu/~shaoyunb/) and me (`blowup/`)
+
+  Givental formalism, quantum Riemann-Roch, shift operators, crepant
+  transformation conjecture in genus 0, quantum cohomology of projective
+  bundles and blowups.
 
 - **Informal enumerative geometry**
   [seminar](https://www.math.columbia.edu/~ccliu/Seminars/IEG_S22.html)
