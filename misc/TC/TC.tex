@@ -30,6 +30,9 @@
 % \usepackage[sc]{mathpazo}
 % \usepackage{inconsolata}
 \usepackage{microtype}
+\usepackage[osf]{ebgaramond}
+\usepackage{inconsolata}
+\usepackage[scaled]{helvet}
 % \usepackage{fontspec} 
 % \setmainfont{Tex Gyre Pagella}
 % \usepackage[OT1,euler-digits]{eulervm}
@@ -100,6 +103,7 @@
 \newtheorem{conj}[thm]{Conjecture}
 \newtheorem{quest}[thm]{Question}
 \newtheorem{claim}[thm]{Claim}
+\newtheorem{slog}[thm]{Slogan}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
@@ -203,14 +207,13 @@
 \newcommand{\fl}{\mr{fl}}
 \newcommand{\ps}[1]{\llbracket #1 \rrbracket}
 \newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
-\newcommand{\GW}{\ms{GW}}
-\newcommand{\FJRW}{\ms{FJRW}}
-\newcommand{\LG}{\ms{LG}}
-\newcommand{\CY}{\ms{CY}}
-\newcommand{\IIA}{\ms{IIA}}
-\newcommand{\IIB}{\ms{IIB}}
-\newcommand{\QM}{\ms{QM}}
-\newcommand{\cs}{\ms{cs}}
+\newcommand{\HN}{\ms{HC}^-}
+\newcommand{\HC}{\ms{HC}}
+\newcommand{\THH}{\ms{THH}}
+\newcommand{\TC}{\ms{TC}}
+\newcommand{\TP}{\ms{TP}}
+\newcommand{\HH}{\ms{HH}}
+\newcommand{\HP}{\ms{HP}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Tor}{Tor}
@@ -240,6 +243,7 @@
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\Cont}{Cont}
 \DeclareMathOperator{\Crit}{Crit}
+\DeclareMathOperator{\op}{op}
 
 
 
@@ -252,9 +256,95 @@
 \begin{document}
 
 \begin{abstract}
-    These are notes from the YouTube lectures by Thomas Nikolaus and Achim Krause at \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTB8pNGvW0iuKUFmBlOSke-C}{this link}.
+    These are notes taken live while watching the \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTB8pNGvW0iuKUFmBlOSke-C}{YouTube lectures} about topological cyclic homology by Thomas Nikolaus and Achim Krause.
 \end{abstract}
 \maketitle
+
+\section{Motivation: trace methods}%
+\label{sec:Motivation}
+
+One motivation to study topological cyclic homology is its relation to crystalline cohomology and syntomic cohomology in arithmetic geometry. However, this is very involved, so we will not discuss it in depth. We will instead discuss the original motivation, which are trace methods in algebraic K-theory.
+
+Let $R$ be a ring. There is an invariant, called \textit{algebraic K-theory}, which produces groups $K_*(R)$ for all $* \geq 0$. These are very important, but are almost impossible to compute or to understand structurally. For example, even $K_*(\Z)$ is not very well-understood. They are known in all odd degrees, conjectured to vanish in degrees divisible by $4$ (this is equivalent to the Kummer-Vandiver conjecture in number theory). 
+
+If you are a topologist, then one motivation is to study whether a retract $X$ of a finite CW complex is itself a finite CW complex. The obstruction to this lies in 
+\[
+    K_*(\Z[\pi_1(X)]).
+\]
+Another motivation is that by work of Whitehead and others (the $s$-cobordism theorem), the obstruction for a cobordism to be trivial lies in an algebraic K-theory group. There is now a higher version of this theorem which relates diffeomorphism groups to algebraic K-theory. A third motivation comes from the Baum-Connes conjecture, which has other applications in geometric topology. 
+
+For other applications, the group $K_0$ was first invented by Grothendieck to give a statement of the Grothendieck-Riemann-Roch theorem, and algebraic K-theory is also related to special values of $L$-functions. 
+
+\begin{defn}
+    For a ring $R$, the group $K_0(R)$ is the Grothendieck group of isomorphism classes of finitely generated projective $R$-modules under the operation of direct sum.
+\end{defn}
+
+Higher $K$-groups are defined as homotopy groups of the space obtained by group completing the category of finitely-generated projective $R$-modules. This can be made precise using higher algebra and actually produces a spectrum, and then we can take its homotopy groups. We can see why this is so complicated. 
+
+\begin{exm}
+    It is easy to see that $K_0(\text{field}) = \Z$, but of course the higher $K$-groups are very complicated. Quillen computed them for finite fields, but if we leave this case this becomes extremely difficult. 
+\end{exm}
+
+\subsection{Approximation of algebraic K-theory}%
+\label{sub:Approximation of algebraic K-theory}
+
+We will attempt to approximate algebraic K-theory using more algebraic invariants. There is a \textit{Dennis trace map} to Hochschild homology. There are refinements of this which fit into a diagram
+\begin{equation*}
+\begin{tikzcd}
+    K_*(R) \ar{dr}{\text{cyclotomic trace}} \\
+    & \TC_*(R) \ar{r} \ar{d} & \HC_*^-(R) \ar{d} \\
+    & \THH_*(R) \ar{r} & \HH_*(R)
+\end{tikzcd}
+\end{equation*}
+
+\begin{slog}
+    The cyclotomic trace is often close to an isomorphism.
+\end{slog}
+
+There are also relative K-groups $K_*(R, I)$ for any ideal $I \subseteq R$, which is simply the homotopy fiber of $K(R) \to K(R/I)$. There are also relative $\TC$ groups, which are defined in the same way. We can also define groups with coefficients like $K_*(R, \Z_p)$ and $\TC_*(R, \Z_p)$. 
+
+\begin{thm}[Dundas-Goodwillie-McCarthy, Clausen-Matthew-Morrow]
+    \begin{enumerate}
+        \item If $I \subseteq R$ is a nilpotent ideal, then 
+        \[ \on{cyctr} \colon K_*(R,I) \to \TC_*(R, I) \]
+        is an isomorphism.
+        \item If $R$ is commutative and $I$-complete, the same conclusion holds with $p$-adic coefficients. In other words, we have
+        \[
+            K_*(R, I, \Z_p) \cong \TC_*(R, I, \Z_p).
+        \]
+        \item If $R$ is $p$-complete, then 
+        \[ \TC_*(R, \Z_p) \cong K_*^{\text{\'et}}(R, \Z_p). \]
+    \end{enumerate}
+\end{thm}
+
+\subsection{Why the trace map is a trace}%
+\label{sub:Why the trace map is a trace}
+
+Let $k$ be a field, $R$ be a $k$-algebra, and $P$ be a finitely generated projective right $R$-module. Then we have
+\[ \Hom_R(P, P) \cong P \otimes_R \Hom_R(P, R). \]
+We would attempt to go to $R$ by an evaluation map
+\[ P \otimes_R \Hom_R(P, R) \xrightarrow{\ev} R, \]
+but this doesn't actually land in $R$. Instead, we see that
+\begin{align*}
+    x \otimes r \varphi &\mapsto r \cdot \varphi(x) \\
+    xr \otimes \varphi \mapsto \varphi(xr) = \varphi(x) \cdot r.
+\end{align*}
+The best we can do is to consider the quotient
+\[ R / [R,R] \]
+as an abelian groups, so in conclusion we have
+\[ \tr \colon \Hom_R(P, P) \to R/[R,R]. \]
+
+Note that an $R$-$R$-bimodule is equivalently an $R \otimes_k R^{\op}$-module. Then, we in fact have
+\[ R/[R,R] \cong R \otimes_{R \otimes_k R^{\op}} R. \]
+Deriving this expression, we will see later that
+\[ \HH(R, k) \cong R \otimes^L_{R \otimes_k R^{\op}} R. \]
+The Dennis trace will refine this trace in the sense that on $K_0$, it will send a projective module $P$ to the trace of the identity endomorphism.
+
+\section{Classical Hochschild and cyclic homology}%
+\label{sec:Classical Hochschild and cyclic homology}
+
+
+
 
 \end{document}
 
