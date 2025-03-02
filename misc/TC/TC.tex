@@ -46,18 +46,19 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-% % \usepackage[sc]{mathpazo}
+%\usepackage[sc]{mathpazo}
 % \usepackage{inconsolata}
+\usepackage{lmodern}
 \usepackage{microtype}
-\usepackage[lf]{ebgaramond}
-\usepackage{inconsolata}
-\usepackage[scaled]{helvet}
-\usepackage[vvarbb,amsthm,ebgaramond,frenchmath,smallerops]{newtxmath}
+%\usepackage[lf]{ebgaramond}
+%%\usepackage{inconsolata}
+%\usepackage[scaled]{helvet}
+%\usepackage[vvarbb,amsthm,ebgaramond,frenchmath,smallerops]{newtxmath}
 % \usepackage{fontspec} 
 % \setmainfont{Tex Gyre Pagella}
-% \usepackage[OT1,euler-digits]{eulervm}
+%\usepackage[OT1,euler-digits]{eulervm}
 % \usepackage{euler-math} 
-% \usepackage[scaled=0.86]{berasans}
+\usepackage[scaled=0.86]{berasans}
 % \let\sffamilyold\sffamily
 % \def\sffamily{\fontencoding{T1}\sffamilyold}
 % \setmonofont{Inconsolatazi4}
@@ -141,6 +142,7 @@
 \newtheorem{rmks}[thm]{Remarks}
 \newtheorem{warn}[thm]{Warning}
 \newtheorem{sch}[thm]{Scholium}
+\newtheorem{conv}[thm]{Convention}
 
 
 % unnumbered theorems
@@ -269,7 +271,8 @@
 \DeclareMathOperator{\Crit}{Crit}
 \DeclareMathOperator{\op}{op}
 \DeclareMathOperator{\Sym}{Sym} 
-\DeclareMathOperator{\Tot}{Tot} 
+\DeclareMathOperator{\Tot}{Tot}
+\DeclareMathOperator*{\colim}{colim} 
 
 
 \title{Topological cyclic homology}
@@ -329,7 +332,7 @@ We will attempt to approximate algebraic K-theory using more algebraic invariant
 
 There are also relative K-groups $K_*(R, I)$ for any ideal $I \subseteq R$, which is simply the homotopy fiber of $K(R) \to K(R/I)$. There are also relative $\TC$ groups, which are defined in the same way. We can also define groups with coefficients like $K_*(R, \Z_p)$ and $\TC_*(R, \Z_p)$. 
 
-\begin{thm}[Dundas-Goodwillie-McCarthy, Clausen-Matthew-Morrow]
+\begin{thm}[Dundas-Goodwillie-McCarthy, Clausen-Matthew-Morrow]\leavevmode
     \begin{enumerate}
         \item If $I \subseteq R$ is a nilpotent ideal, then 
         \[ \on{cyctr} \colon K_*(R,I) \to \TC_*(R, I) \]
@@ -365,6 +368,252 @@ Note that an $R$-$R$-bimodule is equivalently an $R \otimes_k R^{\op}$-module. T
 Deriving this expression, we will see later that
 \[ \HH(R, k) \cong R \otimes^{\L}_{R \otimes_k R^{\op}} R. \]
 The Dennis trace will refine this trace in the sense that on $K_0$, it will send a projective module $P$ to the trace of the identity endomorphism.
+
+\section{Infinity-categories}%
+\label{sec:Infinity-categories}
+
+Infinity-categories are a simultaneous generalization of both ordinary categories and of the homotopy theory of spaces which form a natural home for derived phenomena. We will not aim to cover the entire theory but instead to give an idea of how to work with and think about $\infty$-categories.
+
+\begin{conv}
+    We will resolve size issues by assuming the existence of a Grothendieck universe $\mc{U}$. Elements of $\mc{U}$ will be called \textit{small} sets. We will take categories to have large object sets and large morphism sets. Therefore, for us we will take $\ms{Set}$ to mean the category of \textbf{small} sets.
+\end{conv}
+
+\subsection{$\infty$-categories}%
+\label{sub:infinity cats}
+
+\begin{defn}
+    An \textit{$\infty$-category} is is a (large) simplicial set $\mc{C}$ with the property that any diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \Lambda_i^n \ar{r} \ar{d} & \mc{C} \\
+        \Delta^n \ar[dashrightarrow]{ur}
+    \end{tikzcd}
+    \end{equation*}
+    admits a filling for all $0 < i < n$. Here, $\Lambda_i^n$ is the $i$-th horn given by taking the boundary of $\Delta^n$ and removing the facet opposite to the $i$-th vertex.
+
+    A \textit{functor} $\mc{C} \to \mc{D}$ is a map of simplicial sets.
+\end{defn}
+
+It is not clear why this definition should be related to categories at all, but we will construct an example of an $\infty$-category from an ordinary category.
+
+\begin{exm}
+    Let $\mc{C}$ be an ordinary category. Define the \textit{nerve} of $\ms{C}$ to be the simplicial set given by
+    \[ (N \mc{C})_n = \ms{Fun}([n], \mc{C}), \]
+    where $[n]$ is the poset given by $0 \leq 1 \leq \cdots \leq n$.
+\end{exm}
+
+\begin{exer}\leavevmode
+    \begin{enumerate}
+        \item Show that $N\mc{C}$ is an $\infty$-category;
+        \item Show that functors $N\mc{C} \to N \mc{D}$ are in bijection with functors $\mc{C} \to \mc{D}$.
+    \end{enumerate}
+\end{exer}
+
+Now let $\mc{C}$ be an $\infty$-category. We will call $\mc{C}_0$ the set of \textit{objects} and $\mc{C}_1$ the set of \textit{morphisms}. Note that it is not clear what the composition of two morphisms should be. For any $f \in \mc{C}_1$, we will view $f$ as a morphism
+\[ f \colon a \to b, \qquad a = \partial_1 f, b = \partial_0 f. \]
+
+\begin{defn}
+    Two morphisms $f, g \colon a \to b$ are \textit{equivalent} if there exists a $2$-simplex $\sigma \in \mc{C}_2$ of the form
+    \begin{equation*}
+    \begin{tikzcd}[execute at end picture={
+        \scoped[on background layer]
+        \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (C.center) -- cycle;
+    }]
+        & & |[alias=B]|b \ar{dr}{\mr{id}} & \\
+        |[alias=A]|a \ar{urr}{f} \ar[swap]{rrr}{g} & & & |[alias=C]|b.
+    \end{tikzcd}
+    \end{equation*}
+    In this case, we write $f \simeq g$.
+\end{defn}
+
+This notion is extremely boring for the nerve of a $1$-category. It is more interesting in the next example.
+
+\begin{exm}
+    Let $\mc{C}$ be a Kan complex. This means that all horns can be filled in, so in particular $\mc{C}$ is an \textit{$\infty$-category}. For example, if $X$ is a topological space, then the singular simplicial set $\ms{Sing}(X)$ is a Kan complex. Here, objects are points of $X$, morphisms are paths in $X$, and equivalence is simply homotopy of paths relative to the endpoints. If we pass to equivalence classes, we obtain the fundamental groupoid of $X$, so we can think of $\ms{Sing}(X)$ as being an $\infty$-categorical version of the fundamental groupoid. Note here that composition of paths is only associative up to homotopy.
+\end{exm}
+
+\begin{defn}
+    Let $f \colon a \to b$ and $g \colon b \to c$ be morphisms. A \textit{composition} of $f$ and $g$ is a $2$-simplex $\sigma$ of the form
+    \begin{equation*}
+        \begin{tikzcd}[execute at end picture={
+            \scoped[on background layer]
+            \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (C.center) -- cycle;
+        }]
+            & & |[alias=B]|b \ar{dr}{g} & \\
+            |[alias=A]|a \ar{urr}{f} \ar[swap]{rrr}{g} & & & |[alias=C]|c.
+        \end{tikzcd}
+        \end{equation*}
+        In this case, we will write $h \simeq g \circ f$.
+\end{defn}
+
+\begin{exer}
+    Check that two different choices of compositions, $h \simeq g \circ f$ and $h' \simeq g \circ f$, are equivalent.
+\end{exer}
+
+The non-existence of uniqueness may seem like a defect, but if we consider coproducts in ordinary categories, being unique up to unique isomorphism is enough because it allows us to not have to think about a coproduct functor being associative (or maybe only in a weak sense).
+\begin{defn}
+    Let $f \colon a \to b$ be a morphism. It is an \textit{equivalence} if there exists a morphism $g \colon b \to a$ such that $\mr{id}_a \simeq g \circ f$ and $\mr{id}_b \simeq f \circ g$.
+\end{defn}
+
+Recall that the functors between ordinary categories form a category. We will upgrade this to $\infty$-categories.
+\begin{defn}
+    Let $\mc{C}$ and $\mc{D}$ be simplicial sets. Then we define the simplicial set $\ms{Fun}(\mc{C}, \mc{D})$ by the formula
+    \[ \ms{Fun}(\mc{C}, \mc{D})_n = \ab\{ \mc{C} \times \Delta^n \to \mc{D} \}. \]
+\end{defn}
+
+\begin{prop}
+    Let $\mc{C}$ be an arbitrary simplicial set and $\mc{D}$ be an $\infty$-category. Then $\ms{Fun}(\mc{C}, \mc{D})$ is an $\infty$-category.
+\end{prop}
+
+Note that a morphism $\eta \colon f \to g$ is a functor $\mc{C} \times \Delta^1 \to \mc{D}$ which restricts to $f$ and $g$ on the boundaries. We will call these \textit{natural transformations}. A natural transformation $\eta$ is an equivalence in $\ms{Fun}(\mc{C}, \mc{D})$ if and only if it is objectwise an equivalence in $\mc{D}$.
+
+\begin{defn}
+    A functor $f \colon \mc{C} \to \mc{D}$ is an \textit{equivalence} if there exists a functor $g \colon \mc{D} \to \mc{C}$ and natural equivalences $f \circ g \simeq \mr{id}_{\mc{D}}$ and $g \circ f \simeq \mr{id}_{\mc{C}}$. In this case, we will write $\mc{C} \simeq \mc{D}$.
+\end{defn}
+
+We would now like to discuss something that is like the fact that equivalences of ordinary categories are fully faithful and essentially surjective. Unfortunately, we don't really have the machinery to do this yet.
+
+\begin{defn}
+    Let $a,b \in \mc{C}$ be two objects in an $\infty$-category. We define the \textit{mapping space} to be the simplicial set (in fact a Kan complex) which is the pullback in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Map}_{\mc{C}}(a,b) \ar{r} \ar{d} & \ms{Fun}(\Delta^1, \mc{C}) \ar{d} \\
+        \Delta^0 \ar{r}{(a,b)} & \mc{C} \times \mc{C}.
+    \end{tikzcd}
+    \end{equation*}
+    Note that the $0$-simplices in this mapping space are simply morphisms $f \colon a \to b$ and that $1$-simplices are equivalences. Thus $\pi_0 \ms{Map}_{\mc{C}}(a,b)$ is the set of equivalence classes of morphisms $a \to b$.
+\end{defn}
+
+\begin{exer}\leavevmode
+    \begin{enumerate}
+        \item Check that in $N\mc{C}$ for a $1$-category $\mc{C}$, mapping spaces are discrete and agree with morphism sets, and that the composition map recovers ordinary composition.
+        \item Check that in $\ms{Sing}(X)$, the mapping space
+        \[ \ms{Map}_{\ms{Sing}(X)}(a,b) \]
+        is homotopy equivalent to the space of paths from $a$ to $b$ in $X$ and that the composition map comes from path composition.
+    \end{enumerate}
+\end{exer}
+
+\begin{defn}
+    A functor $f \colon \mc{C} \to \mc{D}$ between $\infty$-categories is \textit{fully faithful} if for any pair of objects $a,b \in \mc{C}$, the map
+    \[ \ms{Map}_{\mc{C}}(a,b) \to \ms{Map}_{\mc{D}}(f(a), f(b)) \]
+    is a homotopy equivalence.
+\end{defn}
+
+\begin{defn}
+    A functor $f \colon \mc{C} \to \mc{D}$ between $\infty$-categories is \textit{essentially surjective} if for all $d \in \mc{D}$, there exists some $c \in \mc{C}$ and an equivalence $d \simeq f(c)$.
+\end{defn}
+
+\begin{prop}
+    A functor $f \colon \mc{C} \to \mc{D}$ between $\infty$-categories is an equivalence if and only if $f$ is fully faithful and essentially surjective.
+\end{prop}
+
+Recall the notion of a full subcategory. We will define an $\infty$-categorical version of this.
+
+\begin{defn}
+    Let $S \subset \mc{C}_0$. We define the \textit{full subcategory} $\mc{C}_S \subseteq \mc{C}$ to consist of all simplices with vertices in $S$.
+\end{defn}
+
+Note that if we first saturate $S$ under equivalence of objects to form $S \subseteq \bar{S}$, we obtain an equivalence
+\[ \mc{C}_S \to \ms{C}_{\bar{S}}. \]
+
+We will now discuss a way to upgrade compositions to mapping spaces. Consider the pullback
+\begin{equation*}
+\begin{tikzcd}
+    \ms{Map}_{\mc{C}}(a,b,c) \ar{r} \ar{d} & \ms{Fun}(\Delta^2, \mc{C}) \ar{d} \\
+    \Delta^0 \ar{r}{(a,b,c)} & \mc{C} \times \mc{C} \times \mc{C},
+\end{tikzcd}
+\end{equation*}
+which is a triple mapping space.
+
+\begin{lem}
+    The triple mapping space $\ms{Map}_{\mc{C}}(a,b,c)$ is a Kan complex and fits in a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Map}_{\mc{C}}(b,c) \times \ms{Map}_{\mc{C}}(a,b) & \ms{Map}_{\mc{C}}(a,b,c) \ar{l}[swap]{(\partial_0, \partial_2)}{\simeq} \ar{r}{\partial_1} & \ms{Map}_{\mc{C}}(a,c)
+    \end{tikzcd}
+    \end{equation*}
+    induced by the horn-filling
+    \[ \Lambda_1^2 \to \Delta^2 \gets \Delta^1. \]
+\end{lem}
+
+A choice of a homotopy inverse $S$ gives us a composition map
+\[ \ms{Map}_{\mc{C}}(b,c) \times \ms{Map}_{\mc{C}}(a,b) \xrightarrow{S} \ms{Map}_{\mc{C}}(a,b,c) \xrightarrow{\partial_1} \ms{Map}_{\mc{C}}(a,b). \]
+This seems to depend on the choice of $S$, but it is unique up to unique homotopy. In fact, the space of all possible homotopy inverses is contractible.
+
+Similarly, we can define $\ms{Map}_{\mc{C}}(a,b,c,d)$, which parameterizes the associativity of composition. We can compare this to Segal categories, where data like this is an axiom and gives us categories weakly enriched in spaces. In our approach, we get this for free.
+
+Until now, we have seen two kinds of $\infty$-categories: (nerves of) ordinary categories and Kan complexes (where all morphisms are invertible, sometimes called $\infty$-groupoids). We will now discuss another example, the $\infty$-category of spaces, which is the prototypical example of an $\infty$-category.
+
+Recall that the category of Kan complexes is enriched in simplicial sets. This enrichment actually lands in Kan complexes, so we would like to form an $\infty$-category.
+\begin{con}
+    For a finite, nonempty, totally ordered set $J$, define a simplicially enriched category
+    \[ \mf{C}[\Delta^J] \]
+    where objects are elements of $J$ and for any $i,j \in J$, the mapping simplicial set is given by
+    \[ \Hom(i,j) = N \ab\{K \subseteq J \mid \min K = i, \max k = j\}. \]
+    Here, composition is induced by union of subsets of $J$.
+\end{con}
+
+\begin{defn}
+    Define a simplicial set $\mc{S}$ by the formula
+    \[ \mc{S}_n = \ms{Fun}(\mf{C}[\Delta^n], \ms{Kan}). \]
+\end{defn}
+
+The simplicies look like the follows:
+\begin{itemize}
+    \item $0$-simplices are Kan complexes;
+    \item $1$-simplices are simply morphisms of Kan complexes;
+    \item $2$-simplices correspond to diagrams
+    \begin{equation*}
+    \begin{tikzcd}
+        & |[alias=B]|X_1 \ar{dr}{f_2} & \\
+        X_0 \ar{ur}{f_0} \arrow[rr,"f_1"{swap}, ""{name=U}] \arrow[Rightarrow, from=U, to=B] & & X_2
+    \end{tikzcd}
+    \end{equation*}
+    
+\end{itemize}
+
+\subsection{Limits}%
+\label{sub:Limits}
+
+\subsection{Colimits}%
+\label{sub:Colimits}
+
+\subsection{Derived catgories}%
+\label{sub:Derived catgories}
+
+\subsection{Slices and filtered colimits}%
+\label{sub:Slices and filtered colimits}
+
+\subsection{Derived functors}%
+\label{sub:Derived functors}
+
+\subsection{Nonabelian derived functors}%
+\label{sub:Nonabelian derived functors}
+
+
+\section{Higher algebra}%
+\label{sec:Higher algebra}
+
+\subsection{Spectra}%
+\label{sub:Spectra}
+
+\subsection{Symmetric monoidal $\infty$-categories}%
+\label{sub:Symmetric monoidal infinity-categories}
+
+\subsection{$\E_n$-algebras}%
+\label{sub:En-algebras}
+
+\subsection{$p$-adic completion}%
+\label{sub:p-adic completion}
+
+\subsection{Tate construction}%
+\label{sub:Tate construction}
+
+\subsection{Tate diagonal}%
+\label{sub:Tate diagonal}
+
+
+
 
 \section{Classical Hochschild and cyclic homology}%
 \label{sec:Classical Hochschild and cyclic homology}
@@ -517,7 +766,7 @@ This is well-defined up to quasi-isomorphism.
 \end{lem}
 
 \begin{proof}
-    We replace $R$ by a flat simplicial commutative $k$-algebra. Applying Hochschild homology, then $\HH(R_n/k)$ gives a \textbf{bisimplicial} commutative $k$-algebra. The total complex is then quasi-isomorphic to the diagonal, which is clearly simplicial.
+    We replace $R$ by a flat simplicial commutative $k$-algebra. Then $\HH(R_n/k)$ gives a \textbf{bisimplicial} commutative $k$-algebra. The total complex is then quasi-isomorphic to the diagonal, which is clearly simplicial.
 \end{proof}
 
 \begin{lem}
@@ -916,16 +1165,16 @@ We will now return to the example of $\F_p$ over $\Z$. First, we need to upgrade
     The $E_2$-page of the spectral sequence is given below, where the horizontal direction is powers of $t$ and the vertical direction is divided powers of $x$. We also use dots to denote copies of $\F_p$.
     \begin{center}
         \begin{sseqdata}[classes={draw=none}, name=omegas2, homological Serre
-            grading, xscale=1, y axis gap = 2em] 
+            grading, xscale=1, y axis gap = 2em, axes type = frame] 
             \class["\bullet"](0,0)
             \class["\bullet"](0,2) 
             \class["\bullet"](0,4) 
-            \class["\bullet"](2,0) 
-            \class["\bullet"](2,2) 
-            \class["\bullet"](2,4) 
-            \class["\bullet"](4,0) 
-            \class["\bullet"](4,2) 
-            \class["\bullet"](4,4)
+            \class["\bullet"](-2,0) 
+            \class["\bullet"](-2,2) 
+            \class["\bullet"](-2,4) 
+            \class["\bullet"](-4,0) 
+            \class["\bullet"](-4,2) 
+            \class["\bullet"](-4,4)
         \end{sseqdata} 
         \printpage[name=omegas2, page=2] 
     \end{center} 
@@ -989,7 +1238,7 @@ where $\mc{S}$ denotes the $\infty$-category of anima (spaces or simplicial sets
     \item The category $\mc{C}^{\ms{cp}}$ of compact projective objects is a full subcategory of $\ms{Anim}(\mc{C})$, and so is the ind-category $\ms{Ind}(\mc{C}^{\ms{cp}})$.
     \item A general object of $\mc{C}$ can be represented as the geometric realization of a simplicial diagram with entries in $\ms{Ind}(\mc{C}^{\ms{cp}})$.
     \item If $X$ is compact projective object of $\mc{C}$ and $Y_j$ are any ind-compact projective objects, then the mapping space
-    \[ \ms{Map}_{\ms{Anim}(\mc{C})} (X, \on{colim}_{j \in \Delta^{\op}} Y_j) = \on{colim}_{j \in \Delta^{\op}} \ms{Map}_{\ms{Anim}(\mc{C})} (X, Y_j) \]
+    \[ \ms{Map}_{\ms{Anim}(\mc{C})} (X, \colim_{j \in \Delta^{\op}} Y_j) = \colim_{j \in \Delta^{\op}} \ms{Map}_{\ms{Anim}(\mc{C})} (X, Y_j) \]
     is a simplicial set, so taking the geometric realization gives us a space.
 \end{itemize}
 
@@ -1049,7 +1298,7 @@ Clearly we see that the ind-compact projective objects
 \[ \ms{Ind}(\ms{cRing}^{\ms{cp}}) = \ms{Poly} \]
 are simply all polynomial rings. Therefore, we will represent objects by simplicial diagrams of polynomial rings. For example, we have
 \begin{align*}
-    \ms{Map}_{\ms{Anim}(\ms{cRing})}(\Z[x], \on{colim}_{\Delta^{\op}} Y_i) = \on{colim}_{\Delta^{\op}} Y_i
+    \ms{Map}_{\ms{Anim}(\ms{cRing})}(\Z[x], \colim_{\Delta^{\op}} Y_i) = \colim_{\Delta^{\op}} Y_i
 \end{align*}
 extracts the underlying simplicial set (in fact a simplicial abelian group). This give some version of non-negative complexes with ring structure.
 
@@ -1167,7 +1416,7 @@ for any animated ring $R$.
 \end{exer}
 
 We are now ready to give an enhanced version of~\Cref{thm:hkr}.
-\begin{thm}
+\begin{thm}\label{thm:filteredhkr}
     If $L\Omega^n_{R/\Z}$ is concentrated in degree $0$ for each $n$, then~\Cref{thm:hkr} holds for $R$.
 \end{thm}
 
@@ -1184,7 +1433,7 @@ We are now ready to give an enhanced version of~\Cref{thm:hkr}.
 \end{proof}
 
 To better understand this, we need to better understand $L\Omega^n_{R/\Z}$. This will in fact agree with the value on $R$ of the nonabelian derived functor
-\[ \ms{Anim}(\mc{cRing}/R) \to D(R)_{\geq 0} \to D(\Z)_{\geq 0} \]
+\[ \ms{Anim}(\ms{cRing}/R) \to D(R)_{\geq 0} \to D(\Z)_{\geq 0} \]
 which is given by
 \[ A \mapsto R \otimes_A \Omega_{A/\Z}^n \]
 for $A \in \ms{Poly}/R$. By definition, we have
@@ -1206,7 +1455,7 @@ Applying nonabelian derived functors, we obtain
 \end{proof}
 
 We are now able to state the correct form of~\Cref{thm:hkr}.
-\begin{thm}[Hochschild-Kostant-Rosenberg, ultimate version]
+\begin{thm}[Hochschild-Kostant-Rosenberg, ultimate version]\label{thm:hkr2}
     If $L\Omega^1_{R/k}$ is concentrated in degree $0$ and $\Omega^1_{R/\Z}$ is a flat $R$-module, then
     \[ \HH_n(R/\Z) = \Omega^n_{R/\Z}. \]
 \end{thm}
@@ -1214,6 +1463,175 @@ We are now able to state the correct form of~\Cref{thm:hkr}.
 \begin{rmk}
     For simplicity, we worked over $\Z$, but everything still holds if we replace $\Z$ be an arbitrary commutative ring $k$.
 \end{rmk}
+
+\subsection{Hochschild homology of schemes}%
+\label{sub:Hochschild homology of schemes}
+
+Let $k$ be a commutative ring and $X$ be a scheme over $k$. We could in principle allow the base to be non-affine, but for simplicity we will ignore this. There are two approaches:
+\begin{enumerate}
+    \item Extending from the affine case (by a right Kan extension);
+    \item Generalize the functor $\HH(-/k)$ to $k$-linear dg categories (or stable $\infty$-categories) and then define define
+    \[ \HH(X/k) = \HH(\ms{Perf}(X)/k). \]
+    This is essentially an approach in the spirit of non-commutative geometry and is actually better in many cases (for example, we see that Hochschild homology is really an invariant of a stable $\infty$-category), but we will take the first approach in these notes since it is closer to the case of rings.
+\end{enumerate}
+
+\begin{defn}
+    For a scheme $X$, we define its \textit{Hochschild homology} by
+    \[ \HH(X/k) = \lim_{\substack{U \subseteq X \\ U \text{ affine open}}} \HH(\mc{O}(U)/k) \in D(k). \]
+\end{defn}
+
+Note that if $X = \Spec R$ is affine, then
+\begin{align*}
+    \HH(\Spec(R)/k) &= \lim_{U \subseteq \Spec R} \HH(\mc{O}(U), k) \\
+    &= \HH(\mc{O}(\Spec R)/k) \\
+    &= \HH(R/k)
+\end{align*}
+because $U = \Spec R$ is terminal in the poset of affine open subsets of $\Spec R$.
+
+\begin{rmk}
+    We can also define Hochschild homology for stacks. For simplicity, we will not do this.
+\end{rmk}
+
+
+We will now discuss an example of a non-affine scheme. Let $X = \P^1_k$. It has an open cover by
+\[ (\A^1_k)^+ = \Spec k[x] \qquad \text{and} \qquad (\A_k^1)^- = \Spec k[y], \]
+whose intersection is given by
+\[ (\A_k^1)^+ \cap (\A_k^1)^- = \G_m = \Spec k[x^{\pm}]. \]
+We will hope for some kind of descent of Mayer-Vietoric sequence.
+
+\begin{thm}\label{thm:zariskidescent}
+    For any pair of open subsets $U, V \subseteq X$ such that $X = U \cup V$, the square
+    \begin{equation*}
+    \begin{tikzcd}
+        \HH(X/k) \ar{r} \ar{d} & \HH(U/k) \ar{d} \\
+        \HH(V/k) \ar{r} & \HH((U \cap V)/k)
+    \end{tikzcd}
+    \end{equation*}
+    is a pullback in $D(k)$. In other words, Hochschild homology satisfies Zariski descent.
+\end{thm}
+
+\begin{rmk}
+    Later, we will see that $\HH(-/k)$ satisfies fpqc descent.
+\end{rmk}
+
+\begin{cor}
+    There is a long exact sequence
+    \begin{equation*}
+        \begin{tikzcd}
+            & \cdots \ar{r} & \HH_{n-1}(U \cap V) \arrow[out=-30, in=150]{dll} \\
+            \HH_{n}(X) \ar{r} & \HH_n(U) \oplus \HH_n(V) \ar{r} & \HH_n(U \cap V) \arrow[out=-30,in=150]{dll} \\
+            \HH_{n-1}(X) \ar{r} & \cdots
+        \end{tikzcd}
+    \end{equation*}
+\end{cor}
+
+\begin{lem}
+    For any commutative ring $R$ and $x \in R$, we have
+    \[ \HH(R[x^{-1}]/k) \cong \HH(R/k) \otimes_R R[x^{-1}]. \]
+\end{lem}
+
+\begin{exer}
+    Prove this.
+\end{exer}
+
+In the example of $\P^1$, we have a pullback
+\begin{equation*}
+\begin{tikzcd}
+    \HH(\P^1/k) \ar{r} \ar{d} & \HH(k[x]/k) \ar{d}{x \mapsto x} \\
+    \HH(k[y]/k) \ar{r}{y \mapsto x^{-1}} & \HH(k[x^{\pm}]/k).
+\end{tikzcd}
+\end{equation*}
+This becomes the long exact sequence
+\begin{equation*}
+    \begin{tikzcd}
+        & & 0 \ar[out=-30,in=150]{dll} \\
+        \HH_*(\P^1/k) \rar & k[x]\d{x} \oplus k[y] \d{y} \arrow[swap, r, "{(f \d{x}, g \d{y}) \mapsto f(x)\d{x} + g(x^{-1})\ab(-\frac{1}{x^2}) \d{x}}" {yshift=-1ex}] & k[x^{\pm}] \d{x} \ar[out=-30,in=150]{dll} \\
+        \HH_{0}(\P^1/k) \ar{r} & k[x] \oplus k[y] \arrow[swap, r, "{(f,g) \mapsto f(x)+g(x^{-1})}" {yshift=-1ex}] & k[x^{\pm}]\arrow[out=-30,in=150]{dll} \\
+        \HH_{-1}(\P^1/k) \ar{r} & 0 \ar{r} & \cdots
+    \end{tikzcd}
+\end{equation*}
+Therefore, it is easy to compute
+\begin{align*}
+    \HH_1(\P^1/k) = 0, \qquad \HH_0(\P^1/k) = k \oplus k, \qquad \text{and} \qquad \HH_{-1}(\P^1/k) = 0.
+\end{align*}
+
+\begin{proof}[Proof of~\Cref{thm:zariskidescent}]
+    We always have the square
+    \begin{equation*}
+        \begin{tikzcd}
+            \HH(X) \ar{r} \ar{d} & \HH(U) \ar{d} \\
+            \HH(V) \ar{r} & \HH(U \cap V).
+        \end{tikzcd}
+        \end{equation*}
+        For any open set $U \subset X$, a cofinality argument gives
+        \[ \HH(U) = \lim_{A \subseteq X} \HH(A \cap U). \]
+        Therefore, without loss of generality that $X$ is affine. Unfortunately, affine schemes can have non-affine open subsets, but another cofinality argument allows us to assume that $U$ and $V$ are affine and are standard opens. Therefore, we have reduced to the case of
+        \begin{equation*}
+        \begin{tikzcd}
+            \HH(R/k) \ar{r} \ar{d} & \HH(R[x^{-1}]/k) \ar{d} \\
+            \HH(R[y^{-1}]/k) \ar{r} & \HH(R[x^{-1}, y^{-1}]/k),
+        \end{tikzcd}
+        \end{equation*}
+        where $1 \in (x,y)$. Using the fact that Hochschild homology commutes with localization, this becomes
+        \begin{equation*}
+            \begin{tikzcd}
+                \HH(R/k) \ar{r} \ar{d} & \HH(R]/k) \otimes_R R[x^{-1}] \ar{d} \\
+                \HH(R/k) \otimes_R R[y^{-1}] \ar{r} & \HH(R/k) \otimes_R R[x^{-1}, y^{-1}].
+            \end{tikzcd}
+        \end{equation*}
+        Therefore, it suffices to prove that
+        \begin{equation*}
+        \begin{tikzcd}
+            R \ar{r} \ar{d} & R[x^{-1}] \ar{d} \\
+            R[y^{-1}] \ar{r} & R[x^{-1}, y^{-1}],
+        \end{tikzcd}
+        \end{equation*}
+        which is a standard fact. This is true because
+        \[ R[x^{-1}]/R \cong R[x^{-1}, y^{-1}]/ R[y^{-1}], \]
+        which is true because $y$ acts invertibly on $R[x^{-1}]/R$. This is true because $x$ is invertible on $R/y$.
+\end{proof}
+
+Our goal now is to prove an analog of~\Cref{thm:filteredhkr} and~\Cref{thm:hkr2} for schemes. We begin by defining a filtration on $\HH(X/k)$ by the formula
+\[ F^n_{\ms{HKR}}\HH(X/k) = \lim_{\substack{U \subseteq X \\ \text{affine open}}} F^n_{\ms{HKR}}(\HH(\mc{O}(U)/k)). \]
+\begin{rmk}
+    Note that this cannot be done using the non-commutative approach.
+\end{rmk}
+\begin{prop}
+    This defines a complete filtration on $\HH(X/k)$, namely that
+    \[ \varinjlim_n F^n_{\ms{HKR}} \HH(X/k) = 0. \]
+    Moreover, the associated graded is given by
+    \begin{align*}
+        \lim_{U \subseteq X} L\Omega^n_{U/k}[n] = R\Gamma(X, L\Omega^n_{X/k})[n],
+    \end{align*}
+    which is usually called the \textit{derived Hodge cohomology} of $X$.
+\end{prop}
+Note that if $X$ is smooth, we just get the usual Hodge cohomology.
+
+\begin{proof}
+    Completeness follows from the fact that it is true for affines and that inverse limits commute with inverse limits. The assertion about (derived) Hodge cohomology follows again from the fact that cofibers commute with limits.
+\end{proof}
+
+Using the proposition, we obtain a spectral sequence
+\[ R \Gamma (X, L\Omega^n_{X/k}[n]) \Longrightarrow \HH_*(X/k). \]
+\begin{cor}
+    If $\Q \subseteq k$, then there is a canonical isomorphism
+    \[ \HH(X/k) \cong \prod R\Gamma(X, L\Omega^n_{X/k}[n]). \]
+\end{cor}
+
+\begin{proof}
+    This is clearly true if $X = \Spec k[x_1, \ldots, x_n]$. Using non-abelian derived functors, this is also true for any affine $X$. The general case follows.
+\end{proof}
+
+\begin{rmk}
+    This isomorphism is in fact compatible with the $B$ operator, so we get the desired results for periodic and negative cyclic homology.
+\end{rmk}
+
+\section{Topological Hochschild homology and cyclic homology}%
+\label{sec:Topological Hochschild homology and cyclic homology}
+
+
+
+
 
 \appendix
 
@@ -1346,6 +1764,206 @@ We now need to make sure that this divided power structure behaves well with res
     \]
     Here, for maps $\mu_i \colon [kn] \to [n]$, we set $\mu_i' \colon [1+kn] \to [1+n]$ to be the maps given by sticking a $1$ in front. Then $\d_0 \gamma_k'(y) = \gamma_k(x)$ and $\d_i \gamma_k'(y) = 0$ for all $i > 0$, and therefore $\d{\gamma_k'(y)} = \gamma_k(x)$.
 \end{proof}
+
+\section{Cotangent complexes and obstruction theory}%
+\label{sec:Cotangent complexes}
+
+\subsection{Definition of the cotangent complex}%
+\label{sub:Definition of the cotangent complex}
+
+Recall that we defined
+\[ L \Omega^1_{-/k} \colon \ms{Anim}(k\ms{-alg}) \to D(\Z)_{\geq 0} \] as the nonabelian derived functor of
+\[ \Omega^1 \colon k\ms{-alg} \to \ms{Ab}. \]
+
+\begin{lem}
+    The following constructions agree:
+    \begin{enumerate}
+        \item The functor 
+        \[ L \Omega^1_{-/k} \colon \ms{Anim}(k\ms{-alg}) \to D(\Z)_{\geq 0} \] evaluated on $R$;
+        \item The functor 
+        \[ L (A \mapsto R \otimes_A \Omega^1_{A/k}) \colon \ms{Anim}(k\ms{-alg}/R) \to D(R)_{\geq 0} \]
+        evaluated on $R$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    If we begin with the second construction, we obtain
+    \begin{align*}
+        \colim_{i \in \Delta^{\op}} R \otimes_{A_i}\Omega^1_{A_i/k} &\simeq \colim_{i \in \Delta^{\op}} \ab(\colim_{j \in \Delta^{\op}} A_j) \otimes^{\L}_{A_i} \Omega^1_{A_i/k} \\
+        &\simeq \colim_{i \in \Delta^{\op}} \ab(\colim_{j \in \Delta^{\op}_{i/}} A_j) \otimes_{A_i}^{\L} \Omega^1_{A_i/k} \\
+        &\simeq \colim_{i \to j \in (\Delta^{\op})^{\Delta^1}} A_j \otimes_{A_i}^{\L} \Omega^1_{A_i/k} \\
+        &\simeq \colim_{i \in \Delta^{\op}} \Omega^1_{A_i/k} \\
+        &\simeq L \Omega^1_{R/k}.
+    \end{align*}
+    with $A_i$ polynomial rings. Here, we have used the fact that identity morphisms are cofinal in the arrow category.
+\end{proof}
+
+The second functor has better categorical properties than the first. Namely, it commutes with coproducts. By definition, this implies that it preserves all colimits.
+
+\begin{exm}
+    If $R = k[x_1, \ldots, x_n] / (f_1, \ldots, f_m)$ is defined by a regular sequence, then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        k[f_1, \ldots, f_m] \ar{r} \ar{d} & k[x_1, \ldots, x_m] \ar{d} \\
+        k \ar{r} & R
+    \end{tikzcd}
+    \end{equation*}
+    is a pushout in $\ms{Anim}(k\ms{-alg}/R)$. The functor $L(R \otimes_{\bullet} \Omega^1_{\bullet/k})$ takes this to
+    \begin{equation*}
+    \begin{tikzcd}
+        R\ab\{\d{f_1}, \ldots, \d{f_m} \}  \ar{r} \ar{d} & R \ab\{ \d{x_1}, \ldots, \d{x_n}\} \ar{d} \\
+         0 \ar{r} & L \Omega^1_{R/k},
+    \end{tikzcd}
+    \end{equation*}
+    where the top arrow is the Jacobian matrix of $f_1, \ldots, f_m$. This is also a pushout in $D(R)_{\geq 0}$, and therefore $L\Omega^1_{R/k}$ has as $H_0$ and $H_1$ the cokernel and kernel of the Jacobian matrix.
+\end{exm}
+
+\begin{defn}
+    We will call $\Omega^1_{R/k}$ the \textit{cotangent complex} of $R$ relative to $k$ and denote it by $L_{R/k}$.
+\end{defn}
+
+\subsection{Applications to obstruction theory of rings}%
+\label{sub:Applications to obstruction theory of rings}
+
+Let $S$ be a ring and $M$ be an $S$-module. We can form a \textit{split square-zero extension} on the $S$-module $S \oplus M$ where
+\begin{itemize}
+    \item If $m_1, m_2 \in M$, we have $m_1 m_2 = 0$;
+    \item Elements of $s$ multiply as usual;
+    \item If $s \in S$ and $m \in M$, then $sm$ is given by the usual action of $s$ on $M$.
+\end{itemize}
+We would like to understand when there is a lift in the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & S \oplus M \ar{d} \\
+    R \ar{r}{\varphi} \ar[dashrightarrow]{ur} & S.
+\end{tikzcd}
+\end{equation*}
+These lifts correspond to $\varphi$-linear derivations $R \to M$, which are simply $R$-module maps
+\[ \Omega^1_{R/k} \to \varphi_* M. \]
+
+\begin{prop}
+    There exists a functor
+    \[ D(S)_{\geq 0} \to \ms{Anim}(k\ms{-alg})/S \]
+    which sends a projective module $P$ to the square-zero extension $S \oplus P$. We have equivalences of mapping spaces
+    \[ \ms{Map}_{D(R)_{\geq 0}} (L_{R/k}, \varphi_* M) \simeq \on{Fiber} \ab(\begin{matrix}\ms{Map}_{\ms{Anim}(k\ms{-alg})}(R, S \oplus M) \\ \downarrow \\ \ms{Map}_{\ms{Anim}(k\ms{-alg})}(R,S)\end{matrix}). \]
+\end{prop}
+
+We would now like to apply this to study ordinary rings. Given a surjective $\tilde{R} \to R$ whose kernel $I$ satisfies $I^2 = 0$, we will call this a \textit{(not necessarily split) square-zero extension}. One example of a non-split square-zero extension is
+\[ \Z/p^2 \to \Z/p, \]
+which does not even split as a morphism of abelian groups. Note that the condition that $I^2 = 0$ implies that the $\tilde{R}$-action on $I$ factors through $R$.
+
+It turns out that $L_{R/\tilde{R}}$ has $H_0 = 0$ and 
+\[ H_1 = R \otimes_{\tilde{R}} I = I. \]
+There is a tautological morphism
+\[ L_{R/\tilde{R}} \to I[1] \]
+of $R$-modules which induces an isomorphism on $H_1$. This corresponds to a map
+\[ \delta \colon R \to R \oplus I[1] \]
+of animated $\tilde{R}$-algebras.
+
+\begin{prop}
+    $\tilde{R}$ is the pullback of the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \tilde{R} \ar{r} \ar{d} & R \ar{d}{s} \\
+        R \ar{r}{\delta} & R \oplus I[1]
+    \end{tikzcd}
+    \end{equation*}
+    in the category of animated $\tilde{R}$-algebras.
+\end{prop}
+
+We see that (not necessarily split) square-zero extensions $\tilde{R} \to R$ along $I$ correspond to maps
+\[ L_{R/k} \to I[1]. \]
+Maps $S \to \tilde{R}$ lifting a given $S \to R$ correspond to diagrams of the form
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{R} \ar{r} \ar{d} & R \ar{d}{s} \\
+    S \ar[dashrightarrow]{ur} \ar[dashrightarrow]{urr} \ar{r} & R \ar{r}{\delta} & R \oplus I[1],
+\end{tikzcd}
+\end{equation*}
+which are simply lifts
+\begin{equation*}
+\begin{tikzcd}
+    & R \ar{d}{s} \ar[bend left=60]{dd}{\mr{Id}} \\
+    S \ar[dashrightarrow,""{swap,name=L}]{ur} \ar{r} & R \oplus I[1] \ar{d} \ar[Leftarrow, to=L] \\
+    & R.
+\end{tikzcd}
+\end{equation*}
+If we unwrap everything, we see that a lift exists if and only if the map
+\[ L_{S/k} \to I[1] \]
+is nullhomotopic. Furthermore, lifts are in correspondence to choices of nullhomotopies. These form a torsor over $\pi_1(\ms{Map}(L_{S/k}, I[1]))$. We therefore see that
+\begin{itemize}
+    \item The possible square-zero extensions $\tilde{R}$ are classified by
+    \[ \pi_0 \ms{Map}_{D(R)} (L_{R/k}, I[1]); \]
+    \item For a given $\tilde{R}$ and $S \to R$, there is an obstruction living in
+    \[ \pi_0 \ms{Map}_{D(S)} (L_{S/k}, I[1]). \]
+    \item If lifts do exist, they are parameterized by
+    \[ \pi_1 \ms{Map}_{D(S)} (L_{S/k}, I[1]) \simeq \pi_0 \ms{Map}_{D(S)}(L_{S/k}, I). \]
+\end{itemize}
+
+\begin{exer}
+    Let $S$ be a $k$-algebra. Show that the following are equivalent:
+    \begin{enumerate}
+        \item For every square-zero extension $\tilde{R} \to R$ and every $S \to R$, there is a lift (this is usually called being \textit{formally smooth}).
+        \item We have $H_1(L_{S/k})= 0$ and $H_0(L_{S/k})$ is a projective $S$-module.
+    \end{enumerate}
+\end{exer}
+
+We are now ready to apply this machinery.
+\begin{thm}\label{thm:wittvectors}
+    If $R_1$ is a perfect $\F_p$-algebra (this means that Frobenius is an automorphism), then there exist flat $\Z/p^n$-algebras $R_n$, unique up to isomorphism, with 
+    \[ R_1 \simeq R_n \otimes_{\Z/p^n} \F_p. \]
+    In particular, we have
+    \[ R_{n-1} \cong R_n \otimes_{\Z/p^n} \Z/p^{n-1}, \]
+    so we have a tower
+    \[ \cdots \to R_n \to R_{n-1} \to \cdots \]
+    whose lift
+    \[ R \coloneqq \lim R_n \]
+    is the unique flat, $p$-complete $\Z_p$-algebra satisfying
+    \[ R_1 \cong R \otimes_{\Z_p} \F_p. \]
+\end{thm}
+
+This theorem tells us that there is a way to escape from the positive characteristic to the mixed characteristic setting under the assumption that $R_1$ is perfect.
+
+We will characterize $R_n$ as a non-split square-zero extension of $R_{n-1}$ by $R_1$. This is because if it exists, tensoring
+\[ 0 \to \Z/p \to \Z/p^n \to \Z/p^{n-1} \to 0 \]
+with $R_n$ gives us
+\[ 0 \to R_1 \to R_n \to R_{n-1} \to 0. \]
+These extensions are classified by
+\[ \pi_0 \ms{Map}_{D(R_{n-1})} (L_{R_{n-1}/\Z}, R_1 [1]). \]
+They also need to be compatible with the element of
+\[ \pi_0 \ms{Map}_{D(\Z/p^{n-1})}(L_{(\Z/p^{n-1})/\Z}, \Z/p[1]) \]
+classifying $\Z/p^n \to \Z/p^{n-1}$.
+
+\begin{lem}
+    Isomorphism classes of such $R_n$ form a torsor over
+    \[ \pi_0 \ms{Map}_{D(R_{n-1})} (L_{R_{n-1}/\Z/p^{n-1}}, R_n[1]) \simeq \pi_0 \ms{Map}_{D(R_1)} (L_{R_1/\F_p}, R_1[1]). \]
+\end{lem}
+
+\begin{lem}
+    If $R_1$ is a perfect $\F_p$-algebra, then $L_{R_1/\F_p} \simeq 0$.
+\end{lem}
+
+\begin{proof}
+    For any perfect $\F_p$-algebra $A$, we will consider the effect of the Frobenius $\varphi \colon A \to A$ on the contangent complex. This induces the zero morphism on $\Omega^1_{A/\F_p}$ (in particular for polynomial rings). Therefore, if we resolve $R_1$ by polynomial rings, $\varphi$ acts by $0$ on $L_{R_1/\F_p}$. However, because we assumed that $R_1$ is perfect, it must also act by an isomorphism. The desired result follows immediately.
+\end{proof}
+
+Putting together the two lemmas, we see that there is a unique isomorphism class of possible $R_n$, which proves~\Cref{thm:wittvectors}.
+
+\begin{defn}
+    The $R$ in~\Cref{thm:wittvectors} is called the \textit{Witt vectors} of $R$ and denoted by $W(R_0)$.
+\end{defn}
+
+\begin{rmk}
+    Usually the Witt vectors are given by an explicit construction and exist for any $\F_p$-algebra, not just perfect ones, but we believe this explanation is much more satisfying.
+\end{rmk}
+
+\begin{exm}
+    Consider the finite field $\F_{p^n}$. The Witt vectors $W(\F_{p^n})$
+    is a $\Z_p$-algebra with $W(\F_{p^n}) / p \simeq \F_{p^n}$. One way to construct this is to consider $\F_{p^n} = \F_p[x]/f(x)$ and take the ring
+    \[ \Z_p[x]/\tilde{f}(x) \]
+    for some lift $\tilde{f}$ of $f$.
+\end{exm}
+
 
 \end{document}
 
