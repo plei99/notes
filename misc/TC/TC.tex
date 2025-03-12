@@ -6,6 +6,7 @@
 \usepackage{bm}
 \usepackage{accents}
 \usepackage{mathtools}
+\usepackage{relsize}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathmorphing,shapes,decorations.pathreplacing}
@@ -28,6 +29,7 @@
     }
   }}, altstackar/.default={1}
 }
+\tikzset{shorten <>/.style={shorten >=#1,shorten <=#1}}
 
 \usepackage{forest}
 \usepackage{braket} 
@@ -117,7 +119,7 @@
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
 
-\newtheorem{thm}{Theorem}[section]
+\newtheorem{thm}{Theorem}[subsection]
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{lem}[thm]{Lemma}
@@ -180,6 +182,7 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\F}{\mathbb{F}}
+\newcommand{\bS}{\mathbb{S}}
 \renewcommand{\k}{\Bbbk}
 \renewcommand{\L}{\mathbb{L}}
 \renewcommand{\P}{\mathbb{P}}
@@ -239,6 +242,10 @@
 \newcommand{\HH}{\ms{HH}}
 \newcommand{\HP}{\ms{HP}}
 \newcommand{\dR}{\ms{dR}}
+\newcommand{\sw}{\mathsmaller{\wedge}}
+\newcommand*{\triple}[2][.1ex]{%
+    \mathrel{\vcenter{\offinterlineskip%
+    \hbox{$#2$}\vskip#1\hbox{$#2$}\vskip#1\hbox{$#2$}}}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Tor}{Tor}
@@ -368,6 +375,10 @@ Note that an $R$-$R$-bimodule is equivalently an $R \otimes_k R^{\op}$-module. T
 Deriving this expression, we will see later that
 \[ \HH(R, k) \cong R \otimes^{\L}_{R \otimes_k R^{\op}} R. \]
 The Dennis trace will refine this trace in the sense that on $K_0$, it will send a projective module $P$ to the trace of the identity endomorphism.
+
+\part{Infinity-categories and higher algebra}
+
+In this part, we give a user's guide to $\infty$-category and the homotopy-enriched algebra of spectra following the \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTDenpj574aSvIRBROwCugoB}{higher algebra playlist}.
 
 \section{Infinity-categories}%
 \label{sec:Infinity-categories}
@@ -569,52 +580,2599 @@ The simplicies look like the follows:
         X_0 \ar{ur}{f_0} \arrow[rr,"f_1"{swap}, ""{name=U}] \arrow[Rightarrow, from=U, to=B] & & X_2
     \end{tikzcd}
     \end{equation*}
-    
 \end{itemize}
+
+\begin{thm}
+    This simplicial set $\mc{S}$ is an $\infty$-category, and for all $X, Y$, there is a homotopy equivalence
+    \[ \ms{Map}_{\mc{S}}(X, Y) \simeq \Hom_{\ms{Kan}}(X, Y). \]
+\end{thm}
+
+\begin{defn}
+    For an arbitrary simplicially enriched category $\mc{C}$, we can define the \textit{homotopy-coherent nerve} $N_{\Delta}(\mc{C})$ by the formula
+    \[ N_{\Delta}(\mc{C})_n = \ms{Fun}(\mf{C}[\Delta^n], \mc{C}). \]
+\end{defn}
+
+\begin{prop}
+    If $\mc{C}$ is enriched in complexes, then $N_{\Delta}(\mc{C})$ is an $\infty$-category and we have equivalences
+    \[ \ms{Map}_{N_{\Delta}(\mc{C})} \simeq \Hom_{\mc{C}}(a,b). \]
+\end{prop}
 
 \subsection{Limits}%
 \label{sub:Limits}
 
+We will again neglect to develop the full theory in favor of giving an idea of how to work with limits.
+
+\begin{notn}
+    From now on, we will denote the $\infty$-category of functors from a simplicial set $I$ to an $\infty$-category $\mc{C}$ by $\mc{C}^I \coloneqq \ms{Fun}(I, \mc{C})$.
+\end{notn}
+
+In this subsection, we will let $I$ be a small simplicial set, $\mc{C}$ be an $\infty$-category, and $F \colon I \to \mc{C}$ be a functor.
+
+\begin{defn}
+    A \textit{cone} over $F$ is a pair consisting of an object $y \in \mc{C}$, together with a natural transformation 
+    \[ \eta \colon c_y \to F, \]
+    where 
+    \[ c_y \colon I \to \Delta^0 \xrightarrow{y} \mc{C} \]
+    is the constant functor on $y$.
+\end{defn}
+
+\begin{con}
+    Let $(y, \eta)$ be a cone over $F$ and $x \in \mc{C}$. We will construct a map
+    \[ \ms{Map}_{\mc{C}}(x,y) \to \ms{Map}_{\mc{C}^I} (c_x, F) \]
+    as the composite
+    \[ \ms{Map}_{\mc{C}}(x,y) \xrightarrow{c} \ms{Map}_{\mc{C}^I} (c_x, c_y) \xrightarrow{\eta_*} \ms{Map}_{\mc{C}^I} (c_x, F). \]
+    This is well-defined up to a contractible choice.
+\end{con}
+
+\begin{defn}
+    A cone $(y, \eta)$ over $F$ is a \textit{limit cone (or just limit)} in $\mc{C}$ if for all $x \in \mc{C}$, the map
+    \[ \ms{Map}_{\mc{C}}(x,y) \to \ms{Map}_{\mc{C}^I}(c_x, F) \]
+    is a homotopy equivalence. We will denote this by
+    \[ y = \lim_I F = \lim_{i \in I} F(i). \]
+\end{defn}
+
+\begin{exer}
+    If $I \to \mc{C}$ is a functor of ordinary categories, check that limits of $NI \to N \mc{C}$ correspond exactly to ordinary limits of $I \to \mc{C}$.
+\end{exer}
+
+\begin{exm}
+    Let $I = \emptyset$. Then $\ms{Fun}(I, \mc{C}) \simeq \mr{pt}$. Therefore, every $y \in \mc{C}$ is a cone, and it is a limit if
+    \[ \ms{Map}_{\mc{C}}(x,y) \simeq \mr{pt} \]
+    for all $x \in \mc{C}$. In other words, $y$ must be a terminal object and we will denote it by $*$ or $\mr{pt}$.
+\end{exm}
+
+\begin{exm}
+    If $I$ is a discrete set, then 
+    \[ \ms{Fun}(I, \mc{C}) \cong \prod_I \mc{C}. \]
+    Therefore, a functor $I \to \mc{C}$ is simply a sequence $\ab\{y_i\}_{i \in I}$, and a cone is an object $y \in \mc{C}$ with maps $\ab\{\pi_i \colon y \to y_i \}_{i \in I}$. This is a limit cone if for all objects $x \in \mc{C}$, we have an equivalence
+    \[ \ms{Map}_{\mc{C}}(x,y) \xrightarrow{(\pi_i)_*} \prod_{i \in I} \ms{Map}_{\mc{C}}(x, y_i). \]
+    For example, in $\mc{S}$, the products are given by products of Kan complexes.
+\end{exm}
+
+\begin{lem}
+    Any two limits $y, y'$ of $F$ are canonically equivalent.
+\end{lem}
+
+\begin{proof}
+    The space of maps $y \to y'$ is simply
+    \begin{align*}
+        \ab\{ y\to y' \} &\simeq \ab\{c_y \to F \}.
+    \end{align*}
+    We define a map $f \colon y \to y'$ by simply pulling back $\eta$. By construction, we have $\eta' \circ f \simeq \eta$. Doing this in the other direction, we have $g \colon y' \to y$ such that $\eta \circ g \simeq \eta'$. We see that 
+    \begin{align*}
+        \eta \circ g \circ f &\simeq \eta' \circ f \\
+        &\simeq \eta,
+    \end{align*}
+    which implies that $g \circ f \simeq \mr{id}$. Applying this argument to $f \circ g$ yields the desired result.
+\end{proof}
+
+\begin{rmk}
+    We can strengthen the previous lemma to the statement that the $\infty$-category of limit cones over $F \colon I \to \mc{C}$ is either empty or trivial.
+\end{rmk}
+
+\begin{rmk}
+    We have allowed $I$ to be an arbitrary simplicial set, which may lack the lifting properties in the definition of an $\infty$-category. However, we can form a larger simplicial set $I \subset I'$ by gluing in fillers for horns which do not have fillers, and then we actually have an equivalence
+    \[ \mc{C}^{I'} \simeq \mc{C}^I \]
+    which is even a Kan fibration.
+\end{rmk}
+
+We will now turn to some examples which have some coherence issues. The first are fiber products. Here, let
+\begin{equation*}I = \ab\{
+\begin{tikzcd}[ampersand replacement=\&]
+    \& 0 \ar{d} \\
+    0' \ar{r} \& 1
+\end{tikzcd} \} = \Delta^1 \sqcup_{\Delta^0} \Delta^1.
+\end{equation*}
+Then a functor $F \colon I \to C$ is simply a diagram
+\begin{equation*}
+\begin{tikzcd}
+    & b \ar{d}{h} \\
+    c \ar{r}{k} & d
+\end{tikzcd}
+\end{equation*}
+in $\mc{C}$.
+
+\begin{lem}
+    A natural transformation $c_a \to F$ for some object $a \in \mc{C}$ is, up to equivalence, given by the data of maps $i \colon a \to b$ and $j \colon a \to c$ together with an equivalence
+    \[ h \circ i \simeq k \circ j \colon a \to d \]
+    in $\mc{C}$. 
+\end{lem}
+
+\begin{proof}
+    Because $I = \Delta^1 \sqcup_{\Delta^0} \Delta^1$ is a pushout, the functor category
+    \[ \mc{C}^I \simeq \mc{C}^{\Delta^1} \times_{\mc{C}} \mc{C}^{\Delta^1} \]
+    is a fiber product. Therefore a functor $c_a \to F$ is given by diagrams
+    \begin{equation*}
+        \begin{tikzcd}[execute at end picture={
+            \scoped[on background layer]
+            \fill[violet,opacity=0.3] (A1.center) -- (B.center) -- (D.center) -- cycle;
+            \fill[cyan,opacity=0.3] (A1.center) -- (A2.center) -- (D.center) -- cycle;
+        }]
+           |[alias=A1]|a \ar{r}{\mr{id}} \ar{d}[swap]{i} \ar{dr} & |[alias=A2]| a \ar{d}{f} \\
+           |[alias=B]|b \ar{r}{h} & |[alias=D]|d
+        \end{tikzcd} \qquad \text{and} \qquad
+        \begin{tikzcd}[execute at end picture={
+            \scoped[on background layer]
+            \fill[violet,opacity=0.3] (A1.center) -- (C.center) -- (D.center) -- cycle;
+            \fill[cyan,opacity=0.3] (A1.center) -- (A2.center) -- (D.center) -- cycle;
+        }]
+           |[alias=A2]|a  \ar{d}[swap]{f}  & |[alias=A1]| a \ar{d}{j} \ar{dl} \ar{l}[swap]{\mr{id}} \\
+           |[alias=D]|d  &  |[alias=C]|c \ar{l}{k}.
+        \end{tikzcd}
+        \end{equation*}
+        Gluing the two edges involving $f$ together, we are done.
+\end{proof}
+
+To actually work with limits, we need results about the functoriality and compatibility of mapping spaces.
+
+\begin{lem}[Workhorse lemma]
+    Let $\mc{C}$ be a $\ms{Kan}$-enriched category, $F \colon I \to N_{\Delta}(\mc{C})$ be a functor, $z \in \mc{S}$ be a Kan complex, and $x \in \mc{C}$ be an object. Then the internal hom
+    \[\ul{\Hom}(z, \ms{Map}_{\mc{C}^I}(c_x, F)) \simeq \ms{Map}_{\mc{S}^I} (c_z, \ul{\Hom}(x, F(-))). \]
+    Furthermore, if $\mc{C} = \mc{S}$, then this space is also equivalent to 
+    \[ \ms{Map}_{\mc{S}^I}(c_{z \times x}, F). \]
+\end{lem}
+
+\begin{prop}
+    A cone $(y, \eta)$ over $F$ in $\mc{S}$ is a limit if and only if for all $x \in \mc{S}$, the map
+    \[ [x,y]_{\mc{S}} \coloneqq \pi_0 (\ms{Map}_{\mc{S}}(x, y)) \to \pi_0(\ms{Map}_{S^I}(c_x, F)) \eqqcolon [c_x, F]_{S^I} \]
+    is an isomorphism.
+\end{prop}
+
+\begin{proof}
+    We have an equivalence
+    \begin{equation*}
+    \begin{tikzcd}
+        {[z, \ms{Map}_{\mc{S}}(x,y)]}_{\mc{S}} \ar{d}[swap]{\sim} \ar[equal]{r} & {[z \times x, y]}_{\mc{S}} \ar{d} \\
+        {[z, \ms{Map}_{\mc{S}^I}(c_x, F)]}_{\mc{S}} \ar{r}{\cong} & {[c_{z \times x}, F]}_{\mc{S}^I}
+    \end{tikzcd}
+    \end{equation*}
+    for all $z$ using the workhorse lemma.
+\end{proof}
+
+If we have a square
+\begin{equation*}
+\begin{tikzcd}
+    [execute at end picture={
+            \scoped[on background layer]
+            \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (D.center) -- (C.center) -- cycle;
+        }]
+           |[alias=A]|a  \ar{d} \ar{r}  & |[alias=B]| b \ar{d} \\
+           |[alias=C]|c \ar{r}  &  |[alias=D]|d
+\end{tikzcd}
+\end{equation*}
+in $\mc{S}$, it is a pullback if maps $x \to a$ are up to homotopy the same as maps $x \to b$ and $x \to c$ together with a homotopy between $x \to c \to d$ and $x \to b \to d$.
+
+\begin{exer}
+    Check that a pullback of a diagram
+    \[ b \to d \gets c \]
+    in $\mc{S}$ can be computed as the ordinary limit of the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        b \ar{dr} & & d^{\Delta^1} \ar{dl}{\ev_0} \ar{dr}{\ev_1} & & c \ar{dl} \\
+        & d & & d
+    \end{tikzcd}
+    \end{equation*}
+    of simplicial sets.
+\end{exer}
+
+\begin{prop}
+    For any functor $F \colon I \to \mc{S}$, the space
+    \[ \ms{Map}_{\mc{S}^I}(c_{\mr{pt}}, F) \]
+    is the limit of $F$. In particular, $\mc{S}$ has all (small) limits.
+\end{prop}
+
+\begin{proof}
+    We need to check that
+    \[ \ms{Map}_{\mc{S}}(x, \ms{Map}_{\mc{S}^I}(c_{\mr{pt}}, F)) \simeq \ms{Map}_{\mc{S}^I}(c_x, F). \]
+    This is true by using the exponential law to put $c_{x \times \mr{pt}} = c_x$ on the RHS. To construct the cone, we simply put the identity map on the LHS.
+\end{proof}
+
+\begin{exm}
+    Let $X$ be any simplicial set and let $F = c_x$ be the constant functor on a space $x \in \mc{S}$. Then
+    \begin{equation*}
+    \begin{tikzcd}
+        \lim_I F &= \mc{Map}_{\mc{S}^I}(c_{\mr{pt}}, c_x) \\
+        &= \ul{\Hom}(I, \ms{Map}_{\mc[S]}(\mr{pt}, x)) \\
+        &= \ul{\Hom}(I, x).
+    \end{tikzcd}
+    \end{equation*}
+    This tells us a lot more than a $1$-categorical limit. For example, it sees all of the higher homotopy groups of $x$ by inputting spheres.
+\end{exm}
+
+\begin{exm}
+    Let $I' = N(\N, \leq)^{\op}$. This is an $\infty$-category. We will consider the simplicial set
+    \[ I = \Delta^1 \sqcup_{\Delta^0} \Delta^1 \sqcup_{\Delta^0} \Delta^1 \sqcup_{\Delta^0} \cdots = 0 \gets 1 \gets 2 \gets 3 \gets \cdots \]
+    Therefore, functors $I \to \mc{S}$ are simply sequences
+    \[ a \gets b \gets c \gets d \gets \cdots \]
+    Then the limit of this diagram in $\mc{S}$ is simply the mapping telescope.
+\end{exm}
+
+We will now consider an arbitrary $\ms{Kan}$-enriched category $\mc{C}$, a functor $F \colon I \to N_{\Delta}(\mc{C})$, and an object $x \in \mc{C}$. We will consider the internal Hom functor
+\[ \ul{\Hom}(x, -) \colon \mc{C} \to \ms{sSet}, \]
+which induces a mapping space
+\[ \ms{Map}(x, -) \colon N_{\Delta}(\mc{C}) \to \mc{S}. \]
+
+\begin{thm}\label{thm:limitsviaspaces}
+    A cone $(y, \eta)$ over $F$ is a limit cone if and only if the induced cone
+    \[ (\ul{\Hom}_{\mc{C}}(x, y), N_{\Delta} \Hom_{\mc{C}}(x, \eta)) \]
+    is a limit cone in $\mc{S}$ for all $x \in \mc{C}$. In fact, there is an equivalence
+    \[ \ms{Map}_{\mc{C}}(x, \lim_I F) \simeq \lim_{i \in I} \ms{Map}_{\mc{S}}(x, F(i)). \]
+\end{thm}
+
+\begin{rmk}
+    We could try to take this as a definition, but it has two disadvantages:
+    \begin{enumerate}
+        \item We would have to define limits in spaces;
+        \item We would have issues with the functoriality of mapping spaces.
+    \end{enumerate}
+\end{rmk}
+
+\begin{proof}
+    Being a limit cone in $\mc{C}$ is the same thing as an equivalence
+    \[ \mc{Map}_{\mc{C}}(x, y) \simeq \ms{Map}_{\mc{C}^I} (c_x, F). \]
+    This is now equivalent to having an equivalence
+    \[ \ul{\Hom}_{\mc{S}}(z, \ms{Map}_{\mc{C}}(x,y)) \simeq \ul{\Hom}_{\mc{S}}(z, \ms{Map}_{\mc{C}^I}(c_x, F)) \]
+    for any space $z$. But now this is equivalent to checking that
+    \[ \ms{Map}_{\mc{S}}(z, \Hom_{\mc{C}}(x,y)) \simeq \ms{Map}_{\mc{S}^I} (c_z, \ul{\Hom}(x, F(-))), \]
+    which is the condition about the induced cones.
+\end{proof}
+
+\begin{rmk}
+    In our definition, a cone over $F$ is a functor
+    \[ \frac{I \times \Delta^1}{I \times \ab\{0\}} \to \mc{C}. \]
+    There is in fact a ``smaller'' model for this quotient called $I^{\triangleleft} = \Delta^0 * I$.
+    Then $\ms{Map}_{\mc{C}^I}(c_x, F)$ is the pullback
+    \begin{equation*} \ms{Map}_{\mc{C}^I}(c_x, F) \simeq 
+    \begin{tikzcd}
+        P \ar{d} \ar{r} & \mc{C}^{I^{\triangleleft}} \ar{d} \\
+        \Delta^0 \ar{r}{(x, F)} & \mc{C} \times \mc{C}^I 
+    \end{tikzcd} \simeq
+        \begin{tikzcd}
+            P'' \ar{d} \ar{r} & \mc{C}_{/F} \ar{d} \\
+            \Delta^0 \ar{r}{x} & \mc{C}.
+        \end{tikzcd}
+    \end{equation*}
+    This model is the one that is used by Lurie and Joyal.
+\end{rmk}
+
+
 \subsection{Colimits}%
 \label{sub:Colimits}
+
+Colimits are formally dual to limits. If $\mc{C}$ is an $\infty$-category, there is an opposite $\infty$-category $\mc{C}^{\op}$ defined by
+\[ \Delta^{\op} \xrightarrow{(-)^{\op}} \Delta^{\op} \xrightarrow{\mc{C}} \ms{Set}. \]
+Then we can define the colimit $F \colon I \to \mc{C}$ as the limit of the functor
+\[ F^{\op} \colon I^{\op} \to \mc{C}^{\op}. \]
+
+Explicitly, we first define a \textit{cone under $F$} to be an object $y \in \mc{C}$ together with a natural transformation $\eta \colon F \to c_y$. This is a \textit{colimit cone} if for any $z \in \mc{C}$, the map
+\[ \ms{Map}_{\mc{C}}(y, z) \xrightarrow{\eta^*} \ms{Map}_{\mc{C}^I} (F, c_z) \]
+is an equivalence.
+
+\begin{prop}
+    Extending an object $y \in \mc{S}$ to a colimit cone over a fixed $F \colon I \to \mc{S}$ is equivalent to providing a natural isomorphism
+    \[ [y, z]_{\mc{C}} \simeq [F, c_z]_{\mc{C}^I}, \]
+    where naturality is in $z$.
+\end{prop}
+
+\begin{exm}
+    If $I = \emptyset$, then a colimit over $I$ is an \textit{initial object}, which will be denoted by $\emptyset$. It is given by the property that
+    \[ \ms{Map}_{\mc{C}}(\emptyset, z) \simeq *. \]
+    In $\mc{S}$, this is actually given by the empty set.
+\end{exm}
+
+\begin{exm}
+    If $I$ is discrete, then a functor is $F = \ab\{y_i \}_{i \in I}$, and the colimit is called a \textit{coproduct} and denoted by
+    \[ \colim_I F \eqqcolon \bigsqcup_{i \in I} y_i. \]
+    It is characterized by the property that
+    \[ \ms{Map}_{\mc{C}}\ab(\bigsqcup_{i\in I} y_i, z) \simeq \prod_{i \in I} \ms{Map}_{\mc{C}}(y_i, z). \]
+    In $\mc{S}$, it is given by the disjoint union.
+\end{exm}
+
+\begin{exm}
+    Suppose that
+    \begin{equation*}I = \ab\{
+    \begin{tikzcd}[ampersand replacement=\&]
+        0 \ar{r} \ar{d} \& 1 \\
+        1' 
+    \end{tikzcd} \} = \Delta^1 \sqcup_{\Delta^0} \Delta^1.
+    \end{equation*}
+    Then a functor is simply a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        a \ar{r} \ar{d} & b \\
+        c.
+    \end{tikzcd}
+    \end{equation*}
+    The colimit, called a \textit{pushout} and denoted $b \sqcup_a c$, is characterized by the universal property that for all $z \in \mc{C}$, we have
+    \[ \ms{Map}_{\mc{C}}(b \sqcup_a c, z) \simeq \ms{Map}_{\mc{C}}(b, z) \times_{\ms{Map}_{\mc{C}}(a, z)} \ms{Map}_{\mc{C}}(c, z), \]
+    where we are taking the homotopy fiber product in $\mc{S}$.
+\end{exm}
+
+We will now consider pushouts in the category of spaces. Given a diagram
+\begin{equation*}
+\begin{tikzcd}
+    a \ar{r} \ar{d} & b \\
+    c
+\end{tikzcd}
+\end{equation*}
+of spaces, we form the simplicial set
+\[ b \sqcup_{a \times \{0\}} a \times \Delta^1 \sqcup_{a \times \{1\}} c, \]
+which is usually called the double mapping cylinder. It corresponds to the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \node[cylinder,draw=black,thick,aspect=0.7,minimum height=1.7cm,minimum width=1.5cm,shape border rotate=90,cylinder uses custom fill, cylinder body fill=violet!30,cylinder end fill=violet!10] (A) at (0,0) {};
+    \node (B) at (1,1.5) {b};
+    \node (C) at (1,-1.5) {c};
+    \node at (1.5,0) {a \times \Delta^1};
+    \draw[->, thick] (0,0.85) -- (B);
+    \draw[->, thick] (0,-0.65) -- (C);
+  \draw[dashed]
+    let \p1 = ($ (A.after bottom) - (A.before bottom) $),
+        \n1 = {0.5*veclen(\x1,\y1)-\pgflinewidth},
+        \p2 = ($ (A.bottom) - (A.after bottom)!.5!(A.before bottom) $),
+        \n2 = {veclen(\x2,\y2)-\pgflinewidth}
+  in
+    ([xshift=-\pgflinewidth] A.before bottom) arc [start angle=0, end angle=180,
+    x radius=\n1, y radius=\n2];
+\end{tikzcd}
+\end{equation*}
+Then we will replace this by a Kan complex $d$, and the resulting diagram
+\begin{equation*}
+\begin{tikzcd}
+    [execute at end picture={
+            \scoped[on background layer]
+            \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (D.center) -- (C.center) -- cycle;
+        }]
+           |[alias=A]|a  \ar{d} \ar{r}  & |[alias=B]| b \ar{d} \\
+           |[alias=C]|c \ar{r}  &  |[alias=D]|d
+\end{tikzcd}
+\end{equation*}
+is a pushout.
+
+\begin{exer}
+    Check that this is actually true.
+\end{exer}
+
+We have seen that the category of spaces has all coproducts and pushouts, and we now want to show that it has all (small) colimits. One way is to write this is to consider
+\[ [I \to \mc{S}, (I \times_{\mc{S}} \mc{S}_*)_K], \]
+which is a formula for the colimit. Instead, we will show that any $\infty$-category with all coproducts and pushouts has all colimits.
+
+\begin{exm}
+    A \textit{coequalizer} is a colimit over
+    \[ I = (0 \rightrightarrows 1) = \frac{\Delta^1 \sqcup \Delta^1}{\sim}. \]
+    a coequalizer is simply a universal $c$ which fits into a diagram
+    \[ a \rightrightarrows b \to c, \]
+    and is in fact the pushout
+    \begin{equation*}
+    \begin{tikzcd}
+        a \sqcup a \ar{r}{(f,g)} \ar{d}{\nabla} & b \ar{d} \\
+        a \ar{r} & c.
+    \end{tikzcd}
+    \end{equation*}
+\end{exm}
+
+\begin{exer}
+    Prove this.
+\end{exer}
+
+\begin{exm}
+    A pushout
+    \begin{equation*}
+        \begin{tikzcd}
+            [execute at end picture={
+                    \scoped[on background layer]
+                    \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (D.center) -- (C.center) -- cycle;
+                }]
+                   |[alias=A]|a  \ar{d} \ar{r}  & |[alias=B]| b \ar{d} \\
+                   |[alias=C]|c \ar{r}  &  |[alias=D]|d
+        \end{tikzcd}
+    \end{equation*}
+    is actually a coequalizer
+    \[ a \rightrightarrows b \sqcup c \to d. \]
+\end{exm}
+
+We will now discuss sequential colimits. Here, we consider
+\[ I = \Delta^1 \sqcup_{\Delta^0} \Delta^1 \sqcup_{\Delta^0} \Delta^1 \sqcup_{\Delta^0} \cdots \]
+Functors $I \to \mc{C}$ and colimits are simply sequences
+\[ (y_0 \to y_1 \to \cdots) \to y_{\infty} = \varinjlim y_i. \]
+This is actually a coequalizer
+\begin{equation*}
+\begin{tikzcd}
+    \bigsqcup_{i \geq 0} y_i \ar[shift left=1]{r}{\mr{id}} \ar[shift right=1]{r}[swap]{\text{shift}} & \bigsqcup_{i \geq 0} y_i \ar{r} & y_{\infty}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{defn}
+    A simplicial set $I$ is called \textit{finite} if it has only finitely many non-degenerate simplices. Colimits over finite simplicial sets will be called \textit{finite} colimits.
+\end{defn}
+
+\begin{thm}
+    For an $\infty$-category $\mc{C}$, the following are equivalent:
+    \begin{enumerate}
+        \item $\mc{C}$ admits an initial object and all pushouts;
+        \item $\mc{C}$ admits all finite coproducts and all coequalizers;
+        \item $\mc{C}$ admits all finite colimits.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}[Proof, but not really]
+    First, we note that coproducts $a \sqcup b$ are pushouts
+    \begin{equation*}
+    \begin{tikzcd}
+        \emptyset \ar{r} \ar{d} & a \ar{d} \\
+        b \ar{r} & a \sqcup b.
+    \end{tikzcd}
+    \end{equation*}
+    In the other direction, the initial object is the empty coproduct.
+
+    Now, we need to write arbitrary finite colimits using the basic colimits (coproducts, coequalizers, and pushouts). If $I$ is a finite simplicial set, we write
+    \[ I_0 \subseteq I_1 \subseteq \cdots \subseteq I_n = I \]
+    and consider the attaching construction of $I$, which is
+    \begin{equation*}
+    \begin{tikzcd}
+        \bigsqcup_J \partial \Delta^n \ar{r} \ar{d} & I_{n-1} \ar{d} \\
+        \bigsqcup_J \Delta^n \ar{r} & I_n.
+    \end{tikzcd}
+    \end{equation*}
+    For any $F \colon I \to \mc{C}$, we have an equivalence
+    \[ \colim_I F \simeq \colim_{I_{n-1}} F \sqcup_{\colim_{\bigsqcup_J \partial \Delta^n} F|_{\partial \Delta^n}} \colim_{\bigsqcup_J \Delta^n} F|_{\Delta^n}. \]
+    Here, we use the fact that
+    \[ \colim_{\bigsqcup_J \Delta^n} G \simeq \bigsqcup_J \colim_{\Delta^n} G|_{\Delta^n} \simeq \bigsqcup_J (G|_{\Delta^n})(n). \]
+    This allows us to prove the existence of finite coproducts by inducting on the dimension of $I$, where the base case is simply the case of coproducts.
+\end{proof}
+
+\begin{exer}
+    Let $I$ be a poset with a terminal object. Show that colimits over $F \colon I \to \mc{C}$ are simply given by evaluating $F$ at the terminal object.
+\end{exer}
+
+We know already that the category of spaces has all finite colimits since we already wrote down finite coproducts and pushouts. However, we want all colimits.
+
+\begin{thm}
+    Suppose $\mc{C}$ admits all coproducts. Then the following are equivalent:
+    \begin{enumerate}
+        \item $\mc{C}$ admits all colimits;
+        \item $\mc{C}$ admits all pushouts;
+        \item $\mc{C}$ admits all coequalizers;
+        \item $\mc{C}$ admits all geometric realizations, or in other words colimits indexed over $N\Delta^{\op}$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    We already know that pushouts and coequalizers are equivalent. We now need to write arbitrary colimits using pushouts and coequalizers. We now write
+    \[ I = \bigcup (I_0 \subseteq I_1 \subseteq \cdots). \]
+    Then we write
+    \[ \colim_I (F) \simeq \colim_{n \in \N} \ab(\lim_{I_n} F|_{I_n}), \]
+    and sequential colimits are simply coequalizers.
+
+    We now want to construct pushouts from $\Delta^{\op}$. Here, we realize the pushout
+    \begin{equation*}
+        \begin{tikzcd}
+            [execute at end picture={
+                    \scoped[on background layer]
+                    \fill[violet,opacity=0.3] (A.center) -- (B.center) -- (D.center) -- (C.center) -- cycle;
+                }]
+                   |[alias=A]|a  \ar{d} \ar{r}  & |[alias=B]| b \ar{d} \\
+                   |[alias=C]|c \ar{r}  &  |[alias=D]|d
+        \end{tikzcd}
+    \end{equation*}
+    as a colimit of the simplicial diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \cdots \ar[r,altstackar=7] & b \sqcup a \sqcup a \sqcup c \ar[r,altstackar=5] & b \sqcup a \sqcup c \ar[r,altstackar=3] & b \sqcup c.
+    \end{tikzcd}
+    \end{equation*}
+    This proves the result.
+\end{proof}
+
+\begin{cor}
+    The $\infty$-category $\mc{S}$ of spaces has all colimits.
+\end{cor}
+
+We will discuss limits and colimits freely in some other $\infty$-categories.
+\begin{defn}
+    The $\infty$-category $\mc{S}_*$ of \textit{pointed spaces} is the homotopy-coherent nerve
+    \[ N_{\Delta}(\ms{Kan}_*), \]
+    where $\ms{Kan}_*$ is the simplicially enriched category of pointed Kan complexes.
+\end{defn}
+
+\begin{defn}
+    The $\infty$-category $\ms{Cat}_{\infty}$ of $\infty$-categories is given by the homotopy-coherent nerve
+    \[ N_{\Delta}(\ms{Cat}_{\infty}^{\Delta}), \]
+    where $\ms{Cat}_{\infty}^{\Delta}$ is the simplicially enriched category where objects are $\infty$-categories and morphisms
+    \[ \ul{\Hom}_{\ms{Cat}_{\infty}^{\Delta}}(x,y) \subseteq \ms{Fun}(x,y) \]
+    are given by the maximal Kan complexes.
+\end{defn}
+
+\begin{thm}
+    The $\infty$-categories $\ms{Cat}_{\infty}$ and $\mc{S}_*$ have all limits and colimits.
+\end{thm}
+
 
 \subsection{Derived catgories}%
 \label{sub:Derived catgories}
 
+We will construct an $\infty$-categorical refinement of the derived category $\mc{D}(\mc{A})$ of an abelian category $\mc{A}$, which encode $\Ext$ groups in the mapping spaces. We will first describe an $\infty$-category where equivalence classes of morphisms are chain homotopy classes, and then we will use Dwyer-Kan localizations to localize at quasi-isomorphisms. The resulting category, $\mc{D}(\mc{A})$, will be characterized by the following:
+\begin{itemize}
+    \item Objects will be (unbounded) chain complexes in $\mc{A}$;
+    \item Equivalence classes of morphisms will be given by the usual derived $\Hom$.
+\end{itemize}
+
+\begin{defn}
+    For an abelian category $\mc{A}$, denote the \textit{$1$-category of chain complexes} by $\ms{Ch}(\mc{A})$. It is enriched over $\ms{Ch}(\Z)$ and is therefore a dg category.
+\end{defn}
+
+\begin{con}[Dold-Kan]
+    There is a lax monoidal functor
+    \[ \Gamma \colon \ms{Ch}(\Z)_{\geq 0} \xrightarrow{\simeq} \ms{Fun}(\Delta^{\op}, \ms{Ab}). \]
+    Then we form the composite
+    \[ K \colon \ms{Ch}(\Z) \xrightarrow{\tau_{\geq 0}} \ms{Ch}(\Z)_{\geq 0} \xrightarrow{\Gamma} \ms{Fun}(\Delta^{\op}, \ms{Ab}) \to \ms{Fun}(\Delta^{\op}, \ms{Set}). \]
+    Each functor in this composition is lax monoidal, so we can turn every dg category into a simplicially enriched category by applying $K$.
+\end{con}
+
+The functor $K$ has two nice properties. First, it produces Kan complexes, not just simplicial sets. The homotopy groups are given by the non-negative homology groups of the complex, or in other words
+\[ \pi_n K(C) = H_n(C) \]
+for all $n \geq 0$.
+
+\begin{defn}
+    For a dg category $\mc{C}$, define the \textit{dg-nerve} of $\mc{C}$ to be
+    \[ N_{\ms{dg}}(\mc{C}) \coloneqq N_{\Delta} (\mc{C}_{\Delta}), \]
+    where $\mc{C}_{\Delta}$, where $\mc{C}_{\Delta}$ is obtained from $\mc{C}$ by applying $K$ to all $\Hom$ complexes.
+\end{defn}
+Note that this produces an $\infty$-category.
+
+\begin{defn}
+    For an abelian category $\mc{A}$, define
+    \[ \mc{K}(\mc{A}) \coloneqq N_{\ms{dg}}(\ms{Ch}(\mc{A})). \]
+\end{defn}
+
+This actually has some very nice properties with respect to limits and colimits regardless of the abelian category $\mc{A}$.
+
+\begin{prop}
+    The $\infty$-category $\mc{K}(\mc{A})$ has all finite limits and colimits.
+\end{prop}
+
+\begin{proof}
+    First, note that $0 \in \mc{K}(\mc{A})$ is the initial and terminal object. In particular, we see that
+    \[ \ms{Map}_{\mc{K}(\mc{A})}(0, E) \simeq K(\Hom(0, E)) = \Delta^0 \]
+    and that
+    \[ \ms{Map}_{\mc{K}(\mc{A})}(E, 0) \simeq \Delta^0 \]
+    for any $E \in \mc{K}(\mc{A})$.
+
+    Next, let $C, D \in \mc{K}(\mc{A})$. The coproduct will be $C \oplus D$. Here, we need to check that
+    \[ \ms{Map}_{\mc{K}(\mc{A})}(C \oplus D, E) \simeq \ms{Map}_{\mc{K}(\mc{A})}(C, E) \times \ms{Map}_{\mc{K}(\mc{A})}(D, E). \]
+    Similarly, $C \oplus D$ is also the product.
+
+    Pushouts are trickier. Let $f \colon C \to D$ and $g \colon C \to D'$ be morphisms. Then we will construct the mapping cone $C(f, g)$ by setting the $n$-th element of the complex to be
+    \[ C(f, g)_n \coloneqq D_n \oplus D'_n \oplus C_{n-1} \]
+    with the differential
+    \[ \partial(d, d', c) \coloneqq (\partial d + f(c), \partial d' - g(c), \partial c). \]
+    This gives us a pushout square
+    \begin{equation*}
+        \begin{tikzcd}
+           C  \ar{d} \ar{r}  &  D \ar{d} \ar[dl,shorten <>=10pt, Rightarrow] \\
+           D' \ar{r}  &  C(f,g).
+        \end{tikzcd}
+    \end{equation*}
+    We will omit checking that this is actually a pushout. There is a similar description for fiber products.
+\end{proof}
+
+Note that $\mc{K}(\mc{A})$ is not the actual derived category of $\mc{A}$. For example, there is a morphism
+\[ (\cdots \Z \xrightarrow{2} \Z \cdots) \to (\cdots 0 \to \Z/2 \cdots) \]
+but not a morphism in the other direction. We want to localize at such quasi-isomorphisms, and the localization we will take is called \textit{Dwyer-Kan localization}. 
+
+\begin{defn}
+    Let $\mc{C}$ be an $\infty$-category and $W \subseteq \mc{C}_1$ be any subset of morphisms. A functor
+    \[ f \colon \mc{C} \to \mc{C}' \]
+    is a \textit{Dwyer-Kan localization at $W$} if
+    \begin{itemize}
+        \item $f$ takes $W$ to equivalences in $\mc{C}'$;
+        \item For any $\mc{D}$, the functor
+        \[ \ms{Fun}(\mc{C}', \mc{D}) \to \ms{Fun}(\mc{C}, \mc{D}) \]
+        is fully faithful with essential the full subcategory
+        \[ \ms{Fun}^W(\mc{C}, \mc{D}) \subseteq \ms{Fun}(\mc{C}, \mc{D}) \]
+        on those functors $\mc{C} \to \mc{D}$ which take $W$ to equivalences. We will denote such a $\mc{C}'$ by $\mc{C}[W^{-1}]$.
+    \end{itemize}
+\end{defn}
+
+\begin{exm}
+    Let $\mc{C} = \Delta^1$ and let $W$ consist of the nontrivial morphism $0 \to 1$. Then 
+    \[ \mc{C}[W^{-1}] \simeq \Delta^0 \]
+    because if we invert the morphism, the two objects become equivalent. We will check the universal property now. Clearly, the functor $\Delta^1 \to \Delta^0$ takes the unique element of $W$ to an equivalence. We now need to check that
+    \[ \ms{Fun}(\Delta^0, \mc{D}) \to \ms{Fun}^W(\Delta^1, \mc{D}) \]
+    is an equivalence. To prove that it is essentially surjective, we need to check that isomorphisms $d \simeq d'$ are equivalent to $d \xrightarrow{\mr{id} d}$, which is left as an exercise. To prove that it is fully faithful, we need to check that
+    \[ \ms{Map} (a \xrightarrow{f} a', b \xrightarrow{g} b') \]
+    is a fiber product of the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \ms{Map}_{\mc{D}}(a', b') \ar{d}{f^*} \\
+        \ms{Map}_{\mc{D}}(a, b) \ar{r}{g_*} & \ms{Map}_{\mc{D}}(a, b').
+    \end{tikzcd}
+    \end{equation*}
+    This proof will also be omitted.
+\end{exm}
+
+\begin{exer}
+    Show that every object
+    \[ (d \xrightarrow{\simeq} d') \in \ms{Fun}^W(\Delta^1, \mc{D}) \]
+    is equivalent to $(d \xrightarrow{\mr{id}} d)$.
+\end{exer}
+
+Having defined Dwyer-Kan localizations, we still need to see that they actually exist.
+
+\begin{prop}
+    For any $\infty$-category $\mc{C}$ and any set of morphisms $W$, the Dwyer-Kan localization $\mc{C}[W^{-1}]$ exists and the functor
+    \[ \mc{C} \to \mc{C}[W^{-1}] \]
+    is essentially surjective.
+\end{prop}
+
+\begin{proof}
+    We can begin by trying the pushout
+    \begin{equation*}
+    \begin{tikzcd}
+        \bigsqcup_W \Delta^1 \ar{r} \ar{d} & \mc{C} \ar{d} \\
+        \bigsqcup_W \Delta^0 \ar{r} & \mc{C}'
+    \end{tikzcd}
+    \end{equation*}
+    in $\ms{Cat}_{\infty}$. If we apply $\ms{Fun}(-, \mc{D})$ to this square to obtain the square
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Fun}(\mc{C}', \mc{D}) \ar{r} \ar{d} & \ms{Fun}\ab(\bigsqcup_W \Delta^0, \mc{D}) \ar{d} \\
+        \ms{Fun}(\mc{C}, \mc{D}) \ar{r} & \ms{Fun}\ab(\bigsqcup_W \Delta^1, \mc{D}).
+    \end{tikzcd}
+    \end{equation*}
+    We need to prove that this is a fiber product in $\ms{Cat}_{\infty}$. Note that these functor categories (which are not Kan complexes) differ from mapping spaces in $\ms{Cat}_{\infty}$, which are.
+
+    Before we do this, note that note that the essential image of
+    \[ \ms{Fun}\ab(\bigsqcup_W \Delta_0, \mc{D}) \to \ms{Fun}\ab(\bigsqcup_{W} \Delta^1, \mc{D}) \]
+    are those functors which send $W$ to equivalences. By general properties of base change, the essential image of
+    \[ \ms{Fun}(\mc{C}', \mc{D}) \to \ms{Fun}(\mc{C}, \mc{D}) \]
+    consists of exactly those functors which take $W$ to equivalences.
+
+    To prove the claim about fiber products of functor categories, we will show that for any pushout
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{A} \ar{r} \ar{d} & \mc{B} \ar{d} \\
+        \mc{C} \ar{r} & \mc{D},
+    \end{tikzcd}
+    \end{equation*}
+    the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Fun}(\mc{D}, \mc{E}) \ar{r} \ar{d} & \ms{Fun}(\mc{B}, \mc{E}) \ar{d} \\
+        \ms{Fun}(\mc{C}, \mc{E}) \ar{r} & \ms{Fun}(\mc{A}, \mc{E})
+    \end{tikzcd}
+    \end{equation*}
+    is a fiber product. Applying $\ms{Map}_{\ms{Cat}_{\infty}}(\mc{F}, -)$, we first note that
+    \[ \ms{Map}_{\ms{Cat}_{\infty}}(\mc{F}, \ms{Fun}(\mc{D}, \mc{E})) \simeq \ms{Map}_{\ms{Cat}_{\infty}}(\mc{D}, \ms{Fun}(\mc{F}, \mc{E})). \]
+    This is because they are both the maximal Kan complex inside of
+    \[ \ms{Fun}(\mc{F}, \ms{Fun}(\mc{D}, \mc{E})) \simeq \ms{Fun}(\mc{D}, \ms{Fun}(\mc{F}, \mc{E})). \]
+    Therefore, we obtain the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Map}_{\ms{Cat}_{\infty}}(\mc{D}, \ms{Fun}(\mc{F}, \mc{E})) \ar{r} \ar{d} & \ms{Map}_{\ms{Cat}_{\infty}}(\mc{B}, \ms{Fun}(\mc{F}, \mc{E}))  \ar{d} \\
+        \ms{Map}_{\ms{Cat}_{\infty}}(\mc{C}, \ms{Fun}(\mc{F}, \mc{E})) \ar{r} & \ms{Map}_{\ms{Cat}_{\infty}}(\mc{A}, \ms{Fun}(\mc{F}, \mc{E})),
+    \end{tikzcd}
+    \end{equation*}
+    which is a fiber product.
+\end{proof}
+
+Therefore, we see that $\ms{Cat}_{\infty}$ is really an $(\infty, 2)$-category, but we will not discuss this in detail here. We are now ready to define the derived category, however.
+
+\begin{defn}
+    Let $\mc{W} \subseteq \mc{K}(\mc{A})_1$ be the set of quasi-isomorphisms, namely morphisms which induce isomorphisms on homology. Now define the \textit{derived category} $\mc{D}(\mc{A})$ by the formula
+    \[ \mc{D}(\mc{A}) \coloneqq \mc{K}(\mc{A})[W^{-1}]. \]
+\end{defn}
+
+This is unfortunately extremely non-explicit. For example, it does not tell us how to work with mapping spaces in $\mc{D}(\mc{A})$.
+
+
 \subsection{Slices and filtered colimits}%
 \label{sub:Slices and filtered colimits}
+
+Our goal is now to give a description of mapping spaces in $\mc{D}(\mc{A})$ as colimits of mapping spaces in $\mc{K}(\mc{A})$. In many cases, they will even agree with mapping spaces in $\mc{K}(\mc{A})$. In general, the problem of describing mapping spaces in Dwyer-Kan localizations is very hard.
+
+\begin{defn}
+    Let $\mc{C}$ be an $\infty$-category and $x \in \mc{C}$ be an object. We will define the \textit{slice category over $x$} $\mc{C}_{/x}$ by the fiber product
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C}_{/x} \ar{r} \ar{d} & \mc{C}^{\Delta^1} \ar{d}{\d_0} \\
+        \Delta^0 \ar{r}{x} & \mc{C}
+    \end{tikzcd}
+    \end{equation*}
+    and the \textit{slice category under $x$} by the fiber product
+    \begin{equation*}
+        \begin{tikzcd}
+            \mc{C}_{x/} \ar{r} \ar{d} & \mc{C}^{\Delta^1} \ar{d}{\d_1} \\
+            \Delta^0 \ar{r}{x} & \mc{C}
+        \end{tikzcd}
+    \end{equation*}
+\end{defn}
+
+Note that objects of $\mc{C}_{/x}$ are morphisms $c \to x$ and objects of $\mc{C}_{x/}$ are morphisms $x \to c$.
+
+\begin{defn}
+    For any chain complex $C \in \mc{K}(\mc{A})$, define the subcategory
+    \[ \mc{K}(\mc{A})_{/C}^{\ms{qi}} \subseteq \mc{K}(\mc{A})_{/C} \]
+    to be the full subcategory on all $C' \to C$ which are quasi-isomorphisms. Dually, we can define
+    \[ \mc{K}(\mc{A})_{C/}^{\ms{qi}} \subseteq \mc{K}(\mc{A})_{C/}. \]
+\end{defn}
+
+\begin{prop}
+    We have the following description for mapping spaces in $\mc{D}(\mc{A})$:
+    \begin{align*}
+        \ms{Map}_{\mc{D}(\mc{A})}(C, D) &\simeq \colim_{(\mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{K}(\mc{A})}(-, D) \\
+        &\simeq \colim_{(\mc{K}(\mc{A})_{D/}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{K}(\mc{A})}(D, -).
+    \end{align*}
+\end{prop}
+
+\begin{warn}
+    The mapping spaces as we have defined them are \textbf{not} functors $\mc{C}^{\op} \times \mc{C} \to \mc{S}$. In this case, we can get around this by noting that both $\mc{K}(\mc{A})$ and $\mc{S}$ are homotopy-coherent nerves of ordinary categories, but in general we will need the technique of \textit{straightening}, which is beyond the scope of these notes.
+\end{warn}
+
+Because quasi-isomorphisms become equivalences in $\mc{D}(\mc{A})$, we have a morphism
+\[ \colim_{(\mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{K}(\mc{A})}(-, D) \to \colim_{(\mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{D}(\mc{A})}(-, D). \]
+Every morphism in $\mc{K}(\mc{A})_{/C}^{\ms{qi}}$ induces an equivalence on mapping spaces in $\mc{D}(\mc{A})$, so the target of this morphism becomes
+\[ \ms{Map}_{\mc{D}(\mc{A})}(C, D). \]
+
+\begin{exer}
+    Check that the colimit of a constant functor $(\mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op} \to \mc{S}$ is given by its value. \textit{Hint: first give a description of colimits of constant diagrams $\mc{C} \to \mc{S}$.}
+\end{exer}
+
+\begin{defn}
+    A complex $C \in \mc{K}(\mc{A})$ is \textit{$K$-projective} if $\ms{Map}_{\mc{K}(\mc{A})}(C, -)$ sends quasi-isomorphisms to homotopy equivalences. Similarly, $C \in \mc{K}(\mc{A})$ is \textit{$K$-injective} if $\ms{Map}_{\mc{K}(\mc{A})}(-, C)$ sends quasi-isomorphisms to homotopy equivalences.
+\end{defn}
+
+\begin{cor}
+    If $C$ is $K$-projective or $D$ is $K$-injective, then 
+    \[ \ms{Map}_{\mc{D}(\mc{A})} (C, D) \simeq \ms{Map}_{\mc{K}(\mc{A})}(C, D). \]
+\end{cor}
+
+\begin{rmk}
+    There is a fundamental lemma in homological algebra, which states that bounded below and levelwise projective chain complexes are $K$-projective. Similarly, bounded above and levelwise injective complexes are $K$-injective.
+\end{rmk}
+
+Given some $C \in \mc{K}(\mc{A})$ and a quasi-isomorphism $C' \to C$ with $C'$ $K$-projective, then
+\[ \ms{Map}_{\mc{D}(\mc{A})} (C, D) \simeq \ms{Map}_{\mc{K}(\mc{A})} (C', D). \]
+This is the usual way that $\Ext$ groups are computed if $\mc{A}$ has enough projectives. Dually, we can compute mapping spaces by taking a $K$-injective replacement of $D$.
+
+Our next goal is to understand limits and colimits in $\mc{D}(\mc{A})$. Limits are easy to understand if there are enough $K$-projective objects and colimits are easy to understand if there are enough $K$-injective objects. In general, we will not need this, but at the cost of introducing filtered colimits.
+
+\begin{defn}
+    An $\infty$-category $\mc{C}$ is \textit{filtered} if for any finite simplicial set $K$, every map $K \to \mc{C}$ extends over the simplicial set
+    \[ (K \times \Delta^1) \sqcup_{K \times \{1\}} \Delta^0. \]
+    This is a simplicial set obtained by taking a cone from $K$ out to the right. Dually, we say that $\mc{C}$ is \textit{cofiltered} if $\mc{C}^{\op}$ is filtered.
+\end{defn}
+
+\begin{exer}
+    A $1$-category $\mc{C}$ is \textit{filtered} if and only if for every $a, b \in \mc{C}$, there exists an object $c \in \mc{C}$ and morphisms $a \to c$ and $b\to c$ and if for every pair of morphisms $a \rightrightarrows b$ there exists a morphism $b \to c$ such that the two composites are equal. Show that $\mc{C}$ is filtered if and only if $N(\mc{C})$ is filtered in the $\infty$-categorical sense.
+\end{exer}
+
+We will call colimits indexed over filtered diagrams \textit{filtered colimits}. Dually, we can also speak of \textit{cofiltered limits}. Also, being filtered is a weaker property than having colimits.
+
+\begin{lem}
+    If $I$ is a filtered $\infty$-category and $J$ is a finite simplicial set, then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Fun}(I \times J, \mc{S}) \ar{d}{\colim_I} \ar{r}{\lim_J} & \ms{Fun}(I, S) \ar{d}{\colim_I} \\
+        \ms{Fum}(J, S) \ar{r}{\lim_J} & \mc{S}
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{lem}
+
+This result only holds for the $\infty$-category of spaces and is nontrivial even though we only need to check it for $J$ being a fiber product square.
+
+\begin{exer}
+    Prove that filtered colimits commute with finite products in the $1$-category $\ms{Set}$.
+\end{exer}
+
+\begin{lem}
+    If $K \in \mc{S}$ comes from a finite simplicial set, then the functor
+    \[ \ms{Map}(K, -) \colon \mc{S} \to \mc{S} \]
+    commutes with filtered colimits.
+\end{lem}
+
+The analogous result for finite sets follows by the previous exercise.
+
+\begin{exer}
+    Prove the lemma using the fact that filtered colimits commute with finite limits.
+\end{exer}
+
+\begin{cor}
+    The functor
+    \[ [K,-] = \pi_0 \ms{Map}(K, -) \colon \mc{S} \to N(\ms{Set}) \]
+    commutes with filtered colimits.
+\end{cor}
+
+\begin{proof}
+    This follows from the fact that the functor
+    \[ \pi_0 \colon \mc{S} \to N(\ms{Set}) \]
+    commutes with all colimits.
+\end{proof}
+
+\begin{exer}
+    Prove that
+    \[ \pi_0 \colon \mc{S} \to N(\ms{Set}) \]
+    commutes with all colimits.
+\end{exer}
+
+We will now apply this to the discussion of mapping spaces in $\mc{D}(\mc{A})$.
+
+\begin{lem}
+    The categories $\mc{K}(\mc{A})_{C/}^{\ms{qi}}$ and $(mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op}$ are both filtered.
+\end{lem}
+
+\begin{proof}
+    We will instead note that they have all colimits. More precisely, we have that
+    \[ \ms{K}(\mc{A})_{C/}^{\ms{qi}} \subseteq \mc{K}(\mc{A})_{C/} \]
+    is closed under colimits. We will not give the proof of this in full, but first we consider the cofiber functor
+    \[ \mc{K}(\mc{A})_{C/} \to \mc{K}(\mc{A}) \]
+    which sends a morphism $C \to C'$ to its cofiber, which is the pushout of the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        C \ar{r} \ar{d} & C' \\
+        0.
+    \end{tikzcd}
+    \end{equation*}
+    Because it is itself a colimit, it commutes with colimits. Now, a morphism $C \to C'$ is a quasi-isomorphism if and only if its cofiber is acyclic (in other words, quasi-isomorphic to $0$), so we only need to check that acyclic objects in $\mc{K}(\mc{A})$ are closed under colimits, which is true by definition. A dual argument gives the result in the over category.
+\end{proof}
+
+\begin{prop}
+    The derived category $\mc{D}(\mc{A})$ has all finite limits and colimits and the functor $\mc{K}(\mc{A}) \to \mc{D}(\mc{A})$ preserves them.
+\end{prop}
+
+\begin{proof}
+    First, we need to check that $0$ is still initial and terminal in $\mc{D}(\mc{A})$. Note that $0$ is $K$-injective and $K$-projective, so because mapping spaces can be computed in $\mc{K}(\mc{A})$, it is still initial and terminal.
+
+    Now consider a pushout
+    \begin{equation*}
+    \begin{tikzcd}
+        A \ar{r} \ar{d} & B \ar{d} \\
+        c \ar{r} & D
+    \end{tikzcd}
+    \end{equation*}
+    in $\mc{K}(\mc{A})$. Therefore, the square
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Map}_{\mc{K}(\mc{A})}(D, E) \ar{r} \ar{d} & \ms{Map}_{\mc{K}(\mc{A})}(C, E) \ar{d} \\
+        \ms{Map}_{\mc{K}(\mc{A})}(B, E) \ar{r} & \ms{Map}_{\mc{K}(\mc{A})}(A, E)
+    \end{tikzcd}
+    \end{equation*}
+    is a fiber product in spaces. Then the diagram
+    \begin{equation*}
+        \begin{tikzcd}
+            \ms{Map}_{\mc{D}(\mc{A})}(D, E) \ar{r} \ar{d} & \ms{Map}_{\mc{D}(\mc{A})}(C, E) \ar{d} \\
+            \ms{Map}_{\mc{D}(\mc{A})}(B, E) \ar{r} & \ms{Map}_{\mc{D}(\mc{A})}(A, E)
+        \end{tikzcd}
+    \end{equation*}
+    is a filtered colimit of diagrams of mapping spaces in $\mc{K}(\mc{A})$ for $E' \in \mc{K}(\mc{A})_{E/}^{\ms{qi}}$. Because filtered colimits commute with finite limits in spaces, it is a fiber product. Dually, we see that fiber products are preserved.
+
+    Now we need to check that finite limits and colimits actually exist. Consider a diagram
+    \[ C \gets A \to B \]
+    in $\mc{D}(\mc{A})$. Because $\pi_0$ commutes with colimits, we see that
+    \[ \pi_0 \ms{Map}_{\mc{D}(\mc{A})}(A, C) \simeq \colim_{\mc{K}(\mc{A})_{C/}^{\ms{qi}}} \ms{Map}_{\mc{K}(\mc{A})}(A, -) \]
+    is a filtered colimit of sets. Therefore, there exists a quasi-isomorphism $C \to C'$ such that the morphism $A \to C \to C'$ comes from $\mc{K}(\mc{A})$. Therefore, we have a morphism
+    \begin{equation*}
+    \begin{tikzcd}
+        C \ar{d}{\simeq} & A \ar{d}{\mr{id}} \ar{l} \ar{r}\ar{d} & B \ar{d}{\simeq} \\
+        C' & A \ar{l} \ar{r} & B'
+    \end{tikzcd}
+    \end{equation*}
+    where the bottom row comes from $\mc{K}(\mc{A})$. Therefore, we can simply take the colimit of the bottom row. The same trick gives us fiber products.
+\end{proof}
+
+\begin{warn}
+    The Dwyer-Kan localization producing $\mc{D}(\mc{A})$ is extremely nice. In general, this is not the case. We will see this in the following statements
+\end{warn}
+
+\begin{prop}
+    The Dwyer-Kan localization of simplicial sets at weak equivalences
+    \[ N(\ms{sSet})[W^{-1}] \simeq \mc{S} \]
+    yields the $\infty$-category of spaces. Note that we have produced highly nontrivial mapping spaces by localizing a category with only discrete mapping spaces and that limits are usually not preserved by this procedure.
+\end{prop}
+
+\begin{prop}
+    Inverting all quasi-isomorphisms from the $1$-category of chain complexes yields the derived category of $\mc{A}$, or in other words,
+    \[ N(\ms{Ch}(\mc{A}))[W^{-1}] \simeq \mc{D}(\mc{A}). \]
+    This is very hard to deal with, so the presentation we gave is better. Similarly, if we let $W$ be the set of chain homotopy equivalences, we obtain
+    \[ N(\ms{Ch}(\mc{A}))[W^{-1}] \simeq \mc{K}(\mc{A}). \]
+    Therefore, we have in some sense performed a two-step localization.
+\end{prop}
+
 
 \subsection{Derived functors}%
 \label{sub:Derived functors}
 
+We will discuss derived functors even when there are not enough injectives or projectives. Also, we will see how these are related to adjunctions and Kan extensions.
+
+Assume that $F \colon \mc{A} \to \mc{B}$ is an additive functor, which means that $F(0) \cong 0$ and
+\[ F(A \oplus B) \cong FA \oplus FB. \]
+This induces a functor
+\[ \ms{Ch}(\mc{A}) \xrightarrow{\ms{Ch}(F)} \ms{Ch}(\mc{B}) \]
+given by levelwise applying $F$. More precisely, it is given by
+\[ (\cdots \to C_1 \to C_0 \to \cdots) \mapsto (\cdots \to F(C_1) \to F(C_0) \to \cdots) \]
+and is an enriched functor with respect to the dg structure on $\ms{Ch}(\mc{A})$. Therefore, we may apply the dg nerve construction to obtain a functor
+\[ \mc{K}(F) \colon \mc{K}(\mc{A}) = N_{\ms{dg}}(\ms{Ch}(\mc{A})) \xrightarrow{N_{\ms{dg}}(F)} N_{\ms{dg}} (\ms{Ch}(\mc{B})) = \mc{K}(\mc{B}) \]
+which commutes with finite limits and colimits. Our goal now is to induce a functor
+\[ \mc{D}(F) \colon \mc{D}(\mc{A}) \to \mc{D}(B). \]
+One thing we might ask is that the square
+\begin{equation*}
+\begin{tikzcd}
+    \mc{K}(\mc{A}) \ar{r}{\mc{K}(F)} \ar{d} & \mc{K}(\mc{B}) \ar{d} \\
+    \mc{D}(\mc{A}) \ar{r}{\mc{D}(F)} & \mc{D}(\mc{B})
+\end{tikzcd}
+\end{equation*}
+is commutative in $\ms{Cat}_{\infty}$. Unfortunately, this is too much to ask for in general.
+
+\begin{exer}
+    Prove that the following are equivalent:
+    \begin{enumerate}
+        \item There exists a functor $\mc{D}(\mc{A}) \to \mc{D}(\mc{B})$ making the square commutative;
+        \item The functor $\mc{K}(\mc{A}) \to \mc{K}(\mc{B})$ preserves quasi-isomorphisms;
+        \item The functor $\mc{A} \to \mc{B}$ is exact.
+    \end{enumerate}
+\end{exer}
+
+Of course, most functors we would like to derive are not exact, so we need to do something different in general. We could then try to ask for a weaker version of a commutative square, namely that there is a natural transformation
+\begin{equation*}
+    \begin{tikzcd}
+        \mc{K}(\mc{A}) \ar{r}{\mc{K}(F)} \ar{d}{p_{\mc{A}}} & \mc{K}(\mc{B}) \ar{d}{p_{\mc{B}}} \\
+        \mc{D}(\mc{A}) \ar{r}[swap]{LF} \ar[ur,shorten <>=10pt, Rightarrow, "\eta"] & \mc{D}(\mc{B}).
+    \end{tikzcd}
+\end{equation*}
+Unfortunately, even the zero functor works for $LF$, so maybe we want some universality property.
+
+\begin{defn}
+    The \textit{left derived functor} $LF$ of $F$ is a functor
+    \[ LF \colon \mc{D}(\mc{A}) \to \mc{D}(\mc{B}) \]
+    together with a natural transformation
+    \[ \eta \colon LF \circ p_{\mc{A}} \to p_{\mc{B}} \circ \mc{K}(F) \]
+    such that for any other functor
+    \[ H \colon \mc{D}(\mc{A}) \to \mc{D}(\mc{B}), \]
+    the map
+    \[ \ms{Map}_{\ms{Fun}(\mc{D}(\mc{A}), \mc{D}(\mc{B}))}(H, LF) \to \ms{Map}_{\ms{Fun}(\mc{K}(\mc{A}), \mc{D}(\mc{B}))}(H \circ p_{\mc{A}}, p_{\mc{B}} \circ \mc{K}(\mc{F})) \]
+    is an equivalence.
+\end{defn}
+
+\begin{warn}
+    The functor $LF$ might not always exist.
+\end{warn}
+
+\begin{prop}
+    If $LF$ exists, it preserves finite limits and colimits.
+\end{prop}
+
+\begin{defn}
+    Given a pair $(\mc{C}, W)$ and a functor $G \colon \mc{C} \to \mc{D}$, the \textit{left derived functor} $LG$ is given by a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C} \arrow[r, "G", ""{name=G, inner sep=1pt, below}] \ar{d} & \mc{D} \\
+        \mc{C}[W^{-1}] \ar[bend right=30]{ur}[swap]{LG} \arrow[to=G, Rightarrow, shorten <>=4pt, "\eta"{swap}]
+    \end{tikzcd}
+    \end{equation*}
+    such that the induced map
+    \[ \ms{Map}(H, LG) \xrightarrow{\eta^*} \ms{Map}(H, G) \]
+    is an equivalence for all $H \colon \mc{C}[W^{-1}] \to \mc{D}$. We say that LF is the \textit{absolute left derived functor} if for any $T \colon \mc{D} \to \mc{E}$, the induced triangle
+    \begin{equation*}
+        \begin{tikzcd}
+            \mc{C} \arrow[r, "G", ""{name=G, inner sep=1pt, below}] \ar{d} & \mc{D} \ar{r}{T} & \mc{E} \\
+            \mc{C}[W^{-1}] \ar[bend right=20]{urr}[swap]{T \circ LG} \arrow[ur, Rightarrow, shorten <>=4pt, "T \circ \eta"{swap}]
+        \end{tikzcd}
+        \end{equation*}
+        exhibits $T \circ LG$ as the left derived functor of $T \circ G$.
+\end{defn}
+
+Of course, absolute left derived functors are even more rare than left derived functors.
+
+\begin{rmk}
+    We have used the fact that
+    \[ \ms{Fun}(\mc{C}[W^{-1}], \mc{D}) \cong \ms{Fun}^W(\mc{C}, \mc{D}) \subseteq \ms{Fun}(\mc{C}, \mc{D}). \]
+    For a given $G \in \ms{Fun}(\mc{C}, \mc{D})$, we have $LG \in \ms{Fun}^W(\mc{C}, \mc{D})$ and
+    \[ \ms{Map}(H, LG) \cong \ms{Map}(H, G) \]
+    for $H \in \ms{Fun}^W(\mc{C}, \mc{D})$, which is an example of coreflection (or a right Kan extension).
+\end{rmk}
+
+The main result of this section is the following.
+\begin{thm}\label{thm:formulaleftderived}
+    For any functor $G \colon \mc{K}(\mc{A}) \to \mc{D}$, we have
+    \[ (LG)(C) = \varprojlim_{\hat{C} \to C} G(\hat{C}) \]
+    provided that this limit exists for each $C \in \mc{K}(\mc{A})$. This limit is taken over the slice category $\mc{K}(\mc{A})_{/C}^{\ms{qi}}$.
+\end{thm}
+
+\begin{exm}
+    For $C = 0$, we obtain, we have
+    \[ (LG)(0) = \varprojlim_{\hat{C} \to 0} G(\hat{C}) = G(0) \]
+    because $0$ is initial in the slice category.
+\end{exm}
+
+\begin{exm}
+    Assume that there is a $K$-projective object 
+    \[ p \colon \hat{C} \xrightarrow{\sim} C. \]
+    This is in fact initial in $\mc{K}(\mc{A})_{/C}^{\ms{qi}}$ because for any other object $\hat{\hat{C}} \to C$, the square
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Map}_{\mc{K}(\mc{A})_{/C}^{\ms{qi}}}(\hat{C} \to C, \hat{\hat{C}} \to C) \ar{r} \ar{d} & \ms{Map}_{\mc{K}(\mc{A})} (\hat{C}, \hat{\hat{C}}) \ar{d} \\
+        \Delta^0 \ar{r}{p} & \ms{Map}_{\mc{K}(\mc{A})}(\hat{C}, C)
+    \end{tikzcd}
+    \end{equation*}
+    is a fiber product. Because $\hat{\hat{C}}$ is quasi-isomorphic to $C$, the right vertical arrow is an equivalence, so the mapping space we want is contractible. Therefore, we have
+    \[ (LG)(C) = G(\hat{C}). \]
+\end{exm}
+
+\begin{rmk}
+    If for every $C$ there exists such a $K$-projective resolution $\hat{C}$, then
+    \[ (LG)(C) = G(\hat{C}) \]
+    for any functor $G$. This implies that $LG$ is actually an absolute left derived functor, or in other words that every left derived functor is absolute.
+\end{rmk}
+
+\begin{rmk}
+    Often, people define derived functors by taking projective resolutions, but this of course runs into problems with functoriality of projective resolutions. In addition, our approach generalizes better to the nonadditive setting.
+\end{rmk}
+
+\begin{exm}
+    Assume that $F \colon \mc{A} \to \mc{B}$ is additive, $\mc{A}$ is small, and $\mc{B}$ has all infinite products and they are exact (Grothendieck's AB4\textsuperscript{*}). Then $\mc{D}(\mc{B})$ has all limits and the derived functor
+    \[ LF \colon \mc{D}(\mc{A}) \to \mc{D}(\mc{B}) \]
+    exists and preserves all finite limits and colimits.
+\end{exm}
+
+\begin{exer}
+    Prove that the large category $\mc{D}(\mc{B})$ has all small limits if $B$ satisfies AB3\textsuperscript{*} and AB4\textsuperscript{*}, namely that $\mc{B}$ has all small products and they are exact. Use as a black box the fact that if a large $\infty$-category $\mc{C}$ has all small colimits, then $\mc{C}$-indexed colimits in the category of large spaces commute with all small products, not just finite ones.
+\end{exer}
+
+We have discussed left derived functors until now, but of course there is a dual notion of right derived functors. These are given by diagrams
+\begin{equation*}
+    \begin{tikzcd}
+        \mc{C} \arrow[r, "G"] \ar{d} & \mc{D} \\
+        \mc{C}[W^{-1}] \arrow[bend right=10, ur, "LG"{swap}, ""{name=G, inner sep=1pt, above}] \arrow[from=1-1, to=G, Rightarrow, shorten <>=4pt, "\eta"{swap}]
+    \end{tikzcd}
+\end{equation*}
+with the appropriate universality property. The dual of our formula for $LG$ reads as
+\[ (RG)(C) = \colim_{C \xrightarrow{\sim} \hat{C}} G(\hat{C}), \]
+where the colimit is taken over $\mc{K}(\mc{A})_{C/}^{\ms{qi}}$.
+
+\begin{exm}
+    We have functors
+    \begin{align*}
+        \ms{Map}_{\mc{K}(\mc{A})}(A, -) &\colon \mc{K}(\mc{A}) \to \mc{S}, \\
+        \ms{Map}_{\mc{K}(\mc{A})}(-, B) &\colon \mc{K}(\mc{A})^{\op} = \mc{K}(\mc{A}^{\op}) \to \mc{S}.
+    \end{align*}
+    Then the formulae for mapping spaces show that
+    \begin{align*}
+        \ms{Map}_{\mc{D}(\mc{A})}(A, -) &\cong R \ms{Map}_{\mc{K}(\mc{A})}(A, -), \\
+        \ms{Map}_{\mc{D}(\mc{A})}(-, B) &\cong R \ms{Map}_{\mc{K}(\mc{A})}(-, B).
+    \end{align*}
+    This is usually written as
+    \[ \ms{Map}_{\mc{D}(\mc{A})} = R\ms{Map}_{\mc{K}(\mc{A})}. \]
+    Unfortunately, we cannot derive in both variables at the same time, but we will be able to do this when we introduce nonabelian derived functors.
+\end{exm}
+
+\begin{proof}[Sketch of proof of~\Cref{thm:formulaleftderived}]
+    The first step is to prove that defining
+    \[ (LG)(C) = \varprojlim_{\hat{C} \to C} G(\hat{C}) \]
+    defines a functor $\mc{K}(\mc{A}) \to \mc{D}$.
+
+    The next step is to prove that it preserves weak equivalences. This seems obvious because we are taking a limit over weak equivalences, which requires that the pullback functor between slice categories along a weak equivalence has an adjoint.
+
+    As a consequence, there is a natural transformation
+    \[ \eta \colon LG \to G. \]
+    If $G$ already preserves quasi-isomorphisms, then $\eta$ is an equivalence.The last step is to show that
+    \[ \ms{Map}(H, LG) \xrightarrow{\eta_*} \ms{Map}(H, G) \xrightarrow{L} \ms{Map}(LH, LG) \xrightarrow{\eta_*} \ms{Map}(H, LG) \]
+    is an inverse for $\eta^*$.
+\end{proof}
+
+We will now discuss adjunctions and cofinality.
+
+\begin{defn}
+    Let $\mc{C}$ and $\mc{D}$ be $\infty$-categories with functors
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C} \ar{r}{L} & \mc{D} \ar{l}{R}.
+    \end{tikzcd}
+    \end{equation*}
+    A natural transformation $\ep \colon LR \to \mr{id}_{\mc{D}}$ is a \textit{counit of an adjunction} if for a given pair of objects $c \in \mc{C}$ and $d \in \mc{D}$, the induced map
+    \[ \ms{Map}_{\mc{C}}(c, Rd) \xrightarrow{L} \ms{Map}_{\mc{D}}(Lc, LRd) \xrightarrow{\ep_d} \ms{Mao}_{\mc{D}}(Lc, d) \]
+    is a homotopy equivalence. Dually, a natural transformation $\eta \colon \mr{id}_{\mc{C}} \to RL$ is a \textit{unit of an adjunction} if the induced mao
+    \[ \ms{Map}_{\mc{D}}(Lc, d) \xrightarrow{R} \ms{Map}_{\mc{C}}(RL c, Rd) \xrightarrow{\eta_c^*} \ms{Map}_{\mc{C}}(c, Rd) \]
+    is an equivalence. In either case we say that $L$ is left adjoint to $R$ and write it as $L \dashv R$.
+\end{defn}
+
+Note that we have given two ways for $L$ to be left adjoint to $R$, but we will see that they are actually equivalent. 
+
+\begin{defn}
+    Given functors $L, R$ as before and any natural transformations $\ep \colon LR \to \mr{id}$ and $\eta \colon \mr{id} \to RL$, the \textit{zig-zag identities hold} if the composites
+    \begin{align*}
+        L &= L \circ \mr{id} \xrightarrow{\eta} L \circ R \circ L \xrightarrow{\ep} \mr{id} \circ L = L, \\
+        R &= \mr{id} \circ R \xrightarrow{\eta} R \circ L \circ R \xrightarrow{\ep} R \circ \mr{id} = R
+    \end{align*}
+    are equivalent to $\mr{id}_L$ and $\mr{id}_R$, respectively.
+\end{defn}
+
+\begin{prop}
+    If natural transformations $\ep$ and $\eta$ satisfy the zig-zag identities, then they are unit and counit of an adjunction. Conversely, given a unit of an adjunction $\eta$, there is a unique counit $\ep$ such that the zig-zag identites hold.
+\end{prop}
+
+\begin{proof}
+    If $\ep$ and $\eta$ satisfy the zig-zag identities, then
+    \begin{align*}
+        \ms{Map}_{\mc{C}}(c, Rd) &\xrightarrow{L} \ms{Map}_{\mc{D}}(Lc, LRd) \xrightarrow{\ep} \ms{Map}_{\mc{D}}(Lc, d), \\
+        \ms{Map}_{\mc{D}}(Lc, d) &\xrightarrow{R} \ms{Map}_{\mc{D}}(RLc, Rd) \xrightarrow{\eta} \ms{Map}_{\mc{C}}(c, Rd)
+    \end{align*}
+    are inverse to each other. We omit the proof of the existence of a counit given a unit.
+\end{proof}
+
+\begin{exer}
+    Show that if $F \colon \mc{C} \to \mc{D}$ is an equivalence, it is left and right adjoint to its inverse.
+\end{exer}
+
+We now present some important facts about adjoint functors.
+\begin{enumerate}
+    \item Given a functor $L \colon \mc{C} \to \mc{D}$, then the right adjoint $(R, \eta)$ is unique if it exists;
+    \item The composite of left adjoints is again a left adjoint with the right adjoint given by the composite of right adjoints. A more coherent statement is that we have an equivalence
+    \[ \ms{Cat}_{\infty}^L \simeq (\ms{Cat}_{\infty}^R)^{\op}, \]
+    where $\ms{Cat}_{\infty}^L$ is the $\infty$-category with $\infty$-categories as objects and left adjoint functors as morphisms and $\ms{Cat}_{\infty}^R$ is defined similarly.
+\end{enumerate}
+
+Now let $I$ be a small $\infty$-category. Consider the functor
+\[ \Delta \colon \mc{C} \to \ms{Fun}(I, \mc{C}) \]
+given by pulling back along $I \to \mr{pt}$. Assume that $\Delta$ has a left adjoint $L$. Then for any functor $F \colon I \to \mc{C}$, the unit gives a map $F \to \Delta(LF)$
+such that the induced map
+\[ \ms{Map}_{\mc{C}}(LF, y) \to \ms{Map}(F, \Delta y) \]
+is an equivalence. In other words, we have
+\[ LF = \colim_I F. \]
+
+\begin{prop}\leavevmode
+    \begin{itemize}
+        \item If $\mc{C}$ has all $I$-shaped colimits, then $\Delta$ admits a left adjoint. 
+        \item Assume that $L \colon \mc{C} \to \mc{D}$ has for any $d$ an object $Rd$ with a map $LRd \to d$ such that for all $c \in \mc{C}$, the map
+        \[ \ms{Map}_{\mc{C}}(c, Rd) \to \ms{Map}_{\mc{D}}(Lc, d) \]
+        is an equivalence. Then $L$ admits a right adjoint $R$ given pointwise by $d \mapsto Rd$.
+    \end{itemize}
+\end{prop}
+
+\begin{exer}
+    Prove the following statements.
+    \begin{itemize}
+        \item Consider the functor $\pi_0 \colon \mc{S} \to \ms{Set}$. This has a left adjoint given by the discrete topology.
+        \item Given a functor forgetful functor $\mc{C}_{/x} \to \mc{C}$ on a slice category, it is a left adjoint if $\mc{C}$ has products.
+    \end{itemize}
+\end{exer}
+
+Adjoint functors behave well with respect to limits and colimits as in the $1$-categorical setting.
+\begin{prop}
+    Left adjoints preserve colimits and right adjoint preserve limits.
+\end{prop}
+
+\begin{proof}
+    The proof is left as an exercise.
+\end{proof}
+
+\begin{defn}
+    Given a functor $p \colon \mc{C} \to \mc{C}'$ and any functor $F \colon \mc{C} \to \mc{D}$, a triangle
+    \begin{equation*}
+        \begin{tikzcd}
+            \mc{C} \arrow[r, "F", ""{name=G, inner sep=1pt, below}] \ar{d} & \mc{D} \\
+            \mc{C}' \ar[bend right=30]{ur}[swap]{R\ms{Kan} F} \arrow[to=G, Rightarrow, shorten <>=4pt, "\eta"{swap}]
+        \end{tikzcd}
+    \end{equation*}
+    exhibits $R\ms{Kan} F$ as the \textit{right Kan extension} of $F$ along $p$ if it is terminal among all such diagrams as in the definition of a left derived functor. In other words, the induced map
+    \[ \ms{Map}(H, R\ms{Kan}F) \xrightarrow{\eta^*} \ms{Map}(H \circ p, F) \]
+    is an equivalence.
+\end{defn}
+
+\begin{cor}
+    If the right Kan extension $R \ms{Kan} F$ exists for every $F \colon \mc{C} \to \mc{D}$, then the restriction functor
+    \[ p^* \colon \ms{Fun}(\mc{C}', \mc{D}) \to \ms{Fun}(\mc{C}, \mc{D}) \]
+    admits a right adjoint $R\ms{Kan}$.
+\end{cor}
+
+Therefore, we see that derived functors are right Kan extensions.
+
+
 \subsection{Nonabelian derived functors}%
 \label{sub:Nonabelian derived functors}
+
+In this section, we will discuss nonabelian derived functors and animation in order to derive non-additive functors. This will be technical, but it will be useful to understand these notions.
+
+First, we will recast derived functors of additive functors $F$. Assume that $\mc{K}(\mc{A})$ has enough $K$-projectives. For example, this is true where $\mc{A}$ is the category of modules over a ring. First, the functor
+\[ \mc{K}(\mc{A})^{\ms{K-proj}} \xrightarrow{i} \mc{K}(\mc{A}) \xrightarrow{p} \mc{D}(\mc{A}) \]
+is an equivalence and $i$ is left adjoint to the projection $p$. Using this equivalence, the left derived functor $LF \colon \mc{D}(\mc{A}) \to \mc{D}$ of any functor $F \colon \mc{K}(\mc{A}) \to \mc{D}$ is simply the restriction along $i$. In particular, if the target is an abelian category $\mc{B}$, the derived functor
+\[ LF \colon \mc{D}(\mc{A}) \to \mc{D}(\mc{B}) \]
+preserves connective objects, or in other words
+\[ LF(\mc{D}(\mc{A})_{\geq 0}) \subseteq \mc{D}(\mc{B})_{\geq 0}. \]
+
+Our goal is now to answer the following questions.
+\begin{itemize}
+    \item How can we universally characterize $p \circ \mc{K}(\mc{F}) \colon \mc{K}(\mc{A})_{\geq 0} \to \mc{D}(\mc{B})$?
+    \item What if $F$ is not additive?
+\end{itemize}
+
+\begin{exer}
+    Given a pointed functor $\mc{A} \to \mc{B}$ between abelian categories, prove that if there exists a functor $\mc{K}(\mc{A})_{\geq 0} \to \mc{D}(\mc{B})$ given on chain complexes representing objects by applying $F$ levelwise, $F$ must already be additive.
+\end{exer}
+
+Before we proceed, we need to discuss the Yoneda lemma in $\infty$-categories. Unfortunately, this will require discussing size issues. We will fix three Grothendieck universes
+\[ \ab\{ \text{small sets}\} \subseteq \ab\{ \text{large sets} \} \subseteq \ab\{ \text{very large sets} \}, \]
+which is equivalent to fixing three strongly inaccessible cardinals. This becomes three nested models of ZFC where the set of all small sets is a large set and the set of very large sets is a very large set.
+
+We may discuss categories and $\infty$-categories in all of these universes:
+\begin{itemize}
+    \item \textit{Small categories} have small object and morphism sets;
+    \item \textit{Large categories} have large object and morphism sets;
+    \item \textit{Very large categories} have very large object and morphism sets.
+\end{itemize}
+For example, the $\infty$-category $\mc{S}$ of small spaces is a large $\infty$-category and the $\infty$-category $\hat{\mc{S}}$ of large spaces is a very large $\infty$-category. For example, if $\mc{C}$ is a large category, then $\ms{Map}_{\mc{C}}(a,b) \in \hat{\mc{S}}$. Another example of this is that if we let $\ms{Cat}_{\infty}^{\ms{small}}$ be the large $\infty$-category of small $\infty$-categories, we can also define $\ms{Cat}_{\infty}$ to be the very large $\infty$-category of large $\infty$-categories. This approach avoids issues involving proper classes, but requires jumping between universes.
+
+Some of our previous constructions can now be discussed more precisely. Here, if $\mc{C} \in \ms{Cat}_{\infty}$, then the Dwyer-Kan localization is still large, or in other words,
+\[ \mc{C}[W^{-1}] \in \ms{Cat}_{\infty}. \]
+Another example is that the formula
+\begin{align*}
+    \ms{Map}_{\mc{D}(\mc{A})}(C, D) &\simeq \colim_{(\mc{K}(\mc{A})_{/C}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{K}(\mc{A})}(-, D) \\
+    &\simeq \colim_{(\mc{K}(\mc{A})_{D/}^{\ms{qi}})^{\op}} \ms{Map}_{\mc{K}(\mc{A})}(D, -)
+\end{align*}
+really lands in the $\infty$-category $\hat{\mc{S}}$ of large spaces.
+
+\begin{defn}
+    A large $\infty$-category $\mc{C}$ is \textit{locally small} if for any pair $a,b \in \mc{C}$ of objects, the mapping space
+    \[ \ms{Map}_{\mc{C}}(a,b) \in \hat{\mc{S}} \]
+    is equivalent to an object to $\mc{S} \subseteq \hat{\mc{S}}$, i.e. is essentially small. Equivalently, the functor
+    \[ \ms{Map}_{\mc{C}}(-,-) \colon \mc{C}^{\op} \times \mc{C} \to \hat{\mc{S}} \]
+    factors through $\mc{S} \subseteq \hat{\mc{S}}$.
+\end{defn}
+
+\begin{con}
+    For any large $\infty$-category $\mc{C}$, we have a functor
+    \[ j \colon \mc{C} \to \ms{Fun}(\mc{C}^{\op}, \hat{\mc{S}}) \eqqcolon \hat{\mc{P}}(\mc{C}) \]
+    which is given on objects by
+    \[ c \mapsto \ul{c} \coloneqq \ms{Map}_{\mc{C}}(-, c) \]
+    called the \textit{Yoneda embedding}. If $\mc{C}$ is locally small, this factors as
+    \[ j \colon \mc{C} \to \ms{Fun}(\mc{C}^{\op}, \mc{S}) \eqqcolon \mc{P}(\mc{S}). \]
+\end{con}
+
+\begin{thm}[Yoneda Lemma]\leavevmode
+    \begin{enumerate}
+        \item The functor $j$ is fully faithful.
+        \item For any $F \colon \mc{C}^{\op} \to \hat{\mc{S}}$ and any $X \in \mc{C}$, there is a natural equivalence
+        \[ \ms{Map}_{\ms{Fun}(\mc{C}^{\op}, \hat{\mc{S}})}(\ul{X}, F) \simeq F(X). \]
+        \item Every object $F \in \ms{Fun}(\mc{C}^{\op}, \hat{S})$ is a (large) colimit of objects of the form $\ul{X}$ for $X \in \mc{C}$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    The proof should be the same as with ordinary categories, but machinery (straightening and unstraightening) is required to handle coherence issues. We will omit this. Of course, the second part implies the first by the equation
+    \[ \ms{Map}_{\hat{\mc{P}}(\mc{C})}(\ul{x}, \ul{y}) \simeq \ul{y}(x) \cong \ms{Map}_{\mc{C}}(x,y). \]
+    For the last item, we consider the pullback
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C}_{/F} \ar{r} \ar{d} & \ms{Fun}(\mc{C}^{\op}, \hat{\mc{S}})_{/F} \ar{d} \\
+        \mc{C} \ar{r}{j} & \ms{Fun}(\mc{C}^{\op}, \hat{\mc{S}}).
+    \end{tikzcd}
+    \end{equation*}
+    The category $\mc{C}_{/F}$ is actually large, not very large. We now claim that
+    \[ F \simeq \colim_{\ul{x} \in \mc{C}_{/F}} \ul{x}. \qedhere \]
+\end{proof}
+
+\begin{exer}
+    For any $F \in \ms{Fun}(\mc{C}^{\op}, \hat{\mc{S}})$, prove that
+    \[ F \simeq \colim_{\ul{x} \in \mc{C}_{/F}} \ul{x}. \]
+\end{exer}
+
+Because of our keeping track of size constraints, note that if $\mc{C}$ is small, then every
+\[ F \colon \mc{C}^{\op} \to \mc{S} \]
+is a small colimit of representables.
+
+Now let $\mc{C} \to \mc{D}$ be a functor where $\mc{C}$ is small and $\mc{D}$ is possibly large.
+
+\begin{prop}
+    Assume that $\mc{D}$ admits all small colimits. Then
+    \begin{enumerate}
+        \item There exists an essentially unique colimit-preserving functor
+        \[ \mc{P}(\mc{C}) = \ms{Fun}(\mc{C}^{\op}, \mc{S}) \to \mc{D} \]
+        extending $F$. In other words, there is a left Kan extension of $F$.
+        \item If $\mc{D}$ is locally small, then this is left adjoint to the restricted Yoneda embedding
+        \[ \mc{D} \to \ms{Fun}(\mc{D}^{\op}, \mc{S}) \xrightarrow{F^*} \ms{Fun}(\mc{C}^{\op}, \mc{S}). \]
+    \end{enumerate}
+\end{prop}
+
+\begin{cor}
+    There is an equivalence
+    \[ \ms{Fun}^{\ms{colim}}(\mc{P}(\mc{C}), \mc{D}) \simeq \ms{Fun}(\mc{C}, \mc{D}). \]
+    In other words, $\mc{P}(\mc{C})$ is the universal $\infty$-category obtained from $\mc{C}$ obtained from $\mc{C}$ be freely adjoining colimits.
+\end{cor}
+This is really just a restatement of the proposition.
+
+\begin{con}
+    Let $K$ be any class\footnote{Not in the technical sense.} of small colimit shapes, for example all colimits, all finite colimits, all filtered colimits, or all geometric realizations. We form the category
+    \[ \mc{P}^K(\mc{C}) \subseteq \mc{P}(\mc{C}) \]
+    as the smallest full subcategory which contains representables and which is closed under $K$-indexed colimits.
+\end{con}
+
+\begin{prop}
+    For any large $\infty$-category $\mc{D}$ which admits $K$-indexed colimits, restriction along $j \colon \mc{C} \to \mc{P}^K(\mc{C})$ is an equivalence
+    \[ \ms{Fun}^{\ms{K-colim}} (\mc{P}^K(\mc{C}), \mc{D}) \xrightarrow{j^*} \ms{Fun}(\mc{C}, \mc{D}) \]
+    whose inverse is given by left Kan extension.
+\end{prop}
+
+\begin{exm}
+    If $\mc{C}$ is any $\infty$-category, we can define the Ind-category
+    \[ \ms{Ind}(\mc{C}) = \mc{P}^{\ms{filtered}}(\mc{C}). \]
+    We claim the following:
+    \begin{enumerate}
+        \item Objects in $\ms{Ind}(\mc{C})$ are given by functors $F \colon I \to \mc{C}$, where $I$ is filtered. These objects are denoted
+        \[ \colim_{i \in I} F_i \in \ms{Ind}(\mc{C}). \]
+        \item For any pair $F, G$, we have
+        \[ \ms{Map}_{\ms{Ind}(\mc{C})} \ab(\colim_{i \in I} F_i, \colim_{j \in J} G_j) \simeq \lim_{i \in I} \colim_{j \in J} \ms{Map}_{\mc{C}}(F_i, G_j). \]
+        In particular, if $\mc{C}$ is a $1$-category, so is $\ms{Ind}(\mc{C})$.
+    \end{enumerate}
+\end{exm}
+
+We are finally now able to return to nonabelian derived functors.
+\begin{prop}[Dold-Kan, Quillen, \dots]
+    Assume that $\mc{A}$ has enough compact projective objects (compact means that $\Hom_{\mc{A}}(A,-)$ preserves filtered colimits). Then we have an equivalence
+    \begin{align*}
+        \mc{D}(\mc{A})_{\geq 0} &\cong \mc{K}(\mc{A}^{\ms{proj}})_{\geq 0} \\
+        &\cong \mc{P}^{\Delta^{\op}, \ms{filtered}}(\mc{A}^{\ms{cp}}) \\
+        &\cong \ms{Fun}^{\Pi} ((\mc{A}^{\ms{cp}})^{\op}, \mc{S}).
+    \end{align*}
+\end{prop}
+
+\begin{cor}
+    A functor
+    \[ \mc{D}(\mc{A})_{\geq 0} \to \mc{E} \]
+    which preserves geometric realizations and filtered colimits is uniquely determined by its restriction to $\mc{A}^{\ms{cp}}$.
+\end{cor}
+
+This is precisely a nonabelian derived functor, which is given by taking the Kan extension in the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \mc{A}^{\ms{cp}} \ar{r} \ar{d} & \mc{E} \\
+    \mc{D}(\mc{A})_{\geq 0} \ar[dashrightarrow]{ur}.
+\end{tikzcd}
+\end{equation*}
+In other words, for any object in $\mc{D}(\mc{A})_{\geq 0}$, we resolve it by simplicial diagrams of compact projectives and then evaluate the functor termwise.
+
+We conclude by giving the categorical incarnation of nonabelian derived functors.
+\begin{defn}
+    Let $\mc{C}$ be a category which admits small colimits and is generated under small colimits by $\mc{C}^{\ms{cp}}$. Here, an object $x \in \mc{C}$ is \textit{projective} if $\ms{Map}_{\mc{C}}(x,-)$ commutes with geometric realizations (if $\mc{C}$ is a $1$-category, we replace geometric realizations with split coequalizers). Then the \textit{animation} $\ms{Ani}(\mc{C})$ is defined as
+    \[ \mc{P}^{\Delta^{\op}, \ms{filtered}}(\mc{C}^{\ms{cp}}) \subseteq \ms{Fun}^{\Pi} ((\mc{C}^{\ms{cp}})^{\op}, \mc{S}). \]
+\end{defn}
+
+\begin{exm}
+    If $\mc{C} = \ms{Set}$, we obtain
+    \[ \ms{Ani}(\ms{Set}) \simeq \mc{S}. \]
+\end{exm}
+
+
 
 
 \section{Higher algebra}%
 \label{sec:Higher algebra}
 
+One of the most important objects in homotopy theory is the $\infty$-category of spectra. Studying spectra will give us a homotopy-enriched version of algebra.
+
 \subsection{Spectra}%
 \label{sub:Spectra}
+
+Let $\mc{S}_*$ be the $\infty$-category of pointed spaces. There are functors
+\[ \Sigma, \Omega \colon \mc{S}_* \to \mc{S}_*, \]
+where $\Sigma$ is given by the pushout
+\begin{equation*}
+\begin{tikzcd}
+    X \ar{r} \ar{d} & \pt \ar{d} \\
+    \pt \ar{r} & \Sigma X
+\end{tikzcd}
+\end{equation*}
+and $\Omega$ is given by the fiber product
+\begin{equation*}
+\begin{tikzcd}
+    \Omega X \ar{r} \ar{d} & \pt \ar{d} \\
+    \pt \ar{r} & X.
+\end{tikzcd}
+\end{equation*}
+\begin{exer}
+    Prove that $\Sigma \dashv \Omega$.
+\end{exer}
+
+\begin{defn}
+    A \textit{spectrum} is a sequence of (pointed) spaces $X_i$ for $i \geq 0$ together with homotopy equivalences
+    \[ X_i \xrightarrow{\sim} \Omega X_{i+1}. \]
+\end{defn}
+
+\begin{defn}
+    The $\infty$-category $\ms{Sp}$ of spectra is the infinite fiber product
+    \[ \ms{Sp} \coloneqq \ms{Eq}(\mc{S}_*) \times_{\mc{S}_*} \ms{Eq}(\mc{S}_*)\times_{\mc{S}_*}, \]
+    where $\ms{Eq}(\mc{S}_*) \subseteq \mc{S}_*^{\Delta^1}$ is the full subcategory on equivalences, the rightward morphisms $\ms{Eq}(\mc{S}_*)$ take an arrow to its target, and the leftward morphisms take an arrow to the loop space of its source.
+\end{defn}
+
+Note that objects in $\ms{Sp}$ are exactly given by lists of
+\[ X_i \xrightarrow{\sim} \Omega X_{i+1}. \]
+Maps in $\ms{Sp}$ are lists of maps
+\[ f \colon X_i \to Y_i \]
+together with homotopies
+\begin{equation*}
+\begin{tikzcd}
+    X_i \ar{r}{f_i} \ar{d} & Y_i \ar{d} \ar[dl,shorten <>=10pt, Rightarrow] \\
+    \Omega X_{i+1} \ar{r}[swap]{\Omega f_{i+1}} & \Omega Y_{i+1}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{rmk}
+    We can write $\ms{Sp}$ as a colimit
+    \[ \ms{Sp} = \lim (\cdots \xrightarrow{\Omega} \mc{S}_* \xrightarrow{\Omega} \mc{S}_* \xrightarrow{\Omega} \mc{S}_*). \]
+    Using this, mapping spaces can be described as
+    \[ \ms{Map}_{\ms{Sp}}(X, Y) = \lim \ms{Map}_{\mc{S}_*} (X_i, Y_i). \]
+\end{rmk}
+
+\begin{exm}
+    If $A$ is an abelian group, there is a spectrum $HA$ given by
+    \[ (HA)_i \coloneqq K(A, i). \]
+    By definition, we have equivalences
+    \[ K(A, i-1) \simeq \Omega K(A, i). \]
+\end{exm}
+
+\begin{exm}
+    Let $X \in \mc{S}_*$ be a pointed space. Then there is a spectrum $\Sigma^{\infty} X$ given by
+    \[ (\Sigma^{\infty}X)_i \coloneqq \colim_k \Omega^k \Sigma^{k+i} X. \]
+    Here, we are using the fact that the loop space is a fiber product, so forming it commutes with filtered colimits. In particular, if $X = S^0$, we define $\Sigma^{\infty} S^0 \eqqcolon \bS$.
+\end{exm}
+
+\begin{lem}
+    If $X$ is a space, then
+    \[ \ms{Map}_{\ms{Sp}}(\Sigma^{\infty} X, Y) \simeq \ms{Map}_{\mc{S}_*} (X, Y_0) \]
+    for any spectrum $Y$.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+    Consider a map
+    \[ X \to Y_0 \simeq \Omega^{k+i} Y_{k+i}. \]
+    By the adjunction, it is adjoint to a morphism
+    \[ \Sigma^{k+i} X \to Y_{k+i}. \]
+    Applying $\Omega^k$, we obtain a morphism
+    \[ \Omega^k \Sigma^{k+i} X \to Y_i. \]
+    This yields a map
+    \[ (\Sigma^{\infty} X)_i = \colim_k \Omega^k \Sigma^{k+i} X \to Y_i. \]
+    Going in the other direction is given by restricting to $(\Sigma^{\infty} X)_0$ and restricting to the first term in the colimit.
+\end{proof}
+
+\begin{defn}
+    Define the functor $\Omega^{\infty} \colon \ms{Sp} \to \mc{S}_*$ by
+    \[ \Omega^{\infty} Y \coloneqq Y_0. \]
+\end{defn}
+
+Using this definition, the previous lemma becomes the statement that $\Omega^{\infty}$ and $\Sigma^{\infty}$ are adjoint.
+
+\begin{exm}
+    For a finite $K \in \mc{S}_*$, we have
+    \begin{align*}
+        \ms{Map}_{\ms{Sp}}(\Sigma^{\infty} K, \Sigma^{\infty} X) &\simeq \ms{Map}_{\mc{S}_*}(K, \Omega^{\infty} \Sigma^{\infty} X) \\
+        &\simeq \ms{Map}_{\ms{S}_*} \ab(K, \colim_k \Omega^k\Sigma^k X) \\
+        &\simeq \colim_k \ms{Map}_{\mc{S}_*} (K, \Omega^k \Sigma^k X) \\
+        &\simeq \colim_k \ms{Map}_{\mc{S}_*} (\Sigma^k K, \Sigma^k X).
+    \end{align*}
+    For example, if $X = S^0$, we see that
+    \[ \pi_n \ms{Map}_{\ms{Sp}}(\bS, \Sigma^{\infty} X) = \pi_n^S(X) \]
+    are the stable homotopy groups.
+\end{exm}
+
+We will now see that $\ms{Sp}$ is well-behaved.
+
+\begin{lem}
+    The $\infty$-category $\ms{Sp}$ has all limits, filtered colimits, and a zero object.
+\end{lem}
+
+\begin{proof}
+    The zero object is given by $X_i = \pt$. Limits and colimits both commute with $\Omega$, so we can take them pointwise and still get a spectrum. By the formula for mapping spaces, they satisfy the universal properties.
+\end{proof}
+
+\begin{lem}
+    The functor $\Omega \colon \ms{Sp} \to \ms{Sp}$ is an equivalence.
+\end{lem}
+
+\begin{proof}
+    Applying $\Omega$ to a spectrum is given by
+    \[ (X_0, X_1, \ldots) \mapsto (\Omega X_0, X_0, X_1, \ldots). \]
+    This is just a shift, and its inverse is given by shifting down.
+\end{proof}
+
+\begin{prop}
+    The $\infty$-category $\ms{Sp}$ has all colimits and pushout squares are the same as pullback squares (and vice versa).
+\end{prop}
+
+
+\begin{proof}[Very rough proof sketch]
+    The proof is surprisingly elementary but quite tricky. The key idea is that $\infty$-category with all finite limits, a zero object, and where $\Omega$ is an equivalence has pushouts. These pushouts are determined by the fact that pushout squares are the same as pullback squares.
+\end{proof}
+
+We will call $\infty$-categories with zero objects and all finite limits and colimits where pushout and pullback squares are the same \textit{stable}. Another example of a stable $\infty$-category is the derived category $\mc{D}(\mc{A})$.
+
+\begin{rmk}
+    The suspension functor $\Sigma \colon \ms{Sp} \to \ms{Sp}$ is inverse to $\Omega$. Therefore, it is simply the left shift functor. Also note that $Y_i$ is equivalent to $\Omega^{\infty} \Sigma^i Y$.
+\end{rmk}
+
+\begin{exm}
+    Note that
+    \begin{align*}
+        [\Sigma^{\infty} X, \Sigma^n HA]_{\ms{Sp}} &= [X, K(A, n)]_{\mc{S}_*} \\
+        &= H^n(X, A).
+    \end{align*}
+    Similarly, we have
+    \begin{align*}
+        [\Sigma^n \bS, Y]_{\bS} &= [S_n, \Omega^{\infty Y}]_{\mc{S}_*} \\
+        &= \pi_n (\Omega^{\infty} Y).
+    \end{align*}
+    Therefore, we can obtain both cohomology and stable homotopy groups. Because $\ms{Sp}$ is stable, we get long exact sequences in both cohomology and in stable homotopy.
+\end{exm}
+
+Unfortunately, not every spectrum is a suspension spectrum. However, this is close to being true.
+\begin{lem}
+    For all $Y \in \ms{Sp}$, we have
+    \[ Y \simeq \colim_i \Sigma^{-i} \Sigma^{\infty} Y_i. \]
+\end{lem}
+
+\begin{proof}
+    We will prove that they have the same mapping spaces. In particular, we compute
+    \begin{align*}
+        \ms{Map}_{\ms{Sp}}(Y, Z) &= \lim_i \ms{Map}_{\mc{S}_*}(Y_i, Z_i) \\
+        &= \lim_i \ms{Map}_{\ms{Sp}} (\Sigma^{\infty} Y_i, \Sigma^i Z) \\
+        &= \lim_i \ms{Map}_{\ms{Sp}} (\Sigma^{-i} \Sigma^{\infty} Y_i, Z) \\
+        &= \ms{Map}_{\ms{Sp}} \ab(\colim_i \Sigma^{-i}\Sigma^{\infty} Y_i, Z).
+    \end{align*}
+\end{proof}
+
+Our goal is now to make sense of homology, To do this correctly requires us to talk about symmetric monoidal structures, but we can give a different construction.
+
+\begin{con}
+    We will define a functor $\ms{Sp} \to \mc{D}(\Z)$ given by
+    \[ Y \mapsto \colim_i C_*(Y_i) [-i]. \]
+    This functor is characterized by preserving colimits and taking $\Sigma^{\infty} X \mapsto C_*(X)$. In particular, we have
+    \[ \bS \mapsto \Z[0]. \]
+\end{con}
+
+We want to view spectra as modules over $\bS$ and the homology functor as a base change to $\mc{D}(\Z)$. We will now attempt to make this precise.
+
+\begin{defn}
+    Define the category $\ms{Sp}^{\ms{fin}} \subseteq \ms{Sp}$ of \textit{finite spectra} to be the full subcategory of all spectra of the form $\Sigma^{-i} \Sigma^{\infty} K$ for $K$ a finite space.
+\end{defn}
+
+\begin{exer}
+    Prove that $\ms{Sp}^{\ms{fin}}$ is closed under finite colimits.
+\end{exer}
+
+\begin{prop}
+    We have $\ms{Sp} = \ms{Ind}(\ms{Sp}^{\ms{fin}})$.
+\end{prop}
+
+\begin{proof}
+    There are a natural functor $\ms{Ind}(\ms{Sp}^{\ms{fin}}) \to \ms{Sp}$. The objects in $\ms{Sp}^{\ms{fin}}$ are compact objects in $\ms{Sp}$. This is because
+    \begin{align*}
+        \ms{Map}_{\ms{Sp}}\ab(\Sigma^{-n} \Sigma^{\infty} K, \colim_j Y^j) &\simeq \ms{Map}_{\mc{S}_*} \ab(K, \Omega^{\infty} \Sigma^n \colim_j Y^j) \\
+        &\simeq \colim_j \ms{Map}_{\mc{S}_*}(K, \Omega^{\infty} \Sigma^n Y^j).
+    \end{align*}
+    Therefore, the functor is fully faithful. To prove that it is essentially surjective, we write a spectrum $Y$ as
+    \[ Y = \colim \Sigma^{-i} \Sigma^{\infty} Y_i \]
+    and then write $Y_i$ as a filtered colimit of finite spaces.
+\end{proof}
+
+Note that in the derived category $\mc{D}(R)$, the subcategory $\ms{Perf}(R)$ of perfect complexes consists exactly of the compact objects. This is analogous to the fact that every finite spectrum is a finite limit of shifts of $\bS$. In addition, we actually have
+\[ \mc{D}(R) = \ms{Ind}(\ms{Perf}(R)), \]
+so we will think of $\ms{Sp}$ as the derived category $\mc{D}(\bS)$ if such a thing existed (this requires a way to think about $\bS$ as a ring). However, a point of non-analogy is that the mapping space
+\[ \ms{Map}_{\ms{Sp}}(\bS, \bS) \]
+is not discrete (and in fact it contains all stable homotopy groups of spheres, so is extremely complicated).
+
+We will now make abelian groups a full subcategory of spectra.
+\begin{defn}
+    A spectrum $X \in \ms{Sp}$ is \textit{$n$-connective} if 
+    \[ \pi_i (X) = [\Sigma^i \bS, X]_{\ms{Sp}} = 0 \] 
+    for all $i < n$. Dually, $X$ is \textit{$n$-coconnective} if $\pi_i X = 0$ for all $i > n$. We will denote the full subcategories as $\ms{Sp}_{\geq n}$ and $\ms{Sp}_{\leq n}$.
+\end{defn}
+
+\begin{prop}
+    The inclusion
+    \[ \ms{Sp}_{\leq n} \to \ms{Sp} \]
+    has a left adjoint $\tau_{\leq n}$.
+\end{prop}
+
+\begin{proof}
+    Denote $X_n \coloneqq X$. We will build $X_i$ as follows:
+    \begin{itemize}
+        \item Choose generators of $\pi_i(X_{i-1})$ and consider the corresponding map
+        \[ \bigoplus \Sigma^i \bS \to X_{i-1}. \]
+        \item Considering the cofiber of this morphism, we obtain a pushout
+        \begin{equation*}
+        \begin{tikzcd}
+            \bigoplus \Sigma^i \bS \ar{r} \ar{d} & X_{i-1} \ar{d} & \\
+            0 \ar{r} & X_i.
+        \end{tikzcd}
+        \end{equation*}
+        \item Let $\tau_{\leq n} \coloneqq \colim_i X_i$.
+    \end{itemize}
+    This satisfies the property that $\tau_{\leq n} X \in \ms{Sp}_{\leq n}$ and that $\pi_i \tau_{\leq n} X = \pi_i X$ for all $i \leq n$. This uses the fact that $\bS$ is connective. Another property is that every map
+    \[ X \to Y \in \ms{Sp}_{\leq n} \]
+    factors through all of these pushouts because $Y$ has no homotopy groups for $i > n$ and therefore through $\tau_{\leq n} X$.
+\end{proof}
+
+\begin{defn}
+    Let $\tau_{\geq n} X$ denote the fiber of the morphism $X \to \tau_{\leq n-1} X$.
+\end{defn}
+
+\begin{lem}
+    If $X \in \ms{Sp}_{\geq n}$ and $Y \in \ms{Sp}_{\leq n-1}$, then
+    \[ \ms{Map}(X, Y) \simeq 0. \]
+    In addition, there is an equivalence
+    \[ \ms{Sp}_{\geq n} \cap \ms{Sp}_{\leq n} \simeq \ms{Ab}. \]
+\end{lem}
+
+\begin{proof}
+    Any map $X \to Y$ factors through $\tau_{\leq n-1} X \to Y$. But now $\tau_{\leq n-1} X$ is weakly contractible, so it must be $0$.
+
+    For the latter statement, note that $\pi_n$ gives a functor. In addition, note that mapping spaces are discrete because
+    \[ \ms{Map}(X, Y) = \ms{Map}(\Sigma^i X, Y) \simeq 0 \]
+    for $i > 0$. If $\pi_n(X)$ is free, choose a map
+    \[ \bigoplus \Sigma^n \bS \to X \]
+    which is an isomorphism on $\pi_n$ and therefore an equivalence on $\tau_{\leq n}$. This gives us an isomorphism
+    \begin{align*}
+        \ms{Map}(X, Y) &\simeq \ms{Map} \ab(\bigoplus \Sigma^n \bS, Y) \\
+        &\simeq \prod \pi_n(Y).
+    \end{align*}
+    If $\pi_n(X)$ is not free, we choose a map
+    \[ \bigoplus \Sigma^n \bS \to X \]
+    which is surjective on $\pi_n$. The fiber has free $\pi_n$, so we use the exact sequence for $\pi_* \ms{Map}(-, Y)$ to conclude.
+\end{proof}
+
+We will now discuss the \textit{Postnikov tower}. For ever $X$, we have a tower
+\begin{equation*}
+\begin{tikzcd}
+    & \vdots \ar{d} \\
+    & \tau_{\leq n+1} X \ar{d} & H(\pi_{n+1}(X))[n+1] \ar{l} \\
+    X \ar{uur} \ar{ur} \ar{r} \ar{dr} & \tau_{\leq n} X \ar{d} \\
+    & \vdots
+\end{tikzcd}
+\end{equation*}
+such that $X$ is actually the limit of this sequence. Unfortunately, to actually reconstruct $X$ from its truncations requires a lot of gluing data.
+
 
 \subsection{Symmetric monoidal $\infty$-categories}%
 \label{sub:Symmetric monoidal infinity-categories}
 
+Our goal is to explain why $\ms{Sp}$ and $\mc{D}(R)$ have canonical symmetric monoidal structures.
+
+Recall that an ordinary symmetric monoidal category consists of a category $\mc{C}$ with a tensor product
+\[ \otimes \colon \mc{C} \times \mc{C} \to \mc{C}, \]
+a unit object $\1_{\mc{C}} \in \mc{C}$, and natural isomorphisms
+\begin{align*}
+    (a \otimes b) \otimes c &\simeq a \otimes (b \otimes c), \\
+    a \otimes \1_{\mc{C}} &\simeq a \simeq \1_{\mc{C}} \otimes a, \\
+    a \otimes b \simeq b \otimes a
+\end{align*}
+satisfying a number of coherence conditions. One of them is the pentagon identity, which says that the diagram
+\begin{equation*}
+\begin{tikzcd}[column sep=-3em, row sep=2em]
+    & & ((a \otimes b) \otimes c) \otimes d \ar{drr}{\sim} \ar{dll}{\sim} & & \\
+    (a \otimes (b \otimes c)) \otimes d \ar{ddr} & & & & (a \otimes b) \otimes (c \otimes d) \ar{ddl}{\sim} \\
+    \\
+    & a \otimes ((b \otimes c) \otimes d) \ar{rr}{\sim} & & a \otimes (b \otimes (c \otimes d))
+\end{tikzcd}
+\end{equation*}
+commutes. 
+
+In this setting, a \textit{lax symmetric monoidal functor} between symmetric monoidal categories $\mc{C}$ and $\mc{D}$ is a functor 
+\[ F \colon \mc{C} \to \mc{D} \]
+together with natural morphisms
+\[ F(c) \otimes_{\mc{D}} F(c') \to F(c \otimes_{\mc{C}} c') \]
+for all $c, c' \in \mc{C}$ and a natural morphism
+\[ \1_{\mc{D}} \to F(\1_{\mc{C}}). \]
+These must be compatible with the associativity, unit, and symmetry isomorphisms. Such a lax symmetric monoidal functor is \textit{strong symmetric monoidal} if the above natural morphisms are isomorphisms.
+
+Also recall that a symmetric monoidal category $(\mc{C}, \otimes)$ is \textit{closed} if for all $c\in \mc{C}$, the functor $- \otimes c$ admits a right adjoint $\ul{\Hom}(c, -)$ and in particular preserves colimits. Our goal is to generalize the following result to $\infty$-categories.
+
+\begin{prop}
+    Let $R$ be a commutative ring. Then the category $\ms{Mod}_R$ of $R$-modules admits an essentially unique symmetric closed symmetric monoidal structure with unit $R$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+    Existence is clear, so we will consider uniqueness. Note that because $R$ is the tensor unit, we must have
+    \[ R \otimes M \cong M. \]
+    Because the tensor product is assumed to preserve colimits, we obtain
+    \[ \ab(\bigoplus_I R) \otimes M \cong \bigoplus_I (R \otimes M) = \bigoplus_I M. \]
+    For an arbitrary $R$-module $N$, we write $N$ as the cokernel 
+    \[ \bigoplus_J R \xrightarrow{f} \bigoplus_I R \twoheadrightarrow N \]
+    of a morphism of free $R$-modules. This implies that $N \otimes M$ is the cokernel of
+    \[ f \otimes M \colon \bigoplus_J M \to \bigoplus_I M. \]
+    This must be equal to $N \otimes M$.
+\end{proof}
+
+\begin{exer}
+    Give an actual proof of the proposition.
+\end{exer}
+
+For any morphism $R \to S$ of commutative rings, we obtain a functor
+\[ - \otimes_R S \colon \ms{Mod}_R \to \ms{Mod}_S, \]
+which is symmetric monoidal.
+
+In the land of $\infty$-categories, we will state the following theorem, which gives some examples of symmetric monoidal $\infty$-categories and symmetric monoidal functors.
+\begin{thm}\label{thm:symmetricmonoidal}\leavevmode
+    \begin{enumerate}
+        \item The $\infty$-categories $\ms{Sp}$ and $\mc{D}(R)$ admit essentially unique closed symmetric monoidal structures with units $\bS$ and $R$, respectively. We will denote the tensor products by $\otimes_{\bS}$ and $\otimes_R^{\L}$, respectively.
+        \item The functors $C_* \colon \ms{Sp} \to \mc{D}(\Z)$, $\Sigma_+^{\infty} \colon \mc{S} \to \ms{Sp}$, and $\otimes_R^{\L} S \colon \mc{D}(R) \to \mc{D}(S)$ have canonical strong symmetric monoidal structures.
+    \end{enumerate}
+\end{thm}
+
+This will require us to define symmetric monoidal $\infty$-categories such that $N\mc{C}$ is an example for any symmetric monoidal category and to define lax and strong symmetric monoidal functors.
+
+The very rough idea of the proof of the theorem for $\ms{Sp}$ is as follows. If $X \in \ms{Sp}$, then we must have $\bS \otimes X \cong X$. Secondly, tensoring with the suspension spectrum of a space gives
+\begin{align*}
+    (\Sigma_+^{\infty} Y) \otimes X &\cong \Sigma_+^{\infty} \ab(\colim_y \pt) \otimes X \\
+    &\cong \colim_y (\Sigma_+^{\infty} \pt) \otimes X \\
+    &\cong \colim_y X.
+\end{align*}
+We then obtain $(\Sigma^{-n} Y) \otimes X \cong \Sigma^{-n} (Y \otimes X)$ because $\Sigma$ is an equivalence and is clearly symmetric monoidal. Finally, we use the fact that every spectrum is a colimit of its constituent parts $\Sigma^{\infty -n} Y_n$. This determines the tensor product $Y \otimes X$ up to equivalence.
+
+Let $\ms{Fin}_*$ be the category of finite pointed sets $\ab<n> = \ab\{0, \ldots, n \}$ with $0$ as a basepoint. For every $1 \leq i \leq n$ there is a map
+\[ \rho^i \colon \ab<n> \to \ab<1> \qquad k \mapsto \begin{cases}
+    1 & k=i \\
+    0 & \text{otherwise}.
+\end{cases} \]
+
+\begin{defn}[First definition, Segal]
+    A \textit{symmetric monoidal $\infty$-category} is a functor
+    \[ \ul{\mc{C}} \colon N \ms{Fin}_* \to \ms{Cat}_{\infty} \]
+    such that the induced maps
+    \[ \ul{\mc{C}}(\ab<n>) \xrightarrow{(\rho_i)} \prod_{i=1}^n \ul{\mc{C}}(\ab<1>) \]
+    are equivalences for all $n = 0, 1, \ldots$
+\end{defn}
+
+The underlying category of such an object is $\mc{C} \coloneqq \ul{\mc{C}}(\ab<1>)$. The tensor product is simply the map
+\[ \otimes \colon \mc{C} \otimes \mc{C} \xleftarrow{\sim} \ul{\mc{C}}(\ab<2>) \xrightarrow{m_*} \ul{\mc{C}}(\ab<1>)= \mc{C}, \]
+where $m \colon \ab<2> \to \ab<1>$ is given by $0 \mapsto 0$ and $1,2 \mapsto 1$. The tensor unit is given by the map
+\[ \1 \colon \pt = \mc{C}(\ab<0>) \to \mc{C}(\ab<1>) = \mc{C}, \]
+which is equivalent to an object in $\mc{C}$. The idea is that all of the higher values of the functor encode all coherences like associativity, and symmetry.
+
+\begin{exer}
+    For an ordinary symmetric monoidal $1$-category $\mc{C}$, construct a functor
+    \[ \ms{Fin}_* \to \ms{Cat}_{\infty} \]
+    which takes a pointed set $S \sqcup *$ to $\mc{C}^{\times S}$.
+\end{exer}
+
+\begin{defn}
+    A \textit{strong symmetric monoidal functor} $\mc{C} \to \mc{D}$ is a natural transformation $\ul{\mc{C}} \to \ul{\mc{D}}$.
+\end{defn}
+
+In particular, we could define a full subcategory
+\[ \ms{SymMonCat}_{\infty} \subseteq \ms{Fun}(N\ms{Fin}_*, \ms{Cat}_{\infty}). \]
+The reader could take this as a definition of the $\infty$-category of symmetric monoidal $\infty$-categories, but it has some shortcomings. The main shortcoming is that we don't really have a way to discuss lax symmetric monoidal functors.
+
+\begin{defn}[Lurie]
+    A \textit{symmetric monoidal $\infty$-category} is a functor 
+    \[ \mc{C}^{\otimes} \to N\ms{Fin}_* \]
+    satisfying the following conditions:
+    \begin{enumerate}
+        \item It is a cocartesian fibration.\footnote{We will not discuss what this is even though it is very fundamental for working with $\infty$-categories.} In particular, we can consider the fibers
+        \begin{equation*}
+        \begin{tikzcd}
+            \mc{C}_{\ab<n>}^{\otimes} \ar{r} \ar{d} & \mc{C}^{\otimes} \ar{d} \\
+            \pt \ar{r}{\ab<n>} & N\ms{Fin}_*
+        \end{tikzcd}
+        \end{equation*}
+        and compute them as ordinary fiber products of simplicial sets. In addition, for any morphism $f \colon \ab<n> \to \ab<m>$ in $\ms{Fin}_*$, we obtain a pushforward
+        \[ f_! \colon \mc{C}^{\otimes}_{\ab<n>} \to \mc{C}^{\otimes}_{\ab<m>}. \]
+        \item The induced maps
+        \[ \mc{C}^{\otimes}_{\ab<n>} \xrightarrow{(\rho^i)_!} \prod \mc{C}_{\ab<1>}^{\otimes} \]
+        are equivalences for all $n = 0, 1, \ldots$
+    \end{enumerate}
+\end{defn}
+
+We will call $\mc{C} \coloneqq \mc{C}_{\ab<1>}^{\otimes}$ and the tensor product is given by
+\[ \otimes \colon \mc{C} \otimes \mc{C} \xleftarrow{\sim} \mc{C}_{\ab<2>}^{\otimes} \xrightarrow{m_!} \mc{C}_{\ab<1>}^{\otimes} = \mc{C}. \]
+
+\begin{thm}[Lurie]
+    The two definitions agree in that for a symmetric monoidal $\infty$-category $\mc{C}^{\otimes} \to N\ms{Fin}_*$, we get an induced functor $N\ms{Fin}_* \to \ms{Cat}_{\infty}$ given by $\ab<n> \mapsto \mc{C}_{\ab<n>}^{\otimes}$ and vice versa.
+\end{thm}
+
+We will discuss how to get a fibration from a copresheaf of $\infty$-categories, but only do it for an ordinary symmetric monoidal category $(\mc{C}, \otimes)$. We define $\mc{C}^{\otimes}$ as follows:
+\begin{itemize}
+    \item Objects are given by lists $c_1, \ldots, c_n$ in $\mc{C}$ for $\ab<n> \in \ms{Fin}_*$;
+    \item Morphisms from $c_1, \ldots, c_n$ to $d_1, \ldots, d_m$ are given by the data of
+    \begin{itemize}
+        \item A map $f \colon \ab<n> \to \ab<m>$ in $\ms{Fin}_*$;
+        \item For each $k \in \ab<m> \setminus 0$, a map
+        \[ \bigotimes_{i \in f^{-1}(k)} c_i \to d_k; \]
+    \end{itemize}
+    \item Composition is defined in the obvious way;
+    \item The forgetful functor takes $c_1, \ldots, c_n$ to $\ab<n>$.
+\end{itemize}
+Taking the nerve of this gives a symmetric monoidal $\infty$-category.
+
+We will now start defining lax symmetric monoidal functors. We will call a morphism
+\[ f \colon \ab<n> \to \ab<m> \]
+\textit{inert} if the induced map
+\[ f |_{f^{-1}(\ab<m> \setminus 0)} \colon f^{-1}(\ab<m> \setminus 0) \to \ab<m> \setminus 0 \]
+is a bijection.
+
+\begin{defn}
+    A \textit{lax symmetric monoidal functor} between symmetric monoidal $\infty$-categories $\mc{C}^{\otimes} \to N\ms{Fin}_*$ and $\mc{D}^{\otimes} \to N\ms{Fin}_*$ is a functor
+    \begin{equation*}
+    \begin{tikzcd}[column sep=-0.5em]
+        \mc{C}^{\otimes} \ar{rr}{F^{\otimes}} \ar{dr} & & \mc{D}^{\otimes} \ar{dl} \\
+        & N\ms{Fin}_*
+    \end{tikzcd}
+    \end{equation*}
+    such that $F^{\otimes}$ sends cocartesian lifts of inert morphisms to cocartesian lifts.
+\end{defn}
+
+\begin{exer}
+    Prove that for $1$-categories, a lax symmetric monoidal functor $\mc{C} \to \mc{D}$ induces a functor $\mc{C}^{\otimes} \to \mc{D}^{\otimes}$.
+\end{exer}
+
+
 \subsection{$\E_n$-algebras}%
 \label{sub:En-algebras}
+
+$\E_n$-algebras interpolate between associative ($\E_1$-) algebras and commutative ($\E_{\infty}$-) algebras. In this section, $\mc{C}$ will be a symmetric monoidal $\infty$-category.
+
+\begin{defn}
+    An \textit{associative algebra} in $\mc{C}$ is a symmetric monoidal functor
+    \[ N(\ms{Ass}_{\ms{act}}^{\otimes}) \to \mc{C}, \]
+    where objects of $\ms{Ass}_{\ms{act}}^{\otimes}$ are finite sets, morphisms are morphisms of finite sets with a chosen linear order on preimages of points, composition is given by the lexicographic order, and the tensor product is given by disjoint union. We will denote the $\infty$-category of associative algebras in $\mc{C}$ by
+    \[ \ms{Alg}(\mc{C}) \coloneqq \ms{Fun}^{\otimes}(N(\ms{Ass}_{\ms{act}}^{\otimes}), \mc{C}). \]
+\end{defn}
+
+\begin{defn}
+    A \textit{commutative algebra} in $\mc{C}$ is a symmetric monoidal functor
+    \[ N(\ms{Comm}_{\ms{act}}^{\otimes}) \to \mc{C}, \]
+    where $\ms{Comm}_{\ms{act}}^{\otimes}$ is just the category of finite sets. We will denote the $\infty$-category of commutative algebras in $\mc{C}$ by
+    \[ \ms{CAlg}(\mc{C}) \coloneqq \ms{Fun}^{\otimes}(N(\ms{Comm}_{\ms{act}}^{\otimes}), \mc{C}). \]
+\end{defn}
+
+\begin{warn}
+    In a $1$-category $\mc{C}$, we have an inclusion
+    \[ \ms{CAlg}(\mc{C}) \subseteq \ms{Alg}(\mc{C}). \]
+    This is completely false in $\infty$-categories, even if there is a functor.
+\end{warn}
+
+We will now interpolate between commutative and associative algebras.
+\begin{defn}
+    Let $0 \leq n < \infty$. We define a symmetric monoidal $\infty$-category $(\E_n^{\otimes})_{\ms{act}}$ as the homotopy-coherent nerve of the topologically enriched category given by the following:
+    \begin{itemize}
+        \item Objects are disjoint unions $D^n \sqcup \cdots \sqcup D^n$ of (poly)disks $D^n = (0,1)^n$;
+        \item Morphisms from $D^n \sqcup \cdots \sqcup D^n$ to $D^n \sqcup \cdots \sqcup D^n$ are given by rectilinear embeddings. These are simply embeddings of topological spaces which on each disk is given by an affine linear map with matrix of the form
+        \[ \pdiagmat[empty={}]{\alpha_1,\ddots,\alpha_n}, \qquad \alpha_i \in \R_{>0}. \]
+        An example would look something like~\Cref{fig:E2operad}.
+        \begin{figure}[htpb]
+        \begin{center}
+        \begin{tikzpicture}[scale=1, transform shape]
+            \draw[thick] (0,0) circle [radius=2];
+            \filldraw[color=violet,fill=violet!30] (1,1) circle [radius=0.5];
+            \node at (1,1) {$1$};
+            \filldraw[color=blue,fill=blue!30] (-0.5,-0.5) circle [radius=1];
+            \node at (-0.5,-0.5) {$2$};
+            \filldraw[color=cyan,fill=cyan!30] (-0.4,1.3) circle [radius=0.3];
+            \node at (-0.4,1.3) {$3$};
+        \end{tikzpicture}
+        \end{center}
+        \caption{Morphism in $(\E_2^{\otimes})_{\ms{act}}$.}%
+        \label{fig:E2operad}
+        \end{figure}
+        \item Composition is simply composition of embeddings.
+    \end{itemize}
+    This category is clearly topologically enriched and has a symmetric monoidal structure given by disjoint union.
+\end{defn}
+
+\begin{defn}
+    An \textit{$\E_n$-algebra} in a symmetric monoidal $\infty$-category $\mc{C}$ is a symmetric monoidal functor
+    \[ (\E_n^{\otimes})_{\ms{act}} \to \mc{C}. \]
+    We will denote the $\infty$-category of $\E_n$-algebras in $\mc{C}$ by
+    \[ \ms{Alg}_{\E_n}(\mc{C}) \coloneqq \ms{Fun}^{\otimes} ((\E_n^{\otimes})_{\ms{act}}, \mc{C}). \]
+\end{defn}
+
+Note that all mapping spaces in $(\E_n^{\otimes})_{\ms{act}}$ are determined by
+\[ \ms{Map}_{(\E_n^{\otimes})_{\ms{act}}} (D^n \sqcup \cdots \sqcup D^n, D^n). \]
+This has a map
+\[ \ms{Map}_{(\E_n^{\otimes})_{\ms{act}}} (D^n \sqcup \cdots \sqcup D^n, D^n) \to \ms{Conf}_k (D^n) \subseteq D^n \]
+given by evaluation at the center of each disk. Here, $\ms{Conf}_k(D^n) \subseteq D^n$ is the \textit{configuration space} and is simply the locus where no two points agree.
+
+\begin{exer}
+    Prove that the evaluation map we just defined is a homotopy equivalence.
+\end{exer}
+
+As an example, it is clear that
+\[ \ms{Map}_{(\E_n^{\otimes})_{\ms{act}}} (D^n, D^n) \simeq \ms{Conf}_1 (D^n) \simeq \pt. \]
+The next example is
+\[ \ms{Map}_{(\E_n^{\otimes})_{\ms{act}}} (D^n \sqcup D^n, D^n) \simeq \ms{Conf}_2 (D^n) \simeq S^{n-1}. \]
+
+Now suppose we have an $\E_n$-algebra $\ul{A} \colon (\E_n^{\otimes})_{\ms{act}} \to \mc{C}$ with underlying algebra $\ul{A}(D^n) = A$. We also have a morphism
+\[ S^{n-1} \to \ms{Map}(A \otimes A, A) \]
+and other morphisms. Restricting to the $0$-cell, this is a multiplication morphism.
+
+To try to understand $\E_n$-algebras, we may try to begin with $n=1$.
+\begin{prop}
+    There is an equivalence
+    \[ N\ms{Ass}_{\mc{act}}^{\otimes} \to (\E_1^{\otimes})_{\ms{act}} \]
+    of symmetric monoidal $\infty$-categories which sends a finite set $S$ to disjoint union $\bigsqcup_S D^1$.
+\end{prop}
+
+\begin{proof}
+    First, we show that all mapping spaces in $(\E_1^{\otimes})_{\ms{act}}$ are discrete. Up to homotopy, a map $D^1 \sqcup \cdots \sqcup D^1 \to D^1$ is simply an ordering of the indexing set of connected components of the source. This is precisely the set of maps in $\ms{Ass}_{\ms{act}}^{\otimes}$. This functor sends disjoint unions to disjoint unions, and finally a symmetric monoidal functor between symmetric monoidal $\infty$-categories is an equivalence in the $\infty$-category of symmetric monoidal $\infty$-categories if and only if the underlying functor is an equivalence.
+\end{proof}
+
+\begin{cor}
+    We have an equivalence
+    \[ \ms{Alg}_{\E_1}(\mc{C}) \cong \ms{Alg}(\mc{C}). \]
+\end{cor}
+
+\begin{exer}
+    Figure out what $\E_0$-algebras are in an arbitrary symmetric monoidal $\infty$-category. Next, figure out what $\E_2$-algebras in the $\infty$-category $\ms{Cat}$ of $1$-categories are (you should get braided monoidal categories).
+\end{exer}
+
+There are functors
+\[ (\E_0^{\otimes})_{\ms{act}} \to (\E_1^{\otimes})_{\ms{act}} \to \cdots \]
+given by taking the Cartesian product with $D^1$. These are symmetric monoidal functors, so we have induced functors
+\[ \cdots \to \ms{Alg}_{\E_1}(\mc{C}) \to \ms{Alg}_{\E_0}(\mc{C}). \]
+
+\begin{defn}
+    The $\infty$-category of \textit{$\E_{\infty}$-a;gebras} is the inverse limit of the diagram
+    \[ \cdots \to \ms{Alg}_{\E_1}(\mc{C}) \to \ms{Alg}_{\E_0}(\mc{C}) \]
+    in $\ms{Cat}_{\infty}$.
+\end{defn}
+
+\begin{thm}
+    We have an equivalence
+    \[ \ms{Alg}_{\E_{\infty}}(\mc{C}) \cong \ms{CAlg}(\mc{C}). \]
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    First, note that
+    \begin{align*}
+        \ms{Alg}_{\E_{\infty}}(\mc{C}) &\cong \varprojlim \ms{Alg}_{\E_n}(\mc{C}) \\
+        &\simeq \varprojlim \ms{Fun}^{\otimes}((\E_n^{\otimes})_{\ms{act}}, \mc{C}) \\
+        &\simeq \ms{Fun}^{\otimes} (\colim (\E_n^{\otimes})_{\ms{act}}, \mc{C}).
+    \end{align*}
+    Proving that this colimit is equivalent to $N \ms{Comm}_{\ms{act}}^{\otimes}$ is left as an exercise.
+\end{proof}
+
+We will now state a very important result. The proof is very hard, but the statement should be understandable. Let $(\mc{C}, \otimes)$ be a closed symmetric monoidal category or at least have the property that $-\otimes c$ commutes with filtered colimits and geometric realizations. We will also assume that $\mc{C}$ has all limits and colimits.
+
+\begin{thm}[Lurie]\leavevmode
+    \begin{enumerate}
+        \item The $\infty$-category $\ms{Alg}_{\E_n}(\mc{C})$ admits all limits and colimits for any $0 \leq n \leq \infty$. The forgetful functor
+        \[ \ms{Alg}_{\E_n}(\mc{C}) \to \mc{C} \]
+        preserves filtered colimits, geometric realizations, and all limits. Moreover, it detects equivalences.
+        \item When $n = \infty$, the coproduct and tensor product coincide.
+        \item The $\infty$-category $\ms{Alg}_{\E_n}(\mc{C})$ admits a symmetric monoidal structure such that $\ms{Alg}_{\E_n}(\mc{C}) \to \mc{C}$ is symmetric monoidal.
+    \end{enumerate}
+\end{thm}
+
+\begin{exer}
+    Do the $1$-categorical analogue of the theorem in the category $\ms{Ab}$ of abelian groups.
+\end{exer}
+
+We will now discuss $\E_n$-algebras in the $\infty$-category of spaces. Here, we will consider $\mc{S}$ equipped with symmetric monoidal structure given by the Cartesian product. Then $\ms{Alg}(\mc{S})$ is the category of ``monoids'' in $\mc{S}$. For any such space $X$, the set of connected components $\pi_0(X)$ is a monoid.
+
+\begin{defn}
+    We say $X$ is \textit{grouplike} if $\pi_0 (X)$ is a group. This is equivalent to saying that the shear map
+    \[ X \times X \to X \times X \qquad (a,b) \mapsto (ab, b) \]
+    is a homotopy equivalence. In addition, we say an $\E_n$-algebra is \textit{grouplike} if the underlying $\E_1$-algebra is grouplike.
+\end{defn}
+
+For every pointed space $X \in \mc{S}_*$, the iterated loop space
+\[ \Omega^n X \simeq \ms{Map}_{\mc{S}_*}(S^n, X) \cong \ms{Map}((D^n, \partial D^n), (X, *)) \]
+is canonically an $\E_n$-algebra in $\mc{S}$.
+
+\begin{exer}
+    Make this $\E_n$-algebra structure precise by giving a functor $(\E_n^{\otimes})_{\ms{act}} \to \mc{S}$ of topologically enriched categories.
+\end{exer}
+
+\begin{thm}[Boardman-Vogt]\label{thm:enalgspaces}
+    The functor 
+    \[ \Omega^n \colon \mc{S}_*^{n\ms{-conn}} \to \ms{Alg}_{\E_n}(\mc{S}) \]
+    is fully faithful with essential image the grouplike $\E_n$-algebras for any $0 \leq n < \infty$.
+\end{thm}
+
+\begin{cor}
+    For any $\E_n$-algebra $A$ in $\mc{S}$ and any connected pointed space $X \in \mc{S}_*^{\ms{conn}}$, we have that
+    \[ \ms{Map}_{\E_n}(\Omega^n \Sigma^n X, A) \cong \ms{Map}_{\mc{S}_*}(X, A). \]
+\end{cor}
+
+\begin{proof}
+    We can consider the subspace $A' \subseteq A$ consisting of the unit component $\pi_0(A') \subseteq \pi_0(A)$. Then
+    \begin{align*}
+        \ms{Map}_{\E_n}(\Omega^n \Sigma^n X, A) &\simeq \ms{Map}_{\E_n} (\Omega^n \Sigma^n X, A').
+    \end{align*}
+    Similarly, we have
+    \[ \ms{Map}_{\mc{S}_*}(X, A) \simeq \ms{Map}_{\mc{S}_*}(X, A'). \]
+    Therefore, we may assume that $A$ is grouplike. But this means that $A = \Omega^n Y$ for some pointed $n$-connected space $Y$. This implies that
+    \begin{align*}
+        \ms{Map}_{\E_n}(\Omega^n \Sigma^n X, \Omega^n Y) &\cong \ms{Map}_{\mc{S}_*} (\Sigma^n X, Y) \\
+        &\cong \ms{Map}_{\mc{S}_*}(X, \Omega^n Y) \\
+        &\cong \ms{Map}_{\mc{S}_*}(X, A). \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{proof}[Sketch of proof of~\Cref{thm:enalgspaces}]
+    We begin with the case of $n=1$. Here, we have the functor
+    \[ \Omega \colon \mc{S}_*^{\ms{conn}} \to \ms{Alg}_{\E_1}^{\ms{gp}}(\mc{S}). \]
+    We will construct an inverse using the bar construction, which is given by
+    \[ \ms{Bar}(G) \coloneqq \colim_{\Delta^{\op}} \ab(\cdots G \times G \triple{\to} G \rightrightarrows \pt). \]
+    The result we need is that $\Omega \ms{Bar}(G) \simeq G$ is an equivalence of spaces. This is usually done by constructing a fiber sequence
+    \[ G \to EG \to BG. \]
+
+    The general step is now to induct on $n$. For example, if we consider $\mc{S}_*^{2\ms{-conn}}$, its image in $\ms{Alg}_{\E_1}^{\ms{Sp}}(\mc{S}_*^{\ms{conn}})$. Therefore we have a chain
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{S}_*^{2\ms{-conn}} \ar[shift left=1]{r} & \ms{Alg}_{\E_1}^{\ms{gp}} (S_*^{\ms{conn}})\ar[shift left=1]{r} \ar[shift left=1]{l} & \ms{Alg}_{\E_1}(\ms{Alg}_{\E_1}^{\ms{gp}}(\mc{S})). \ar[shift left=1]{l}
+    \end{tikzcd}
+    \end{equation*}
+    This is actually the same as $\E_2$-algebras, and the general case works the same way and the desired result follows from~\Cref{thm:dunnadditivity}.
+\end{proof}
+
+\begin{thm}[Dunn additivity]\label{thm:dunnadditivity}
+    For any symmetric monoidal $\infty$-category $\mc{C}$, we have
+    \[ \ms{Alg}_{\E_{n+m}}(\mc{C}) \cong \ms{Alg}_{\E_m}(\ms{Alg}_{\E_n}(\mc{C})) \]
+    for all $n, m \geq 0$.
+\end{thm}
+
+Note that the $1$-categorical version of this is the Eckmann-Hilton argument.
+
+\begin{cor}
+    Suppose that $\mc{C}$ has sifted colimits and $\otimes$ commutes with them in both variables separately. Then
+    \[ \ms{Bar} \colon \ms{Alg}_{\E_n}(\mc{C})_{/\1} \to \ms{Alg}_{\E_{n-1}}(\mc{C}) \]
+    given by 
+    \[ A \mapsto \colim \ab(\cdots A \otimes A \triple{\to} A \rightrightarrows \1) \]
+    is well-defined.
+\end{cor}
+
+\begin{proof}
+    Note that it is simply given by
+    \[ \ms{Alg}_{\E_n} \cong \ms{Alg}_{\E_1} (\ms{Alg}_{\E_{n-1}}(\mc{C})) \to \ms{Alg}_{\E_1}(\mc{C}). \qedhere \]
+\end{proof}
 
 \subsection{$p$-adic completion}%
 \label{sub:p-adic completion}
 
+We will generalize the process of going from $\Z$ to $\Z_p$ in the world of spectra. In addition, we will see how spectra can be recovered from their $p$-completions and their rationalizations.
+
+Recall that an abelian group $A$ is \textit{$p$-complete} if it is complete (and separated) with respect to the $p$-adic topology on $A$. This is the topology which has a neighborhood basis of $0$ given by $p^n A \subseteq A$. Equivalently, this says that
+\[ A \xrightarrow{\sim} \varprojlim A/p^n \eqqcolon A^{\sw}_p. \]
+
+\begin{defn}
+    For a spectrum $X \in \ms{Sp}$ and an integer $n \in \Z$, define $X/n$ to be the cofiber of the map $X \xrightarrow{n} X$ given by the addition of identity morphism $n$ times. Equivalently, we have
+    \[ X/n \simeq X \otimes_{\bS} \bS/n. \]
+\end{defn}
+
+As we would expect, if $n \mid m$, then there is a canonical map
+\[ X/m \to X/n \] defined as the cofiber of
+\begin{equation*}
+\begin{tikzcd}
+    X \ar{d}{m} \ar{r}{m/n} & X \ar{d}{n} \\
+    X \ar{r}{\mr{id}} \ar{d} & X \ar{d} \\
+    X/m \ar{r} & X/n.
+\end{tikzcd}
+\end{equation*}
+
+\begin{defn}
+    For a spectrum $X \in \ms{Sp}$, we define its \textit{$p$-completion} to be the spectrum
+    \[ X_p^{\sw} \coloneqq \varprojlim (\cdots \to X/p^3 \to X/p^2 \to X/p). \]
+\end{defn}
+Note that there is a canonical map $X \to X_p^{\sw}$ induced from the projections $X \to X/p^n$.
+
+\begin{rmk}
+    All of these constructions are well-defined up to contractible choice.
+\end{rmk}
+
+\begin{defn}
+    A spectrum $X$ is \textit{$p$-complete} if the map $X \to X_p^{\sw}$ is an equivalence. Denote the $\infty$-category of $p$-complete spectra by $\ms{Sp}_p^{\sw}$.
+\end{defn}
+
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item For every spectrum $X$, the spectrum $X_p^{\sw}$ is $p$-complete.
+        \item The functor $(-)_p^{\sw} \colon \ms{Sp} \to \ms{Sp}_p^{\sw}$ is left adjoint to the inclusion $\ms{Sp}_p^{\sw} \hookrightarrow \ms{Sp}$.
+        \item The $\infty$-category $\ms{Sp}_p^{\sw}$ has all limits and colimits.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    We will first prove that $X_p^{\sw}$ is $p$-complete. First, note that $\ms{Sp}_p^{\sw}$ is closed under limits and finite colimits. This is true because the functor $-/p$ is a cofiber and so commutes with all limits and colimits and the limit functor commutes with limits and finite colimits. The second step is to prove that for any $X$, $X/p$ is $p$-complete. This implies that $X/p^n$ is $p$-complete by using the fiber sequence
+    \[ X/p \xrightarrow{p^{n-1}} X/p^n \to X/p^{n-1}. \]
+    This implies that $X_p^{\sw}$ is $p$-complete.
+
+    First, note that the functor $(-)_p^{\sw}$ is idempotent. This means that
+    \[ (X_p^{\sw})_p^{\sw} \simeq X_p^{\sw}. \]
+    If $Y$ is a $p$-complete spectrum, we can construct an inverse to
+    \[ \ms{Map}(X, Y) \gets \ms{Map}(X_p^{\sw}, Y) \]
+    by applying $p$-completion to everything.
+
+    We know already that limits and finite colimits exist. For an arbitrary colimit of a functor $I \xrightarrow{X} \ms{Sp}_p^{\sw}$, the colimit is simply given by
+    \[ \ab(\colim_I^{\ms{Sp}} X_i)_p^{\sw}. \qedhere \]
+\end{proof}
+
+\begin{exer}
+    Prove that a spectrum $X$ is $p$-complete if and only if
+    \[ \lim (\cdots \to X \xrightarrow{p} X \xrightarrow{p} X) \simeq 0. \]
+    Moreover, prove that $X/p$ is $p$-complete for any spectrum $X$.
+\end{exer}
+
+\begin{defn}
+    A map $f \colon X \to Y$ of spectra is a \textit{$p$-adic equivalence} if the induced map
+    \[ f_p^{\sw} \colon X_p^{\sw} \to Y_p^{\sw} \]
+    is an equivalence.
+\end{defn}
+
+Note that if $X$ and $Y$ are $p$-complete, then $f$ is a $p$-adic equivalence if and only if $f$ is an equivalence.
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item A map $f \colon X \to Y$ is a $p$-adic equivalence if and only if the map
+        \[ f/p \colon X/p \to Y/p \]
+        is an equivalence.
+        \item A map $f \colon X \to Y$ between connective $X, Y$ is a $p$-adic equivalence if and only if the induced map
+        \[ X \otimes_{\bS} H\F_p \to Y \otimes_{\bS} H\F_p \]
+        is an equivalence (in other words, we can check equivalence on homology).
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    The proof is left as an exercise to the reader.
+\end{proof}
+
+Now we know that $p$-adic equivalences have nice properties, but it is not clear how to tell whether a spectrum is $p$-complete.
+
+\begin{prop}
+    Let $A$ be an abelian group. If $A$ is $p$-complete, then so is $HA \in \ms{Sp}$.
+\end{prop}
+
+For example, we see that $H \Z_p$ is $p$-complete. The converse unfortunately fails in general, but it does hold if $A$ has bounded order of $p^{\infty}$-torsion.
+
+\begin{defn}
+    An abelian group $A$ is \textit{derived $p$-complete} if the Eilenberg-Maclane spectrum $HA$ is $p$-complete.
+\end{defn}
+
+\begin{rmk}
+    There is also a notion of $p$-completeness in $\mc{D}(\Z)$. Everything works exactly as in $\ms{Sp}$. Then $A$ is derived $p$-complete if and only if it is $p$-complete as an object of $\mc{D}(\Z)$. This is equivalent to the condition that there is a quasi-isomorphism
+    \[ A \simeq R\varprojlim \ms{Cone}(A \xrightarrow{p^n} A) \in \mc{D}(\Z). \]
+\end{rmk}
+
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item A spectrum $X$ is $p$-complete if and only if $\pi_n (X)$ is derived $p$-complete for all $n$.
+        \item Assume that $\pi_n(X)$ has bounded order of $p^{\infty}$-torsion for each $n$. Then
+        \[ \pi_* (X_p^{\sw}) = \pi_*(X)_p^{\sw}. \]
+    \end{enumerate}
+\end{thm}
+
+\begin{exm}
+    The most important example of a $p$-complete spectrum is the $p$-adic completion $\bS_p^{\sw}$ of the sphere. We can compute
+    \[ \pi_*(\bS_p^{\sw}) = \begin{cases}
+        \Z_p & *=0 \\
+        \ab\{\text{$p^{\infty}$-torsion in } \pi_*(\bS) \} & > 0 \\
+        0 & * < 0.
+    \end{cases} \]
+    Another example is simply $(H\Q)_p^{\sw} = 0$ because multiplication by $p$ is an isomorphism on $\Q$.
+\end{exm}
+
+There are some nice monoidal properties associated to $p$-complete spectra which are listed below. We will not prove these.
+\begin{itemize}
+    \item The category $\ms{Sp}_p^{\sw}$ of $p$-complete spectra admits a closed symmetric monoidal structure given by
+    \[ X \hat{\otimes}_p Y \coloneqq (X \otimes_{\bS} Y)_p^{\sw}. \]
+    In particular, the $p$-completion functor is strong symmetric monoidal.
+    \item If $R$ is an $\E_n$-algebra, then so is $R_p^{\sw}$ and $R \to R_p^{\sw}$ is an $\E_n$-map exhibiting $R_p^{\sw}$ as the initial $p$-complete $\E_n$-algebra under $R$.
+\end{itemize}
+
+It is much easier to deal with $p$-complete spectra than to deal with spectra. However, this is only useful if we can recover spectra from their $p$-completions.
+
+\begin{quest}
+    Can we recover any spectrum $X$ from its $p$-completions $X_p^{\sw}$ as $p$ ranges over all primes?
+\end{quest}
+
+The answer to this question must be no by the example of $H\Q$. In order to even attempt to have an affirmative answer, we will also need to consider rationalization. Here, recall that an abelian group $A$ is \textit{rational} if it is uniquely divisible. Equivalently, it is a $\Q$-vector space.
+
+\begin{defn}
+    A spectrum $X$ is \textit{rational} if $\pi_n (X)$ is rational for each $n$. We denote the full subcategory of rational spectra by $\ms{Sp}_{\Q} \subseteq \ms{Sp}$.
+\end{defn}
+
+This is actually even better-behaved than $p$-completeness.
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item A spectrum is rational if and only if it admits the structure of an $H\Q$-module.
+        \item For any spectrum $X$, the spectrum $X \otimes_{\bS} H\Q \eqqcolon X_{\Q}$ is rational and $\pi_*(X_{\Q}) = \pi_*(X)_{\Q}$. 
+        \item The functor $-\otimes_{\bS} H\Q \colon \ms{Sp} \to \ms{Sp}_{\Q}$ is left adjoint to the inclusion $\ms{Sp}_{\Q} \subseteq \ms{Sp}$.
+        \item The category $\ms{Sp}_{\Q} \subseteq \ms{Sp}$ is closed under limits and colimits.
+        \item We have an equivalence
+        \[ \ms{Sp}_{\Q} \cong \ms{Mod}_{H\Q} \simeq \mc{D}(\Q). \]
+        \item The category $\ms{Sp}_{\Q}$ is symmetric monoidal with tensor product
+        \[ X \otimes_{\bS} Y = X \otimes_{H\Q} Y \]
+        and unit $H\Q$.
+    \end{enumerate}
+\end{thm}
+
+\begin{exer}
+    Prove this theorem using the fact that $H\Q \otimes_{\bS} H\Q = H\Q$.
+\end{exer}
+
+We can now refine our question.
+\begin{quest}
+    Can we recover any spectrum $X$ from its $p$-completions $X_p^{\sw}$ as $p$ ranges over all primes together with its rationalization $X_{\Q}$?
+\end{quest}
+
+Our slogan will be that the answer to this question is yes if we also include the data of a certain ``gluing map.'' This uses something known as the Hasse square.
+
+For every spectrum we have maps
+\[ X \to X_p^{\sw} \qquad \text{and} \qquad X \to X_{\Q}. \]
+In addition, rationalizing the $p$-completion map, we have maps
+\[ X_{\Q} \to (X_p^{\sw})_{\Q} \eqqcolon X_{\Q_p}. \]
+By naturality properties of rationalization, we obtain a commutative square
+\begin{equation*}
+\begin{tikzcd}
+    X \ar{r} \ar{d} & \prod_p X_p^{\sw} \ar{d} \\
+    X_{\Q} \ar{r} & \ab(\prod_p X_{p}^{\sw})_{\Q}.
+\end{tikzcd}
+\end{equation*}
+This is called the \textit{Hasse square} or the \textit{fracture square}.
+
+\begin{thm}
+    For any spectrum $X$, this square is a fiber product.
+\end{thm}
+
+This theorem is proved by noting that $p$ is invertible on the fiber of $X \to X_p^{\sw}$. Therefore, the fiber of the top row is rational (because all primes are invertible), so it equals its rationalization, which is the fiber of the bottom row.
+
+The theorem can be refined to the categorical level. In particular, we have a pullback diagram
+\begin{equation*}
+\begin{tikzcd}
+    \ms{Sp} \ar{r}{\prod_p (-)_p^{\sw}} \ar{d}[swap]{X_{\Q} \to \ab(\prod_p X_p^{\sw})_{\Q}} & \prod_p \ms{Sp}_p^{\sw} \ar{d}{(X_p)_p \mapsto \ab(\prod_p X_p)_{\Q}} \\
+    \ms{Sp}_{\Q}^{\Delta^1} \ar{r}{\mr{target}} & \ms{Sp}_{\Q}
+\end{tikzcd}
+\end{equation*}
+of $\infty$-categories. This means that we can decompose the entire $\infty$-category of spectra.
+
+Unfortunately, this morphism is not symmetric monoidal, but it at least behaves well with respect to $\E_n$-algebras. More precisely, there is a pullback square
+\begin{equation*}
+\begin{tikzcd}
+    \ms{Alg}_{\E_n}(\ms{Sp}) \ar{r} \ar{d} & \prod_p \ms{Alg}_{\E_n}(\ms{Sp}_p^{\sw}) \ar{d} \\
+    (\ms{Alg}_{\E_n}(\ms{Sp}_{\Q}))^{\Delta^1} \ar{r} & \ms{Alg}_{\E_n}(\ms{Sp}_{\Q})
+\end{tikzcd}
+\end{equation*}
+of $\infty$-categories, where the arrows are given by restriction from the previous square.
+
+
 \subsection{Tate construction}%
 \label{sub:Tate construction}
+
+Let $G$ be a group object in $\mc{S}$. In particular, this means that $G$ is a group-like $\E_1$-space. These can in fact be modeled by topological groups, but the correct generality is that of group-like $\E_1$-spaces. There is a classifying space $BG \in \mc{S}$ given by the bar construction. If $\mc{C}$ is any $\infty$-category, we will let
+\[ \mc{C}^{BG} = \ms{Fun}(BG, \mc{C}) \]
+denote the category of objects in $\mc{C}$ with a $G$-action.
+
+\begin{con}
+    We will consider $G$ as an object in $\mc{S}^{G \times G}$ by letting $G \times G$ act on $G$ by the action 
+    \[ (g,h) \cdot h \coloneqq gxh^{-1}. \]
+\end{con}
+
+\begin{defn}[Klein]
+    We define a spectrum $D_G \in \ms{Sp}^{BG}$ called the \textit{dualizing spectrum} of $G$ as
+    \[ D_G \coloneqq (\Sigma_+^{\infty} G)^{h(G \times 1)} \]
+    with its remaining $G = 1 \times G$-action.
+\end{defn}
+
+The name dualizing spectrum needs a justification, which will be given in the remainder of this section. Before we do this, we give some examples.
+
+\begin{exm}
+    Assume $G$ is a finite group. Then
+    \[ \Sigma_+^{\infty} G = \bigoplus_{g \in G} \bS. \]
+    Computing the homotopy fixed points, we obtain
+    \[ (\Sigma_+^{\infty} G)^{hG} = \ab(\bigoplus_{g \in G} \bS)^{hG} \simeq \bS. \]
+    More precisely, the map
+    \[ \ab(\bigoplus_{g \in G} \bS)^{hG} \to \bigoplus_{g \in G} \bS \to \bS \]
+    is an equivalence.
+
+    To see this, consider the homotopy fixed point spectral sequence
+    \[ H^* \ab(G, \bigoplus_{g \in G} \pi_* \bS) \implies \pi_* \ab(\ab(\bigoplus_{g \in G} \bS)^{hG}). \]
+    It is a classical result that
+    \[ H^*\ab(G, \bigoplus_{g \in G} A) = \begin{cases}
+        A & *=0 \\
+        0 & * \neq 0
+    \end{cases}. \]
+    Therefore the spectral sequence degenerates and yields the result. This implies that $D_G = \bS$ with the trivial action.
+\end{exm}
+
+Now suppose that $G$ is a compact Lie group.
+\begin{thm}
+    If $G$ is a compact Lie group, then
+    \[ D_G = \bS^{\g} \coloneqq \Sigma^{\infty}(\g^+) \]
+    where $G$ acts by the adjoint representation.
+\end{thm}
+
+For example, let $\T = U(1) = S^1$. Then because the adjoint representation of an abelian group is trivial, we have $D_{\T} = \bS^1$ with the trivial action.
+
+Now assume that $BG \simeq (M, m_0)$ for some closed smooth manifold $M$. For example, if $G = \Z$, then $BG \simeq S^1$. Alternatively, we can consider any closed manifold $(M, m_0)$ and let $G = \Omega M$.
+
+\begin{thm}[Atiyah duality]
+    The dualizing spectrum is given by
+    \[ D_G = \bS^{-T_{m_0} M} \simeq \bS^{-\dim M}, \]
+    where we extend the construction $\bS^V$ for any representation of $G$ to a virtual representation. As a functor
+    \[ BG \simeq M \to \ms{Sp}, \]
+    it sends 
+    \[ m \mapsto \bS^{-T_m M}. \]
+\end{thm}
+
+\begin{rmk}
+    For any space $X$ (in place of $BG$), we can define a dualizing spectrum
+    \[ D_X \colon X \to \ms{Sp}. \]
+    For example, we can define this functor on connected components because
+    \[ X \simeq \bigsqcup B G_i. \]
+    In particular, we assign $D_{G_i}$ to $BG_i$.
+\end{rmk}
+
+\begin{con}
+    Let $\mc{C}$ be a stable $\infty$-category which has all limits and colimits. For any $E \in \ms{Sp}$ and $X \in \mc{C}$, there is an object
+    \[ E \otimes X \in \mc{C} \]
+    defined such that the functor
+    \[ - \otimes X \colon \ms{Sp} \to \mc{C} \]
+    preserves colimits and the composite
+    \[ \mc{S} \xrightarrow{\Sigma_+^{\infty}} \ms{Sp} \xrightarrow{- \otimes X} \mc{C} \]
+    is given by the functor
+    \[ M \mapsto M \otimes X = \colim_M c_X. \]
+\end{con}
+
+\begin{defn}
+    Let $G \in \ms{Alg}_{\E_1}^{\ms{gp}} (\mc{S})$ and $X \in \mc{}^{BG}$. We define the \textit{norm map}
+    \[ \mr{Nm}_G \colon (D_G \otimes_{\bS} X)_{hG} \to X^{hG} \]
+    as the composite
+    \begin{equation*}
+    \begin{tikzcd}
+        ((\Sigma_+^{\infty} G)^{h(G\times 1)} \otimes_{\bS} X)_{h(1 \times G)} \ar{d} \\
+        ((\Sigma_+^{\infty} G \otimes_{\bS} X)^{h(G \times 1)})_{h(1 \times G)} \ar{d} \\
+        ((\Sigma_+^{\infty} G \otimes_{\bS} X)_{h(1 \times G)})^{h(G \times 1)} \ar{r}{\sim} & X^{hG}.
+    \end{tikzcd}
+    \end{equation*}
+\end{defn}
+
+\begin{exer}
+    Prove that
+    \[ ((\Sigma_+^{\infty} G \otimes_{\bS} X)_{h(1 \times G)})^{h(G \times 1)} \simeq X^{hG}. \]
+\end{exer}
+
+This is quite an abstract construction, so we will try to get our hands on it with some examples.
+
+\begin{exm}
+    If $G$ is finite and $X \in \mc{C}^{BG}$, then the norm map is
+    \[ (D_G \otimes X)_{hG} \simeq X_{hG} \to X^{hG}. \]
+    For example, if $\mc{C} = \ms{Sp}$ and $X = HM$ for an abelian group $M$ with a $G$-action, then this map is a map
+    \begin{equation*}
+    \begin{tikzcd}
+        HM_{HG} \ar{r}{\mr{nM}} \ar{d} & HM^{hG} \\
+        H M_G \ar{r} & H M^G \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    and is induced from the classical norm map
+    \[ M_G \to M^G \qquad [m], \mapsto \sum_{g \in G} gm \]
+    from coinvariants to invariants.
+    This follows from the fact that for a general $X$, the composite
+    \[ X \to X_{hG} \xrightarrow{\mr{Nm}_G} X^{hG} \to X \]
+    is the sum over all $g \in G$ of the maps $\rho_g \colon X \to X$ given by multiplication by $g$.
+\end{exm}
+
+\begin{exer}
+    Prove that if $G$ is finite, the composite
+    \[ X \to X_{hG} \xrightarrow{\mr{Nm}_G} X^{hG} \to X \]
+    agrees with the map
+    \[ \sum_{g \in G} \rho_g \colon X \to X. \]
+\end{exer}
+
+\begin{exm}
+    When $G = \T$, we get a map
+    \[ \Sigma X_{h\T} = (D_{\T} \otimes X)_{h\T} \to X^{h\T}. \]
+\end{exm}
+
+\begin{thm}
+    The norm map $(D_G \otimes X)_{hG} \to X^{hG}$ is an equivalence provided that one of the following conditions holds:
+    \begin{enumerate}
+        \item $BG$ is a finite CW complex;
+        \item $X$ is induced, which means that $X \simeq \Sigma_+^{\infty} G \otimes Y$ where $G$ acts only on $\Sigma_+^{\infty} G$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    In the first case, all limits in the interchange maps are finite. Because all functors in the composite are exact, we are done.
+
+    In the second case, the limits and colimits are still close enough to being finite, so we are done.
+\end{proof}
+
+\begin{exm}
+    Let $BG$ be a closed manifold $M$, $\mc{C} = \ms{Sp}$, and $X = H\Z$ with the trivial action of $G$. In this case, the norm is a map
+    \[ (DG \otimes X)_{hG} \xrightarrow{\sim} X^{hG} = H\Z^{BG}. \]
+    The target has homotopy groups given by
+    \[ \pi_* (H\Z^{BG}) = H^{-*}(M, \Z). \]
+    The source is explicitly given by
+    \[ (DG \otimes X)_{hG} \cong (\bS^{-tM} \otimes H\Z)_{hG} \simeq (H\Z[-n])_{hG}, \]
+    where $G$ acts on $HZ[-n]$ non-trivially. This has homotopy groups
+    \[ \pi_*((H\Z[-n])_{hG}) = H_{*+n}(M, \Z^{w_1}) \]
+    given by homology with coefficients in the orientation cover. On homotopy groups, this map
+    \[ H_{*+n}(M, \Z^{w_1}) \xrightarrow{\sim} H^{-*}(M, \Z) \]
+    is simply Poincar\'e duality (at least if $M$ is orientable).
+\end{exm}
+
+If we replace $H\Z$ by any spectrum, we get Poincar\'e duality in arbitrary cohomology theories. If $X = BG$ is a finite CW complex, the norm equivalence is a generalized version of Poincar\'e duality
+\[ H_*(X, D_X) \to H^{-*}(X). \]
+This can be thought of as being analogous to Serre or Verdier duality in algebraic geometry. If $D_X$ is a parameterized sphere ($D_X = \bS[n]$ as underlying spectra), then this is equivalent to $X$ being a Poincar\'e duality space.
+
+\begin{thm}[Klein]
+    The natural transformation (called the \textit{assembly map})
+    \[ (D_G \otimes -)_{hG} \to (-)^{hG} \]
+    exhibits the functor $(D_G \otimes -)_{hG}$ as the universal functor over $(-)^{hG}$ which preserves colimits.
+\end{thm}
+
+Note that this uniquely determines the spectrum $D_G$ as an object of $\ms{Sp}^{BG}$.
+
+\begin{defn}
+    For an object $X \in \mc{C}^{BG}$, we define the \textit{Tate object} as the cofiber
+    \[ X^{tG} \coloneqq \ms{cofib}(\mr{Nm}_G). \]
+\end{defn}
+
+\begin{exm}
+    If $BG$ is finite, then $X^{tG} = 0$ for all $X$. If $G$ is finite and $X = HM$ for an abelian group $M$ with a $G$-action, then $(HM)^{tG}$ has homotopy groups given by the Tate cohomology
+    \[ \pi_* ((HM)^{tG}) = \hat{H}^{-*}(G, M) \]
+    of $G$ with coefficients in $M$.
+\end{exm}
+
+\begin{exer}
+    Work out what Tate cohomology is in terms of usual homology and cohomology.
+\end{exer}
+
+\begin{exm}
+    Suppose that $\mc{C}$ is a symmetric monoidal $\infty$-category such that the tensor product commutes with colimits in both variables separately. Then the functor
+    \[ (-)^{tG} \colon \mc{C}^{BG} \to \mc{C} \]
+    admits a (unique) lax symmetric monoidal structure such that the natural transformation
+    \[ (-)^{hG} \to (-)^{tG} \]
+    admits a refinement to a symmetric monoidal transformation.
+\end{exm}
+
+\begin{cor}
+    If $A \in \ms{Alg}_{\E_n}(\mc{C}^{BG}) \simeq \ms{Alg}_{\E_n}(\mc{C})^{BG}$, then $A^{hG} \to A^{tG}$ is a morphism of $\E_n$-algebras.
+\end{cor}
 
 \subsection{Tate diagonal}%
 \label{sub:Tate diagonal}
 
+The Tate diagonal is a surprising feature of the world of spectra. Before we discuss it, we will motivate it by discussing abelian groups.
+
+Let $A$ be an abelian group. If we try to write a map of sets
+\[ A \to A \otimes A, \qquad x \mapsto x\otimes x, \]
+this is not a homomorphism. For example, note that
+\[ (x+y) \otimes (x+y) = x \otimes x + y \otimes y + (x\otimes y + y \otimes x). \]
+Recall now that if $C_p$ is the cyclic group with $p$ elements, there is a norm map
+\[ N \colon (A^{\otimes p})_{C_p} \to (A^{\otimes p})^{C_p}, \qquad x_1 \otimes \cdots x_p \mapsto \sum_{\sigma \in C_p} x_{\sigma(1)} \otimes \cdots \otimes x_{\sigma(p)}. \]
+Note here that the error term of the map $x \mapsto x \otimes x$ is in the image of the norm map. Therefore, the ``diagonal'' $x \mapsto x \otimes \cdots \otimes x$ induces a homormorphism
+\[ A \to (A^{\otimes p})^{C_p}/N((A^{\otimes p})_{C_p}). \]
+This homomorphism in fact exhibits
+\[ (A^{\otimes p})^{C_p} / N((A^{\otimes p})_{C_p}) \cong A/p. \]
+
+\begin{exer}\leavevmode
+    \begin{enumerate}
+        \item Prove that $x \mapsto x^{\otimes p}$ induces a homomorphism
+        \[ A \to (A^{\otimes p})^{C_p}/N((A^{\otimes p})_{C_p}). \]
+        \item Prove that this homomorphism factors through an isomorphism
+        \[ A/p \xrightarrow{\sim} (A^{\otimes p})^{C_p}/N((A^{\otimes p})_{C_p}). \]
+    \end{enumerate}
+\end{exer}
+
+We will now discuss the analogous construction for spectra.
+\begin{thm}
+    There is a unique lax symmetric monoidal natural transformation
+    \[ X \to (X^{\otimes p})^{t C_p}. \]
+\end{thm}
+
+In the rest of this section, we will attempt to see where this comes from and understand some of its properties.
+
+\begin{lem}
+    The Singer construction
+    \[ X \mapsto (X^{\otimes p})^{t C_p} \]
+    is an exact functor.
+\end{lem}
+This result is particularly surprising because the $p$-th tensor power functor is not even additive.
+
+\begin{proof}
+    First, suppose $Y \simeq X \oplus Z$. By the binomial theorem, we have
+    \begin{align*}
+        (X \oplus Z)^{\otimes p} &= X^{\otimes p} \oplus Z^{\otimes p} \oplus \bigoplus_p (X^{\otimes (p-1)} \otimes Z) \oplus \bigoplus_{\binom{p}{2}} (X^{\otimes (p-2)} \otimes Z^{\otimes 2})\oplus \cdots
+    \end{align*}
+    On all of the non-pure terms, the action of $C_p$ on the connected components is free, so these terms are all induced modules over $C_p$. These terms vanish after taking Tate fixed points.
+
+    In general, consider a cofiber sequence $X \to Y \to Z$ as a ``two-stage filtration'' on $Y$ of the form
+    \begin{equation*}
+    \begin{tikzcd}
+        \cdots \ar{r} & 0 \ar{r} \ar{d} & X \ar{r} \ar{d} & Y \ar{d} \\
+        &  0 & X & Z,
+    \end{tikzcd}
+    \end{equation*}
+    where $Z$ appears as the associated graded term. We then obtain a filtration on $Y^{\otimes p}$ of the form
+    \[ X^{\otimes p} \to \bigoplus X^{\otimes (p-1)} \otimes Y \to \cdots \to \bigoplus X \otimes Y^{\otimes (p-1)} \to Y^{\otimes p}. \]
+    There is a monoidal structure on filtered objects called the \textit{Day convolution structure} which produces this diagram from our filtered object. The associated graded terms are given by
+    \[ X^{\otimes p}, \ldots, \bigoplus_p X \otimes Z^{\otimes (p-1)}, Z^{\otimes p}. \]
+    Applying Tate fixed points, the associated graded terms are now of the form
+    \[ (X^{\otimes p})^{tC_p}, 0, \ldots, 0, (Z^{\otimes p})^{t C_p}. \]
+    This implies that we have a cofiber sequence
+    \[ (X^{\otimes p})^{t C_p} \to (Y^{\otimes p})^{t C_p} \to (Z^{\otimes p})^{t C_p}. \qedhere \]
+\end{proof}
+
+\begin{rmk}
+    The Singer construction commutes with suspension as
+    \[ ((\Sigma X)^{\otimes p})^{t C_p} \simeq \Sigma (X^{\otimes p})^{t C_p}. \]
+    We can write
+    \[ (\Sigma X)^{\otimes p} \simeq \bS^p \otimes X^{\otimes p}, \]
+    but the action of $C_p$ involves a nontrivial action on $\bS^p$, where we take the suspension spectrum of the one-point compactification of the regular representation of $C_p$. In fact, we have $(\bS^p)^{t C_p} \simeq (\bS^1)^{t C_p}$, where $S^1$ has the trivial action.
+\end{rmk}
+
+\begin{lem}[Stable Yoneda Lemma]
+    Let $\mc{C}$ be a stable $\infty$-category. We consider the stable $\infty$-category $\ms{Fun}^{\ms{ex}}(\mc{C}, \ms{Sp})$ of exact functors to $\ms{Sp}$. Taking mapping spectra, there exists a natural equivalence
+    \[ \ms{map}_{\ms{Fun}^{\ms{ex}}(\mc{C}, \ms{Sp})} (\ms{map}(X, -), F) \simeq F(X). \]
+\end{lem}
+
+\begin{proof}[Proof sketch]
+    We will reduce this to the ordinary Yoneda lemma. A natural transformation $\ms{Map}(X, -) \to F$ is simply a sequence of natural transformations on the $n$-th underlying spaces with some compatibility conditions. More precisely, we have natural transformations
+    \[ \ms{map}(\Sigma^{-n} X, -) \to \Omega^{\infty} \Sigma^n F(-), \]
+    which by the ordinary Yoneda lemma yields a sequence of points in 
+    \[ \Omega^{\infty} \Sigma^n F(\Sigma^{-n} X)  \simeq \Omega^{\infty} F(X). \]
+    In other words, we have an equivalence of spaces
+    \[ \ms{Map}_{\ms{Fun}^{\ms{ex}}(\mc{C}, \ms{Sp})} (\ms{map}(X, -), F) \simeq \Omega^{\infty} F(X). \qedhere \]
+\end{proof}
+
+Therefore, natural transformations $X \to (X^{\otimes p})^{t C_p}$ correspond to maps $\bS \to (\bS^{\otimes p})^{t C_p} \simeq \bS^{t C_p}$. There is a natural choice of map like this given by
+\[ \bS \simeq \ms{map}(\Sigma_+^{\infty} \pt, \bS) \to \bS^{h C_p} \simeq \ms{map}(\Sigma_+^{\infty} C_p, \bS) \to \bS^{t C_p}. \]
+Note that there are other maps $\bS \to \bS^{t C_p}$, for example the zero map. However, we need a map which preserves the lax symmetric monoidal structure, and the unique such map is the one we have just given.
+
+\begin{lem}
+    The functor $\ms{map}(\bS, -)$ is initial among all lax symmetric monoidal exact functors $\ms{Sp} \to \ms{Sp}$.
+\end{lem}
+
+We are now ready to discuss some properties of the Tate diagonal. In particular, we will not prove anything.
+
+\begin{thm}
+    For a bounded below $X$, the morphism
+    \[ X \to (X^{\otimes p})^{t C_p} \]
+    exhibits $(X^{\otimes p})^{t C_p}$ as $X_p^{\sw}$. In particular, $(X^{\otimes p})^{t C_p}$ is bounded below.
+\end{thm}
+
+In particular, we see that $\bS^{t C_p} \simeq \bS_p^{\sw}$. This is completely different from Tate cohomology for abelian groups and is a special form of the Segal conjecture. Proofs of these results rely on the Adams spectral sequence because the Tate spectral sequences is too messy.
+
+The Tate construction also allows us to define a version of Frobenius on $\E_{\infty}$-ring spectra.
+\begin{defn}
+    For an $\E_{\infty}$-ring spectrum $R$, we have the \textit{Tate-valued Frobenius}
+    \[ R \xrightarrow{\Delta} (R^{\otimes p})^{t C_p} \xrightarrow{\mu^{t C_p}} R^{t C_p} \]
+    using the fact that multiplication $R^{\otimes p} \to R$ is equivariant. This follows from the fact that a morphism $(R^{\otimes p})_{h C_p} \to R$ is encoded in the definition of an $\E_{\infty}$-algebra.
+\end{defn}
+
+We should think about this as an analogue of the morphism
+\[ R \to R/p, \qquad x \mapsto x^p \]
+for an ordinary commutative ring $R$.
+
+\begin{exer}
+    Prove that it is necessary that $R$ is commutative and that the target is reduced by $p$. Also prove that $x \mapsto x^p$ is a ring homomorphism $R \to R/p$.
+\end{exer}
+
+Applying the Tate-valued Frobenius to
+\[ \ms{map}(\Sigma_+^{\infty} X, E) \]
+for some space $X$ and $\E_{\infty}$-algebra $E$, we obtain \textit{power operations}. For example, Steenrod operations and Adams operations arise in this way.
 
 
 
+\part{(Topological) cyclic homology}
 \section{Classical Hochschild and cyclic homology}%
 \label{sec:Classical Hochschild and cyclic homology}
 
@@ -960,7 +3518,7 @@ Note that this implies that
 In the anology between Hochschild homology and the de Rham complex, we will now discuss cyclic homology, which will be analogous to algebraic de Rham cohomology.
 
 We will work with derived functors in the category $\ms{DGMod}_A$. The homotopy theory we will work with is inverting quasi-isomorphisms, which means we will consider the $\infty$-category
-\[ \ms{Mod}_A(D(k)). \]
+\[ \ms{Mod}_A(\mc{D}(k)). \]
 
 \begin{defn}
     Let $R$ be a $k$-algebra.
@@ -1232,32 +3790,32 @@ Note that this notion doesn't really make sense for $\infty$-categories. Being g
 detect isomorphisms.
 
 We can now pass from $\mc{C}$ to the full subcategory on compact projective objects. If $\mc{C} = \ms{Set}$, then we get finite sets, and if $\ms{C} = \ms{Mod}_R$, then we get finitely generated projective modules. We can then construct the \textit{animation} of $\mc{C}$, which is given by
-\[ \ms{Anim}(\mc{C}) = \ms{Fun}^{\Pi} ((\mc{C}^{\ms{cp}})^{\op}, \mc{S}), \]
+\[ \ms{Ani}(\mc{C}) = \ms{Fun}^{\Pi} ((\mc{C}^{\ms{cp}})^{\op}, \mc{S}), \]
 where $\mc{S}$ denotes the $\infty$-category of anima (spaces or simplicial sets). Some properties of this include the following:
 \begin{itemize}
-    \item The category $\mc{C}^{\ms{cp}}$ of compact projective objects is a full subcategory of $\ms{Anim}(\mc{C})$, and so is the ind-category $\ms{Ind}(\mc{C}^{\ms{cp}})$.
+    \item The category $\mc{C}^{\ms{cp}}$ of compact projective objects is a full subcategory of $\ms{Ani}(\mc{C})$, and so is the ind-category $\ms{Ind}(\mc{C}^{\ms{cp}})$.
     \item A general object of $\mc{C}$ can be represented as the geometric realization of a simplicial diagram with entries in $\ms{Ind}(\mc{C}^{\ms{cp}})$.
     \item If $X$ is compact projective object of $\mc{C}$ and $Y_j$ are any ind-compact projective objects, then the mapping space
-    \[ \ms{Map}_{\ms{Anim}(\mc{C})} (X, \colim_{j \in \Delta^{\op}} Y_j) = \colim_{j \in \Delta^{\op}} \ms{Map}_{\ms{Anim}(\mc{C})} (X, Y_j) \]
+    \[ \ms{Map}_{\ms{Ani}(\mc{C})} (X, \colim_{j \in \Delta^{\op}} Y_j) = \colim_{j \in \Delta^{\op}} \ms{Map}_{\ms{Ani}(\mc{C})} (X, Y_j) \]
     is a simplicial set, so taking the geometric realization gives us a space.
 \end{itemize}
 
 \begin{exm}
-    If $\mc{C} = \ms{Set}$, functors are determined by their effect on the singleton set, so we just get $\ms{Anim}(\ms{Set}) = \ms{Spaces}$.
+    If $\mc{C} = \ms{Set}$, functors are determined by their effect on the singleton set, so we just get $\ms{Ani}(\ms{Set}) = \ms{Spaces}$.
 \end{exm}
 
 \begin{exm}
-    The \textit{non-negative derived category} $D(\mc{A})_{\geq 0}$ of an abelian category with enough compact projectives is equivalent to the animation $\ms{Anim}(\mc{A})$. One advantage of this description is that any functor out of $\ms{Anim}(\mc{A})$ preserving filtered colimits and reflexive coequalizers is simply a functor out of the $1$-category $\mc{C}^{\ms{cp}}$. For example, if we have a nonadditive functor
-    \[ F \colon \mc{A} \to \mc{B} (\hookrightarrow \ms{Anim}(\mc{B})), \]
+    The \textit{non-negative derived category} $\mc{D}(\mc{A})_{\geq 0}$ of an abelian category with enough compact projectives is equivalent to the animation $\ms{Ani}(\mc{A})$. One advantage of this description is that any functor out of $\ms{Ani}(\mc{A})$ preserving filtered colimits and reflexive coequalizers is simply a functor out of the $1$-category $\mc{C}^{\ms{cp}}$. For example, if we have a nonadditive functor
+    \[ F \colon \mc{A} \to \mc{B} (\hookrightarrow \ms{Ani}(\mc{B})), \]
     this will extend to a functor preserving filtered colimits and geometric realizations denoted by
-    \[ LF \colon \ms{Anim}(\mc{A}) \to \ms{Anim}(\mc{B}). \]
+    \[ LF \colon \ms{Ani}(\mc{A}) \to \ms{Ani}(\mc{B}). \]
 \end{exm}
 
 \begin{exm}
     For any commutative ring $R$, there is a functor
     \[ \Lambda_R^{n} \colon \ms{Mod}_R \to \ms{Mod}_R \]
     taking a module to its $n$-th exterior power. This is clearly nonadditive, but there is a derived functor
-    \[ L \Lambda_R^n \colon D(R)_{\geq 0} \to D(R)_{\geq 0}. \]
+    \[ L \Lambda_R^n \colon \mc{D}(R)_{\geq 0} \to \mc{D}(R)_{\geq 0}. \]
     We cannot compute by resolving chain complexes, so instead we will represent an object by a simplicial diagram of projective modules and then applying $\Lambda_R^n$ levelwise.
 
     For example, consider $R = \Z$. We will attempt to resolve $\Z/n$, and this is resolved by the chain complex
@@ -1291,31 +3849,31 @@ where $\mc{S}$ denotes the $\infty$-category of anima (spaces or simplicial sets
 
 One advantage of this animation language is that we can discuss animation for categories which have no linear structure. For example, we have
 \begin{align*}
-    \ms{Anim}(\ms{cRing}) &= \ms{Fun}^{\Pi} ((\ms{cRing}^{\ms{cp}})^{\op}, \mc{S}) \\
+    \ms{Ani}(\ms{cRing}) &= \ms{Fun}^{\Pi} ((\ms{cRing}^{\ms{cp}})^{\op}, \mc{S}) \\
     &\cong \ms{Fun}^{\Pi}((\ms{Poly}^{\ms{fg}})^{\op}, \mc{S}).
 \end{align*}
 Clearly we see that the ind-compact projective objects
 \[ \ms{Ind}(\ms{cRing}^{\ms{cp}}) = \ms{Poly} \]
 are simply all polynomial rings. Therefore, we will represent objects by simplicial diagrams of polynomial rings. For example, we have
 \begin{align*}
-    \ms{Map}_{\ms{Anim}(\ms{cRing})}(\Z[x], \colim_{\Delta^{\op}} Y_i) = \colim_{\Delta^{\op}} Y_i
+    \ms{Map}_{\ms{Ani}(\ms{cRing})}(\Z[x], \colim_{\Delta^{\op}} Y_i) = \colim_{\Delta^{\op}} Y_i
 \end{align*}
 extracts the underlying simplicial set (in fact a simplicial abelian group). This give some version of non-negative complexes with ring structure.
 
 \begin{warn}
-    This \textbf{does not} agree with commutative ring objects in $D(\Z)$.
+    This \textbf{does not} agree with commutative ring objects in $\mc{D}(\Z)$.
 \end{warn}
 
 The universal property is that
 \begin{align*}
-    \ms{Fun}^{\mr{geom,filtered}}(\ms{Anim}(\ms{cRing}), \mc{D}) &= \ms{Fun}(\ms{Poly}^{\ms{fg}}, \mc{D}) \\
+    \ms{Fun}^{\mr{geom,filtered}}(\ms{Ani}(\ms{cRing}), \mc{D}) &= \ms{Fun}(\ms{Poly}^{\ms{fg}}, \mc{D}) \\
     &= \ms{Fun}^{\mr{filtered}}(\ms{Poly}, \mc{D}).
 \end{align*}
 This allows us to define nonabelian derived functors by defining functors on polynomial rings which preserve filtered colimits.
 
 \begin{exm}
-    The functor $\HH(-/\Z) \colon \ms{Poly} \to D(\Z)_{\geq 0}$ commutes with filtered colimits. Therefore, it extends to a functor
-    \[ L\HH \colon \ms{Anim}(\ms{cRing}) \to D(\Z)_{\geq 0}. \]
+    The functor $\HH(-/\Z) \colon \ms{Poly} \to \mc{D}(\Z)_{\geq 0}$ commutes with filtered colimits. Therefore, it extends to a functor
+    \[ L\HH \colon \ms{Ani}(\ms{cRing}) \to \mc{D}(\Z)_{\geq 0}. \]
     If we apply it to an ordinary commutative ring, this agrees with our previous definiion of Hochschild homology. In fact, it agrees for all animated rings by considering the associated dg-algebra.
 \end{exm}
 
@@ -1328,7 +3886,7 @@ This allows us to define nonabelian derived functors by defining functors on pol
 \end{quest}
 
 \begin{con}
-    For any $C \in D(\Z)$, we can cut off homology groups using the functor $\tau_{\geq n} \colon D(\Z) \to D(\Z)$. This produces a map
+    For any $C \in \mc{D}(\Z)$, we can cut off homology groups using the functor $\tau_{\geq n} \colon \mc{D}(\Z) \to \mc{D}(\Z)$. This produces a map
     \[ \tau_{\geq n} C \to C \]
     which has the following properties:
     \begin{itemize}
@@ -1339,7 +3897,7 @@ This allows us to define nonabelian derived functors by defining functors on pol
 \end{con}
 
 \begin{exer}
-    Construct the functor $\tau_{\geq n} \colon D(\Z) \to D(\Z)$ using an adjunction.
+    Construct the functor $\tau_{\geq n} \colon \mc{D}(\Z) \to \mc{D}(\Z)$ using an adjunction.
 \end{exer}
 We in fact have a map $\tau_{\geq n+1} C \to \tau_{\geq n} C$, and the cofiber is given by
 \[ \on{Cofiber}(\tau_{\geq n+1} C \to \tau_{\geq n} C) \simeq H_n(C) [n]. \]
@@ -1357,7 +3915,7 @@ Therefore, we can try to compute Hochschild homology using the machinery of nona
 
 \begin{defn}
     We define
-    \[ F^n_{\ms{HKR}} \HH(-/\Z) \colon \ms{Anim}(\ms{cRing}) \to D(\Z)_{\geq 0} \]
+    \[ F^n_{\ms{HKR}} \HH(-/\Z) \colon \ms{Ani}(\ms{cRing}) \to \mc{D}(\Z)_{\geq 0} \]
     as the geometric realization preserving extension of $\tau_{\geq n} \HH(-/\Z)$ from $\ms{Poly}$.
 \end{defn}
 
@@ -1366,12 +3924,12 @@ We see that there is a cofiber sequence
 for any animated ring $R$.
 
 \begin{lem}
-    The nonabelian derived functor $F^n_{\ms{HKR}}(-/\Z)$ lands in $D(\Z)_{\geq n}$. More precisely, for any animated ring $R$, we have
-    \[ F^n_{\ms{HKR}} \HH(R/\Z) \in D(\Z)_{\geq n}. \]
+    The nonabelian derived functor $F^n_{\ms{HKR}}(-/\Z)$ lands in $\mc{D}(\Z)_{\geq n}$. More precisely, for any animated ring $R$, we have
+    \[ F^n_{\ms{HKR}} \HH(R/\Z) \in \mc{D}(\Z)_{\geq n}. \]
 \end{lem}
 
 \begin{proof}
-    The lemma clearly holds for polynomial rings, and the extension to everything else follows from the fact that $D(\Z)_{\geq n}$ is closed under filtered colimits.
+    The lemma clearly holds for polynomial rings, and the extension to everything else follows from the fact that $\mc{D}(\Z)_{\geq n}$ is closed under filtered colimits.
 \end{proof}
 
 \begin{lem}
@@ -1433,13 +3991,13 @@ We are now ready to give an enhanced version of~\Cref{thm:hkr}.
 \end{proof}
 
 To better understand this, we need to better understand $L\Omega^n_{R/\Z}$. This will in fact agree with the value on $R$ of the nonabelian derived functor
-\[ \ms{Anim}(\ms{cRing}/R) \to D(R)_{\geq 0} \to D(\Z)_{\geq 0} \]
+\[ \ms{Ani}(\ms{cRing}_{/R}) \to \mc{D}(R)_{\geq 0} \to \mc{D}(\Z)_{\geq 0} \]
 which is given by
 \[ A \mapsto R \otimes_A \Omega_{A/\Z}^n \]
-for $A \in \ms{Poly}/R$. By definition, we have
+for $A \in \ms{Poly}_{/R}$. By definition, we have
 \[ R \otimes_A \Omega^n_{A/\Z} \simeq \Lambda_R^n (R \otimes_A \Omega^1_{A/\Z}). \]
 \begin{exer}
-    Check that $A \mapsto R \otimes_A \Omega^1_{A/k}$ takes compact projective objects in $k\ms{-Alg}/R$ to compact projective objects in $\ms{Mod}_R$.
+    Check that $A \mapsto R \otimes_A \Omega^1_{A/k}$ takes compact projective objects in $k\ms{-Alg}_{/R}$ to compact projective objects in $\ms{Mod}_R$.
 \end{exer}
 Applying nonabelian derived functors, we obtain
 \[ L\Omega^n_{R/\Z} = L \Lambda^n_R (L \Omega^1_{R/\Z}). \]
@@ -1477,7 +4035,7 @@ Let $k$ be a commutative ring and $X$ be a scheme over $k$. We could in principl
 
 \begin{defn}
     For a scheme $X$, we define its \textit{Hochschild homology} by
-    \[ \HH(X/k) = \lim_{\substack{U \subseteq X \\ U \text{ affine open}}} \HH(\mc{O}(U)/k) \in D(k). \]
+    \[ \HH(X/k) = \lim_{\substack{U \subseteq X \\ U \text{ affine open}}} \HH(\mc{O}(U)/k) \in \mc{D}(k). \]
 \end{defn}
 
 Note that if $X = \Spec R$ is affine, then
@@ -1507,7 +4065,7 @@ We will hope for some kind of descent of Mayer-Vietoric sequence.
         \HH(V/k) \ar{r} & \HH((U \cap V)/k)
     \end{tikzcd}
     \end{equation*}
-    is a pullback in $D(k)$. In other words, Hochschild homology satisfies Zariski descent.
+    is a pullback in $\mc{D}(k)$. In other words, Hochschild homology satisfies Zariski descent.
 \end{thm}
 
 \begin{rmk}
@@ -1575,7 +4133,7 @@ Therefore, it is easy to compute
         where $1 \in (x,y)$. Using the fact that Hochschild homology commutes with localization, this becomes
         \begin{equation*}
             \begin{tikzcd}
-                \HH(R/k) \ar{r} \ar{d} & \HH(R]/k) \otimes_R R[x^{-1}] \ar{d} \\
+                \HH(R/k) \ar{r} \ar{d} & \HH(R/k) \otimes_R R[x^{-1}] \ar{d} \\
                 \HH(R/k) \otimes_R R[y^{-1}] \ar{r} & \HH(R/k) \otimes_R R[x^{-1}, y^{-1}].
             \end{tikzcd}
         \end{equation*}
@@ -1772,16 +4330,16 @@ We now need to make sure that this divided power structure behaves well with res
 \label{sub:Definition of the cotangent complex}
 
 Recall that we defined
-\[ L \Omega^1_{-/k} \colon \ms{Anim}(k\ms{-alg}) \to D(\Z)_{\geq 0} \] as the nonabelian derived functor of
+\[ L \Omega^1_{-/k} \colon \ms{Ani}(k\ms{-alg}) \to \mc{D}(\Z)_{\geq 0} \] as the nonabelian derived functor of
 \[ \Omega^1 \colon k\ms{-alg} \to \ms{Ab}. \]
 
 \begin{lem}
     The following constructions agree:
     \begin{enumerate}
         \item The functor 
-        \[ L \Omega^1_{-/k} \colon \ms{Anim}(k\ms{-alg}) \to D(\Z)_{\geq 0} \] evaluated on $R$;
+        \[ L \Omega^1_{-/k} \colon \ms{Ani}(k\ms{-alg}) \to \mc{D}(\Z)_{\geq 0} \] evaluated on $R$;
         \item The functor 
-        \[ L (A \mapsto R \otimes_A \Omega^1_{A/k}) \colon \ms{Anim}(k\ms{-alg}/R) \to D(R)_{\geq 0} \]
+        \[ L (A \mapsto R \otimes_A \Omega^1_{A/k}) \colon \ms{Ani}(k\ms{-alg}_{/R}) \to \mc{D}(R)_{\geq 0} \]
         evaluated on $R$.
     \end{enumerate}
 \end{lem}
@@ -1808,14 +4366,14 @@ The second functor has better categorical properties than the first. Namely, it 
         k \ar{r} & R
     \end{tikzcd}
     \end{equation*}
-    is a pushout in $\ms{Anim}(k\ms{-alg}/R)$. The functor $L(R \otimes_{\bullet} \Omega^1_{\bullet/k})$ takes this to
+    is a pushout in $\ms{Ani}(k\ms{-alg}_{/R})$. The functor $L(R \otimes_{\bullet} \Omega^1_{\bullet/k})$ takes this to
     \begin{equation*}
     \begin{tikzcd}
         R\ab\{\d{f_1}, \ldots, \d{f_m} \}  \ar{r} \ar{d} & R \ab\{ \d{x_1}, \ldots, \d{x_n}\} \ar{d} \\
          0 \ar{r} & L \Omega^1_{R/k},
     \end{tikzcd}
     \end{equation*}
-    where the top arrow is the Jacobian matrix of $f_1, \ldots, f_m$. This is also a pushout in $D(R)_{\geq 0}$, and therefore $L\Omega^1_{R/k}$ has as $H_0$ and $H_1$ the cokernel and kernel of the Jacobian matrix.
+    where the top arrow is the Jacobian matrix of $f_1, \ldots, f_m$. This is also a pushout in $\mc{D}(R)_{\geq 0}$, and therefore $L\Omega^1_{R/k}$ has as $H_0$ and $H_1$ the cokernel and kernel of the Jacobian matrix.
 \end{exm}
 
 \begin{defn}
@@ -1843,9 +4401,9 @@ These lifts correspond to $\varphi$-linear derivations $R \to M$, which are simp
 
 \begin{prop}
     There exists a functor
-    \[ D(S)_{\geq 0} \to \ms{Anim}(k\ms{-alg})/S \]
+    \[ \mc{D}(S)_{\geq 0} \to \ms{Ani}(k\ms{-alg})/S \]
     which sends a projective module $P$ to the square-zero extension $S \oplus P$. We have equivalences of mapping spaces
-    \[ \ms{Map}_{D(R)_{\geq 0}} (L_{R/k}, \varphi_* M) \simeq \on{Fiber} \ab(\begin{matrix}\ms{Map}_{\ms{Anim}(k\ms{-alg})}(R, S \oplus M) \\ \downarrow \\ \ms{Map}_{\ms{Anim}(k\ms{-alg})}(R,S)\end{matrix}). \]
+    \[ \ms{Map}_{\mc{D}(R)_{\geq 0}} (L_{R/k}, \varphi_* M) \simeq \on{Fiber} \ab(\begin{matrix}\ms{Map}_{\ms{Ani}(k\ms{-alg})}(R, S \oplus M) \\ \downarrow \\ \ms{Map}_{\ms{Ani}(k\ms{-alg})}(R,S)\end{matrix}). \]
 \end{prop}
 
 We would now like to apply this to study ordinary rings. Given a surjective $\tilde{R} \to R$ whose kernel $I$ satisfies $I^2 = 0$, we will call this a \textit{(not necessarily split) square-zero extension}. One example of a non-split square-zero extension is
@@ -1893,11 +4451,11 @@ If we unwrap everything, we see that a lift exists if and only if the map
 is nullhomotopic. Furthermore, lifts are in correspondence to choices of nullhomotopies. These form a torsor over $\pi_1(\ms{Map}(L_{S/k}, I[1]))$. We therefore see that
 \begin{itemize}
     \item The possible square-zero extensions $\tilde{R}$ are classified by
-    \[ \pi_0 \ms{Map}_{D(R)} (L_{R/k}, I[1]); \]
+    \[ \pi_0 \ms{Map}_{\mc{D}(R)} (L_{R/k}, I[1]); \]
     \item For a given $\tilde{R}$ and $S \to R$, there is an obstruction living in
-    \[ \pi_0 \ms{Map}_{D(S)} (L_{S/k}, I[1]). \]
+    \[ \pi_0 \ms{Map}_{\mc{D}(S)} (L_{S/k}, I[1]). \]
     \item If lifts do exist, they are parameterized by
-    \[ \pi_1 \ms{Map}_{D(S)} (L_{S/k}, I[1]) \simeq \pi_0 \ms{Map}_{D(S)}(L_{S/k}, I). \]
+    \[ \pi_1 \ms{Map}_{\mc{D}(S)} (L_{S/k}, I[1]) \simeq \pi_0 \ms{Map}_{\mc{D}(S)}(L_{S/k}, I). \]
 \end{itemize}
 
 \begin{exer}
@@ -1929,14 +4487,14 @@ We will characterize $R_n$ as a non-split square-zero extension of $R_{n-1}$ by 
 with $R_n$ gives us
 \[ 0 \to R_1 \to R_n \to R_{n-1} \to 0. \]
 These extensions are classified by
-\[ \pi_0 \ms{Map}_{D(R_{n-1})} (L_{R_{n-1}/\Z}, R_1 [1]). \]
+\[ \pi_0 \ms{Map}_{\mc{D}(R_{n-1})} (L_{R_{n-1}/\Z}, R_1 [1]). \]
 They also need to be compatible with the element of
-\[ \pi_0 \ms{Map}_{D(\Z/p^{n-1})}(L_{(\Z/p^{n-1})/\Z}, \Z/p[1]) \]
+\[ \pi_0 \ms{Map}_{\mc{D}(\Z/p^{n-1})}(L_{(\Z/p^{n-1})/\Z}, \Z/p[1]) \]
 classifying $\Z/p^n \to \Z/p^{n-1}$.
 
 \begin{lem}
     Isomorphism classes of such $R_n$ form a torsor over
-    \[ \pi_0 \ms{Map}_{D(R_{n-1})} (L_{R_{n-1}/\Z/p^{n-1}}, R_n[1]) \simeq \pi_0 \ms{Map}_{D(R_1)} (L_{R_1/\F_p}, R_1[1]). \]
+    \[ \pi_0 \ms{Map}_{\mc{D}(R_{n-1})} (L_{R_{n-1}/\Z/p^{n-1}}, R_n[1]) \simeq \pi_0 \ms{Map}_{\mc{D}(R_1)} (L_{R_1/\F_p}, R_1[1]). \]
 \end{lem}
 
 \begin{lem}
