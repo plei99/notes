@@ -1,4 +1,7 @@
-\documentclass[10pt]{amsart}
+% !TEX program = latexmk
+% !TEX options = -xelatex -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
+\documentclass[10pt,oldfontcommands,oneside]{memoir}
+\usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -16,8 +19,7 @@
 \usepackage{listings}
 \usepackage{mdframed}
 \usepackage{verbatim}
-\usepackage{physics2}
-\usephysicsmodule{ab,ab.legacy,diagmat,xmat,op.legacy}
+
 \usepackage{derivative}
 \usepackage{fixdif}
 \usepackage{stmaryrd}
@@ -27,17 +29,17 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-% \usepackage[sc]{mathpazo}
-% \usepackage{inconsolata}
+\usepackage{fontspec}
+\setmainfont{Palatino}
+\setsansfont{Optima}
+\usepackage{unicode-math}
+\setmathfont{Asana-Math.otf}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfaily]{Scale=1}
 \usepackage{microtype}
-% \usepackage{fontspec} 
-% \setmainfont{Tex Gyre Pagella}
-% \usepackage[OT1,euler-digits]{eulervm}
-% \usepackage{euler-math} 
-% \usepackage[scaled=0.86]{berasans}
-% \let\sffamilyold\sffamily
-% \def\sffamily{\fontencoding{T1}\sffamilyold}
-% \setmonofont{Inconsolatazi4}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat,op.legacy}
+
 
 %CS packages
 \usepackage{algorithmicx}
@@ -70,10 +72,10 @@
 \usepackage[shortlabels]{enumitem}
 \setitemize{noitemsep}
 \usepackage{csquotes}
-%\usepackage{titlesec}
-%\usepackage{titling}
-%\usepackage{fancyhdr}
-%\usepackage{lastpage}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 % \usepackage{parskip}
 \newlist{mydescription}{description}{1}
 \setlist[mydescription]{style=nextline,
@@ -176,7 +178,7 @@
 \newcommand{\ut}{\ul{t}}
 \newcommand{\uz}{\ul{z}}
 \newcommand{\ur}{\ul{j}}
-\newcommand{\btau}{\bm{\tau}}
+\newcommand{\btau}{\symbfit{\tau}}
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\on}[1]{\operatorname{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
@@ -194,7 +196,7 @@
 \newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
 \renewcommand{\v}{\mbf{v}}
 \newcommand{\w}{\mbf{w}}
-\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bmu}{\symbfit{\mu}}
 \newcommand{\pre}{\mr{pre}}
 \newcommand{\vir}{\mr{vir}}
 \newcommand{\red}{\mr{red}}
@@ -210,7 +212,7 @@
 \newcommand{\IIA}{\ms{IIA}}
 \newcommand{\IIB}{\ms{IIB}}
 \newcommand{\QM}{\ms{QM}}
-\newcommand{\cs}{\ms{cs}}
+\newcommand{\scs}{\ms{cs}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Tor}{Tor}
@@ -241,64 +243,179 @@
 \DeclareMathOperator{\Cont}{Cont}
 \DeclareMathOperator{\Crit}{Crit}
 
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftchapterfont}{\hfill\Large\bfseries}
+\renewcommand*{\cftsectionfont}{\hfill\bfseries}
+\renewcommand*{\cftsubsectionfont}{\hfill\itshape}
+\makeatletter
+\renewcommand*{\cftchapterformatpnum}[1]{%
+~\textbullet~\cftchapterformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftchapterpagefont #1}}}
+\renewcommand*{\cftsectionformatpnum}[1]{%
+~\textbullet~\cftsectionformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftsectionpagefont #1}}}
+\renewcommand*{\cftsubsectionformatpnum}[1]{%
+~\textbullet~\cftsubsectionformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftsubsectionpagefont #1}}}
+\makeatother
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{0.25\textwidth}
+\setsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\chapterstyle{demo2}
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[C]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+\fancypagestyle{frontmatter}
+{
+   \fancyhf{}
+   \fancyfoot[C]{\itshape \thepage}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+\pagestyle{frontmatter}
+
 \addbibresource{./hg.bib}
 
-\title[Higher-genus GW of compact CY3]{Notes on the higher-genus Gromov-Witten theory of compact Calabi-Yau threefolds}
+\newcommand*{\titleGWP}{\begingroup% Gawain Poet
+%\FSfont{5gm}% FontSite Garamond
+\newlength{\drop}
+\setlength{\drop}{0.1\textheight}
+\vspace*{\drop}
+\begin{center}
+%\FSfont{5ci}% FontSite Cipollini
+\Huge\color{violet}
+NOTES ON THE HIGHER GENUS GROMOV-WITTEN THEORY OF CALABI-YAU THREEFOLDS
+\end{center}
+\vfill
+\begin{center}
+{\includegraphics[width=0.5\textwidth]{CalabiYau5}}
+\end{center}
+\vfill
+\begin{center}
+\large
+{\itshape Lectures in January 2025 at the Simons Center for Geometry and Physics \\
+\normalsize
+Notes by Patrick Lei} \\
+{\color{violet} \rule{\textwidth}{0.4pt}}
+WHAT'S A PUBLISHER?
+\end{center}
+\vspace*{0.5\drop}
+\endgroup}
+
+\title{Notes on the higher-genus Gromov-Witten theory of compact Calabi-Yau threefolds}
 \author{Patrick Lei}
 \date{January 2025}
 \allowdisplaybreaks
 \setcounter{MaxMatrixCols}{12}
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{frontmatter}}}
 
 \begin{document}
     
-\begin{abstract}
-    These notes, taken during the first two weeks of the program \href{https://scgp.stonybrook.edu/archives/42649}{Recent developments in higher genus curve counting} at the Simons Center for Geometry and Physics, explain how to prove important structural results in the higher-genus Gromov-Witten theory of compact Calabi-Yau threefolds. 
-\end{abstract}
 
-\maketitle
 
-\tableofcontents
+\titleGWP\thispagestyle{empty}
+\newpage
+\ \thispagestyle{empty}
+\newpage
 
-\section{Introduction}%
+\frontmatter
+\chapter*{Preface}\thispagestyle{frontmatter}
 \label{sec:Introduction}
+\addcontentsline{toc}{chapter}{Preface}
+
+These notes, taken during the first two weeks of the program \href{https://scgp.stonybrook.edu/archives/42649}{Recent developments in higher genus curve counting} at the Simons Center for Geometry and Physics, explain how to prove important structural results in the higher-genus Gromov-Witten theory of compact Calabi-Yau threefolds. 
 
 One of the oldest problems in Gromov-Witten theory is to compute the Gromov-Witten invariants of compact Calabi-Yau threefolds. While there are a variety of physical methods which have allowed physicists to make spectacular predictions in a wide range of examples, mathematical progress has often been frustratingly slow due to a lack of satisfactory tools to attack the problem with. To illustrate this, we will briefly outline some developments in mathematics regarding Calabi-Yau threefolds with $h^2 = 1$ which arise as complete intersections in weighted projective space.
-\begin{itemize}
-    \item For complete intersections in projective space, a genus-zero mirror theorem was proved by Givental in 1996 and Lian-Liu-Yau in 1997~\cite{eqgwinv,lly}.
-    \item For complete intersections in weighted projective space, a genus-zero mirror theorem was proved by Coates-Corti-Lee-Tseng in 2006 in the convex case and by Jun Wang in 2019 in the non-convex case~\cite{orbqcohwproj,mirrornonconvex}. The main difficulty in the non-convex case is the failure of the quantum Lefschetz theorem~\cite{qrr}, which is the main tool used in~\cite{eqgwinv,lly,orbqcohwproj}.
-    \item Meanwhile, a genus-one mirror theorem was proved for the quintic by Zinger in 2007 and for complete intersections in projective space by Popa in 2010~\cite{reducedgenus1,popagenus1ci}. This used the theory of reduced invariants developed by Vakil-Zinger and Li-Zinger~\cite{desingularizationgenusone,g1cilizinger}, which is a technique of performing birational modifications to the main component of the moduli space of stable maps to force the quantum Lefschetz theorem to hold so that computations can be performed using virtual localization~\cite{virtloc}. Unfortunately, to this date no computations have been successfully performed using reduced invariants since.
-    \item Another way to force the quantum Lefschetz theorem to hold is to consider the theory of GLSMs~\cite{mirrorandglsm}, which were constructed mathematically by various authors during the 2010s~\cite{glsm,faverokim}. Unfortunately, the virtual cycle is supported on the moduli space of stable maps to the threefold, which does not carry a torus action.
-    \item For the quintic, the ambient space of the relevant GLSM is the total space of $\mc{O}_{\P^4}(-5)$. A standard way to gain a torus action is to compactify the moduli space at infinity and consider relative (or logarithmic) invariants. This leads to the theory of logarithmic GLSMs, which was introduced by Chen-Janda-Ruan in 2019~\cite{logglsm}. Before this, Guo-Janda-Ruan used this theory~\cite{puncturedlogr}, including still conjectural foundational results~\cite{structurelog1,structurelog3}, to prove a genus-two mirror theorem for the quintic in 2017 (up to the fact that the moduli space used in their 2017 paper is still not defined) and to prove the Yamaguchi-Yau finite generation conjecture, holomorphic anomaly equations, and orbifold regularity (as well as the conifold gap condition in low genus) for the quintic~\cite{genus2logglsm,bcovlogglsm}.
-    \item Because a GLSM is an enumerative theory of a critical locus in a GIT quotient, it depends on a stability parameter. We can vary the stability parameter and construct a master theory following the master space construction of Thaddeus~\cite{gitflips}. This leads to the theory of Mixed-Spin-P fields, which was first constructed by Chang-Li-Li-Liu in 2015 (for the quintic only)~\cite{mspfermat,msp2}. Unfortunately, the original theory is impossible to compute with when $g \geq 2$, so a parameter $N$ was introduced by Chang-Guo-Li-Li in 2018~\cite{nmsp}. In the same year, Chang-Guo-Li proved the Yamaguchi-Yau finite generation conjecture, BCOV Feynman rule, and holomorphic anomaly equations for the quintic threefold~\cite{nmsp2,nmsp3}. These results were generalized to hypersurfaces in weighted projective space by the author in 2024~\cite{polynomiality,bcovme}.
-    \item A genus-one mirror theorem for hypersurfaces in weighted projective space was finally proved in 2024 by the author using the theory of Mixed-Spin-P fields~\cite{polynomiality}.
-    \item The Castelnuovo bound was proved in 2022 by Liu-Ruan~\cite{castelnuovoquintic} for any Calabi-Yau threefold satisfying a conjectural Bogomolov-Gieseker-type inequality (including the quintic) due to Bayer-Macri-Toda~\cite{bmt} and a weaker version of the result was proved by Zhiyu Liu in 2024~\cite{castelnuovogeneral} without assuming the conjectural inequality. These results were obtained using the GW/DT correspondence~\cite{mnop1,mnop2}, which was proved for complete intersections in products of projective spaces by Pandharipande-Pixton in 2012~\cite{ppquintic} and for all Calabi-Yau threefolds by Pardon in 2023~\cite{universalcount}.
-\end{itemize}
+
+For complete intersections in projective space, a genus-zero mirror theorem was proved by Givental in 1996 and Lian-Liu-Yau in 1997~\cite{eqgwinv,lly}.
+For complete intersections in weighted projective space, a genus-zero mirror theorem was proved by Coates-Corti-Lee-Tseng in 2006 in the convex case and by Jun Wang in 2019 in the non-convex case~\cite{orbqcohwproj,mirrornonconvex}. The main difficulty in the non-convex case is the failure of the quantum Lefschetz theorem~\cite{qrr}, which is the main tool used in~\cite{eqgwinv,lly,orbqcohwproj}.
+
+Meanwhile, a genus-one mirror theorem was proved for the quintic by Zinger in 2007 and for complete intersections in projective space by Popa in 2010~\cite{reducedgenus1,popagenus1ci}. This used the theory of reduced invariants developed by Vakil-Zinger and Li-Zinger~\cite{desingularizationgenusone,g1cilizinger}, which is a technique of performing birational modifications to the main component of the moduli space of stable maps to force the quantum Lefschetz theorem to hold so that computations can be performed using virtual localization~\cite{virtloc}. Unfortunately, to this date no computations have been successfully performed using reduced invariants since.
+
+Another approach is to consider the theory of GLSMs~\cite{mirrorandglsm}, which were constructed mathematically by various authors~\cite{glsm,faverokim} during the 2010s. Unfortunately, the virtual cycle is supported on the moduli space of stable maps to the threefold, which does not carry a torus action.
+For the quintic, the ambient space of the relevant GLSM is the total space of $\mc{O}_{\P^4}(-5)$. A standard way to gain a torus action is to compactify the moduli space at infinity and consider relative (or logarithmic) invariants. This leads to the theory of logarithmic GLSMs, which was introduced by Chen-Janda-Ruan in 2019~\cite{logglsm}. Before this, Guo-Janda-Ruan used this theory~\cite{puncturedlogr}, including still conjectural foundational results~\cite{structurelog1,structurelog3}, to prove a genus-two mirror theorem for the quintic in 2017 (up to the fact that the moduli space used in their 2017 paper is still not defined) and to prove the Yamaguchi-Yau finite generation conjecture, holomorphic anomaly equations, and orbifold regularity (as well as the conifold gap condition in low genus) for the quintic~\cite{genus2logglsm,bcovlogglsm}.
+
+Because a GLSM is an enumerative theory of a critical locus in a GIT quotient, it depends on a stability parameter. We can vary the stability parameter and construct a master theory following the master space construction of Thaddeus~\cite{gitflips}. This leads to the theory of Mixed-Spin-P fields, which was first constructed by Chang-Li-Li-Liu in 2015 (for the quintic only)~\cite{mspfermat,msp2}. Unfortunately, the original theory is impossible to compute with when $g \geq 2$, so a parameter $N$ was introduced by Chang-Guo-Li-Li in 2018~\cite{nmsp}. In the same year, Chang-Guo-Li proved the Yamaguchi-Yau finite generation conjecture, BCOV Feynman rule, and holomorphic anomaly equations for the quintic threefold~\cite{nmsp2,nmsp3}. These results were generalized to hypersurfaces in weighted projective space by the author in 2024~\cite{polynomiality,bcovme}, where a genus-one mirror theorem was also proved.
+
+The Castelnuovo bound was proved in 2022 by Liu-Ruan~\cite{castelnuovoquintic} for any Calabi-Yau threefold satisfying a conjectural Bogomolov-Gieseker-type inequality (including the quintic) due to Bayer-Macri-Toda~\cite{bmt} and a weaker version of the result was proved by Zhiyu Liu in 2024~\cite{castelnuovogeneral} without assuming the conjectural inequality. These results were obtained using the GW/DT correspondence~\cite{mnop1,mnop2}, which was proved for complete intersections in products of projective spaces by Pandharipande-Pixton in 2012~\cite{ppquintic} and for all Calabi-Yau threefolds by Pardon in 2023~\cite{universalcount}.
 
 As we can see, two major breakthroughs were made around the year 2018, when mathematicians discovered ways which make proving results about Gromov-Witten invariants in arbitrary genus tractable.\footnote{Considering that the progress had been approximately one genus every decade, the existence of such breakthroughs is implied by the existence of these notes prior to the year 2027, or really at all.} These notes explain how to use these new ideas to prove the most important conjectures which are provided to us by physicists, namely the Yamaguchi-Yau finite generation conjecture and the holomorphic anomaly equations.~\Cref{pt:prelim} covers the B-model topological string and the Givental formalism,~\Cref{pt:logglsm} covers log GLSMs, and~\Cref{pt:msp} covers Mixed-Spin-P fields. We will cover both the foundational theory and the calculations in both approaches -- in particular,~\Cref{sec:Foundationslogglsm} and~\Cref{sec:Prehistory} discuss the geometry of the log GLSM and MSP moduli spaces while~\Cref{sec:Calculationslogglsm} and~\Cref{sec:Applications to Gromov-Witten theory} discuss calculations. 
 
 \subsection*{Author's note}%
 \label{sub:Disclaimer}
+\addcontentsline{toc}{subsection}{Author's note}
 
 In contrast to the genus zero situation, not much is known about higher-genus Gromov-Witten theory. This is in part because there are significantly fewer tools to study higher-genus invariants, and the ones which do exist seem to be considered extremely inaccessible. It is my sincere hope that these notes can help make the subject more accessible. 
 
 All errors are the sole responsibility of the author. Please email me if you find any mistakes or typos in these notes.
 
-The names next to section titles indicate that the material in that part of the notes comes from talks given by that speaker. The notes from the lectures by Albrecht Klemm were taken partly during the lecture and partly by watching the videos on the SCGP website, the notes from my lectures are slightly expanded versions of my lecture notes, and the notes from all other lectures were taken during the lecture, with some material being provided by the speakers after their lectures. All references were added after the lectures.
+The lectures were divided as in~\Cref{tab:lectures}. The notes from the lectures by Albrecht Klemm were taken partly during the lecture and partly by watching the videos on the SCGP website, the notes from my lectures are slightly expanded versions of my lecture notes, and the notes from all other lectures were taken during the lecture, with some material being provided by the speakers after their lectures. All references were added after the lectures.
+
+\begin{table}[htpb]
+    \centering
+    \caption{Schedule of lectures}
+    \label{tab:lectures}
+
+    \begin{tabular}{cccc}
+        \toprule
+        Date & Time & Subject & Speaker(s) \\
+        \midrule
+        \textsf{1/6/25} & \textsf{9:30} & Log GLSM foundations I & Qile Chen \\
+        \textsf{1/6/25} & \textsf{11:30} & Givental formalism I & Patrick Lei \\
+        \textsf{1/7/25} & \textsf{9:30} & Log GLSM foundations II & Qile Chen \\
+        \textsf{1/7/25} & \textsf{11:30} & Givental formalism II & Patrick Lei \\
+        \textsf{1/8/25} & \textsf{9:30} & Log GLSM foundations III & Qile Chen \\
+        \textsf{1/9/25} & \textsf{9:30} & Physics I & Albrecht Klemm \\
+        \textsf{1/9/25} & \textsf{11:30} & Log GLSM virtual localization & Felix Janda \\
+        \textsf{1/10/25} & \textsf{9:30} & Physics II & Albrecht Klemm \\
+        \midrule
+        \textsf{1/13/25} & \textsf{9:30} & MSP moduli space: quintic & Wei-Ping Li \\
+        \textsf{1/13/25} & \textsf{11:30} & Genus two and LG/CY via log GLSM & Shuai Guo, Felix Janda \\
+        \textsf{1/14/25} & \textsf{9:30} & Polynomiality via MSP & Patrick Lei \\
+        \textsf{1/14/25} & \textsf{11:30} & GW theory of the quintic via log GLSM & Shuai Guo, Felix Janda \\
+        \textsf{1/15/25} & \textsf{9:30} & $\Omega$-stability I & Yang Zhou \\
+        \textsf{1/16/25} & \textsf{9:30} & $\Omega$-stability II & Yang Zhou \\
+        \textsf{1/17/25} & \textsf{9:30} & BCOV Feynman rule via MSP & Shuai Guo \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection*{Acknowledgements}%
 \label{sub:Acknowledgements}
+\addcontentsline{toc}{subsection}{Acknowledgements}
 
 I would like to thank Qile Chen, Felix Janda, Sheldon Katz, Melissa Liu, John Pardon, and Rachel Webb for organizing the program. I would also like to thank Konstantin Aleshkin, Shuai Guo, Melissa Liu, and Dimitri Zvonkine for helpful discussions regarding the material in my lectures. Further thanks goes to Qile Chen for generously providing the notes from his lectures, Felix Janda for pointing out some subtleties and correcting some errors related to the material in his lectures, Sheldon Katz for pointing out that the K\"ahler structure bundle is the dual of the Hodge bundle, Yang Zhou for making detailed suggestions, and the Simons Center for posting videos of all of the lectures.
 
 
-\part{Mathematical and physical preliminaries}
+\clearpage
+\tableofcontents
+\clearpage
+
+
+\mainmatter
+\pagestyle{firstpage}
+
+\chapter{Mathematical and physical preliminaries}\thispagestyle{firstpage}
 \label{pt:prelim}
 
 We begin these notes with discussion of the topological B-model. Using mirror symmetry, physicists are able to transport questions in Gromov-Witten theory (the A-model) to the B-model, which lacks a satisfactory mathematical definition. The benefit of doing this is that it is easier to calculate in the B-model, where genus-zero invariants are simply period integrals. Using other B-model techniques,\footnote{They also have the advantage of not needing to prove any theorems rigorously.} physicists are able to make far-reaching predictions about the Gromov-Witten invariants of Calabi-Yau threefolds. Note that there are proposed mathematical definitions of the B-model -- the analytic approach of Costello-Li~\cite{mathbcov1,mathbcov2} and the categorical enumerative invariants of Caldararu-Tu~\cite{cei} -- but they are extremely difficult to compute with.
 
 We then proceed to a discussion of the mathematical prerequisites for the calculations which appear later in these notes. The most important tool for performing calculations in Gromov-Witten theory is the formalism introduced by Givental in a highly influential series of papers~\cite{ssfrobhg,virasorofanotoric,symplfrob} in the early 2000s. This formalism allows us to package large formulae, for example coming from virtual localization, in a compact way, which allows us to reason about higher-genus invariants in a relatively streamlined way. For example, polynomiality of GW generating series will be a direct corollary of polynomiality of the entries of an \textit{$R$-matrix} which plays a central role in Givental's formalism.
 
-\section{Introduction to the topological B-model (Albrecht Klemm)}%
+\section{Introduction to the topological B-model}%
 \label{sec:Introduction to the topological B-model (Albrecht Klemm)}
 
 \subsection{Mirror symmetry and the role of Calabi-Yau threefolds}%
@@ -495,7 +612,7 @@ We now turn our attention to calculating the numbers $n_g^{\beta}$. We already s
     \end{tabular}
 \end{table}
 
-Physical predictions were made by Candelas et al.~\cite{cdgp} for $g=0$, Bershadsky et al.~\cite{bcov} for $g \leq 3$, and Huang et al.~\cite{hkq} for $g \leq 53$.
+Predictions were made by Candelas et al.~\cite{cdgp} for $g=0$, Bershadsky et al.~\cite{bcov} for $g \leq 3$, and Huang et al.~\cite{hkq} for $g \leq 53$.
 The numbers $n_1^1$, $n_1^2$, and $n_1^3$ were calculated mathematically by Schubert, Katz~\cite{katz}, and Ellingsrud-Str{\o}mme~\cite{botteg}, respectively. Kontsevich~\cite{enumtorus} gave a mathematical proof of some numbers in $g=0$ before the genus-zero invariants were completely determined by Givental and Lian-Liu-Yau~\cite{eqgwinv,lly}. The formula for the genus-one invariants was proved by Zinger~\cite{reducedgenus1}.
 
 \subsection{Fourteen one-parameter hypergeometric families}%
@@ -722,8 +839,8 @@ this becomes
 \subsection{Special geometry}%
 \label{sub:Special geometry}
 
-On the moduli space of complex structures $\mc{M}_{\cs} \coloneqq \mc{M}(\uz)$, we have metric connections from the Weil-Petersson metric and the K\"ahler line bundle connection. On sections
-\[ V_{j\bar{\jmath}} \in T^*_{1,0}\M_{\cs} \otimes T^*_{0,1}\M_{\cs} \otimes \mc{L}^{\otimes n} \otimes \bar{\mc{L}}^{\otimes m}, \]
+On the moduli space of complex structures $\mc{M}_{\scs} \coloneqq \mc{M}(\uz)$, we have metric connections from the Weil-Petersson metric and the K\"ahler line bundle connection. On sections
+\[ V_{j\bar{\jmath}} \in T^*_{1,0}\M_{\scs} \otimes T^*_{0,1}\M_{\scs} \otimes \mc{L}^{\otimes n} \otimes \bar{\mc{L}}^{\otimes m}, \]
 the covariant derivatives are given by
 \begin{align*}
     D_i V_{j\bar{\jmath}} &= \partial_i V_{j\bar{\jmath}} - \Gamma^{\ell}_{ij} V_{\ell\bar{\jmath}} + n K_i V_{j\bar{\jmath}} \\
@@ -762,7 +879,7 @@ Using $G_{i\bar{\jmath}} = \partial_{\bar{\jmath}} \partial_i K = \partial_{\bar
 \subsection{Propagators}%
 \label{sub:Propagators}
 
-The \textit{propagators} are \textbf{an-holomorphic} sections $S^{ij}$, $S^i$, and $S$ of $\mc{L}^{-2}\otimes \on{Sym}^2(T\mc{M}_{\cs}^{1,0})$, $\mc{L}^{-2} \otimes T \mc{M}_{\cs}^{1,0}$, and $\mc{L}^{-2}$, respectively, defined by
+The \textit{propagators} are \textbf{an-holomorphic} sections $S^{ij}$, $S^i$, and $S$ of $\mc{L}^{-2}\otimes \on{Sym}^2(T\mc{M}_{\scs}^{1,0})$, $\mc{L}^{-2} \otimes T \mc{M}_{\scs}^{1,0}$, and $\mc{L}^{-2}$, respectively, defined by
 \[ \partial_{\bar{\imath}} S^{jk} = C_{\bar{\imath}}^{jk}, \qquad \partial_{\bar{\jmath}} S^k = G_{i\bar{\jmath}} S^{ik}, \qquad \text{and} \qquad \partial_{\bar{\jmath}} S = G_{i\bar{\jmath}} S^i. \]
 We can integrate the first equation using the special geometry equation and the observation that the only contributions to $C_{\bar{\jmath}}^{km} C_{i\ell m}$ are derivatives in $\bar{\partial}_{\bar{\jmath}}$. Therefore, if there exists an index $i$ such that $[C_{(i)}]_m$ is invertible, we obtain
 \[ S^{km} = C^{(i)k\ell} (\delta_{\ell}^m K_{(i)} + \delta_{(i)}^m K_{\ell} + \Gamma^m_{(i)\ell} + q_{(i)\ell}^m), \]
@@ -842,7 +959,7 @@ where the number $c_{\infty}$ depends on the type of singularity at $z=\infty$. 
     \ab(\frac{\lambda}{g_2})^{2g-2} \mc{F}_g &= \sum_{\beta} \ab((-1)^{g-1} \frac{(2g-2)B_{2g}}{(2g)!}n_0^{\beta} + \frac{2(-1)^g n_2^{\beta}}{(2g-2)!} + \cdots) \on{Li}_{3-2g}(Q_{\beta}) \\
     &= \frac{(-1)^g (2g)!}{(2\pi)^{4g-2}g(2g-2)}\chi(X) + \mc{O}(Q_{\beta}).
 \end{align*}
-The second equality requires the computation of degree-zero GW invariants due to Faber-Pandharipande.
+The second equality uses the computation of degree-zero GW invariants by Faber-Pandharipande.
 
 In the one-parameter case, the Castelnuovo bound implies that the GV invariants $n_g^d$ are nonzero only when the genus is strictly less than $g_{\max}(d) \leq \floor*{\frac{d^2}{2\kappa}+\frac{d}{2}}+1$ in general and $g_{\max}(d) \leq \floor*{\frac{2d^2}{3\kappa} + \frac{d}{3}}+1$ when $0 < d < \kappa$. This was first observed by Huang-Klemm-Quackenbush~\cite{hkq} and proved in 2023 by Feyzbakhsh (in the paper~\cite{qgeommod} of Alexandrov et. al). Because curves of degree $\beta$ of genus $g_{\max}(\beta)$ are smooth, the associated invariants may be obtained by the formula
 \[ n_{g,\beta} = (-1)^{\dim_{\C} \M_{\beta}} \chi(\M_{\beta}), \]
@@ -858,7 +975,7 @@ The most important boundary condition is the gap condition at the conifold point
 for all $g > 1$, where $t_{\ms{con}}$ is the local coordinate at the conifold point given by the ratio of a vanishing and non-vanishing period.
 
 
-\section{An axiomatic approach to enumerative geometry (Patrick Lei)}%
+\section{An axiomatic approach to enumerative geometry}%
 \label{sec:An axiomatic approach to enumerative geometry (Patrick Lei)}
 
 \subsection{Moduli of curves and CohFTs}%
@@ -1062,7 +1179,7 @@ where $\on{Cont}_{\Gamma}$ is defined by the following construction:
         \[ V(\bar{\psi}_1, \bar{\psi}_2) \coloneqq  \frac{\sum_{\mu}e_{\mu} \otimes e^{\mu} - \sum_{\mu'} R(-\bar{\psi}_1)^* e_{\mu'} \otimes R(-\bar{\psi}_2)^* e^{\mu'}}{\bar{\psi}_1 + \bar{\psi}_2}; \]
     \item At every vertex, we place the linear map
         \[ \Omega_{g_v, n_v} \colon V^{\otimes n_v} \to H^*(\Mbar_{g_v, n_v}); \]
-    \item Finally, we consider the pushforward in cohomology along the gluing morphism $\prod_v \Mbar_{g_v, n_v} \to \Mbar_{g,n}$.
+    \item Finally, we consider the pushforward in cohomology along the gluing morphism \[ \prod_v \Mbar_{g_v, n_v} \to \Mbar_{g,n}. \]
 \end{itemize}
 
 \begin{defn}
@@ -1261,12 +1378,12 @@ This implies that
 which proves the identity.
 \end{exm}
 
-\part{Higher-genus computations via logarithmic GLSMs}
+\chapter{Higher-genus computations via log GLSM}\thispagestyle{firstpage}
 \label{pt:logglsm}
 
 In algebraic geometry, one profitable way to deal with non-compactness issues is to forcibly compactify our spaces and then understand the contributions coming from the divisor at infinity. For example, this technique was used by Deligne to construct mixed Hodge structures~\cite{ht2}. In enumerative geometry, one profitable application of this technique is the capped topological vertex~\cite{dtloccurve}, which calculates relative invariants of a (partial compactification) of $\C^3$ relative to the divisor at infinity and is related to the usual topological vertex by a capping operator. While Jun Li's technique of expanded degenerations~\cite{expdeg} allows us to calculate enumerative invariants relative to a smooth divisor, generalizing this to the case of a simple normal crossings divisor requires logarithmic geometry (at least if we want to do it using algebraic geometry). Now, Chen-Janda-Ruan~\cite{logglsm} have developed the theory of log GLSMs, which define stable map-type invariants for any GLSM-type theory defined over an arbitrary projective Deligne-Mumford stack (and resolves all compactness issues therein). This theory has been used by Guo-Janda-Ruan~\cite{bcovlogglsm} to prove finite generation, holomorphic anomaly equations, orbifold regularity, and the LG/CY correspondence for the quintic threefold and some other Calabi-Yau threefold complete intersections in projective space.
 
-\section{Geometry of log GLSM moduli spaces (Qile Chen and Felix Janda)}%
+\section{Geometry of log GLSM moduli spaces}%
 \label{sec:Foundationslogglsm}
 
 Our motivation is the quantum Lefschetz theorem. Here, we let $\mc{X}$ be a smooth projective variety or Deligne-Mumford stack over $\C$ and $E$ be a vector bundle over $\mc{X}$. We are interested in computing the Gromov-Witten invariants of a smooth complete intersection $\mc{Z} \subset \mc{X}$ defined by a regular section of $E$. Because the ambient space is generally easier to work with, it is desirable to find a way to compute the GW invariants of $\mc{Z}$ in terms of the data of $(\mc{X}, E)$.
@@ -1545,16 +1662,16 @@ In this formulation, $W$ has proper critical locus if and only if $\on{Crit} W_{
 \end{exm}
 
 The discrete data of punctured $R$-maps is
-\[ \bm{\tau} = (G, g, \beta, \deg, \ol{r}, \sigma\colon V \cup H \to \{0,R_{\geq 0}\}, c \colon H \to \Z). \]
+\[ \symbfit{\tau} = (G, g, \beta, \deg, \ol{r}, \sigma\colon V \cup H \to \{0,R_{\geq 0}\}, c \colon H \to \Z). \]
 
 \begin{thm}
-    The moduli stack $\mc{R}(\mf{P}, \bm{\tau})$ is a proper log DM stack admitting a canonical perfect obstruction theory.
+    The moduli stack $\mc{R}(\mf{P}, \symbfit{\tau})$ is a proper log DM stack admitting a canonical perfect obstruction theory.
 \end{thm}
 
 
 \begin{defn}
-    We will consider $\bm{\tau}$ where $V(G) = \{\star\}$ and $L(G) = H(G)$. These are called \textit{vertex-type moduli}. If $\sigma = 0$, then we will denote
-    \[ \mc{R}_{g,\vec{c}}(\mf{P}, \beta) \coloneqq \mc{R}(\mf{P}, \bm{\tau}) \]
+    We will consider $\symbfit{\tau}$ where $V(G) = \{\star\}$ and $L(G) = H(G)$. These are called \textit{vertex-type moduli}. If $\sigma = 0$, then we will denote
+    \[ \mc{R}_{g,\vec{c}}(\mf{P}, \beta) \coloneqq \mc{R}(\mf{P}, \symbfit{\tau}) \]
     for the stack of stable log $R$-maps,
     and if $\sigma = \R_{\geq 0}$, the we will denote
     \[ \mc{R}_{g,\vec{c}}(\infty, \beta) \coloneqq \mc{R}(\mf{P}, \btau) \]
@@ -1957,7 +2074,7 @@ Here, we will give a few exmples.
     \[ \infty_{\LG, \C} \xrightarrow{\text{fifth root}} \infty_{X_5, \C}. \]
 \end{exm}
 
-\subsection{$\C^{\times}_{\omega}$ action}%
+\subsection{\texorpdfstring{$\C^{\times}_{\omega}$ action}{C star action}}%
 \label{sub:action}
 
 Our goal is now to proceed towards a virtual localization formula for log GLSM. Here, the two structural formulae are related as in~\Cref{fig:structural}.
@@ -2091,7 +2208,7 @@ where $X$ was the ambient space.
 \end{exm}
 
 
-\section{Applications to Gromov-Witten theory (Shuai Guo and Felix Janda)}%
+\section{Applications to Gromov-Witten theory}%
 \label{sec:Calculationslogglsm}
 
 \subsection{Genus two calculations}%
@@ -2579,12 +2696,12 @@ The conifold gap condition has been checked for $g \leq 5$ by computer. Unfortun
 
 
 
-\part{See BCOV from the A-side: MSP fields}
+\chapter{See BCOV from the A-side: MSP fields}\thispagestyle{firstpage}
 \label{pt:msp}
 
 Using the master space construction introduced by Thaddeus and Dolgachev-Hu~\cite{gitflips,dhgit} in the context of variation of GIT, Chang-Li-Li-Liu~\cite{mspfermat,msp2} defined the theory of \textit{Mixed-Spin-P fields}, which connects the Gromov-Witten and FJRW theories of the quintic threefold. The moduli space has a torus action, and one type of fixed point gives the Gromov-Witten theory of the quintic, which led to hope that the theory could be used to compute GW invariants of the quintic. However, the calculations quickly proved intractable, and an insight of Guo, which led to the creation of \textit{N-Mixed-Spin-P fields}~\cite{nmsp}, was required to resolve the difficulties. This led to the proof of the finite generation conjecture and holomorphic anomaly equations for the quintic threefold by Chang-Guo-Li~\cite{nmsp2,nmsp3}, which was generalized to hypersurfaces in weighted projective space by the author~\cite{polynomiality,bcovme}. More recently, a new stability condition for GLSMs was introduced by Chang-Guo-Li-Li-Zhou~\cite{generalmsp}, and this will enable the construction of MSP moduli spaces for other targets.
 
-\section{Geometry of MSP moduli spaces (Wei-Ping Li and Yang Zhou)}%
+\section{Geometry of MSP moduli spaces}%
 \label{sec:Prehistory}
 
 The genus-zero Gromov-Witten invariants of the quintic were computed by Givental, Lian-Liu-Yau, and various other authors~\cite{eqgwinv,lly}. Their computation uses the fact that the moduli space
@@ -2880,7 +2997,7 @@ A fancier way to write an LG-quasimap is as a commutative diagram
 \end{tikzcd}
 \end{equation*}
 
-\subsection{$\Omega$-stability}%
+\subsection{\texorpdfstring{$\Omega$-stability}{Omega stability}}%
 \label{sub:Omega-stability}
 
 Define
@@ -3243,7 +3360,7 @@ This completes the proof of properness.
 
 
 
-\section{Applications to Gromov-Witten theory (Shuai Guo and Patrick Lei)}%
+\section{Applications to Gromov-Witten theory}%
 \label{sec:Applications to Gromov-Witten theory}
 
 \subsection{MSP invariants}%
@@ -3779,7 +3896,9 @@ where $\G_i$ is polynomial in $q_i$ (with no bound in the other K\"ahler paramet
     The bound obtained using MSP for this example is not sharp, for example see~\Cref{fig:bounds}.
 \end{rmk}
 
+\sloppy
 \printbibliography
+
 
 \end{document}
 

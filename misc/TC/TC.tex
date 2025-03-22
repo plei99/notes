@@ -1,4 +1,7 @@
-\documentclass[10pt]{amsart}
+% !TEX program = latexmk
+% !TEX options = -xelatex -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
+\documentclass[10pt, oneside]{memoir}
+\usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -42,28 +45,25 @@
 \usepackage{fixdif}
 \usepackage{stmaryrd}
 % \usepackage{euscript} 
-\usepackage{eucal}
+%\usepackage{eucal}
 \usepackage{stackengine}
 \usepackage{spectralsequences} 
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-%\usepackage[sc]{mathpazo}
-% \usepackage{inconsolata}
-\usepackage{lmodern}
+\usepackage{fontspec}
+\setmainfont{Palatino}
+\setsansfont{Noto Sans}
+\usepackage{unicode-math}
+\setmathfont{Asana-Math.otf}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfaily]{Scale=1}
+% \usepackage[math-style=TeX]{unicode-math}
+
+% \usepackage[scale=0.92]{tgschola}
+% \usepackage{fouriernc}
 \usepackage{microtype}
-%\usepackage[lf]{ebgaramond}
-%%\usepackage{inconsolata}
-%\usepackage[scaled]{helvet}
-%\usepackage[vvarbb,amsthm,ebgaramond,frenchmath,smallerops]{newtxmath}
-% \usepackage{fontspec} 
-% \setmainfont{Tex Gyre Pagella}
-%\usepackage[OT1,euler-digits]{eulervm}
-% \usepackage{euler-math} 
-\usepackage[scaled=0.86]{berasans}
-% \let\sffamilyold\sffamily
-% \def\sffamily{\fontencoding{T1}\sffamilyold}
-% \setmonofont{Inconsolatazi4}
+
 
 %CS packages
 \usepackage{algorithmicx}
@@ -75,7 +75,7 @@
 % \usepackage[utf8]{inputenc} 
 % \usepackage[T1]{fontenc}
 % \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref,backref=true,backrefstyle=none]{biblatex}
-\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\usepackage[bookmarks, colorlinks, breaklinks, hypertexnames=false]{hyperref} 
 \hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
 \usepackage{cleveref}
 \crefname{equation}{}{}
@@ -96,10 +96,10 @@
 \usepackage[shortlabels]{enumitem}
 \setitemize{noitemsep}
 \usepackage{csquotes}
-%\usepackage{titlesec}
-%\usepackage{titling}
-%\usepackage{fancyhdr}
-%\usepackage{lastpage}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 % \usepackage{parskip}
 \newlist{mydescription}{description}{1}
 \setlist[mydescription]{style=nextline,
@@ -154,6 +154,7 @@
 \newtheorem*{lem*}{Lemma}
 \newtheorem*{cor*}{Corollary}
 \newtheorem*{conj*}{Conjecture}
+\newtheorem*{slog*}{Slogan}
 
 % unnumbered definitions
 \theoremstyle{definition}
@@ -281,23 +282,65 @@
 \DeclareMathOperator{\Tot}{Tot}
 \DeclareMathOperator*{\colim}{colim} 
 
+\renewcommand*{\cftchapterleader}{}
+\renewcommand*{\cftsectionleader}{}
+\renewcommand*{\cftsubsectionleader}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftsubsectionformatpnum}[1]{~\textbullet~#1}
+\renewcommand*{\cftchapterfont}{\hfill\Large\bfseries}
+\renewcommand*{\cftsectionfont}{\hfill\bfseries}
+\renewcommand*{\cftsubsectionfont}{\hfill\itshape}
+\makeatletter
+\renewcommand*{\cftchapterformatpnum}[1]{%
+~\textbullet~\cftchapterformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftchapterpagefont #1}}}
+\renewcommand*{\cftsectionformatpnum}[1]{%
+~\textbullet~\cftsectionformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftsectionpagefont #1}}}
+\renewcommand*{\cftsubsectionformatpnum}[1]{%
+~\textbullet~\cftsubsectionformatpnumhook{#1}%
+\hbox to \@pnumwidth{{\cftsubsectionpagefont #1}}}
+\makeatother
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip}
+\setrmarg{0.25\textwidth}
+\setsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\chapterstyle{dash}
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[C]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+\pagestyle{firstpage}
+
 
 \title{Topological cyclic homology}
 \author{Patrick Lei}
 \date{Spring 2025}
 \allowdisplaybreaks
-\setcounter{MaxMatrixCols}{12}
+\setcounter{tocdepth}{2}
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{firstpage}}}
 
 \begin{document}
 
+
+\maketitle\thispagestyle{empty}
 \begin{abstract}
     These are notes taken live while watching the \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTB8pNGvW0iuKUFmBlOSke-C}{YouTube lectures} about topological cyclic homology by Thomas Nikolaus and Achim Krause. Note that we use homological grading throughout because the lecturers are homotopy theorists.
 \end{abstract}
-\maketitle
+\clearpage
 \tableofcontents
+\clearpage
 
-\section{Motivation: trace methods}%
+\section*{Motivation: trace methods}%
 \label{sec:Motivation}
+\addcontentsline{toc}{section}{Motivation: trace methods}
 
 One motivation to study topological cyclic homology is its relation to crystalline cohomology and syntomic cohomology in arithmetic geometry. However, this is very involved, so we will not discuss it in depth. We will instead discuss the original motivation, which are trace methods in algebraic K-theory.
 
@@ -311,18 +354,19 @@ Another motivation is that by work of Whitehead and others (the $s$-cobordism th
 
 For other applications, the group $K_0$ was first invented by Grothendieck to give a statement of the Grothendieck-Riemann-Roch theorem, and algebraic K-theory is also related to special values of $L$-functions. 
 
-\begin{defn}
+\begin{defn*}
     For a ring $R$, the group $K_0(R)$ is the Grothendieck group of isomorphism classes of finitely generated projective $R$-modules under the operation of direct sum.
-\end{defn}
+\end{defn*}
 
 Higher $K$-groups are defined as homotopy groups of the space obtained by group completing the category of finitely-generated projective $R$-modules. This can be made precise using higher algebra and actually produces a spectrum, and then we can take its homotopy groups. We can see why this is so complicated. 
 
-\begin{exm}
+\begin{exm*}
     It is easy to see that $K_0(\text{field}) = \Z$, but of course the higher $K$-groups are very complicated. Quillen computed them for finite fields, but if we leave this case this becomes extremely difficult. 
-\end{exm}
+\end{exm*}
 
-\subsection{Approximation of algebraic K-theory}%
+\subsection*{Approximation of algebraic K-theory}%
 \label{sub:Approximation of algebraic K-theory}
+\addcontentsline{toc}{subsection}{Approximation of algebraic K-theory}
 
 We will attempt to approximate algebraic K-theory using more algebraic invariants. There is a \textit{Dennis trace map} to Hochschild homology. There are refinements of this which fit into a diagram
 \begin{equation*}
@@ -333,13 +377,13 @@ We will attempt to approximate algebraic K-theory using more algebraic invariant
 \end{tikzcd}
 \end{equation*}
 
-\begin{slog}
+\begin{slog*}
     The cyclotomic trace is often close to an isomorphism.
-\end{slog}
+\end{slog*}
 
 There are also relative K-groups $K_*(R, I)$ for any ideal $I \subseteq R$, which is simply the homotopy fiber of $K(R) \to K(R/I)$. There are also relative $\TC$ groups, which are defined in the same way. We can also define groups with coefficients like $K_*(R, \Z_p)$ and $\TC_*(R, \Z_p)$. 
 
-\begin{thm}[Dundas-Goodwillie-McCarthy, Clausen-Matthew-Morrow]\leavevmode
+\begin{thm*}[Dundas-Goodwillie-McCarthy, Clausen-Matthew-Morrow]\leavevmode
     \begin{enumerate}
         \item If $I \subseteq R$ is a nilpotent ideal, then 
         \[ \on{cyctr} \colon K_*(R,I) \to \TC_*(R, I) \]
@@ -351,10 +395,11 @@ There are also relative K-groups $K_*(R, I)$ for any ideal $I \subseteq R$, whic
         \item If $R$ is $p$-complete, then 
         \[ \TC_*(R, \Z_p) \cong K_*^{\text{\'et}}(R, \Z_p). \]
     \end{enumerate}
-\end{thm}
+\end{thm*}
 
-\subsection{Why the trace map is a trace}%
+\subsection*{Why the trace map is a trace}%
 \label{sub:Why the trace map is a trace}
+\addcontentsline{toc}{subsection}{Why the trace map is a trace}
 
 Let $k$ be a field, $R$ be a $k$-algebra, and $P$ be a finitely generated projective right $R$-module. Then we have
 \[ \Hom_R(P, P) \cong P \otimes_R \Hom_R(P, R). \]
@@ -363,11 +408,11 @@ We would attempt to go to $R$ by an evaluation map
 but this doesn't actually land in $R$. Instead, we see that
 \begin{align*}
     x \otimes r \varphi &\mapsto r \cdot \varphi(x) \\
-    xr \otimes \varphi \mapsto \varphi(xr) = \varphi(x) \cdot r.
+    xr \otimes \varphi &\mapsto \varphi(xr) = \varphi(x) \cdot r.
 \end{align*}
 The best we can do is to consider the quotient
 \[ R / [R,R] \]
-as an abelian groups, so in conclusion we have
+as an abelian group, so in conclusion we have
 \[ \tr \colon \Hom_R(P, P) \to R/[R,R]. \]
 
 Note that an $R$-$R$-bimodule is equivalently an $R \otimes_k R^{\op}$-module. Then, we in fact have
@@ -376,11 +421,11 @@ Deriving this expression, we will see later that
 \[ \HH(R, k) \cong R \otimes^{\L}_{R \otimes_k R^{\op}} R. \]
 The Dennis trace will refine this trace in the sense that on $K_0$, it will send a projective module $P$ to the trace of the identity endomorphism.
 
-\part{Infinity-categories and higher algebra}
+\chapter{\texorpdfstring{$\infty$-categories and higher algebra}{Infinity-categories and higher algebra}}\thispagestyle{firstpage}
 
-In this part, we give a user's guide to $\infty$-category and the homotopy-enriched algebra of spectra following the \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTDenpj574aSvIRBROwCugoB}{higher algebra playlist}.
+In this chapter, we give a user's guide to $\infty$-categories and the homotopy-enriched algebra of spectra following the \href{https://www.youtube.com/playlist?list=PLsmqTkj4MGTDenpj574aSvIRBROwCugoB}{higher algebra playlist}.
 
-\section{Infinity-categories}%
+\section{\texorpdfstring{$\infty$-categories}{Infinity-categories}}%
 \label{sec:Infinity-categories}
 
 Infinity-categories are a simultaneous generalization of both ordinary categories and of the homotopy theory of spaces which form a natural home for derived phenomena. We will not aim to cover the entire theory but instead to give an idea of how to work with and think about $\infty$-categories.
@@ -389,7 +434,7 @@ Infinity-categories are a simultaneous generalization of both ordinary categorie
     We will resolve size issues by assuming the existence of a Grothendieck universe $\mc{U}$. Elements of $\mc{U}$ will be called \textit{small} sets. We will take categories to have large object sets and large morphism sets. Therefore, for us we will take $\ms{Set}$ to mean the category of \textbf{small} sets.
 \end{conv}
 
-\subsection{$\infty$-categories}%
+\subsection{\texorpdfstring{$\infty$-categories}{Infinity-categories}}%
 \label{sub:infinity cats}
 
 \begin{defn}
@@ -789,13 +834,11 @@ in $\mc{S}$, it is a pullback if maps $x \to a$ are up to homotopy the same as m
 
 \begin{exm}
     Let $X$ be any simplicial set and let $F = c_x$ be the constant functor on a space $x \in \mc{S}$. Then
-    \begin{equation*}
-    \begin{tikzcd}
+    \begin{align*}
         \lim_I F &= \mc{Map}_{\mc{S}^I}(c_{\mr{pt}}, c_x) \\
         &= \ul{\Hom}(I, \ms{Map}_{\mc[S]}(\mr{pt}, x)) \\
         &= \ul{\Hom}(I, x).
-    \end{tikzcd}
-    \end{equation*}
+    \end{align*}
     This tells us a lot more than a $1$-categorical limit. For example, it sees all of the higher homotopy groups of $x$ by inputting spheres.
 \end{exm}
 
@@ -2250,7 +2293,7 @@ We will now discuss the \textit{Postnikov tower}. For ever $X$, we have a tower
 such that $X$ is actually the limit of this sequence. Unfortunately, to actually reconstruct $X$ from its truncations requires a lot of gluing data.
 
 
-\subsection{Symmetric monoidal $\infty$-categories}%
+\subsection{Symmetric monoidal infinity-categories}%
 \label{sub:Symmetric monoidal infinity-categories}
 
 Our goal is to explain why $\ms{Sp}$ and $\mc{D}(R)$ have canonical symmetric monoidal structures.
@@ -3133,7 +3176,7 @@ This result is particularly surprising because the $p$-th tensor power functor i
     \[ \ms{Map}_{\ms{Fun}^{\ms{ex}}(\mc{C}, \ms{Sp})} (\ms{map}(X, -), F) \simeq \Omega^{\infty} F(X). \qedhere \]
 \end{proof}
 
-Therefore, natural transformations $X \to (X^{\otimes p})^{t C_p}$ correspond to maps $\bS \to (\bS^{\otimes p})^{t C_p} \simeq \bS^{t C_p}$. There is a natural choice of map like this given by
+Natural transformations $X \to (X^{\otimes p})^{t C_p}$ correspond to maps $\bS \to (\bS^{\otimes p})^{t C_p} \simeq \bS^{t C_p}$. There is a natural choice of map like this given by
 \[ \bS \simeq \ms{map}(\Sigma_+^{\infty} \pt, \bS) \to \bS^{h C_p} \simeq \ms{map}(\Sigma_+^{\infty} C_p, \bS) \to \bS^{t C_p}. \]
 Note that there are other maps $\bS \to \bS^{t C_p}$, for example the zero map. However, we need a map which preserves the lax symmetric monoidal structure, and the unique such map is the one we have just given.
 
@@ -3172,7 +3215,7 @@ for some space $X$ and $\E_{\infty}$-algebra $E$, we obtain \textit{power operat
 
 
 
-\part{(Topological) cyclic homology}
+\chapter{(Topological) cyclic homology}\thispagestyle{firstpage}
 \section{Classical Hochschild and cyclic homology}%
 \label{sec:Classical Hochschild and cyclic homology}
 
@@ -4184,20 +4227,660 @@ Using the proposition, we obtain a spectral sequence
     This isomorphism is in fact compatible with the $B$ operator, so we get the desired results for periodic and negative cyclic homology.
 \end{rmk}
 
-\section{Topological Hochschild homology and cyclic homology}%
+\section{Topological Hochschild and cyclic homology}%
 \label{sec:Topological Hochschild homology and cyclic homology}
 
+\subsection{\texorpdfstring{Hochschild homology in $\infty$-categories}{Hochschild homology in infinity-categories}}%
+
+Hochschild homology can be constructed in an arbitrary symmetric monoidal $\infty$-category.
+
+Recall that $\ms{Ass}^{\otimes}_{\ms{act}}$ is a $1$-category with objects being finite sets and morphisms being maps of finite sets with a linear order on each preimage. Also recall that composition is given by the lexicographic order and that this category is symmetric monoidal with respect to the disjoint union.
+
+In $\ms{Ass}_{\ms{act}}^{\otimes}$, the object $\ab<1>$ is an associative algebra object, which means it comes with a multiplication map
+\[ \ab<1> \sqcup \ab<1> \to \ab<1> \]
+given by the left copy of $\ab<1>$ being smallest. The unit is the unique morphism from the empty set, and it is clear that multiplication is associative and unital. Therefore, we should think of $\ms{Ass}_{\ms{act}}^{\otimes}$ as a kind of free symmetric monoidal category on one associative algebra object, so as before, we define an associative algebra in an $\infty$-category $\mc{C}$ to be a symmetric monoidal functor
+\[ N(\ms{Ass}_{\ms{act}}^{\otimes}) \to \mc{C}. \]
+Of course, the underlying object is simply the image of $\ab<1>$.
+
+\begin{exer}
+    Prove that the category of symmetric monoidal functors $\ms{Ass}_{\ms{act}}^{\otimes} \to \ms{Ab}$ is equivalent to the category of rings.
+\end{exer}
+
+Recall that Hochschild homology was defined by writing a simplicial diagram. However, this is very hard to do by hand in an $\infty$-category, so we need a systematic way of handling $\infty$-categories.
+
+\begin{defn}
+    For a finite, nonempty totally ordered set $S$, define the \textit{set of cuts} to be
+    \[ \on{Cut}(S) = \ab\{ (S_0, S_1) \mid S_0, S_1 \subseteq S, S_0 < S_1, S_0 \sqcup S_1 = S \}. \]
+    We form the closely related set of cyclic cuts
+    \[ \on{Cut}^{\ms{cyc}}(S) = \on{Cut}(S) / (S, \emptyset) \sim (\emptyset, S). \]
+\end{defn}
+
+\begin{exer}
+    Check that the functor $\on{Cut} \colon \Delta^{\op} \to \ms{Set}$ and $\on{Cut}^{\ms{Cyc}} \colon \Delta^{\op} \to \ms{Set}$ are represented by the simplicial sets $\Delta^1$ and $S^1$.
+\end{exer}
+
+The functor $\mr{Cut}^{\ms{cyc}}$ actually defines a functor $\Delta^{\op} \to \ms{Ass}_{\ms{act}}^{\otimes}$. For a map $f \colon S \to T$ of totally ordered sets and a cut $(S_0, S_1) \in \on{Cut}^{\ms{cyc}}(S)$, the preimage
+\[ (f^*)^{-1} (S_0, S_1) \subseteq \on{Cut}^{\ms{cyc}}(T) \]
+consists of all cuts on $T$ ``between'' the images $f(S_0)$ and $f(S_1)$ if the cut is nontrivial. If $(S_0, S_1)$ is trivial, then the preimage consists of all cuts outside of $f(S)$. To give this an order, in the first case we simply order the cuts from left to right. In the second case, we start with the cuts to the right of $f(S)$ and then go to the cuts to the left of $f(S)$.
+
+\begin{defn}
+    For an algebra $A \colon \ms{Ass}_{\ms{act}}^{\otimes} \to \mc{C}$, the \textit{Hochschild object} is defined by
+    \[ \HH(A/\mc{C}) \coloneqq \colim_{\Delta^{\op}} (A \circ \on{Cut}^{\ms{cyc}}). \]
+\end{defn}
+
+\begin{lem}
+    For an ordinary ring (or dg algebra), we obtain an algebra $A$ in $\mc{D}(\Z)$. Then there is an equivalence
+    \[ \HH(A/\mc{D}(\Z)) \simeq \HH(A/\Z) \]
+    between the Hochschild complex of $A$ as an algebra in $\mc{D}(\Z)$ and the Hochschild complex of $A$ defined previously.
+\end{lem}
+
+\begin{proof}
+    The functor $\ms{Ch}(\Z) \to \mc{D}(\Z)$ preserves tensor products of $K$-flat chain complexes. Therefore, if we take our dg algebra to be $K$-flat, the two sides of the lemma are computing the same object by the fact that in $\mc{D}(\Z)$, a colimit of a simplicial diagram is computed by a total complex.
+\end{proof}
+
+\begin{exer}
+    For an ordinary ring $R$, prove that the composite
+    \[ \Delta^{\op} \xrightarrow{\on{Cut}^{\ms{cyc}}} \ms{Ass}_{\ms{act}}^{\otimes} \xrightarrow{R} \ms{Ab} \]
+    agrees with the cyclic bar complex of $R$.
+\end{exer}
+
+\begin{defn}
+    For a ring spectrum $A$, define its \textit{topological Hochschild homology} by
+    \[ \THH(A) \coloneqq \HH(A/\ms{Sp}). \]
+\end{defn}
+
+Recall that ordinary rings $R$ have Eilenberg-Maclane spectra $HR$, so we can take their topological Hochschild homology and denote it by $\THH(R)$.
+
+\begin{exm}
+    Because $\bS$ is the unit in $\ms{Sp}$, we have $\THH(\bS) = \bS$ for the same reason that $\HH_*(\Z) = \Z$.
+\end{exm}
+This example suggests that we can view $\THH$ as $\HH(-/\bS)$, but it will take some work to make this precise. Before we do this, we will consider things like modules over algebras.
+
+\begin{defn}
+    Define the $1$-category $\ms{LMod}_{\ms{act}}^{\otimes}$ in the following way:
+    \begin{itemize}
+        \item Objects are finite sets with elements labelled (``colored'') by $\ab\{a, m\}$;
+        \item Morphisms are maps $S \to T$ together with a total ordering on preimages subject to the conditions that
+        \begin{itemize}
+            \item Preimages of $a$-colored elements are completely $a$-colored;
+            \item Preimages of $m$-colored contain precisely one $m$-colored element and this element is the maximum.
+        \end{itemize}
+    \end{itemize}
+    We can define an analogous category $\ms{RMod}^{\otimes}_{\ms{act}}$ by the same definition, except the $m$-colored element of a preimage must be the minimum.
+\end{defn}
+
+\begin{defn}
+    A \textit{left module} in a symmetric monoidal $\infty$-category $\mc{C}$ is a symmetric monoidal functor
+    \[ \ms{LMod}_{\ms{act}}^{\otimes} \to \mc{C}. \]
+\end{defn}
+
+Note that if we only considered $a$-colored sets, we obtain the underlying algebra of the left module. Now recall that we can tensor left and right modules over a ring $R$ to obtain an abelian group.
+
+\begin{defn}
+    Define a category $\ms{LRMod}_{\ms{act}}^{\otimes}$ by the following:
+    \begin{itemize}
+        \item Objects are finite sets with colors given by $\ab\{r, a, \ell \}$;
+        \item Morphisms are maps $f \colon S \to T$ of finite sets with a total ordering on preimages such that
+        \begin{itemize}
+            \item Preimages of $a$-colored elements are entirely $a$-colored;
+            \item Preimages of $r$-colored elements have precisely one $r$-colored element at the minimum and the rest are $a$-colored;
+            \item Preimages of $\ell$-colored elements have precisely one $\ell$-colored element at the maximum and the rest are $a$-colored.
+        \end{itemize}
+    \end{itemize}
+\end{defn}
+
+Because the $r$ and $\ell$-colored elements do not interact, we see that a symmetric monoidal functor $\ms{LRMod}_{\ms{act}}^{\otimes} \to \mc{C}$ is simply a pair of functors $\ms{LMod}_{\ms{act}}^{\otimes}\to \mc{C}$ and $\ms{RMod}_{\ms{act}}^{\otimes} \to \mc{C}$ which agree on $\ms{Ass}_{\ms{act}}^{\otimes}$.
+
+\begin{defn}
+    Define the tensor product $N \otimes_A M$ to be the colimit of the composite
+    \[ \Delta^{\op} \xrightarrow{\on{Cut}} \ms{LRMod}_{\ms{act}}^{\otimes} \xrightarrow{(N, A, M)} \mc{C}. \]
+    Here, the cut functor colors $(\emptyset, S)$ as $r$, $(S, \emptyset)$ as $\ell$, and everything else as $a$.
+\end{defn}
+
+There are variants of this theory, including bimodules. In this case, we relax the restriction on preimages of $m$-colored elements by dropping the condition that it must be either the minimum or maximum. Then $\on{Cut}^{\ms{cyc}}$ factors through the category $\ms{BiMod}_{\ms{act}}^{\otimes}$ by assigning the color $m$ to the trivial cuts and the color $a$ to everything else. Therefore, if $M$ is a bimodule over $A$, we have
+\[ \HH(A/\mc{C}; M), \]
+which is Hochschild homology of $A$ with coefficients in $M$.
+
+We can also discuss commutative algebras. Recall that $\ms{Comm}_{\ms{act}}^{\otimes} = \ms{Fin}$, which lets is define commutative algebras in $\mc{C}$. 
+
+\begin{lem}
+    For a commutative algebra $A$, its Hochschild homology $\HH(A/\mc{C})$ has a commutative algebra structure.
+\end{lem}
+
+We will now study $\THH$ for ordinary rings. Eilenberg-Maclane spectra extend to a functor
+\[ H \colon \mc{D}(\Z) \to \ms{Sp} \]
+coming from the Dold-Kan correspondence. It has the property that
+\[ \pi_* (H(C)) = H_*(C). \]
+This functor is lax symmetric monoidal and preserves colimits, so we obtain a canonical map
+\[ \THH(HR) \to H(\HH(R)). \]
+On homotopy groups, we obtain a morphism
+\[ \THH_*(HR) \to \HH_*(R). \]
+The functor $H$ canonically factors through an equivalence
+\[ \mc{D}(\Z) \to \ms{Mod}(H\Z), \]
+which is symmetric monoidal. Therefore, we see that
+\[ H(\HH(R)) = \HH(HR/\ms{Mod}(H\Z)) = \THH(HR/H\Z). \]
+
+\begin{exm}
+    If $R$ is a $\Q$-algebra, then the map $\THH_*(R) \to \HH_*(R)$ is an isomorphism. This follows from the fact that
+    \[ \bS \otimes H\Q \simeq H\Z \otimes H\Q = H\Q. \]
+    This implies that 
+    \[ S \otimes HR \simeq H\Z \otimes HR, \]
+    so we obtain
+    \[ HR \otimes_{\bS} HR \simeq HR \otimes_{H\Z} HR. \]
+\end{exm}
+
+\begin{prop}
+    For an ordinary ring $R$, the map
+    \[ \THH_i(R) \to \HH_i(R) \]
+    is an isomorphism for $i \leq 2$ and surjective for $i \geq 3$.
+\end{prop}
+
+\begin{proof}
+    The fiber of the map
+    \[ \THH(R) \to \HH(R) \]
+    is the geometric realization of a simplicial diagram of the form
+    \begin{equation*}
+    \begin{tikzcd}
+        \cdots \ar[r,altstackar=5] & 
+        \on{fib}(HR \otimes_{\bS} HR \to HR \otimes_{H\Z} HR) \ar[r, altstackar=3] & 
+        \on{fib}(HR \to HR).
+    \end{tikzcd}
+    \end{equation*}
+    The last term is $0$ and the other terms are all $2$-connective by a study of the effect of $\bS \to H\Z$ on homotopy groups. A technical argument (which we will not give here) shows that homotopy groups come from the last term, the suspension of the second-to-last term, the double suspension of the third-to-last term, and so on, so the geometric realization must be $3$-connective.
+\end{proof}
+
+If we consider the ordinary ring $\F_p$, we see that 
+\[ \THH_2(\F_p) \cong \HH_2(\F_p) \cong \F_p \]
+with generator $x$.
+
+\begin{thm}[B\"okstedt]\label{thm:bokstedt}
+    There is an isomorphism
+    \[ \THH_*(\F_p) \cong \F_p[x]. \]
+\end{thm}
+
+In particular, we have no divided power structure. In addition, the map
+\[ \F_p[x] \to \F_p \ab<x> \]
+is zero in degree $\geq p$.
+
+\subsection{B\"okstedt periodicity}%
+
+We will now study the spectrum $\THH(\F_p)$.
+
+\begin{thm}[B\"okstedt]
+    As an $\E_1$-algebra over $\F_p$, $\THH(\F_p)$ is free on one generator of degree $2$. More explicitly, we have
+    \[ \THH(\F_p) \simeq H \F_p \otimes \Sigma^{\infty} \Omega S^3. \]
+\end{thm}
+
+Note that $\THH(\F_p)$ is actually an $\E_{\infty}$-algebra, but we are forgetting some of the structure in this theorem. Also, note that $\Omega \Sigma S^2$ is the free $\E_1$-algebra on $S^2$, so
+\begin{align*}
+    \ms{Map}_{\E_1/H\F_p} (H \F_p \otimes \Sigma^{\infty}\Omega S^3, R) &\simeq \ms{Map}_{\E_1} (\Omega S^3, \Omega^{\infty}R) \\
+    &\simeq \ms{Map}_{\mc{S}}(S^2, \Omega^{\infty} R) \\
+    &\simeq \ms{Map}_{\ms{Sp}}(\Sigma^{\infty}S^2, R) \\
+    &\simeq \ms{Map}_{H\F_p} (\Sigma^2 H\F_p, R)
+\end{align*}
+by a chain of adjunctions.
+
+We should first prove that the two versions of B\"okstedt's theorem are equivalent. If we consider the element $x \in \THH_2(\F_p)$, then we obtain a map of $\E_1$-algebras
+\[ H \F_p \otimes \Sigma^{\infty} \Omega S^3 \to \THH(\F_p). \]
+This map is an equivalence if and only if it is an equivalence on homotopy groups. Finally, note that the homotopy groups of the source are simply
+\[ \F_p [x], \]
+where $x$ has degree $2$. This is because
+\begin{align*}
+    \pi_* (H \F_p \otimes \Sigma^{\infty} \Omega S^3) &\simeq H_* (\Omega S^3, \F_p).
+\end{align*}
+Using the Serre spectral sequence, this is $\F_p$ in every even degree. Because $\Omega S^3$ is an $\E_1$-algebra, we obtain the desired product structure.
+
+\begin{exer}
+    Prove that $\pi_* (H \F_p \otimes \Sigma_+^{\infty} X)$ agrees with $H_*(X, \F_p)$ for any space $X$.
+\end{exer}
+
+\begin{lem}
+    We have an equivalence
+    \[ \THH(R) \simeq R \otimes_{R \otimes_{\bS} R^{\op}} R. \]
+\end{lem}
+
+\begin{proof}[Sketch of proof]
+    Write $R \simeq R \otimes_R R$. This becomes
+    \begin{align*}
+        R &\simeq R \otimes_R R \\
+        &\simeq \ab|\begin{tikzcd}[ampersand replacement=\&]
+            R \otimes_{\bS} R \& R \otimes_{\bS}  R \otimes_{\bS} R \arrow[l, altstackar=3] \& \cdots \ar[l, altstackar=5]
+        \end{tikzcd}|.
+    \end{align*}
+    Therefore, we have
+    \[ R \otimes_{R \otimes_{\bS} R^{\op}} = \colim_{\Delta^{\op}} R \otimes_{R \otimes_{\bS} R^{\op}} R^{\otimes (s+1)}. \]
+    This construction identifies the rightmost and leftmost copies of $R$, so it gives us exactly the cyclic bar complex of $R$.
+\end{proof}
+
+We would like to apply this description to $\F_p$. First, we need to understand the spectrum
+\[ H \F_p \otimes_{\bS} H \F_p. \]
+This is quite difficult (because the homotopy groups of spheres are extremely difficult), but it does have an interpretation as the homology groups of the Eilenberg-Maclane spectrum $H \F_p$, which form the \textit{dual Steenrod algebra}.
+
+\begin{thm}[Milnor]
+    As an algebra, we have
+    \[ \pi_* (H \F_p \otimes_{\bS} H \F_p) = \begin{cases}
+        \Vectorstack{{\F_2[\zeta_1, \zeta_2, \ldots]} {\ab|\zeta_i| = 2^i - 1}} & p=2 \\
+        \Vectorstack{
+        {\Lambda_{\F_p}(\tau_0, \tau_1, \ldots) \otimes \F_p [\xi_1, \xi_2, \ldots]} {\ab|\tau_i| = 2p^i-1, \ab|\xi_i|=2p^i-2}} & p > 2.
+    \end{cases} \]
+\end{thm}
+
+This is a very large description of the homotopy groups. Fortunately, there is a direct description of the spectrum $H\F_p \otimes_{\bS} H \F_p$, which is an $\E_{\infty}$-algebra over $\F_p$.
+
+\begin{lem}\label{lem:tensorproduct}
+    As an $\E_2$-algebra over $H \F_p$, $H \F_p \otimes_{\bS} H \F_p$ is free on one generator of degree $1$. More explicitly, there is an equivalence
+    \[ H \F_p \otimes \Sigma_+^{\infty} \Omega^2 S^3 \simeq H \F_p \otimes_{\bS} H \F_p. \]
+\end{lem}
+
+\begin{proof}[Proof of~\Cref{thm:bokstedt}]
+    Write
+    \begin{align*}
+        \THH(\F_p) &\simeq H \F_p \otimes_{H \F_p \otimes_{\bS} H \F_p} H \F_p \\
+        &\simeq H \F_p \otimes_{H \F_p \otimes_{\bS} \Sigma_+^{\infty}\Omega^2 S^3} H \F_p.
+    \end{align*}
+    The three terms in the tensor products come from the spaces $\mr{pt}$ and $\Omega^2 S^3$, so we can form a bar construction with $\Omega^2 S^3$ acting on two copies of a point. Therefore, we obtain
+    \begin{align*}
+        \THH(\F_p) &\simeq H \F_p \otimes \Sigma_+^{\infty} \ms{Bar}(*, \Omega^2 S^3, *) \\
+        &\simeq H \F_p \otimes \Sigma_+^{\infty} \Omega S^3.
+    \end{align*}
+    Because we formed the bar construction with an $\E_2$-algebra, we still have an $\E_1$-algebra structure.
+\end{proof}
+
+\begin{rmk}
+    The description of $H \F_p \otimes H \F_p$ is equivalent to B\"okstedt's theorem. This is because a map $A \to B$ of connected $H \F_p$-algebras is an equivalence if and only if the map
+    \[ H \F_p \otimes_A H \F_p \to H \F_p \otimes_B H \F_p \]
+    is an equivalence. We simply apply this to the map
+    \[ H \F_p \otimes \Sigma_+^{\infty} \Omega^2 S^3 \to H \F_p \otimes_{\bS} H \F_p, \]
+    which is given by specifying an element of $\pi_1$.
+\end{rmk}
+
+\begin{exer}\leavevmode
+    \begin{enumerate}
+        \item Let $A$ be a connected $H \F_p$-algebra. Prove that a map $N \to M$ of connective $A$-modules is an equivalence if
+        \[ H \F_p \otimes_A N \to H \F_p \otimes_A M \]
+        is.
+        \item Let $A \to B$ be a map of connected $H \F_p$-algebras with an equivalence
+        \[ H \F_p \otimes_A H \F_p \to H \F_p \otimes_B H \F_p. \]
+        Prove that $H \F_p \otimes_A B \simeq H \F_p$ and that $A \to B$ is an equivalence.
+    \end{enumerate}
+\end{exer}
+
+If $p$ is odd, there are \textit{Dyer-Lashof operations}
+\[ Q^i \colon \pi_n(R) \to \pi_{n+2(p-1)i}(R), \qquad \beta Q^i \colon \pi_n(R) \to \pi_{n+2(p-1)i-1}(R) \]
+for any $\E_{\infty}$-algebra over $H \F_p$. For any element of degree $n$, then
+\[ Q^{\frac{n}{2}} x = x^p. \]
+In addition, we have
+\[ Q^i x = 0 \]
+whenever $i < \frac{n}{2}$. Similarly, when $i \leq \frac{n}{2}$, we have
+\[ \beta Q^i x = 0. \]
+These should be viewed as coming from the homology of configuration spaces. On $\E_2$-algebras, we already have $Q^{\frac{n}{2}} x$
+whenever $n$ is even and $Q^{\frac{n+1}{2}}x$, $\beta Q^{\frac{n+1}{2}}x$ when $n$ is odd. The first is simply the $p$-th power, but the existing power operations for odd $n$ are an additional structure on $\E_2$-algebras.
+
+\begin{thm}[Dyer-Lashof, Araki-Kudo]
+    We have
+    \[ H_*(\Omega^2 S^3, \F_p) = \Lambda_{\F_p} (a, Q^1 a, Q^p Q^1 a, \ldots) \otimes \F_p[\beta Q^1 a, \beta Q^p Q^1 a, \ldots]. \]
+\end{thm}
+
+Note that this is very similar to Milnor's result. All of the elements given by Dyer-Lashof have the same degrees as Milnor's elements, so we might try to compare them.
+
+\begin{thm}[Steinberger]
+    On $\pi_* (H \F_p \otimes_{\bS} H \F_p)$, we have
+    \[ \tau_i = Q^{p^{i-1}} Q^{p^{i-2}} \dots Q^1 \tau_0 \]
+    and
+    \[ \xi_i = \beta Q^{p^{i-1}} Q^{p^{i-2}} \cdots Q^1 \tau_0. \]
+\end{thm}
+
+Now it remains to try to construct a map realizing our desired isomorphism on homotopy groups.
+
+\begin{proof}[Proof of~\Cref{lem:tensorproduct}]
+    We have a map
+    \[ \pi_1 (H \F_p \otimes_{\bS} H \F_p) \to \pi_1 (H \F_p \otimes_{H \Z} H \F_p). \]
+    The target is simply $\Tor_1^{\Z}(\F_p, \F_p) \simeq \F_p$. This map is actually an isomorphism (because the map $\bS \to H \Z$ is $1$-connected). Therefore, we obtain a map
+    \[ H \F_p \otimes \Sigma_+^{\infty} \Omega^2 S^3 \to H \F_p \otimes_{\bS} H \F_p \]
+    of $\E_2$-algebras over $H \F_p$. This is an isomorphism on $\pi_1$, but both sides are generated in the same way by the $\E_2$ Dyer-Lashof operations, so it is an isomorphism on all homotopy groups.
+\end{proof}
+
+\begin{exer}
+    Prove that $\pi_1(H \F_p \otimes_{\bS} H \F_p) \simeq \F_p$.
+\end{exer}
+
+\subsection{Properties of $\THH$}%
+
+We will now consider formal properties of topological Hochschild homology. These include base change results, universality, and more.
+
+\begin{prop}
+    The functor $\THH \colon \ms{Alg}(\ms{Sp}) \to \ms{Sp}$ is a (strong) symmetric monoidal functor. In particular, there is a natural equivalence
+    \[ \THH(A \otimes_{\bS} B) \simeq \THH(A) \otimes_{\bS} \THH(B). \]
+    More generally, the functor
+    \[ \HH(-/\mc{C}) \colon \ms{Alg}(\mc{C}) \to \mc{C} \]
+    is symmetric monoidal.
+\end{prop}
+
+\begin{proof}
+    Consider the forgetful functor $U \colon \ms{Alg}(\ms{Sp}) \to \ms{Sp}$ as an object in the symmetric monoidal category $\ms{Fun}(\ms{Alg}(\ms{Sp}), \ms{Sp})$. This is in fact an algebra object. Then we obtain
+    \[ \THH(-) \cong \HH(U/\ms{Fun}(\ms{Alg}(\ms{Sp}), \ms{Sp})). \qedhere \]
+\end{proof}
+
+\begin{cor}
+    If $R$ is an $\E_n$-algebra, then $\THH(R)$ is an $\E_{n-1}$-algebra.
+\end{cor}
+
+\begin{proof}
+    Recall that
+    \[ \ms{Alg}_{\E_n}(\ms{Sp}) \cong \ms{Alg}_{\E_{n-1}}(\ms{Alg}_{\E_1}(\ms{Sp})). \]
+    Applying $\THH$ and using the fact that it depends only on the underlying $\E_1$-algebra structure, we land in $\ms{Alg}_{\E_{n-1}}(\ms{Sp})$.
+\end{proof}
+
+In particular, if $R$ is an $\E_{\infty}$-algebra, so is $\THH(R)$. However, there is a more canonical description. First recall that if $A, B \in \ms{CAlg}(\ms{Sp})$, then $A \otimes_{\bS} B$ is the coproduct in $\ms{CAlg}(\ms{Sp})$.
+
+\begin{prop}
+    For $R \in \ms{CAlg}(\ms{Sp})$, we have
+    \[ \THH(R) \cong \colim_{S^1} R \eqqcolon R^{\otimes S^1}, \]
+    where we are considering the constant diagram on $R$.
+\end{prop}
+
+\begin{exer}
+    Prove this.
+\end{exer}
+
+\begin{warn}
+    This colimit is different from the colimit in the category of all spectra, which is given by
+    \[ \colim_{\Delta^{\op}} \ab(\begin{tikzcd}[ampersand replacement=\&]
+        \cdots R \oplus R \oplus R \ar[r, altstackar=5] \& R \oplus R \ar[r, altstackar=3] \& R
+    \end{tikzcd}) \simeq R \oplus \Sigma R. \]
+\end{warn}
+
+We will now prove a base change formula for $\THH$. 
+
+\begin{prop}
+    For any lax symmetric monoidal functor $F \colon \mc{C} \to \mc{D}$ and $A \in \ms{Alg}(\mc{C})$, we get a canonical map
+    \[ \HH(FA/\mc{D}) \to F (\HH(A/\mc{C})). \]
+    If $F$ is strong symmetric monoidal and preserves geometric realizations, then this map is an equivalence.
+\end{prop}
+
+\begin{proof}
+    We need to compare the cyclic bar constructions
+    \[ \colim_{\Delta^{\op}} \ab( \begin{tikzcd}[ampersand replacement=\&]
+        \cdots \ar[r, altstackar=5] \& FA \otimes_{\mc{D}} FA \ar[r, altstackar=3] \& FA
+    \end{tikzcd}) \]
+    and 
+    \[ F \ab(\colim_{\Delta^{\op}} \ab( \begin{tikzcd}[ampersand replacement=\&]
+        \cdots \ar[r, altstackar=5] \& A \otimes_{\mc{C}} A \ar[r, altstackar=3] \& A
+    \end{tikzcd}) ). \]
+    The latter receives a map from
+    \[ \ab(\colim_{\Delta^{\op}} \ab( \begin{tikzcd}[ampersand replacement=\&]
+        \cdots \ar[r, altstackar=5] \& F (A \otimes_{\mc{C}} A) \ar[r, altstackar=3] \& FA
+    \end{tikzcd}) ), \]
+    and this receives a map from the first colimit. The second part follows from the additional assumptions on $F$.
+\end{proof}
+
+\begin{exm}
+    Consider the Eilenberg-Maclane functor $H \colon \mc{D}(\Z) \to \ms{Sp}$ which is lax symmetric monoidal. Therefore, we obtain a map
+    \[ \THH(R) \to H(\HH(R/\Z)) \]
+    for any $H\Z$-algebra $R$.
+\end{exm}
+
+\begin{exm}
+    If $k \to k'$ is a map of commutative ring spectra, we have the functor
+    \[ - \otimes_k k' \colon \ms{Mod}_k \to \ms{Mod}_{k'}. \]
+    This is symmetric monoidal and preserves all colimits, so we have
+    \[ \THH(R/k) \otimes_k k' \simeq \THH(R \otimes_k k' / k'). \]
+\end{exm}
+
+We will now prove a more general version of B\"okstedt periodicity. First, recall that an $\F_p$-algebra is \textit{perfect} if the Frobenius morphism is an isomorphism. Examples include finite fields $\F_{p^n}$ and the ring
+\[ \F_p[x^{1/p^{\infty}}] = \colim (\F_p[x] \xrightarrow{\varphi} \F_p[x] \to \cdots). \]
+By definition, we have a map
+\[ Hk \to \THH(k) \]
+inducing a map $k \to \THH_*(k)$ on homotopy groups. We can then precompose this with a map $\THH(\F_p) \to \THH(k)$, so we obtain a map
+\[ Hk \otimes_{H \F_p} \THH(\F_p) \to \THH(k). \]
+On homotopy groups, this gives us a map
+\[ k[x] \to \THH_*(k). \]
+
+\begin{thm}[B\"okstedt periodicity for perfect rings]
+    For any perfect $\F_p$-algebra $k$, the map
+    \[ k[x] \to \THH_*(k) \]
+    is an isomorphism of commutative rings. Equivalently, $\THH(k)$ is the free $\E_1$-algebra on a degree $2$ element $x$ over $Hk$.
+\end{thm}
+
+\begin{proof}
+    For every perfect ring $k$, there is a commutative ring spectrum $\bS_{W(k)}$ called the \textit{spherical Witt vectors} such that
+    \[ \bS_{W(k)} \otimes_{\bS} H \F_p \simeq k. \]
+    This should be thought of as a lift of $k$ along $\bS \to H \F_p$. This implies that
+    \begin{align*}
+        \THH(k) &\simeq \THH(\bS_{W(k)}\otimes_{\bS} H F_p) \\
+        &\simeq \THH(\bS_{W(k)}) \otimes_{\bS} \THH(\F_p) \\
+        &\simeq \THH(\bS_{W(k)}) \otimes_{\bS} \F_p \otimes_{H\F_p} \THH(\F_p) \\
+        &\simeq \THH(k/H\F_p) \otimes_{H \F_p} \THH(\F_p) \\
+        &\simeq \HH(k/\F_p) \otimes_{H \F_p} \THH(\F_p).
+    \end{align*}
+    Therefore, it suffices to prove that
+    \[ \HH_*(k/\F_p) = 0 \]
+    for all $* \geq 1$. This is left as an exercise.
+\end{proof}
+
+We will conclude with one more base change formula for $\THH$. Recall that if $k$ is an $\E_{\infty}$-ring, then $\THH(k) = k^{\otimes S^1}$, so we get a map $\THH(k) \to k$ of $\E_{\infty}$-rings by
+\[ \THH(k) = k^{\otimes S^1} = \colim_{S^1} k \to \colim_{\pt} k = k \]
+along the projection $S^1 \to \pt$. In particular, the composition $k \to \THH(k) \to k$ is the identity.
+
+\begin{rmk}
+    This retract $\THH(k) \to k$ does not exist if $k$ is only $\E_n$ for any finite $n$.
+\end{rmk}
+
+\begin{thm}
+    If $k$ is a commutative ring spectrum and $R$ is an associative $k$-algebra, then 
+    \[ \THH(R/k) \simeq \THH(R) \otimes_{\THH(k)} k. \]
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    We can rewrite
+    \begin{align*}
+        & \colim_{\Delta^{\op}} \ab(\begin{tikzcd}[ampersand replacement=\&]
+            \cdots \ar[r,altstackar=5] \& R \otimes_k R \ar[r, altstackar=3] \& R
+        \end{tikzcd}) \\
+        \simeq{}& \colim_{\Delta^{\op}} \ab(\begin{tikzcd}[ampersand replacement=\&]
+            \cdots \ar[r,altstackar=5] \& R \otimes_{\bS} R \otimes_{k \otimes_{\bS} k} k \ar[r, altstackar=3] \& R
+        \end{tikzcd}) \\
+        \simeq{}&  \colim_{\Delta^{\op}} \ab[ \ab(\begin{tikzcd}[ampersand replacement=\&]
+            \cdots \ar[r,altstackar=5] \& R \otimes_{\bS} R \ar[r, altstackar=3] \& R
+        \end{tikzcd}) \otimes_{(\cdots k \otimes_{\bS}k \rightrightarrows k)} \ab(\begin{tikzcd}[ampersand replacement=\&]
+            \cdots \ar[r,altstackar=5] \& k \ar[r, altstackar=3] \& k
+        \end{tikzcd}) ] \\
+        \simeq{}& \THH(R) \otimes_{\THH(k)} k. \qedhere
+    \end{align*}
+\end{proof}
+
+\subsection{The circle action on $\THH$}%
+\label{sub:The circle action on THH}
+
+We will now consider the origin of the Connes operator on Hochschild homology from an actual action of $\S^1$ on topological Hochschild homology.
+
+Recall that a group action on an object of a $1$-category $\mc{C}$ is a functor
+\[ BG \to \mc{C}, \]
+where $BG$ is a category with a single object and automorphisms given by $G$.
+
+\begin{defn}
+    A \textit{group action} of a group $G$ on an object of a category $\mc{C}$ is a functor
+    \[ N(BG) \to \mc{C}. \]
+    Note that $N(BG)$ is a Kan complex with $\Omega(N(BG)) \simeq G$. This means that the space associated $N(BG)$ is the classifying space of $G$.
+\end{defn}
+
+\begin{exm}
+    Note that $B\Z \simeq S^1$.
+\end{exm}
+
+\begin{defn}
+    For any grouplike $\E_1$-algebra $G$ in $\mc{S}$ and an $\infty$-category $\mc{C}$, the category of \textit{objects of $\mc{C}$ with $G$-action} is the functor category
+    \[ \ms{Fun}(BG, \mc{C}). \]
+\end{defn}
+
+\begin{defn}
+    Define the \textit{homotopy orbits} of an object $X$ with $G$-action as the colimit
+    \[ X_{hG} = \colim_{BG} X. \]
+    Similarly, define the \textit{homotopy fixed-points} by the limit
+    \[ X^{hG} = \lim_{BG} X. \]
+\end{defn}
+
+In the category of spaces, if $X$ has the trivial $G$-action, then we have
+\[ X_{hG} \simeq X \times BG \qquad \text{and} \qquad X^{hG} \simeq \ms{Map}(BG, X). \]
+
+\begin{exer}
+    Prove this.
+\end{exer}
+
+The homotopy orbits should be thought of as a derived version of a quotient construction. For example, if the action of $G$ is free, then we get an actual quotient.
+
+\begin{prop}
+    Objects in $\mc{D}(\Z)$ with an action of $S^1$ are equivalent to $A = \Lambda_{\Z}(\ep)$-modules in $\mc{D}(\Z)$, where $\ep$ has degree $1$.
+\end{prop}
+
+\begin{proof}[Sketch of proof]
+    We use the fact that
+    \[ \ms{Fun}(BS^1, \mc{D}(\Z)) \simeq \ms{Mod}_{C_*(S^1)}. \]
+    We now need to compare $C_*(S^1)$ to its homology $A$, or more precisely to prove that $C_*(S^1)$ is formal. Here, we have maps
+    \begin{equation*}
+    \begin{tikzcd}
+        \mr{Free}_{\E_1}(\ep) \ar{r} \ar{dr} & C_*(S^1) \\
+        & A.
+    \end{tikzcd}
+    \end{equation*}
+    These maps are isomorphisms on homology in degrees $0$ and $1$ and they both factor through $\tau_{\leq 1} \mr{Free}_{\E_1}(\ep)$. Because $\tau_{\leq 1}$ is lax symmetric monoidal on $\mc{D}(\Z)_{\geq 0}$, we are done.
+\end{proof}
+
+\begin{rmk}
+    This equivalence is \textbf{not} compatible with monoidal structures on both sides. It does not give the correct answer $\infty$-categorically when we consider $\HC^-$ and $\HP$, but it is fine on homology.
+\end{rmk}
+
+\begin{thm}\label{thm:s1action}
+    On $\HH(R/\mc{C})$, there is a natural $S^1$-action. More precisely, the Hochschild homology functor refines to a functor
+    \[ \HH \colon \ms{Alg}_{\E_1}(\mc{C}) \to \ms{Fun}(BS^1, \mc{C}) \]
+    which agrees with the $S^1$-action on $\HH(R/\Z)$ obtained from the Connes operator.
+\end{thm}
+
+\begin{defn}
+    The \textit{paracyclic category} $\Lambda_{\infty}$ is a $1$-category with objects given by totally ordered sets with a $\Z$-action which are equivalent to sets of the form $\frac{1}{n} \Z$ and morphisms given by equivariant order-preserving maps.
+\end{defn}
+
+There is an $S^1 \simeq B\Z$-action on $\Lambda_{\infty}$ given by the map
+\[ B\Z \times \Lambda_{\infty} \to \Lambda_{\infty} \]
+acting trivially on objects and by the map
+\[ \Z \times \Hom_{\Lambda_{\infty}} \ab(\frac{1}{n}\Z, \frac{1}{m}\Z) \to \Hom_{\Lambda_{\infty}} \ab(\frac{1}{n}\Z, \frac{1}{m}\Z) \]
+given by translation.
+
+\begin{defn}
+    The \textit{cyclic category} $\Lambda$ is the $1$-category with the same objects as $\Lambda_{\infty}$ and morphisms given by
+    \[ \Hom_{\Lambda} \ab(\frac{1}{n} \Z, \frac{1}{m}\Z) = \left. \Hom_{\Lambda_{\infty}} \ab(\frac{1}{n}\Z, \frac{1}{m}\Z) \middle/ \Z \right. . \]
+\end{defn}
+
+\begin{lem}
+    We have $N(\Lambda) = N(\Lambda_{\infty})_{hS^1}$.
+\end{lem}
+
+This follows from the fact that the $\Z$-action is free.
+
+\begin{lem}
+    We have an equivalence
+    \[ \ms{Fun}(N(\Lambda), \mc{C}) \simeq \ms{Fun}(N(\Lambda_{\infty}), \mc{C})^{hS^1}. \]
+\end{lem}
+
+\begin{proof}
+    We compute mapping spaces. We need to prove that
+    \[ \ms{Map}(\mc{D}, \ms{Fun}(N(\Lambda), \mc{C})) \simeq \ms{Map}(\mc{D}, \ms{Fun}(N(\Lambda_{\infty}), \mc{C}))^{hS^1}. \]
+    If we recall that mapping spaces were the maximal Kan complexes in functor categories, we can apply exponential laws. Therefore, it suffices to show that
+    \[ \ms{Map}(N(\Lambda), \ms{Fun}(\mc{D}, \mc{C})) \simeq \ms{Map}(N(\Lambda_{\infty}), \ms{Fun}(\mc{D}, \mc{C})), \]
+    which is just the definition of the colimit.
+\end{proof}
+
+\begin{defn}
+    A \textit{cyclic object} in $\mc{C}$ is a functor $N(\Lambda^{\op}) \to \mc{C}$.
+    There is a functor $\Delta \to \Lambda_{\infty}$ sending $[n-1]$ to the set $\Z \times [n-1] \cong \frac{1}{n} \Z$ with the lexicographic order. The \textit{underlying object} of a cyclic object is defined via the restriction
+    \[ \ms{Fun}(N(\Lambda^{\op}), \mc{C}) \to \ms{Fun}(N(\Lambda_{\infty}^{\op}), \mc{C}) \to \ms{Fun}(N(\Delta^{\op}), \mc{C}). \]
+\end{defn}
+
+It is natural to wonder what the geometric realization of a cyclic object is.
+
+\begin{lem}
+    The diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \ms{Fun}(\Lambda_{\infty}^{\op}, \mc{C}) \ar{r}{\colim} \ar{d} & \mc{C} \\
+        \ms{Fun}(\Delta^{\op}, \mc{C}) \ar[swap]{ur}{\colim}
+    \end{tikzcd}
+    \end{equation*}
+    commutes. More precisely, the functor $\Delta \to \Lambda_{\infty}$ is cofinal.
+\end{lem}
+
+\begin{lem}
+    For a cyclic object $X$, the object
+    \[ \colim_{\Lambda_{\infty}^{\op}} X \simeq \colim_{\Delta^{\op}} X \]
+    admits an $S^1$-action.
+\end{lem}
+
+\begin{proof}
+    Recall that
+    \[ \ms{Fun}(N(\Lambda), \mc{C}) \simeq \ms{Fun}(N(\Lambda_{\infty}), \mc{C})^{hS^1}. \]
+    Taking the colimit, we obtain a functor
+    \[ \ms{Fun}(N(\Lambda_{\infty}^{\op}), \mc{C})^{h S^1} \xrightarrow{\colim^{hS^1}} \mc{C}^{hS^1} \simeq \ms{Fun}(BS^1, \mc{C}). \qedhere \]
+\end{proof}
+
+\begin{exer}
+    For an $\infty$-category $\mc{C}$ with a trivial $G$-action, prove that
+    \[ \mc{C}^{hG} \simeq \ms{Fun}(BG, \mc{C}). \]
+\end{exer}
+
+
+\begin{proof}[Proof of~\Cref{thm:s1action}]
+    We now show that the cyclic bar complex is a cyclic object. Let
+    \[ \ms{Cut}^{\Z} \colon \Lambda^{\op}_{\infty} \to \ms{Ass}_{\ms{act}}^{\otimes} \]
+    be the functor which sends a totally-ordered set $S$ to the set of $\Z$-equivariant cuts, which are just partitions of $S$ of the form
+    \[ S = \cdots \sqcup S_{-1} \sqcup S_0 \sqcup S_1 \sqcup \cdots \]
+    such that each $S_i$ is a fundamental domain for the $\Z$-action. We need to consider preimages along morphisms $f \colon S \to T$ in $\Lambda_{\infty}$. These are simply given by the set of all cuts between $f(S_0)$ and $f(S_1)$ ordered from left-to-right. The functor $\ms{Cut}^{\Z}$ is $\Z$-invariant on morphisms, so it factors through
+    \[ \Lambda \to \ms{Ass}_{\ms{act}}^{\otimes}. \]
+    Restricting to $\Delta^{\op}$, we obtain $\ms{Cut}^{\ms{cyc}}$.
+\end{proof}
+
+\begin{exer}
+    Prove that $\ms{Cut}^{\Z}$ restricts to $\ms{Cut}^{\ms{cyc}}$.
+\end{exer}
+
+
+\subsection{$\THH$ of the integers}%
+\label{sub:THH of the integers}
+
+\subsection{Negative topological cyclic homology}%
+\label{sub:Negative topological cyclic homology}
+
+% \subsection{Topological periodic homology}%
+% \label{sub:Topological periodic homology}
+
+% \subsection{The cyclotomic structure}%
+% \label{sub:The cyclotomic structure}
+
+% \subsection{The definition of $\TC$}%
+% \label{sub:The definition of TC}
+
+% \subsection{$\TC$ of $\F_p$}%
+% \label{sub:TC of Fp}
+
+% \subsection{$\TC$ of perfect rings}%
+% \label{sub:TC of perfect rings}
+
+% \subsection{Frobenius lifts and group rings}%
+% \label{sub:Frobenius lifts and group rings}
 
 
 
 
 \appendix
 
+\chapter{Simplicial rings and cotangent complexes}%
+\label{cha:Appendices}
+\thispagestyle{firstpage}
+
 \section{Simplicial rings and divided power structures}%
 \label{sec:Simplicial rings and divided power structures}
 
 \begin{defn}
-    The category $\ms{ScRing}$ of simplicial commutative rings is defined to be the functor category
+    The category $\ms{scRing}$ of simplicial commutative rings is defined to be the functor category
     \[ \ms{scRing} \coloneqq \ms{Fun}(\Delta^{\op}, \ms{cRing}). \]
     More precisely, this is a diagram
     \begin{equation*}
@@ -4524,8 +5207,3 @@ Putting together the two lemmas, we see that there is a unique isomorphism class
 
 
 \end{document}
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
