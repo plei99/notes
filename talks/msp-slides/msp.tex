@@ -1,4 +1,4 @@
-% !TEX program = xelatex
+% !TEX program = lualatex
 % !TEX encoding = UTF-8 Unicode
 \documentclass[10pt]{beamer}
 % Configuration options specific to Metropolis
@@ -32,10 +32,14 @@
 \usepackage{eucal}
 \usepackage{stackengine} 
 \usepackage{float}
-\usepackage{booktabs}
+\usepackage{tabularray}
+%\usepackage{booktabs}
+\UseTblrLibrary{booktabs}
 \usepackage{microtype}
 \usepackage[mathrm=sym]{unicode-math}
 \setmathfont{Fira Math}
+\setmathfont[range={\bigoplus}]{Noto Sans Math}
+\setmathfont[range={\mathcal}]{Euler-Math.otf}
 
 \newcommand{\Ima}{\mathrm{Im}}
 \newcommand{\A}{\mathbb{A}}
@@ -189,7 +193,7 @@
 \title{Higher-genus GW theory of smooth CY hypersurfaces in weighted $\P^4$}
 \author{Patrick Lei}
 \institute{Columbia University}
-\date{March 30, 2025}
+\date{April 1, 2025}
 
 % PRESENTATION STRUCTURE
 \begin{document}
@@ -211,19 +215,36 @@
   \onslide<3->{\textbf{Goal:}} \only<3-4>{Calculate all $N_{g,d}$.}\only<4>{ \textcolor{red}{This is too hard!}}\only<5>{Say something about the behavior of the generating series of all $N_{g,d}$ when we fix the genus.}
 \end{frame}
 
+\begin{frame}{Mirror symmetry picture}
+ \onslide<+->{ One source of predictions in Gromov-Witten theory is \textit{mirror symmetry}.}
+  \onslide<+->{\begin{center}
+    \begin{tblr}{colspec={ccc}}
+      \toprule
+      & A-model ($Z$) & B-model ($Z^{\vee})$ \\
+      \midrule
+      Local deformations & $H^{1,1}(X)$ & $H^{2,1}(X^{\vee})$ \\
+      $g=0$ invariants & GW invariants & period integrals \\
+      $g=1$ invariants & GW invariants & analytic torsion \\
+      $g\geq 2$ invariants & GW invariants & \textcolor{red}{\textbf{???}} \\
+      \bottomrule
+    \end{tblr}
+  \end{center}}
+  \onslide<+->{We will translate predictions from physics in the bottom right corner into Gromov-Witten theory and then try to prove them.}
+\end{frame}
+
 \beamerdefaultoverlayspecification{<only@+>}
 \AtBeginEnvironment{enumerate}{\onslide<.->}
 \begin{frame}{Our results}
   \onslide<1->{We are able to prove the following results for the threefolds $\mathcolor{blue}{Z_6 \subset \P(1,1,1,1,2)}$, $Z_8 \subset \P(1,1,1,1,4)$, and $Z_{10} \subset \P(1,1,1,2,5)$:}
   \onslide<+>
   \begin{enumerate}
-    \item If $F_g = \sum_d N_{g,d} Q^d$ is the generating series of genus $g$ invariants, we prove that a normalized version $P_g$ is a polynomial in five generators $\mathcolor{magenta}{A_1}, \mathcolor{purple}{B=B_1, B_2, B_3}, X$ defined using only genus-zero data.
+    \item If $F_g = \sum_d N_{g,d} Q^d$ is the generating series of genus $g$ invariants, we prove that a normalized version $P_g$ is a polynomial in five generators $\mathcolor{magenta}{A=A_1}, \mathcolor{purple}{B=B_1, B_2, B_3}, X$ defined using only genus-zero data.
     \item More precisely, Coates-Corti-Lee-Tseng proved that the genus-0 GW theory of $Z$ is controlled by the series
     \begin{align*}
       I(q, z) &\coloneqq z\sum_{d \geq 0} q^d \frac{\prod_{m=1}^{6d}(6H+mz)}{\prod_{m=1}^d (H+mz)^4 \prod_{m=1}^{2d}(2H+mz)} \\
       &= \mathcolor{purple}{I_0 (q)} z + \mathcolor{magenta}{I_1(q)} H + I_2(q) \frac{H^2}{z} + I_3(q) \frac{H^3}{z^2}.
     \end{align*}
-    \item Define $\mathcolor{magenta}{I_{11}(q)} \coloneqq D \ab(\frac{I_1(q)}{I_0(q)})$, where $D = q \odv[style-inf=\mathsf{d}]{}{q}$. Then define
+    \item Define $\mathcolor{magenta}{I_{11}(q)} \coloneqq 1+ D \ab(\frac{I_1(q)}{I_0(q)})$, where $D = q \odv[style-inf=\mathsf{d}]{}{q}$. Then define
     \[ \mathcolor{magenta}{A} \coloneqq \frac{D I_{11}}{I_{11}}, \qquad \mathcolor{purple}{B_k} \coloneqq \frac{D^k I_0}{I_0}, \qquad X \coloneqq 1- \frac{1}{1-\frac{6^6}{2^2}q}. \]
     Also define $Y \coloneqq 1-X$.
     \item The first result, conjectured by Yamaguchi-Yau (2004), is that
@@ -232,11 +253,11 @@
     \item The second result is the equality
     \[ P_{1,1} = -\frac{1}{2} \mathcolor{magenta}{A} - \frac{21}{2} \mathcolor{purple}{B} - \frac{1}{12} X - \frac{7}{4}. \]
     \item Consider the following Feynman rule (sum over \textit{stable graphs}) defined by BCOV (1993) defining a power series $f_{g,m,n}$. First, introduce \textit{propagators} $E_{\psi} = B$, $E_{\varphi\varphi} = A+2B$, $E_{\varphi\psi} = -B_2$, and $E_{\psi\psi} = -B_3 + (B-X)B_2 - \frac{13}{36} BX$.
-    \item Place $\varphi - E_{\psi} \psi$ at the first $m$ vertices and $\psi$ at the last $n$ vertices, place
+    \item Place $\varphi - E_{\psi} \psi$ at the first $m$ legs and $\psi$ at the last $n$ legs, place
     \[ E_{\varphi\varphi}\varphi\otimes \varphi + E_{\varphi\psi}(\varphi \otimes \psi + \psi \otimes \varphi) + E_{\psi\psi} \psi \otimes \psi \]
-    at each edge, and place
+    at each edge, and place the linear map
     \[ \varphi^{\otimes m} \otimes \psi^{\otimes n} \mapsto P_{g,m,n} \coloneqq \frac{(2g-2+m+n-1)!}{(2g-2+m-1)!} P_{g,m} \]
-    at each leg. Also, set $P_{1,0,1} = -\frac{19}{2}$.
+    at each vertex. Also, set $P_{1,0,1} = -\frac{19}{2}$.
     \item Our result is that the output $f_{g,m,n}$ is a polynomial of degree at most $3g-3+m$ in $X$. This implies the \textit{modular anomaly equations}
     \footnotesize
     \begin{align*}
@@ -261,7 +282,7 @@
   \onslide<2->{The original geometric intuition was to implement the master space idea of Thaddeus, but in order to perform calculations we need to introduce a parameter $N$ (which is a positive integer) to the theory.}
 \end{frame}
 
-\begin{frame}{MSP moduli}
+\begin{frame}{MSP moduli I}
   \onslide<1->{Let $(\C^{\times})^3$ act on $\C^{N+7}$ with the following weights:}
   \onslide<2->{
     \[ \ab[\begin{array}{cccccccccc}
@@ -282,12 +303,22 @@
   subject to a stability condition.}
 \end{frame}
 
+\begin{frame}{MSP moduli II}
+  \onslide<1->{More explicitly, objects in $W$ consist of:}
+  \begin{itemize}[<+->]
+    \item A prestable twisted curve $(C, \Sigma^C)$;
+    \item Line bundles $\mc{L}, \mc{N}$ such that $\mc{L} \oplus \mc{N}$ is representable;
+    \item Sections $x \in H^0(\mc{L}^{\oplus 4} \oplus \mc{L}^2)$, $p \in H^0(\mc{L}^{-6} \otimes \omega^{\log})$, $u \in H^0(\mc{L} \oplus \mc{N})^{\oplus N}$, and $v \in H^0(\mc{N})$
+  \end{itemize}
+  \onslide<+->{subject to the constraints that $(x, u)$, $(p,v)$, and $(u,v)$ are all everywhere nonzero and that objects have finitely many automorphisms.}
+\end{frame}
+
 \begin{frame}{Virtual localization I}
   \onslide<1->{$\mc{W}$ is not proper, but it has a cosection localized virtual cycle $[\mc{W}]^{\vir}$ supported on a proper closed substack $\mc{W}^-$.} \onslide<2->{This virtual cycle is equivariant with respect to the action of $(\C^{\times})^N$ on $\mc{W}$ by scaling $(u_1, \ldots, u_N)$.}
-    \begin{thm}[Chang-Kiem-Li, 2015]<3->
-      Indexing the fixed loci by $\Gamma$, we have
-      \[ [\mc{W}]^{\vir} = \sum_{\Gamma} \frac{[\mc{W}_{\Gamma}]^{\vir}}{e(N_{\Gamma}^{\vir})}. \]
-    \end{thm}
+  \begin{thm}[Chang-Kiem-Li, 2015]<3->
+    Indexing the fixed loci by $\Gamma$, we have
+    \[ [\mc{W}]^{\vir} = \sum_{\Gamma} \frac{[\mc{W}_{\Gamma}]^{\vir}}{e(N{\Gamma}^{\vir})}. \]
+  \end{thm}
 \end{frame}
 
 \begin{frame}{Virtual localization II}
@@ -297,12 +328,31 @@
     \item Level $1$ vertices contribute Hodge integrals;
     \item Level $\infty$ vertices contribute FJRW invariants.
   \end{enumerate}
-  \begin{thm}<+->
+  \begin{thm}[Irregular vanishing]<+->
     If $\Gamma$ has an edge between a level $0$ and level $\infty$ vertex, then $[\mc{W}_{\Gamma}]^{\vir} = 0$.
   \end{thm}
-  \begin{defn}<+->
-    Define the MSP $[0,1]$ theory by only considering the contributions of graphs without level $\infty$ vertices.
-  \end{defn}
+\end{frame}
+
+\begin{frame}{Irregular vanishing}
+  \onslide<+->{Geometrically, a $0\infty$ edge corresponds to the following picture:
+  \begin{figure}[htpb]
+  \begin{center}
+  \begin{tikzpicture}[scale=1, transform shape]
+    \draw[-,thick] (0,1.2) -- (0,-0.2);
+    \draw[-,thick] (0.1,0.2) -- (-0.5,-1);
+    \node[fill=blue,circle,inner sep=0pt,minimum size=4pt] at (0,0) {};
+    \draw[->,red,thick] (-0.15, 0) -- (-0.5,0);
+    \node[text=red] at (-2,0) {\Centerstack{{order $6d$} infinitesimal smoothing}};
+    \node[text=blue] at (1.5,0) {\Centerstack{no geometric smoothing}};
+    \node at (-4,-1) {$0$};
+    \node at (-4,0) {$1$};
+    \node at (-4,1.2) {$\infty$};
+  \end{tikzpicture}
+  \end{center}
+  \caption{Geometry of $0\infty$ edge.}%
+  \label{fig:}
+  \end{figure}}
+  \onslide<+->{There are some such edges which are called \textit{strings}. In the no-string case, the virtual dimension of $\mc{W}_{\Gamma}$ is negative.} \onslide<+->{The general case follows by a virtual pullback argument using the fact that the moduli of a $0\infty$ string has lci singularities.}
 \end{frame}
 
 
@@ -316,12 +366,24 @@
   \onslide<+->{This implies that all genus zero MSP invariants are recovered from the $J$-function
   \[z\sum_{d \geq 0} q^d \frac{\prod_{m=1}^{6d}(6p+mz)}{\prod_{m=1}^d (p+mz)^4 \prod_{m=1}^{2d}(2p+mz) \prod_{m=1}^d ((p+mz)^N - t^N)}. \]
   Here, we specialize the equivariant parameters to $t_{\alpha} = \zeta_N^{\alpha} t$ for $\alpha = 1, \ldots,N$.}
+  \onslide<+->{Using this, we are able to compute the \textit{$S$-matrix}, which controls the entire genus-zero theory.}
 \end{frame}
 
 \begin{frame}{MSP $R$-matrix}
   \onslide<+->{Define the $R$-matrix by the Birkhoff factorization
   \[ S^{\ms{MSP}}(z) \Delta = R(z) S^{\ms{loc}}(z), \]
   where $\Delta$ comes from Quantum Riemann-Roch and $S^{\ms{loc}}$ is simply the direct sum of the $S$-matrix of $Z$ and $N$ copies of the $S$-matrix of a point.}
+  \begin{lem}<+->
+    Write
+    \[ R(z) = R_0 + R_1 z + R_2 z^2 + \cdots \]
+    For each $k$, all entries of $R_k$ lie in $\Q[\mathcolor{magenta}{A}, \mathcolor{purple}{B, B_2, B_3}, X]$ (possibly after normalization). There are also explicit degree bounds for the entries coming from the $N$ points, which are polynomials in $X$.
+  \end{lem}
+\end{frame}
+
+\begin{frame}{MSP $[0,1]$ theory}
+  \begin{defn}<+->
+    Define the MSP $[0,1]$ theory by only considering the contributions of graphs without level $\infty$ vertices to the virtual localization formula.
+  \end{defn}
   \begin{thm}<+->
     The MSP $[0,1]$ theory is a \textit{cohomological field theory} given by the action
     \[ R(z) . \ab(\Omega^Z \oplus \bigoplus_{\alpha=1}^N \Omega^{\ms{pt}_{\alpha}}) \]
@@ -329,16 +391,54 @@
   \end{thm}
 \end{frame}
 
+\begin{frame}{MSP $[0,1]$ theory II}
+  More precisely, we can calculate the MSP $[0,1]$ as a sum over stable graphs with vertices labeled by either $Z$ or $\pt_{\alpha}$:
+  \begin{itemize}[<+->]
+    \item At each leg with insertion $\phi$, place $R(z)^{-1}\phi$;
+    \item At each edge, place the bivector
+    \[ \sum_{a} \frac{\phi_a \otimes \phi^a - R(z)^{-1}\phi_a \otimes R(w)^{-1} \phi^a}{z+w}; \]
+    \item At each vertex with label $Z$, compute
+    \[ I_0^{-(2g_v-2+n_v)}\sum_d (q e^{I_1/I_0})^d \ab<->_{g_v, n_v, d}^Z; \]
+    \item At each vertex with label $\pt_{\alpha}$, compute a slight modification $\ab<->_{g_v, n_v}^{\pt, T}$ of the GW theory of a point.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Proof of polynomiality}
-  \begin{lem}<+->
-    All entries of $R(z)$ lie in $\Q[\mathcolor{magenta}{A}, \mathcolor{purple}{B, B_2, B_3}, X]$ (possibly after normalization). There are also explicit degree bounds for the entries coming from the $N$ points, which are polynomials in $X$.
-  \end{lem}
   \begin{lem}<+->
     The MSP $[0,1]$ correlator $\ab<p^{a_1}, \ldots, p^{a_n}>_{g,n}^{[0,1]}$ is a polynomial in $q$ of degree at most $g-1 + \frac{3g-3+\sum a_i}{N}$.
   \end{lem}
+  \begin{proof}<+->
+    The full invariants satisfy the same degree bound for virtual dimension reasons, and then the contributions coming from FJRW invariants are controlled by a degree counting argument.
+  \end{proof}
+  \onslide<+->{\begin{center}
+    \begin{tikzpicture}[scale=0.8]
+      \node[circle,fill,label=above:{$v_2,5$}] (J) at (5.5,2) {};
+        \node[circle,draw,label=left:{$v_1,2$}] (K) at (5.5,0) {};
+        \node[circle,draw,label=right:{$v_3,6$}] (L) at (7,0) {};
+        \draw[-] (J) edge [bend left=20] (K);
+        \draw[-] (K) edge [bend left=20] (J);
+        \draw[-] (J) edge [bend left=20] (L);
+        \node (M) at (5.5,-0.7) {$\ell_1$};
+        \node (N) at (6.2,2) {$\ell_2$};
+        \node (O) at (7, -0.7) {$\ell_3$};
+        \draw[-] (K) -- (M);
+        \draw[-] (J) -- (N);
+        \draw[-] (L) -- (O);
+        \node at (2.5,0) {$[0,1]$};
+        \node at (2.5,2) {$\infty$};
+    \end{tikzpicture}
+  \end{center}}
+\end{frame}
+
+\begin{frame}{Proof of polynomiality II}
   \begin{cor}<+->
     \[ P_{g,n} = \frac{(3Y)^{g-1} I_{11}^n}{I_0^{2g-2}} \ab(Q \odv[style-inf=\mathsf{d}]{}{Q})^n F_g(Q) \Bigg|_{Q=qe^{I_1/I_0}} \in \Q[\mathcolor{magenta}{A}, \mathcolor{purple}{B, B_2, B_3}, X]. \]
   \end{cor}
+  \begin{proof}<+->
+    Using the fact that $Y^{g-1}\ab<\ >_{g,0}^{[0,1]}$ is a polynomial in $Y=1-X$ of degree at most $g-1$ by the previous lemma, we induct on the genus using the fact that 
+    \[ D(P_{g,n}) = ((1-g)(2B+X) + nA) P_{g,n} + P_{g,n+1} \]
+    and the earlier lemmas.
+  \end{proof}
 \end{frame}
 
 \begin{frame}{Feynman rule I}
@@ -361,7 +461,9 @@
 
 \begin{frame}{Feynman rule II}
   \begin{lem}<+->
-    The entries of $R^X(z)$ are polynomials in $X$ with an explicit degree bound.
+    Write
+    \[ R^X(z) = R^X_0 + R_1^X z + R_2^X z^2 + \cdots \]
+    For each $k$, all entries of $R_k^X$ are polynomials in $X$ with explicit degree bounds.
   \end{lem}
   \begin{cor}[MSP Feynman rule]<+->
     Let $f_{g,m,n}^{\bA}$ be the generating functions of the cohomological field theory
@@ -385,20 +487,6 @@
       \ab(-2 \partial_{A} + \partial_{B} + (A+2B) \partial_{B_2} - \ab((B-X)(A+2B)-B_2-\frac{13}{36} X)\partial_{B_3})P_g = 0.
     \end{align*}
   \end{cor}
-  \begin{proof}<5->
-    Differentiate the physics Feynman rule.
-  \end{proof}
-\end{frame}
-
-\section{Future work}%
-\label{sec:Speculation}
-
-\begin{frame}{Multi-parameter models}
-  \begin{itemize}[<+->]
-    \item We have proved results for Calabi-Yau threefolds with $h^{1,1} = 1$. A natural question is to extend these results to the case when $h^{1,1} > 1$.
-    \item A natural direction is to study hypersurfaces in toric Fano orbifolds whose corresponding reflexive polytope is a simplex. This includes weighted projective space examples and the mirror quintic.
-    \item Stay tuned in the future!
-  \end{itemize}
 \end{frame}
 
 
