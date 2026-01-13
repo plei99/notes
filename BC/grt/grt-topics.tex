@@ -10,6 +10,8 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathmorphing,shapes}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta, shapes.geometric}
+\usetikzlibrary{decorations.markings, fit}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -284,19 +286,270 @@ For a more sophisticated example, we may consider a smooth manifold $X$ with a s
 
 We will now discuss a connection to symplectic geometry. If we have a stratification \(\mc{S}\), then we may consider the union
 \[ T^*_{\mc{S}}X \coloneqq \bigsqcup_{S_{\alpha} \in \mc{S}} T^*_{S_{\alpha}} X \]
-of conormal bundles to the strata and consider the microlocal sheaf theory. In particular, each constructible sheaf $\mc{F}$ has a microlocal stalk at each $(x, \xi) \in T^*_{\mc{S}}X$. For example, if we have a restriction map $\mc{F}(U) \to \mc{F}(V)$, then the microlocal stalk is
+of conormal bundles to the strata and consider the microlocal sheaf theory. In particular, each constructible sheaf $\mc{F}$ has a microlocal stalk at each $(x, \xi) \in T^*_{\mc{S}}X$ as in~\Cref{fig:microlocal_stalk}. For example, if we have a restriction map $\mc{F}(U) \to \mc{F}(V)$, then the microlocal stalk is
 \[ \mu_{(x, \xi)}(\mc{F}) = \on{Cone}(\mc{F}(U) \to \mc{F}(V))[\cdots], \]
 where the shift is not canonical. One upshot of this approach is that
 \[ K_0(\ms{Sh}_{\mc{S}}(X)) \cong \ms{Fun}_{\mc{S}} (X) \cong H_{\mr{top}}^{\mr{BM}}(T_{\mc{S}}^* X). \]
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[
+    font=\footnotesize,
+    >=Latex,
+    % Define geometric parameters for the cylinder perspective
+    x_rad/.style={x radius=3cm},
+    y_rad_main/.style={y radius=1cm},
+    y_rad_cap/.style={y radius=1cm},
+    cylinder_height/.store in=\cylht, cylinder_height=2.5cm,
+    % Define styles for strata and data
+    stratum_point/.style={circle, fill=red!80!black, inner sep=2pt, outer sep=0pt},
+    stratum_line/.style={very thick, blue!70!black},
+    sheaf_data/.style={fill=white, fill opacity=0.8, text opacity=1, draw=gray, thin, rounded corners=2pt, inner sep=2pt},
+    micro_point/.style={circle, fill=orange, inner sep=2pt},
+    conormal_fiber/.style={thick, orange!50!gray, dashed}
+]
+
+% --- 1. Draw the Cylinder (Cotangent Bundle T*S^1) ---
+
+% Bottom cap (back half dashed)
+\draw[gray, dashed, x_rad, y_rad_cap] (-3,-\cylht) arc (180:0:3cm and 1cm);
+\draw[gray, x_rad, y_rad_cap] (-3,-\cylht) arc (180:360:3cm and 1cm);
+
+% Vertical walls
+\draw[gray] (-3, -\cylht) -- (-3, \cylht);
+\draw[gray] (3, -\cylht) -- (3, \cylht);
+
+% Top cap
+\draw[gray, x_rad, y_rad_cap] (0,\cylht) circle (3cm and 1cm);
+
+% Label the spaces
+\node at (3.5, \cylht) {$T^*S^1 \cong S^1 \times \mathbb{R}$};
+\node[gray] at (5.0, 0) {Zero Section ($\xi=0$)};
+
+
+% --- 2. Draw the Stratified Base Space S^1 (Zero Section) ---
+
+% Define coordinates for the stratifying points
+\coordinate (x1) at (-3, 0);
+\coordinate (x2) at (3, 0);
+
+% Interval U1 (Back semi-circle)
+\draw[stratum_line, opacity=0.4, dashed, x_rad, y_rad_main] 
+    (x1) arc (180:0:3cm and 1cm);
+\coordinate (u1_mid) at (0, 0.9); % Midpoint for label
+
+% Interval U2 (Front semi-circle)
+\draw[stratum_line, x_rad, y_rad_main] 
+    (x1) arc (180:360:3cm and 1cm);
+\coordinate (u2_mid) at (0, -0.9); % Midpoint for label
+
+% Points x1 and x2
+\node[stratum_point, label={left:$x_1$}] at (x1) {};
+\node[stratum_point, label={right:$x_2$}] at (x2) {};
+
+
+% --- 3. Visualize Sheaf Data on the Base ---
+
+% Stalks at points
+\node[sheaf_data, anchor=south east] (Vx1) at ($(x1)+(-0.2,0.2)$) {$V_{x_1}$};
+\node[sheaf_data, anchor=south west] (Vx2) at ($(x2)+(0.2,0.2)$) {$V_{x_2}$};
+
+% Stalks on intervals
+\node[sheaf_data, anchor=south] (Vu1) at ($(u1_mid)+(0,0.2)$) {$V_{U_1}$};
+\node[sheaf_data, anchor=north] (Vu2) at ($(u2_mid)+(0,-0.3)$) {$V_{U_2}$};
+
+% Draw restriction/generization maps (sp)
+% From x1 to U1 and U2
+\draw[->, shorten >=2pt, shorten <=2pt] (Vx1) -- (Vu1);
+\draw[->, shorten >=2pt, shorten <=2pt] (Vx1) -- (Vu2);
+% From x2 to U1 and U2 (optional, for completeness)
+%\draw[->, shorten >=2pt, shorten <=2pt, opacity=0.5] (Vx2) -- (Vu1);
+%\draw[->, shorten >=2pt, shorten <=2pt, opacity=0.5] (Vx2) -- (Vu2);
+
+
+% --- 4. Visualize the Microlocal Stalk ---
+
+% Draw the conormal fiber over x1 (T^*_{x1} S^1)
+\draw[conormal_fiber] (-3, -2.2) -- (-3, 2.2) node[above, orange!70!gray] {$T^*_{x_1}S^1$};
+
+% Pick a point p = (x1, xi) with xi > 0
+\coordinate (p) at (-3, 1.5);
+\node[micro_point] at (p) {};
+
+% Add cotangent vector xi indicating direction
+\draw[->, very thick, orange] (p) -- ++(0, 0.7) node[midway, left] {$\xi > 0$};
+\node[left, orange] at ($(p)-(0.1,0)$) {$p=(x_1, \xi)$};
+
+% Label the microlocal stalk
+% We use a callout box to indicate it depends on local data
+\node[draw=orange, very thick, fill=orange!10, rounded corners, align=left, anchor=west] 
+    (micro_label) at (-1.5, 2.8) 
+    {\textbf{Microlocal Stalk} $\mu_p\mathcal{F}$\\
+     Depends on $V_{x_1} \to V_{U_1}$ \\
+     and $V_{x_1} \to V_{U_2}$};
+
+\draw[orange, very thick, ->] (micro_label.west) -- (p);
+
+% Add visual connectors showing dependence
+% Connecting the base data to the microlocal point to show the relationship
+\draw[orange, dotted, thick, ->] (Vx1.north) to[out=90, in=270] (p);
+\draw[orange, dotted, thick, ->] (Vu1.west) to[out=180, in=0] ($(p)+(0,-0.3)$);
+\draw[orange, dotted, thick, ->] (Vu2.west) to[out=180, in=0] ($(p)+(0,-0.5)$);
+
+\end{tikzpicture}
+\end{center}
+\caption{A microlocal stalk}%
+\label{fig:microlocal_stalk}
+\end{figure}
+
 
 The following theorem inspired many subsequent works, including the lecturer's PhD work.
 \begin{thm}[Nadler-Zaslow]
     The dg-category $\ms{Sh}_c(X)$ of constructible sheaves on $X$ equivalent the Fukaya category \(\ms{Fuk}(T^* X)\) of the cotangent bundle \(T^* X\) of $X$.
 \end{thm}
-We will now discuss a geometric interpretation. We may consider the characteristic cycle $\on{CC}(\mc{F})$ of a constructible sheaf, which is a conic Lagrangian cycle in \(T^* X\). However, the objects of the Fukaya category are smooth Lagrangian submanifolds with the cochain complexes of morphisms being given by counting interesection points and holomorphic polygons. It is usually very difficult to calculate the Fukaya category directly, but the theorem allows us to translate these questions into questions about constructible sheaves, which are more manageable.
+We will now discuss a geometric interpretation. We may consider the characteristic cycle $\on{CC}(\mc{F})$ of a constructible sheaf, which is a conic Lagrangian cycle in \(T^* X\). However, the objects of the Fukaya category are smooth Lagrangian submanifolds with the cochain complexes of morphisms being given by counting interesection points and holomorphic polygons. See~\Cref{fig:fukaya} for a visualization. It is usually very difficult to calculate the Fukaya category directly, but the theorem allows us to translate these questions into questions about constructible sheaves, which are more manageable.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[
+    >=Stealth,
+    font=\small,
+    line cap=round,
+    line join=round
+]
+
+% --- Definitions ---
+\def\cylLen{6}   % Length of cylinder
+\def\cylRad{1.5} % Radius of cylinder
+\def\xStart{0.5}
+\def\xEnd{5.5}
+
+% --- Draw Back of Cylinder (Inside) ---
+\draw[gray!30, thick] (\xStart, \cylRad) arc (90:270:0.4 and \cylRad);
+\draw[gray!30, thick, dashed] (\xStart, \cylRad) arc (90:-90:0.4 and \cylRad);
+
+% --- Draw Cylinder Body ---
+% Top and Bottom lines
+\draw[thick] (\xStart, \cylRad) -- (\xEnd, \cylRad);
+\draw[thick] (\xStart, -\cylRad) -- (\xEnd, -\cylRad);
+
+% Right Cap (Front)
+\draw[thick] (\xEnd, 0) ellipse (0.4 and \cylRad);
+
+% --- Define Lagrangians ---
+
+% L0: The Zero Section (Straight horizontal line along the "front" face)
+% We place it slightly offset in z-space conceptually, but y=0 in 2D
+\coordinate (L0_start) at (\xStart, 0);
+\coordinate (L0_end) at (\xEnd, 0);
+
+% L1: An oscillating Lagrangian (e.g., graph of df or a wrapped curve)
+% It creates a "Bigon" (two intersection points)
+\coordinate (p) at (2, 0); % Intersection 1
+\coordinate (q) at (4, 0); % Intersection 2
+
+% --- Draw the Holomorphic Polygon (Shading) ---
+% We fill the area between L0 and L1 between p and q
+\fill[orange!90!yellow, opacity=0.4] 
+    (p) 
+    -- (2.2, 0) % Guide point along L0
+    -- (q) 
+    .. controls (3.5, 0.8) and (2.5, 0.8) .. (p);
+
+% Add a flow arrow inside the polygon to indicate holomorphic map u
+\draw[->, orange!80!black, thick, decoration={markings, mark=at position 0.6 with {\arrow{>}}}, postaction={decorate}] 
+    (3, 0.2) -- (3, 0.5) node[above=0.1, font=\footnotesize] {$u$};
+
+% --- Draw L0 (Blue) ---
+\draw[blue, very thick] (L0_start) -- (L0_end) node[above] {$L_0$};
+
+% --- Draw L1 (Red) ---
+% Curve starts low, intersects p, goes high, intersects q, goes low
+\draw[red, very thick] 
+    (\xStart, -0.5) 
+    .. controls (1.2, -0.5) and (1.5, -0.2) .. (p)
+    .. controls (2.5, 0.8) and (3.5, 0.8) .. (q)
+    .. controls (4.5, -0.2) and (4.8, -0.5) .. (5.2, -0.5)
+    node[right] {$L_1$};
+
+% --- Draw Intersection Points ---
+\fill[black] (p) circle (2pt) node[below] {$p$};
+\fill[black] (q) circle (2pt) node[below] {$q$};
+
+% --- Annotations ---
+\node[above] at (3, \cylRad) {$\mathcal{W}\ms{Fuk}(T^*S^1)$};
+
+% Optional: Draw vector field or boundary orientation on the strip
+% Top boundary orientation
+\draw[->, red, thick] (3, 0.56) -- (2.9, 0.56); 
+% Bottom boundary orientation
+\draw[->, blue, thick] (2.9, 0) -- (3, 0);
+
+\end{tikzpicture}
+\end{center}
+\caption{Two objects in the Fukaya category}%
+\label{fig:fukaya}
+\end{figure}
+
 
 \begin{proof}[Sketch of proof]
-    We will begin by discussing why there is a fully faithful functor \(\on{Sh}_c(X) \to \ms{Fuk}(T^* X)\). The first step is to find some nice generators of the constructible sheaf category. For this, we consider open embeddings $j \colon U \hookrightarrow X$ and extension by zero $j_! \C_U$ of the constant sheaf on $U$. These have characteristic cycles given by the conormal bundle to the boundary \(\partial U\) (together with the zero section at $U$). We will send this sheaf $j_! \C_U$ to a smoothing of its characteristic cycle.
+    We will begin by discussing why there is a fully faithful functor \(\on{Sh}_c(X) \to \ms{Fuk}(T^* X)\). The first step is to find some nice generators of the constructible sheaf category. For this, we consider open embeddings $j \colon U \hookrightarrow X$ and extension by zero $j_! \C_U$ of the constant sheaf on $U$. These have characteristic cycles given by the conormal bundle to the boundary \(\partial U\) (together with the zero section at $U$). We will send this sheaf $j_! \C_U$ to a smoothing of its characteristic cycle, as depicted in~\Cref{fig:charcycle_smoothing}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[>=stealth, thick]
+
+    % --- 1. Axes (T*R plane) ---
+    \draw[->, gray!50] (-4, 0) -- (4, 0) node[right, black] {$x$ (Base)};
+    \draw[->, gray!50] (0, -1) -- (0, 4) node[above, black] {$\xi$ (Fiber)};
+
+    % Define Interval U = (-2, 2)
+    \def\a{-2}
+    \def\b{2}
+
+    % --- 2. Singular Characteristic Cycle CC(F) ---
+    % F = j_! C_U (Extension by zero)
+    % Cycle = Zero section over U + Conormals at boundary
+    % Drawn in BLUE
+    
+    % The Zero Section part: U x {0}
+    \draw[blue, line width=2pt] (\a, 0) -- (\b, 0);
+    
+    % The Conormal parts: {a} x R+ and {b} x R+ (Upward orientation for visual standard)
+    \draw[blue, line width=2pt] (\a, 0) -- (\a, 3.5);
+    \draw[blue, line width=2pt] (\b, 0) -- (\b, 3.5);
+    
+    % Draw "Nodes" at the singularities (corners)
+    \fill[blue] (\a, 0) circle (3pt);
+    \fill[blue] (\b, 0) circle (3pt);
+
+
+    % --- 3. Lagrangian Smoothing ---
+    % A smooth approximation that rounds the corners
+    % Drawn in ORANGE
+    
+    \draw[orange, line width=1.5pt] 
+        (\a - 0.4, 3.5) 
+        .. controls (\a - 0.1, 0.5) and (\a + 0.5, 0.2) .. (0, 0.2) % Left corner smoothing
+        .. controls (\b - 0.5, 0.2) and (\b + 0.1, 0.5) .. (\b + 0.4, 3.5); % Right corner smoothing
+
+
+    % --- 4. Annotations ---
+    
+    % Label the Interval U
+    \draw[|<->|, thin, black] (\a, -0.5) -- (\b, -0.5) node[midway, fill=white] {$U = (a,b)$};
+    
+    % Label the Singular Cycle
+    \node[blue, align=left] at (-2.95, 1.8) {$CC(j_! \mathbb{C}_U)$};
+    \draw[->, blue, thin] (-2.5, 1.6) -- (-2.1, 1);
+    
+    % Label the Smoothing
+    \node[orange, align=left] at (3.2, 2) {Lagrangian\\Smoothing};
+    \draw[->, orange, thin] (2.5, 1.6) -- (2.1, 1.4);
+
+\end{tikzpicture}
+    \end{center}
+    \caption{Characteristic cycle and its smoothing}%
+    \label{fig:charcycle_smoothing}
+    \end{figure}
+    
 
     To prove essential surjectivity, all of the Hom complexes in the Fukaya category can be calculated using Morse theory. For more details, see the original paper by Nadler-Zaslow.
 \end{proof}
@@ -304,7 +557,7 @@ We will now discuss a geometric interpretation. We may consider the characterist
 One reason to consider the Fukaya category is homological mirror symmetry, which was originally proposed by Kontsevich. For certain symplectic manifolds $M$, there is a \textit{mirror partner} \(\check{M}\), which is a complex algebraic variety, and Kontsevich conjectured that there is an equivalence of categories
 \[ \ms{Fuk}(M) \simeq \ms{Coh}(\check{M}). \]
 The simplest example is when \(M = T^* S^1\), where we need to consider the fully wrapped Fukaya category. We have an equivalence
-\[ W\ms{Fuk}(T^* S^1) \simeq \ms{Loc}(S^1) \]
+\[ \mc{W}\ms{Fuk}(T^* S^1) \simeq \ms{Loc}(S^1) \]
 (modulo technical details), but the upshot is that all characteristic cycles are supported inside the zero section. Local systems are on \(S^1\) are simply representations of \(\pi_1(S^1) \cong \Z\), which are simply modules over the group algebra \(\C[\Z] \cong \C[t, t^{-1}] = \mc{O}(\C^{\times})\). Ignoring finiteness conditions, these are simply quasicoherent sheaves on \(\C^{\times}\).
 
 \begin{rmk}
