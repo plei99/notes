@@ -11,8 +11,8 @@
 \usepackage{accents}
 \usepackage{mathtools}
 \usepackage{tikz}
-\usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta, patterns, calc, shapes.geometric, decorations.pathreplacing}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -57,6 +57,7 @@
 \usepackage{parskip}
 
 \usepackage{lipsum}
+\usepackage{cleveref}
 
 % delimiters
 \DeclarePairedDelimiter{\gen}{\langle}{\rangle}
@@ -227,7 +228,7 @@ errors, please contact me at \texttt{plei@math.columbia.edu}.
 
 I would like to thank Nicol\'as Vilches and Alex Xu for pointing out errors and
 typos in these notes. I would also like to thank Alex for graciously offering
-to teach everyone about the Dirac operator. 
+to teach everyone about the Dirac operator. Finally, I would like to thank Google for Gemini 3 Pro allowing me to upscale the original hand-drawn figures to Tikz.
 
 
 \newpage
@@ -1332,7 +1333,7 @@ coefficients in $\Z$ modulo odd torsion. We should be able to obtain
 \chapter{Characteristic Classes and $K$-theory}%
 \label{cha:characteristic_classes_and_k_theory}
 
-\section{Obstruction Theory}% \label{sec:obstruction_theory}
+\section{Obstruction Theory} \label{sec:obstruction_theory}
 
 Here is a very basic question: \textit{Can we extend maps?}
 
@@ -1409,14 +1410,84 @@ desired $d(e) \in \pi_n(Y)$.  \end{proof}
 
 \begin{proof} For simplicity, suppose $f, g$ only differ on $\sigma^n$. Given
     $e^{n+1}$, we want to show that \[ c_g(e) - c_f(e) = [e:\sigma]
-        d_{f,g}(\sigma). \] Up to homotopy, we may assume that in the picture
-        \begin{figure}[H] \centering
-            \includegraphics[width=0.8\linewidth]{shaded.png} \caption{Diagram
-            of the morphism}% \label{fig:shaded} \end{figure} that the shaded
+        d_{f,g}(\sigma). \] Up to homotopy, we may assume that in Figure~\ref{fig:shaded}, the shaded
             part is $\varphi^{-1}(\sigma^n)$ and $\varphi$ is a homeomorphism
             on the shaded component. In particular, $f \circ \varphi, g \circ
             \varphi$ only differ on the shaded part, so the number of
-            components of the shaded part is $[e:\sigma]$.  \end{proof}
+            components of the shaded part is $[e:\sigma]$.
+            \begin{figure}[htpb]
+            \begin{center}
+            \begin{tikzpicture}[scale=1, transform shape, thick,
+    >={Stealth[round, scale=1.2]}, % Professional-looking arrows
+    shaded circle/.style={
+        draw,
+        pattern=north east lines,
+        pattern color=black!60,
+        minimum size=1cm,
+        inner sep=0pt,
+        shape=circle
+    }]
+                % --- Left Side: S^n (Boundary of e^{n+1}) ---
+    \coordinate (SnCenter) at (0,0);
+    \def\SnRadius{2.5cm}
+
+    % Main circle representing S^n
+    \draw (SnCenter) circle (\SnRadius);
+
+    % Label for S^n
+    \node[above left, xshift=-1cm, yshift=2cm] at (SnCenter) {$\partial e^{n+1} \cong S^n$};
+
+    % The four smaller shaded circles (pre-images)
+    \node[shaded circle] at ($(SnCenter) + (1, 1)$) {};
+    \node[shaded circle] at ($(SnCenter) + (1, -1)$) {};
+    \node[shaded circle] at ($(SnCenter) + (-1, 1)$) {};
+    \node[shaded circle] at ($(SnCenter) + (-1, -1)$) {};
+
+
+    % --- Right Side: X^n containing sigma ---
+    \coordinate (XnCenter) at (8,0);
+
+    % Amorphous shape representing the space X^n
+    \draw[smooth cycle, tension=0.7] plot coordinates {
+        ($(XnCenter) + (0, 2.5)$)
+        ($(XnCenter) + (2.5, 1)$)
+        ($(XnCenter) + (1.5, -2)$)
+        ($(XnCenter) + (-2, -1.5)$)
+        ($(XnCenter) + (-2.5, 1.5)$)
+    };
+
+    % Label for X^n supset sigma
+    \node[above right, xshift=0cm, yshift=0.5cm] at (XnCenter) {$X^n \supset \sigma$};
+
+    % Representation of the simplex sigma (e.g., a small filled triangle)
+    \coordinate (SigmaCenter) at ($(XnCenter) + (-0.5, 0)$);
+    \node[
+        regular polygon,
+        regular polygon sides=3,
+        draw,
+        fill=gray!30,
+        minimum size=1.2cm,
+        inner sep=0pt,
+        rotate=30 % Rotate slightly for a more dynamic look
+    ] (Sigma) at (SigmaCenter) {};
+    
+    % Label for sigma itself (optional, but adds clarity)
+    \node at (SigmaCenter) {$\sigma$};
+
+
+    % --- Mapping Arrow phi ---
+    % Arrow from the boundary of S^n to the simplex sigma
+    \draw[->, line width=1.5pt, shorten >=5pt, shorten <=5pt] 
+        ($(SnCenter) + (\SnRadius, 0)$) 
+        to[bend left=25] 
+        node[above, midway, yshift=5pt, font=\Large] {$\varphi$} 
+        (Sigma);
+            \end{tikzpicture}
+            \end{center}
+            \caption{Attaching disks}%
+            \label{fig:shaded}
+            \end{figure}
+          \end{proof}
 
 \begin{proof}[Proof of fundamental theorem of obstruction theory] Let $\mc{O}_f
     = [c_f] = 0$. Then $c_f = \delta d$ for some $d \in \mc{C}^n(X, \pi_n(Y))$.
@@ -1528,9 +1599,75 @@ only if $\chi(M) = 0$.  \end{cor}
     points}}$ (one for each top-cell). To compute $\mc{O}(\xi)$ we can use a
     vector field $v$ with only isolated zeroes. Now we may define the local
     degree at $x$ to be the degree of the map $S_{\ep} \to S^{n-1}$ defined by
-    $y \mapsto v(y)$. The local degree behaves like \begin{figure}[H]
-        \centering \includegraphics[width=0.8\linewidth]{locdeg}
-        \caption{Example of local degrees}% \label{fig:locdeg} \end{figure} and
+    $y \mapsto v(y)$. The local degree behaves like in~\Cref{fig:locdeg} 
+        \begin{figure}[htpb]
+        \begin{center}
+        \begin{tikzpicture}[scale=1, transform shape, thick,
+    >={Stealth[scale=1.2]}, % Professional-looking arrowheads
+    dot/.style={circle, fill=black, inner sep=0pt, minimum size=4pt} % Style for the central dots
+    ]
+            % --- Left Part: Sink and Source (deg = 1) ---
+    \begin{scope}[xshift=0cm]
+        % 1. Sink (Stable Node) - Arrows pointing inwards
+        \coordinate (C1) at (0, 2);
+        \node[dot] at (C1) {};
+        \foreach \angle in {0, 45, ..., 315} {
+            % Draw arrows from a radius of 1.2 down to 0.2 from the center
+            \draw[->] ($(C1) + (\angle:1.2)$) -- ($(C1) + (\angle:0.2)$);
+        }
+
+        % 2. Source (Unstable Node) - Arrows pointing outwards
+        \coordinate (C2) at (4, 2);
+        \node[dot] at (C2) {};
+        \foreach \angle in {0, 45, ..., 315} {
+            % Draw arrows from 0.2 out to a radius of 1.2
+            \draw[->] ($(C2) + (\angle:0.2)$) -- ($(C2) + (\angle:1.2)$);
+        }
+
+        % Curly Brace and Label
+        % Group both the sink and source
+        \draw[decorate, decoration={brace, mirror, amplitude=10pt}, thick]
+            ($(C1) + (-1.5, -1.5)$) -- ($(C2) + (1.5, -1.5)$)
+            node[midway, below=15pt] {$\deg = 1$};
+    \end{scope}
+
+
+    % --- Right Part: Saddle Point (deg = -1) ---
+    \begin{scope}[xshift=11cm] % Shift to the right
+        \coordinate (C3) at (0, 2);
+
+        % 1. Principal Axes
+        % Horizontal axis: Inflow
+        \draw[->] ($(C3) - (2.2, 0)$) -- ($(C3) - (0.3, 0)$);
+        \draw[->] ($(C3) + (2.2, 0)$) -- ($(C3) + (0.3, 0)$);
+        % Vertical axis: Outflow
+        \draw[->] ($(C3) + (0, 0.3)$) -- ($(C3) + (0, 2.2)$);
+        \draw[->] ($(C3) - (0, 0.3)$) -- ($(C3) - (0, 2.2)$);
+
+        % 2. Hyperbolic Curves in the Quadrants
+        % Quadrant 1 (Top-Right)
+        \draw[->] ($(C3) + (0.6, 2.2)$) to[out=-85, in=175] ($(C3) + (2.2, 0.6)$);
+        % Quadrant 2 (Top-Left)
+        \draw[->] ($(C3) + (-0.6, 2.2)$) to[out=-95, in=5] ($(C3) + (-2.2, 0.6)$);
+        % Quadrant 3 (Bottom-Left)
+        \draw[->] ($(C3) + (-0.6, -2.2)$) to[out=95, in=-5] ($(C3) + (-2.2, -0.6)$);
+        % Quadrant 4 (Bottom-Right)
+        \draw[->] ($(C3) + (0.6, -2.2)$) to[out=85, in=-175] ($(C3) + (2.2, -0.6)$);
+
+        % Square Bracket and Label
+        % Drawn manually to match the style in the image
+        \draw[thick, line cap=rect] 
+            ($(C3) + (-2.5, -1.8)$) -- ($(C3) + (-2.5, -2.3)$) -- 
+            ($(C3) + (2.5, -2.3)$) -- ($(C3) + (2.5, -1.8)$);
+        \node[below=25pt] at ($(C3) + (0, -1.8)$) {$\deg = -1$};
+    \end{scope}
+        \end{tikzpicture}
+        \end{center}
+        \caption{Example of local degrees}%
+        \label{fig:locdeg}
+        \end{figure}
+               
+        and
         therefore $\Z \ni \mc{O}(\xi) = \sum \text{local degrees}$ by
         definition. Now we simply need to construct an explicit nice vector
         field. Because $M$ is smooth, it admits a smooth
