@@ -11,7 +11,7 @@
 \usepackage{accents}
 \usepackage{mathtools}
 \usepackage{tikz}
-\usetikzlibrary{calc}
+\usetikzlibrary{calc, patterns, arrows.meta}
 \usetikzlibrary{automata,positioning}
 \usepackage{tikz-cd}
 \usepackage{forest}
@@ -54,6 +54,7 @@
 \usepackage{parskip}
 
 \usepackage{lipsum}
+\usepackage{cleveref} 
 
 % delimiters
 \DeclarePairedDelimiter{\gen}{\langle}{\rangle}
@@ -535,9 +536,57 @@ Z(f')$ is a homotopy equivalences.  \end{thm}
 
 \begin{proof} Choose homotopy inverses $\alpha_-, \beta_-$. We need to
     construct the correct homotopy inverse $\Phi_-: X' \times I \to Y$ to
-    $\Phi$. We will set $\Phi_i: Z(f') \times I \to Z(f)$ to be the picture
-    \begin{figure}[H] \centering \includegraphics[width=0.8\linewidth]{mcyl}
-        \caption{Picture of $\Phi_i$}% \label{fig:} \end{figure} Here,
+    $\Phi$. We will set $\Phi_i: Z(f') \times I \to Z(f)$ to be the space shown in~\Cref{fig:mcyl}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[transform shape, x=2cm, y=1cm, % Scaling factors
+    every node/.style={font=\large},
+    >=latex]
+        % --- Definitions ---
+    \def\radius{1.2}
+    \def\semimajor{0.25} % Width of the ellipse arc
+
+    % --- Cylinder Walls ---
+    % Top line
+    \draw[thick] (0,\radius) -- (3,\radius);
+    % Bottom line
+    \draw[thick] (0,-\radius) -- (3,-\radius);
+
+    % --- Segment 1 (Left) ---
+    % Left Face (Solid Ellipse)
+    \draw[thick] (0,0) ellipse ({\semimajor} and \radius);
+    
+    % Text Content
+    \node at (0.7,0) {$\psi_f \, f \, \alpha_-$};
+
+    % --- Divider 1 (Between Seg 1 & 2) ---
+    % Solid arc for the front, dashed for the back to show 3D depth
+    \draw[thick] (1,-\radius) arc (-90:90:{\semimajor} and \radius);
+    \draw[dashed, thin, gray] (1,\radius) arc (90:270:{\semimajor} and \radius);
+    
+    % --- Segment 2 (Middle) ---
+    % Text Content
+    \node at (1.7,0) {$\beta_- \, \Phi \, \alpha_-$};
+
+    % --- Divider 2 (Between Seg 2 & 3) ---
+    % Dashed arc as per the sketch (implies internal or permeable boundary)
+    \draw[thick, dashed] (2,-\radius) arc (-90:90:{\semimajor} and \radius);
+    \draw[dashed, thin, gray] (2,\radius) arc (90:270:{\semimajor} and \radius);
+
+    % --- Segment 3 (Right) ---
+    % Text Content
+    \node at (2.7,0) {$\beta_i \, f' \, \psi_{\alpha_i}$};
+
+    % --- Right End ---
+    % Dashed arc as per the sketch
+    \draw[thick, dashed] (3,-\radius) arc (-90:90:{\semimajor} and \radius);
+    \draw[dashed, thin, gray] (3,\radius) arc (90:270:{\semimajor} and \radius);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Picture of $\Phi_i$}%
+    \label{fig:mcyl}
+    \end{figure}
+        Here,
         $\psi_{\alpha_-}$ is a homotopy from $\alpha \alpha_-$ to
         $\mr{id}_{X'}$ and $\psi_{\beta}$ is defined analogously. Then the
         three components are first $\beta_- f' \psi_{\alpha_-}$, then $\beta_-
@@ -758,8 +807,9 @@ Let $X$ be a based space.
     \times \{0 \}$. Here, the source triple is homotopy equivalent to
     $(D^{n+1}, S^n, *)$.  \end{defn}
 
-We will attempt to develop some tools to compute homotopy groups. Let $F(X,A) =
-\qty{w \colon I \to X \mid w(0) = *, w(1) \in A}$. By splitting $(F(I^{n+1},
+We will attempt to develop some tools to compute homotopy groups. Let 
+\[ F(X,A) =
+\qty{w \colon I \to X \mid w(0) = *, w(1) \in A}.\] By splitting $(F(I^{n+1},
 \partial I^{n+1}, \mc{J}), (x, A, *)) \cong F((I^n, *), (F(X,A), *))$ and using
 the suspension-loop adjunction, we obtain \[ \pi_n(X, *) \cong \pi_{n-1}(\Omega
 X, *) \cong \cdots \cong \pi_1(\Omega^n X, *). \] Therefore the relative
@@ -864,9 +914,73 @@ sequence of homotopy groups, we obtain the desired result.
 Now consider the special case $Y = D^{q+1} \cup_{S^q} Y_0 \cup_{S^p} D^{p+1}$.
 This is the pushout \begin{equation*} \begin{tikzcd} S^q \sqcup S^p \arrow{d}
 \arrow{r} & D^{q+1} \cup D^{p+1} \arrow{d} \\ Y_0 \arrow{r} & Y.  \end{tikzcd}
-\end{equation*} and looks something like \begin{figure}[H] \centering
-\includegraphics[scale=0.8]{attachcell.png} \caption{Attaching two cells to
-$Y_0$}% \label{fig:attachcell} \end{figure} The key idea is that if $I^n
+\end{equation*} and looks something like~\Cref{fig:attachcell}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape, thick,
+    >={Stealth},
+    dot/.style={circle, inner sep=0pt, minimum size=6pt}
+    ]
+    % --- Coordinates ---
+    \coordinate (CenterTop) at (0, 1.5);
+    \coordinate (CenterBottom) at (0, -2.5);
+    \coordinate (LeftControl) at (-4, -0.5);
+    \coordinate (RightControl) at (4, -0.5);
+    
+    % Specific locations for the dots based on the image
+    \coordinate (RedDotLoc) at (-2.8, 1.2);
+    \coordinate (BlueDotLoc) at (2.8, 1.2);
+
+    % --- The Loops (Disks) ---
+    % Drawing smooth curves to represent the D^{q+1} and D^{p+1} loops
+    
+    % Left Loop (D^{q+1})
+    \draw[black] (CenterBottom) 
+        to[out=160, in=270] (-3.5, -0.5) 
+        to[out=90, in=180] (RedDotLoc) 
+        to[out=0, in=135] (0.2, 0.5); % Ends merging into center
+
+    % Right Loop (D^{p+1})
+    \draw[black] (CenterBottom) 
+        to[out=20, in=270] (3.5, -0.5) 
+        to[out=90, in=0] (BlueDotLoc) 
+        to[out=180, in=45] (-0.2, 0.5); % Ends merging into center
+
+    % --- The Central Intersection Region (Y_0) ---
+    % This represents the shaded vertical blob in the sketch
+    \filldraw[
+        draw=black, 
+        pattern=north east lines, 
+        pattern color=black!70
+    ] 
+        (0, -2.5) to[out=90, in=270] (-0.6, -0.5)
+        to[out=90, in=180] (0, 1.2)
+        to[out=0, in=90] (0.6, -0.5)
+        to[out=270, in=90] (0, -2.5);
+
+    % --- Dots ---
+    \node[dot, fill=red] at (RedDotLoc) {};
+    \node[dot, fill=blue] at (BlueDotLoc) {};
+
+    % --- Labels ---
+    
+    % Label for Y_0
+    \node (Y0) at (1.5, 2.5) {$Y_0$};
+    \draw[->, thin, bend right] (Y0) to (0.2, 1.3);
+
+    % Label for D^{q+1} (Left)
+    \node (Dq) at (-4, -1) {$D^{q+1}$};
+    % Using a visually pleasing placement relative to the curve
+    
+    % Label for D^{p+1} (Right)
+    \node (Dp) at (4, 2.5) {$D^{p+1}$};
+    \draw[shorten >= 5pt] (Dp) -- (BlueDotLoc);
+\end{tikzpicture}
+\end{center}
+\caption{Attaching two cells to $Y_0$}%
+\label{fig:attachcell}
+\end{figure}
+The key idea is that if $I^n
 \xrightarrow{\sigma} F(Y)$ is a family of paths, then generically, the
 subfamily $Q \subset  I^n$ of paths which intersect the origin in $D^{q+1}$ has
 dimension $n-q$. To see this, appeal to the fact that locally $D^{q+1}$ is a
@@ -1526,9 +1640,57 @@ orientations. Also, we can consider $\abs{K}$ as a CW complex and then the CW
 and simplicial chain complexes are the same. Then we can collapse the $n-2$
 skeleton to obtain a wedge of spheres, and then we have maps of degree $\pm 1$.
 The sign is determined by the orientation, where we will consider clockwise to
-be the standard orientation. For example, consider a single $2$-simplex:
-\begin{figure}[H] \centering \includegraphics[scale=1]{simporient.png}
-    \caption{Simplicial orientations.}% \label{fig:simporient} \end{figure} Now
+be the standard orientation. For example, consider a single $2$-simplex as in~\Cref{fig:simporient}.
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape, >=Stealth, font=\sffamily, thick]
+    % --- Define Coordinates ---
+% Vertices of an equilateral triangle
+\coordinate (V0) at (0, 0);
+\coordinate (V2) at (4, 0);
+\coordinate (V1) at (2, {4*sin(60)}); % Height is side * sin(60)
+
+% --- Shaded Regions (Background) ---
+% Draw these first so they are behind the edges and vertices.
+% Blue path spanning 0 -> 1 -> 2
+\draw[line width=25pt, blue, opacity=0.3, line join=round, line cap=round] (V0) -- (V1) -- (V2);
+% Red edge spanning 0 -> 2
+\draw[line width=25pt, red, opacity=0.3, line cap=round] (V0) -- (V2);
+
+% --- Directed Edges (Foreground) ---
+\draw[->, very thick] (V0) -- (V1);
+\draw[->, very thick] (V1) -- (V2);
+% The bottom edge is drawn in red in the sketch
+\draw[->, very thick, red!80!black] (V0) -- (V2);
+
+% --- Vertices ---
+% Draw vertices as white circles with numbers
+\foreach \i/\pos in {0/V0, 1/V1, 2/V2} {
+    \node[circle, draw, fill=white, inner sep=3pt, font=\bfseries] at (\pos) {\i};
+}
+
+% --- Labels and Annotations ---
+
+% Label [v0, v1] with an arrow pointing to the edge
+\node (L01) at (-1.5, 2.5) {$[v_0, v_1]$};
+\draw[->] (L01) to[out=0, in=135] ($(V0)!0.5!(V1)$);
+% Number '1' near the edge
+\node at ($(V0)!0.5!(V1) + (-0.4, 0.2)$) {1};
+
+% Label [v1, v2] with an arrow pointing to the edge
+\node (L12) at (5.5, 2.5) {$[v_1, v_2]$};
+\draw[->] (L12) to[out=180, in=45] ($(V1)!0.5!(V2)$);
+% Number '2' near the edge
+\node at ($(V1)!0.5!(V2) + (0.4, 0.2)$) {2};
+
+% Circular orientation arrow inside the triangle
+\draw[->] (2, 1.5) arc[start angle=450, end angle=90, radius=0.4];
+\end{tikzpicture}
+\end{center}
+\caption{Simplicial orientations.}%
+\label{fig:simporient}
+\end{figure}
+    Now
     if $K \to L$ is a map of ``simplicial sets,'' then we get maps $\abs{K} \to
     \abs{L}$. We can try to compute $h_*\abs{K} \to h_*\abs{L}$, and this is
     determined by the cell complex, which is the same as the simplicial
@@ -1580,9 +1742,64 @@ induce an orientation on the boundary, so we can set \[ S_n(X) \cong
 orientation to the boundary. The advantage of this secondary approach is that
 we can see that $\partial^2 = 0$ topologically instead of combinatorially. On a
 manifold with corners, when we consider the intersection of two facets, the two
-restrictions are clearly opposite to each other: \begin{figure}[H] \centering
-    \includegraphics[scale=1]{orientsimp.png} \caption{Tracking orientations}%
-\label{fig:orientsimp} \end{figure}
+restrictions are clearly opposite to each other, as in~\Cref{fig:orientsimp}. 
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1, transform shape, >=Latex, font=\sffamily\bfseries]
+    % --- Grid lines ---
+% Three horizontal blue lines acting as guides
+\foreach \y in {0, 2, 4} {
+    \draw[blue!30, thick] (-1.5, \y) -- (11.5, \y);
+}
+
+% --- Central Structure ---
+
+% Hatched region (background)
+% Represents the area affected by the forces
+\fill[pattern=north east lines, pattern color=red!70] (3.2, 0.1) rectangle (4.9, 3.9);
+
+% Vertical orange line (e.g., a wall or beam)
+\draw[orange, very thick, line cap=round] (5, -0.2) -- (5, 4.2);
+
+% Horizontal magenta line (e.g., a lever arm)
+\draw[magenta, very thick, line cap=round] (2.5, 4) -- (5, 4);
+
+% Green pivot point at the intersection
+\fill[green!60!black] (5, 4) circle (4pt);
+
+% --- Central Forces & Moments ---
+
+% Magenta downward force
+\draw[magenta, very thick, ->] (3.5, 4) -- (3.5, 2.2);
+
+% Orange leftward force (reaction from the wall)
+\draw[orange, very thick, ->] (5, 2) -- (3.2, 2);
+
+% Blue rotation moment arrow
+\draw[blue, very thick, ->] (3.5, 2) ++(290:0.6) arc[start angle=290, end angle=110, radius=0.6];
+
+
+% --- Left Vector Pair ---
+% Located at coordinate (1, 2)
+\coordinate (L) at (1, 2);
+% Vector 1 (Orange, Left)
+\draw[orange, very thick, ->] (L) -- +(-1.2, 0) node[above, xshift=-2pt] {1};
+% Vector 2 (Magenta, Down)
+\draw[magenta, very thick, ->] (L) -- +(0, -1.2) node[right, yshift=-2pt] {2};
+
+% --- Right Vector Pair ---
+% Located at coordinate (9, 2)
+\coordinate (R) at (9, 2);
+% Vector 2 (Orange, Left)
+\draw[orange, very thick, ->] (R) -- +(-1.2, 0) node[above, xshift=-2pt] {2};
+% Vector 1 (Magenta, Down)
+\draw[magenta, very thick, ->] (R) -- +(0, -1.2) node[right, yshift=-2pt] {1};
+\end{tikzpicture}
+\end{center}
+\caption{Tracking orientations}%
+\label{fig:orientsimp}
+\end{figure}
+
 
 Now for $A \subset X$, we clearly have an inclusion $S_n(A) \hookrightarrow
 S_n(X)$. Then define $S_n(X,A)$ to be the quotient $S_n(X) / S_n(A)$. Note that
