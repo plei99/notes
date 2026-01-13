@@ -258,7 +258,66 @@
 
 \tableofcontents
 
+\section{Introduction}%
+\label{sec:introduction}
+
+Representation theory studies some group $G$ with some structure by considering representations \((V,\rho \colon G \to \on{GL}(V))\) where $V$ is a vector space and \(\rho\) is a group homomorphism with suitable properties. This seems like a purely algebraic question, but it is already very hard even when \(G\) is a finite group (in the nonabelian case). We may now bring in various geometric methods to construct representations of $G$:
+\begin{enumerate}
+    \item If $G$ acts on an algebraic variety \(X\), then there is an action of $G$ on the space of functions on $X$;
+    \item If $G$ acts on an algebraic variety \(X\), then we may consider a $G$-equivariant line bundle $\mc{L}$ on $X$ (which is a line bundle on $[X/G]$), we may consider the cohomology groups \(H^i(X,\mc{L})\) which are representations of $G$. If \(X\) is projective, then these cohomology groups are finite-dimensional;
+    \item If \(G\) acts on $X$, then it also acts on the cohomology \(H^{\bullet}(X) \)  for any generalized cohomology theory;
+    \item There are also more hidden and subtle symmetries, where instead of actual group actions, we consider correspondences acting on cohomology groups. We will see examples of this later when we discuss Springer theory. In addition, we can lift this to the level of derived categories and consider Fourier-Mukai transforms;
+\end{enumerate}
+
+\subsection{Overview of the course}%
+\label{sub:Overview of the course}
+
+
+The first part of the course will focus on the basics of geometric representation theory, largely focusing on Springer theory, the Borel-Weil-Bott theorem, and the geometry of the wonderful compactification \(\ol{G}\).
+
+The second part of the course will focus on a completely integrable system called the Toda system and its homological mirror symmetry. One motivation for this is the notion of categorification, for example going from the Hecke algebra to the Hecke category, which will turn out to be a category of constructible sheaves. 
+
+One origin of categorification in algebraic geometry is Grothendieck's function-sheaf correspondence, which we will adapt to our setting (in particular, we will not need \(\ell\)-adic sheaves). One particularly simple example of this is upgrading the integers $\Z$ to the derived category of vector spaces over a field $k$, where the original integer is recovered as the Euler characteristic.
+
+For a more sophisticated example, we may consider a smooth manifold $X$ with a stratification $\mc{S} = \ab\{S_{\alpha} \}$ by locally closed submanifolds. We may consider the space $\ms{Fun}_{\mc{S}}(X)$ of constructible functions (taking values in integers) with respect to \(\mc{S}\), which are locally constant on each stratum \(S_{\alpha}\). The natural categorification of this is the derived category \(\ms{Sh}_{\mc{S}}(X)\)  of constructible sheaves on $X$, where all cohomology sheaves are locally constant on each stratum \(S_{\alpha}\). The original constructible function is recovered by taking the Euler characteristic of the stalk at each point. In addition, we may recover the functions as
+\[ K_0(\ms{Sh}_{\mc{S}}(X)) \cong \ms{Fun}_{\mc{S}} (X). \]
+
+We will now discuss a connection to symplectic geometry. If we have a stratification \(\mc{S}\), then we may consider the union
+\[ T^*_{\mc{S}}X \coloneqq \bigsqcup_{S_{\alpha} \in \mc{S}} T^*_{S_{\alpha}} X \]
+of conormal bundles to the strata and consider the microlocal sheaf theory. In particular, each constructible sheaf $\mc{F}$ has a microlocal stalk at each $(x, \xi) \in T^*_{\mc{S}}X$. For example, if we have a restriction map $\mc{F}(U) \to \mc{F}(V)$, then the microlocal stalk is
+\[ \mu_{(x, \xi)}(\mc{F}) = \on{Cone}(\mc{F}(U) \to \mc{F}(V))[\cdots], \]
+where the shift is not canonical. One upshot of this approach is that
+\[ K_0(\ms{Sh}_{\mc{S}}(X)) \cong \ms{Fun}_{\mc{S}} (X) \cong H_{\mr{top}}^{\mr{BM}}(T_{\mc{S}}^* X). \]
+
+The following theorem inspired many subsequent works, including the lecturer's PhD work.
+\begin{thm}[Nadler-Zaslow]
+    The dg-category $\ms{Sh}_c(X)$ of constructible sheaves on $X$ equivalent the Fukaya category \(\ms{Fuk}(T^* X)\) of the cotangent bundle \(T^* X\) of $X$.
+\end{thm}
+We will now discuss a geometric interpretation. We may consider the characteristic cycle $\on{CC}(\mc{F})$ of a constructible sheaf, which is a conic Lagrangian cycle in \(T^* X\). However, the objects of the Fukaya category are smooth Lagrangian submanifolds with the cochain complexes of morphisms being given by counting interesection points and holomorphic polygons. It is usually very difficult to calculate the Fukaya category directly, but the theorem allows us to translate these questions into questions about constructible sheaves, which are more manageable.
+
+\begin{proof}[Sketch of proof]
+    We will begin by discussing why there is a fully faithful functor \(\on{Sh}_c(X) \to \ms{Fuk}(T^* X)\). The first step is to find some nice generators of the constructible sheaf category. For this, we consider open embeddings $j \colon U \hookrightarrow X$ and extension by zero $j_! \C_U$ of the constant sheaf on $U$. These have characteristic cycles given by the conormal bundle to the boundary \(\partial U\) (together with the zero section at $U$). We will send this sheaf $j_! \C_U$ to a smoothing of its characteristic cycle.
+
+    To prove essential surjectivity, all of the Hom complexes in the Fukaya category can be calculated using Morse theory. For more details, see the original paper by Nadler-Zaslow.
+\end{proof}
+
+One reason to consider the Fukaya category is homological mirror symmetry, which was originally proposed by Kontsevich. For certain symplectic manifolds $M$, there is a \textit{mirror partner} \(\check{M}\), which is a complex algebraic variety, and Kontsevich conjectured that there is an equivalence of categories
+\[ \ms{Fuk}(M) \simeq \ms{Coh}(\check{M}). \]
+The simplest example is when \(M = T^* S^1\), where we need to consider the fully wrapped Fukaya category. We have an equivalence
+\[ W\ms{Fuk}(T^* S^1) \simeq \ms{Loc}(S^1) \]
+(modulo technical details), but the upshot is that all characteristic cycles are supported inside the zero section. Local systems are on \(S^1\) are simply representations of \(\pi_1(S^1) \cong \Z\), which are simply modules over the group algebra \(\C[\Z] \cong \C[t, t^{-1}] = \mc{O}(\C^{\times})\). Ignoring finiteness conditions, these are simply quasicoherent sheaves on \(\C^{\times}\).
+
+\begin{rmk}
+    For the purposes of representation theory, we will treat $\pi_1(S^1) = \mathbb{X}_{\bullet}(S^1)$ as cocharacters, which will be identified with the characters $\mathbb{X}^{\bullet}(\C^{\times})$ on the mirror side. This picture generalizes if we consider algebraic tori of any rank and is a version of Langlands duality in the abelian case.
+\end{rmk}
+
+\begin{rmk}
+    Homological mirror symemtry is closely related to the geometric Langlands correspondence, where we send the Hitchin system for $G$ to the character variety for the Langlands dual group \(G^{\vee}\). There are some technical issues, but the Betti geometric Langlands correspondence is essentially homological mirror symmetry here.
+\end{rmk}
+
 \part{Geometry of complex semisimple Lie algebras and groups}
+
+
 
 \part{Universal centralizers}
 
