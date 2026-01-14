@@ -14,6 +14,8 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{decorations.pathmorphing, patterns}
+\usepackage{tikz-3dplot}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -1588,11 +1590,13 @@ neighborhoods.  \end{defn}
 
 To construct a Seifert surface from a link, we can trivialize crossings, fill
 the circles into discs, and then untrivialize the crossings again.
-
-\begin{figure}[H] \centering \includegraphics[width=0.8\linewidth]{seifert}
-    \caption{Seifert surface of the trefoil knot.}% \label{fig:seifert}
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{seifert.jpg}
+\end{center}
+\caption{Seifert surface for the trefoil knot}%
+\label{fig:seifert}
 \end{figure}
-
 Here are some more properties of Milnor fibers: \begin{enumerate} \item Each
 fiber is parallelizable; \item Each fiber has the homotopy type of a cell
 complex of dimension $n$.  \end{enumerate}
@@ -1873,9 +1877,36 @@ vertices truncated. Note the center of the triangular face is the $A_1 \times
 A_1 \times A_1$ lattice while the center of a hexagonal face is the $A_2 \times
 A_1$ lattice.
 
-\begin{figure}[H] \centering \includegraphics[scale=0.5]{voronoi.png}
-    \caption{Soul\'e's cube. This was used to compute the cohomology of
-    $SL_3(\Z)$.}% \label{fig:name} \end{figure}
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}
+\fill[draw=none, red!50, opacity=0.9] (-0.5, -0.5) -- (1.1,-0.5) -- (1.5, -0.1) -- (1.5,1.5) -- (-0.1,1.5) -- (-0.5, 1.1) -- cycle; 
+\fill[draw=none, red!50, opacity=0.9] (-0.85, -0.85) -- (-0.5,-0.5) -- (-0.5,1.1) -- (-0.65, 1.35) -- (-1,1) -- (-1,-0.6) -- cycle;
+\fill[draw=none, red!30, opacity=0.5] (-1,-0.6) -- (-0.6,-1) -- (1,-1) -- (1,0.6) -- (0.6,1) -- (-1,1) -- cycle;
+\fill[draw=none, red!50, opacity=0.9] (-0.6, -1) -- (1,-1) -- (1.35, -0.65) -- (1.1, -0.5) -- (-0.5, -0.5) -- (-0.85, -0.85) -- cycle;
+\fill[draw=none, blue!50, opacity=0.7] (1.35, -0.65) -- (1.1, -0.5) -- (1.5, -0.1) -- cycle;
+\fill[draw=none, blue!50, opacity=0.7] (-0.5, 1.1) -- (-0.65, 1.35) -- (-0.1,1.5) -- cycle;
+\fill[draw=none, blue!50, opacity=0.6] (-1,-0.6) -- (-0.6, -1) -- (-0.85,-0.85) -- cycle;
+\fill[draw=none, blue!50, opacity=0.5] (1, 0.6) -- (0.6, 1) -- (1.15, 1.15) -- cycle;
+\draw[-] (-1,-0.6) -- (-0.6,-1) -- (1,-1) -- (1,0.6) -- (0.6,1) -- (-1,1) -- cycle;
+\draw[-] (-1, -0.6) -- (-0.85,-0.85) -- (-0.6, -1);
+\draw[dashed] (-0.85,-0.85) -- (-0.5,-0.5) -- (-0.5,1.1) -- (-0.1, 1.5);
+\draw[dashed] (-0.5, 1.1) -- (-0.65, 1.35);
+\draw[-] (-1,1) -- (-0.65, 1.35) -- (-0.1,1.5) -- (1.5,1.5) -- (1.5, -0.1);
+\draw[-] (0.6,1) -- (1.15, 1.15) -- (1.5,1.5);
+\draw[-] (1,0.6) -- (1.15, 1.15);
+\draw[dashed] (-0.5, -0.5) -- (1.1, -0.5) -- (1.5, -0.1);
+\draw[-] (1,-1) -- (1.35, -0.65) -- (1.1, -0.5);
+\draw[-] (1.35, -0.65) -- (1.5, -0.1);
+\end{tikzpicture}
+\end{center}
+\caption{Soul\'e's cube. This was used to compute the cohomology of
+    $SL_3(\Z)$.}%
+\label{fig:}
+\end{figure}
+
+
+
 
 \begin{exer} Find the three remaining special lattices (names can be found in a
 crystollagraphy book).  \end{exer}
@@ -2042,10 +2073,101 @@ index them by partitions of $3$ where the order of the parts matters.
         strata at infinity \\ \bottomrule \end{tabular} \end{table} In fact,
         the strata at infinity are lower-rank locally symmetric spaces that are
         being compactified themselves in this process. The space for $n=3$
-        looks something like this: \begin{figure}[H] \centering
-            \includegraphics[width=0.8\linewidth]{space.png}
-            \caption{Simplified picture of strata for $n=3$}%
-        \label{fig:Simplifi} \end{figure} This space is singular. We have
+        looks something like this: 
+        \begin{figure}[H]
+        \begin{center}
+        \begin{tikzpicture}[scale=1.5, line width=0.8pt, line cap=round, line join=round]
+
+    % --- 1. Coordinate Definitions ---
+    \coordinate (Center) at (0,0);
+    \coordinate (LeftTip) at (-3, 0.5);
+    \coordinate (RightTip) at (3, 0.5);
+    \coordinate (TopCenter) at (0, 2.5);
+
+    % --- 2. The Main "Lobes" (The glasses/infinity shape) ---
+    % Left Lobe
+    \draw plot [smooth cycle, tension=0.8] coordinates {
+        (Center) 
+        (-1, -0.5) 
+        (-2.8, 0.2) 
+        (-3, 1) 
+        (-1.5, 0.8) 
+        (-0.2, 0.2)
+    };
+
+    % Right Lobe
+    \draw plot [smooth cycle, tension=0.8] coordinates {
+        (Center) 
+        (1, -0.5) 
+        (2.8, 0.2) 
+        (3, 1) 
+        (1.5, 0.8) 
+        (0.2, 0.2)
+    };
+
+    % --- 3. The Large Upper Dome ---
+    % Arcs from the far left of the left lobe to the far right of the right lobe
+    \draw (-3, 1) .. controls (-3, 4) and (3, 4) .. (3, 1);
+
+    % --- 4. Central Vertex ---
+    \fill (Center) circle (1.5pt);
+
+    % --- 5. Internal Circles & Symbols ---
+
+    % Top Circle (Region 1)
+    \draw (0, 2.2) circle (0.6);
+    % Drawing the squiggle inside (looks like an integral or a '1')
+    \draw plot [smooth] coordinates {(0.1, 2.5) (-0.1, 2.2) (0.1, 1.9)};
+
+    % Left Circle (Region 2)
+    \draw (-1.6, 0.2) circle (0.35);
+    \node at (-1.6, 0.2) {\small 2};
+
+    % Right Circle (Region 2)
+    \draw (1.6, 0.2) circle (0.35);
+    \node at (1.6, 0.2) {\small 2};
+
+    % Bottom Circle (Region 0 / Spiral)
+    \draw (0, -1.2) circle (0.3);
+    % Drawing a small spiral/squiggle inside
+    \draw (0, -1.2) node {\scriptsize $0$}; % or spiral approximation
+
+    \draw (-2.8,0.6) to[bend left] (-2.2,0.6);
+    \draw (-2.7,0.65) to[bend right] (-2.3, 0.65);
+    \draw (-1,0) to[bend left] (-0.4,0);
+    \draw (-0.9,0.05) to[bend right] (-0.5, 0.05);
+    \draw (2.8,0.6) to[bend right] (2.2,0.6);
+    \draw (2.7,0.65) to[bend left] (2.3, 0.65);
+    \draw (1,0) to[bend right] (0.4,0);
+    \draw (0.9,0.05) to[bend left] (0.5, 0.05);
+    %\draw (-1.2,-6.4) to[bend right] (1.2,-6.4);
+
+    % --- 6. The Line Segment ---
+    % Emanating from center to bottom right
+    \draw (Center) -- (1.5, -1.5);
+
+    % --- 7. Labels and Annotations ---
+
+
+    % Floating "3" inside the dome, right side
+    \node at (2, 1.5) {3};
+
+    % "21" Bottom Left
+    \node at (-2, -0.5) {21};
+
+    % "12" Bottom Right
+    \node at (2, -0.5) {12};
+
+    % "111" Bottom Right (below 12)
+    \node at (1.6, -1.6) {111};
+
+\end{tikzpicture}
+        \end{center}
+        \caption{Simplified picture of strata for $n=3$}%
+        \label{fig:}
+        \end{figure}
+        
+        This space is singular. We have
         attached two-dimensional strata to a five-dimensional space. We can
         compte links by realizing the space as a quotient of a manifold with
         corners. The bigger space is called the Borel-Serre
