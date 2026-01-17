@@ -35,7 +35,7 @@
 % \usepackage{fontspec} 
 % \setmainfont{Tex Gyre Pagella}
 \usepackage[OT1,euler-digits]{eulervm}
-% \usepackage{euler-math} 
+% % \usepackage{euler-math} 
 \usepackage[scaled=0.86]{berasans}
 % \let\sffamilyold\sffamily
 % \def\sffamily{\fontencoding{T1}\sffamilyold}
@@ -192,6 +192,14 @@
 \newcommand{\fl}{\mr{fl}}
 \newcommand{\ps}[1]{\llbracket #1 \rrbracket}
 \newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\GL}{\mr{GL}}
+\newcommand{\SL}{\mr{SL}}
+\newcommand{\SO}{\mr{SO}}
+\newcommand{\Sp}{\mr{Sp}}
+\newcommand{\gl}{\mf{gl}}
+\renewcommand{\sl}{\mf{sl}}
+\newcommand{\so}{\mf{so}}
+\renewcommand{\sp}{\mf{sp}}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Tor}{Tor}
@@ -199,6 +207,7 @@
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\Ext}{Ext}
 \DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Rad}{Rad}
 \DeclareMathOperator{\Pic}{Pic}
@@ -283,6 +292,9 @@ One origin of categorification in algebraic geometry is Grothendieck's function-
 
 For a more sophisticated example, we may consider a smooth manifold $X$ with a stratification $\mc{S} = \ab\{S_{\alpha} \}$ by locally closed submanifolds. We may consider the space $\ms{Fun}_{\mc{S}}(X)$ of constructible functions (taking values in integers) with respect to \(\mc{S}\), which are locally constant on each stratum \(S_{\alpha}\). The natural categorification of this is the derived category \(\ms{Sh}_{\mc{S}}(X)\)  of constructible sheaves on $X$, where all cohomology sheaves are locally constant on each stratum \(S_{\alpha}\). The original constructible function is recovered by taking the Euler characteristic of the stalk at each point. In addition, we may recover the functions as
 \[ K_0(\ms{Sh}_{\mc{S}}(X)) \cong \ms{Fun}_{\mc{S}} (X). \]
+
+\subsection{Homological mirror symmetry}%
+\label{sub:Homological mirror symmetry}
 
 We will now discuss a connection to symplectic geometry. If we have a stratification \(\mc{S}\), then we may consider the union
 \[ T^*_{\mc{S}}X \coloneqq \bigsqcup_{S_{\alpha} \in \mc{S}} T^*_{S_{\alpha}} X \]
@@ -568,7 +580,81 @@ The simplest example is when \(M = T^* S^1\), where we need to consider the full
     Homological mirror symemtry is closely related to the geometric Langlands correspondence, where we send the Hitchin system for $G$ to the character variety for the Langlands dual group \(G^{\vee}\). There are some technical issues, but the Betti geometric Langlands correspondence is essentially homological mirror symmetry here.
 \end{rmk}
 
+One modification of this is to complexify the Fukaya side into $T^* T$, and in this case the (appropriate version of the) wrapped Fukaya category  still reduces to local systems on $T$. Traditionally, we considered $T^* T_c$ (the cotangent bundle of the compact form) because of the SYZ mirror symmetry philosophy, which predicts that a manifold $M$ and its mirror $\check{M}$ have dual Lagrangian torus fibrations. In general, it is very hard to use SYZ to construct mirrors because there are usually singular fibers, which are hard to control.
+
+However, one way to produce a mirror is to believe in homological mirror symmetry and then try to find a variety $\check{M}$ such that
+\[ \ms{Fuk}(M) \simeq \ms{Coh}(\check{M}). \]
+If the fibration has a Lagrangian section, then each smooth fiber becomes a Lie group, so $\ms{Fuk}(M)$ is expected to pick up a ``convolution'' symmetric monoidal structure, which should correspond to the tensor product of coherent sheaves in some kind of non-linear Fourier transform.
+
+In the second part of the course, we will generalize the duality $T^*T \leftrightarrow T^{\vee}$ to the universal centralizer (or Toda system) $J_G$, where $G$ is a semisimple complex Lie group. This is related to representation theory for two reasons.
+\begin{itemize}
+    \item $J_G$ is also called the bi-Whittaker reduction and represents something like the generic part of the representation of $G$, namely the ``commutative part'' of the Hecke category;
+    \item If we add a loop to $G$, then we obtain the affine Toda system;
+    \item There is a partial (log) compactification $\ol{J}_G^{\log}$ over the base $\g^* \sslash G$ constucted by Balibanu whose fibers are a kind of regular Hessenberg variety (a generalization of Springer fibers). The central fiber is the Peterson variety $Y_P$, which is a closed subvariety of the flag variety $G/B$ and is related to the quantum cohomology of $G^{\vee}/P^{\vee}$ via the isomorphism
+    \[ QH^*(G^{\vee} / P^{\vee}) \cong \mc{O}(Y_P). \]
+\end{itemize}
+
 \part{Geometry of complex semisimple Lie algebras and groups}
+
+\section{Review of semisimple Lie algebras/groups}%
+\label{sec:Review of semisimple Lie algebras/groups}
+
+Eventually, the groups we are interested in are $\on{SL}_n(\C)$, $\on{SO}_n(\C)$, and $\on{Sp}_{2n}(\C)$ with Lie algebras $\mf{sl}_n(\C)$, $\so_n(\C)$, and $\sp_{2n}(\C)$. However, along the way we will encounter groups like Borels and unipotent groups.
+
+Every Lie group has both a left and right action of $G$ on itself given by the multiplication map
+\[ m \colon G \times G \to G. \]
+We may consider the tangent space $\g = T_e G$ at the identity, and left translation of vector fields gives an isomorphism
+\[ L \colon G \times \g \xrightarrow{\sim} TG \qquad (g, \xi) \mapsto L_{g *} \xi. \]
+The right action gives another trivialization
+\[ R \colon G \times \g \xrightarrow{\sim} TG \qquad (g, \xi) \mapsto R_{g^{-1} *} \xi. \]
+These two are related by the diagram
+\begin{equation*}
+\begin{tikzcd}
+    G \times \g \ar{r}{L} \ar[swap]{d}{\iota \times (-1)} & TG \ar{d}{T\iota} \\
+    G \times \g \ar{r}{R} & TG,
+\end{tikzcd}
+\end{equation*}
+where $\iota$ is the map sending an element of $G$ to its inverse. If we fix $\xi \in \g$, then applying $L$ gives us a left-invariant vector field $\xi^{\ell}$ on $G$, and similarly applying $R$ gives a right-invariant vector field $\xi^r$. 
+
+\begin{lem}\leavevmode
+    \begin{enumerate}
+        \item Left (resp. right) invariant vector fields on $G$ are closed under the Lie bracket;
+        \item The left and right-invariant vector fields induce the same Lie bracket on $\g$.
+    \end{enumerate}
+\end{lem}
+
+The main idea of the proof is that the Lie bracket is preserved by diffeomorphisms and in particular left (or right) translation. 
+
+\begin{rmk}
+    If we have any action $a \colon G \times X \to X$, then taking the derivative
+    \[ (\d{a})_e \colon \g \times X \to X \]
+    gives an infinitesimal action of $G$ on $X$ (as in a map from $\g$ to vector fields on $X$). For example, $L$ is simply 
+    \[ (\d{m})_{e, \text{factor 2}} \colon G \times \g \to TG \]
+    and a similar statement is true for $R$.
+\end{rmk}
+
+One important action of $G$ on itself is the \textit{adjoint action}, where $G$ acts on itself by conjugation. On the tangent space, we have $(R_{g^{-1}})_* L_{g*} = L_{g*} (R_{g^{-1}})_*$. By definition, we now have
+\[ \Ad_g \xi \coloneqq (R_{g^{-1}})_* L_{g*} \xi, \]
+which induces a map
+\[ \Ad \colon G \to \GL(\g). \]
+Therefore, another equivalent definition of the Lie bracket is to simply differentiate the adjoint action. There is also an exponential map $\exp \colon \g \to G$, and the Lie bracket is defined as
+\[ [\xi, \eta] \coloneqq \eval{\odv{}{t}}_{t=0} \Ad_{\exp(t\xi)} \eta. \]
+
+\begin{rmk}
+    Any finite-dimensional abstract Lie algebra is isomorphic to a subalgebra of $\gl_n$ by Ado's theorem, which says that every finite-dimensional Lie algebra has a finite-dimensional faithful representation. In particular, every finite-dimensional Lie group over $\R$ is locally an immersed subgroup of $\GL_n(\R)$ for some $n$.
+\end{rmk}
+
+We will give some principles of Lie theory:
+\begin{itemize}
+    \item The Lie group is (up to taking its universal cover) determined by its Lie algebra. Given a connected Lie group $(H, e)$, then any discrete covering $(H', e')$ inherits a unique group structure whose kernel lies in the center of $H'$ (this works because the fundamental group of $H$ is abelian due to the group structure). Conversely, any discrete central quotient of $H$ is a Lie group with the same Lie algebra. If we work analytically, $H$ has a universal cover, which is the unique simply connected Lie group with the same Lie algebra as $H$.
+    \item If $G$ and $H$ are Lie groups such that $G$ is connected, then any Lie group homomorphism
+    \[ \rho \colon G \to H \]
+    is uniquely determined by its derivative $\d{\rho} \colon \g \to \mf{h}$, which is a Lie algebra homomorphism.
+    \item For $\g = \on{\ms{Lie}} G$ and any embedding $\mf{h} \hookrightarrow \g$, the subgroup of $G$ generated by $\exp(\mf{h})$ is an immersed Lie subgroup of $G$ with Lie algebra $\mf{h}$.
+\end{itemize}
+
+By Ado's theorem, we see that the embedding $\g \hookrightarrow \gl_n(\R)$ gives an immersed subgroup $G \to \GL_n(\R)$. In addition, the third item actually implies that there is a unique simply connected Lie group for any Lie algebra $\g$.
+
 
 
 
