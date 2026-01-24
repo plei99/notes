@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathmorphing,shapes, decorations.markings}
-\usetikzlibrary{automata,positioning}
+\usetikzlibrary{automata,positioning, snakes}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -17,7 +17,7 @@
 \usepackage{mdframed}
 \usepackage{verbatim}
 \usepackage{physics2}
-\usephysicsmodule{ab,ab.legacy,diagmat,xmat}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat, op.legacy}
 \usepackage{derivative}
 \usepackage{fixdif}
 \usepackage{stmaryrd}
@@ -444,6 +444,9 @@ which counts singularities. For example, if $B$ is a smooth projective curve, th
     Projectivity of $\ol{M}_{0,n}$ can be proved in more synthetic ways, for example via the explicit blowup construction of Keel.
 \end{rmk}
 
+\subsection{Hassett moduli spaces}%
+\label{sub:Hassett moduli spaces}
+
 There is a modification of this, which is the functor $\ol{M}_{0, A}$, where
 \[ A = (\alpha_1, \ldots, \alpha_n) \in (0,1] \cap \Q. \]
 Here, we consider $n$-pointed rational curves which are at worst nodal, but where the sections $\sigma_{i_1}, \ldots, \sigma_{i_k}$ can meet if and only if
@@ -536,6 +539,9 @@ This functor is actually representable by a scheme because the three conditions 
     
 \end{exm}
 
+\subsection{Semistable objects}%
+\label{sub:Semistable objects}
+
 Now we will define a new moduli space
 \[ \ol{M}_{0, A}^*(T) = \ab\{ \begin{tikzcd}
     \mc{C} \ar[bend right=20, swap]{d}{\pi} \\ T \ar[bend right = 20, swap]{u}{\sigma_1, \ldots, \sigma_n} \end{tikzcd}
@@ -626,7 +632,8 @@ by relaxing the ampleness condition. This can happen if we have sections whose w
 
 The Hassett moduli spaces have a wall-and chamber-structure, where for example, if $A = (\alpha, \ldots, \alpha)$ is $S_n$-symmetric, then $\ol{M}_{0,A}$ is constant for $\alpha \in \ab(\frac{1}{k+1}, \frac{1}{k})$, but on the walls we only have $\ol{M}_{0, A}^*$. The main observation is that if we write $\ol{M}_{0, \alpha}$ for $\ol{M}_{0, (\alpha, \ldots, \alpha)}$, then there are open immersions
 \[ \ol{M}_{0, \frac{1}{k}-\ep} \subset \ol{M}_{0, \frac{1}{k}}^* \supset \ol{M}_{0, \frac{1}{k}+\ep}. \]
-If we consider the complement $\ol{M}_{0, \frac{1}{k}}^* \setminus \ol{M}_{0, \frac{1}{k}-\ep}$, then it consists of curves which contain an irreducible component which is a tree in the dual graph and contains $k$ marked points, so this part of the moduli space has a factor which describes the rest of the curve and one which is $[\A^{k-2}/\G_m]$.
+If we consider the complement $\ol{M}_{0, \frac{1}{k}}^* \setminus \ol{M}_{0, \frac{1}{k}-\ep}$, then it consists of curves which contain an irreducible component which is a tree in the dual graph and contains $k$ marked points, so this part of the moduli space has a factor which describes the rest of the curve and one which is $[\A^{k-2}/\G_m]$. More precisely, we have
+\[ \ol{M}_{0, \frac{1}{k}}^* \setminus \ol{M}_{0, \frac{1}{k}-\ep} = \ol{M}^*_{0, (1, \frac{1}{k}, \ldots, \frac{1}{k})} \times \ol{M}^*_{0, (1, \frac{1}{k}, \ldots, \frac{1}{k})} \]
 
 This actually allows us to construct a test configuration, where if we have $\P^1 \times \A^1$ with a bunch of sections, we can blow up a point on the central fiber and then contract the central $(-1)$-curve with all of the sections.
 
@@ -634,8 +641,129 @@ This actually allows us to construct a test configuration, where if we have $\P^
     Figure out what $\ol{M}_{0, \frac{1}{k}}^* \setminus \ol{M}_{0, \frac{1}{k}+\ep}$ is.
 \end{exer}
 
+For now, we will denote this picture by $\mc{M}^- \subset \mc{M} \supset \mc{M}^+$. Then in fact we actually have
+\[ \mc{M} \setminus \mc{M}^+ = \ol{M}_{0, (1, \frac{1}{k}, \ldots, \frac{1}{k})} \times [\C/\C^{\times}], \]
+where the second factor comes from the place where $k$ of the sections collide. In this picture, we can degenerate out a new rational tail which has only the $k$ colliding sections (which has a $\C^{\times}$-action), which is another example of a test configuration, as in~\Cref{fig:bubble}.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % --- Styles ---
+    \tikzstyle{component}=[ultra thick, color=blue!60!black]
+    \tikzstyle{unstable_component}=[ultra thick, color=red!60!black, dashed]
+    \tikzstyle{markpoint}=[draw=black, circle, fill=white, inner sep=2pt, thick]
+    \tikzstyle{node_singularity}=[fill=red, circle, inner sep=2.5pt]
+    \tikzstyle{label_text}=[font=\footnotesize, color=black!70]
+    \tikzstyle{anno_box}=[draw=gray!30, fill=white, rounded corners, align=left, font=\scriptsize]
+
+    % --- 1. Draw Components ---
+    
+    % Component 1 (Stable): Holds 4 points
+    % Drawn horizontally
+    \draw[component] (-3, 0) -- (0, 0) node[midway, below=0.4cm, color=blue!60!black] {$C_1$ (Stable)};
+    
+    % Component 2 (Unstable): Holds 1 point
+    % Drawn at an angle to suggest it's "bubbling" or distinct
+    % Dashed line indicates it is the unstable/contractible part
+    \draw[unstable_component] (0, 0) -- (2.5, 1.5) node[midway, above left=0.1cm, color=red!60!black] {$C_2$ (Unstable)};
+
+    % --- 2. Draw The Singularity ---
+    \node[node_singularity] at (0, 0) {};
+    \node[label_text, below right] at (0, -0.1) {Node};
+
+    % --- 3. Draw Marked Points ---
+    
+    % Points on C_1 (x1 to x4)
+    \node[markpoint, label=below:$x_1$] at (-2.5, 0) {};
+    \node[markpoint, label=below:$x_2$] at (-1.8, 0) {};
+    \node[label=below:$\cdots$] at (-1.5, 0) {};
+    \node[markpoint, label=below:$x_{k-1}$] at (-1.1, 0) {};
+    \node[markpoint, label=below:$x_{k}$] at (-0.5, 0) {};
+
+    % Point on C_2 (x5)
+    \node[markpoint, label=right:{$x_{k+1}=\cdots=x_{2k}$}] at (1.5, 0.9) {};
+
+    % --- 4. Annotations ---
+\end{tikzpicture}
+\end{center}
+\caption{A curve that we bubble out}%
+\label{fig:bubble}
+\end{figure}
 
 
+Later, when we discuss good moduli spaces, there is a diagram
+\begin{equation*}
+\begin{tikzcd}
+    \mc{M}^+ \ar[hookrightarrow]{r} \ar{d} & \mc{M} \ar{d} \ar[hookleftarrow]{r} &  \mc{M}^-  \ar{d} \\
+    M^+ \ar{r} & M & M^- \ar{l}{\sim},
+\end{tikzcd}
+\end{equation*}
+where the rightward arrow in the bottom row is a divisorial contraction.
+
+In fact, there is a series of divisorial contractions
+\[ \ol{M}_{0, n} \to \cdots \to \ol{M}_{0, A} \to \cdots \to (\P^1)^n \sslash \on{PGL}(2) \]
+and another series of divisorial contractions
+\[ \ol{M}_{0, n} \to \cdots \to \ol{M}_{0, A} \to \cdots \to \P^{n-3}. \]
+
+
+\subsection{Divisors on $\ol{M}_{0,n}$}%
+\label{sub:Divisors on m0nbar}
+
+There are boundary divisors $\Delta_{I, J}$ where $I \sqcup J = \ab\{1, \ldots, n \}$ where the curve degenerates into two components, one with the markings from $I$ and the other with the markings from $J$. It is clear that
+\[ \Delta_{I, J} \simeq \ol{M}_{0, \abs{I}+1} \times \ol{M}_{0, \abs{J}+1}. \]
+We will denote their union by $\Delta$ and call it the total boundary.
+
+It is easy to see that $\ol{M}_{0,n} \setminus \Delta \eqqcolon M_{0,n}$ consists only of smooth curves and is given by
+\[ M_{0,n} = (\C^{\times} \setminus 1)^{n-3} \setminus \text{all diagonals}. \]
+This has no Picard group, so the entire Picard group of $\ol{M}_{0,n}$ is generated by the boundary divisors. For example, $\ol{M}_{0,3}$ is a point, $\ol{M}_{0,4} = \P^1$, and $\ol{M}_{0,5}$ is $\P^1 \times \P^1$ blown up at three points.
+
+\begin{exer}
+    Compute the Picard rank of $\ol{M}_{0,n}$.
+\end{exer}
+
+If we consider a $1$-dimensional base $B$, then basic the theory of surfaces tells us that $\psi_{i|_B} = -\sigma_i^2$, and if we blow down all rational tails in $\mc{C}$ to form a new $\P^1$-bundle $\mc{D} \to B$ which has a section $\sigma_1$ with self-intersection $-r$ and a number of other sections $\tilde{\sigma}_i$ with self-intersection $+r$. If we now blow up the other collision points, then we see that
+\[ (\psi_1 + \psi_i )_{|B}= \sum_{\substack{1 \in I \\ i \in J}} \Delta_{I \sqcup J} \cdot B. \]
+In particular, because $\ol{M}_{0,n}$ is smooth, we have derived Keel's relation, which is that for all $i \neq j$, then
+\[ \psi_i + \psi_j \sim \sum_{\substack{i \in I \\ j \in J}} \Delta_{I \sqcup J}. \]
+These in fact generate all relations.
+
+We now consider the morphism $f_{n+1} \colon \ol{M}_{0, n+1} \to \ol{M}_{0, n}$ given by deleting the last marked point and stabilizing. This is in fact the universal family over $\ol{M}_{0, n}$, so in particular it has $n$ disjoint sections $\sigma_1, \ldots, \sigma_n$. From this perspective, we can construct $\ol{M}_{0, 5}$ by blowing up the points on $\P^1 \times \P^1$ where the diagonal intersects the three horizontal sections corresponding to $0$, $1$, and $\infty$. If we blow down the four $(-1)$-curves corresponding to the diagonal section and the three fibers that we blew up, the family becomes the pencil of conics passing through four points on $\P^2$ and the reducible fibers are in fact the three degenerate members. In particular, we see that $\Pic(\ol{M}_{0,5}) = \Z^5$.
+
+Another way to see this is to consider the sequence
+\[ \ol{M}_{0,n} \simeq \ol{M}_{0, (\frac{1}{2}, \ldots, \frac{1}{2})} \to \ol{M}_{0, (\frac{1}{3}, \ldots, \frac{1}{3})} \to \cdots \to (\P^1)^n \sslash \on{PGL}(2) \]
+and use this to compute the Picard rank, which is
+\[ \rho(\ol{M}_{0,n}) = 2^{n-1} - \binom{n}{2} - 1. \]
+A more precise description is that
+\[ \Pic (\ol{M}_{0,n}) = \Z \ab<\Delta_{I \sqcup J}, \psi_1, \ldots, \psi_n> / \text{Keel}. \]
+The blowup construction (really the one that starts with $\P^{n-3}$) proves that the Picard group also has no torsion.
+
+One way to find a basis for the Picard group is the following. We will call $\Delta_{I \sqcup J}$ \textit{non-adjacent} if $I$ is not an arc when we arrange $1, \ldots, n$ in a circle.
+
+\begin{prop}
+    Non-adjacent boundary divisors form a basis of $\Pic(\ol{M}_{g,n})$.
+\end{prop}
+
+\begin{proof}
+    We use Keel's relations to rewrite every divisor as a linear combination of non-adjacent ones, and then we check that the number of non-adjacent ones is exactly the Picard rank. 
+
+    For example, if we have $I = \ab\{1, 2\}$, we will use the relations for $\psi_1 + \psi_2$, $\psi_3 + \psi_n$ (with a plus sign), $\psi_1 + \psi_n$, and $\psi_2 + \psi_3$ (with a minus sign), then the left hand side vanishes while the only adjacent boundary divisor remaining is the one with $I = \ab\{1,2\}$. The general case of this is left as an exercise, as is counting the non-adjacent boundary divisors.
+\end{proof}
+
+We have discussed the fact that $\ol{M}_{0,n}$ is a projective variety. We know it is proper, but we would like to produce an ample line bundle. One candidate is
+\[ \psi - \Delta \coloneqq \psi_1 + \cdots + \psi_n - \sum {\Delta_{I \sqcup J}}. \]
+The first step to proving that this is ample is to sum all of Keel's relations, which gives us
+\[ (n-1)\psi = \abs{I} \abs{J} \Delta_{I \sqcup J}. \]
+Because $\abs{I} \abs{J} \geq 2(n-2) > n-1$ (here $n \geq 4$), we see that
+\[ \Psi - \Delta = \sum c_{I \sqcup J} \Delta_{I \sqcup J}, \]
+where all coefficients are positive. 
+
+We will now use the ampleness criterion and show that $(\psi - \Delta).B > 0$ for any irreducible proper curve $B \hookrightarrow \ol{M}_{0,n}$. If $B$ intersects the interior nontrivially, then by definition it has to intersect the boundary with positive degree. The other case is when $B \hookrightarrow \Delta_{I \sqcup J}$ lives inside one of the boundary divisors.
+
+In this case, we have
+\[ B \hookrightarrow \Delta_{I \sqcup J} \simeq \ol{M}_{0, k+1} \times \ol{M}_{0, n-k+1}. \]
+Restricting $\psi - \Delta$, we obtain
+\[ (\psi - \Delta)_{|\Delta_{I \sqcup J}} \simeq (\psi - \Delta)_{\ol{M}_{0, k+1}} \boxtimes (\psi -\Delta)_{\ol{M}_{0, n-k+1}}, \]
+so we induct using the fact that on $\ol{M}_{0,4} \simeq \P^1$, $\psi - \Delta = \mc{O}(1)$.
 
 
 
