@@ -7,10 +7,12 @@
 \usepackage{accents}
 \usepackage{mathtools}
 \usepackage{tikz}
-\usetikzlibrary{calc}
+\usetikzlibrary{math, calc}
 \usetikzlibrary{decorations.pathmorphing,shapes, decorations.markings}
 \usetikzlibrary{automata,positioning, snakes}
 \usepackage{tikz-cd}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage{forest}
 \usepackage{braket} 
 \usepackage{listings}
@@ -727,7 +729,73 @@ In particular, because \(\ol{M}_{0,n}\) is smooth, we have derived Keel's relati
 \[ \psi_i + \psi_j \sim \sum_{\substack{i \in I \\ j \in J}} \Delta_{I \sqcup J}. \]
 These in fact generate all relations.
 
-We now consider the morphism \(f_{n+1} \colon \ol{M}_{0, n+1} \to \ol{M}_{0, n}\) given by deleting the last marked point and stabilizing. This is in fact the universal family over \(\ol{M}_{0, n}\), so in particular it has \(n\) disjoint sections \(\sigma_1, \ldots, \sigma_n\). From this perspective, we can construct \(\ol{M}_{0, 5}\) by blowing up the points on \(\P^1 \times \P^1\) where the diagonal intersects the three horizontal sections corresponding to \(0\), \(1\), and \(\infty\). If we blow down the four \((-1)\)-curves corresponding to the diagonal section and the three fibers that we blew up, the family becomes the pencil of conics passing through four points on \(\P^2\) and the reducible fibers are in fact the three degenerate members. In particular, we see that \(\Pic(\ol{M}_{0,5}) = \Z^5\).
+We now consider the morphism \(f_{n+1} \colon \ol{M}_{0, n+1} \to \ol{M}_{0, n}\) given by deleting the last marked point and stabilizing. This is in fact the universal family over \(\ol{M}_{0, n}\), so in particular it has \(n\) disjoint sections \(\sigma_1, \ldots, \sigma_n\). From this perspective, we can construct \(\ol{M}_{0, 5}\) by blowing up the points on \(\P^1 \times \P^1\) where the diagonal intersects the three horizontal sections corresponding to \(0\), \(1\), and \(\infty\). If we blow down the four \((-1)\)-curves corresponding to the diagonal section and the three fibers that we blew up, the family becomes the pencil of conics passing through four points on \(\P^2\) and the reducible fibers are in fact the three degenerate members (see~\Cref{fig:pencil_of_conics}). In particular, we see that \(\Pic(\ol{M}_{0,5}) = \Z^5\).
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[scale=1]
+  % Define the four base points in general position
+  % Forming a roughly convex quadrilateral
+  \coordinate (P1) at (-2, 1.8);
+  \coordinate (P2) at (2.2, 1.2);
+  \coordinate (P3) at (1.5, -2.5);
+  \coordinate (P4) at (-1.8, -1.5);
+
+  % --- Styles ---
+  \tikzset{
+    base point/.style={circle, fill=red, inner sep=2pt, outer sep=0pt},
+    degenerate conic/.style={gray, dashed, thin},
+    smooth conic/.style={thick, opacity=0.7}
+  }
+
+  % --- Draw the 3 Degenerate Conics (pairs of lines) ---
+  % Pair 1: Opposite sides (top/bottomish)
+  \draw[degenerate conic] (P1) -- (P2);
+  \draw[degenerate conic] (P3) -- (P4);
+
+  % Pair 2: Opposite sides (left/rightish)
+  \draw[degenerate conic] (P1) -- (P4);
+  \draw[degenerate conic] (P2) -- (P3);
+
+  % Pair 3: Diagonals
+  \draw[degenerate conic] (P1) -- (P3);
+  \draw[degenerate conic] (P2) -- (P4);
+
+
+  % --- Draw Representative Smooth Conics ---
+  % We use 'plot [smooth cycle]' through the coordinates.
+  % The topology of the resulting curve depends on the order we visit the points.
+
+  % Conic 1 (Ellipse type): Visiting points in convex order (P1-P2-P3-P4)
+  \draw[smooth conic, blue] plot [smooth cycle, tension=0.7] coordinates {(P1) (P2) (P3) (P4)};
+
+  % Conic 2 (Hyperbola type A): Visiting points in "figure-eight" order 1 (P1-P2-P4-P3)
+  % A higher tension makes it "pointier" at the vertices, typical of hyperbolas near the base points.
+  \draw[smooth conic, orange!90!black] plot [smooth cycle, tension=1.2] coordinates {(P1) (P2) (P4) (P3)};
+
+  % Conic 3 (Hyperbola type B): Visiting points in "figure-eight" order 2 (P1-P4-P2-P3)
+  \draw[smooth conic, green!60!black] plot [smooth cycle, tension=1.2] coordinates {(P1) (P4) (P2) (P3)};
+  
+  % Another Ellipse type one for density
+   \draw[smooth conic, cyan!80!black, thin, opacity=0.5] plot [smooth cycle, tension=0.9] coordinates {(P1) (P2) (P3) (P4)};
+
+
+  % --- Draw and Label the Base Points ---
+  \node[base point, label=above left:$P_1$] at (P1) {};
+  \node[base point, label=above right:$P_2$] at (P2) {};
+  \node[base point, label=below right:$P_3$] at (P3) {};
+  \node[base point, label=below left:$P_4$] at (P4) {};
+
+  % --- Crop the view ---
+  % The high-tension smooth plots can extend very far. We clip the view to a reasonable box.
+  \clip (-3.5, -3.5) rectangle (3.5, 3);
+
+\end{tikzpicture}
+\end{center}
+\caption{Pencil of conics through four points in general position on \(\P^2\). The three degenerate conics correspond to pairs of lines through these points (dashed).}%
+\label{fig:pencil_of_conics}
+\end{figure}
+
 
 Another way to see this is to consider the sequence
 \[ \ol{M}_{0,n} \simeq \ol{M}_{0, (\frac{1}{2}, \ldots, \frac{1}{2})} \to \ol{M}_{0, (\frac{1}{3}, \ldots, \frac{1}{3})} \to \cdots \to (\P^1)^n \sslash \on{PGL}(2) \]
@@ -764,6 +832,206 @@ In this case, we have
 Restricting \(\psi - \Delta\), we obtain
 \[ (\psi - \Delta)_{|\Delta_{I \sqcup J}} \simeq (\psi - \Delta)_{\ol{M}_{0, k+1}} \boxtimes (\psi -\Delta)_{\ol{M}_{0, n-k+1}}, \]
 so we induct using the fact that on \(\ol{M}_{0,4} \simeq \P^1\), \(\psi - \Delta = \mc{O}(1)\).
+
+\section{Existence of coarse moduli spaces}%
+\label{sec:Existence of coarse moduli spaces}
+
+
+We will now recall the Yoneda embedding, which is the  fully faithful functor
+\[ \ms{Sch}_S \to \ms{Fun}(\ms{Sch}_S^{\mr{op}}, \ms{Set}), \qquad X \mapsto h_X = \on{Mor}_{\ms{Sch}_S}(-, X). \]
+
+\begin{defn}
+    A scheme \(G\) is a \textit{group scheme} if the functor \(h_G\) factors through the embedding \(\ms{Grp} \hookrightarrow \ms{Set}\).
+\end{defn}
+
+\begin{exm}\leavevmode
+    \begin{enumerate}
+        \item There is the group scheme \(\G_m = S \times \Z[x, x^{-1}]\) which sends a scheme \(T\) to \(H^0(T, \mc{O}_T)^{\times}\).
+        \item There is the group scheme \(\G_a = S \times \Z[x]\) which sends a scheme \(T\) to \(H^0(T, \mc{O}_T)\) with addition.
+    \end{enumerate}
+\end{exm}
+
+\begin{defn}
+    A scheme \(G\) is a \textit{group scheme} if there exist morphisms
+    \[ \mu \colon G \times_S G \to G, \qquad \beta \colon G \to G, \qquad e \colon S \to G \]
+    satisfying the usual group axioms:
+    \begin{enumerate}
+        \item The diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            G \times G \times G \ar{r}{1 \times \mu} \ar{d}{\mu \times 1} & G \times G \ar{d}{\mu} \\
+            G \times G \ar{r}{\mu} & G
+        \end{tikzcd}
+        \end{equation*}
+        commutes (associativity);
+        \item The diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            G \ar{r}{\Delta} \ar{d} & G \times G \ar[shift left=1]{r}{1 \times \beta} \ar[shift right=1, swap]{r}{\beta \times 1} & G \times G \ar{d}{\mu} \\
+            S \ar{rr}{e} & & G
+        \end{tikzcd}
+        \end{equation*}
+        commutes (inverse axiom).
+        \item The diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            & G \times_S S \ar{dr}{1 \times e} \\
+            G \ar[bend left=70]{rrr}{1} \ar{ur} \ar{dr} & & G \times_S G \ar{r}{\mu} & G \\
+            & S \times_S G \ar{ur}{e \times 1}
+        \end{tikzcd}
+        \end{equation*}
+        commutes (identity axiom).
+    \end{enumerate}
+\end{defn}
+
+\begin{exm}
+    If \(k\) is algebraically closed, then a (Zariski)-closed subgroup of \(\on{GL}_ n(k)\) is a group scheme over \(k\), and is known as a \textit{linear algebraic group}.
+\end{exm}
+
+\begin{defn}
+    An \textit{algebraic group} over \(k\) is a smooth group scheme over \(k\), and if it is affine, we call it \textit{linear}.
+\end{defn}
+
+\begin{defn}
+    An \textit{action} of an algebraic group \(G\) on a scheme \(X\) is a morphism \(\sigma \colon G \times X \to X\) such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        G \times G \times X \ar{r}{\mu \times 1} \ar{d}{1 \times \sigma} & G \times X \ar{d}{\sigma} \\
+        G \times X \ar{r}{\sigma} & X
+    \end{tikzcd}
+    \end{equation*}
+    commutes and the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r}{\simeq} \ar[bend right=30, swap]{rrr}{1_X} & S \times X \ar{r}{e \times 1} & G \times X \ar{r}{\sigma} & X
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{defn}
+
+On \(k\)-points over an algebraically closed field, this says that \(g(g'(x)) = (gg')(x)\) and that \(e \cdot x = x\) which are the usual group action axioms.
+
+\begin{con}[Action groupoid]
+    Suppose that \(G\) acts on \(X\). Define \(R \coloneqq G \times X\), \(s \coloneqq \on{pr}_2 \colon R \to X\) (source morphism), and \(t \coloneqq \sigma \colon R \to X\) (target morphism). Then set \(j \coloneqq (s, t) \colon R \to X \times X\). There is a morphism
+    \[ c \colon R \times_{(s, t)} R \simeq G \times G \times X \xrightarrow{\mu \times 1} G \times X \cong R \]
+    giving composition. Finally there is the morphism 
+    \[ e \colon X \simeq S \times X \xrightarrow{e \times 1} G \times X \simeq R \]
+    and the reflexivity morphism
+    \[ i \colon R \xrightarrow{\beta \times 1_X} R \simeq G \times X. \]
+    This construction gives a groupoid in schemes called the \textit{action groupoid} associated to the action of \(G\) on \(X\).
+\end{con}
+
+More generally, if we replace \(G \times X\) by an arbitrary \(R\), we obtain the general notion of a \textit{groupoid} in the category of schemes. Our goal will be to prove the following theorems.
+
+\begin{thm}
+    Let \(j \colon R \to X \times X\) be a flat groupoid such that the stabilizer \(j^{-1}(\Delta_X) \to \Delta_X \simeq X\) is finite. Then there exists an algebraic space ``quotient'' \(X /R\)  and a quotient morphism \(q \colon X \to X/R\) which is a uniformly categorical and geometric quotient. Moreover, if \(j\) is finite, then \(X/R\) is separated.
+\end{thm}
+
+\begin{defn}
+    Let \(\sigma \colon G \times X \to X\) be a group action. Then \(\phi \colon X \to Y\) is a \textit{geometric quotient} if the square in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        T \times X \ar{r}{\sigma} \ar{d}{\on{pr}_2} & X \ar{d}{\phi} \ar[bend left=20]{ddr}{\psi} \\
+        X \ar{r}{\phi} \ar[bend right=20, swap]{drr}{\psi} & Y \ar[dashed]{dr}{\exists !} \\
+        & & Z
+    \end{tikzcd}
+    \end{equation*}
+    commutes and the dashed arrow is unique for any commutative diagram where the \(\psi\) exists. The categorical quotient is \textit{uniform} if it is preserved by flat base change and \textit{universal} if it is preserved by arbitrary base change.
+\end{defn}
+
+Naively, we may form a quotient pre-sheaf
+\[ X/R \colon \ms{Sch}_S^{\mr{op}} \to \ms{Set}, \qquad T \mapsto X(T) / \sim, \]
+where \(x \sim x'\) if there exists \(g \in G(T)\) such that \(g \cdot x = x'\). However, this is not a sheaf in general (and is definitely not a scheme), so we need to improve our constructions.
+
+\section{Good quotients}%
+\label{sec:Good quotients}
+
+Let $S = \Spec k$ for an algebraically closed field $k$ and $G$ be an algebraic group over $k$. Suppose that $X$ is a scheme with an action
+\[ \sigma \colon G \times X \to X \]
+of $G$. Now suppose we have another action
+\[ \sigma' \colon G \times X' \to X' \]
+on another scheme $X'$.
+
+\begin{defn}
+    A morphism $f \colon X \to X'$ is \textit{$G$-invariant} if the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        G \times X \ar{r}{\sigma} \ar[swap]{d}{1 \times f} & X \ar{d}{f} \\
+        G \times X' \ar{r}{\sigma'} & X'
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{defn}
+
+In the finite-type case, this reduces to the equation
+\[ g \circ g(x) = f(g \circ x) \]
+for all $k$-points $g \in G(k)$ and $x \in X(k)$.
+
+\begin{defn}
+    If $G$ acts trivially on $Y$, then a $G$-equivariant $f \colon X \to Y$ is \textit{$G$-invariant}.
+\end{defn}
+
+In particular, $f$ has to collapse all orbits of $G$ to points.
+
+\begin{defn}
+    A morphism $\phi \colon X \to Y$ is a \textit{categorical quotient} of $X$ by $G$ if it is $G$-invariant and for any other $G$-invariant morphism $\psi$, there exists a unique $g \colon y \to y'$ such that $\psi = g \circ \phi$, or in other words the dashed arrow in
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r}{\phi} \ar[swap]{dr}{\psi} & Y \ar[dashrightarrow]{d}{g} \\
+        & Y'
+    \end{tikzcd}
+    \end{equation*}
+    exists and is unique.
+\end{defn}
+
+\begin{exer}
+    If $X$ has property $\mc{P}$ being one of normal, irreducible, reduced, connected, or locally factorial, and if $\phi \colon X \to Y$ is a categorical quotient, then $Y$ also has $\mc{P}$.
+\end{exer}
+
+\begin{rmk}
+    If $G$ acts on $X$ and $U \subset X$ is a $G$-invariant open subset, then the group $G(k)$ acts on $\mc{O}_X(U)$, which is a $k$-algebra.
+\end{rmk}
+
+\begin{defn}
+    Suppose that $G$ acts on $X$. A morphism $\pi \colon X \to Y$ is a \textit{good quotient} if
+    \begin{enumerate}[(1)]
+        \item It is $G$-invariant;
+        \item $\pi$ is affine and surjective;
+        \item If $U \subset Y$ is open, the morphism of rings $\mc{O}_Y(U) \to \mc{O}_X(\pi^{-1}(U))^G$ is an isomorphism;
+        \item If $W_1$ and $W_2$ are disjoint $G$-invariant closed subsets in $X$, then $\pi(W_1) \cap \pi(W_2) = \emptyset$ and the two images are closed.
+    \end{enumerate}
+\end{defn}
+
+\begin{prop}
+    Every good quotient is a categorical quotient.
+\end{prop}
+
+\begin{proof}
+    Suppose that $\pi X \to Y$ is a good quotient and $\phi \colon X \to Z$ is $G$-invariant. We will construct a morphism $g \colon Y \to Z$ filling in the dashed arrow in
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r}{\pi} \ar[swap]{dr}{\phi} & Y \ar[dashrightarrow]{d}{g} \\
+        & Y'.
+    \end{tikzcd}
+    \end{equation*}
+    Let $\ab\{V_i \}$ be a cover of $Z$ by affine open subschemes. 
+
+    The first claim we will prove is that there exists an open $U_i \subset Y$ such that $\pi^{-1}(U_i) = \phi^{-1}(V_i)$. If $x \in V_i$ is a closed point and we set $W = Z \setminus V_i$, then $\phi^{-1}(x)$ and $\phi^{-1}(W)$ are disjoint $G$-invariant closed subsets of $X$. This is true for all $x \in V_i$, so we see that $\phi^{-1}(V_i) = \pi^{-1}(U_i)$ for some $U_i \subset X$. Because $Y \setminus U_i = \pi(\phi^{-1}(W))$ is closed, $U_i$ must be open.
+
+    We now treat $U_i$ as a subset of $Y$. We need to construct a morphism $g_i \colon U_i \to V_i = \Spec A_i$. There is a map
+    \[ A_i \to \mc{O}_X(\phi^{-1}(V_i))^G = \mc{O}_X(\pi^{-1}(U_i))^G \simeq \mc{O}_Y(U_i), \]
+    which is the desired morphism. These morphisms glue, so we are done.
+\end{proof}
+
+We will denote good quotients by $X \sslash G$.
+\begin{lem}
+    If $\pi \colon X \to X \sslash G$ is a good quotient, then for all closed $y \in X \sslash G$, the fiber $\pi^{-1}(y)$ contains a unique closed $G$-orbit.
+\end{lem}
+
+\begin{cor}
+    The set $X \sslash G (k)$ is in bijection with the set of closed orbits in $X$.
+\end{cor}
+
 
 
 

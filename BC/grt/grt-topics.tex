@@ -791,7 +791,7 @@ We now give some important properties of semisimple Lie algebras.
     If we consider \(\g = \C\), then the representation
     \[ t \mapsto \begin{bmatrix}
         t & t \\
-        0 & 0
+        0 & t
     \end{bmatrix} \]
     has \({\rho(X)}_s\) and \({\rho(X)}_n\) not in the image of \(\rho\) in general.
 \end{exm}
@@ -848,6 +848,266 @@ In particular, the means that the adjoint and coadjoint representations are isom
 \begin{rmk}
     If \(Z(\g) \neq 0\), then \(\ad_x = 0\) for all \(x \in Z(\g)\), so \(B(x, -) = 0\) for \(B\) the Killing form.
 \end{rmk}
+
+
+We now briefly pause to consider issues of analytic vs algebraic categories. If we are considering \textbf{semisimple} Lie groups over \(\C\), then they are in fact also (linear) algebraic groups. However, if we leave the semisimple setting, then there are differences. For example, if we consider \(\g = \C\), then the algebraic options are \((\C, +) = \G_a\), \((\C^{\times}, \times) = \G_m\), and compact \(1\)-dimensional tori, namely elliptic curves. Usually, in algebraic groups theory, we will only consider affine algebraic groups.
+
+\begin{thm}[Borel]
+    Every affine algebraic group \(G\) is linear, and has a closed immersion to some \(\GL(V)\).
+\end{thm}
+
+
+In the analytic world, there is the map
+\[ \exp \colon \C \to \C^{\times}, \]
+which is not algebraic. In particular, \(\G_a\) and \(\G_m\) are totally different and have no nontrivial morphisms between them (and we have to consider their formal completions to recover the exponential map). In fact, the category \(\ms{Rep}(\G_m)\) is semisimple (prove this using the unitary trick for \(S^1\)), while the same is not true for \(\G_a\) (consider the representation by matrices of the form \(\begin{bsmallmatrix}
+    1 & * \\
+    0 & 1
+\end{bsmallmatrix}\)). However, any analytic Lie group over \(\C\) not containing a compact torus is algebraic.
+
+
+We now proceed to defining reductive groups. Recall that we essentially need to figure out what to do with the center \(Z(\g)\) of a reductive Lie algebra \(\g\). In the algebraic group world, we will consider \textit{tori}, which are groups isomorphic to products of copies of \(\G_m\).
+
+\begin{defn}
+    A \textit{reductive} group \(G\) is a finite quotient of the product of an (affine) algebraic torus and a semisimple algebraic group.
+\end{defn}
+
+In particular, we have
+\[ G = Z(G) \times^{Z(G^{\on{der}})} G^{\on{der}}, \]
+where \(G^{\on{der}} = [G,G]\) is semisimple and \(Z(G)\) might be disconnected. For example, \(Z(\SL_n) = \mu_n\), which is clearly not connected. Alternatively, there is a quotient morphism
+\[ G \to G / Z(G^{\on{der}}) = Z(G) / Z(G^{\on{der}}) \times G_{\ad}, \]
+where again \(G_{\ad}= G/Z(G)\). Here, we see that \(Z(G)/Z(G^{\on{der}})\) is always connected. Using Langlands duality, we can produce a cover by something with connected center. A third alternative is to rewrite the product as
+\[ G = Z(G)_0 \times^{Z{(G^{\on{der}})}^{0}} G^{\on{der}}, \]
+where \(Z{(G^{\on{der}})}^{0} = Z(G)_0 \cap G^{\on{der}}\).
+
+\begin{exm}
+    In the case where \(G = \GL_n\), we have \(Z(\GL_n) = \C^{\times}\) and \({(\GL_n)}^{\on{der}} = \SL_n\), so we have
+    \[ \GL_n = \C^{\times} \times^{\mu_n} \SL_n. \]
+\end{exm}
+
+Reductive \textbf{groups} are characterized by complete reducibility of their finite-dimensional representations (in characteristic zero). In addition, algebraic and analytic morphisms between reductive groups agree, so we no longer need to worry about the difference between algebraic and analytic categories. Representations of reductive groups also satisfy the preservation of Jordan decompositions, namely that for any \(g \in G\), there exist \(g_s, g_u \in G\) such that \(g = g_s g_u = g_u g_s\) and for any finite-dimensional representation
+\[ \rho \colon G \to \GL(V), \]
+the Jordan decomposition of \(\rho(g)\) satisfies \({\rho(g)}_s = \rho(g_s)\) and \({\rho(g)}_u = \rho(g_u)\).
+
+\begin{lem}
+    If \(\g\) is semisimple, then any invariant bilinear form is symmetric. In addition, any invariant non-degenerate bilinear form is a scalar multiple of the Killing form.
+\end{lem}
+
+\begin{proof}
+    Any invariant bilinear form \(B\) induces a map
+    \[ \g \to \g^* \]
+    as morphisms of \(G \coloneqq G_{\ad}\)-representations. Recall that \(\g\) decomposes into a product 
+    \[ \g = \g_1 \times \cdots \times \g_k \]
+    of simple Lie algebras, so we have a morphism
+    \[ \g_1 \times \cdots \times \g_k \to \g_1^* \times \cdots \times \g_k^*. \]
+    Using the Killing form, we have an isomorphism \(\g_i \cong \g_i^*\), so by Schur's lemma, the map \(\g_i \to \g_j^*\) is zero if \(i \neq j\) and a scalar multiple of the identity if \(i = j\). Therefore, any invariant bilinear form is a sum of scalar multiples of Killing forms on each simple factor, which are all symmetric. The second statement follows similarly.
+\end{proof}
+
+\subsection{Cartan subalgebras}%
+\label{sub:Cartan subalgebras}
+
+We will begin by considering general \(\g\) and specialize to semisimple ones later. 
+
+\begin{defn}
+    If \(\mf{a} \subset \g\) is a Lie subalgebra, then the \textit{normalizer} of \(\mf{a}\) in \(\g\) is given by
+    \[ \n_{\g}(\mf{a}) = \{ x \in \g : [x, \mf{a}] \subset \mf{a} \}. \]
+\end{defn}
+
+\begin{defn}
+    A subalgebra \(\h \subset \g\) is a \textit{Cartan subalgebra} if 
+    \begin{enumerate}
+        \item \(\h\) is nilpotent;
+        \item \(\h = \n_{\g}(\h)\) (as in it is equal to its own normalizer).
+    \end{enumerate}
+\end{defn}
+
+We will see later that every Lie algebra has a Cartan subalgebra.
+
+For any \(x \in \g\), let 
+\[ P_x(T) = \det(T \on{Id} - \ad_x) = \sum_{i=0}^n a_i(x) T^i \] 
+denote the characteristic polynomial of \(\ad_x\). If we choose linear coordinates \(x_1, \ldots, x_n\) on \(\g\), then each \(a_i(x)\) is a homogeneous polynomial in \(x_1, \ldots, x_n\) of degree \(n-i\). 
+
+\begin{defn}
+    The \textit{rank} of \(\g\) is the least \(i\) such that \(a_i(x)\) is not identically zero.
+\end{defn}
+
+\begin{exm}
+    If \(\g \cong \C^n\) is abelian, then \(P_x(T) = T^n\) for all \(x\), so \(\g\) has rank \(n\).
+\end{exm}
+
+\begin{rmk}
+    Note that \(i < n\) in the nonabelian case because \(a_n(x) = 1\) is never zero and \(i > 0\) because \(x \in \ker(\ad_x)\) for all \(x\) and therefore \(a_0(x) = 0\) for all \(x\).
+\end{rmk}
+
+From now on, we will denote the rank of \(\g\) by \(r\).
+
+\begin{defn}
+    We say that \(x \in \g \) is \textit{strongly regular} if \(a_r(x) \neq 0\).
+\end{defn}
+
+\begin{rmk}
+    We will see another notion of regularity later, so we call this strongly regular to distinguish it.
+\end{rmk}
+
+We will denote the set of strongly regular elements by \(\g_{\on{sreg}}\). The definition of a strongly regular element implies the following.
+
+\begin{prop}
+    The set \(\g_{\on{sreg}}\) is a connected open dense subset of \(\g\) (in the Zariski topology and hence also the analytic topology).
+\end{prop}
+
+\begin{thm}
+    If \(x \in \g_{\on{sreg}}\), then the generalized eigenspace of \(0\) for \(\ad_x\), denoted \(\g_x^0\), is a Cartan subalgebra of \(\g\).
+\end{thm}
+
+Note that by definition, we have \(\dim \g_x^0 = r\), so the dimension of this Cartan equals the rank of \(\g \). In fact, we have already described all Cartan subalgebras.
+
+\begin{thm}
+    Let \(\g\) be a Lie algebra over \(\C\). Then all Cartan subalgebras of \(\g\) are of the form \(\g_x^0\) for some \(x \in \g_{\on{sreg}}\).
+\end{thm}
+
+These Cartan subalgebras are all conjugate under the action of
+\[ G_{\mr{inn}} = \ab<e^{\ad_x} \mid x \in \g> \hookrightarrow \Aut(\g), \]
+so in particular \(G_{\mr{inn}}\) acts transitively on the set of Cartan subalgebras.
+
+\begin{rmk}
+    If \(G\) is reductive, then \(G_{\mr{inn}} = G_{\on{ad}} = G/Z(G)\).
+\end{rmk}
+
+We will now specialize to the semisimple case, which is much more explicit. 
+
+\begin{thm}
+    Let \(\h\) be a Cartan subalgebra of a semisimple Lie algebra \(\g\). Then
+    \begin{enumerate}
+        \item \(\h\) is abelian;
+        \item \(\h\) is its own centralizer, i.e. \(Z_{\g}(\h) = \h\);
+        \item Every element of \(\h\) is semisimple.
+        \item The restriction of the Killing form to \(\h\) is nondegenerate.
+    \end{enumerate}
+\end{thm}
+
+\begin{exm}
+    If \(\g = \sl_n\), then the Cartan subalgebras are precisely the conjugates of the diagonal matrices. This has dimension \(n-1\) (given the constraint that the trace vanishes), so the rank of \(\sl_n\) is \(n-1\).
+\end{exm}
+
+For a semisimple Lie algebra, if \(x \in \h = \g_x^0\), then in fact \(\h = \ker \ad_x\) for a general choice of \(x\). The necessary condition on \(x\) is that it is \textit{regular semisimple}, which we can take to simply mean that \(\ker \ad_x\) is as small as possible. Because we can simultaneously diagonalize all \(\ad_x\) for \(x \in \h\), we have a decomposition
+\[ \g = \h \oplus \bigoplus_{\alpha \in \Phi} \g_{\alpha}, \]
+where
+\[ \g_{\alpha} = \{ x \in \g : [h,x] = \alpha(h) x \text{ for all } h \in \h \} \]
+and \(\Phi\) is the set of nonzero \(\alpha \in \h^*\) such that \(\g_{\alpha} \neq 0\). 
+
+\begin{exm}
+    Returning to \(\sl_n\), if we let
+    \[ \h = \ab\{ \bdiagmat{x_1, \ddots, x_n} \}, \]
+    then twe see that 
+    \[ \ab[\bdiagmat{x_1, \ddots, x_n}, E_{ij}] = (x_i - x_j) E_{ij}. \]
+    If we refer to the coordinates on \(\C^n\) as \(e_1, \ldots, e_n\), then the roots are given by
+    \[ \Phi = \ab\{ \alpha_{ij} = e_i^* - e_j^* \mid i \neq j \}, \]
+    where \(\alpha_{ij}(\bdiagmat{x_1, \ldots, x_n}) = x_i - x_j\). We refer to the set \(\Phi\) as the \textit{roots} of \(\g\) with respect to \(\h\) and \(\g_{\alpha}\) as the \textit{root space} corresponding to \(\alpha\).
+\end{exm}
+
+Because the Killing form is nondegenerate when restricted to \(\h\), we may identify \(e_i^* - e_j^* \in \h^*\) with \(e_i - e_j \in \h\). In particular, we may consider \(\Phi\) as a subset of \(\h\) itself.
+
+\begin{cor}\leavevmode
+    \begin{enumerate}
+        \item \(\h\) is a maximal abelian subalgebra of \(\g\);
+        \item Every strongly regular element is semisimple;
+        \item \(G_{\ad}\) acts transitively on the set of all Cartan subalgebras of \(\g\). 
+    \end{enumerate}
+\end{cor}
+
+\begin{lem}
+    Assume that \(G\) is semisimple. Let \(T = N_G(\h)_0\) (usually, it is not connected). Then \(T\) is a maximal torus in \(G\) with \(T \cong {(\C^{\times})}^r\).
+\end{lem}
+
+\begin{proof}[Sketch of proof]
+    Choose a compact real form \(\g_c \subset \g\). We now consider the set
+    \[ \g_{\mr{sreg}} \cap \g_c \neq \emptyset. \]
+    Now let \(\xi_c \in \g_c\) be strongly regular. Then \(Z_{\g_c}(\xi_c) = \h_c\) is a Cartan subalgebra of \(\g_c\). Next, the normalizer
+    \[ N_{G_c}{(\h_c)}_0 = Z_{G_c}{(\xi_c)}_0 = T_c \]
+    is a maximal torus of \(G_c\) of real dimension \(r\), so we can conclude the proof by complexifying everything.
+\end{proof}
+
+\begin{exm}
+    In the case of \(\sl_n\), if \(\xi\) is strongly regular, then we see that \(a_r(\xi) \neq 0\), and so \(\dim \ker \ad_{\xi} = r = n-1\), so \(\xi\) must be semisimple. In particular, the root space decomposition is
+    \[ \g = \h \oplus \bigoplus_{i \neq j} \g_{\alpha_{ij}}. \]
+\end{exm}
+
+\begin{lem}
+    Choose a root decomposition
+    \[ \g = \h \oplus \bigoplus_{\alpha \in \Phi} \g_{\alpha}. \]
+    Then \(\xi \in \h\) is strongly regular if and only if there exists \(\alpha \in \Phi\) such that \(\alpha(\xi) \neq 0\) for all \(\alpha \in \Phi\).
+\end{lem}
+
+\begin{proof}
+    Note that \(\xi \in \h\) is strongly regular if and only if \(\ker \ad_{\xi} = \h\), which holds if and only if \(\ad_{\xi}|_{\g_{\alpha}}\) is nonzero for all \(\alpha \in \Phi\), which holds if and only if \(\alpha(\xi) \neq 0\) for all \(\alpha \in \Phi\).
+\end{proof}
+
+\begin{rmk}
+    From now on, we will refer to strongly regular elements as \textit{regular semisimple} elements in the semisimple case and refer to the set of such elements as $\g_{\mr{rs}}$. We will also denote
+    \[ \h^{\on{reg}} \coloneqq \g_{\mr{rs}} \cap \h, \]
+    which is given by the equation
+    \[ \prod_{\alpha \in \Phi} \alpha \neq 0. \]
+\end{rmk}
+
+\begin{exm}
+    In the case of $\sl_3$, the root system is drawn in~\Cref{fig:sl3-roots}.
+    \begin{figure}[htpb]
+    \begin{center}
+         \begin{tikzpicture}[scale=2, >=Latex]
+
+    % -------------------------------------------------------
+    % 1. Shade the Fundamental Weyl Chamber
+    % -------------------------------------------------------
+    % The chamber is the cone defined by <v, alpha_i> >= 0.
+    % It is bounded by the hyperplanes orthogonal to the simple roots.
+    % H_alpha1 is at 90 degrees. H_alpha2 is at 30 degrees.
+    \fill[gray!10] (0,0) -- (30:1.8) arc (30:90:1.8) -- cycle;
+    \node[gray!60, font=\large] at (60:1.5) {$\mathcal{C}$};
+
+    % -------------------------------------------------------
+    % 2. Draw Hyperplanes (orthogonal to roots)
+    % -------------------------------------------------------
+    % These extend infinitely (or to the edge of our view)
+    \foreach \angle in {30, 90, 150} {        \draw[dashed, gray!80] (\angle:-1.8) -- (\angle:1.8);
+    }
+
+    % -------------------------------------------------------
+    % 3. Draw Fundamental Weights
+    % -------------------------------------------------------
+    % omega1 is dual to alpha1 check. It lies on the boundary H_alpha2 (30 deg).
+    % omega2 lies on the boundary H_alpha1 (90 deg).
+    % Length: If roots have length 1, weights have length 1/sqrt(3) approx 0.577
+    \def\wlen{0.577}
+    \draw[->, blue, thick] (0,0) -- (30:\wlen) node[right] {$\omega_1$};
+    \draw[->, blue, thick] (0,0) -- (90:\wlen) node[above] {$\omega_2$};
+
+    % -------------------------------------------------------
+    % 4. Draw Roots
+    % -------------------------------------------------------
+    \def\rlen{1.0} % Root length
+
+    % Non-simple positive root
+    \draw[->, thick] (0,0) -- (60:\rlen) node[above right] {$\alpha_1+\alpha_2$};
+    
+    % Negative roots
+    \draw[->, thick] (0,0) -- (180:\rlen) node[left] {$-\alpha_1$};
+    \draw[->, thick] (0,0) -- (240:\rlen) node[below left] {$-\alpha_1-\alpha_2$};
+    \draw[->, thick] (0,0) -- (300:\rlen) node[below right] {$-\alpha_2$};
+
+    % Simple Roots (Highlighted)
+    \draw[->, very thick, red] (0,0) -- (0:\rlen) node[right] {$\alpha_1$};
+    \draw[->, very thick, red] (0,0) -- (120:\rlen) node[above left] {$\alpha_2$};
+
+\end{tikzpicture}
+
+    \end{center}
+    \caption{Root system of $\sl_3$}%
+    \label{fig:sl3-roots}
+    \end{figure}
+    
+   
+
+\end{exm}
+
 
 
 
