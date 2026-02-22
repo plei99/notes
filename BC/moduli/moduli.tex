@@ -1452,6 +1452,95 @@ Let \(X\) be finite type and separated over an algebraically closed field \(k\),
     \end{enumerate}
 \end{rmks}
 
+\begin{thm}[Geometric invariant theory]
+    Let \(G\) be reductive and \((X, \mc{L})\) be a finite-type scheme over \(k\) with a \(G\)-linearized line bundle. Then the \textit{semistable locus}
+    \[ X^{\on{ss}}(\mc{L}) \coloneqq \ab\{ x \text{ is semistable with respect to } \mc{L} \} \subseteq X \]
+    is open and there exists a good quotient
+    \[ \pi \colon X^{\on{ss}}(\mc{L}) \to X^{\on{ss}}(\mc{L}) \sslash G = Y \]
+    and an open \(\tilde{Y} \subset Y\) such that \(\pi^{-1}(\tilde{Y}) = X^s(\mc{L})\) and \(X^s(\mc{L}) \to \tilde{Y}\) is geometric. Moreover, there exists an ample line bundle \(\mc{M}\) on \(Y\) and positive integer \(N\) such that 
+    \[ \pi^* \mc{M} = \mc{L}^{\otimes N}_{|X^{\on{ss}}}. \]
+\end{thm}
+\begin{proof}[Proof sketch]
+    Write
+    \[ X^{\on{ss}}(\mc{L}) = X_{s_1} \cup \cdots \cup X_{s_n}, \]
+    which requires replacing \(\mc{L}\) by \(\mc{L}^{\otimes N}\). Here, we have
+    \[ X_{s_i} = \ab\{x \in X \mid s_i(x) \neq 0 \} \]
+    for \(s_i \in H^0(X, \mc{L})^H\). By definition, each \(X_{s_i} = \Spec \Gamma(X_{s_i}, \mc{O})\) is affine. Applying affine GIT, we obtain good quotients
+    \[ \pi_i \colon X_{s_i} \to U_i = \Spec \Gamma(X_{s_i}, \mc{O})^G. \]
+    Our goal is now to glue the \(U_i\). If we consider the function \(\frac{s_i}{s_j}\), it is a \(G\)-invariant function on \(X_{s_j}\), so it descends to a function \(\sigma_{ij}\) on \(U_j\). Now \((U_j)_{\sigma_{ij}}\) is the categorical quotient of \(X_{s_i} \cap X_{s_j}\), but so is \((U_i)_{\sigma_{ji}}\), so they are canonically isomorphic via
+    \[ \psi_{ij} \colon (U_j)_{\sigma_{ij}} \simeq (U_i)_{\sigma_{ji}}. \]
+    These satisfy the cocycle condition because everything is a canonical isomorphism between categorical quotients, so the \(U_i\) glue to a scheme. The \(\ab\{\sigma_{ij}\}\) give a \(1\)-cocycle defining a line bundle \(\mc{M}\) such that \(\pi^* \mc{M} = \mc{L}\). Ampleness follows from the fact that the distinguished opens \(U_i\) are affine.
+\end{proof}
+
+\begin{thm}
+    If \(X\) is projective and \(\mc{L}\) is ample, then
+    \[ \pi\colon X^{\on{ss}}(\mc{L}) \to Y = \Proj \bigoplus_{m \geq 0} H^0(X, \mc{L}^{\otimes m})^G \]
+    is a projective scheme and \(\pi^* \mc{O}_Y(1) = \mc{L}^{\otimes N}\). 
+\end{thm}
+
+\begin{rmk}
+    In this case, we have
+    \[ X^{\ms{ss}}(\mc{L}) = \ab\{ x \in X \mid \text{there exists } \sigma \in H^0(X, \mc{L}^{\otimes N})^G, \sigma(x) \neq 0 \}. \]
+\end{rmk}
+
+\section{Stacks}%
+\label{sec:Stacks}
+
+\subsection{Quotient stacks}%
+\label{sub:Quotient stacks}
+
+Let \(X\) be a \(G\)-scheme for an affine group scheme \(G\). 
+\begin{defn}
+    Define the \textit{quotient stack}
+    \[ [X/G] \colon \ms{Sch}_{/k} \to \ms{Gpd} \]
+    to be the contravariant (pseudo)functor defined by
+    \[ [X/G](U) = \ab\{ \Centerstack{{principal \(G\)-bundle \(E \to U\)} {with a \(G\)-morphism \(E \to X\)}} \}. \]
+\end{defn}
+
+Now we will work over a field \(k\) and require \(G\) to be reductive. We will need to make sense of everything in the above definition.
+
+\begin{defn}
+    A morphism \(\pi \colon E \to B\) is a \textit{fibration} with fiber \(F\) if there exists a surjective \'etale (equivalently, smooth) morphism \(B' \to B\) such that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        F \times B' \ar{r}{\simeq, \sigma} \ar{dr} & E \times_B B' \ar{r} \ar{d} & E \ar{d} \\
+        & B' \ar{r} & B
+    \end{tikzcd}
+    \end{equation*}
+    is a Cartesian diagram.
+\end{defn}
+
+\begin{defn}
+    Suppose that \(F\) and \(E\) are \(G\)-schemes. We say that a fibration \(E \to B\) with fiber \(F\) is \textit{\(G\)-equivariant} if \(\sigma\) in the previous definition is \(G\)-equivariant.
+\end{defn}
+
+\begin{defn}
+    A morphism \(\pi \colon E \to B\) is a \textit{principal \(G\)-bundle} if it is a \(G\)-equivariant fibration with fiber \(G\), where \(G\) acts on itself by left multiplication.
+\end{defn}
+
+\begin{lem}[\(G\) reductive]
+    Suppose that \(\pi \colon E \to B\) is a principal \(G\)-bundle. Then
+    \begin{enumerate}
+        \item \(B \simeq E / G\) is a good geometric quotient;
+        \item \(G\) acts freely on \(E\) in the stronger sense that
+        \[ \Psi \colon G \times E \to E \times E \]
+        is a closed embedding.
+    \end{enumerate}
+\end{lem}
+
+\begin{prop}[Converse]
+    If \(G\) acts freely on \(X\) \textbf{and} the quotient \(X/G\) exists as a scheme, then \(X \to X/G\) is a principal \(G\)-bundle.
+\end{prop}
+
+Since \(\pi \colon E \to B\) is affine, we can glue affine GITs to get a good quotient \(E / G = B^{\mr{GIT}}\). This produces the diagram
+\begin{equation*}
+\begin{tikzcd}
+    G \times B' \ar{r}{\simeq, \sigma} \ar{dr} & B' \times_B E \ar{r} \ar{d} & E \ar{d} \ar{dr} \\
+    & B' \ar{r} & B & B^{\mr{GIT}} \ar{l} \ar{dl} \\
+    & & (B')^{\mr{GIT}} \ar{ul}{\sim},
+\end{tikzcd}
+\end{equation*}
+where the bottom square is Cartesian.
 
 
 \end{document}

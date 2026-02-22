@@ -158,6 +158,7 @@
 \newcommand{\h}{\mathfrak{h}}
 \newcommand{\n}{\mathfrak{n}}
 \renewcommand{\b}{\mathfrak{b}}
+\newcommand{\p}{\mathfrak{p}}
 \newcommand{\ep}{\varepsilon}
 \newcommand*{\dt}[1]{%
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
@@ -1570,8 +1571,8 @@ where \(x_s\) is semisimple and \(x_n\) is nilpotent. Because \(\ad x = \ad x_s 
     We may assume that \(y \in \sl_n\) is already in Jordan normal form. Then in fact it is regular if and only if all Jordan blocks have distinct eigenvalues. Here, the Levi subalgebra is given by block-diagonal matrices where the blocks are grouped by shared eigenvalues. However, any regular nilpotent element in \(\sl_m\) has a single Jordan block, so we see that each eigenvalue of \(y\) must correspond to a single Jordan block.
 \end{exm}
 
-\section{Flag varieties and the Bruhat decomposition}%
-\label{sec:Flag varieties and the Bruhat decomposition}
+\subsection{Flag varieties and the Bruhat decomposition}%
+\label{sub:Flag varieties and the Bruhat decomposition}
 
 We will now discuss Borel subalgebras \(\b \subset \g\).
 
@@ -1678,16 +1679,242 @@ where the first summand is the sum of positive weight spaces and the second summ
 
     First note that there is a bijection between \(T\)-fixed points in \(\mc{B}\) and the set of all Borels \(\b' \supset \h\). This is simply the infinitesimal version of the fact that if \(T \cdot B' = B'\), then \(T \subset N_G(B') = B'\). Now this is in bijection with the set of \(\dot{w} \cdot \b\) for \(w \in W_T\), which establishes the first bijection.
 
-    Now choose a cocharacter \(h^{\vee} \colon \C^{\times} \hookrightarrow T\) which is regular and a primitive nonzero cocharacter of \(T\). For this \(\C^{\times}\)-action, the fixed points are in bijection to the set of all Borel subgroups \(B'\) containing \(\C^{\times}\). Taking the derivative at the identity, this is in bijection with
-    \[ \ab\{ \b' \mid \C h^{\vee} \subset \b' \}. \]
-    Because \(h^{\vee}\) is regular, then \(\h = Z_{\g}(h^{\vee}) \subset \b'\), so we have recovered the set of all \(\b' \supset \h\).
+    Now choose a cocharacter \(h \colon \C^{\times} \hookrightarrow T\) which is regular and a primitive nonzero cocharacter of \(T\). For this \(\C^{\times}\)-action, the fixed points are in bijection to the set of all Borel subgroups \(B'\) containing \(\C^{\times}\). Taking the derivative at the identity, this is in bijection with
+    \[ \ab\{ \b' \mid \C h \subset \b' \}. \]
+    Because \(h\) is regular, then \(\h = Z_{\g}(h) \subset \b'\), so we have recovered the set of all \(\b' \supset \h\).
 
-    
+    It remains to identify \(B\)-orbits with attracting sets of the \(\C^{\times}\)-fixed points. If \(\b_w \in \mc{B}^{\C^{\times}}\) is a Borel, then we consider its attracting set
+    \[ \mc{B}_{\b_w} = \ab\{ \b' \in \mc{B} \middle\vert \lim_{\lambda \to 0} \lambda \cdot \b' = \b_2 \}. \]
+    The attracting sets are the positive parts of the tangent spaces at the fixed points, and so we must have \(T_{\b_w} \mc{B} \cong \g / \b_w\) because \(\mc{B} \cong G / B_w\). Note that the action of \(\C^{\times}\) on \(\g\) decomposes into eigenspaces
+    \[ \g = \h \oplus \bigoplus_n \g_n, \]
+    where \(\h\) will disappear when we quotient by \(\b_w\). Our goal is to have
+    \[ \g_{> 0} = \n = [\b, \b]. \]
+    Considering the root decomposition
+    \[ \g = \h \oplus \bigoplus_{\alpha \in \Phi} \g_{\alpha}, \]
+    considering \(\C^{\times}\)-weights gives us
+    \[ \g = \h \oplus \bigoplus_{\alpha: \ab<\alpha, h> > 0} \g_{\alpha} \oplus \bigoplus_{\alpha: \ab<\alpha, h> < 0} \g_{\alpha}. \]
+    There is a Weyl chamber (see~\Cref{fig:sl3-coroots} for the \(\SL_3\) example) which pairs with the positive roots \(\Phi^+\) positively, so we are free to choose \(\h\) in this chamber. Once we choose \(\h\), then the inclusion \(\n^+ \to \g / \b_w\) factors through \(T_{\b_w} \mc{B}\).
+
+    \begin{rmk}
+    One convenient choice for a regular cocharacter \(h\) is \(h = 2 \rho^{\vee}\), where
+    \[ \rho^{\vee} = \sum_{j \in \Pi} \omega_j^{\vee} = \frac{1}{2} \sum_{\beta \in \Phi^+} {\beta}^{\vee}. \]
+    This implies that
+    \[ h = \sum_{\beta \in \Phi^+} \beta^{\vee}, \]
+    which lies in the coroot lattice \(Q^{\vee} = \X_{\bullet}(T_{\on{sc}})\). By definition, we have \(\ab<\rho^{\vee}, \alpha_j> = 1\) for all simple roots, so it pairs positively with all positive roots. 
+\end{rmk}
+
+    Now let \(U \subset [B, B]\) such that \(\on{\ms{Lie}} U = \n^+\). Then if we consider the orbit \(U \cdot \b_w\), we have
+    \[ \n^+ \to T_{\b_w} (U \cdot \b_w) \subset \g / \b_w. \]
+    Dimension counting shows that \(U \cdot \b_w\) is open and dense in \(\mc{B}_{\b_w}\), so our goal is to show that it is also closed, i.e. that \(U \cdot \b_w = \mc{B}_{\b_w}\).
+
+    \begin{lem}
+        Suppose that \(U\) is a unipotent group acting on an affine variety \(X = \Spec A\). Then any \(U\)-orbit in \(X\) is closed.
+    \end{lem}
+
+    \begin{proof}[Proof]
+        Let \(\mc{O}\) be a \(U\)-orbit and \(\ol{\mc{O}}\) be its closure. Suppose that \(C \coloneqq \ol{\mc{O}} \setminus \mc{O}\) is nonempty (and hence is a closed subvariety of \(X\)) and has defining ideal \(0 \neq I \subset \C[\ol{\mc{O}}]\). Because \(C\) is \(U\)-stable, so is \(I\).
+
+        \begin{lem}
+            For all \(f \in I\), the span \(\on{Span}_{\C} U \cdot f\) is finite-dimensional.
+        \end{lem}
+
+        \begin{proof}
+            The action of \(U\) on \(X\) gives a coaction
+            \[ A \to A \otimes \C[U] \qquad a \mapsto \sum_{i=1}^m a_i \otimes h_i. \]
+            Then we see that
+            \[ u \cdot a = \sum_{i=1}^m a_i \otimes h_i(u) \]
+            and thus
+            \[ \on{Span}_{\C} \ab< U \cdot a> \subset \on{Span}_{\C} \ab<a_1, \ldots, a_m>, \]
+            which is finite-dimensional.
+        \end{proof}
+
+        Now consider \(I^U \supset (\on{Span}_{a \neq 0} U \cdot a)^U \neq 0\). Choose \(0 \neq f \in I^U\). Then \(f\) is \(U\)-invariant, so it must be constant on \(\mc{O}\), and hence constant on \(\ol{\mc{O}}\). But we know that \(f\) vanishes on \(C\), so it must vanish on \(\ol{\mc{O}}\), which contradicts the fact that \(f\) is nonzero. Therefore, \(C\) must be empty and \(\mc{O}\) is closed.
+    \end{proof}
+
+    The two lemmas together emply that \(U \cdot \b_w = B \cdot \b_w = \mc{B}_{\b_w}\).
 \end{proof}
 
+\begin{exm}
+    In the case when \(G = \SL_2\), then the flag variety if \(\P^1\), and if we choose \(\b\) to be the upper-triangular matrices with \(\h\) the diagonal matrices, then the Weyl group is
+    \[ W = \ab\{ \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{bmatrix}, \begin{bmatrix}
+        0 & -1 \\
+        1 & 0
+    \end{bmatrix}\}, \]
+    and the nontrivial element \(w\) swaps the upper-triangular and lower-triangular Borels. See~\Cref{fig:sl2-weyl-borels}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1.35]
+  \def\R{2.0}
+
+  % Sphere
+  \shade[ball color=blue!10, opacity=0.9] (0,0) circle (\R);
+  \draw[thick] (0,0) circle (\R);
+  \draw[thick] (\R,0) arc[start angle=0,end angle=180,x radius=\R,y radius=0.55*\R];
+  \draw[thick,dashed] (-\R,0) arc[start angle=180,end angle=360,x radius=\R,y radius=0.55*\R];
+
+  % Poles
+  \node[circle,fill=black,inner sep=1.5pt,
+        label=above:{\(w\!\cdot\!\b\)}] (N) at (0,\R) {};
+  \node[circle,fill=black,inner sep=1.5pt,
+        label=below:{\(\b\)}] (S) at (0,-\R) {};
+
+  % Weyl action indication
+  \draw[->,thick] (S) to[bend left=18] node[right]{\(w\)} (N);
+
+  % Caption
+  \node at (0,-2.65) {\(\mathbb{P}^1 \cong SL_2/B\)};
+\end{tikzpicture}
+    \end{center}
+    \caption{Action of Weyl group on Borels for \(\SL_2\).}%
+    \label{fig:sl2-weyl-borels}
+    \end{figure}  
+\end{exm}
+
+Note that the Bruhat decomposition even refines to
+\[ \mc{B} = \bigsqcup_{w \in W_T} U \dot{w} \cdot B \]
+and gives a cell decomposition of \(\mc{B}\) into affine spaces (which are even dimensional). This allows us to easily compute the homology and cohomology of \(\mc{B}\), which is given by
+\[ H_{\bullet}(\mc{B}) = \bigoplus_{w \in W} ([U \dot{w} \cdot B]) [2 \dim U \dot{w} \cdot B]. \]
+We can compute the dimension of each cell as follows. Note that
+\[ U \dot{w} \cdot B = (U \dot{w} \cap \dot{w}U^-) \cdot B, \]
+where \(U^-\) is the unipotent radical of the opposite Borel. Now we compute
+\begin{align*}
+    \dim \mc{B}_w &= \dim (U \dot{w} \cap w U^-) \\
+    &= \dim (\dot{w}^{-1} U \dot{w} \cap U^-) \\
+    &= \dim (\Ad_{\dot{w}^{-1}} \n \cap \n^-) \\
+    &= \$ w^{-1} (\Phi^+) \cap (-\Phi^+) \eqqcolon \ell(w),
+\end{align*}
+which is called the \textit{length} of \(w\) relative to \(\Phi^+\). For example, the identity has length \(0\) and the longest element \(w_0\) has length \(\# \Phi^+\).
+
+\begin{exm}
+    In the \(\SL_n\) case, the flag variety has dimension
+    \[ \abs{\Phi^+} = 1 + \cdots + (n-1) = \frac{n(n-1)}{2}. \]
+    The cohomology has dimension
+    \[ \dim H^{\bullet}(\mc{B}) = \abs{W} = n!. \]
+    Later, we will see that this is actually a representation of the Weyl group \(W\) and describe its algebra structure.
+\end{exm}
+
+\begin{rmk}
+    In fact, a Borel subgroup \(B \subset G\) is a minimal subgroup of \(G\) such that the quotient \(G/B\) is projective. 
+\end{rmk}
+
+\begin{thm}[Fixed point theorem of Borel]
+    A connected solvable linear algebraic group acting algebraically on a non-empty complete variety has a fixed point.
+\end{thm}
+
+\subsection{Parabolic subgroups}%
+\label{sub:Parabolic subgroups}
+
+
+If \(X = G/H\) is a homogeneous space which is compact, we can consider the action of a Borel subgroup \(B \subset G\) on \(X\). By Borel's fixed point theorem, this has a fixed point, say \(gH\). But then the stabilizer \(g H g^{-1}\) of this point contains \(B\), and therefore
+\[ g^{-1} B g \subset H \]
+so \(H\) contains a Borel. Conversely, if \(H\) contains a Borel, then \(G/H\) admits a surjection from the flag variety \(G/B\) and is hence projective. 
+
+\begin{defn}
+    A \textit{parabolic subgroup} of \(G\) is a (necessarily connected) subgroup \(P \subset G\) which contains a Borel subgroup.
+\end{defn}
+
+\begin{rmk}
+    We can drop connectedness from the definition because \(P\) is in fact always connected.
+\end{rmk}
+
+\begin{prop}
+    A subgroup \(P \subset G\) is parabolic if and only if \(G/P\) is projective.
+\end{prop}
+
+We can in fact ``classify'' parabolic subgroups. If we fix a Borel \(B\), then we can ask for all parabolic subgroups containing \(B\). Because \(P\) is connected, we can reduce to the corresponding problem for Lie algebras, namely finding \(\mf{p} \supset \b\) such that \([\p, \p] \subset \p\). We may consider the adjoint action of \(\h\) on \(\p\), which decomposes as
+\[ \p = \h \oplus \bigoplus_{\alpha \in \Phi^+} \g_{\alpha} \oplus \bigoplus_{\beta \in \Gamma} \g_{\beta}. \]
+The first two factors give \(\b\), so our goal is to determine the possible \(\Gamma\). We will not discuss the details and only state the end result.
+
+\begin{prop}
+    There is a one-to-one correspondence between \(\p \supset \b\) and subsets \(S \subset \Pi\) of the simple roots. It is given by
+    \[ \p \supset \b \mapsto S = S = -\Gamma \cap \Pi. \]
+\end{prop}
+
+If we restrict the Cartan matrix to \(S\), we obtain a root system
+\[ S = S_1 \sqcup S_2 \sqcup \cdots \sqcup S_k, \]
+which decomposes into irreducible root systems. We can then decompose
+\[ \p = \p^u \oplus \ell, \]
+where \(\p^u\) is the nilradical and \(\ell\) is the Levi factor, then \(\ell^{\on{ss}} = \ell / Z(\ell)\) has root system determined by \(S\). The center is given by
+\begin{align*}
+    Z(\ell) &= S^{\perp} \\
+    &= \ab\{ h \in \h \mid \alpha(h) = 0 \text{ for all } \alpha \in S \} \\
+    &= \bigcap_{\alpha \in S} \ker(\alpha).
+\end{align*} 
+In particular, we have
+\[ \ell = \h \oplus \bigoplus_{\alpha \in \Phi_S} \g_{\alpha}. \]
+For example, in the \(\SL_3\) example, if we choose \(S\) to be one simple root, then we see only roots living in the span of that simple root, which gives us a copy of \(\sl_2\).
+
+\begin{exm}
+    If \(\g = \sl_n\) and \(\b = \b_n\) is the upper-triangular matrices, then the parabolic subalgebras are simply block upper-triangular matrices and the Levi factor is given by block-diagonal matrices. The root system of the Levi is determined by the sizes of the blocks, and the center is given by scalar matrices in each block.
+\end{exm}
+
+\begin{rmk}
+    The varieties \(G/P\) are known as \textit{partial flag varieties}. In the \(G = \SL_n\) example, they are given by flags
+    \[ 0 = V_0 \subset V_1 \subset V_2 \subset \cdots \subset V_k = \C^n, \]
+    where we require that \(\dim V_i / V_{i-1} = n_i\) is the size of the \(i\)-th block.
+\end{rmk}
+
+\subsection{Representation theory}%
+\label{sub:Representation theory}
 
 
 
+We will give a classification of irreducible representations of \(\g\).
+
+\begin{thm}
+    Fixing \(\h \subset \b \subset \g\), the (isomorphism classes of) irreducible representations of \(\g\) are in one-to-one correspondence with dominant weights \(\lambda \in \Lambda\), where
+    \begin{align*}
+        \Lambda &= \on{Span}_{i \in \Pi} \ab\{\omega_i \} \\
+        &= \ab\{ \lambda \in \h^* \mid \ab<\lambda, \alpha^{\vee}> \in \Z_{\geq 0} \text{ for all } \alpha \in \Phi^+ \}
+    \end{align*}
+    is the nonnegative integral span of the fundamental weights.
+\end{thm}
+
+In the \(\sl_3\) example, this corresponds to the shaded region in~\Cref{fig:sl3-roots}.
+
+\begin{rmk}
+    The case of groups is more subtle because of fundamental group issues. However, representations of \(\g\) are ``the same'' as representations of the simply connected form \(G_{\on{sc}}\). This happens because we can integrate \(\g \to \gl(V)\) to \(G_{\on{sc}} \to \GL(V)\). In particular, this means that irreducible representations of \(G_{\on{sc}}\) are the same as positive coweights \(\X^{\bullet}(T_{\on{sc}})^+ = \Lambda^+\).
+        
+    The way we do this is by considering the restriction to \(\h\) for any \(\g\)-representation. These are all semisimple by preservation of Jordan decomposition. This gives a decomposition
+    \[ V = \bigoplus_{\mu \in \h^*} V_{\mu}, \]
+    so because we can integrate to \(G_{\on{sc}}\), the \(\h\)-action upgrades to a \(T_{\on{sc}}\)-action, and we have a decomposition
+    \[ V = \bigoplus_{\mu \in \X^{\bullet}(T_{\on{sc}})} V_{\mu}. \]
+    We can now consider the action of the unipotent radical \(U \subset B\) on \(V\), which will not preserve the weight decomposition. 
+
+    \(U\) has a nonzero fixed point because the \(B\)-action on \(\P(V)\) has a fixed point by Borel's fixed point theorem.
+    If we consider the action of \(U\) on \(V_{\mu}\), then
+    \[ U \cdot v_{\mu} = v_{\mu} + \sum_{q \in Q^+} v'_{\mu + q}, \]
+    where \(Q^+\) is the positive part of the root lattice. We will say that \(\mu \leq \nu\) if \(\nu - \mu \in Q^+\). In this language, we have
+    \[ U \cdot v_{\mu} = v_{\mu} + \sum_{\nu \gneq \mu} v'_{\nu}. \]
+\end{rmk}
+
+\begin{defn}
+    A \textit{highest weight vector} \(v_{\lambda}\) of \(V\) is a nonzero vector such that \(U \cdot v_{\lambda} = v_{\lambda}\).
+\end{defn}
+
+\begin{thm}
+    Every irreducible representation \(V\) has a unique highest weight vector \(v_{\lambda}\) up to scaling, and this \(\lambda\) is called the \textit{highest weight}. Conversely, \(V\) is uniquely determined by its highest weight.
+\end{thm}
+
+For an arbitrary finite-dimensional representation \(V\), we can compute the decomposition
+\[ V = \bigoplus_{i,j} V_{\lambda_i}^{(j)} \]
+by considering the action of \(U\) on \(V\). To decompose, we look for the fixed subspace \(V^U\), which is the span of the highest weight vectors. Finite-dimensional representations of \(B\) are classified by \(\X^{\bullet}(B_{\on{sc}}/B_{\on{sc}}^u) = \X^{\bullet}(T_{\on{sc}}) = \Lambda\). For all \(\lambda \in \Lambda\), let \(\C_{\lambda}\) be the corresponding irreducible representation of \(B\). Then the the associated line bundle \(\mc{L}_{\lambda}\) 
+\begin{align*}
+    G \times^B \C_{-\lambda} &= (G \times \C_{-\lambda}) / B \\
+    &= \ab\{ (g, v) \sim (gb^{-1}, b \cdot v) \}
+\end{align*}
+on \(G / B\) is \(G\)-equivariant. 
+
+\begin{thm}[Borel-Weil]
+    The global sections \(\Gamma (\mc{B} = G/B, \mc{L}_{\lambda})\) are isomorphic to \(V_{\lambda}^*\) as \(G_{\on{sc}}\)-representations.
+\end{thm}
+
+\begin{rmk}
+    There is a generalization of this result, called the Borel-Weil-Bott theorem, which calculates the higher cohomology of these line bundles.
+\end{rmk}
 
 
 
