@@ -1,0 +1,1119 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta, shapes.geometric}
+\usetikzlibrary{decorations.markings, fit}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat, op.legacy}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+% \usepackage{euscript} 
+% \usepackage[mathcal]{eucal}
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{inconsolata}
+\usepackage{microtype}
+% \usepackage{fontspec} 
+% \setmainfont{Tex Gyre Pagella}
+\usepackage[OT1,euler-digits]{eulervm}
+% % \usepackage{euler-math} 
+\usepackage[scaled=0.86]{berasans}
+% \let\sffamilyold\sffamily
+% \def\sffamily{\fontencoding{T1}\sffamilyold}
+% \setmonofont{Inconsolatazi4}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+% \usepackage[utf8]{inputenc} 
+% \usepackage[T1]{fontenc}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\usepackage{subcaption}
+
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+% \usepackage{parskip} 
+\newlist{mydescription}{description}{1}
+\setlist[mydescription]{style=nextline,
+                        font=\bfseries,
+                        % Tweak the next 4 options as needed:
+                        labelindent=1cm, 
+                        leftmargin =2cm,
+                        rightmargin=1cm,
+                        topsep     =1ex
+                       }
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{claim}[thm]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+\newtheorem{conv}[thm]{Convention}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\bv}{\mbf{v}}
+\newcommand{\bq}{\mbf{q}}
+\newcommand{\bp}{\mbf{p}}
+\newcommand{\btau}{\bm{\tau}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\pre}{\mr{pre}}
+\newcommand{\vir}{\mr{vir}}
+\newcommand{\fl}{\mr{fl}}
+\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
+\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\GL}{\mr{GL}}
+\newcommand{\SL}{\mr{SL}}
+\newcommand{\SO}{\mr{SO}}
+\newcommand{\Sp}{\mr{Sp}}
+\newcommand{\gl}{\mf{gl}}
+\renewcommand{\sl}{\mf{sl}}
+\newcommand{\so}{\mf{so}}
+\renewcommand{\sp}{\mf{sp}}
+\newcommand{\dbar}{\bar{\partial}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Cont}{Cont}
+\DeclareMathOperator{\Sym}{Sym}
+
+% \addbibresource{../../notes/math.bib}
+
+\title{Notes on the B-model}
+\author{Lectures on Bilibili by Si Li \\ Notes by Patrick Lei}
+\date{February 2026}
+\allowdisplaybreaks
+
+\begin{document}
+    
+\begin{abstract}
+    These are notes taken based on the~\href{https://space.bilibili.com/510673295/lists/5119099?type=season}{Bilibili minicourse} on the B-model given by Si Li in Spring 2025 at the Chinese University of Hong Kong. The minicourse consisted of 12 lectures.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}%
+\label{sec:introduction}
+
+The B-model has its origins in \textit{mirror symmetry}, which is a duality of two-dimensional superconformal field theories (SCFTs) in physics. These describe the geometry of a mapping space from a surface \(\Sigma\) to a target space \(X\) (see~\Cref{fig:surface_to_target}). The duality gives mathematical predictions which relate symplectic geometry (the A-model) to complex geometry (the B-model).
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[>=Latex, line cap=round, line join=round, scale=0.9]
+
+  %--------------------------
+  % Domain: Genus 2 Surface
+  %--------------------------
+  \begin{scope}[xshift=-4cm]
+    % Main body
+    \draw[thick, fill=none] plot [smooth cycle, tension=0.8] coordinates {
+       (-2.8,0) (-2,1.2) (0,0.8) (2,1.2) (2.8,0) (2,-1.2) (0,-0.8) (-2,-1.2)
+    };
+    
+    % Left Hole
+    \begin{scope}[shift={(-1.4,0.1)}]
+        \draw[thick] (-0.6,0.1) .. controls (-0.3,-0.2) and (0.3,-0.2) .. (0.6,0.1);
+        \draw[thick] (-0.5,0) .. controls (-0.2,0.2) and (0.2,0.2) .. (0.5,0);
+    \end{scope}
+
+    % Right Hole
+    \begin{scope}[shift={(1.4,0.1)}]
+        \draw[thick] (-0.6,0.1) .. controls (-0.3,-0.2) and (0.3,-0.2) .. (0.6,0.1);
+        \draw[thick] (-0.5,0) .. controls (-0.2,0.2) and (0.2,0.2) .. (0.5,0);
+    \end{scope}
+
+    \node at (0,-1.8) {$\Sigma_2$};
+  \end{scope}
+
+  % Map Arrow
+  \draw[->, thick] (-0.5,0) -- (1.1,0) node[midway, above] {$f$};
+
+  %--------------------------
+  % Target: Space X
+  %--------------------------
+  \begin{scope}[xshift=4cm]
+    % Blob
+    \draw[thick, fill=green!10] plot [smooth cycle, tension=1] coordinates {
+        (-2,-1) (-1,1.5) (1.5,1) (2,-1.5) (0,-2)
+    };
+    
+    % Coordinate grid hint
+    % \begin{scope}
+    %     \clip plot [smooth cycle, tension=1] coordinates {
+    %         (-2,-1) (-1,1.5) (1.5,1) (2,-1.5) (0,-2)
+    %     };
+    %     \draw[thin, gray!50] (-3,-3) grid (3,3);
+    % \end{scope}
+
+    \node at (0,-1.5) {$X$};
+  \end{scope}
+
+\end{tikzpicture}
+\end{center}
+\caption{Map from a surface \(\Sigma\) to a target space \(X\).}%
+\label{fig:surface_to_target}
+\end{figure}
+
+There is a duality
+\begin{equation*}
+\begin{tikzcd}
+    \int_{\ms{Map}(\Sigma, X)} (\text{A-model}) \ar[leftrightsquigarrow]{rr}{\text{Fourier}}[swap]{\text{T-duality}} \ar{d}[swap]{\text{localize}} & & \int_{\ms{Map}(\Sigma, X)} (\text{B-model}) \ar{d}{\text{localize}}  \\
+    \int_{\ms{Hol}(\Sigma, X)} \cdots \arrow[Rightarrow]{d} & & \int_{\ms{Const}(\Sigma, X)} \cdots \arrow[Rightarrow]{d} \\
+    \text{Gromov-Witten type} & & \text{Hodge-type}
+\end{tikzcd}
+\end{equation*}
+where both sides involve some kind of infinite-dimensional geometry. However, we can reduce this to a finite-dimensional geometry by a form of supersymmetric localization, which we will not explain. The interested reader can refer to the speaker's lectures at the Perimeter Institute on supersymmetry and TQFTs, which are also on~\href{https://space.bilibili.com/510673295/lists/4795655?type=season}{Bilibili}.
+
+There is a string description via a worldsheet theory, where we consider maps as in~\Cref{fig:worldsheet_to_target}. This theory is called \textit{string field theory}. This describes string theory using the language of quantum field theory.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[>=Latex, line cap=round, line join=round, scale=0.9]
+
+  %--------------------------
+  % Domain: Genus 1 Surface with 3 boundaries
+  %--------------------------
+  \begin{scope}[xshift=-4cm]
+    % Top arc connecting left and right
+    \draw[thick] (-2.5, 0.5) .. controls (-1, 1.2) and (1, 1.2) .. (2.5, 0.5);
+    
+    % Curve from left bottom to bottom left
+    \draw[thick] (-2.5, -0.5) .. controls (-1.5, -0.5) and (-0.6, -1) .. (-0.6, -2);
+    
+    % Curve from right bottom to bottom right
+    \draw[thick] (2.5, -0.5) .. controls (1.5, -0.5) and (0.6, -1) .. (0.6, -2);
+
+    % Left cylindrical end
+    \draw[thick] (-2.5, 0) ellipse (0.2 and 0.5);
+    
+    % Right cylindrical end
+    \draw[thick] (2.5, 0) ellipse (0.2 and 0.5);
+
+    % Bottom cylindrical end
+    \draw[thick] (0, -2) ellipse (0.6 and 0.2);
+
+    % Genus 1 Hole (Handle) - centered
+    \draw[thick] (-0.6,0.3) .. controls (-0.3,0) and (0.3,0) .. (0.6,0.3);
+    \draw[thick] (-0.5,0.15) .. controls (-0.2,0.45) and (0.2,0.45) .. (0.5,0.15);
+
+    \node at (0,-2.8) {$\Sigma$, worldsheet};
+  \end{scope}
+
+  % Map Arrow
+  \draw[->, thick] (-0.5,0) -- (1.1,0) node[midway, above] {$f$};
+
+  %--------------------------
+  % Target: Space X
+  %--------------------------
+  \begin{scope}[xshift=4cm]
+    % Blob
+    \draw[thick, fill=green!10] plot [smooth cycle, tension=1] coordinates {
+        (-2,-1) (-1,1.5) (1.5,1) (2,-1.5) (0,-2)
+    };
+
+    \node at (0,-1.5) {$X$};
+  \end{scope}
+
+\end{tikzpicture}
+\end{center}
+\caption{Map in the worldsheet theory \(X\).}%
+\label{fig:worldsheet_to_target}
+\end{figure}
+
+The correspondence goes as follows:
+\begin{table}[htpb]
+    \centering
+    \caption{Idea of string field theory}
+    \label{tab:string-field-theory}
+
+    \begin{tabular}{cc}
+        \toprule
+        String Fock space & String field theory \\
+        \midrule
+        \(\ket{\psi}\) & \(\psi\) \\
+        Dynamics & \(S[\psi]\) String field action \\
+        \begin{tikzpicture}[scale=0.5]
+    % Top arc connecting left and right
+    \draw[thick] (-2.5, 0.5) .. controls (-1, 1.2) and (1, 1.2) .. (2.5, 0.5);
+    
+    % Curve from left bottom to bottom left
+    \draw[thick] (-2.5, -0.5) .. controls (-1.5, -0.5) and (-0.6, -1) .. (-0.6, -2);
+    
+    % Curve from right bottom to bottom right
+    \draw[thick] (2.5, -0.5) .. controls (1.5, -0.5) and (0.6, -1) .. (0.6, -2);
+
+    % Left cylindrical end
+    \draw[thick] (-2.5, 0) ellipse (0.2 and 0.5);
+    \node at (-3.3, 0) {$\ket{\psi}$};
+    
+    % Right cylindrical end
+    \draw[thick] (2.5, 0) ellipse (0.2 and 0.5);
+
+    % Bottom cylindrical end
+    \draw[thick] (0, -2) ellipse (0.6 and 0.2);
+
+    % Genus 1 Hole (Handle) - centered
+    \draw[thick] (-0.6,0.3) .. controls (-0.3,0) and (0.3,0) .. (0.6,0.3);
+    \draw[thick] (-0.5,0.15) .. controls (-0.2,0.45) and (0.2,0.45) .. (0.5,0.15);
+
+        \end{tikzpicture} & \begin{tikzpicture}[scale=0.5]
+            \draw[thick] (-2,1.5) -- (0,0) -- (2.3,0);
+            \draw[thick] (-2,-1.5) -- (0,0);
+            \node at (-2.5,1.5) {$\psi$};
+        \end{tikzpicture} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+We mention a few important developments:
+\begin{itemize}
+    \item In 1992, Zwiebach described a general structure for closed string field theory and discovered that it is described by a string action which contains infinitely many vertices and satisfies the \textit{BV master equation}, something we will describe later in the language of the B-model. In particular, if we consider the genus \(0\) closed string field, we will discover a homotopy Lie algebra or an \(L_{\infty}\)-algebra.
+    \item In 1997, Zwiebach extended this theory to the open string field, which is described by an \(A_{\infty}\)-algebra. When coupled with the closed string field, it satisfies the \textit{open-closed master equation}, which is described via the moduli of bordered Riemann surfaces.
+\end{itemize}
+
+
+
+We will consider the B-model from the perspective of string field theory. This is usually referred to as the B-twisted topological field theory, and when coupled to gravity, it becomes the topological string theory. It is localized around constant maps, and near each constant map, we see the ``local'' string field action. The correspondence goes as in~\Cref{fig:sphere_to_target}.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[>=Latex, line cap=round, line join=round, scale=0.8, decoration=snake]
+
+  %--------------------------
+  % Domain: Sphere with 3 marked points
+  %--------------------------
+  \begin{scope}[xshift=-4cm]
+    % Sphere
+    \draw[thick] (0,0) circle (1.5);
+    \draw[thin] (-1.5,0) arc (180:360:1.5 and 0.5);
+    \draw[thin, dashed] (1.5,0) arc (0:180:1.5 and 0.5);
+
+    % Marked points
+    \node at (0, 0.8) {$\times$};
+    \node at (-0.8, -0.6) {$\times$};
+    \node at (0.8, -0.6) {$\times$};
+  \end{scope}
+
+  % Map Arrow
+  \draw[->, thick] (-2.2,0) -- (-1.2,0);
+  \node at (-0.8, 0) {$X$};
+  \draw[->, decorate, thick] (-0.5, 0) -- (1.6,0);
+
+  %--------------------------
+  % Target: Space X
+  %--------------------------
+  \begin{scope}[xshift=4cm]
+    % Blob
+    \draw[thick, fill=green!10] plot [smooth cycle, tension=1] coordinates {
+        (-2,-1) (-1,1.5) (1.5,1) (2,-1.5) (0,-2)
+    };
+    \node[circle, fill=black, inner sep=2pt] at (0,0) {};
+    \draw[-, thick] (0,0) -- (0.5, 0.5);
+    \draw[-, thick] (0,0) -- (-0.5, 0.5);
+    \draw[-, thick] (0,0) -- (0.5, -0.5);
+    \draw[-, thick] (0,0) -- (-0.5, -0.5);
+
+    \node at (0,-1.5) {$X$};
+  \end{scope}
+
+  \node at (-4, -3) {$\int_{\ms{Map}(\Sigma, X)} (-)$};
+  \draw[->, thick, decorate] (-2, -3) -- (2, -3);
+  \node at (4, -3) {$\int_X (-)$};
+
+\end{tikzpicture}
+\end{center}
+\caption{Localization of the B-model.}%
+\label{fig:sphere_to_target}
+\end{figure}
+
+Here are some developments in the history of describing this new action:
+\begin{itemize}
+    \item In 1992, Witten described the A-model open string field using Chern-Simons and instanton theories. As for the B-model open string field, ge described it as holomorphic Chern-Simons theory. Finally, he speculated that the theory is actually UV-finite, which we know now is true by the work of M. Wang and J. Yan.
+    \item The famous work of Bershadsky-Cecotti-Ooguri-Vafa in 1994 described the B-model closed string field theory on a Calabi-Yau threefold as a gauge theory, which they call \textit{Kodaira-Spencer gravity}. This has some interesting features:
+    \begin{itemize}
+        \item At the classical level, the equation of motion describes deformation of complex structures on the Calabi-Yau threefold. By Yau's proof of the Calabi conjecture, this leads to a family of solutions which are Ricci-flat metrics.
+        \item The leading cubic vertex of Zwiebach's string action in the topological B-model admits a full description.
+    \end{itemize}
+    \item There is a construction by Barannikov-Kontsevich which constructs the Frobenius manifold (which encodes classical genus-zero data) of this theory via the geometry of polyvector fields, which will be discussed in the next few lectures.
+    \item In 2012, the speaker and Kevin Costello gave a mathematical definition of the full string action for the topological B-model on a Calabi-Yau manifold of any dimension and proved that it satisfies the full BV master equation. They refer to this as \textit{BCOV theory}.
+    \item In 2015/16, the same authors determined the B-model open-closed quantum coupling in the large \(N\) limit and from this perspective they worked out a version of twisted supergravity. Most of the lectures will explain the speaker's work with Costello.
+\end{itemize}
+
+\begin{conv}
+    We will now fix some conventions. We will work with the category of \(\Z\)-graded vector spaces
+    \[ V = \bigoplus_{m \in \Z} V_m. \]
+    For any \(a \in V_m\), we will denote its degree by \(\deg(a) = \abs{a} = m\). We will denote degree shifts by
+    \[ (V[n])_m = V_{m+n}, \]
+    or namely, shifting to the left. Finally, we will discuss some conventions on tensors. We will denote the symmetric power by
+    \[ \on{Sym}^n(V) = V^{\otimes n} / (a \otimes b \sim (-1)^{\abs{a} \abs{b}} b \otimes a) \]
+    and the exterior powers by
+    \[ \Lambda^n (V) = V^{\otimes n} / (a \otimes b \sim -(-1)^{\abs{a} \abs{b}} b \otimes a). \]
+    These are sometimes referred to as the \textit{graded symmetric product} and the \textit{graded skew-symmetric product}. Finally, we will consider the symmetric algebra (or polynomial algebra)
+    \[ \Sym(V) = \bigoplus_m \Sym^m(V) \]
+    and its completion (a power series ring)
+    \[ \wh{\Sym}(V) = \prod_{m} \Sym^m(V). \]
+    For a graded algebra \(A\), we will always use \([-,-]\) to refer to the graded commutator, which is defined by
+    \[ [a,b] = ab - (-1)^{\abs{a} \abs{b}} ba. \]
+    
+    Finally, if \(X\) is a smooth manifold \(X\), we will write
+    \[ \Omega^{\bullet}(X) = \bigoplus_k \Omega^k (X) \]
+    to denote smooth differential forms on \(X\) and denote the de Rham differential by \(\d{}\). If \(X\) is a complex manifold, we can decompose
+    \[ \Omega^k(X) = \bigoplus_{p+q=k} \Omega^{p,q}(X) \]
+    and decompose the differential as \(\d{} = \bar{\partial} + \partial\).
+\end{conv}
+
+\begin{exer}
+    Show that
+    \[ \on{Sym}^n(V[1]) \simeq \Lambda^n(V)[n]. \]
+\end{exer}
+
+\section{Calabi-Yau geometry}%
+\label{sec:Calabi-Yau geometry}
+
+In this section, we will build some foundations for Calabi-Yau geometry. Let \(X\) be a complex manifold of dimension \(\dim_{\C} = d\). We will denote the holomorphic tangent bundle by \(T_X\). We will denote polyvector fields by
+\[ \ms{PV}^{i,j}(X) \coloneqq \Omega^{0, j}(X, \Lambda^i T_X) \]
+and the space of all polyvector fields by
+\[ \ms{PV}(X) = \bigoplus_{i,j} \ms{PV}^{i,j}(X). \]
+Locally, we can write \(\mu \in \ms{PV}^{i,j}(X)\) can be written as
+\[ \mu = \sum_{\substack{\abs{I} = i \\ \abs{J} = j}} \mu^I_{\bar{J}} \d{\bar{z}^I} \otimes \partial_{z^I}, \]
+where \(I = \{k_1, \ldots, k_i \}\) and \(J = \{ s_1, \ldots, s_j\}\) are multi-indices. Here, the index notation looks like
+\[ \d{\bar{z}^J} = \d{\bar{z}^{s_1}} \wedge \cdots \wedge \d{\bar{z}^{s_j}} \qquad \text{and} \qquad \partial_{z^I} = \partial_{z^{k_1}} \wedge \cdots \wedge \partial_{z^{k_i}}. \]
+These look like differential forms, but are in fact subtly different. All \(\mu^I_{\bar{J}}\) are smooth and skew-symmetric for indices in both \(I\) and in \(J\).
+
+There is a natural (wedge) product
+\[ \ms{PV}^{i_1, j_1} \otimes \ms{PV}^{i_2, j_2} \xrightarrow{\wedge} \ms{PV}^{i_1 + i_2, j_1 + j_2} \]
+which makes \(\ms{PV}(X)\) a bi-graded algebra. We will define the total degree by \(\abs{\mu} = i + j\) for \(\mu \in \ms{PV}^{i,j}(X)\). This makes \((\ms{PV}(X), \wedge)\) a graded-commutative algebra, namely that \(\alpha \wedge \beta = (-1)^{\abs{\alpha} \abs{\beta}} \beta \wedge \alpha\).
+
+We can also extend the \(\dbar\)-operator to polyvector fields, which has degree \(1\) and goes as
+\[ \dbar \colon \ms{PV}^{i,j}(X) \to \ms{PV}^{i, j+1}(X). \]
+This is in fact a derivation which satisfies the graded Leibniz rule
+\[ \dbar (\alpha \wedge \beta) = (\dbar \alpha) \wedge \beta + (-1)^{\abs{\alpha}} \alpha \wedge \dbar \beta. \]
+
+There are many definitions for Calabi-Yau manifolds, so we will choose one.
+\begin{defn}
+    A \textit{Calabi-Yau manifold} is a pair \((X, \Omega_X)\) where \(X\) is a complex manifold and \(\Omega_X\) is a nowhere-vanishing holomorphic volume form on \(X\). 
+\end{defn}
+
+In local holomorphic coordinates \(\ab\{z^1, \ldots, z^d\}\) on \(X\), we can write
+\[ \Omega_X = \varphi(z) \d{z^1} \wedge \cdots \wedge \d{z^d}, \]
+where \(\varphi(z)\) is a nowhere-vanishing holomorphic function. The Calabi-Yau form induces a linear isomorphism
+\[ \ms{PV}^{i,j} \xrightarrow{\lrcorner \Omega_X} \Omega^{d-i, j} \qquad \mu \mapsto \mu \lrcorner \Omega_X. \]
+
+We now consider the \textit{divergence operator}
+\[ \partial_{\Omega} \colon \ms{PV}^{i,j} \to \ms{PV}^{i-1, j} \]
+with respect to the volume form \(\Omega_X\), which is defined using the commutative diagram
+\begin{equation*}
+\begin{tikzcd}
+    \ms{PV}^{i,j} \ar{d}{\sim}[swap]{\Omega_X} \ar{r}{\partial_{\Omega}} & \ms{PV}^{i-1, j} \\
+    \Omega^{d-i,j} \ar{r}{\partial} & \Omega^{d-i+1, j} \ar{u}{\sim}[swap]{\Omega_X}.
+\end{tikzcd}
+\end{equation*}
+Note that this depends on the choice of volume form. Unfortunately, we will abuse notation and write \(\partial\) for \(\partial_{\Omega}\) and whether we mean the divergence operator or the holomorphic de Rham operator will be clear from context. Unfortunately, the divergence operator is \textbf{not} a derivation. The failure is described by the tensor
+\[ \ab\{\alpha, \beta \} = \partial(\alpha \wedge \beta) - (\partial \alpha) \wedge \beta - (-1)^{\abs{\alpha}} \alpha \wedge (\partial \beta). \]
+This bracket is known in geometry and is related to the Schouten-Nijenhuis bracket \([-,-]_{\mr{SN}}\) by the sign
+\[ [\alpha, \beta]_{\mr{SN}} = -(-1)^{\abs{\alpha}} \ab\{\alpha, \beta \}. \]
+In mathematics, this is sometimes called the Bogomolov-Tian-Todorov lemma and in physics it is related to the BV algebra. In fact, the difference between the Schouten-Nijenhuis bracket and the BV bracket is related to shifting the degree by \(1\). The BV bracket has degree given by
+\[ \ab\{-,-\} \colon \ms{PV}^{i_1, j_1} \otimes \ms{PV}^{i_2, j_2} \to \ms{PV}^{i_1 + i_2 - 1, j_1 + j_2}. \]
+It is in fact intrinsically defined independent of the choice of volume form (or divergence operator). 
+
+\begin{rmk}
+    The lifting of \(\{-,-\}\) to the volume form \(\Omega_X\) or the divergence operator \(\partial\) is related to \textit{BV quantization}.
+\end{rmk}
+
+\begin{exer}
+    Show that the BV bracket satisfies
+    graded symmetry 
+    \[\ab\{\alpha, \beta\} = -(-1)^{(\abs{\alpha})(\abs{\beta})} \ab\{\beta, \alpha\}, \]
+    the Leibniz relation
+    \[  \ab\{\alpha, \beta \wedge \gamma\} = \ab\{\alpha, \beta\} \wedge \gamma + (-1)^{\abs{\beta} \abs{\gamma}} \ab\{\alpha, \gamma\} \wedge \beta, \]
+    and the graded Jacobi identity 
+    \[ \ab\{ \ab\{ \alpha, \beta \}, \gamma\} = (-1)^{\abs{\alpha}} \ab\{\alpha, \ab\{\beta, \gamma\}\} - (-1)^{(\abs{\alpha}+1)\abs{\beta}} \ab\{\beta, \ab\{\alpha, \gamma\}\}. \]
+\end{exer}
+
+\begin{rmk}
+    The algebra \((\ms{PV}, \dbar, \partial, \ab\{-,-\})\) is a fundamental example of a \textit{differential graded Gerstenhaber BV algebra} and exists in a large class of examples.
+\end{rmk}
+
+We can now define a \textit{trace map}
+\[ \on{Tr} \colon \ms{PV}(X) \to \C \qquad \on{Tr}(\mu) \coloneqq \int_X (\mu \lrcorner \Omega_X) \wedge \Omega_X. \]
+This trace is only nontrivial for \(\ms{PV}^{d,d}\) and will be used later to discuss higher residue pairings.
+
+\begin{exer}
+    Show that the trace map is compatible with the the two differentials via the identities
+    \[ \on{Tr}((\dbar \alpha) \wedge \beta) = -(-1)^{\abs{\alpha}} \on{Tr}(\alpha \wedge \dbar \beta) \]
+    and 
+    \[ \on{Tr}((\partial \alpha) \wedge \beta) = (-1)^{\abs{\alpha}} \on{Tr}(\alpha \wedge \partial \beta). \]
+\end{exer}
+
+\subsection{Deformation theory and local moduli}%
+\label{sub:Deformation theory and local moduli}
+
+We will now let \(X\) be a compact Kähler manifold. The deformation space of complex structures on \(X\) is locally given by
+\[ \mc{M}^{\ms{cx}} = \ab\{ \mu \in \ms{PV}^{1,1}(X) \middle\vert \norm{\mu} < \ep, \dbar \mu + \frac{1}{2} \ab\{ \mu, \mu \} = 0, \dbar^* \mu = 0\}. \]
+Here, the final condition is a gauge-fixing condition and \(\dbar \mu + \frac{1}{2} \ab\{ \mu, \mu \} = 0\) is known as the \textit{Maurer-Cartan equation}.
+
+\begin{thm}[Bogomolov-Tian-Todorov]
+    Let \(X\) be a compact Kähler Calabi-Yau manifold. Then the deformation space \(\mc{M}^{\ms{cx}}\) is smooth and has dimension
+    \[ \dim_{\C} \mc{M}^{\ms{cx}} = h^1(X, T_X). \]
+\end{thm}
+
+In general, we can consider the \textit{extended moduli space} \(\mc{M}\) by solving
+\[ \dbar \mu + \frac{1}{2} \ab\{ \mu, \mu \} = 0 \]
+modulo gauge for all types of polyvector fields. We can view the original moduli space as a submanifold of the extended one.
+
+\begin{thm}[Barannikov-Kontsevich]
+    The extended moduli space \(\mc{M}\) is smooth.
+\end{thm}
+
+\begin{proof}
+    Consider the divergence-free polyvector fields \(\ker \partial \subset \ms{PV}\). Given \(\alpha, \beta \in \ker \partial\), we consider their BV bracket
+    \begin{align*}
+        \ab\{\alpha, \beta\} &= \partial(\alpha \wedge \beta) - (\partial \alpha) \wedge \beta - (-1)^{\abs{\alpha}} \alpha \wedge (\partial \beta) \\
+        &= \partial(\alpha \wedge \beta),
+    \end{align*}
+    which is \(\partial\)-exact. Therefore,
+    \[ \ab\{-,-\} \colon \ker \partial \otimes \ker \partial \to \Im \partial. \]
+    This fact will be crucial.
+
+    The complex \((\ms{PV}, \dbar, \ab\{-,-\})\) is actually a (shifted) dg Lie algbera, and we consider the inclusion
+    \[ j \colon (\ker \partial, \dbar, \ab\{-,-\}) \hookrightarrow (\ms{PV}, \dbar, \ab\{-,-\}). \]
+    This is actually a morphism of dg Lie algebras and is in fact a quasi-isomorphism. If we allow \(\mathbb{H} \subset \ms{PV}(X)\) be the harmonic elements, then extending Hodge theory gives us
+    \[ \mathbb{H} \simeq \ker \partial / \Im \partial \simeq \ker \dbar / \Im \dbar \]
+    by the Kähler condition. Now define the projection
+    \[ \Pi \colon \ker \partial \to \mathbb{H}. \]
+    By the \(\partial\dbar\)-lemma, we see that \(\dbar (\ker \partial) \subset \Im \partial\), so we can consider the map
+    \[ (\ker \partial, \dbar, \{-,-\}) \xrightarrow{\Pi} (\mathbb{H}, 0, 0), \]
+    which is again a morphism of dg Lie algebras. Now we have the zig-zag
+    \begin{equation*}
+    \begin{tikzcd}
+        & (\ker \partial, \dbar, \{-,-\}) \ar[hookrightarrow]{dl}{j} \ar{dr}{\Pi} \\
+        (\ms{PV}, \dbar, \{-,-\}) & & (\mathbb{H}, 0, 0),
+    \end{tikzcd}
+    \end{equation*}
+    where both maps are quasi-isomorphisms. By some abstract nonsense, solving the Maurer-Cartan up to gauge is invariant under quasi-isomorphisms, and solving the Maurer-Cartan equation in \((\mathbb{H}, 0, 0)\) is trivial. Therefore we have \(\mc{M} \simeq \mathbb{H}\).
+\end{proof}
+
+
+
+\section{Period map}%
+\label{sec:Period map}
+
+Before we move to the B-model, we need to discuss the period map, which will allow us to write down action functionals. Let \(X, \Omega_X\) be a compact Kähler Calabi-Yau manifold. Given \(\mu \in \ms{PV}^{1,1}(X)\) satisfying the Maurer-Cartan equation
+\[ \dbar \mu + \frac{1}{2} \ab\{\mu, \mu\} = 0, \]
+we will use \([X_{\mu}] \in \mc{M}^{\ms{cx}}\) to denote the complex manifold specified by the deformation \(\mu\). Assume that \(\ab\{z^i\}\) are local holomorphic coordinates on \(X\). We can write
+\[ \mu = \sum_{i,j} \mu_{\bar{\jmath}}^i \d{\bar{z}}^j \otimes \partial_{z^i}. \]
+Then we can define new holomorphic \(1\)-forms by
+\begin{align*}
+    (\d{z^i} + \mu \lrcorner \d{z^i}) &= \d{z^i} + \sum_j \mu_{\bar{\jmath}}^i \d{\bar{z}}^j \\
+    &= e^{\mu} \lrcorner \d{z^i},
+\end{align*}
+and these form a local basis of \((1,0)\)-forms on \(X_{\mu}\). 
+
+Let \(\mc{H}^d\) denote the complex vector bundle over \(\mc{M}^{\ms{cx}}\) whose fiber at \([X_{\mu}]\) is the de Rham cohomology \(H^d(X_{\mu})\). This bundle admits a flat connection, called the \textit{Gauss-Manin connection}, and denoted by \(\nabla^{\ms{GM}}\), which identifies the nearby fibers to the central one as
+\[ H^d (X_{\mu}) \simeq H^d(X). \]
+There is some global issue with monodromy, but locally the identification is canonical. We now define the holomorphic subbundles (the Hodge filtration)
+\(\mc{F}^p \mc{H}^d \subset \mc{H}^d\) with fibers
+\[ \mc{F}^p \mc{H}^d|_{[X_{\mu}]} = \bigoplus_{k \geq p} H^{k, d-k}(X_{\mu}). \]
+In particular, there is the line bundle \(L = \mc{F}^d \mc{H}^d\) which picks up the holomorphic volume form on \(X_{\mu}\). In physics, this is known as the \textit{vacuum line bundle}. Later, we will see that invariants of the B-model are actually sections of powers of this line bundle.
+
+The period map is locally given by the map
+\[ \mc{M}^{\ms{cx}} \hookrightarrow \P (H^d (X, \C)) \qquad [X_{\mu}] \mapsto [\Omega_{X_{\mu}}]. \]
+Here, we need to use the Gauss-Manin connection to identify the cohomology of \(X_{\mu}\) with that of \(X\). The period map is actually a local embedding (the local Torelli theorem). Sometimes it is helpful to remember the actual volume form, and if we consider the \(\C^{\times}\)-bundle 
+\[ \hat{\mc{M}}^{\ms{cx}} = \on{Tot}(L \setminus \{0\}) \]
+over \(\mc{M}^{\ms{cx}}\), then a point here represents a pair \((X, \Omega_X)\), so we have defined the local moduli of deformations of a pair \((X, \Omega_X)\). This allows us to lift the period map to an embedding
+\[ \hat{\mc{M}}^{\ms{cx}} \hookrightarrow H^d(X, \C) \qquad (X_{\mu}, \Omega_{X_{\mu}}) \mapsto [\Omega_{X_{\mu}}]. \]
+
+Our goal is to understand the geometry of the period map, which will allow us to understand the action functional of the B-model. We will begin with the case of Calabi-Yau threefolds, which is classical, and then move to a more modern perspective. Let \((X, \Omega_X)\) be a Calabi-Yau threefold. Then \(H^3(X, \C)\) has a symplectic pairing given by
+\[ \omega(\alpha, \beta) = \int_X \alpha \wedge \beta. \]
+Considering the Hodge filtration, the subspace
+\[ F^2 H^3 = H^{3,0} \oplus H^{2,1} \subset H^3 \]
+is a Lagrangian subspace. Over the moduli space \(\mc{M}^{\ms{cx}}\) \(\omega\) defines a fiberwise symplectic pairing on \(\mc{H}^3\) which is flat with respect to the Gauss-Manin connection. Then we can lift the Hodge filtration to a subbundle
+\[ \mc{F}^2 \mc{H}^3 \subset \mc{H}^3, \]
+which gives a holomorphic family of Lagrangian subspaces. 
+
+\begin{prop}
+    The embedding \(\hat{\mc{M}}^{\ms{cx}} \hookrightarrow H^3\) defines a Lagrangian submanifold.
+\end{prop}
+
+\begin{proof}
+    Let \(\Omega_s\) be a holomorphic family of Calabi-Yau forms parameterized by \(s\). By Griffiths transversality, we see that
+    \[ \nabla^{\ms{GM}} \Omega_s \subset \mc{F}^2 \mc{H}^3. \]
+    Every fiber is a linear Lagrangian subspace, so we are done.
+\end{proof}
+
+From this data, we can cook up B-model invariants as follows. Choose a Lagrangian splitting \(\mc{L} \subset H^3(X, \C)\) be a transversal linear Lagrangian subspace such that
+\[ H^3 = F^2 H^3 \oplus \mc{L} \]
+is an isotropic splitting. This allows us to identify
+\[ H^3 \cong T^* F^2, \]
+where we use \(F^2\) to refer to \(F^2 H^3\). Then \(\hat{\mc{M}}^{\ms{cx}}\) is a Lagrangian submanifold as in~\Cref{fig:lagrangian_submanifold}. Therefore, there is some function \(\hat{F}_0 \in \mc{O}(F^2)\) such that \(\hat{\mc{M}}^{\ms{cx}}\) is the graph of \(\d{\hat{F}_0}\). 
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=1.05cm,>=Stealth,line cap=round,line join=round]
+  % white background (optional; remove if your page is already white)
+  \fill[white] (-4.9,-3.6) rectangle (7.0,4.4);
+
+  % axes
+  \draw[thick,->] (-4.6,0) -- (5.4,0) node[right] {$F^2$};
+  \draw[thick,->] (0,-3.2) -- (0,4.2);
+
+  % labels
+  \node at (3.9,3.45) {$H^3 \simeq T^{*}F^2$};
+  \node at (4.0,1.65) {$\hat{\mathcal M}^{\mathrm{cx}}$};
+
+  % curve
+  \draw[thick]
+    (-3.2,-0.8)
+    .. controls (-3.0,1.3) and (-2.4,2.2) .. (-1.7,2.0)
+    .. controls (-1.0,1.8) and (-0.4,0.9) .. (0,0)
+    .. controls (0.5,-0.9) and (1.2,-1.4) .. (1.8,-1.1)
+    .. controls (2.3,-0.8) and (2.5,-0.1) .. (2.7,0.6)
+    .. controls (2.9,1.3) and (3.2,1.7) .. (3.6,1.7);
+\end{tikzpicture}
+\end{center}
+\caption{The moduli space \(\hat{\mathcal M}^{\mathrm{cx}}\) as a Lagrangian submanifold in \(H^3 \simeq T^* F^2\).}%
+\label{fig:lagrangian_submanifold}
+\end{figure}
+
+\begin{exm}
+    Choose \(\mc{L} = H^{1,2} \oplus H^{0,3}\) (the complex conjugate splitting). Physicists would now write down some special geometry and prepotentials. We parametrize \(\hat{\mc{M}}^{\ms{cx}}\) by
+    \[ \hat{\mc{M}}^{\ms{cx}} = \ab\{ (t^0, t^i \partial_{t^i} \hat{F}_0, \partial_{t^0} \hat{F}_0) \}. \]
+    Because \(\mc{M}^{\ms{cx}} = \hat{\mc{M}}^{\ms{cx}} / \C^{\times}\), we see that \(\hat{F}_0\) has homogeneous degree \(2\). The local coordinates on \(\mc{M}^{\ms{cx}}\) are given by \(\tau^i = \frac{t^i}{t^0}\). Therefore, we can write
+    \[ \hat{F}_0 = (t_0)^2 \mc{F}_0 (\tau^i). \]
+    Geometrically, \(\hat{F}_0\) actually defines a local section of \(L^{\otimes -2}\), where \(L\) is the vacuum line bundle. We can now reparaterize the extended moduli space by
+    \[ \hat{\mc{M}}^{\ms{cx}} = \ab\{ t^0 (1, \tau^i \partial_{\tau^i} \mc{F}_0, 2 \mc{F}_0 - \tau^i \partial_{\tau^i} \mc{F}_0) \}. \]
+    The factor inside the parentheses is called the \textit{primitive period map}. We now obtain a particular choice of holomorphic volume form on the moduli space given by
+    \[ [\Omega_{\tau}] = (1, \tau^i, \partial_{\tau^i} \mc{F}_0, 2 \mc{F}_0 - \tau^i \partial_{\tau^i} \mc{F}_0). \]
+    We are now finally able to calculate the \textit{Yukawa coupling} for the moduli space by
+    \begin{align*}
+        C_{ijk}(\tau) &= \int \nabla^{\ms{GM}}_{\partial_{\tau^i}} [\Omega_{\tau}] \wedge \nabla^{\ms{GM}}_{\partial_{\tau^j}} \nabla^{\ms{GM}}_{\partial_{\tau^k}} [\Omega_{\tau}] \\
+        &= \partial_{\tau^i} \partial_{\tau^j} \partial_{\tau^k} \mc{F}_0 (\tau).
+    \end{align*}
+    In the physics literature, \(\mc{F}_0(\tau)\) is called the \textit{prepotential}.
+\end{exm}
+
+\begin{exer}
+    Prove the formula for the Yukawa coupling in the previous example.
+\end{exer}
+
+Before we proceed, we need to describe the deformation of the pair \((X, \Omega_X)\). We know that deformations of \(X\) are given by \(\mu \in \ms{PV}^{1,1}(X)\) satisfying the Maurer-Cartan equation
+\[ \dbar \mu + \frac{1}{2} \ab\{\mu, \mu\}  = 0. \]
+In the complex structure \(X_{\mu}\) specified by \(\mu\), the elements
+\[ e^{\mu} \lrcorner \d{z^i} = \d{z^i} + \mu \lrcorner \d{z^i} \]
+form a new basis of \((1,0)\)-forms on \(X_{\mu}\).
+
+\begin{lem}
+    We have
+    \[ e^{\mu} \lrcorner (\alpha \wedge \beta) = (e^{\mu} \lrcorner \alpha) \wedge (e^{\mu} \lrcorner \beta) \]
+    for any differential forms \(\alpha, \beta\).
+\end{lem}
+
+The lemma now implies that 
+\[ e^{\mu} \lrcorner (\d{z^1} \wedge \cdots \wedge \d{z^d}) \]
+is of type \((d, 0)\) with respect to \(X_{\mu}\). Applying this globally, the form
+\[ e^{\mu} \lrcorner \Omega_X \]
+is of type \((d, 0)\) in \(X_{\mu}\). Therefore, there exists a smooth function \(\rho\) such that
+\[ e^{\rho} e^{\mu} \lrcorner \Omega_X \]
+is a holomorphic volume form on \(X_{\mu}\). Because the type is \((d, 0)\), then the form is holomorphic if and only if it is closed, or in other words that \(\d{(e^{\rho} e^{\mu} \lrcorner \Omega_X)} = 0\). This gives us the two equations
+\[ \begin{cases}
+    \dbar \mu + \frac{1}{2} \ab\{\mu, \mu\} = 0 & \rightsquigarrow \text{deform to } X_{\mu}\\
+    \dbar \rho + \partial \mu + \ab\{ \mu, \rho \} = 0 & \rightsquigarrow \text{deform to } \Omega_{X_{\mu}}
+\end{cases} \]
+which govern deformations of the pair \((X, \Omega_X)\). These equations were studied by Barannikov in his work on variations of semi-infinite Hodge structures.
+
+\section{Extended period map}%
+\label{sec:Extended period map}
+
+Introduce a formal parameter \(t\) of degree \(2\), which will play the role of gravitational descendents and consider the combined differential
+\[ Q = \dbar + t \partial. \]
+We can rewrite our two equations as the single equation
+\[ Q \hat{\mu} + \frac{1}{2} \ab\{\hat{\mu}, \hat{\mu}\} = 0, \]
+where we have defined
+\[ \hat{\mu} = \mu + t \rho. \]
+Introduce a new (shifted) dgLa 
+\[ (\ms{PV}(X)\ps{t}, Q = \dbar + t \partial, \ab\{-,-\}). \]
+
+\begin{rmk}
+    The data of \((\ms{PV}(X) \ps{t}, Q)\) can be viewed as a homological replacement of volume-preserving (divergence-free) vector fields \((\ker \partial, \dbar)\). We may now write the complex
+    \[ \ker \partial \to \ms{PV} \xrightarrow{t \partial} t \ms{PV} \xrightarrow{t \partial} t^2 \ms{PV} \to \cdots \]
+    which behaves badly, so we replace it with \((\ms{PV} \ps{t}, Q)\).
+\end{rmk}
+
+\begin{rmk}
+    The variable \(t\) plays the role of gravitational descendants (namely \(\psi\)-classes on the A-side) in the B-model.
+\end{rmk}
+
+\begin{rmk}
+    If \((\ms{PV}, \dbar, \ab\{-.-\})\) gives extended moduli for \(X\), then \((\ms{PV} \ps{t}, Q, \ab\{-,-\})\) gives extended moduli for the Calabi-Yau geometry.
+\end{rmk}
+
+\begin{rmk}
+    The variable \(t\) can be viewed as an equivariant parameter for rotation on the worldsheet in the worldsheet B-model.
+\end{rmk}
+
+\begin{quest}
+    Can we express the above equations as the variational critical locus of some action functional?
+\end{quest}
+
+One reason we would be interested in this question is because this is the usual approach to classical physics, and then we can quantize these using path integrals. This is unfortunately highly nontrivial, and on a Calabi-Yau threefold, BCOV work with some \(\mu \in \ker \partial\). They found that the Maurer-Cartan equation
+\[ \dbar \mu + \frac{1}{2} \ab\{\mu, \mu\} = 0 \]
+is equivalent to \(\fdv{\ms{KS}}{\mu} = 0\) for the Kodaira-Spencer action \(\ms{KS}\).
+
+\begin{warn}
+    This approach unfortunately violates locality for various reasons:
+    \begin{itemize}
+        \item \(\ker \partial\) is not a module over \(C^{\infty}(X)\);
+        \item One of the terms in \(\ms{KS}\) is nonlocal.
+    \end{itemize}
+\end{warn}
+
+Consider the Calabi-Yau geometry and let \(\mu \in \ms{PV}(X)\ps{t}\). We can ask for an action functional whose critical points are solutions of
+\[ Q \mu + \frac{1}{2} \ab\{\mu, \mu\} = 0. \]
+Unfortunately, the speaker was unable to find this, but there is some magic involved. If we perform an \(L_{\infty}\) transformation, this equation becomes
+\[ Q \mu + \sum_{k \geq 2} \frac{1}{k!} \ell_k (\mu^{\otimes k}) = 0, \]
+and for this equation there is a BCOV action which was found by Costello and the speaker. The \(L_{\infty}\) transformation is produced directly from the period map.
+
+\begin{defn}
+    Define
+    \[ \ms{S}(X) \coloneqq \ms{PV}(X) \ls{t}[2], \]
+    where the shift makes \(\mu + t \rho\) have degree \(0\). Then define
+    \[ \ms{S}_+(X) \coloneqq \ms{PV}(X) \ps{t}[2] \qquad \text{and} \qquad \ms{S}_-(X) \coloneqq t^{-1} \ms{PV}(X)[{t^{-1}}][2]. \]
+    This makes \(\ms{S}(X) = \ms{S}_+(X) \oplus \ms{S}_-(X)\), and once we define a symplectic structure it will be a splitting by isotropic subspaces. However, \(Q\) does \textbf{not} preserve the splitting, but this will lead to the classical master equation.
+
+    We define a \(t\)-sesquilinear pairing on \(\ms{S}(X)\) (inspired by the higher residue pairing of Kyoji Saito)
+    \[ \omega \colon \ms{S}(X) \otimes \ms{S}(X) \to \C \]
+    by the formula
+    \[ \omega(f(t) \alpha, g(t) \beta) \coloneqq \Tr \alpha\beta \on{Res}_{t = 0} f(t) g(-t) \d{t}. \]
+    Observe that
+    \begin{align*}
+        \omega (g(t) \beta, f(t) \alpha) &= \Tr \beta\alpha \on{Res}_{t = 0} g(t) f(-t) \d{t} \\
+        &= - (-1)^{\abs{\alpha} \abs{\beta}} \Tr \alpha\beta \on{Res}_{t = 0} f(t) g(-t) \d{t} \\
+        &= - (-1)^{\abs{\alpha} \abs{\beta}} \omega(f(t) \alpha, g(t) \beta).
+    \end{align*}
+\end{defn}
+
+If we calculate the degrees, then \(\omega\) is only nontrivial when 
+\begin{align*}
+    \deg (f(t) \alpha) + \deg (g(t) \beta) &= \deg (\alpha \wedge \beta) + \deg f(t) + \deg g(t) \\
+    &= 2d - 2,
+\end{align*}
+so if we take the original shift by \(2\) into account, we have proved the following result.
+
+\begin{prop}
+    The space \((\ms{S}(X), \omega)\) has a \((6-2d)\)-shifted symplectic structure.
+\end{prop}
+
+\begin{rmk}
+    For a Calabi-Yau threefold \(X\), we have the splitting
+    \[ \Omega^3 = \Omega^{3,0} \oplus \Omega^{2,1} \oplus \Omega^{1,2} \oplus \Omega^{0,3}, \]
+    and the we will be able to identify this with
+    \[ t \ms{PV}^{0,0} \oplus \ms{PV}^{1,1} \oplus t^{-1} \ms{PV}^{2,2} \oplus t^{-2} \ms{PV}^{3,3} \]
+    via contraction with \(\Omega_X\), which we will call \(\Gamma\). The higher residue pairing will be identified with the usual pairing on differential forms. We should note however that this only works for threefolds.
+\end{rmk}
+
+\begin{prop}
+    The operator \(Q\) is (graded) skew-symmetric with respect to \(\omega\).
+\end{prop}
+
+\begin{proof}
+    The proof is left as an exercise. The key point is to study the operators \(\dbar\) and \(\partial\).
+\end{proof}
+
+We now consider the (cochain) period map
+\[ \mc{P} \colon \ms{S}_+(X) \to \ms{S}(X) \qquad \mu \mapsto t \ab(1-e^{\frac{\mu}{t}}). \]
+
+\begin{rmk}
+    This \(\mc{P}\) is understood as a map on formal schemes. For any Artinian ring \((R, \mf{m})\), we send
+    \[ \mu \in \ms{S}_+(X) \otimes \mf{m} \mapsto t \ab(1-e^{\frac{\mu}{t}}) \in \ms{S}(X) \otimes \mf{m}. \]
+    This truncates at finite order, so the map is well-defined.
+\end{rmk}
+
+We compute the tangent map at \(\mu = 0\), and we see
+\[ \delta \mu \mapsto t \ab(1 - e^{\frac{\delta \mu}{t}}) = - \delta \mu + \cdots, \]
+so we see that
+\[ \d{\mc{P}}_* \colon T_0 \ms{S}_+(X) = \ms{S}_+(X) \to T_0 \ms{S}(X) = \ms{S}(X) \]
+is simply the inclusion with a sign of \(-1\). See~\Cref{fig:cochain-period-map} for a visualization. This implies that \(\mc{P}\) is a formal embedding.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[x=0.55cm,y=0.55cm,>=Stealth,line cap=round,line join=round]
+  \draw[thick, ->] (-16,0) -- (-10, 0) node[above] {$\ms{S}_+(X)$};
+  \node at (-13, -0.5) {$\mu$};
+  \draw[->] (-9, 0) to [bend left]  node[above] {$\mc{P}$} (-5, 0);
+  % axes
+  \draw[thick,->] (-4.6,0) -- (5.0,0) node[right] {$\ms{S}_+$};
+  \draw[thick,->] (0,-3.2) -- (0,4.2);
+
+  % labels
+  \node at (3.9,3.45) {$\ms{S}(X)$};
+
+  % curve
+  \draw[thick]
+    (-3.2,-0.8)
+    .. controls (-3.0,1.3) and (-2.4,2.2) .. (-1.7,2.0)
+    .. controls (-1.0,1.8) and (-0.6,0.0) .. (0,0)
+    .. controls (0.6,0.0) and (1.2,-1.4) .. (1.8,-1.1)
+    .. controls (2.3,-0.8) and (2.5,-0.1) .. (2.7,0.6)
+    .. controls (2.9,1.3) and (3.2,1.7) .. (3.6,1.7);
+\end{tikzpicture}
+\end{center}
+\caption{The cochain period map}%
+\label{fig:cochain-period-map}
+\end{figure}
+
+This map is actually an \(L_{\infty}\)-morphism
+\[ (\ms{S}_+(X), Q, \ab\{-,-\}) \xrightarrow{\mc{P}}  (\ms{S}(X), Q, 0). \]
+One way to see this is to check that the Maurer-Cartan equation is preserved. We can check that 
+\begin{align*}
+    Q \ab(t \ab(1-e^{\frac{\mu}{t}})) &= -\ab(Q \mu + \frac{1}{2} \ab\{\mu, \mu\}) e^{\frac{\mu}{t}},
+\end{align*}
+and therefore we see that \(\mu\) satisfies the Maurer-Cartan equation if and only if \(\mc{P}(\mu)\) does. Therefore, if we view \(Q\) as a vector field on \(\ms{S}(X)\), then \(Q\) is tangent to \(\Im(\mc{P})\) and is thus the pushforward of a vector field on \(\ms{S}_+(X)\) which defines the \(L_{\infty}\) structure.
+
+The image \(\Im(\mc{P}) \subset \ms{S}(X)\) of the period map is a formal Lagrangian submanifold. If we calculate the variation of the period map, we see that
+\begin{align*}
+    \delta \ab(t \ab(1-e^{\frac{\mu}{t}})) &= - \delta \mu e^{\frac{\mu}{t}} \\
+    &\subset \mc{S}_+(X) e^{\frac{\mu}{t}}.
+\end{align*}
+
+\begin{prop}
+    For all \(\alpha, \beta \in \mc{S}_+(X)\), we have
+    \[ \omega \ab(\alpha e^{\frac{\mu}{t}}, \beta e^{\frac{\mu}{t}}) = 0. \]
+\end{prop}
+
+\begin{proof}
+    The proof is left as an exercise.
+\end{proof}
+
+\section{Classical BCOV action}%
+\label{sec:Classical BCOV action}
+
+Some references for this include the surveys \href{https://link.springer.com/content/pdf/10.1007/978-3-319-94220-9_4.pdf}{Some classical/quantum aspects of Calabi-Yau moduli} and \href{https://sigma-journal.com/2012/101/sigma12-101.pdf}{Renormalization method and mirror symmetry} by the lecturer in addition to his work with Costello.
+
+We will begin with a toy model to describe the geometry of gravitational descendants. Suppose the case when \(X\) is a point. In this case, \(\ms{S} = \C \ls{t}\), \(\ms{S}_+ = \C \ps{t}\), and \(\ms{S}_- = t^{-1} \C[t^{-1}]\). The symplectic pairing is given by
+\[ \omega(f(t), g(t)) = \on{Res}_{t = 0} f(t) g(-t) \d{t}. \]
+The period map now looks like~\Cref{fig:cochain-period-map-point}. The image of the period map is a formal Lagrangian submanifold.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[x=0.55cm,y=0.55cm,>=Stealth,line cap=round,line join=round]
+  \draw[thick, ->] (-16,0) -- (-10, 0) node[above] {$\ms{S}_+(X)$};
+  \node at (-13, -0.5) {$f(t)$};
+  \draw[->] (-9, 0) to [bend left]  node[above] {$\mc{P}$} (-5, 0);
+  % axes
+  \draw[thick,->] (-4.6,0) -- (5.0,0) node[right] {$\ms{S}_+$};
+  \draw[thick,->] (0,-3.2) -- (0,4.2);
+
+  % labels
+  \node at (3.9,3.45) {$\ms{S} = \C \ps{t}$};
+
+  % curve
+  \draw[thick]
+    (-3.2,-0.8)
+    .. controls (-3.0,1.3) and (-2.4,2.2) .. (-1.7,2.0)
+    .. controls (-1.0,1.8) and (-0.6,0.0) .. (0,0)
+    .. controls (0.6,0.0) and (1.2,-1.4) .. (1.8,-1.1)
+    .. controls (2.3,-0.8) and (2.5,-0.1) .. (2.7,0.6)
+    .. controls (2.9,1.3) and (3.2,1.7) .. (3.6,1.7);
+    \node at (-1.8, 2.5) {$t(1-e^{\frac{f}{t}})$};
+\end{tikzpicture}
+\end{center}
+\caption{The cochain period map for \(X = \mr{pt}\)}%
+\label{fig:cochain-period-map-point}
+\end{figure}
+
+Under the identification \(\ms{S} = T^* \ms{S}_+\), we write the image of the period map as the graph of \(\d{I_0}\) for some \(I_0 \in \mc{O}(\ms{S}_+)\). We will parameterize \(\tau \in \ms{S}_+\) as
+\[ \tau = \sum_{k = 0}^{\infty} \tau_k t^k. \]
+Then we can write \(I_0 = I_0(\tau_k)\), and our goal is to compute this. We see that
+\[ \Im \mc{P} = \sum_{k = 0}^{\infty} \tau_k t^k + \sum_{k = 0}^{\infty} \partial_{\tau_k}  I_0 (-t)^{-(k+1)}. \]
+Denoting this by \(\varphi(\tau_k)\), we will try to find its geometry. This actually becomes a combinatorial problem, but this actually becomes too complicated. Instead, it can be charcterized by various properties, which correspond to properties of the Lagrangian cone in Gromov-Witten theory.
+
+The first property is the \textit{string equation}. Let \(\hat{t} \colon \ms{S} \to \ms{S}\) be the operator which sends \(t^k \mapsto t^{k+1}\). Now define
+\[ L_{-1} = \hat{t}^{-1}, \]
+which is essentially multiplying by \(t^{-1}\). We can view \(L_{-1}\) as a vector field on \(\ms{S}\), which is actually symplectic, namely satisfying the equation
+\[ \omega(L_{-1} f, g) = - \omega(f, L_{-1} g). \]
+Writing the symplectic form as
+\begin{align*}
+    \omega &= \sum_{k \geq 0} \d{\tau_k} \wedge \d{\tau_{-k-1}} (-1)^{k+1} \\
+    &= \frac{1}{2} \sum_{i+j=-1} (-1)^{j} \d{\tau_i} \wedge \d{\tau_j},
+\end{align*}
+we see that
+\[ L_{-1} = \sum_i \tau_{i+1} \partial_{\tau_i}. \]
+This implies that
+\begin{align*}
+    \iota_{L_{-1}} \omega &= \sum_{i+j=-1} (-1)^j \tau_{i+1} \d{\tau_j} \\
+    &= \frac{1}{2} \d{\ab(\sum_{i+j=0} (-1)^j \tau_i \tau_j)}.
+\end{align*}
+Therefore, we will write the Hamiltonian as
+\[ h_{-1} = \frac{1}{2} \tau_0^2 + \sum_{k \geq 1} (-1)^k \tau_k \tau_{-k}. \]
+The following result is one of the basic results in the Givental formalism.
+
+\begin{lem}
+    The vector field \(L_{-1}\) is tangent to the object \(\Im \mc{P} - t\), which is known as the \textit{dilaton shift}.
+\end{lem}
+
+\begin{proof}
+    Let \(\alpha = \mc{P}(f) - t = -t e^{\frac{f}{t}}\). We calculate the tangent space
+    \begin{align*}
+        T_{\alpha} (\Im \mc{P} - t) &= \ab\{ - \delta f e^{\frac{f}{t}} \} \\
+        &= \ms{S}_+ e^{\frac{f}{t}}.
+    \end{align*}
+    We conclude by calculating \(L_{-1}|_{\alpha} = L_{-1}(\alpha) = - e^{\frac{f}{t}} \subset T_{\alpha} (\Im \mc{P} - t)\).
+\end{proof}
+
+We can now write down a Hamilton-Jacobi equation, which says that \(h_{-1}|_{\Im \mc{P} - t}\) is constant. In this example, the constant will be zero, we see that
+\begin{align*}
+    \frac{1}{2} \tau_0^2 + \sum_{k = 0}^{\infty} \tau_{k+1} \pdv{}{\tau_k} I_0 - \pdv{}{\tau_0} I_0 = 0.
+\end{align*}
+This is equivalent to the PDE
+\[ \pdv{}{\tau_0} I_0 = \frac{1}{2} \tau_0^2 + \sum_{k = 0}^{\infty} \tau_{k+1} \pdv{}{\tau_k} I_0, \]
+which is exactly the string equation from Gromov-Witten theory.
+
+The second property we will consider is the \textit{dilaton equation}. Consider the operator
+\[ L_0 \colon \ms{S} \to \ms{S} \qquad t^k \mapsto \ab(k + \frac{1}{2}) t^k. \]
+This is also a symplectic operator satisfying
+\[ \omega(L_0 f, g) + \omega(f, L_0 g) = 0. \]
+The Hamiltonian function is now given by
+\[ h_0 = \sum_{k=0}^{\infty} \ab(k + \frac{1}{2}) (-1)^{-k-1} \tau_k \tau_{-k-1}. \]
+Note that all of our operators are linear, so the Hamiltonians are quadratic. 
+
+\begin{lem}
+    The vector field \(L_0\) is tangent to \(\Im \mc{P} - t\).
+\end{lem}
+
+\begin{proof}
+    The proof is similar to the string equation, so it is left as an exercise.
+\end{proof}
+
+We can once again write the Hamilton-Jacobi equation, which says that
+\[ \eval{\sum_{k=0}^{\infty} \ab(k + \frac{1}{2}) (-1)^{-k-1} \tau_k \tau_{-k-1}}_{\Im \mc{P} - t} = 0. \]
+This implies that
+\[ \frac{3}{2} \pdv{}{\tau_1} I_0 = \sum_{k=0}^{\infty} \ab(k + \frac{1}{2}) \tau_k \pdv{}{\tau_k} I_0, \]
+which is exactly the dilaton equation from Gromov-Witten theory. We may continue this and write down the classical Virasoro constraints, but we will stop here.
+
+There is a third equation, called the \textit{grading equation}. Consider the \textit{degree operator}
+\[ G \colon \ms{S} \to \ms{S} \qquad t^k \mapsto (2k-2) t^k. \]
+Here, we are remembering that there is actually a shift by \(2\) that we have been suppressing and that \(t\) has degree \(2\).
+
+\begin{lem}
+    \(G\) is tangent to the Lagrangian \(\Im \mc{P}\) (with no dilaton shift).
+\end{lem}
+
+Unfortunately, this is not a Hamiltonian vector field (in particular the symplectic form has a nonzero degree). The lemma is equivalent to the statement that \(\Im \mc{P}\) is preserved by the \(\C^{\times}\)-action taking \(t^k \mapsto \lambda^{2k-2} t^k\). In particular, we see that \(I_0 (\tau_k)\) is homogeneous of degree \(6\) if we assign \(\deg \tau_k = 2-2k\). Combining this with the string and dilaton equations, it is easy to show the following.
+
+\begin{prop}
+    For each \(k_1, \ldots, k_n\), we have
+    \[ \eval{\pdv{}{\tau_{k_1}} \cdots \pdv{}{\tau_{k_n}} I_0}_{\tau = 0} I_0 = \int_{\ol{\M}_{0,n}} \psi_1^{k_1} \cdots \psi_n ^{k_n} = \binom{n-3}{k_1, \ldots, k_n}. \]
+\end{prop}
+
+The general case follows easily from the point case, and in particular we can determine the \textit{classical BCOV action}. Denote the image of the cochain period map (see~\Cref{fig:cochain-period-map}) by \(\mc{L}_X\), which is a formal Lagrangian submanifold of \(\ms{S}(X) = \ms{S}_+(X) \oplus \ms{S}_-(X) = T^* \ms{S}_+(X)\). Writing \(\mc{L}_X\) as the graph of \(\d{I_0^X}\), we can determine \(I_0^X\) as a function on \(\ms{S}_+(X) = \ms{PV}(X) \ps{t}[2]\). Denote
+\[ \ab< t^{k_0} \otimes \cdots \otimes t^{k_n}>_0 \coloneqq \int_{\ol{\M}_{0,n}} \psi_1^{k_1} \cdots \psi_n^{k_n} = \binom{n-3}{k_1, \ldots, k_n}. \]
+This extends \(\ms{PV}(X)\)-linearly to a map
+\[ \ab<->_0 \colon \on{Sym}^{\bullet} (\ms{S}_+(X)) \to \ms{PV}(X). \]
+
+\begin{thm}[Costello-Li]
+    We have the formula
+    \begin{align*}
+        I_0^X(\mu) &= \on{Tr} \ab<e^{\mu}>_0 \\
+        &= \sum_{n \geq 3} \frac{1}{n!} \on{Tr} \ab<\mu^{\otimes n}>_0.
+    \end{align*}
+    This is known as the \textit{classical BCOV action}.
+\end{thm}
+
+If we write \(\mu = \mu_0 + \mu_1 t + \mu_2 t^2 + \cdots \) for \(\mu_k \in \ms{PV}(X)\), we see that 
+\[ I_0^X = \frac{1}{3!} \on{Tr} \mu_0^3 + \cdots \]
+In the Kodaira-Spencer gravity of BCOV, the fields are \(\mu_0 \in \ker \partial \subset \ms{PV}(X)\), and their action is given by
+\[ \ms{KS}[\mu_0] = \frac{1}{2} \on{Tr} \mu_0 \frac{\dbar}{\partial} \mu_0 + \frac{1}{3!} \on{Tr} \mu_0^3. \]
+This looks a bit unusual, because we can find the Maurer-Cartan equation, but the original theory is nonlocal, which poses problems for quantization (which is why we replace \(\ker \partial\) with the complex \([\ms{PV} \xrightarrow{t \partial} t \ms{PV} \xrightarrow{t \partial} t^2 \ms{PV} \to \cdots]\)).
+
+
+
+\section{Hodge structure and primitive forms}%
+\label{sec:Hodge structure and primitive forms}
+
+\section{Classical master equation}%
+\label{sec:Classical master equation}
+
+\section{Quantum master equation}%
+\label{sec:Quantum master equation}
+
+\section{Homotopic renormalization}%
+\label{sec:Homotopic renormalization}
+
+\section{Quantum BCOV theory}%
+\label{sec:Quantum BCOV theory}
+
+\section{Landau-Ginzburg B-model}%
+\label{sec:Landau-Ginzburg B-model}
+
+\section{Open-closed B-model}%
+\label{sec:Open-closed B-model}
+
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

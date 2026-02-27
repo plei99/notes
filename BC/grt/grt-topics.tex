@@ -168,6 +168,7 @@
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
 \newcommand{\bv}{\mbf{v}}
 \newcommand{\bq}{\mbf{q}}
 \newcommand{\bp}{\mbf{p}}
@@ -1901,9 +1902,10 @@ In the \(\sl_3\) example, this corresponds to the shaded region in~\Cref{fig:sl3
 
 For an arbitrary finite-dimensional representation \(V\), we can compute the decomposition
 \[ V = \bigoplus_{i,j} V_{\lambda_i}^{(j)} \]
-by considering the action of \(U\) on \(V\). To decompose, we look for the fixed subspace \(V^U\), which is the span of the highest weight vectors. Finite-dimensional representations of \(B\) are classified by \(\X^{\bullet}(B_{\on{sc}}/B_{\on{sc}}^u) = \X^{\bullet}(T_{\on{sc}}) = \Lambda\). For all \(\lambda \in \Lambda\), let \(\C_{\lambda}\) be the corresponding irreducible representation of \(B\). Then the the associated line bundle \(\mc{L}_{\lambda}\) 
+by considering the action of \(U\) on \(V\). To decompose, we look for the fixed subspace \(V^U\), which is the span of the highest weight vectors. Finite-dimensional representations of \(B\) are classified by \(\X^{\bullet}(B_{\on{sc}}/B_{\on{sc}}^u) = \X^{\bullet}(T_{\on{sc}}) = \Lambda\). For all \(\lambda \in \Lambda\), let \(\C_{\lambda}\) be the corresponding irreducible representation of \(B\). Then the associated line bundle
 \begin{align*}
-    G \times^B \C_{-\lambda} &= (G \times \C_{-\lambda}) / B \\
+    \mc{L}_{\lambda} &= G \times^B \C_{-\lambda} \\
+    &= (G \times \C_{-\lambda}) / B \\
     &= \ab\{ (g, v) \sim (gb^{-1}, b \cdot v) \}
 \end{align*}
 on \(G / B\) is \(G\)-equivariant. 
@@ -1915,6 +1917,214 @@ on \(G / B\) is \(G\)-equivariant.
 \begin{rmk}
     There is a generalization of this result, called the Borel-Weil-Bott theorem, which calculates the higher cohomology of these line bundles.
 \end{rmk}
+
+We will not give a detailed proof of the Borel-Weil theorem. However, the idea is that a section of \(\mc{L}_{\lambda}\) is a pair \((g, f(g) \cdot 1)\) where \(f \colon G_{\on{sc}} \to \C\) (here, we always use the simply connected form and drop the subscripts), and we must be invariant under the \(B\)-action
+\[ (g, f(g) \cdot 1) \sim (g b^{-1}, \lambda(b)^{-1} f(g) \cdot 1) = (gb^{-1}, f(gb^{-1}) \cdot 1), \]
+and therefore we must have
+\[ f(gb^{-1}) = \lambda(b)^{-1} f(g) \]
+for all \(g \in G\) and \(b \in B\). Equivalently, we can ask for
+\[ f(gb) = \lambda(b) f(g). \]
+Then we are looking for \(f \in \mc{O}(G)^{(B, \lambda)} \cong \Gamma(\mc{B}, \mc{L}_{\lambda})\). To identify this representation, we need to find the highest weight with respect to \(B\) or \(B^-\). It is a bit easier to work with \(B^-\), so we can pass to \(U^-\). Then we consider
+\[ \mc{O}(G)^{U^- \times (B, \lambda)} \cong \mc{O}(G)^{U^- \times U, (T, \lambda)}. \]
+Using the Bruhat decomposition
+\[ G = \bigsqcup_{w \in W} B \dot{w} B = \bigsqcup_{w \in W} B^- \dot{w} B, \]
+we will use the longest element \(w_0\) (for \(\SL_n\) this is the permutation which exchanges \(1\) and \(n\), \(2\) and \(n-1\), etc.) to write
+\[ G = \bigsqcup_{w \in W} \dot{w}_0 B \dot{w}_0 \dot{w} B. \]
+Then \(B^- B \subset G\) is open, so we can consider the behavior of functions on this open. This decomposes as the Cartesian product
+\[ B^- B = C^- T U \cong U^- \times T \times U, \]
+so we are looking for functions in \(\mc{O}(U^- T U)^{U^- \times U, (T, \lambda)} = \mc{O}(T)^{(T, \lambda)}\). This gives us the \(1\)-dimensional space \(\C \cdot y^{\lambda}\), so the highest weight space we are trying to calculate is at most \(1\)-dimensional. It remains to show that \(y^{\lambda}\) has no poles outside of \(B^- B\). Using the Bruhat decomposition again, the codimension \(1\) orbits with respect to \(B^- \times B\) are given by \(B^- \dot{s}_i B\) for simple reflections \(s_i\). 
+
+\begin{lem}
+    For all simple coroots \(\alpha_i^{\vee}\), let \(\omega_i\) be the dual fundamental weight. Then \(\on{div}(y^{\omega_i}) = \ol{B^- \dot{s}_i B}\).
+\end{lem}
+
+Now if \(\lambda \in \Lambda^+\), we see that \(y^{\lambda}\) is globally defined and that
+\[ \mc{O}(G)^{U^- \times U, (T, \lambda)} = \C \cdot y^{\lambda}. \]
+If \(\lambda \notin \Lambda^+\), then
+\[ \lambda = \sum_{i=1}^r a_i \omega_i \]
+with some of the \(a_i\) being negative, so \(y^{\lambda}\) has a pole along \(D_i\) of order \(\abs{a_i}\). Thus, \(B^-\) acts on \(\mc{O}(G)^{(B, \lambda)}\) with weight \(-\lambda\), and the end result is that the representation must be \(V_{\lambda}^*\).
+
+\begin{rmk}
+    Note that \(\Pic (G) = 0\) because of the Bruhat decomposition
+    \[ G = U^- T U \cup \bigcup_{i=1}^r \ol{B^- \dot{s}_i B}, \]
+    and therefore the the exact sequence
+    \[ \bigoplus_{i=1}^r \Z[D_i] \to \Pic(G) \to \Pic(U^- T U) = 0 \]
+    has the first object given entirely by principal divisors \(D_i = \ol{B^- \dot{s}_i B}\). Equivalently, we see that \(\mc{O}(G)\) is a UFD.
+
+    However, if we move away from the simply-connected form, then there are nontrivial line bundles, and
+    \[ \Pic(G) \cong \pi_1(G). \]
+\end{rmk}
+
+\begin{thm}[Peter-Weyl]
+    Consider the action of \(G_{\on{sc}} \times G_{\on{sc}}\) on \(\mc{O}(G_{\on{sc}})\). Then we have a decomposition
+    \[ \mc{O}(G_{\on{sc}}) = \bigoplus_{\lambda \in \Lambda^+} V_{\lambda}^* \otimes V_{\lambda}. \]
+\end{thm}
+
+We may obtain this decomposition by considering \(U^- \times U\)-fixed vectors and obtaining
+\begin{align*}
+    \mc{O}(G_{\on{sc}})^{U^- \times U} &= \bigoplus_{\lambda \in \Lambda^+} \C y^{\lambda},
+\end{align*}
+which has weight \(-\lambda\) for \(B^-\) in the first factor and weight \(\lambda\) for \(B\) in the second factor. In the other direction, we associate the tensor \(v_1^* \otimes v_2\) with the function
+\[ f_{v_1^* \otimes v_2}(g) = \ab< v_1^*, g \cdot v_2 >. \]
+
+\section{Springer theory}%
+\label{sec:Springer theory}
+
+\subsection{The Grothendieck-Springer resolution}%
+\label{sub:The Grothendieck-Springer resolution}
+
+\begin{prop}
+    Let \(\b\) and \(\b'\) be two Borel subalgebras of \(\g\). Then there is a canonical isomorphism \(\b / [\b, \b] \xrightarrow{\sim} \b' / [\b', \b']\).
+\end{prop}
+
+\begin{proof}
+    Because all Borels are conjugate, we have
+    \[ \b' = \Ad_g \b. \]
+    This isomorphism preserves the nilradical, so it induces an isomorphism on the quotients. For a different \(g'\) that conjugates \(\b\) to \(\b'\), we have \(g' = g b\) for some \(b \in B\), and it remains to check that
+    \[ \b / [\b, \b] \xrightarrow{\Ad_b} \b / [\b, \b] \xrightarrow{\Ad_g} \b' / [\b', \b'] \]
+    is the same as 
+    \[ \b / [\b, \b] \xrightarrow{\Ad_g} \b' / [\b', \b']. \]
+    Passing to the infinitesimal version, the action of \(\b\) on \(\b / [\b, \b]\) is zero because the adjoint action of \(\b\) on itself sends everything to the nilradical, so it integrates to the trivial action of \(B\). 
+\end{proof}
+
+\begin{defn}
+    The quotient \(\b / [\b, \b]\) is called the \textit{universal Cartan} of \(\g\) and is denoted by \(\mf{H}\).
+\end{defn}
+
+\begin{rmk}
+    We must note that \(\mf{H}\) is \textbf{not} a subalgebra of \(\g\). Instead, we should view it as a pair \((\h, \b \subset \h)\). Indeed, for all such pairs, we can identify \(\h\) and \(\mf{H}\) by
+    \[ \h \hookrightarrow \b \twoheadrightarrow \b / [\b, \b] = \mf{H}. \]
+
+    If \(\h \subset \b'\) is a different Borel, then \(\b' = w(\b) = \dot{w} \cdot \b\), and therefore relating the sequences via
+    \begin{equation*}
+    \begin{tikzcd}
+        \h \ar[hookrightarrow]{r} \ar{d}{\Ad_{\dot{w}}} & \b \ar[twoheadrightarrow]{r} \ar{d}{\Ad_{\dot{w}}} & \b / [\b, \b] \ar{d}{\cong} \ar[equals]{r} & \mf{H} \ar[equals]{d} \\
+        \h \ar[hookrightarrow]{r} & \b' \ar[twoheadrightarrow]{r} & \b' / [\b', \b'] \ar[equals]{r} & \mf{H}
+    \end{tikzcd}
+    \end{equation*}
+    requires conjugation by \(\dot{w}\) and thus requires the choice of a Borel. However, we do end up with a pair \((\mf{H}, \Phi^+_{\mf{H}})\), which gives a universal set of positive roots containing a universal set \(\Pi_{\mf{H}}\) of simple roots. We will call this a ``pinned'' version of the usual Cartan. This allows us to discuss the Weyl group \(\mbb{W}\) and the universal simple reflections. Here, we note that any choice of \(\h \subset \b\) gives a canonical isomorphism
+    \[ W_T \xrightarrow{\sim} \mbb{W}. \]
+\end{rmk}
+
+\begin{lem}
+    For any Borel subalgebras \(\b_1\) and \(\b_2\) there exists a Cartan subalgebra \(\h \subset \b_1 \cap \b_2\).
+\end{lem}
+
+\begin{proof}
+    Using the Bruhat decomposition relative to \(B_1 \supset T_1\), we write
+    \[ \mc{B} = \bigsqcup_{w \in W} B_1 \dot{w} \cdot \b_1. \]
+    There exists some \(u_1 \in U_1\) and \(w \in W_{T_1}\) such that
+    \[ \b_2 = u_1 \dot{w} \cdot \b_1. \]
+    We consider \(u_1^{-1} \cdot \b_2 = \dot{w} \cdot \b_1\) and \(u_1^{-1} \cdot \b_1 = \b_1\). In particular, we see that
+    \[ \h_1 \subset u_1^{-1}  \cdot \b_2 \cap u_1^{-1} \cdot \h_1. \]
+    Applying \(u_1\) to this inclusion gives us the desired result.
+\end{proof}
+
+\begin{rmk}
+    If we consider the set of pairs \(\ab\{ (\h, \b)\}\), this is actually isomorphic to \(G/T\). Forgetting \(\h\) corresponds to the map \(G/T \to G/B\), and the fiber over the set 
+    \[ \ab\{ \h \subset \b \} \cong B/T \cong U. \]
+\end{rmk}
+
+\begin{defn}
+    Define the \textit{relative position} of two Borel subalgebras \(\b_1\) and \(\b_2\) as follows. Choose a Cartan \(\h \subset \b_1 \cap \b_2\). The pair \((\h, \b_1)\) determines a choice of positive roots, and we also know that \(\b_2 = \dot{w} \cdot \b_1\). We then have canonical identifications \((\h, \b_1) \cong (\mf{H}, \Phi_{\mf{H}}^+)\) and \(W_T \simeq \mbb{W}\). Therefore, we have
+    \[ \b_1 \xrightarrow{w} \b_2 \]
+    for a unique \(w \in \mbb{W}\). 
+    
+    The reason this is well defined is because for any two \(\h_1, \h_2 \subset \b_1 \cap \b_2\), we have \(\h_2 = b \cdot \h_1\) for some \(b \in B_1 \cap B_2\). This implies that in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        (\h_1, \b_1) \ar{rr}{\Ad_b} \ar{dr} & & (\h_2, \b_1) \ar{dl} \\
+        & (\mf{H}, \Phi^+_{\mf{H}}),
+    \end{tikzcd}
+    \end{equation*}
+    we actually have \(\dot{w}_2 = \Ad_b \dot{w}_1\), so they are sent to the same \(w \in \mbb{W}\).
+\end{defn}
+
+In practice, if we fix a pair \((\h, \b)\), then given \(\b_1\) and \(\b_2\), we first write \(\b_1 = u \dot{w} \cdot \b\), then apply
+\[ (\b_1, \b_2) \xrightarrow{\Ad_{(u \dot{w})^{-1}}} (\b, (u \dot{w})^{-1} \cdot \b_2), \]
+and then compute which Bruhat cell \((u \dot{w})^{-1} \cdot \b\) lies in.
+
+\begin{rmk}\leavevmode
+    \begin{enumerate}
+        \item If we consider the action of \(G_{\Delta}\) on \(\mc{B} \times \mc{B}\), then the orbits are canonically indexed by \(\mbb{W}\).
+        \item If we have \(\b_1 \xrightarrow{w_1} \b_2 \xrightarrow{w_2} \b_3\), the relative position of \(\b_3\) with respect to \(\b_1\) is \textbf{not} determined by \(w_1\) and \(w_2\). However, if \(\ell(w_1) + \ell(w_2) = \ell(w_1 w_2)\), then the relative position is indeed \(w_1 w_2\).
+    \end{enumerate}    
+\end{rmk}
+
+\begin{exm}
+    If \(G = \SL_2\), then \(\mc{B} \times \mc{B} = \P^1 \times \P^1\). The \(G_{\Delta}\)-action decomposes this into
+    \[ \P^1 \times \P^1 = \Delta \P^1 \sqcup (\P^1 \times \P^1 \setminus \Delta \P^1), \]
+    and the diagonal corresponds to the identity element (so \(\b_1 = \b_2\)), while the other element corresponds to the large open set. If we consider
+    \[ \b_1 \xrightarrow{s} \b_2 \xrightarrow{s} \b_3, \]
+    then we can get either \(1\) or \(s\) depending on whether \(\b_1 = \b_3\).
+\end{exm}
+
+In general, suppose \(\b_1, \b_2, \b_3 \supset \h\) and 
+\[ \b_1 \xrightarrow{w_1} \b_2 \xrightarrow{w_2} \b_3. \]
+Suppose that \(\b_1 = \b\). Applying \(\dot{w}^{-1}\) to the second arrow, we see that
+\[ \dot{w}_1^{-1} \xrightarrow{w_2} \dot{w}_1^{-1} \b_3, \]
+which tells us that \(\dot{w}_1^{-1} \b_3 = \dot{w}_2 \b\) and hence that \(\b_3 = \dot{w}_1 \dot{w}_2 \b\).
+
+\begin{defn}
+    The \textit{Grothendieck-Springer resolution} is the incidence variety
+    \[ \tilde{\g} \coloneqq \ab\{ (x, \b) \in \g \times \mc{B} \mid x \in \b \}. \]
+\end{defn}
+
+This variety admits two maps
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{g} \ar{dl}{\mu} \ar{dr}{\pi} \\
+    \g & & \mc{B}
+\end{tikzcd}
+\end{equation*}
+which are both \(G\)-equivariant. Over \(\mc{B}\), the fibers are simply given by \(\b\), so we have the tautological vector bundle over \(\b\). Therefore, we have a morphism
+\[ G \times^B \b \to \tilde{g} \qquad (g, x) \mapsto (g \cdot x, g \cdot \b) \]
+over \(G/B\ \cong \mc{B}\). 
+
+The fiber
+\[ \mu^{-1}(x) = \ab\{ \b \in \mc{B} \mid x \in \b \} \]
+which is the zero locus of the vector field on \(\mc{B}\) corresponding to \(x\) is called the \textit{Springer fiber}. Later, we will restrict to \(x\) in the nilpotent cone. The first extreme case is if \(x = 0\), in which case \(\mu^{-1}(0) = \mc{B}\). On the other hand, if \(x \in \g_{\mr{ss}}^{\on{reg}}\), then \(x \in \h^{\on{reg}}\) for some Cartan, so \(\h \subset \b\) for any \(\b \ni x\), and thus the Springer fiber is simply 
+\begin{align*}
+    \mu^{-1}(x) &= \ab\{\b \supset \h \},
+\end{align*}
+which is a torsor for the Weyl group. In particular, \(\tilde{\g}^{\on{rs}}\) is actually a \(\mbb{W}\)-torsor over \(\g^{\on{rs}}\).
+
+\begin{prop}
+    The map \(\mu\) is proper.
+\end{prop}
+
+\begin{proof}
+    Consider the commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \tilde{\g} \ar[hookrightarrow]{r} \ar{dr}{\mu} & \g \times \mc{B} \\
+        & \g
+    \end{tikzcd}
+    \end{equation*}
+    and use the fact that the horizontal arrow is a closed immersion and the fact that proper morphisms are closed under composition.
+\end{proof}
+
+Now consider the morphism
+\[ \nu \colon \tilde{\g} \to \mf{H} \qquad (x, \b) \mapsto (x \mod{[\b, \b]}). \]
+Note that if we consider \(\g\) only, then the target must be \(\h \sslash W\) because there is no preferred order of the eigenvalues (in the \(\sl_n\) case, the others are similar). We now have the correspondence
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{\g} \ar{dl}{\mu} \ar{dr}{\nu} \\
+    \g & & \mf{H}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{thm}[Chevalley restriction theorem]
+    Fix a Cartan \(\h \subset \g\). Then there is the restriction of functions \(\mc{O}(\g) \to \mc{O}(\h)\), which induces
+    \[ \varphi \colon \mc{O}(\g)^G \to \mc{O}(\h)^W. \]
+    This \(\varphi\) is an isomorphism.
+\end{thm}
+
+\begin{proof}
+    We begine with injectivity. If \(P \in \mc{O}(\g)^G\) satisfies \(P|_{\h} = 0\), then \(P|_{\g^{\on{s}}} = 0\). This is dense, so \(P = 0\).
+\end{proof}
+
+
 
 
 
