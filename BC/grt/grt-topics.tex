@@ -1,3 +1,5 @@
+% !TEX program = latexmk
+% !TEX options = -lualatex -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
 \documentclass{amsart}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -29,17 +31,25 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[sc]{mathpazo}
-\usepackage{inconsolata}
+% \usepackage[sc]{mathpazo}
+% \usepackage{inconsolata}
+% \usepackage{microtype}
+% % \usepackage{fontspec} 
+% % \setmainfont{Tex Gyre Pagella}
+% \usepackage[OT1,euler-digits]{eulervm}
+% % % \usepackage{euler-math} 
+% \usepackage[scaled=0.86]{berasans}
+% % \let\sffamilyold\sffamily
+% % \def\sffamily{\fontencoding{T1}\sffamilyold}
+% % \setmonofont{Inconsolatazi4}
 \usepackage{microtype}
-% \usepackage{fontspec} 
-% \setmainfont{Tex Gyre Pagella}
-\usepackage[OT1,euler-digits]{eulervm}
-% % \usepackage{euler-math} 
-\usepackage[scaled=0.86]{berasans}
-% \let\sffamilyold\sffamily
-% \def\sffamily{\fontencoding{T1}\sffamilyold}
-% \setmonofont{Inconsolatazi4}
+\usepackage{fontspec}
+
+\setmainfont[Numbers=OldStyle]{TeX Gyre Pagella}
+\setsansfont{Optima}
+\usepackage{unicode-math}
+\setmathfont{Asana Math}
+\defaultfontfeatures{Scale=MatchLowercase}
 
 %CS packages
 \usepackage{algorithmicx}
@@ -65,6 +75,7 @@
 \usepackage[shortlabels]{enumitem}
 \setitemize{noitemsep}
 \usepackage{csquotes}
+\usepackage[shortcuts]{extdash}
 %\usepackage{titlesec}
 %\usepackage{titling}
 %\usepackage{fancyhdr}
@@ -154,11 +165,11 @@
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\Mbar}{\overline{\mathcal{M}}}
-\newcommand{\g}{\mathfrak{g}}
-\newcommand{\h}{\mathfrak{h}}
-\newcommand{\n}{\mathfrak{n}}
-\renewcommand{\b}{\mathfrak{b}}
-\newcommand{\p}{\mathfrak{p}}
+\newcommand{\g}{\symbffrak{g}}
+\newcommand{\h}{\symbffrak{h}}
+\newcommand{\n}{\symbffrak{n}}
+\renewcommand{\b}{\symbffrak{b}}
+\newcommand{\p}{\symbffrak{p}}
 \newcommand{\ep}{\varepsilon}
 \newcommand*{\dt}[1]{%
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
@@ -166,7 +177,7 @@
 \newcommand{\mc}[1]{\mathcal{#1}}
 % \newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
-\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mf}[1]{\symbffrak{#1}}
 \newcommand{\mbf}[1]{\mathbf{#1}}
 \newcommand{\mbb}[1]{\mathbb{#1}}
 \newcommand{\bv}{\mbf{v}}
@@ -194,8 +205,8 @@
 \newcommand{\pre}{\mr{pre}}
 \newcommand{\vir}{\mr{vir}}
 \newcommand{\fl}{\mr{fl}}
-\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
-\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\ps}[1]{\lBrack #1 \rBrack}
+\newcommand{\ls}[1]{(\!( #1 )\!)}
 \newcommand{\GL}{\mr{GL}}
 \newcommand{\SL}{\mr{SL}}
 \newcommand{\SO}{\mr{SO}}
@@ -418,7 +429,7 @@ where the shift is not canonical. One upshot of this approach is that
 \end{figure}
 
 
-The following theorem inspired many subsequent works, including the lecturer's PhD work.
+The following theorem inspired many subsequent works.
 \begin{thm}[Nadler-Zaslow]
     The dg-category \(\ms{Sh}_c(X)\) of constructible sheaves on \(X\) equivalent the Fukaya category \(\ms{Fuk}(T^* X)\) of the cotangent bundle \(T^* X\) of \(X\).
 \end{thm}
@@ -771,7 +782,7 @@ We now give some important properties of semisimple Lie algebras.
 
     If \(\on{Rad}(g) \neq 0\), then by Lie's theorem says that any representation must have an eigenvector, so all irreducible representations must be \(1\)-dimensional. This implies that
     \[ \g = \ell_1 \oplus \cdots \oplus \ell_k \oplus \g_{\on{ss}} = Z(\g) \oplus \g_{\mr{ss}}. \]
-    Any abelian Lie algebra has indecomposable representations which are not semisimple, for example representing a line by matrices of the form \( \begin{bsmallmatrix}
+    An abelian Lie algebra has indecomposable representations which are not semisimple, for example representing a line by matrices of the form \( \begin{bsmallmatrix}
         0 & * \\
         0 & 0
     \end{bsmallmatrix}    \), so the radical must have vanished to begin with.
@@ -888,7 +899,7 @@ where \(Z{(G^{\on{der}})}^{0} = Z(G)_0 \cap G^{\on{der}}\).
     \[ \GL_n = \C^{\times} \times^{\mu_n} \SL_n. \]
 \end{exm}
 
-Reductive \textbf{groups} are characterized by complete reducibility of their finite-dimensional representations (in characteristic zero). In addition, algebraic and analytic morphisms between reductive groups agree, so we no longer need to worry about the difference between algebraic and analytic categories. Representations of reductive groups also satisfy the preservation of Jordan decompositions, namely that for any \(g \in G\), there exist \(g_s, g_u \in G\) such that \(g = g_s g_u = g_u g_s\) and for any finite-dimensional representation
+Reductive \textbf{groups} are characterized by complete reducibility of their finite\-/dimensional representations (in characteristic zero). In addition, algebraic and analytic morphisms between reductive groups agree, so we no longer need to worry about the difference between algebraic and analytic categories. Representations of reductive groups also satisfy the preservation of Jordan decompositions, namely that for any \(g \in G\), there exist \(g_s, g_u \in G\) such that \(g = g_s g_u = g_u g_s\) and for any finite-dimensional representation
 \[ \rho \colon G \to \GL(V), \]
 the Jordan decomposition of \(\rho(g)\) satisfies \({\rho(g)}_s = \rho(g_s)\) and \({\rho(g)}_u = \rho(g_u)\).
 
@@ -928,7 +939,7 @@ We will see later that every Lie algebra has a Cartan subalgebra.
 
 For any \(x \in \g\), let 
 \[ P_x(T) = \det(T \on{Id} - \ad_x) = \sum_{i=0}^n a_i(x) T^i \] 
-denote the characteristic polynomial of \(\ad_x\). If we choose linear coordinates \(x_1, \ldots, x_n\) on \(\g\), then each \(a_i(x)\) is a homogeneous polynomial in \(x_1, \ldots, x_n\) of degree \(n-i\). 
+denote the characteristic polynomial of \(\ad_x\). If we choose coordinates \(x_1, \ldots, x_n\) on \(\g\), then each \(a_i(x)\) is a homogeneous polynomial in \(x_1, \ldots, x_n\) of degree \(n-i\). 
 
 \begin{defn}
     The \textit{rank} of \(\g\) is the least \(i\) such that \(a_i(x)\) is not identically zero.
@@ -1304,7 +1315,7 @@ Because this needs to be an integer, we see that for all roots, the angle \(\the
     Root systems are classified by \textit{Dynkin diagrams}, which is equivalent to classifying Cartan matrices. The entries of the Cartan matrix satisfy \(C_{ii} = 2\) and \(C_{ij} \leq 0\). Non-symmetry can be explained by the fact that in some root systems, \(\alpha_i\) and \(\alpha_j\) may have different lengths. This gives arise to the notions of \textit{long roots} and \textit{short roots}. In fact, there are only two possible lengths for all roots (under the Weyl group action, any root can become simple).
 \end{rmk}
 
-For an example of a root system with two lengths, consider the \(B_2\) root system, whose root and coroot systems are shown in~\Cref{fig:b2-roots-coroots}.
+For an example of a root system with two lengths, consider the \(B_2\) root system, whose root and coroot systems are shown in~\Cref{fig:b2-root-coroot}.
 
 \begin{figure}[htpb!]
     \begin{subfigure}{0.4\textwidth}
@@ -1744,7 +1755,7 @@ where the first summand is the sum of positive weight spaces and the second summ
         0 & -1 \\
         1 & 0
     \end{bmatrix}\}, \]
-    and the nontrivial element \(w\) swaps the upper-triangular and lower-triangular Borels. See~\Cref{fig:sl2-weyl-borels}.
+    and the nontrivial element \(w\) swaps the upper-triangular and lower-triangular Borel subgroups. See~\Cref{fig:sl2-weyl-borels}.
     \begin{figure}[htpb]
     \begin{center}
     \begin{tikzpicture}[scale=1.35]

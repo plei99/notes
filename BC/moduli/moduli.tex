@@ -1,7 +1,10 @@
+% !TEX program = latexmk
+% !TEX options = -lualatex -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
 \documentclass{amsart}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{thmtools}
 %\usepackage{MnSymbol}
 \usepackage{bm}
 \usepackage{accents}
@@ -29,17 +32,25 @@
 %\usepackage{/home/patrickl/homework/macaulay2}
 
 %font
-\usepackage[sc]{mathpazo}
-\usepackage{inconsolata}
+% \usepackage[sc]{mathpazo}
+% \usepackage{inconsolata}
+% \usepackage{microtype}
+% % \usepackage{fontspec} 
+% % \setmainfont{Tex Gyre Pagella}
+% \usepackage[OT1,euler-digits]{eulervm}
+% % \usepackage{euler-math} 
+% \usepackage[scaled=0.86]{berasans}
+% % \let\sffamilyold\sffamily
+% % \def\sffamily{\fontencoding{T1}\sffamilyold}
+% % \setmonofont{Inconsolatazi4}
 \usepackage{microtype}
-% \usepackage{fontspec} 
-% \setmainfont{Tex Gyre Pagella}
-\usepackage[OT1,euler-digits]{eulervm}
-% \usepackage{euler-math} 
-\usepackage[scaled=0.86]{berasans}
-% \let\sffamilyold\sffamily
-% \def\sffamily{\fontencoding{T1}\sffamilyold}
-% \setmonofont{Inconsolatazi4}
+\usepackage{fontspec}
+
+\setmainfont[Numbers=OldStyle]{TeX Gyre Pagella}
+\setsansfont{Optima}
+\usepackage{unicode-math}
+\setmathfont{Asana Math}
+\defaultfontfeatures{Scale=MatchLowercase}
 
 %CS packages
 \usepackage{algorithmicx}
@@ -190,8 +201,8 @@
 \newcommand{\pre}{\mr{pre}}
 \newcommand{\vir}{\mr{vir}}
 \newcommand{\fl}{\mr{fl}}
-\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
-\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\ps}[1]{\lBrack #1 \rBrack}
+\newcommand{\ls}[1]{(\!( #1 )\!)}
 
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Tor}{Tor}
@@ -1546,7 +1557,7 @@ An alternative proof is to consider the diagram
 \begin{equation*}
 \begin{tikzcd}
     G \times E \ar{r}{\Psi} & E \times_B E \ar[hookrightarrow]{r} & E \times E \\
-    G \times E' \ar{u} \ar{r}{\Psi'} & E' \times_{B'} E' \ar{u} \ar[hookrightarrow]{r} & E' \times E'.
+    G \times E' \ar{u} \ar{r}{\Psi'} & E' \times_{B'} E' \ar{u} \ar[hookrightarrow]{r} & E' \times E' \ar{u}.
 \end{tikzcd}
 \end{equation*}
 Because \(G\) acts freely on \(E'\), \(\Psi'\) is a closed embedding, and therefore so is \(\Psi\). Then we can deduce things going in a direction that is not the one we usually go in.
@@ -1667,6 +1678,7 @@ Let \(X\) and \(Y\) be \(G\)-schemes admitting good quotients.
         \[ f(X) = \pi_Y^{-1} (f/G (X \sslash G)). \]
         \item For all closed points \(\bar{x} \in X \sslash G\), we have \(\pi_X^{-1}(\bar{x}) \simeq \pi_Y^{-1}(f/G(\bar{x}))\).
         \item The morphism \(f_{|G \cdot x} \colon G \cdot c \to G \cdot f(x)\) is an isomorphism for all \(x \in X(k)\) and \(G \cdot x\) is closed in \(X\) if and only if \(G \cdot f(x)\) is closed in \(Y\). Also, we have \(G_x \simeq G_{f(x)}\).
+        \item \(X\) is normal at \(x\).
     \end{enumerate}
 \end{lem}
 
@@ -1734,7 +1746,7 @@ where all of the squares are Cartesian.
     of \'etale morphisms, and \(T_{X,x}^G\) is a vector space, and hence smooth, so everything else is smooth.
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{lem:etale-to-tangent-space}
     Let \(X\) be affine and \(x \in X\) be such that \(G_x\) is reductive. Then there exists an \'etale \(G_x\)-morphism \(\phi \colon X \to T_{X,x}\) such that \(\phi(x) = 0\).
 \end{lem}
 
@@ -1744,7 +1756,7 @@ where all of the squares are Cartesian.
     There is a section \(\mf{m}/\mf{m}^2 \to \mf{m} \subset A\) which then lifts to an algebra morphism. This is clearly an isomorphism on tangent spaces, so it is \'etale.
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{lem:embedding-into-affine-space}
     Every affine finite-type \(G\)-scheme \(X\) can be embedded as a \(G\)-stable closed subscheme of an affine space with \(G\)-action.
 \end{lem}
 
@@ -1753,8 +1765,79 @@ where all of the squares are Cartesian.
 \end{proof}
 
 \begin{proof}[Proof sketch of Luna's \'etale slice theorem]
-    Matsushima's criterion says that if \(H < G\) is a closed subgroup, then \(G/H\) is affine if and only if \(H\) is reductive. Now if \(G \cdot x\) is closed in \(X = \Spec A\), then \(G / G_x\) is affine and thus \(G_x\) is reductive. 
+    Suppose that \(x \in X\) has a closed orbit \(G \cdot x\). Then there is a closed immersion
+    \[ G / G_x \simeq G \cdot x \hookrightarrow X \]
+    and thus the orbit is affine. Matsushima's criterion states that if \(G\) is reductive and \(H \subset G\) is a closed subgroup, then \(G / H\) is affine if and only if \(H\) is reductive. Therefore, \(G_x\) is reductive. By~\Cref{lem:etale-to-tangent-space}, there is an \'etale \(G_x\)-morphism \(\phi \colon X \to T_{X,x}\) such that \(\phi(x) = 0\). Assume now that \(x \in X\) is a smooth point. Then we can decompose
+    \[ T_{X,x} = T_{G \cdot x, x} \oplus N_x, \]
+    where \(N_x\) is the normal space to \(G \cdot x\) at \(x\). Let \(Y = \phi^{-1}(N_x)\). This is a closed subscheme of \(X\) and is smooth at \(x\). We now consider the morphism
+    \[ \psi \colon G \times_{G_x} Y \to X \qquad z \coloneqq \ol{(1_G, x)} \mapsto x. \]
+    Then in fact \(G \times_{G_x} Y\) is smooth at \(z\) (which checks part 4 of Luna's fundamental lemma). Now, note that 
+    \[ G \times Y \to G \times_{G_x} Y \qquad (1_G, x) \mapsto z \]
+    is a principal \(G_x\)-bundle. We also compute \(G_z = G_{\ol{(1_G, x)}} \simeq G_x\) because \(g \cdot \ol{(1_G, x)} = \ol{(1_G, x)}\) if and only if \((g, gx) \in G_x \cdot (1_G, x)\), which is equivalent to \(g \in G_x\). Therefore, \(\psi\) is \'etale at \(z\). This implies that \(G \cdot z\) is closed in \(G \times_{G_x} Y\) because \(G_x \cdot x\) is closed in \(Y\). 
+
+    We can now apply Luna's fundamental lemma to \(\psi \colon G \times_{G_x} Y \to X\) to obtain a saturated open \(U \subset G \times_{G_x} Y\) such that
+    \[ \psi|_U \colon U \to \psi(U) \subset X \]
+    is strongly \'etale. Now consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        G \times_{G_x} Y \sslash G \ar{r}{\simeq} & Y \sslash G_x \\
+        G \times_{G_x} Y \ar{r} \ar{u} & Y \ar{u}.
+    \end{tikzcd}
+    \end{equation*}
+    Because \(U\) is a saturated open in \(G \times_{G_x} Y\), there exists a saturated open \(V \subset Y\) such that \(U = G \times_{G_x} V\). Therefore, we obtain a strongly \'etale morphism \(G \times_{G_x} V \to X\). This finishes the proof in the case when \(x \in X\) is a smooth point. The general case follows by~\Cref{lem:embedding-into-affine-space}.
 \end{proof}
+
+One application of Luna's \'etale slice theorem is that the quotient stack \(\mf{X} = [X/G]\) is locally isomorphic to \([V / G_x]\) near a closed point \(x \in \mf{X}\) (at least at a smooth point).
+
+\subsection{General stacks}%
+\label{sub:General stacks}
+
+Every stack is going to be a category fibered in groupoids. We begin by discussing some examples.
+
+\begin{exm}
+    Every contravariant functor (presheaf) \(F \colon \ms{Sch}_S^{\on{op}} \to \ms{Set}\) defines a category fibered in groupoids \(\mc{G}_F\) over \(\ms{Sch}_S\) whose objects are simply 
+    \[ \ms{Obj}(\mc{G}_F) = \ab\{ (B, \beta) \mid \beta \in F(B) \} \]
+    and whose morphisms are given by
+    \[ \ms{Mor}(\mc{G}_F) = \ab\{ (B', \beta') \to (B, \beta) \mid B' \xrightarrow{f} B, \beta' = F(f)(\beta) \}. \]
+    The reason it is called a category fibered in groupoids is that there is a morphism to \(\mc{Sch}_S\) and each \(p^{-1}(B) = F(B)\) is a set (which is the simplest example of a groupoid).
+\end{exm}
+
+\begin{exm}
+    Consider the moduli problem \(\mc{M}_g\), which is given by
+    \[ \mc{M}_g(B) = \ab\{ \text{isomorphism classes of flat families of genus } g \text{ smooth curves over } B \}. \]
+    Morphisms are given by Cartesian diagrams
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{C}' \ar{r} \ar{d} & \mc{C} \ar{d} \\
+        B' \ar{r} & B,
+    \end{tikzcd}
+    \end{equation*}
+    and over the identity arrow of \(B\) we clearly only have isomorphisms.
+\end{exm}
+
+\begin{exm}
+    If \(Z\) is a scheme, its functor of points \(F = h_Z\) is a category fibered in groupoids.
+\end{exm}
+
+If we have a category fibered in groupoids \(p \colon \mc{C} \to \ms{Sch}_S\), we have the Isom functor
+\[ \ms{Isom}(X, Y) \colon \ms{Sch}_{/B}^{\on{op}} \to \ms{Set} \qquad \ms{Isom}(X, Y)(B') = \ab\{ \Centerstack{ {isomorphisms between} {$f^* X$ and $f^* Y$} } \} \]
+for any two objects \(X, Y \in \mc{C}(B)\).
+
+\begin{exm}
+    If \(\mc{C} = \mc{C}_F\) for a functor \(F \colon \ms{Sch}_S^{\on{op}} \to \ms{Set}\), then
+    \[ \on{Isom}_B (X, Y) (B') = \begin{cases}
+        \ab\{1\} & f^* X = f^* Y \\
+        \emptyset & f^* X \neq f^* Y.
+    \end{cases} \]
+\end{exm}
+
+\begin{defn}
+    A \textit{stack} is a category \(\mc{C}\) fibered in groupoids over \(\mc{Sch}_S\) if
+    \begin{enumerate}
+        \item For all \(B \in \ms{Sch}_S\), the Isom functor \(\ms{Isom}(X, Y)\) is a sheaf on the big \'etale site of \(B\);
+        \item Descent is effective in the \'etale topology for all \(B\).
+    \end{enumerate}
+\end{defn}
 
 
 \end{document}
