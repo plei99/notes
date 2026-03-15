@@ -165,11 +165,11 @@
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\Mbar}{\overline{\mathcal{M}}}
-\newcommand{\g}{\symbffrak{g}}
-\newcommand{\h}{\symbffrak{h}}
-\newcommand{\n}{\symbffrak{n}}
-\renewcommand{\b}{\symbffrak{b}}
-\newcommand{\p}{\symbffrak{p}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\p}{\mathfrak{p}}
 \newcommand{\ep}{\varepsilon}
 \newcommand*{\dt}[1]{%
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
@@ -177,7 +177,7 @@
 \newcommand{\mc}[1]{\mathcal{#1}}
 % \newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
-\newcommand{\mf}[1]{\symbffrak{#1}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
 \newcommand{\mbf}[1]{\mathbf{#1}}
 \newcommand{\mbb}[1]{\mathbb{#1}}
 \newcommand{\bv}{\mbf{v}}
@@ -2118,12 +2118,12 @@ which is a torsor for the Weyl group. In particular, \(\tilde{\g}^{\on{rs}}\) is
 Now consider the morphism
 \[ \nu \colon \tilde{\g} \to \mf{H} \qquad (x, \b) \mapsto (x \mod{[\b, \b]}). \]
 Note that if we consider \(\g\) only, then the target must be \(\h \sslash W\) because there is no preferred order of the eigenvalues (in the \(\sl_n\) case, the others are similar). We now have the correspondence
-\begin{equation*}
+\begin{equation}\label{eqn:springer-correspondence}
 \begin{tikzcd}
-    & \tilde{\g} \ar{dl}{\mu} \ar{dr}{\nu} \\
+    & \tilde{\g} \ar{dl}[swap]{\mu} \ar{dr}{\nu} \\
     \g & & \mf{H}.
 \end{tikzcd}
-\end{equation*}
+\end{equation}
 
 \begin{thm}[Chevalley restriction theorem]
     Fix a Cartan \(\h \subset \g\). Then there is the restriction of functions \(\mc{O}(\g) \to \mc{O}(\h)\), which induces
@@ -2132,9 +2132,221 @@ Note that if we consider \(\g\) only, then the target must be \(\h \sslash W\) b
 \end{thm}
 
 \begin{proof}
-    We begine with injectivity. If \(P \in \mc{O}(\g)^G\) satisfies \(P|_{\h} = 0\), then \(P|_{\g^{\on{s}}} = 0\). This is dense, so \(P = 0\).
+    We begin with injectivity. If \(P \in \mc{O}(\g)^G\) satisfies \(P|_{\h} = 0\), then \(P|_{\g^{\on{s}}} = 0\). This is dense, so \(P = 0\).
+
+    Now let \(P \in \mc{O}(\h)^W\). Our goal is to find \(\tilde{P} \in \mc{O}(\g)^G\) such that \(\tilde{P}|_{\h} = P\). Note that \(P\) determines \(\tilde{P}\) on \(\g^{\mr{rs}}\), but we need to ensure that \(\tilde{P}\) extends to all of \(\g\) (since the boundary has codimension \(1\)).
+
+    First, using the correspondence~\Cref{eqn:springer-correspondence}, we have \(P_{\mf{H}} \in \mc{O}(\mf{H})\) after we choose some \(\b \supset \h\). Because \(P\) is \(W\)-invariant, this in fact does not depend on the choice of \(\b\). We now have a function \(\tilde{P} = \nu^* P_{\mf{H}}\) on \(\tilde{\g}\), which is \(G\)-invariant because
+    \begin{align*}
+        \tilde{P}(g \cdot x, g \cdot \b) &= P_{\mf{H}}(g \cdot x + [g \cdot \b, g \cdot \b]) \\
+        &= P_{\mf{H}}(x + [\b, \b])\\
+        &= \tilde{P}(x, \b).
+    \end{align*}
+    Our goal now is to descend it to \(\g\). Let \(x \in \g^{\on{rs}}\). Note that \(\tilde{\g}^{\on{rs}} \to \g^{\on{rs}}\) is a \(\mathbb{W}\)-torsor and thus \(\g^{\on{rs}} = \tilde{\g}^{\on{rs}} / \mbb{W}\). In particular, we see that
+    \[ \mc{O}(\g^{\on{rs}}) = \mc{O}(\tilde{\g}^{\on{rs}})^{\mbb{W}}. \]
+    Note that \(\tilde{P}|_{\tilde{\g}}^{\on{rs}}\) is \(\mbb{W}\)-invariant, so it descends to \(R \in \mc{O}(\g^{\on{rs}})^G\). Moving to the analytic topology, we want to show that for all \(x \in \g \setminus \g^{\on{rs}}\) and any small ball \(D \ni x\), then \(R|_{D \cap \g^{\on{rs}}}\) is bounded. Note that \(\mu^{-1}(\bar{D})\) is compact because \(\mu\) is proper. Note that \(\tilde{P}|_{\mu^{-1}(\bar{D}) \cap \tilde{\g}^{\on{rs}}}\) is bounded, so \(R|_{\bar{D} \cap \g^{\on{rs}}}\) is bounded and thus extends to a holomorphic function on \(D\).
+
+    Finally, we need to check that \(R|_{\h} = P\). For any \(x \in \h\) and any choice of \(\b \ni x\), we see that
+    \begin{align*}
+        R(x) &= \tilde{P}(x, \b) \\
+        &= P_{\mf{H}}(x + [\b, \b]) \\
+        &= P(x). \qedhere
+    \end{align*}
 \end{proof}
 
+\begin{exm}
+    For \(\g = \sl_n\), we can write
+    \[ P_t(A) = t^n + 0 \cdot t^{n-1} + a_2(A) t^{n-2} + \cdots + a_n(A), \]
+    and \(\mc{O}(\g)^G = \C[a_2, \ldots, a_n]\). Transported to \(\h\), these are simply the elementary symmetric polynomials in the eigenvalues.
+\end{exm}
+
+Note also that the Chevalley restriction theorem gives a canonical isomorphism \(\mc{O}(\g)^G \simeq \mc{O}(\mf{H})^{\mbb{W}}\). Later, we will see that \(\mc{O}(\mf{H})^{\mbb{W}}\) is a polynomial ring in \(r\) variables, so \(\mf{H}\sslash \mbb{W}\) is an affine space of dimension \(r\). The embedding \(\mc{O}(\mf{H})^{\mbb{W}} \hookrightarrow \mc{O}(\g)\) gives the adjoint quotient map
+\[ \chi \colon \g \to \mf{H} \sslash \mbb{W}. \]
+
+\begin{rmk}
+    We can in fact choose homogeneous generators of degrees \(d_1 \leq d_2 \leq \cdots \leq d_r\), and we will have \(d_1 = 2\) and \(d_r\) being the Coxeter number \(h\).
+\end{rmk}
+
+\begin{prop}
+    The diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \tilde{\g} \ar{dl}[swap]{\mu} \ar{dr}{\nu} \\
+        \g \ar{dr}{\chi} & & \mf{H} \ar{dl}{\pi} \\
+        & \mf{H} \sslash \mbb{W}
+    \end{tikzcd}
+    \end{equation*}
+    commutes.
+\end{prop}
+
+\begin{proof}
+    It suffices to check that 
+    \[ \mu^* \chi^* \colon \mc{O}(\mf{H} \sslash \mbb{W}) \to \mc{O}(\tilde{\g}) = \nu^* \pi^* \]
+    because \(\mf{H} \sslash \mbb{W}\) is affine. This is true because
+    \begin{align*}
+        \mu^* \chi^* (P)(x, \b) &= \nu^* P(x, \b) \\
+        &= P(x + [\b, \b])
+    \end{align*}
+    essentially by definition.
+\end{proof}
+
+\begin{prop}
+    Let \(\b \in \mc{B}\) be a Borel, \(\n = [\b, \b]\), and \(x \in \b\). Then for all \(P \in \mc{O}(\g)^G\), the restriction \(P|_{x + \n}\) is constant.
+\end{prop}
+
+\begin{proof}
+    For all \(n \in \n\), we have
+    \begin{align*}
+        P(x + n) &= \tilde{P}(x+n, \b) \\
+        &= P_{\mf{H}} (x + n + [\b, \b]) \\
+        &= P_{\mf{H}}(x + [\b, \b]) \\
+        &= \tilde{P}(x, \b) \\
+        &= P(x). \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{rmk}
+    If we use the Jordan decomposition, then in fact \(P(x) = P(x_s)\) for any \(P \in \mc{O}(\g)^G\) because \(P(x) = P_{\mf{H}}(x_s)\).
+\end{rmk}
+
+\subsection{Nilpotent cone}%
+\label{sub:Nilpotent cone}
+
+\begin{defn}
+    The set of nilpotent elements
+    \[ \mc{N} = \ab\{ x \in \g \mid x \text{ is nilpotent} \} \]
+    is closed, \(G\)-stable, and \(\C^{\times}\)-stable and is called the \textit{nilpotent cone}.
+\end{defn}
+
+Recalling the Grothendieck-Springer resolution \(\mu \colon \tilde{\g} \to \g\), we define \(\tilde{\mc{N}} = \mu^{-1}(\mc{N})\). Now we can consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{\mc{N}} \ar{dl}[swap]{\mu_{\mc{N}}} \ar{dr}{\pi} \\
+    \mc{N} & & \mc{B}.
+\end{tikzcd}
+\end{equation*}
+We see here that
+\begin{align*}
+    \pi^{-1}(\b) &= \ab\{ x \in \b \mid x \text{ is nilpotent} \} \\
+    &= \ab\{ x \in \b \mid \bar{x} = 0 \in \b / [\b,\b] \} \\
+    &= [\b, \b] = \n.
+\end{align*}
+Note in fact that the condition of being nilpotent is equivalent to \(P(x) = 0\) for all \(P \in \mc{O}(\g)^G\). This identifies \(\tilde{\mc{N}}\) as a \(G\)-equivariant vector bundle over \(\mc{B}\) with fiber \(\n\), and in particular that
+\[ \tilde{\mc{N}} = G \times^B \n. \]
+Under this presentation, we see that \(\mu(g,x) = g \cdot x\).
+
+\begin{thm}
+    There is a natural identification \(\tilde{\mc{N}} \cong T^* \mc{B}\).
+\end{thm}
+
+\begin{proof}
+    Note that if \(\b \in \mc{B}\), we have \(T_{\b} \mc{B} = \g / \b\), so the cotangent space \(T_{\b} \mc{B} = \b^{\perp} \subset \g^*\). Using the Killing form, we can identify \(\g^* \cong \g\), and under this identification, \(\b^{\perp} = \n\). Therefore, we have a canonical isomorphism \(T^* \mc{B} \cong G \times^B \b^{\perp} \cong G \times^B \n \cong \tilde{\mc{N}}\). 
+\end{proof}
+
+Later, we will see that \(\mu_{\mc{N}}\) is the moment map for the \(G\)-action on \(T^* \mc{B}\) induced by the \(G\)-action on \(\mc{B}\). Let \(\mc{O}(\g)_+^G \subset \mc{O}(\g)^G\) be the functions which vanish at the origin.
+
+\begin{prop}
+    \(x \in \mc{N}\) if and only if \(P(x) = 0\) for all \(P \in \mc{O}(\g)_+^G\).
+\end{prop}
+
+\begin{cor}
+    The nilpotent cone \(\mc{N}\) is an irreducible variety of dimension \(2 \dim \n\).
+\end{cor}
+
+\begin{proof}
+    The map \(\mu_{\mc{N}}\) is proper and surjective, and \(\tilde{\mc{N}} \cong T^* \mc{B}\) is irreducible. We also see that \(\dim \mc{N} \leq \dim \tilde{\mc{N}} = 2 \dim \n\). On the other hand, we know \(\mc{O}(\g)_+^G = \mc{O}(\mf{H})_+^{\mbb{W}} = \ab< f_1, \ldots, f_r>\), and the morphism \(\chi \colon \g \to \mf{H} \sslash \mbb{W}\) expresses \(\mc{N} = \chi^{-1}(0)\) and shows that \(\dim \mc{N} \geq \dim \g - r = 2 \dim \n\).
+\end{proof}
+
+\begin{prop}
+    There are finitely many \(G\)-orbits in \(\mc{N}\).
+\end{prop}
+
+\begin{proof}[Idea of proof]
+    This is easy to see for \(\g = \gl_n\) via the Jordan normal form. In the general case, we choose a faithful representation \(\g \hookrightarrow \gl_n\), which embeds nilpotent cones by preservation of Jordan decomposition. The following lemma finishes the proof using the fact that \(\g\) is semisimple (so it has a \(\g\)-stable complement in \(\gl_n\)).
+\end{proof}
+\begin{lem}
+    Let \(\g \supset \mf{a}\) such that \(\mf{a}\) has an \(\mf{a}\)-stable complement \(W \subset \g\). Let \(G\) and \(A\) be connected algebraic groups with Lie algebras \(\g\) and \(\mf{a}\). For all \(G\)-orbits \(\Omega\) in \(\g\), any irreducible component of \(\Omega \cap \mf{a}\) is a single \(A\)-orbit.
+\end{lem}
+\begin{proof}
+    Let \(Z \subset \Omega \cap \mf{a}\) be any irreducible component. For any \(x \in Z\), we have
+    \[ T_x Z \subset T_x \Omega = [x, \g] = [x, \mf{a}] + [x, W]. \]
+    This implies that \(T_x Z = [x, \mf{a}] = T_x (A \cdot x)\), so \(A \cdot x\) is open and dense in \(Z\). This implies that for any \(x_1, x_2 \in Z\), \(A \cdot x_1 \cap A \cdot x_2 \neq \emptyset\), so the two orbits coincide. 
+\end{proof}
+
+\begin{cor}
+    The nilpotent cone \(\mc{N}\) contains an open dense orbit, which is exactly
+    \[ \mc{N}^{\on{reg}} = \mc{N} \cap \g^{\on{reg}}. \]
+\end{cor}
+
+\begin{proof}
+    For all \(x \in \mc{N}^{\on{reg}}\), we want to check that \(\dim G \cdot x = \dim \mc{N}\). This follows from the fact that
+    \begin{align*}
+        \dim G \cdot x &= \dim G - \dim Z_G(x) \\
+        &= \dim G - r \\
+        &= 2 \dim \n. \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{exm}
+    In the case of \(\sl_2\), we see that
+    \begin{align*}
+        \mc{N} &= \ab\{ \det \begin{bmatrix}
+            x & y \\
+            z & -x  
+        \end{bmatrix} = 0 \} \\
+            &= \ab\{ (x,y,z) \mid x^2 + yz = 0 \}.
+    \end{align*}
+    See \Cref{fig:sl2-nilpotent-cone} for a visualization of this variety. We can interpret \(\tilde{\mc{N}} = T^* \P^1\) as
+    \[ \tilde{\mc{N}} = \ab\{ (\xi, \ell) \mid \ell \in \ker \xi \} \]
+    and therefore anything in the open part is similar to \(\begin{bsmallmatrix}
+        0 & 1 \\
+        0 & 0
+    \end{bsmallmatrix}\) and clearly has a one-dimensional kernel, while the origin has a two-dimensional kernel and thus its fiber is all of \(\P^1\).
+    
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1.5]
+        % Back half of lower cone
+        \draw[dashed] (1,-1.5) arc (0:180:1 and 0.3);
+        
+        % Lower cone shading and front outline
+        \fill[blue!10] (0,0) -- (-1,-1.5) arc (180:360:1 and 0.3) -- cycle;
+        \draw (-1,-1.5) arc (180:360:1 and 0.3);
+        \draw (-1,-1.5) -- (0,0) -- (1,-1.5);
+        
+        % Upper cone inside (back half)
+        \fill[blue!5] (0,0) -- (-1,1.5) arc (180:0:1 and 0.3) -- cycle;
+        
+        % Upper cone front shading
+        \fill[blue!20, opacity=0.8] (0,0) -- (-1,1.5) arc (180:360:1 and 0.3) -- cycle;
+        
+        % Upper cone outlines
+        \draw (0,1.5) ellipse (1 and 0.3);
+        \draw (-1,1.5) -- (0,0) -- (1,1.5);
+        
+        % Origin
+        \fill (0,0) circle (1.5pt) node[right=2pt] {$0$};
+    \end{tikzpicture}
+    \end{center}
+    \caption{Nilpotent cone of \(\sl_2\)}
+    \label{fig:sl2-nilpotent-cone}
+    \end{figure}
+\end{exm}
+
+Now fix a \(B \supset T\). This gives an action of \(T\) on \(\n / [\n, \n] \cong \bigoplus_{\alpha_i \in \Pi} \g_{\alpha_i}\). Choose a basis \(e_i \in \g_{\alpha_i}\) for \(1 \leq i \leq r\). Define the subset
+\[ \n^r = \ab\{ x \in \n\ \middle\vert\ \bar{x} = \sum_{i=1}^r a_i \bar{e}_i, a_i \neq 0 \text{ for all } i \}. \] 
+
+\begin{prop}
+    The set \(\n^r\) is a single \(B\)-orbit consisting of regular nilpotent elements.
+\end{prop}
+
+\begin{proof}
+    Note that \(\n^r\) is open and dense in \(\n\) (here, \(\mc{N}^{\on{reg}} \cap \n\) must be open and dense in \(\n\)), so \(\n^r\) must contain a regular element \(x\). The image of \(\n^r\) in \(\n / [\n, \n]\) is a single \(T\)-orbit, so it remains to show that \(x + [\n, \n]\) is a single \(U\)-orbit. On the level of tangent spaces, we see that
+    \[ T_x (U \cdot x) = [\n, x] \subset [\n, \n] \]
+    and that this holds on all of \(x + [\n, \n]\). This tangent space has dimension
+    \[ \dim U - \dim Z_U(x) \geq n - r, \]
+    and therefore \(U \cdot x \subset x + [\n, \n]\) is open and dense. However, the fact that \(U\) is unipotent and \(x + [\n, \n]\) is affine implies that it is also closed, so \(U \cdot x = x + [\n, \n]\).
+\end{proof}
 
 
 

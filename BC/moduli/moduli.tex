@@ -1799,7 +1799,7 @@ Every stack is going to be a category fibered in groupoids. We begin by discussi
     \[ \ms{Obj}(\mc{G}_F) = \ab\{ (B, \beta) \mid \beta \in F(B) \} \]
     and whose morphisms are given by
     \[ \ms{Mor}(\mc{G}_F) = \ab\{ (B', \beta') \to (B, \beta) \mid B' \xrightarrow{f} B, \beta' = F(f)(\beta) \}. \]
-    The reason it is called a category fibered in groupoids is that there is a morphism to \(\mc{Sch}_S\) and each \(p^{-1}(B) = F(B)\) is a set (which is the simplest example of a groupoid).
+    The reason it is called a category fibered in groupoids is that there is a morphism to \(\ms{Sch}_S\) and each \(p^{-1}(B) = F(B)\) is a set (which is the simplest example of a groupoid).
 \end{exm}
 
 \begin{exm}
@@ -1825,19 +1825,106 @@ for any two objects \(X, Y \in \mc{C}(B)\).
 
 \begin{exm}
     If \(\mc{C} = \mc{C}_F\) for a functor \(F \colon \ms{Sch}_S^{\on{op}} \to \ms{Set}\), then
-    \[ \on{Isom}_B (X, Y) (B') = \begin{cases}
+    \[ \ms{Isom}_B (X, Y) (B') = \begin{cases}
         \ab\{1\} & f^* X = f^* Y \\
         \emptyset & f^* X \neq f^* Y.
     \end{cases} \]
 \end{exm}
 
 \begin{defn}
-    A \textit{stack} is a category \(\mc{C}\) fibered in groupoids over \(\mc{Sch}_S\) if
+    A \textit{stack} is a category \(\mc{C}\) fibered in groupoids over \(\ms{Sch}_S\) if
     \begin{enumerate}
         \item For all \(B \in \ms{Sch}_S\), the Isom functor \(\ms{Isom}(X, Y)\) is a sheaf on the big \'etale site of \(B\);
-        \item Descent is effective in the \'etale topology for all \(B\).
+        \item Descent is effective in the \'etale topology for all \(B\). More precisely, given a surjective \'etale cover \(B' = \bigsqcup B_i \to B\), \(x_i \in \mc{C}(B_i)\), and isomorphisms \(\phi_{ij} \colon x_i|_{B_i \times_B B_j} \simeq x_j|_{B_i \times_B B_j}\) satisfying the cocycle condition \(\phi_{ij} \circ \phi_{jk} = \phi_{jk}\) on triple overlaps \(B_i \times_B B_j \times_B B_k\), there exists \(x \in \mc{C}(B)\) such that \(x_i \simeq x|_{B_i}\).
+    \end{enumerate}
+    Equivalently, it is a sheaf of groupoids on \((\ms{Sch}_S)_{\acute{e}t}\).
+\end{defn}
+
+\begin{defn}
+    The \textit{big \{\'etale, smooth, fppf, Zariski, etc\} site} is the category \(\ms{Sch}_S\) with the Grothendieck topology in which covers are \(S\)-morphisms which are a disjoint union of \{\'etale, smooth, fppf, open immersions, etc\} morphisms and jointly surjective. This is denoted by \((\ms{Sch}_S)_{\on{\acute{e}t}, \on{smooth}, \on{fppf}, \on{etc}}\). 
+\end{defn}
+
+\begin{defn}
+    A \textit{sheaf} on \((\ms{Sch}_S)_{\tau}\) is a presheaf \(F\) satisfying the sheaf condition that
+    \[ F(U) \to F(U') \rightrightarrows F(U' \times_U U') \]
+    is an equalizer for all \(\tau\)-covers \(U' \to U\).
+\end{defn}
+
+\begin{exm}
+    Because schemes are sheaves in the fpqc topology, every scheme is a stack.
+\end{exm}
+
+Now suppose that \(\mf{X}\), \(\mf{Y}\), and \(\mf{Z}\) are stacks with morphisms \(f \colon \mf{X} \to \mc{Z}\) and \(g \colon \mf{Y} \to \mc{Z}\). We can form the fiber product
+\[ \mf{X} \times_{\mf{Z}} \mf{Y} (B) = \ab\{ (x, y) \mid x \in \mf{X}(B), y \in \mf{Y}(B), f(x) \simeq g(y) \}. \]
+The main point is that this fiber product is again a stack.
+
+\begin{defn}
+    A morphism of stacks \(f \colon \mf{X} \to \mf{Y}\) is \textit{representable by schemes} if for every scheme \(B\) and morphism \(B \to \mf{Y}\), the fiber product \(\mf{X} \times_{\mf{Y}} B\) is a scheme.
+\end{defn}
+
+\begin{exm}
+    The morphism \(X \to [X/G]\) given by the action
+    \begin{equation*}
+    \begin{tikzcd}
+        G \times X \ar{d} \ar{r}{\sigma} & X \\
+        X
+    \end{tikzcd}
+    \end{equation*}
+    is representable by schemes because for any
+    \begin{equation*}
+    \begin{tikzcd}
+        E \ar{r} \ar{d} & X \\
+        B
+    \end{tikzcd}
+    \end{equation*}
+    giving a morphism \(B \to [X/G]\), the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r} & {[X/G]} \\
+        E \ar{u} \ar{r} & B \ar{u}
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian.
+\end{exm}
+
+\begin{defn}
+    An \textit{algebraic space} is a sheaf \(F\) of sets on \((\ms{Sch}_X)_{\acute{e}t}\) such that
+    \begin{enumerate}
+        \item The diagonal morphism \(\Delta_F \colon F \to F \times F\) is representable by schemes (this implies that any morphism from a scheme is representable by schemes because \(B \times_F C = (B \times C) \times_{F \times F} F\), and the two conditions are in fact equivalent);
+        \item There exists a surjective \'etale morphism \(U \to F\) where \(U\) is a scheme.
     \end{enumerate}
 \end{defn}
+
+\begin{defn}
+    A stack \(\mf{X}\) is \textit{Deligne-Mumford (resp. algebraic)} if
+    \begin{enumerate}
+        \item The diagonal morphism \(\Delta_{\mf{X}} \colon \mf{X} \to \mf{X} \times \mf{X}\) is representable by algebraic spaces, quasi-compact, and separated;\footnote{Some authors (like the Stacks project) remove the separation conditions.}
+        \item There exists a surjective \'etale (resp. smooth) morphism \(U \to \mf{X}\) where \(U\) is a scheme.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    The quotient stack \([X/G]\) and the morphism \(X \to [X/G]\) is a smooth atlas (at least in characteristic zero) and an algebraic space if \(G\) is finite and all stabilizers are trivial.
+\end{defn}
+
+\begin{exm}
+    If we define \(\mc{M}_g\) to send a scheme \(B\) to the \textbf{set} of isomorphism classes of genus \(g\) smooth curves over \(B\), then it is not a stack. For example, consider a genus \(g\) curve \(C\) with a nontrivial involution and an \'etale double cover \(B' \to B\). Then we can consider the quotient \(X\) of \(C \times B'\) by the diagonal action of \(\Z_2\), and the resulting diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        C \times B' \ar{r} \ar{d} & X \ar{d} \\
+        B' \ar{r} & B
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian, but \(X \not\simeq C \times B\) in general. This shows that the Isom functor \(\ms{Isom}(C \times B, X)\) is not a sheaf and that descent is not effective.
+\end{exm}
+
+\begin{exm}
+    Let \(X\) be the affine line with doubled origin and \(\Z_2\) act by switching the two origins and exchanging \(x \leftrightarrow -x\) for \(x \neq 0\). Then \([X/\Z_2]\) is a sheaf on \(\ms{Sch}_{\on{\acute{e}t}}\) (and in fact an algebraic space) but is not a scheme because the two origins do not lie in a single affine.
+\end{exm}
+
+\begin{exm}
+    Consider two copies of \(\P^1\) which are glued along two nodes. This configuration admits two inclusions \(f,g\) into \(\P^2\) (where one becomes a line and the other a conic), and there is a pushout \(\P^2 \cup_{f = g} \P^2\), which is not projective. There is an involution induced by switching the two copies of \(\P^1\) and the two nodes, and the stack \([X / \Z_2]\) is not a scheme because the two nodes do not lie in a single affine, but is an algebraic space.
+\end{exm}
 
 
 \end{document}
