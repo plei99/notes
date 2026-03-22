@@ -1898,17 +1898,26 @@ The main point is that this fiber product is again a stack.
 \begin{defn}
     A stack \(\mf{X}\) is \textit{Deligne-Mumford (resp. algebraic)} if
     \begin{enumerate}
-        \item The diagonal morphism \(\Delta_{\mf{X}} \colon \mf{X} \to \mf{X} \times \mf{X}\) is representable by algebraic spaces, quasi-compact, and separated;\footnote{Some authors (like the Stacks project) remove the separation conditions.}
+        \item The diagonal morphism \(\Delta_{\mf{X}} \colon \mf{X} \to \mf{X} \times \mf{X}\) is representable by algebraic spaces;\footnote{Some references require the diagonal to be quasicompact and separated, but this is not necessary.}
         \item There exists a surjective \'etale (resp. smooth) morphism \(U \to \mf{X}\) where \(U\) is a scheme.
     \end{enumerate}
 \end{defn}
 
-\begin{defn}
-    The quotient stack \([X/G]\) and the morphism \(X \to [X/G]\) is a smooth atlas (at least in characteristic zero) and an algebraic space if \(G\) is finite and all stabilizers are trivial.
-\end{defn}
+\begin{exm}
+    The quotient stack \([X/G]\) is an algebraic stack and the morphism \(X \to [X/G]\) is a smooth atlas (at least in characteristic zero) and an algebraic space if \(G\) is finite and all stabilizers are trivial. Without the assumption on stabilizers, it is a Deligne-Mumford stack.
+
+    Because \'etale descent is effective for principal \(G\)-bundles, we will not discuss descent. The reason that \(X \to [X/G]\) is representable is because the square
+    \begin{equation*}
+    \begin{tikzcd}
+        E \ar{r} \ar{d} & X \ar{d} \\
+        B \ar{r} & {[X/G]}
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian, and we see that \(E\) is a scheme. Here, if we have morphisms \(D \to B\) and \(D \to X\), the fact that \(X \times_{[X /G]} X \simeq G \times X\) implies that \(E \times_B D \cong G \times D\) and gives us a morphism \(D \to E\), which is the desired result. The morphism \(X \to [X/G]\) is also clearly smooth and surjective, so it is a smooth atlas.
+\end{exm}
 
 \begin{exm}
-    If we define \(\mc{M}_g\) to send a scheme \(B\) to the \textbf{set} of isomorphism classes of genus \(g\) smooth curves over \(B\), then it is not a stack. For example, consider a genus \(g\) curve \(C\) with a nontrivial involution and an \'etale double cover \(B' \to B\). Then we can consider the quotient \(X\) of \(C \times B'\) by the diagonal action of \(\Z_2\), and the resulting diagram
+    If we define \(\mc{M}_g\) to send a scheme \(B\) to the \textbf{set} of isomorphism classes of flat families \(\mc{C} \to B\) of genus \(g\) smooth curves over \(B\), then it is not a stack. For example, consider a genus \(g\) curve \(C\) with a nontrivial involution and an \'etale double cover \(B' \to B\). Then we can consider the quotient \(X\) of \(C \times B'\) by the diagonal action of \(\Z_2\), and the resulting diagram
     \begin{equation*}
     \begin{tikzcd}
         C \times B' \ar{r} \ar{d} & X \ar{d} \\
@@ -1916,6 +1925,15 @@ The main point is that this fiber product is again a stack.
     \end{tikzcd}
     \end{equation*}
     is Cartesian, but \(X \not\simeq C \times B\) in general. This shows that the Isom functor \(\ms{Isom}(C \times B, X)\) is not a sheaf and that descent is not effective.
+
+    However, if we allow the total space to be an algebraic space, then if we consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \mc{C}' \ar{d} & \on{pr}_1^* \mc{C'} \ar{l} \ar{r}{\sim} \ar{d} & \on{pr_2}^* \mc{C}' \ar{dl} \\
+        B & B' \ar{l} & B' \times_B B' \ar[shift right=1]{l}[swap]{\on{pr}_1} \ar[shift left=1]{l}{\on{pr}_2},
+    \end{tikzcd}
+    \end{equation*}
+    then taking the pushout in the category of algebraic spaces gives us a family \(\mc{C}\) over \(B\) filling in the diagram.
 \end{exm}
 
 \begin{exm}
@@ -1926,6 +1944,155 @@ The main point is that this fiber product is again a stack.
     Consider two copies of \(\P^1\) which are glued along two nodes. This configuration admits two inclusions \(f,g\) into \(\P^2\) (where one becomes a line and the other a conic), and there is a pushout \(\P^2 \cup_{f = g} \P^2\), which is not projective. There is an involution induced by switching the two copies of \(\P^1\) and the two nodes, and the stack \([X / \Z_2]\) is not a scheme because the two nodes do not lie in a single affine, but is an algebraic space.
 \end{exm}
 
+\begin{rmk}
+    If we have a presentation \(U \to \mf{X}\), then we can replace the condition that the diagonal is representable by requiring that the presentation is representable.
+\end{rmk}
+
+\subsection{Equivalence relations}%
+\label{sub:Equivalence relations}
+
+It is easier to deal with morphisms of schemes than morphisms of stacks, so we will give another way to think about stacks.
+
+\begin{defn}
+    A \textit{pre-relation} on a scheme \(U\) over \(S\) is a morphism \(j \colon R \to U \times_S U\) where \(R\) is a scheme. It is a \textit{relation} if \(j\) is a monomorphism (equivalently, \(\Delta \colon R \to R \times_{U \times U} R\) is an isomorphism, or the morphism is injective on \(T\)-points for all \(T\)).
+
+    A \textit{pre-equivalence (pre-)relation} is a (pre-)relation such that the image of \(R(T)\) in \(U(T) \times U(T)\) is an equivalence relation for all \(T\). An \textit{equivalence relation} is a pre-equivalence \textbf{relation}.
+\end{defn}
+
+\begin{exm}
+    Let \(G \times X \xrightarrow{\sigma} X\) be a group action and
+    \[ \Psi \colon G \times X \xrightarrow{(\sigma, \on{pr}_2)} X \times X. \]
+    Then \(\Psi\) is a pre-equivalence pre-relation and is an equivalence relation if all stabilizers are trivial.
+\end{exm}
+
+\begin{defn}
+    A \textit{groupoid scheme} over \(S\) is a quintuple \((U, R, s, t, c)\) \textbf{and}
+    \begin{enumerate}
+        \item An \(S\)-morphism \(j \colon R \xrightarrow{(t,s)} U \times_S U\);
+        \item An \(S\)-morphism \(c \colon R \times_{t,U,s} R \to R\)
+    \end{enumerate}
+    such that \(j(T)\) and \(c(T)\) define a groupoid on \(U(T)\).
+\end{defn}
+
+\begin{exer}
+    If \((U, R, s,t,c)\) is a groupoid scheme, then \(j \colon R \to U \times U\) is a pre-equivalence pre-relation.
+\end{exer}
+
+\begin{exer}
+    Every equivalence relation \(j \colon R \to U \times U\) extends uniquely to a groupoid scheme \((U, R, s, t, c)\). \textit{Hint: define \(c\) using the Yoneda lemma.}
+\end{exer}
+
+\begin{exm}
+    Let \(f \colon U \to \mf{X}\) be a presentation of an algebraic space \(\mf{X}\). Then if we set \(R = U \times_{\mf{X}} U\), the morphism \(j \colon R \to U \times U\) is an \textbf{\'etale} equivalence relation. Here, the set
+    \[ R(T) = \ab\{ (\alpha, \beta) \mid \alpha, \beta \in U(T), f \circ \alpha = f \circ \beta \in \mf{X}(T) \} \]
+    is obviously an equivalence relation.
+\end{exm}
+
+Our goal now is to discuss quotients by pre-relations \(j \colon R \to U \times U\). If \(T\) is a scheme, we get an induced equivalence relation \(\sim_T\) on \(U(T)\). In particular, we obtain a presheaf on \((\ms{Sch}_{/S})_{\acute{e}t}\) given by
+\[ T \mapsto U(T) /\sim_T. \]
+
+\begin{defn}
+    The quotient \(U/R\) is the sheafification of this presheaf.
+\end{defn}
+
+\begin{rmk}
+    If we consider \(U\) and \(R\) as sheaves, then the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R \ar[shift left=1]{r}{s} \ar[shift right=1]{r}[swap]{t} & U \ar{r} & U/R
+    \end{tikzcd}
+    \end{equation*}
+    is a coequalizer in the category of sheaves.
+\end{rmk}
+
+\begin{rmk}
+    For any surjection of sheaves on any site \(q \colon \mc{F} \to \mc{G}\), the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{F} \times_{\mc{G}} \mc{F} \ar{d} \ar{r} & \mc{F} \ar{d}{q} \\
+        \mc{F} \ar{r}{q} & \mc{G}
+    \end{tikzcd}
+    \end{equation*}
+    is both a pullback and a pushout.
+\end{rmk}
+
+If we apply this to the diagram
+\begin{equation*}
+\begin{tikzcd}
+    R \ar[bend left=20]{drr}{s} \ar{dr} \ar[bend right=20]{ddr}[swap]{t} \\
+    & U \times_{U/R} U \ar{r} \ar{d} & U \ar{d} \\
+    & U \ar{r} & U/R,
+\end{tikzcd}
+\end{equation*}
+then the map \(R \to U \times_{U/R} U\) is surjective as a map of sheaves.
+
+\begin{thm}
+    Let \(U\) be a scheme and \(j \colon R \to U \times U\) be an \'etale \textbf{equivalence relation}. Then the sheaf \(U/R\) is an algebraic space and \(q \colon U \to U /R\) is a representable \'etale surjective morphism.
+\end{thm}
+
+\begin{prop}
+    Suppose \(F \colon (\ms{Sch}_{/S})_{\acute{e}t}^{\on{op}} \to \ms{Set}\) is an algebraic space with an \'etale atlas \(f \colon U \to F\). Write \(R = U \times_F U\). Then
+    \begin{enumerate}
+        \item The map \(j \colon R \to U \times U\) is an equivalence relation;
+        \item The maps \(s,t = \on{pr}_1, \on{pr}_2\) are \'etale and surjective;
+        \item The diagram \(R \rightrightarrows U \to F\) is a coequalizer, and in particular \(F \simeq U/R\).
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    Note that the set
+    \[ R(T) = \ab\{ (\alpha, \beta) \in U(T) \times U(T) \mid f \circ \alpha = f \circ \beta \in F(T) \} \]
+    defines an equivalence relation. Because objects in \(F\) have no automorphisms, we see that \(R = U \times_F U \to U \times U\) is a monomorphism, so \(R\) is an equivalence relation.
+
+    The fact that \(s\) and \(t\) are \'etale is just the fact that the property of being \'etale is stable under base change.
+
+    Finally, the property of being a coequalizer is a property of any surjection of sheaves.
+\end{proof}
+
+\begin{defn}
+    Let \(\mf{X}\) be an algebraic (resp. DM) stack. A morphism \(\phi \colon \mf{X} \to X\) to an algebraic space \(X\) is a \textit{good (resp. coarse) moduli space} if
+    \begin{enumerate}
+        \item \(\phi_* \colon \ms{QCoh}(\mf{X}) \to \ms{QCoh}(X)\) is exact (namely \(\phi\) is \textit{cohomologically affine});
+        \item For every algebraically closed field \(k\), \(\phi\) induces a bijection from closed \(k\)-points in \(\mf{X}\) to \(X(k)\).\footnote{If \(\mf{X}\) is DM, then all points are closed, so this condition is equivalent to \(\phi\) inducing a bijection from \(\mf{X}(k)\) to \(X(k)\).}
+    \end{enumerate}
+\end{defn}
+
+\begin{rmk}
+    If \(\phi\) exists, then it is universal among maps to algebraic spaces and hence unique.
+\end{rmk}
+
+\begin{exm}
+    If \(G\) is reductive, then the map
+    \[ \phi \colon \mf{X} = [\Spec A / G] \to \Spec A^G = X \] 
+    is a good moduli space in characteristic zero. The first follows from the fact that taking invariants is exact, and the second follows from GIT.
+\end{exm}
+
+\begin{thm}
+    Suppose \(\mf{X} = [U/G]\) is a quotient stack where \(U\) is normal and \(G\) is reductive. If all stabilizers are finite, then \(\mf{X}\) is a Deligne-Mumford stack and has a coarse moduli space.
+\end{thm}
+
+For example, \(\bar{\mc{M}}_g\) is of this form (where \(U\) is a suitable locus inside a Hilbert scheme of \(\P^N\) and \(G = \on{PGL}_{N+1}\)), so this theorem applies to it.
+
+\begin{proof}
+    By Luna's \'etale slice theorem, there exists a strongly \'etale morphism \(V \simeq V_0 \times_{G_x} G \xrightarrow{\psi} U\) where \(V_0\) is affine and locally closed in \(U\), \(\psi(V)\) is saturated, and \(G \cdot x \subset V\).
+
+    This implies that the morphism \([V_0 / G_x] \simeq [V/G] \to [U/G]\) is strongly \'etale. Note that \([V_0 / G_x]\) has a coarse moduli space \(\Spec H^0(V_0, \mc{O}_{V_0})^{G_x}\). Therefore, there exists a strongly \'etale morphism \(\mf{Y} \to \mf{X}\) where \(\mf{Y}\) has a coarse moduli space \(Y\). Now consider the fiber product \(\mf{Y} \times_{\mf{X}} \mf{Y}\), which has a coarse moduli space \(Y_2\). Then there are two morphisms \(s, t \colon Y_2 \to Y\) which are affine and \'etale, so the left square in the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mf{Y} \times_{\mf{X}} \mf{Y} \ar[shift left]{r}{\on{pr}_1} \ar[shift right]{r}[swap]{\on{pr}_2} \ar{d} & \mf{Y} \ar{d}{\phi} \ar{r}{\psi} & \mf{X} \ar{d} \\
+        Y_2 \ar[shift left]{r}{s} \ar[shift right]{r}[swap]{t} & Y \ar[dashrightarrow]{r} & X
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian. Finally, \(Y_2 \rightrightarrows Y\) is an \'etale equivalence relation, so we can form its quotient \(X\), which is an algebraic space.
+\end{proof}
+
+\begin{rmk}
+    The theorem also applies in the case where \(G\) is reductive and all stabilizers are reductive.
+\end{rmk}
+
+\begin{thm}[Grothendieck]
+    Let \(f \colon T' \to T\) be an fppf morphism and \(X' \to T'\) be separated and locally quasi-finite, then descent is effective.
+\end{thm}
 
 \end{document}
 
