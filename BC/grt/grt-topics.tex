@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{thmtools}
 %\usepackage{MnSymbol}
 \usepackage{bm}
 \usepackage{accents}
@@ -2390,7 +2391,7 @@ Note that in \(\sl_2\), the matrices
     0 & 0 \\
     1 & 0
 \end{bmatrix} \]
-satisfy these relations. For a general \(\g\), these give an embedding \(\sl_2 \hookrightarrow \g\) sending the standard basis to \((e,h,f)\).
+satisfy these relations. For a general \(\g\), these give an embedding \(\sl_2 \hookrightarrow \g\) sending the standard basis to \((e,h,f)\). Also, in the general case, \(e + \ker \ad_f = e + \g^f\) is a transverse slice to \(G \cdot e\), and if \(e\) is regular, it is called the \textit{principal slice} or \textit{Kostant slice} and satisfies \(e + \g^f = \h \sslash W\).
 
 \begin{cor}
     For all \(e \in \mc{N}\), there exists a rational group homomorphism \(\SL_2 \to G\) sending \(\begin{bsmallmatrix} 0 & 1 \\ 0 & 0 \end{bsmallmatrix}\) to \(e\).
@@ -2423,10 +2424,169 @@ satisfy these relations. For a general \(\g\), these give an embedding \(\sl_2 \
     \[ \g = \bigoplus_{k \in \C} \g_k. \]
     Here, note that \(h \in \g_0\) and \(e \in \g_2\), and because \([h,e] = 2e\), we see
     \[ \ad_e \colon \g_k \to \g_{k+2}. \]
+    Here, the calculation is
+    \begin{align*}
+        [h, [e,x]] &= [[h,e], x] + [e, [h,x]] \\
+        &= 2[e,x] + k[e,x] \\
+        &= (k+2)[e,x].
+    \end{align*}
     We want to find \(f \in \g_{-2}\) such that \([e,f] = h\), or equivalently, show that \(h \in \Ima \ad_e = (\g^e)^{\perp}\). Because \([h,e] = 2e\) and \([h, \g^e] \subset \g^e\), we see that the subspace \(\C h + \g^e\) is a solvable subalgebra in \(\g\). By the theorem of Lie and Engel, there exists a basis of \(\g\) such that \(\ad_h\) is upper-triangular and for any \(x \in \g^e\), \(\ad_x\) is strictly upper-triangular. This implies that
     \[ \on{tr} (\ad_h \ad_x) = 0 \]
-    for any \(x \in \g^e\) because \(\ad_h \ad_x\) is strictly upper-triangular.
+    for any \(x \in \g^e\) because \(\ad_h \ad_x\) is strictly upper-triangular. This implies that \(h \in (\g^e)^{\perp} = \Ima \ad_e\), so there exists \(f\) such that \([e,f] = h\). Because \(h \in \g_0\), we can choose \(f \in \g_{-2}\).
 \end{proof}
+
+\begin{prop}\label{prop:sl2-triples-conjugate}
+    All \(\sl_2\)-triples containing \(e \in \mc{N}\) are conjugate under \(G^e \coloneqq Z_G(e)\).
+\end{prop}
+
+For a fixed triple \((e,h,f)\), we can consider the induced representation of \(\sl_2\) from any representation of \(\g\). Recall that representations of \(\sl_2\) are classified by their highest weight, which is a positive integer \(n\). See~\Cref{fig:sl2_representation} for a visualization. For non-irreducible representations, we can draw a diagram with all of the irreducible components.
+
+\begin{figure}[htpb]
+\begin{center}
+\begin{tikzpicture}[
+    dot/.style={circle, fill, inner sep=2pt},
+    arrow/.style={->, >=stealth, thick},
+]
+% Weight spaces as dots (reversed: lowest to highest weight)
+\node[dot, label=below:{$-n$}] (w0) at (-5, 0) {};
+\node[dot, label=below:{$-n+2$}] (w1) at (-3, 0) {};
+\node[dot, label=below:{$-n+4$}] (w2) at (-1, 0) {};
+\node         at (0.5, 0) {$\cdots$};
+\node[dot, label=below:{$n-4$}] (w3) at (2, 0) {};
+\node[dot, label=below:{$n-2$}] (w4) at (4, 0) {};
+\node[dot, label=below:{$n$}] (w5) at (6, 0) {};
+
+% Action of e (raising operator, left to right)
+\draw[arrow, blue] (w0) -- node[below] {$e$} (w1);
+\draw[arrow, blue] (w1) -- node[below] {$e$} (w2);
+\draw[arrow, blue] (w2) -- node[below] {$e$} (0, 0);
+\draw[arrow, blue] (1, 0) -- node[below] {$e$} (w3);
+\draw[arrow, blue] (w3) -- node[below] {$e$} (w4);
+\draw[arrow, blue] (w4) -- node[below] {$e$} (w5);
+
+% Action of f (lowering operator, right to left)
+\draw[arrow, red, bend right=50] (w1) to node[above] {$f$} (w0);
+\draw[arrow, red, bend right=50] (w2) to node[above] {$f$} (w1);
+\draw[arrow, red, bend right=50] (0, 0) to node[above] {$f$} (w2);
+\draw[arrow, red, bend right=50] (w3) to node[above] {$f$} (1, 0);
+\draw[arrow, red, bend right=50] (w4) to node[above] {$f$} (w3);
+\draw[arrow, red, bend right=50] (w5) to node[above] {$f$} (w4);
+\end{tikzpicture}
+\end{center}
+\caption{Irreducible $\mathfrak{sl}_2$-representation $V_n$ with highest weight $n$.}%
+\label{fig:sl2_representation}
+\end{figure}
+
+Specifying to \(V = \g\), we see that \(\g = \g^f \oplus \Im \ad_e\). If we decompose
+\[ \g = \bigoplus_{k \in \Z} \g_k, \]
+note that \([g_k, \g_{\ell}] \subset \g_{k+\ell}\). 
+\begin{rmk}
+    Note that \(\dim \g^e = \dim \g^f \geq \dim \g^h = \dim \g_0\) and equality holds if and only if all weights are even.
+\end{rmk}
+If \(e\) is regular, then \(\dim \g^e = r\), and therefore \(f\) is regular and \(\dim \g^h = \dim \g^e = r\), and therefore \(e,f,h\) are all regular. In this case, we have a \textit{principal \(\sl_2\)-triple}. Note here that all weights are even. Also, note that
+\[ \g^e \subseteq \bigoplus_{k \geq 0} \g_k \]
+but is not necessarily contained in the strictly positive part. By definition, set
+\[ \mf{u} = \g^e \cap \bigoplus_{k > 0} \g_k = \g^e \cap [\g, e] = \ker \ad_e \cap \Ima \ad_e. \]
+By definition, we have \(V_{\on{triv}} = \mf{Z}(e,f,h) \subset \g\), and if there is no trivial part under \(\sl_2\), then \(\g^e\) is contained in the strictly positive part. Now lift \(\mf{u}\) to a unipotent subgroup \(U \subset G^e\). Note that \(G^e\) may be disconnected, but \(U\) is connected.
+
+\begin{lem}
+    The affine space \(h + \mf{u}\) is a single \(U\)-orbit.
+\end{lem}
+
+\begin{proof}
+    First, note that if \(x \in \mf{u}\), then \([h+x, \mf{u}] \subset \mf{u}\) because \(\mf{u}\) consists of weight spaces. In fact, they are actually equal because \([h, \mf{u}] = \mf{u}\). By a standard argument, the orbit \(U \cdot h \subset h + \mf{u}\) is open, but \(U\) is unipotent, so it is also closed.
+\end{proof}
+
+\begin{proof}[Proof of~\Cref{prop:sl2-triples-conjugate}]
+    Fix \((e,h,f)\) and \((e, h', f')\). Note that \([h'-h, e] = 0\), so \(h' - h \in \g^e\). In particular, we see that \(h' - h \in \g^e \cap [\g, e]\) because we also have \([e, f'-f] = h'-h\). Therefore, \(h' \in h + \mf{u} = U \cdot h\), so there exists \(u \in U\) such that \(u \cdot h = h'\).
+
+    Now we have \(u \cdot (e,h,f) = (e, h', u \cdot f)\). Note that
+    \[ [e, uf] = h' = [e, f'], \]
+    and therefore \([e, uf-f'] = 0\). This implies that \(uf - f' \in \g^e\), but \(uf - f' \in \g_{-2}\) while \(\g^e\) is concentrated in nonnegative weights, so \(uf = f'\). Therefore, \(u \cdot (e,h,f) = (e,h',f')\).
+\end{proof}
+
+\begin{rmk}
+    We have in fact also shown that if we fix \(e\) and \(h\), then \(f\) is unique.
+\end{rmk}
+
+We will now consider the structure of \(G^e\).
+\begin{prop}\label{prop:structure-of-centralizer}
+    The unipotent subgroup \(U\) is the unipotent radical of \(G^e\) and \(H \coloneqq Z_G(e, h, f)\) is the maximal reductive subgroup of \(G^e\).
+\end{prop}
+
+\begin{exm}
+    If \(e\) is regular, then so are \(h\) and \(f\). When we described \(\mc{N}^{\on{reg}}\), recall that \(\n^{\on{reg}}\) consisted of all elements which are nonzero on all simple root spaces. If we let
+    \[ e = \begin{bmatrix}
+        0 & 1 & 0 & \cdots & 0 \\
+        & 0 & 1 & \cdots & 0 \\
+        &  & \ddots & \ddots & \vdots \\
+        &  &  & 0 & 1 \\
+        &  &  &  & 0
+    \end{bmatrix}, \]
+    thhen \(h\) is actually unique is given by
+    \[ h = \bdiagmat[empty={}]{n-1, n-3, \ddots, 3-n, 1-n} \]
+    while \(f\) is lower-triangular with nonzero entries on the subdiagonal. In this case, we have \(Z_G(e,h,f) = Z(G)\). For all \(g \in Z_G(e,h,f)\), we see that \(g \in Z_G(h) = T\), and so under some choice of Borel \(\b\) containing \(h \in \h^{\on{reg}}\), we see that
+    \[ g \cdot e_{\alpha} = \alpha(g) e_{\alpha} \]
+    and therefore if \(g \in Z_G(e)\), this is equivalent to \(\alpha(g) = 1\) for all simple roots \(\alpha\), which is equivalent to \(g \in Z(G)\).
+\end{exm}
+
+Because \(e\) is regular, we see that \(\dim G^e = r\). Using the proposition, we see that \(\dim U = r\), and therefore that \(\g^e = \mf{u}\). Here, we see that
+\begin{align*}
+    h &= 2 \rho^{\vee} \\
+    &= 2 \sum_{i \in \Pi} \omega_i^{\vee} \\
+    &= \sum_{\alpha \in \Phi^+} \alpha^{\vee}.
+\end{align*}
+Looking at the decomposition of \(\g\) with respect to this \(h\), then in fact
+\[ \g = \bigoplus_{k \in 2\Z} \g_k, \]
+or namely all weights are even. There is no trivial \(\sl_2\) representation appearing as a summand of \(\g\) because \(Z_G(e,h,f)\) is discrete.
+
+\begin{proof}[Proof of~\Cref{prop:structure-of-centralizer}]
+    Our goal is to show that \(G^e = HU\) and that \(H \cap U\) is trivial. We already know that \(U \triangleleft G^e\) because \(\mf{u}\) is an ideal in \(\g^e\).
+    
+    We will use the fact that the centralizer of a reductive subgroup in \(G\) is always reductive. Because the image of \(\SL_2\) in \(G\) given by \(e,h,f\) is reductive, so is \(H\). We also know that \(H \cap U \triangleleft H\), and because \(H\) is reductive, the intersection is trivial.
+
+    Finally, we need to prove that \(G^e = HU\). For any \(g \in G^e\), recall that
+    \begin{align*}
+        g \cdot (e,h,f) &= (e, h', f') = u \cdot (e,h,f)
+    \end{align*}
+    for some \(u \in U\). Therefore, we see that \(u^{-1}(g) \in Z_G(e,h,f)\) and therefore \(g \in UH = HU\) (here, we use normality of \(U\)).
+\end{proof}
+
+\subsection{Regular \(\sl_2\)-triples}%
+\label{sub:Regular sl2-triples}
+
+Let \(e \in \mc{N}^{\on{reg}}\) and consider the Kostant slice \(e + \g^f\). Recall that the map \(\chi \colon \g \to \h \sslash W\) restricts to an isomorphism
+\[ \chi|_{e + \g^f} \colon e + \g^f \xrightarrow{\sim} \h \sslash W. \]
+Note that \(\mc{O}(\g)^G \simeq \mc{O}(\h)^W\) is an isomorphism of graded rings.
+
+\begin{thm}[Chevalley-Shephard-Todd]
+    We have \(\mc{O}(\h)^W \simeq \C[P_1, \ldots, P_r]\), where \(P_1, \ldots, P_r\) are homogeneous elements of degrees \(d_1 \leq \cdots \leq d_r\) which are independent of the choice of generators. These \(d_1, \ldots, d_r\) are called the \textit{exponents} of \(\g\).
+\end{thm}
+
+\begin{thm}[Kostant]
+    Let \((e,h,f)\) be a regular \(\sl_2\)-triple. Recall that the decomposition
+    \[ \g = \bigoplus_j V_j \]
+    into irreducible \(\sl_2\)-representations \(V_j\) satisfies \(\dim V_j = 2 \mu_j + 1\), where \(\mu_j > 0\). Order \(V_j\) such that \(1 = \mu_1 \leq \cdots \leq \mu_k\). Then \(k = r\) and \(d_j = \mu_j + 1\).
+\end{thm}
+
+\begin{proof}
+    Consider the decomposition
+    \[ \g = \g^f + [\g, e]. \]
+    For each \(V_j\), the lowest weight is \(-2 \mu_j\). Because \(\g^f \cap V_j\) is the lowest weight space of \(V_j\), we can let the set of \(0 \neq \xi_j \in \g^f \cap V_j\) be a basis of \(\g^f\). Define a map
+    \[ \psi \colon G \times \C^r \to \g \qquad (g, a_1, \ldots, a_r) \mapsto g \cdot \ab(e + \sum_{j=1}^r a_j \xi_j). \]
+    We will show that \(\d{\psi}\) is surjective everywhere, or namely that \(\psi\) is a submersion. Because this morphism is \(G\)-equivariant, it suffices to check when \(g = 1\). Let \(x = (1, a_1, \ldots, a_r)\). Then 
+    \begin{align*}
+        \d_x \psi \colon \g \times \C^r \to \g \qquad (\eta, b_1, \ldots, b_r) \mapsto \ab[\eta, e + \sum_j a_j \xi_j] + \sum_j b_j \xi_j.
+    \end{align*}
+    Our goal is to prove that this is surjective. We compute
+    \begin{align*}
+        \Ima (\d_x \psi) &= [\g, e + \sum_j a_j \xi_j] + \sum_j b_j \xi_j \\
+        &= \ab[\g, e + \sum_j a_j \xi_j] + \g^f \\
+        &= \ab[\g, e] + \g^f  \\
+        &= \g. \qedhere
+    \end{align*}
+\end{proof}
+
 
 
 

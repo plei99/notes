@@ -1388,7 +1388,7 @@ then in fact the fibers of \(I_X \to X\) are the stabilizers of points in \(X\).
     has finite stabilizer under the action with weights \(\alpha_0, \ldots, \alpha_n\), so the desired \(i\) exists.
 \end{proof}
 
-\begin{exm}[Non-proper action, Mumford]
+\begin{exm}[Non-proper action, Mumford]\label{exm:non-proper-action}
     Let \(G = \on{SL}(2)\) and
     \[ X = \ab\{ (F_1, F_4) \mid F_1 \neq 0, F_4 = Q^2, Q \text{ quadric}, \det(Q) = 1 \} \subset \C^2 \times \on{Sym}^4(\C^2). \]
     The action will be induced from the natural action of \(\on{SL}(2)\) on \(\C^2\). 
@@ -1416,7 +1416,7 @@ This example is morally the same the example of the action of \(\G_m \rtimes \Z_
 
 In the language of stacks, in fact thre is an isomorphism
 \[ [X/\on{SL}(2)] \simeq [(\A^1\text{ with doubled origin}) / \Z_2], \]
-where \(\Z_2\) acts by swapping the two origins. This stack does not have a good moduli space which is a scheme, but it does have a good moduli space which is a non-separated algebraic space by Keel-Mori.
+where \(\Z_2\) acts by swapping the two origins and \(x \mapsto -x\). This stack does not have a good moduli space which is a scheme, but it does have a good moduli space which is a non-separated algebraic space by Keel-Mori.
 
 \begin{exm}[Hironaka]
     There is a proper but non-projective threefold \(X\) with a free action of \(\G_m\) which is not proper, and the quotient is not a scheme but is an algebraic space.
@@ -2026,7 +2026,7 @@ If we apply this to the diagram
 \end{equation*}
 then the map \(R \to U \times_{U/R} U\) is surjective as a map of sheaves.
 
-\begin{thm}
+\begin{thm}\label{thm:quotient-by-etale-equivalence-relation}
     Let \(U\) be a scheme and \(j \colon R \to U \times U\) be an \'etale \textbf{equivalence relation}. Then the sheaf \(U/R\) is an algebraic space and \(q \colon U \to U /R\) is a representable \'etale surjective morphism.
 \end{thm}
 
@@ -2050,16 +2050,12 @@ then the map \(R \to U \times_{U/R} U\) is surjective as a map of sheaves.
 \end{proof}
 
 \begin{defn}
-    Let \(\mf{X}\) be an algebraic (resp. DM) stack. A morphism \(\phi \colon \mf{X} \to X\) to an algebraic space \(X\) is a \textit{good (resp. coarse) moduli space} if
+    Let \(\mf{X}\) be an algebraic (resp. DM) stack. A morphism \(\phi \colon \mf{X} \to X\) to an algebraic space \(X\) is a \textit{good (resp. coarse) moduli space} if \(\phi\) is quasicompact and
     \begin{enumerate}
         \item \(\phi_* \colon \ms{QCoh}(\mf{X}) \to \ms{QCoh}(X)\) is exact (namely \(\phi\) is \textit{cohomologically affine});
-        \item For every algebraically closed field \(k\), \(\phi\) induces a bijection from closed \(k\)-points in \(\mf{X}\) to \(X(k)\).\footnote{If \(\mf{X}\) is DM, then all points are closed, so this condition is equivalent to \(\phi\) inducing a bijection from \(\mf{X}(k)\) to \(X(k)\).}
+        \item We have \(\phi_*\mc{O}_{\mf{X}} \simeq \mc{O}_X\).
     \end{enumerate}
 \end{defn}
-
-\begin{rmk}
-    If \(\phi\) exists, then it is universal among maps to algebraic spaces and hence unique.
-\end{rmk}
 
 \begin{exm}
     If \(G\) is reductive, then the map
@@ -2093,6 +2089,205 @@ For example, \(\bar{\mc{M}}_g\) is of this form (where \(U\) is a suitable locus
 \begin{thm}[Grothendieck]
     Let \(f \colon T' \to T\) be an fppf morphism and \(X' \to T'\) be separated and locally quasi-finite, then descent is effective.
 \end{thm}
+
+We have discussed descent data and whether it is effective, so we will now give a precise definition of these notions.
+
+\begin{defn}
+    Let \(T' \to T\) be a morphism of schemes. A \textit{descent datum} is a scheme \(X'/T'\) and \(\phi \colon X' \times_T T' \to T' \times_T X'\) satisfying the cocycle condition that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        X' \times_T T' \times T' \ar{r}{\phi_{12}} \ar{dr}[swap]{\phi_{13}} & T' \times_T X' \times T' \ar{d}{\phi_{23}^{-1}} \\
+        & T' \times T' \times X'
+    \end{tikzcd}
+    \end{equation*}
+    commutes. It is \textit{effective} if \(X' = X \times_T T'\) where \(X \to T\) and \(\phi\) is the canonical isomorphism.
+\end{defn}
+
+\begin{lem}
+    Let \(f \colon T' \to T\) be an \'etale surjective morphism of schemes. Suppose that \(\mc{F}\) is a sheaf on \((\ms{Sch}_{/T})_{\acute{e}t}\). Suppose that \(f^* \mc{F}\) is a scheme. Then \(X' = f^* \mc{F}\) defines a descent datum relative to \(f\). Moreover, this descent datum is effective if and only if \(\mc{F}\) is a scheme.
+\end{lem}
+
+
+Consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+   \on{pr}_1^* f^* \mc{F} \ar{r}{\phi}[swap]{\sim} \ar{dr} & \on{pr}_2^*f^* \mc{F} \ar{r} \ar{d} & T' \times_T T' \ar[shift left]{d}{\on{pr}_2}\ar[shift right]{d}[swap]{\on{pr}_1} \\
+    & X' = f^* \mc{F} \ar{r} \ar{d} & T' \ar{d} \\
+    & \mc{F} \ar{r} & T.
+\end{tikzcd}
+\end{equation*}
+Here, note that \(\phi\) comes from the fact that the two morphisms \(T' \times_T T' \to T\) coincide.
+
+\begin{proof}[Proof of~\Cref{thm:quotient-by-etale-equivalence-relation}]
+    For simplicity, we will take \(U\) to be quasi-compact. Then there exists a surjective \'etale morphism \(U' \to U\) where \(U'\) is affine. Consider the Cartesian diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R' \ar{r} \ar{d} \ar[bend left=20]{rr}{t'} \ar[bend right=50]{dd}[swap]{s'}  & R \times_U U' \ar{r} \ar{d} & U' \ar[twoheadrightarrow]{d} \\
+        U' \times_U R \ar{r} \ar{d} & R \ar{r}{t} \ar{d}{s} & U \\
+        U' \ar[twoheadrightarrow]{r} & U.
+    \end{tikzcd}
+    \end{equation*}
+    Then \(j' \colon R' \to U' \times U'\) is an equivalence relation and \(U' / R' \simeq U/R\) as sheaves. Therefore, we may assume that \(U\) is affine.
+
+    Now because \(j \colon R \to U \times U\) is an \'etale equivalence relation, then \(j\) is a monomorphism and thus \(\Delta_j\) is a closed embedding (in fact an isomorphism) and hence \(j\) is separated. Therefore, we may assume that \(R\) is also separated.
+
+    We now need to prove that \(q \colon U \to U/R\) is representable and \'etale (since it is clearly surjective). First, note that the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R \ar{r}{s} \ar{d}{t} & U \ar{d}{q} \\
+        U \ar{r}{q} & U/R
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian. Now consider a Cartesian diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        U \ar{r}{q} & U/R \\
+        \mc{F} \ar{r} \ar{u} & T. \ar{u}{a}
+    \end{tikzcd}
+    \end{equation*}
+    There is some surjective \'etale \(\phi \colon T' \to T\) such that there is a lift \(a' \colon T' \to U\) such that \(q \circ a' = a \circ \phi\), so it fills in as
+    \begin{equation*}
+    \begin{tikzcd}
+        R \ar[shift left]{r}{s} \ar[shift right]{r}[swap]{t} & U \ar{r}{q} & U/R \\
+        & \mc{F} \ar{r} \ar{u} & T \ar{u}{a} \\
+        & \mc{F}' \ar{r} \ar{u} \ar{uul} & T' \ar{u}{\phi} \ar[dashrightarrow]{uul}{a'}
+    \end{tikzcd}
+    \end{equation*}
+    We now claim that \(\mc{F}' \simeq R \times_{t,U,a'} T'\). Here, note that
+    \begin{align*}
+        R \times_{t,U,a'} T' &\simeq (U \times_{q, U/R,q} U) \times_{t,U,a'} T' \\
+        &\simeq U \times_{q, U/R, q \circ a'} T' \\
+        &\simeq U \times_{q, U/R, a \circ \phi} T' \\
+        &\simeq \mc{F}'.
+    \end{align*}
+    This implies that \(\mc{F}'\) is a scheme, and hence \(\mc{F}\) is a scheme.
+\end{proof}
+
+Now let \(\mf{X} = U/R\) be an algebraic space. Consider the Cartesian diagram
+\begin{equation*}
+\begin{tikzcd}
+    R \ar{r} \ar{d}{j=(s,t)} & \mf{X} \ar{d}{\Delta} \\
+    U \times U \ar{r} & \mf{X} \times \mf{X}
+\end{tikzcd}
+\end{equation*}
+In particular, we can descend properties of \(j\) to properties of the diagonal of \(\mf{X}\). For example, to show that the diagonal is representable, consider the Cartesian cube
+\begin{equation*}
+\begin{tikzcd}
+    & R \ar{rr} \ar[dd,"j",near start] & & \mf{X} \ar{dd}{\Delta} \\
+    \mc{F}' \ar{ur} \ar{rr} \ar{dd} & & \mc{F} \ar{ur} \ar{dd} \\
+    & U \times U \ar{rr} & & \mf{X} \times \mf{X} \\
+    T' \ar{ur} \ar{rr} & & T \ar{ur}.
+\end{tikzcd}
+\end{equation*}
+Because \(j\) is quasi-finite and separated (it is a monomorphism) and \(\mc{F}'\) is a scheme, we see that \(\Delta\) is representable. Now consider the Cartesian diagram
+\begin{equation*}
+\begin{tikzcd}
+    R \ar{r} \ar{d}{j} & \mf{X} \ar{d}{\Delta} & I_{\mf{X}} \ar{d} \ar{l} \\
+    U \times U \ar{r} & \mf{X} \times \mf{X} & \mf{X} \ar{l}{\Delta}
+\end{tikzcd}
+\end{equation*}
+defining the \textit{inertia stack} (which is not interesting for an algebraic space). Therefore, we can see that properties of \(j\) correspond to properties of the inertia stack. One important property is that the diagram
+\begin{equation*}
+\begin{tikzcd}
+    \mf{X} \ar{d}{\Delta} & I_{\mf{X}} \ar{d} \ar{l} & \ms{Isom}_T(a,a) \ar{d} \ar{l} \\
+    \mf{X} \times \mf{X} & \mf{X} \ar{l}{\Delta} & T \ar{l}{a}
+\end{tikzcd}
+\end{equation*}
+is Cartesian. One upshot is that we can define properties of an algebraic stack using properties of the diagonal (or the inertia stack).
+
+\begin{defn}
+    An algebraic stack \(\mf{X}\) is separated if \(\Delta_{\mc{X}}\) is proper. For an algebraic space, this is equivalent to being a closed embedding.
+\end{defn}
+
+If \(\mf{X}\) is an algebraic stack, then we have a smooth atlas \(q \colon U \to \mf{X}\), and we can form the Cartesian diagram
+\begin{equation*}
+\begin{tikzcd}
+    R \ar[equals]{r} & U \times_{\mf{X}} U \ar{r}{t} \ar{d}{s} & U \ar{d}{q} \\
+    & U \ar{r}{q} & \mf{X},
+\end{tikzcd}
+\end{equation*}
+where \(j \colon R \to U \times_{\mf{X}} U\) defines a pre-equivalence pre-relation. If we have such a pre-equivalence pre-relation, we can define the groupoid
+\[ T \mapsto \ab\{ j(T) \colon R(T) \to U(T) \times U(T) \} \]
+where \(U(T)\) are objects and \(R(T)\) are arrows, which defines a prestack. The sheafification of this prestack is the stack \(\mf{X}\).
+
+\begin{defn}
+    The condition for \(\mf{X}\) to be separated is equivalent to the condition that \(j\) is proper.
+\end{defn}
+
+One upshot of the diagram defining the inertia stack is that if \(\mf{X}\) is separated, then \(\ms{Isom}_T(a,a)\) is a proper group algebraic space over \(T\).
+
+\section{Moduli spaces}%
+\label{sec:Moduli spaces}
+
+\begin{thm}[Keel-Mori]
+    If \(\mf{X}\) is an algebraic stack with finite inertia, then \(\mf{X}\) has a good moduli space \(\phi \colon \mf{X} \to X\) where \(X\) is an algebraic space. Furthermore, if \(\mf{X}\) is separated, then \(X\) is separated.
+\end{thm}
+
+\begin{exm}
+    When \(\mf{X} = [X/G]\), then \(\Delta_{\mf{X}}\) is separated (proper, finite, etc.) if and only if \(j = (\sigma, \on{pr}_2) \colon G \times X \to X \times X\) is. These correspond to \(\mf{X}\) being an unknown condition, separated, DM with finite inertia, etc.
+\end{exm}
+
+\begin{exm}[Mumford]
+    In~\Cref{exm:non-proper-action}, the stack \(\mf{X} = [X/\on{SL}_2]\) is an algebraic space because the stabilizers are trivial but is not separated because the action is not proper.
+\end{exm}
+
+\begin{exm}
+    Let \(U = \ab\{ D \in \on{Sym}^4(\P^1)\ \middle\vert\ \ab|\on{Supp}(D)| \geq 3 \}\) and let \(\mf{X} = [U/\on{PGL}(2)]\). This stack has quasi-finite inertia, but the generic stabilizer is \(\Z_2 \times \Z_2\) and the automorphism group of a point corresponding to a divisor with a double point is \(\Z_2\), so the inertia is not proper (hence not finite). In particular, \(\mf{X}\) has no coarse (or good) moduli space.
+
+    In fact, we have \(\mf{X} \subset \mf{X}^{\on{GIT}} = [\on{Sym}^4(\P^1)^{\on{ss}} / \on{PGL}(2)]\), and the latter stack has a good moduli space \(X\), but \(\mf{X}\) does not have unpunctured inertia, so it has no good moduli space despite \(\mf{X} \to X\) being bijective on geometric points.
+\end{exm}
+
+\begin{exm}
+    The stack \(\mc{M}_g\) has finite inertia when \(g \geq 2\). The inertia is quasi-finite by Hurwitz's theorem that \(\ab|\Aut(C)| \leq 84(g-1)\) when \(C\) is a smooth curve. Note that a morphism \(\pi \colon \Spec K \to I_{\mf{X}}\) is the data of a smooth curve \(\mc{C}_K\) over \(\Spec K\) and an automorphism of \(\mc{C}_K\). The diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        I_{\mf{X}} \ar{d} & \Spec K \ar{l} \ar{d} \\
+        \mf{X} & \Spec R \ar{l}
+    \end{tikzcd}
+    \end{equation*}
+    corresponds to a lift to a family \(\mc{C}_R\). Lifting to a morphism \(\Spec R \to I_{\mf{X}}\) corresponds to extending the automorphism to the central fiber. Any family of genus \(g\) smooth curves has no \((-1)\)-curves, and therefore the birational map \(\mc{C}_R \dashrightarrow \mc{C}_R\) induced by the automorphism of \(\mc{C}_K\) is an automorphism of \(\mc{C}_R\). This implies that the inertia is proper, and hence finite, so \(\mc{M}_g\) has a coarse moduli space.
+\end{exm}
+
+We will now list some properties of good moduli spaces.
+\begin{enumerate}
+    \item The good moduli space \(\phi\) is initial from \(\mf{X}\) to algebraic spaces;
+    \item \(X(k)\) is in bijection with \textbf{closed} \(k\)-points of \(\mf{X}\) for all algebraically closed fields \(k\);
+    \item If \(\mf{X}\) is DM, then \(X\) is a coarse moduli space.
+\end{enumerate}
+
+\begin{thm}
+    Suppose that \(\mf{X}\) has a good moduli space and \(f \colon \mf{Y} \to \mf{X}\) is a representable affine morphism of algebraic stacks. Then \(\mf{Y}\) has a good moduli space.
+\end{thm}
+
+The idea here is that \(\Spec_{\mc{O}_{X}} (\phi_* f_* \mc{O}_{\mf{Y}}) \eqqcolon Y\) serves as the good moduli space for \(\mf{Y}\).
+
+\begin{defn}
+    Let \(f \colon \mf{X} \to \mf{Y}\) be a morphism of finite type algebraic stacks over an algebraically closed field \(k\). Given a closed point \(x \in \mf{X}(k)\), \(f\) is \textit{strongly \'etale} at \(x\) if
+    \begin{enumerate}
+        \item \(f\) is \'etale at \(x\);
+        \item \(f(x)\) is closed;
+        \item The induced map of stabilizer groups \(G_x \to G_{f(x)}\) is an isomorphism.
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}[Luna's fundamental lemma]
+    Let \(f \colon \mf{X} \to \mf{Y}\) be a morphism of algebraic stacks with good moduli spaces \(X\) and \(Y\).
+    \begin{enumerate}
+        \item \(f\) is strongly \'etale if and only if the map \(\bar{f} \colon X \to Y\) is \'etale and the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            \mf{X} \ar{r}{f} \ar{d} & \mf{Y} \ar{d} \\
+            X \ar{r}{\bar{f}} & Y
+        \end{tikzcd}
+        \end{equation*}
+        is Cartesian.
+        \item If \(f\) is strongly \'etale at a closed \(x \in \mf{X}(k)\), then there exists an open \(\mf{U} \subset \mf{X}\) containing \(x\) such that \(f|_{\mf{U}} \colon \mf{U} \to \mf{Y}\) is strongly \'etale.
+    \end{enumerate}
+\end{thm}
+
+Note that this is the same as the previous version of Luna's fundamental lemma in the case of quotient stacks.
+
+
 
 \end{document}
 
