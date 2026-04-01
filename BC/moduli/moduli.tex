@@ -2270,7 +2270,7 @@ The idea here is that \(\Spec_{\mc{O}_{X}} (\phi_* f_* \mc{O}_{\mf{Y}}) \eqqcolo
     \end{enumerate}
 \end{defn}
 
-\begin{thm}[Luna's fundamental lemma]
+\begin{lem}[Luna's fundamental lemma]
     Let \(f \colon \mf{X} \to \mf{Y}\) be a morphism of algebraic stacks with good moduli spaces \(X\) and \(Y\).
     \begin{enumerate}
         \item \(f\) is strongly \'etale if and only if the map \(\bar{f} \colon X \to Y\) is \'etale and the diagram
@@ -2283,10 +2283,145 @@ The idea here is that \(\Spec_{\mc{O}_{X}} (\phi_* f_* \mc{O}_{\mf{Y}}) \eqqcolo
         is Cartesian.
         \item If \(f\) is strongly \'etale at a closed \(x \in \mf{X}(k)\), then there exists an open \(\mf{U} \subset \mf{X}\) containing \(x\) such that \(f|_{\mf{U}} \colon \mf{U} \to \mf{Y}\) is strongly \'etale.
     \end{enumerate}
-\end{thm}
+\end{lem}
 
 Note that this is the same as the previous version of Luna's fundamental lemma in the case of quotient stacks.
 
+\begin{proof}
+    By a result of Alper, if \(\phi \colon \mf{X} \to X\) is a good moduli space and \(x \in \mf{X}(k)\) is a closed point, then \(\hat{\mc{O}}_{X, \phi(x)} \simeq \hat{\mc{O}}_{\mf{X}, x}^{G_x}\) (we will not define the local ring for a stack here). Because \(f\) is stabilizer preserving, we have \(G_x \simeq G_{f(x)}\). Because \(f\) is formally \'etale, we have \(\hat{\mc{O}}_{\mf{Y}, f(x)} \simeq \hat{\mc{O}}_{\mf{X}, x}\). Taking invariants gives us \(\hat{\mc{O}}_{X, x} \simeq \hat{\mc{O}}_{Y, f(x)}\). This implies that if \(f\) is strongly \'etale, then \(\bar{f}\) is \'etale.
+
+    Now consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mf{X} \ar[bend right=20]{ddr} \ar[bend left=20]{drr}{f} \ar{dr} \\
+        & \mf{Y} \times_Y X \ar{r} \ar{d} & \mf{Y} \ar{d} \\
+        & X \ar{r}{\bar{f}} & Y.
+    \end{tikzcd}
+    \end{equation*}
+    Note that \(X\) is also a good moduli space of \(\mf{Y} \times_Y X\) by a result of Alper. Note also that \(f\) is separated, and therefore so is \(g \colon \mf{X} \to \mf{Y} \times_Y X\). Also, \(g\) is \'etale because \(f\) is. By Zariski's main theorem for stacks, we have a factorization
+    \begin{equation*}
+    \begin{tikzcd}
+        & \mf{Z} \ar{dr} \\
+        \mf{X} \ar[hookrightarrow]{ur} \ar{rr}{g} & & \mf{Y} \times_Y X
+    \end{tikzcd}
+    \end{equation*}
+    where \(\mf{X} \to \mf{Z}\) is an open immersion and \(\mf{Z} \to \mf{Y} \times_Y X\) is finite. Note also that \(g\) sends closed points to closed points and is stabilizer preserving. Note that \(\mf{Z}\) has a good moduli space, so we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        & \mf{Z} \ar{dr}{\phi} \ar{dd} \\
+        \mf{X} \ar[hookrightarrow]{ur} \ar[rr,"g",near start] \ar{dd} & & \mf{Y} \times_Y X \ar{dd}{\pi} \\
+        & Z \ar{dr} \\
+        X \ar{ur} \ar{rr}{\sim} & & X.
+    \end{tikzcd}
+    \end{equation*}
+    However, both \(X \to Z\) and \(X \to Z\) are isomorphisms. Because \(g\) preserves closed points, then \(\mf{X} \to \mf{Z}\) must also preserve closed points. However, the only way for an open immersion to induce an isomorphism on good moduli spaces is if there is a closed point in \(\mf{X}\) which is not closed in \(\mf{Z}\), which is impossible because then \(g\) would not preserve closed points. This implies that \(\mf{X} \simeq \mf{Z}\).
+
+    The final step is to note that \(Z = \Spec_{\mc{O}_X}(\pi_*\phi_* \mc{O}_{\mf{Z}}) = \Spec_{\mc{O}_X} \mc{O}_X \oplus \pi_* \mc{L}\) for some additional factor \(\mc{L}\) making \(\phi_* \mc{O}_{\mf{Z}} \simeq \mc{O}_{\mf{Y} \times_Y X} \oplus \mc{L}\). This factor must disappear, so \(\phi\) is an isomorphism.
+\end{proof}
+
+In the proof, we implicitly used the following lemma.
+\begin{lem}
+    Let \(\mf{Z}\) have a good moduli space and \(\mf{U} \subseteq \mf{Z}\) be an open immersion. Then \(\mf{U} \subseteq \mf{Z}\) is strongly \'etale if and only if \(\mf{U}\) is saturated.
+\end{lem}
+
+\begin{defn}
+    Let \(\mf{X}\) be an algebraic stack of finite type over an algebraically closed field \(k\) and \(x \in \mf{X}(k)\) be a closed point. Then \(\mf{X}\) has a \textit{strongly \'etale local quotient presentation} at \(x\) if
+    \begin{enumerate}
+        \item \(G_x\) is linearly reductive;
+        \item There exists \(f \colon [\Spec A / G_x] \to \mf{X}\) sending a closed point \(w \mapsto x\) with \(A\) a finitely generated \(k\)-algebra such that:
+        \item \(f\) is strongly \'etale (at \(w\) is enough).
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}
+    Suppose \(\mf{X}\) is an algebraic stack of finite type over an algebraically closed field with affine diagonal. Suppose also that
+    \begin{enumerate}
+        \item Every closed point has a strongly \'etale local quotient presentation;
+        \item Every \(\ol{\ab\{x\}}\) has a good moduli space.
+    \end{enumerate}
+    Then \(\mf{X}\) has a good moduli space.
+\end{thm}
+
+\begin{exm}
+    Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        G \times X \ar{r} \ar{d} & \mf{X} \ar{d}{\Delta_{\mf{X}}} \\
+        X \times X \ar{r} & \mf{X} \times \mf{X}.
+    \end{tikzcd}
+    \end{equation*}
+    This is Cartesian, and the left vertical arrow is smooth, so \(\mf{X} = [X/G]\) has affine diagonal if \(G\) is affine.
+\end{exm}
+
+\begin{rmk}
+    If \(\mf{X}\) is a Deligne-Mumford stack, then \(\ol{\ab\{x\}} = \ab\{x\}\), and therefore the second condition in the theorem is automatically satisfied.
+\end{rmk}
+
+\begin{prop}[Alper-Kresch]
+    Every quotient stack \([X/G]\) where \(G\) is a linear algebraic group and \(X\) is a separated and finite type scheme\footnote{We may be able to allow \(X\) to be an algebraic space.} over an algebraically closed field has a \'etale local quotient presentation at every closed point with linearly reductive stabilizer.
+\end{prop}
+
+\begin{cor}
+    If \(\mf{X} = [X/G]\) is as above and is Deligne-Mumford, then \(\mf{X}\) has:
+    \begin{enumerate}
+        \item \'etale local quotient presentations at all closed points;
+        \item \(\ol{\ab\{x\}} = \ab\{x\}\) for all \(x \in \mf{X}(k)\).
+    \end{enumerate}
+\end{cor}
+
+This does not quite imply that \(\mf{X}\) has a good moduli space, but it is close. The only missing ingredient is the following result.
+
+\begin{prop}
+    Suppose that \(\mf{X}\) has finite inertia. Then \(\mf{X}\) has an \'etale local quotient presentation at a closed point \(x\) if and only if it has a strongly \'etale local quotient presentation at \(x\).
+\end{prop}
+
+Recall here the diagram
+\begin{equation*}
+\begin{tikzcd}
+    G \times X \ar{r} \ar{d}{\psi} & \mf{X} \ar{d}{\Delta_{\mf{X}}} & I_{\mf{X}} \ar{d} \ar{l} \\
+    X \times X \ar{r} & \mf{X} \times \mf{X} & \mf{X} \ar{l}{\Delta_{\mf{X}}}.
+\end{tikzcd}
+\end{equation*}
+
+\begin{proof}
+    Let \(f \colon \mf{W} = [\Spec A / G_x] \to \mf{X}\) be an \'etale local quotient presentation at \(x\). Note that \(f\) sends closed points to closed points because all points in both \(\mf{W}\) and \(\mf{X}\) are closed. 
+
+    \begin{lem}
+        \(f\) is stabilizer preserving in an open neighborhood \(x \in \mf{U}\subseteq \mf{W}\), where \(\mf{U} = [\Spec B / G_x]\) such that \(\Spec B \subseteq \Spec A\) is a \(G_x\)-invariant open (which is clearly saturated). 
+    \end{lem}
+
+    Note that it is enough to find any \(\mf{U}\) where \(f\) is stabilizer-preserving because we can just shrink to make it affine. Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        I_{\mf{W}} \ar{r} \ar{d} & I_{\mf{X}} \ar{d} \\
+        \mf{W} \ar{r}{f} & \mf{X}.
+    \end{tikzcd}
+    \end{equation*}
+    Denote the induced map \(h \colon I_{\mf{W}} \to \mf{W} \times_{\mf{X}} I_{\mf{X}}\). These are both finite over \(\mf{W}\), so our goal is to show that \(h\) is an open immersion. Now note that \(f \colon \mf{W} \to \mf{X}\) is \'etale, so we can consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        I_{\mf{W}} \ar{r}{h} \ar{d} & \mf{W} \times_{\mf{X}} I_{\mf{X}} \ar{d} \\
+        \mf{W} \ar{r}{\Delta_f} & \mf{W} \times_{\mf{X}} \mf{W},
+    \end{tikzcd}
+    \end{equation*}
+    which is Cartesian. Because \(\Delta_f\) is an open immersion (this follows from \(f\) being unramified), so is \(h\).
+
+    Now consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mf{W} \times \mf{W} \ar{rr}{f \times f} & & \mf{X} \times \mf{X} \\
+        \mf{W} \times_{\mf{X}} \mf{W} \ar{u} & & \mf{X} \ar{u}{\Delta_{\mf{X}}} \\
+        & \mf{W} \ar{uur} \ar{uul}{\Delta_{\mf{W}}} \\
+        & \mf{Z} \ar{u} \ar{uur} \ar{uul},
+    \end{tikzcd}
+    \end{equation*}
+    where \(\mf{Z} = \mf{W} \times_{\mf{X} \times \mf{X}} \mf{X}\). By the cancellation property, we see that
+    \begin{align*}
+        \mf{W} \times_{\mf{X}} I_{\mf{X}} &\simeq \mf{W} \times_{\mf{X}} (\mf{X} \times_{\mf{X} \times \mf{X}} \mf{X}) \\
+        &\simeq \mf{W} \times_{\mf{X} \times \mf{X}} \mf{X} \\
+        &\simeq \mf{Z}. \qedhere
+    \end{align*}
+\end{proof}
 
 
 \end{document}

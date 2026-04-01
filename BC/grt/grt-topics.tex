@@ -2566,13 +2566,13 @@ Note that \(\mc{O}(\g)^G \simeq \mc{O}(\h)^W\) is an isomorphism of graded rings
 \begin{thm}[Kostant]
     Let \((e,h,f)\) be a regular \(\sl_2\)-triple. Recall that the decomposition
     \[ \g = \bigoplus_j V_j \]
-    into irreducible \(\sl_2\)-representations \(V_j\) satisfies \(\dim V_j = 2 \mu_j + 1\), where \(\mu_j > 0\). Order \(V_j\) such that \(1 = \mu_1 \leq \cdots \leq \mu_k\). Then \(k = r\) and \(d_j = \mu_j + 1\).
+    into irreducible \(\sl_2\)-representations \(V_j\) satisfies \(\dim V_j = 2 \lambda_j + 1\), where \(\lambda_j > 0\). Order \(V_j\) such that \(1 = \lambda_1 \leq \cdots \leq \lambda_k\). Then \(k = r\) and \(d_j = \lambda_j + 1\).
 \end{thm}
 
 \begin{proof}
     Consider the decomposition
     \[ \g = \g^f + [\g, e]. \]
-    For each \(V_j\), the lowest weight is \(-2 \mu_j\). Because \(\g^f \cap V_j\) is the lowest weight space of \(V_j\), we can let the set of \(0 \neq \xi_j \in \g^f \cap V_j\) be a basis of \(\g^f\). Define a map
+    For each \(V_j\), the lowest weight is \(-2 \lambda_j\). Because \(\g^f \cap V_j\) is the lowest weight space of \(V_j\), we can let the set of \(0 \neq \xi_j \in \g^f \cap V_j\) be a basis of \(\g^f\). Define a map
     \[ \psi \colon G \times \C^r \to \g \qquad (g, a_1, \ldots, a_r) \mapsto g \cdot \ab(e + \sum_{j=1}^r a_j \xi_j). \]
     We will show that \(\d{\psi}\) is surjective everywhere, or namely that \(\psi\) is a submersion. Because this morphism is \(G\)-equivariant, it suffices to check when \(g = 1\). Let \(x = (1, a_1, \ldots, a_r)\). Then 
     \begin{align*}
@@ -2583,9 +2583,62 @@ Note that \(\mc{O}(\g)^G \simeq \mc{O}(\h)^W\) is an isomorphism of graded rings
         \Ima (\d_x \psi) &= [\g, e + \sum_j a_j \xi_j] + \sum_j b_j \xi_j \\
         &= \ab[\g, e + \sum_j a_j \xi_j] + \g^f \\
         &= \ab[\g, e] + \g^f  \\
-        &= \g. \qedhere
+        &= \g. 
     \end{align*}
+    Now consider the \(\C^{\times}\)-action on \(e + \g^f\), which is given by
+    \[ t^{-2} \Ad_{t^h} \ab(e+\sum a_i \xi_i) = e + \sum a_i t^{-2 \lambda_i - 2} \xi_i. \]
+    Note that the map \(\psi\) is equivariant with respect to this action, where \(\C^{\times}\) acts on \(\C^r\) by \(a_i \mapsto t^{-2 \lambda_i - 2} a_i\). Note that the \(t \to {\infty}\) limit contracts everything to the origin, so it was enough to check that we had a surjection there. Because the differential is surjective, \(G \cdot (e + \g^f) = \Ima \psi\) is open and dense in \(\g\), and therefore the restriction
+    \[ \C [\g]^G \to \C[e + \g^f] \]
+    is injective.
+
+    For a generator \(P_j \in \C[\g]^G\), let \(R_j \in \C[a_1, \ldots, a_r]\) be given by
+    \begin{align*}
+        R_j (a_1, \ldots, a_r) &= P_j \circ \psi (1, a_1, \ldots, a_r) \\
+        &= P_j \ab(e + \sum_{i=1}^r a_i \xi_i).
+    \end{align*}
+    Because \(P_1, \ldots, P_r\) are algebraically independent, so are \(R_1, \ldots, R_r\). We now use the Euler identity, which says that for all homogeneous \(P \in \C[x_1, \ldots, x_r]\), we have
+    \[ x_1 \pdv{P}{x_1} + \cdots + x_r \pdv{P}{x_r} = \deg (P) \cdot P. \]
+    Denote this vector field by \(Z\).
+    Applying this to the \(P_j\) on \(\g\), let \(u = Z_u \) denote the tangent vector at \(T_u \g\). Clearly, we have
+    \[ \ab<u, \d_u P_j> = d_j P_j(u). \]
+    Now let
+    \begin{align*}
+        u &= e + \sum a_i \xi_i \\
+        &= \ab(e - \sum \lambda_i a_i \xi_i) + \sum (1 + \lambda_i) a_i \xi_i \\
+        &= \d_{(1, a_1, \ldots, a_r)} \psi \ab(\frac{h}{2}, (1+\lambda_1) a_1, \ldots, (1+\lambda_r) a_r)
+    \end{align*}
+    Then we see that
+    \begin{align*}
+        \ab< u, \d_u P_j> &= \ab<\d_{(1, a_1, \ldots, a_r)} \psi \ab(\frac{h}{2}, (1+\lambda_1) a_1, \ldots, (1+\lambda_r) a_r), \d_u P_j> \\
+        &= \ab< \ab(\frac{h}{2}, (1+\lambda_1) a_1, \ldots, (1+\lambda_r) a_r), \d_{(1, a_1, \ldots, a_r)} (P_j \circ \psi)> \\
+        &= \ab< ((1 + \lambda_1) a_1, \ldots, (1+\lambda_r) a_r), \d_{(a_1, \ldots, a_r)} R_j> \\
+        &= \sum_{i=1}^r (1 + \lambda_i) a_i \pdv{R_j}{a_i} \\
+        &= d_j R_j(a_1, \ldots, a_r)
+    \end{align*}
+    The polynomial \(R_j\) is a sum of monomials of the form \(a_1^{m_{1j}} \cdots a_k^{m_{kj}}\), and we have the identity
+    \[ \sum_{i=1}^r (1 + \lambda_i) m_{ij} = d_j \]
+    for every monomial in \(R_j\).
+
+    We now want to show that each \(d_j \geq 1 + \lambda_j\). Suppose there exists \(j_0\) such that \(d_{j_0} < 1 + \lambda_{j_0}\). Then for every \(i \geq j_0\), we must have \(m_{ij_0} = 0\). On the other hand, for all \(j < j_0\), we have \(d_j \leq 1 + \lambda_{j_0}\) while \(m_{ij} = 0\) for \(j \leq j_0\). This implies that \(R_1, \ldots, R_{j_0}\) depend only on \(a_1, \ldots, a_{j_0-1}\), so they cannot be algebraically independent, which is a contradiction.
+
+    Finally, we need to show that \(d_j \leq 1 + \lambda_j\). We will follow Kostant's proof.
+    \begin{prop}
+        Let \(\g\) be semisimple of rank \(r\) and \(d_1, \ldots, d_r\) be the exponents of \(\g\). Then
+        \[ d_1 + \cdots + d_r = \frac{1}{2} (r + \dim \g). \]
+    \end{prop}
+    Assuming the proposition, we see that
+    \begin{align*}
+        \sum_{i=1}^r d_j &\geq \sum_{j=1}^r (1 + \lambda_j) \\
+        &= \frac{1}{2} (r + \dim \g),
+    \end{align*}
+    so we must actually have an equality everywhere.
 \end{proof}
+
+\begin{prop}
+    The morphism
+    \[ \rho \colon e + \g^f \to \C^r \qquad x \mapsto (P_1(x), \ldots, P_r(x)) \]
+    is an isomorphism.
+\end{prop}
 
 
 
