@@ -2333,7 +2333,7 @@ In the proof, we implicitly used the following lemma.
     \end{enumerate}
 \end{defn}
 
-\begin{thm}
+\begin{thm}\label{thm:local-quotient-presentations-imply-global-quotient}
     Suppose \(\mf{X}\) is an algebraic stack of finite type over an algebraically closed field with affine diagonal. Suppose also that
     \begin{enumerate}
         \item Every closed point has a strongly \'etale local quotient presentation;
@@ -2422,6 +2422,100 @@ Recall here the diagram
         &\simeq \mf{Z}. \qedhere
     \end{align*}
 \end{proof}
+
+\begin{rmk}
+    We can extend the definition of a groupoid scheme to that of a groupoid algebraic space.
+\end{rmk}
+
+\begin{exm}
+    Consider \(f \colon U \to B\) and then set \(R = U \times_B U\). We can also consider \(U \times_B \times_B U\), and for example the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        U \times_B U \times_B U \ar{r}{\on{pr}_{12}} & U \times_B U \ar{d}{\on{pr}_2} \\
+        U \times_B U \ar{r}{\on{pr}_1} & U
+    \end{tikzcd}
+    \end{equation*}
+    is Cartesian (as are all othe rsimilar diagrams). We can think of this as
+    \begin{equation*}
+    \begin{tikzcd}
+        (a,b,c) \ar{r}{\on{pr}_{12}} \ar{d}{\on{pr}_{23}} & (a,b) \ar{d}{\on{pr}_2} \\
+        (b,c) \ar{r}{\on{pr}_1} & b.
+    \end{tikzcd}
+    \end{equation*}
+    To recognize a general groupoid scheme or algebraic space, we can just chase the properties of this picture.
+\end{exm}
+
+\begin{proof}[Proof of~\Cref{thm:local-quotient-presentations-imply-global-quotient}]
+    For every closed point \(x \in \mf{X}(k)\), it in particular has a reductive stabilizer, and a strongly \'etale and affine
+    \[ [\Spec A_x / G_x] \to \mf{X}. \]
+    Note that \(\Spec A_x^{G_x}\) is a good moduli space for \([\Spec A_x / G_x]\), so we can consider
+    \[ \mf{X}' = \bigsqcup [\Spec A_x / G_x] \to \mf{X}, \]
+    which is surjective, strongly \'etale, and affine, and has a good moduli space. As a remark, by GIT, \(\mf{X}'\) satisfies both both conditions in the theorem.
+
+    \begin{prop}
+        Suppose that \(\mf{X}' \to \mf{X}\) is strongly \'etale where \(\mf{X}'\) and \(\mf{X}\) both satisfy the condition that every \(\ol{\ab\{x\}}\) has a good moduli space. Then for all \(\mf{W} \to \mf{X}\), the base change \(\mf{X}' \times_{\mf{X}} \mf{W} \to \mf{W}\) is strongly \'etale. 
+    \end{prop}
+
+    \begin{proof}
+        Let \(z \in \mf{X}' \times_{\mf{X}} \mf{W}\) is closed. We will name the morphisms by
+        \begin{equation*}
+        \begin{tikzcd}
+            \mf{X}' \times_{\mf{X}} \mf{W} \ar{r}{g'} \ar{d}{f'} & \mf{X}' \ar{d}{f} \\
+            \mf{W} \ar{r}{g} & \mf{X}.
+        \end{tikzcd}
+        \end{equation*}
+        Replace \(\mf{X}'\) by \(\ol{g'(z)}\), \(\mf{W}\) by \(\ol{f'}(z)\), and \(\mf{X}\) by \(\mf{g(f'(z))}\). Now both \(\mf{X}\) and \(\mf{X}'\) have good moduli space given by a point, and the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            \mf{X}' \ar{r}{\on{GMS}} \ar{d} & \on{pt} \ar{d} \\
+            \mf{X} \ar{r}{\on{GMS}} & \on{pt}
+        \end{tikzcd}
+        \end{equation*}
+        is Cartesian. This implies that \(f\) and \(f'\) are isomorphisms.
+    \end{proof}
+
+    Returning to the proof of the theorem, set \(X'' \coloneqq \mf{X}' \times_{\mf{X}} \mf{X}' \rightrightarrows \mf{X}'\). Note that both \(\on{pr}_1\) and \(\on{pr}_2\) are also strongly \'etale by the proposition. Set \(\mf{X}''' = \mf{X}' \times_{\mf{X}} \mf{X}' \times_{\mf{X}} \mf{X}'\). Note that the \(\on{pr}_{ij}\) are also strongly \'etale. Because \(\mf{X}'\) has a good moduli space and all \(\on{pr}_i\) and \(\on{pr}_{ij}\) are affine, \(\mf{X}''\) and \(\mf{X}'''\) have good moduli spaces. We obtain a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mf{X}''' \ar{r} \ar[shift left]{r} \ar[shift right]{r} \ar{d} & \mf{X}'' \ar{d} \ar[shift left]{r} \ar[shift right]{r} \ar[loop above]{r} & \mf{X}' \ar{d}{\on{GMS}} \ar{r}{f} \ar[bend right=30]{l}[swap]{\Delta_f} & \mf{X} \\
+        X''' \ar{r} \ar[shift left]{r} \ar[shift right]{r} & X'' \ar[shift left]{r} \ar[shift right]{r} \ar[loop below]{r}{i} & X' \ar[bend left=30]{l}{e},
+    \end{tikzcd}
+    \end{equation*}
+    where the bottom row is an \'etale groupoid algebraic space. We will prove that it is in fact an \'etale equivalence relation. Once we have this, we can form the quotient \(X = X' / X''\), which is an algebraic space, and the map \(X' \to X\) is \'etale and surjective, so \(X\) is a good moduli space for \(\mf{X}\).
+
+    The intuition is that \(\mf{X}' = [Z/G]\) and \(\mf{X} = [Y/G]\) and \(f\) is induced by a \(G\)-morphism \(f \colon Z \to Y\) that sends closed orbits to closed orbits and is stabilizer-preserving on closed orbits. Consider the morphism
+    \[ (\on{pr}_1, \on{pr}_2) \colon \mf{X}' \times_{\mf{X}} \mf{X}' \to \mf{X}' \times \mf{X}'. \]
+    Note that \(\mf{X}' \times_{\mf{X}} \mf{X}' = [Z \times_Y Z / G]\), because taking the quotient of the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        Z \times_Y Z \ar{r} \ar{d} & Z \ar{d}{f} \\
+        Z \ar{r}{f} & Y
+    \end{tikzcd}
+    \end{equation*}
+    by \(G\) preserves the property of being Cartesian.\footnote{Note that \(\mf{X} \times \mf{X} \neq [Y \times Y / G] = \mf{X} \times_{BG} \mf{X}\).}
+
+    Consider two closed orbits \(G \cdot (a,b)\) and \(G \cdot (c,d)\) in \(Z \times_Y Z\). Note that in \(Y\), we have \(f(a) = f(b)\) and \(f(c) = f(d)\). Suppose they map to the same point in \(X' \times X'\). But then we have \(G \cdot a = G \cdot c\) and \(G \cdot b = G \cdot d\) in \(Z\). This implies that \(a = g_1 c\) and \(b = g_2 d\) for some \(g_1, g_2 \in G\). This implies that \(g_1 f(c) = f(a) = f(b) = g_2 f(d) = g_2 f(c)\), and therefore \(g_2^{-1} g_1\) stabilizes \(f(c)\). Because \(f\) is stabilizer-preserving on closed orbits, \(g_2^{-1}g_1\) stabilizes \(c\). In particular, we see that \(g_2^{-1}a = c\) and therefore \(g_2^{-1}(a,b) = (c,d)\). Thus they define the same point in \([Z \times_Y Z / G]\).
+\end{proof}
+
+\subsection{Keel-Mori}%
+\label{sub:Keel-Mori}
+
+Our next goal is to prove the following.
+
+\begin{thm}
+    If \(\mf{X}\) is an algebraic stack with finite inertia, then it has a coarse (also good) moduli space \(\pi \colon \mf{X} \to X\) such that
+\begin{enumerate}
+    \item \(\pi\) is initial among morphisms to algebraic spaces;
+    \item \(\ab|\mf{X}(k)| = X(k)\) for all algebraically closed fields \(k\);
+    \item \(\pi\) is proper and quasi-finite;
+    \item The formation of \(\pi\) is invariant under flat base change and is in particular a universal homeomorphism.
+\end{enumerate}
+\end{thm}
+
+Our first reduction is to write \(\mf{X} = \bigcup \mf{X}_i\), where \(\mf{X}_i \subset \mf{X}\) is open such that there exist good moduli spaces \(\mf{X}_i \to X_i\) satisfying the four conditions, and then glue the \(X_i\) together in the Zariski topology. By universality, we have \(U_{ij} = U_{ji}\) and the cocycle condition is automatically satisfied. The second reduction is the following.
+\begin{lem}[Grothendieck]
+    Let \(\mf{X}\) be an algebraic stack with quasi-finite diagonal (quasi-finite inertia is enough). Then there exists an open cover of \(\mf{X}\) by open substacks such that each open substack admits a flat, quasi-finite, finitely presented cover by a quasi-projective scheme.
+\end{lem}
 
 
 \end{document}
