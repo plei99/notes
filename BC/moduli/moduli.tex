@@ -2219,6 +2219,9 @@ One upshot of the diagram defining the inertia stack is that if \(\mf{X}\) is se
 \section{Moduli spaces}%
 \label{sec:Moduli spaces}
 
+\subsection{Some basic situations}%
+\label{sub:Some basic situations}
+
 \begin{thm}[Keel-Mori]
     If \(\mf{X}\) is an algebraic stack with finite inertia, then \(\mf{X}\) has a good moduli space \(\phi \colon \mf{X} \to X\) where \(X\) is an algebraic space. Furthermore, if \(\mf{X}\) is separated, then \(X\) is separated.
 \end{thm}
@@ -2431,11 +2434,11 @@ Recall here the diagram
     Consider \(f \colon U \to B\) and then set \(R = U \times_B U\). We can also consider \(U \times_B \times_B U\), and for example the diagram
     \begin{equation*}
     \begin{tikzcd}
-        U \times_B U \times_B U \ar{r}{\on{pr}_{12}} & U \times_B U \ar{d}{\on{pr}_2} \\
+        U \times_B U \times_B U \ar{r}{\on{pr}_{12}} \ar{d}{\on{pr}_{23}} & U \times_B U \ar{d}{\on{pr}_2} \\
         U \times_B U \ar{r}{\on{pr}_1} & U
     \end{tikzcd}
     \end{equation*}
-    is Cartesian (as are all othe rsimilar diagrams). We can think of this as
+    is Cartesian (as are all other similar diagrams). We can think of this as
     \begin{equation*}
     \begin{tikzcd}
         (a,b,c) \ar{r}{\on{pr}_{12}} \ar{d}{\on{pr}_{23}} & (a,b) \ar{d}{\on{pr}_2} \\
@@ -2516,6 +2519,166 @@ Our first reduction is to write \(\mf{X} = \bigcup \mf{X}_i\), where \(\mf{X}_i 
 \begin{lem}[Grothendieck]
     Let \(\mf{X}\) be an algebraic stack with quasi-finite diagonal (quasi-finite inertia is enough). Then there exists an open cover of \(\mf{X}\) by open substacks such that each open substack admits a flat, quasi-finite, finitely presented cover by a quasi-projective scheme.
 \end{lem}
+
+The next reduction is that if \(\mf{X}\) has finite inertia and admits a flat, quasi-finite, finitely presented cover by a quasi-projective scheme, then there exists a representable morphism \(\mf{U}' \to \mf{X}\) which is strongly \'etale, quasicompact, and surjective, where \(\mf{U}'\) is an algebraic stack and has a finite locally free cover by a scheme. By a standard argument, it suffices to show that \(\mf{U}'\) has a good moduli space.
+
+\begin{defn}
+    A morphism \(\Spec B \to \Spec A\) is finite locally free if \(B\) is a free \(A\)-module of finite rank.
+\end{defn}
+
+In conclusion, it suffices to show that a groupoid space \([R \rightrightarrows U]\) where \(s\) and \(t\) are finite locally free has a good moduli space. In the first case, we will consider the case where \(U = \Spec B\) is affine, where \(B\) is a finite type \(A\)-algebra.
+
+\begin{defn}
+    Define the subring
+    \[ B^R = \ab\{ b \in B \mid s^*(b) = t^*(b) \} \subseteq B. \]
+\end{defn}
+
+\begin{exm}
+    If \(R = G \times \Spec B\) for a finite group \(G\) acting on \(B\), then \(B^R = B^G\) is the ring of invariants.
+\end{exm}
+
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item \(B^R\) is a finite type \(A\)-algebra;
+        \item \(B\) is a finite \(B^R\)-algebra;
+        \item The finite surjective morphism \(\Spec B = U \to Q \coloneqq B^R\) is a good moduli space for the groupoid scheme \(R \rightrightarrows U\) which produces the stack \([R/U]\);
+        \item For every flat affine \(Q' \to Q\), \([R \times_Q Q' \rightrightarrows U \times_Q Q'] \to Q\) is a good moduli space.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}[Proof of the fourth statement]
+    Consider the exact sequence
+    \[ 0 \to B^R \to B \xrightarrow{s^* - t^*} \mc{O}(R) \]
+    of \(B^R\)-modules. If \(Q' = \Spec B_0'\), then tensoring with \(B_0'\) is exact. This proves the fourth statement.
+\end{proof}
+
+Recall that if \(\phi \colon \Spec C \to \Spec B\) is finite flat, then \(C \simeq B^N\) as a \(B\)-module. For any \(g \in C\), \(m_g \colon C \to C\) given by multiplication by \(g\) is \(B\)-linear, and we define the \textit{norm} 
+\[\on{Nm}(g) = \det (m_g) \in B.\]
+Here are some properties of the norm:
+\begin{enumerate}
+    \item \(\on{Nm}\) is multiplicative;
+    \item For all \(b \in B \subset C\), we have \(\on{Nm}(b) = b^N\).
+    \item If we have a Cartesian diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \Spec C' \ar{r}{f'} \ar{d}{\phi'} & \Spec C \ar{d}{\phi} \\
+        \Spec B' \ar{r}{f} & \Spec B,
+    \end{tikzcd}
+    \end{equation*}
+    then \(f^* \on{Nm}_{\phi}(g) = \on{Nm}_{\phi'} ((f')^* g)\).
+\end{enumerate}
+
+\begin{proof}[Proof of the first three statements]
+    Choose generators \(1, x_2, \ldots, x_n\) of \(B\) as an \(A\)-algebra. Then there is a faithfully flat base change
+    \[ A \to A [y_1, \ldots, y_n] \eqqcolon \bar{A}. \]
+    Set \(\bar{B} = B[y_1, \ldots, y_n]\), \(\bar{U} = \Spec \bar{B}\), and \(\bar{R} = R \times_A \Spec \bar{A}\). Therefore, we get a new finite flat groupoid \(\bar{R} \rightrightarrows \bar{U}\). Set
+    \begin{align*} 
+        \phi &= \sum_{i=1}^n x_i y_i \in \bar{B} = B[y_1, \ldots, y_n] \\
+        &= y_1 + \sum_{i=2}^n x_i y_i.
+    \end{align*}
+    \begin{lem}
+        In fact, we have \(\on{Nm}_t(s^* \phi) \in B^R[y_1, \ldots, y_n] \subset \bar{B}\).
+    \end{lem}
+    \begin{proof}
+        By definition of \(\bar{B}^{\bar{R}}\) we need to prove that \(s^* \on{Nm}_t(s^* \phi) = t^* \on{Nm}_t(s^* \phi)\). Consider the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            \bar{R} \times_{\bar{U}} \bar{R} \ar{r}{\on{pr}_2} \ar{d}{\on{pr}_1} & \bar{R} \ar{d}{t} \ar{r}{s} & \bar{U} \\
+            \bar{R} \ar{r}{s} & \bar{U}.
+        \end{tikzcd}
+        \end{equation*}
+        Then we see that
+        \[ s^* \on{Nm}_t(s^* \phi) = \on{Nm}_{\on{pr}_1} (\on{pr}_2^* s^* \phi). \]
+        Because \(\bar{R} \rightrightarrows \bar{U}\) is a groupoid, there is a morphism 
+        \[ \tau \colon \bar{R} \times_{(s,t)} \bar{R} \to \bar{R} \times_{(t,t)} \bar{R} \qquad \tau(r_1, r_2) = (r_1, r_1 \circ r_2), \]
+        which is an isomorphism over \(\bar{R}\) via \(\on{pr}_1\). Now we have the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            \bar{R} \ar[equals]{d} & \bar{R} \times_{(s,t)} \bar{R} \ar{d}{\tau} \ar{l}[swap]{\on{pr}_1} \ar{r}{\on{pr}_2} & \bar{R} \ar{r}{s} & \bar{U} \ar[equals]{d} \\
+            \bar{R} & \bar{R} \times_{(t,t)} \bar{R} \ar{d}{\on{pr}_1} \ar{l}[swap]{\on{pr}_1} \ar{r}{\on{pr}_2} & \bar{R} \ar{d}{t} \ar{r}{s} & \bar{U} \\
+            & \bar{R} \ar{r}{t} & \bar{U}.
+        \end{tikzcd}
+        \end{equation*}
+        This shows that
+        \begin{align*}
+            t^* \on{Nm}_t (s^* \phi) &= \on{Nm}_{\on{pr}_1} (\on{pr}_2^* s^* \phi) \\
+            &= \on{Nm}_{\on{pr}_1} (\tau^{-1} (\on{pr}_2^* s^* \phi)) \\
+            &= \on{Nm}_{\on{pr}_1} (\on{pr}_2^* s^* \phi). \qedhere
+        \end{align*}
+    \end{proof}
+    This gives us
+    \[ F(y_1, \ldots, y_n) = \on{Nm}_t(s^* \phi) \in B^R[y_1, \ldots, y_n]. \]
+    Let \(D \subseteq B^R\) be the \(A\)-algebra generated by the coefficients of \(F\). Using the sequence of inclusions \(A \subseteq D \subseteq B^R \subseteq B\), we can use Artin-Tate to conclude that \(D\) is finitely generated as long as we know that \(B\) is finite over \(D\). Note that \(F(y_1, 0, \ldots, 0) = \on{Nm}_t (s^* y_1) = y_1^{\deg(t)}\), so if we consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        {\mc{O}(R)[y_1]} \ar{r}{s} \ar{d}{t} & {B[y_1]} \\
+        {B[y_1]},
+    \end{tikzcd}
+    \end{equation*}
+    we see that multiplication by \(y_1\) is diagonalizable, and thus \(F\) is monic in \(y_1\). We claim now that \(F(x_i, 0, \ldots, 0, -1, 0, \ldots, 0) = 0\) and consequently that \(x_i\) is integral over \(D\). To prove this claim, we have \(e \colon \bar{U} \to \bar{R}\) such that \(t \circ e = \on{id}_{\bar{U}}\). This gives the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \bar{R} \ar{r}{s} \ar{d}[swap]{t} & \bar{U} \ar[equals]{dl} \\
+        \bar{U} \ar[bend right=20]{u}[swap]{e}
+    \end{tikzcd}
+    \end{equation*}
+    and we see that \(t^* \colon \bar{B} \hookrightarrow \mr{O}(\bar{R})\) has the contraction \(e^*\). Therefore, we see that \(\mc{O}(\bar{R}) = \bar{B} \oplus L\) where \(L \simeq B^{\deg(t)-1}\) as a \(B\)-module. We now compute
+    \begin{align*}
+        F(x_i, 0, \ldots, 0, -1, 0, \ldots, 0) &= \on{Nm}_t(x_i - s^*(x_i)) \\
+        &= \on{Nm}_t (t^*(x_i) - s^*(x_i)) \\
+        &= e^* (t^* (x_i) - s^*(x_i)) \cdot \on{Nm}_{L/B} (t^*(x_i) - s^*(x_i))\\
+        &= (x_i - x_i) \cdot * \\
+        &= 0
+    \end{align*}
+    because \(t \circ e = s \circ e = 1_U\).
+
+    \begin{lem}
+        There is a bijection \((U/R)(k) = Q(k)\), where \(Q = \Spec B^R\).
+    \end{lem}
+    \begin{proof}
+        Consider the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            R \ar[shift left]{r}{s} \ar[shift right]{r}[swap]{t} & U \ar[twoheadrightarrow]{r}{q} & Q = \Spec B^R.
+        \end{tikzcd}
+        \end{equation*}
+        If \(f \in B^R\), then \(f(q(a)) = s^*(f)(r)\) and \(f(q(b)) = t^*(f)(r)\), where \((a,b) = (s(r), t(r))\). By invariance, we see that these two values are equal. In particular, the map \((U/R)(k) \to Q(k)\) is surjective for all algebraically closed fields \(k\).
+
+        Now suppose that \(q(a) = q(a')\) for geometric points \(a, a'\) of \(U\). Then \(F(y_1, \ldots, y_n) = \on{Nm}_t\ab(\sum y_i s^* (x_i))\), and in particular at \(a\) we see that
+        \[ F_a(y_1, \ldots, y_n) = \on{Nm}_t (s^* \phi(a)). \]
+        Because all \(x_i \in B^R\), we see that 
+        \[ F_a(y_1, \ldots, y_n) = F_{a'} (y_1, \ldots, y_n). \]
+        Now consider the cartesian diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            R_a \ar{r} \ar{d}{t} & R \ar{r}{s} \ar{d}{t} & U \\
+            \Spec k \ar{r}{a} & U,
+        \end{tikzcd}
+        \end{equation*}
+        which can be extended to
+        \begin{equation*}
+        \begin{tikzcd}
+            \bar{R}_a \ar{r} \ar{d}{t} & \bar{R} \ar{d}{t} \\
+            \Spec {k[y_1, \ldots, y_n]} \ar{r}{\bar{a}} & \bar{U}.
+        \end{tikzcd}
+        \end{equation*}
+        Therefore, we obtain
+        \begin{align*}
+            F_a (y_1, \ldots, y_n) &= \prod_{b \in t^{-1}(a)} (s^* \phi(b)) \\
+            &= \prod_{b \in t^{-1}(a)} \ab(y_1 + \sum y_i x_i(s(b)))^{\on{mult}},
+        \end{align*}
+        and similarly
+        \begin{align*}
+            F_{a'} (y_1, \ldots, y_n) &= \prod_{b' \in t^{-1}(a')} (s^* \phi(b')) \\
+            &= \prod_{b' \in t^{-1}(a')} \ab(y_1 + \sum y_i x_i(s(b')))^{\on{mult}},
+        \end{align*}
+        Because the two are equal, there exists \(b \in t^{-1}(a)\) and \(b' \in t^{-1}(a')\) such that \(x_i (s(b)) = x_i(s(b'))\) for all \(x_i\). Because the \(x_i\) generate \(B\), we have \(s(b) = s(b')\). Therefore, we see that
+        \[ a = t(b) \sim s(b) = s(b') \sim t(b') = a', \]
+        and therefore \(a \sim a'\).
+    \end{proof}
+    Now consider \(j \colon R \to X \times X\), where \(s,t\) are flat and \(j\) is quasi-finite. We will find an \'etale open \(U\) at every closed geometric point \(x \in X\) such that \(R_{|U}\) and \(U\) are separated, \(s\) and \(t\) are flat and quasi-finite, and \(x\) is fixed by \(R_{|U}\), namely that \(t(s^{-1}(x)) = \ab\{x\}\).
+\end{proof}
+
 
 
 \end{document}
