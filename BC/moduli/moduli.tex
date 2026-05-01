@@ -2568,7 +2568,7 @@ Here are some properties of the norm:
     then \(f^* \on{Nm}_{\phi}(g) = \on{Nm}_{\phi'} ((f')^* g)\).
 \end{enumerate}
 
-\begin{proof}[Proof of the first three statements]
+
     Choose generators \(1, x_2, \ldots, x_n\) of \(B\) as an \(A\)-algebra. Then there is a faithfully flat base change
     \[ A \to A [y_1, \ldots, y_n] \eqqcolon \bar{A}. \]
     Set \(\bar{B} = B[y_1, \ldots, y_n]\), \(\bar{U} = \Spec \bar{B}\), and \(\bar{R} = R \times_A \Spec \bar{A}\). Therefore, we get a new finite flat groupoid \(\bar{R} \rightrightarrows \bar{U}\). Set
@@ -2677,7 +2677,233 @@ Here are some properties of the norm:
         and therefore \(a \sim a'\).
     \end{proof}
     Now consider \(j \colon R \to X \times X\), where \(s,t\) are flat and \(j\) is quasi-finite. We will find an \'etale open \(U\) at every closed geometric point \(x \in X\) such that \(R_{|U}\) and \(U\) are separated, \(s\) and \(t\) are flat and quasi-finite, and \(x\) is fixed by \(R_{|U}\), namely that \(t(s^{-1}(x)) = \ab\{x\}\).
+
+    \begin{lem}
+        The algebraic space \(j^{-1}(\Delta_X)\) is separated if and only if \(j\) is separated. 
+    \end{lem}
+    \begin{proof}
+        Recall that there is a morphism \(e \colon X \to R\), so we get \(e \colon X \to S_X \coloneqq j^{-1}(\Delta_X)\).
+    
+        Suppose that \(j' \colon S_X \to X\) is separated. 
+        \begin{exer}
+            Suppose that \(f \colon Z \to X\) is separated and \(s \colon X \to Z\) is a section. Then \(s\) is a closed embedding.
+        \end{exer}
+        By the exercise, \(e\) is a closed embedding. We now claim that the horizontal arrows in the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            R \ar{r} \ar{d}{\Delta_j} & R \times_{(s,s)} e(X) \ar{d} \\
+            R \times_{X \times X} R \ar{r} & R \times_{(s,s)} S_X
+        \end{tikzcd}
+        \end{equation*}
+        are isomorphisms. Here, the top arrow is defined by \(r \mapsto (r, e(s(r)))\), which is clearly a bijection on points, and the bottom arrow is defined by \((r_1, r_2) \mapsto (r_1, i(r_1) \circ r_2)\), which is also a bijection on points.
+    \end{proof}
+
+    \begin{lem}
+        Let \(X\) and \(R\) of finite type and let \((s,t)\) be flat with \(j\) quasi-finite with \(j^{-1}(X) \to X\) separated. Suppose that \(x \in X\) is a geometric point. TO prove that \(x \in X\) has a \'etale neighborhood \(U\) such that \(U/R|_U\) has a good categorical quotient, we can assume:
+        \begin{enumerate}
+            \item \(X\) and \(R\) are separated;
+            \item \(s,t\) are quasi-finite and flat;
+            \item \(x \in X\) is fixed by \(R\), namely that \(t(s^{-1}(x)) = \ab\{x\}\).
+        \end{enumerate}
+    \end{lem}
+
+        We can take an affine \'etale neighborhood of \(X\), so we may assume that \(X = \Spec B\) is separated. By the previous lemma, \(j\) is separated, so \(R\) is separated and quasi-finite over \(X \times X\) (which is a scheme), so \(R\) is also a scheme. Let \(F = s^{-1}(X)\). We claim that \(F\) is Cohen-Macaulay along \(j^{-1}(x,x)\).
+
+        Note that \(t \colon F \to \ol{t(F)}\) is quasi-finite, so 
+        \[t^{-1}(y) \cap F = t^{-1}(y) \cap s^{-1}(x) = j^{-1}((x,y))\]
+        is finite. Because the Cohen-Macaulay locus in \(F\) is open and nonempty, there exists \(w \in F\) such that \(F\) is Cohen-Macaulay along \(t^{-1}(t(w))\). Consider \(h \colon F \to s^{-1}(t(w))\) given by \(r \mapsto r \circ i(w)\). Then let \(x' = t(w) \sim_R x\). We see that \(s^{-1}(x')\) is Cohen-Macaulay along \(j^{-1}(x', x')\).
+        
+        Our next claim is the following. Suppose that \(s^{-1}(x)\) is Cohen-Macaulay along \(j^{-1}(x,x) = s^{-1}(x) \cap t^{-1}(x)\). Let \(W\) be a closed subscheme defined by \(d = \dim_x(F)\) hypersurfaces whose intersection with \(\ol{O}(x) = \ol{t(s^{-1}(x))} = \ol{t(F)}\) is \(0\)-dimensional at \(x\). Shrinking \(X\) in the Zariski topology, we can asume theoretically that
+        \[ \ol{t(F)} \cap H_1 \cap \cdots \cap H_d = \ab\{x\}. \]
+        Consider the embedding
+        \[ W \coloneqq X \cap H_1 \cap \cdots \cap H_d \hookrightarrow X. \]
+        Then the composition \(p \colon t^{-1}(W) \hookrightarrow R \xrightarrow{s} X\) is flat and quasi-finite.
+
+        Consider the diagram
+        \begin{equation*}
+        \begin{tikzcd}
+            R_{|W} \ar[hookrightarrow]{r} \ar{d} & R \times_{s,X,g} W \ar{d} \ar{r} & W \ar{d}{g} \\
+            t^{-1}(W) \ar[hookrightarrow]{r} \ar{d} & R \ar{r}{s} \ar{d}{t} & X \\
+            W \ar[hookrightarrow]{r}{g} & X,
+        \end{tikzcd}
+        \end{equation*}
+        where every square is Cartesian. Now note that
+        \begin{align*}
+            t^{-1}(W) \cap s^{-1}(x) &= F \cap t^{-1}(H_1) \cap \cdots \cap t^{-1}(H_d) \\
+            &= F \cap t^{-1}(H_1 \cap \cdots \cap H_d \cap \ol{t(F)}) \\
+            &= F \cap t^{-1}(x) \\
+            &= s^{-1}(x) \cap t^{-1}(x) \\
+            &= j^{-1}(x,x),
+        \end{align*}
+        which is finite. Note that \(F\) is Cohen-Macaulay along \(F \cap t^{-1}(H_1) \cap \cdots \cap t^{-1}(H_d)\), so because \(0 = \dim F \cap t^{-1}(H_1) \cap \cdots \cap t^{-1}(H_d) = \dim F - d\), we see that \(t^{-1}(H_1)_{|F}, \ldots, t^{-1}(H_d)_{|F}\) is a regular sequence, so by a lemma from commutative algebra, \(t^{-1}(W)\) is flat over \(X\).
+
+        \begin{lem}
+            Let \(\phi \colon (A,\mf{m}) \to (B, \mf{n})\) is a local homomorphism of Noetherian local rings and \(E = B / \mf{m}B\). Choose \(x_1, \ldots, x_n \in \mf{n}\). The following are equivalent:
+            \begin{enumerate}
+                \item \(x_1, \ldots, x_n\) is a regular sequence in \(B\) and \(B / (x_1, \ldots, x_n)\) is flat over \(A\);
+                \item \(\bar{x}_1, \ldots, \bar{x}_n\) is a regular sequence in \(E\) and \(B\) is flat over \(A\).
+            \end{enumerate} 
+        \end{lem}
+
+\begin{lem}[Keel-Mori]
+    Let \(j \colon R \to X \times X\) be a pre-equivalence relation such that \(s\) and \(t\) are open. Suppose that \(g \colon W \to X\) is such that \(p \colon S^{-1}(W) \to X\) is surjective in the quasi-finite flat topology. Then \(X/R = W / R_{|W}\).
+\end{lem}
+
+The upshot is that from flat \(s,t\) and quasi-finite \(j\), we have reduced to flat and quasi-finite \(s,t\).
+
+\begin{defn}
+    A flat groupoid \(R \rightrightarrows X\) of schemes is \textit{split} at \(x \in X\) if \(R = P \sqcup R_2\) where \(P\) is open and closed such that
+    \begin{enumerate}
+        \item \(P \rightrightarrows X\) is a groupoid;
+        \item \(P \rightrightarrows X\) is flat and finite;
+        \item \(j^{-1}(x,x) \subset P\).
+    \end{enumerate}
+\end{defn}
+
+\begin{prop}
+    For a quasi-flat groupoid of schemes \(R \rightrightarrows X\) and all \(x \in X\), there is an \'etale affine \((W,w) \to (X,x)\) neighborhood of \(x\) such that \(R_{|W} \rightrightarrows W\) is split at \(w\).
+\end{prop}
+
+\begin{proof}
+    Consider the diagram 
+    \begin{equation*}
+    \begin{tikzcd}
+        R \ar{r}{t} \ar{d}{s} & X \\
+        X.
+    \end{tikzcd}
+    \end{equation*}
+    Note that \(s\) is separated and quasi-finite and is therefore quasi-projective, so there exists a Hilbert scheme \(\on{Hilb}_{R/X} \to X\) given by the functor
+    \[ \on{Hilb}_{R/X}(T) = \ab\{ Z \to T \text{ finite, flat } \mid Z \hookrightarrow R \times_X T \text{ closed immersion} \}, \]
+    where the morphism to \(X\) is locally of finite type and separated. Denote this Hilbert scheme by \(H\) and \(H_R = R \times_X H\). Denoting the universal family by \(\mc{Z}\), we have a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{Z} \ar[hookrightarrow]{r} \ar{dr}&  H_R \ar{d} \ar{r} & R \ar{d}[swap]{s} \\
+        & H \ar{r} \ar[bend right=20]{u}[swap]{e_H} & X \ar[bend right=20]{u}[swap]{e}.
+    \end{tikzcd}
+    \end{equation*}
+    Choose some \(t = (Z_t,x) \in H\) and define \(W \hookrightarrow H\) to be the closed subscheme (see next lemma) of \(t \in H\) such that \(e_H(t) \in Z_t\). 
+    \begin{lem}
+        Suppose \(p \colon X \to Y\) is a morphism of schemes and \(F\) and \(G\) are two closed subschemes of \(X\) such that \(p_{|F} \colon F \to X\) is finite and flat. Then 
+        \[ I = \ab\{ y \in Y \mid G_y \hookrightarrow F_y \} \]
+        is a closed subscheme of \(Y\).
+    \end{lem}
+    \begin{proof}
+        This is local on \(Y\), so we can shrink \(Y\) so that \(p_* \mc{O}_F\) is finite and free. Then we have
+        \[ \mc{O}_F = \mc{O}_X / \mc{I}_F \twoheadrightarrow \mc{O}_{F \cap G} = \mc{O}_X / (\mc{I}_F + \mc{I}_G), \]
+        and therefore \(G_y \hookrightarrow F_y\) if and only if \(\mc{I}_{F_y} \subseteq \mc{I}_{G_y}\) if and only if \(\mc{I}_{F_y} \cap I_{G_y} = I_{F_x}\). In addition, \(p_* \mc{O}_F \twoheadrightarrow p_* \mc{O}_{F \cap G}\) because \(p_{|F}\) is finite flat. Therefore, the sequence
+        \[ \mc{O}_Y^s \xrightarrow{h} p_* \mc{O}_F = \mc{O}_Y^t \to p_* \mc{O}_{F \cap G} \to 0 \]
+        is exact, where \(h\) is given by an \(s \times t\) \(\mc{O}_Y\)-valued matrix \(e_{ij}\). Then \(I = \mathbb{V}(e_{ij}) \hookrightarrow Y\).
+    \end{proof}
+    Now let \(x \in X(k)\) be a geometric point. Now consider
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{Z} \ar[hookrightarrow]{r} \ar{dr}&  H_R \ar{d} \ar{r} & R \ar{d}[swap]{s} & s^{-1}(x) \ar{d} \ar{l} \\
+        & H \ar{r} \ar[bend right=20]{u}[swap]{e_H} & X \ar[bend right=20]{u}[swap]{e} & \Spec k \ar{l}{x}.
+    \end{tikzcd}
+    \end{equation*}
+    Choose \(Z_0 \hookrightarrow s^{-1}(x)\) to be any collection of points containing \(e(x)\). Now choose \(W = (Z_0, w) \in H\). We claim that \(g \colon H \to X\) is \'etale at \(w\) and therefore \(W = H\) in a neighborhood of \(w\). 
+
+    To see this, by construction \(k(x) = k(w)\) by construction, so we need to show that \(g\) is formally \'etale. For any local Artinian pointed scheme \((S, y)\) we want to show that
+    \[ \Hom_{(X,x)}((S,y), (H,w)) = \Hom_{(X,x)} ((S,y), (W,w)) \]
+    is a singleton, where we use the fact that \(H \to X\) is formally \'etale.
+
+    We need to lift maps \(S \to X\) to \(H\). Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \mc{Z}_S \ar[dashed]{r} & R_S \ar{r} \ar{d} & R \ar{d}{s} \\
+        & S \ar{r} & X.
+    \end{tikzcd}
+    \end{equation*}
+    Note that \(\ab|R_S|_{\on{top}} = \ab|s^{-1}(x)|_{\on{top}} = \ab|Z_0|_{\on{top}}\), so we take \(\mc{Z}_S\) to be the open and closed subscheme of \(R\) supported on \(\ab|Z_0|_{\on{top}}\). Then \(\mc{Z}_S \times_S x = Z_0\), the map \(\mc{Z}_S \to S\) is flat and proper, and any \(\mc{Z}_S' \subset R_S\) with \(\mc{Z}_S' \times_S x = Z_0\) is a subscheme of \(\mc{Z}_S\). Finally, \(e_S \hookrightarrow \mc{Z}_S\), so a lift does exist. Uniqueness of the lift follows from the universal property of the Hilbert scheme.
+
+    \(W\) represents the functor which sends a scheme to the set of isomorphism classes of diagrams
+    \begin{equation*}
+    \begin{tikzcd}
+        Z \ar[hookrightarrow]{r} \ar{dr}[swap]{\text{flat proper}} & S \times_{X} R \ar{d} \\
+        & S \ar[bend right=20]{u}[swap]{e_S}
+    \end{tikzcd}
+    \end{equation*}
+    such that \(e(S) \subseteq Z\). Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R_{|W} \ar{r} \ar{d} & R \times_X W \ar{r} \ar{d} & W \ar{d}{g} \\
+        W \times_X R \ar{r} \ar{d} & R \ar{d}[swap]{s} \ar{r}{t} & X \\
+        W \ar{r}{g} \ar[bend right=20]{u} & X \ar[bend right=20]{u}[swap]{e}.
+    \end{tikzcd}
+    \end{equation*}
+    Our goal is to find a finite flat subgroupoid of \(R_{|W}\). There is a \(P \hookrightarrow W \times_X R\) which is finite flat over \(W\). We need to find a map \(t_P \colon P \to W\) which gives a map \(P \to R_{|W}\) and a groupoid structure on \(P\). We will define this \(t_P\) on \(S\)-points for any scheme \(S\). For \(y \colon S \to P\), this is a diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        Z \ar{r} \ar{dr} & R_S \ar{d} \\
+        & S \ar[bend left=20]{ul}{a} \ar[bend right=20]{u}[swap]{e}
+    \end{tikzcd}
+    \end{equation*}
+    such that \(e(S) \subseteq Z\). Then the corresponding point in \(W(S)\) is
+    \[ t_P(S)(y) = (Z \circ a^{-1}, a^{-1}), \]
+    where composition is taken inside the groupoid \(R_{t(a)}\).
+
+    This \(P\) is given by the functor which sends a scheme \(S\) to the set of subschemes
+    \begin{equation*}
+    \begin{tikzcd}
+        Z \ar[hookrightarrow]{r} \ar{dr} & s^{-1}(s) \ar{d} \\
+        & S \ar[bend left=20]{ul}{\sigma} \ar[bend right=20]{u}[swap]{e}
+    \end{tikzcd}
+    \end{equation*}
+    such that \(e(S) \subseteq Z\). Also, note that \(W\) sends a scheme \(S\) to the set of subschemes \(Z \hookrightarrow s^{-1}(x)\) flat and proper over \(S\) such that \(x \in X(S)\) and \(e(S) \subseteq Z\). On \(S\)-points, note that
+    \[ R_{|W}(S) = \ab\{ (w_1 ,a, w_2) \mid w_1, w_2 \in W(S), a \in R(S), g(s_1) = s(a), g(s_2) = t(a)\}. \]
+    Now note that
+    \[ (w_1, a, w_2) \circ (w_1', b, w_2') = (w_1, a \circ b, w_2'). \]
+    The target map is given by
+    \[ t_w((Z, a)) = (Z \circ a^{-1}, a^{-1}). \]
+    Now we send
+    \[ P(S) \ni (Z, a) \mapsto (Z, a, Z \circ a^{-1}) \in R_{|W}(S). \]
+    Note that
+    \begin{align*}
+        (Z, a, Z \circ a^{-1}) \circ (Z', b, Z' \circ b^{-1}) &= (Z, a \circ b, Z' \circ b^{-1}) \\
+        &= (Z, a \circ b, Z \circ a^{-1} \circ b^{-1}) \\
+        &= (Z, a \circ b) \in P(S),
+    \end{align*}
+    so \(P\) is closed under composition. The inverse is given by \((Z, a) \mapsto (Z \circ a^{-1}, a^{-1})\) and the identity is given by \(Z \mapsto (Z, e)\), so \(P\) is a closed subgroupoid of \(R_{|W}\). By shrinking \(W\) further, we can also assume that \(P\) is open.
 \end{proof}
+
+
+We return to the big picture. Begin with \(j \colon R \to X \times X\) a flat groupoid with \(\mc{S} \coloneqq j^{-1}(\Delta_X) \to X\) finite. We first reduced to the case where \(j\) is quasi-finite, and then we reduced to the case where \(s\) and \(t\) are quasi-finite and flat and \(R\) and \(X\) are separated schemes. Then there exists an affine \'etale \(W \to X\) such that \(R_{|W} \rightrightarrows W\) is split, which means that
+\begin{enumerate}
+    \item \(R_{|W} = P \sqcup R_2\) is a union of disjoint open and closed subschemes;
+    \item \(P \rightrightarrows W\) is finite and flat;
+    \item \(P\) contains the inertia, namely \(\mc{S} \subset P\).
+\end{enumerate}
+
+\begin{rmk}
+    Note that \(W/P = \Spec A^P\), where \(W = \Spec A\).
+\end{rmk}
+
+The next step is the bootstrap. Suppose \(R \rightrightarrows X\) is a quasi-finite and flat split groupoid of separated (even affine) schemes. Now consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    P \times R \times P \ar{d} \ar{r} & P \times_X R \ar{d} \ar{ddrr} \\
+    P \times_X R \ar{r} \ar{ddrr} & P \ar[hookrightarrow]{dr} \\
+    & & R \ar{dr}{t} & R \ar{d}{s} \\
+    & & R \ar{r}{s}  & X.
+\end{tikzcd}
+\end{equation*}
+We obtain groupoids \(P \rightrightarrows X\) and \(P \times_{(s,t)} R \times_{(s,t)} P \rightrightarrows R\) which are finite and flat. Then \(X' \coloneqq X / P\) is a good moduli space by the finite flat affine case. Now suppose \(R''\) is a good moduli space for the second groupoid. Then \(s, t\) induce an \'etale equivalence relation \(R'' \rightrightarrows X'\) and \(X' / R'' = X/R\). We will conclude using the finite quotient lemma.
+
+\begin{lem}[Finite quotient lemma]
+    Suppose that \(j \colon R \to X \times X\) is a finite flat groupoid of separated schemes with \(j\) a closed immersion. Then \(X/R\) exists as a scheme.
+\end{lem}
+
+\begin{proof}
+    Consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        R \ar[hookrightarrow]{r} \ar[bend left=30]{rr}{t} \ar{dr}{s} & X \times X \ar{d}{\on{pr}_1} \ar{r}[swap]{\on{pr}_2} & X \\
+        & X.
+    \end{tikzcd}
+    \end{equation*}
+    This defines a map \(q \colon X \to \on{Hilb}(X)\) given by \(q(x) = t(s^{-1}(x))\). This is clearly \(R\)-invariant, so let \(Q\) be its scheme-theoretic image. Then \(X/R = Q\).
+\end{proof}
+
 
 
 
