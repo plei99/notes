@@ -1,0 +1,792 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{braket} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+% \usepackage{euscript} 
+% \usepackage[mathcal]{eucal}
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+\usepackage[sc]{mathpazo}
+\usepackage{inconsolata}
+\usepackage{microtype}
+% \usepackage{fontspec} 
+% \setmainfont{Tex Gyre Pagella}
+\usepackage[OT1,euler-digits]{eulervm}
+% \usepackage{euler-math} 
+\usepackage[scaled=0.86]{berasans}
+% \let\sffamilyold\sffamily
+% \def\sffamily{\fontencoding{T1}\sffamilyold}
+% \setmonofont{Inconsolatazi4}
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+% \usepackage[utf8]{inputenc} 
+% \usepackage[T1]{fontenc}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+% \usepackage{parskip}
+\newlist{mydescription}{description}{1}
+\setlist[mydescription]{style=nextline,
+                        font=\bfseries,
+                        % Tweak the next 4 options as needed:
+                        labelindent=1cm, 
+                        leftmargin =2cm,
+                        rightmargin=1cm,
+                        topsep     =1ex
+                       }
+\setcounter{tocdepth}{1}
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{claim}[thm]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\n}{\mathfrak{n}}
+\renewcommand{\b}{\mathfrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{%
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\bv}{\mbf{v}}
+\newcommand{\bq}{\mbf{q}}
+\newcommand{\bp}{\mbf{p}}
+\newcommand{\btau}{\bm{\tau}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\pre}{\mr{pre}}
+\newcommand{\vir}{\mr{vir}}
+\newcommand{\fl}{\mr{fl}}
+\newcommand{\ps}[1]{\llbracket #1 \rrbracket}
+\newcommand{\ls}[1]{\llparenthesis #1 \rrparenthesis}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Cont}{Cont}
+
+% \addbibresource{../../notes/math.bib}
+
+\title{Introduction to GW theory with a view to higher genus}
+\author{Patrick Lei}
+\date{\today}
+\allowdisplaybreaks
+
+\begin{document}
+    
+\begin{abstract}
+    These are notes from lectures I gave at the log GLSM summer school at Sichuan University in July 2026.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction to GW theory}%
+\label{sec:Introduction to GW theory}
+
+The goal of these lectures is to discuss Gromov-Witten theory in a way that is amenable to doing calculations in higher genus. Gromov-Witten theory concerns itself with integrals on the moduli space \(\Mbar_{g,n}(X, \beta)\), where \(X\) is a smooth projective algebraic variety and \(\beta \in H_2(X, \Z)\) is an effective curve class. There is a diagram
+\begin{equation*}
+\begin{tikzcd}
+    \mc{C} \ar{r}{f} \ar[bend right=20]{d}[swap]{\pi} & X \\
+    \Mbar_{g,n}(X, \beta) \ar[bend right=20]{u}[swap]{\sigma_i} \ar{ur}[swap]{\on{ev}_i}
+\end{tikzcd}
+\end{equation*}
+where \(\mc{C}\) is the universal curve, \(\sigma_i\) are the sections of \(\pi\) which give the marked points, \(f\) is the universal stable map, and \(\ev_i = f \circ \sigma_i\) are evaluation morphisms. While \(\Mbar_{g,n}(X, \beta)\) is generally singular, not equidimensional, and reducible, there is a special class
+\[ [\Mbar_{g,n}(X, \beta)]^{\vir} \in A_{\ab(c_1(X), \beta) + (\dim X - 3)(1-g) + n}(\Mbar_{g,n}(X, \beta), \Q), \]
+which is known as the \textit{virtual fundamental class}. 
+
+\begin{exer}
+    Use standard arguments in deformation theory to verify that the ``expected dimension'' of \(\Mbar_{g,n}(X, \beta)\) the number given above.
+\end{exer}
+
+Under the assumption that \(X\) is smooth and projective, \(\Mbar_{g,n}(X, \beta)\) is proper, so we may define \textit{GW invariants}
+\[ \ab<\tau_{a_1}(\alpha_1), \cdots, \tau_{a_n}(\alpha_n)>_{g,n,\beta} \coloneqq \ab(\prod_{i=1}^n \ev_i^* \alpha_i \cdot \psi_i^{a_i}) \cap [\Mbar_{g,n}(X, \beta)]^{\vir} \]
+for \(\alpha_i \in H^*(X)\). Here, the \(\psi_i\) are defined by \(\psi_i = c_1(\sigma_i^*(\omega_{\pi}))\).
+
+Unfortunately, calculating individual Gromov-Witten invariants is very difficult, so we will consider the even more difficult problem of studying generating series of GW invariants, for example
+\[ F_g = \sum_{\beta \geq 0} q^{\beta} \ab<>_{g,0,\beta} \]
+when \(X\) is a Calabi-Yau threefold. Here, \(q\) is a formal variable which keeps track of the curve class and we will denote the ring \(\Q\ps{q^{\beta} \mid \beta \in H_2(X, \Z)_{\mr{eff}}}\) by \(\Lambda\). There are some other structures we will consider. First, we may consider the \textit{quantum cohomology ring}, whose product \(a \star_{\mbf{t}} b\) is given by the formula 
+\[
+    (a \star_{\mbf{t}} b, c) = \sum_{\substack{\beta \geq 0 \\ n \geq 0}} \ab<a,b,c, \mbf{t}, \ldots, \mbf{t}>_{0,3+n,\beta} \frac{q^{\beta}}{n!}.
+\]
+Here \(a,b,c, \mbf{t} \in H^*(X)\). We will also consider the \textit{quantum connection}. Let \(\ab\{ e_i \}\) be a basis for \(H^*(X)\). Then the quantum connection is the connection on the trivial bundle with fiber \(H^*(X)\) over \(H^*(X) \times \P^1_z\) given by the formula
+\[ \nabla_{t^i} = \partial_{t^i} + \frac{1}{z} e_i \star_{\mbf{t}}. \]
+Sometimes, it is useful to also consider the connection in the \(z\)-direction given by 
+\[ \nabla_{z \odv{}{z}} \coloneqq z \odv{}{z} - \frac{1}{z} E_X \star_{\mbf{t}} + \mu_X, \]
+where \(\mu_X(\alpha) = \frac{\deg(\alpha) - \dim X}{2} \alpha\) is the grading operator and
+\[ E_X = c_1(X) + \sum_i \ab(1 - \frac{\deg(e_i)}{2})t^i e_i \]
+is the \textit{Euler vector field}. Because we will be mostly interested in Calabi-Yau varieties, we will not consider this.
+
+\section{Enumerative mirror symmetry in genus zero}%
+\label{sec:Enumerative mirror symmetry in genus zero}
+
+The impetus for mathematicians to develop and study Gromov-Witten theory came in the early 1990s, when a group of physicists predicted the number of rational curves of low degree on a general quintic threefold by converting the problem to one of computing period integrals on a different Calabi-Yau threefold called the \textit{mirror quintic} (equivalently, studying its variation of Hodge structure). In genus zero, all invariants can be recovered from the \textit{J-function} \(J_{\mbf{t}}(q,z) \in H^*(X, \Lambda)[z]\), which is defined by
+\[ \ab( J_{\mbf{t}}(q, z), \alpha ) \coloneqq (z + \mbf{t}, \alpha) + \sum_{n, \beta} \frac{q^{\beta}}{n!} \ab< \frac{\alpha}{z-\psi}, \mbf{t}, \ldots, \mbf{t}>_{0,1+n, \beta} \]
+for any \(\mbf{t} \in H^*(X, \Lambda)[z]\)  \(\alpha \in H^*(X)\), where \((-,-)\) is the Poincar\'e pairing. Therefore, the problem of computing all genus-zero Gromov-Witten invariants with descendants (these are the \(\psi\)-classes) reduces to the problem of computing the J-function.
+
+\begin{rmk}
+    We expand \(\frac{1}{z-\psi}\) as \(\sum_{k=0}^{\infty} \psi^k z^{-k-1}\).  
+\end{rmk}
+
+We should note that the J-function can be obtained via a fundamental solution to the quantum differential equation, which is given by
+\[ ( S_{\mbf{t}}(z) \phi , \alpha) = (\phi, \alpha) + \sum_{n, \beta} \frac{q^{\beta}}{n!} \ab<\frac{\alpha}{z-\psi}, \phi, \mbf{t}, \ldots, \mbf{t}>_{0, 2+n, \beta}. \]
+This has the property that \(S_{\mbf{t}}^*(-z) S_{\mbf{t}}(z) = \on{Id}\), which is usually known as the \textit{symplectic property}. From this, we can recover the J-function by \(z S_{\mbf{t}}^*(z)\cdot 1 = J_{\mbf{t}}(q, z)\).
+
+In physics, mirror symmetry is a duality between two different theories called the A-model and B-model, so now we will need to introduce the B-model object. In the interest of time (and notation), we will assume that \(X\) is a toric variety and that \(-K_X\) is nef. Let \(D_1, \ldots, D_r\) be the complete set of torus-invariant divisors in \(X\). Then define the \(I\)-function
+\[
+    I_{\mbf{t}}(q, z) \coloneqq z e^{\mbf{t}/z} \sum_{\beta \geq 0} q^{\beta} \frac{\prod_{i=1}^r \prod_{m = -\infty}^{0} (D_i + mz)}{\prod_{i=1}^r \prod_{m=-\infty}^{\beta \cdot D_j} (D_i + mz)}.
+\]
+Note here that we expand any \((D_i + mz)^{-1}\) which appears as \(\frac{1}{mz} \ab(1 - \frac{D_i}{mz} + \cdots)\), or namely, as a geometric series in \(\frac{D_i}{mz}\). In addition, the I-function is annihilated by a differential equation known as the \textit{Picard-Fuchs equation}, which is some hypergeometric type equation.
+
+\begin{exm}
+    If \(\mbf{t} = 0\) and \(X = \P^1\), we obtain
+    \begin{align*}
+        I(q,z) &= z\sum_{d \geq 0} q^d \frac{1}{\prod_{m=0}^d (H + mz)^2} \\
+        &= z\sum_{d \geq 0} \ab(\frac{q}{z^2})^d \frac{1}{(d!^2)} + O(H),
+    \end{align*}
+    so in fact we see the Bessel function of the first kind as the leading term.
+\end{exm}
+
+If \(X\) is a complete intersection in a toric variety \(Y\) cut out by line bundles \(L_1, \ldots, L_k\), all of which satisfy \(H^1(f^* L_i) = 0\) for any genus zero stable map to \(Y\) (this is called being \textit{convex}), then the quantum Lefschetz theorem allows us to replace \([\Mbar_{g,n}(X, \beta)]^{\vir}\) with \(e\ab(\bigoplus \pi_* f^* L_i) \cap [\Mbar_{g,n}(Y, \beta)]^{\vir}\) and perform all computations on \(Y\). In this case, the I-function is defined to be
+\[
+    I_{\mbf{t}}(q,z) \coloneqq z e^{\mbf{t}/z} \sum_{\beta \geq 0} q^{\beta} \frac{\prod_{i=1}^k \prod_{m=-\infty}^{L_i \cdot \beta} (L_i + mz)}{\prod_{i=1}^k \prod_{m=-\infty}^{0} (L_i + mz)} \frac{\prod_{i=1}^r \prod_{m = -\infty}^{0} (D_i + mz)}{\prod_{i=1}^r \prod_{m=-\infty}^{\beta \cdot D_j} (D_i + mz)},
+\]
+where we abuse notation and conflate the \(L_i\) with their first Chern classes.
+
+\begin{exm}
+    For the quintic threefold, which is cut out by a section of \(\mc{O}_{\P^4}(5)\)  the I-function at \(\mbf{t} = 0\) is given by
+    \[ I(q,z) = z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d (H+mz)^5}. \]
+\end{exm}
+
+The content of the genus zero mirror theorem is a correspondence between these two objects. More precisely, in the case where \(-K_X\) is nef, they are related by a change of variables.
+
+\begin{thm}
+    Write the I-function with \(\mbf{t} = 0\) as \(I_0(q) \cdot z + I_1(q) + O(z^{-1})\). Then we have 
+    \[
+        J_{\tau(\mbf{t})}(q,z) = \frac{I_{\mbf{t}}(q,z)}{I_0(q)},
+    \]
+    where \(\tau(\mbf{t}) = \frac{\mbf{t} + I_1(q)}{I_0(q)}\). 
+\end{thm}
+
+\begin{exm}
+    When \(X = \P^1\), note that \(I_0(q) = 0\) and \(I_1(q) = 0\), so in fact, we have the equality
+    \[ J_{\mbf{t}}(q,z) = I_{\mbf{t}}(q,z). \]
+\end{exm}
+
+\begin{exm}
+    When \(X\) is the quintic threefold, we will rewrite the components of the I-function as \(I_0(q) \cdot z + I_1(q)H + O(z^{-1})\) for convenience. We have
+    \[ I_0(q) = \sum_{d \geq 0} \frac{(5d)!}{(d!)^5} q^d, \qquad I_1(q) = H \sum_{d \geq 0} \frac{(5d)!}{(d!)^5} \ab(5\sum_{m=d+1}^{5d} \frac{1}{m}), \]
+    so there is a nontrivial mirror map in this case. Specializing to \(\mbf{t} = 0\), we see that \(\tau = \frac{I_1(q)H}{I_0(q)}\), so we obtain
+    \[ J_{\tau}(q,z) = \frac{I(q,z)}{I_0(q)}. \]
+    By the divisor equation, the left hand side also equals \(J(qe^{I_1/I_0}, z)\), and we will also refer to this as the mirror map.  
+    Therefore, we can use the mirror theorem to compute $\star_{\tau}$. The quantum connection in the direction of \(H^2\) becomes the ODE
+    \[ (H+zD) S_{\tau}(z)^* = S_{\tau}(z)^* \cdot I_{11} H \star_{\tau}, \]
+    where $D \coloneqq q \odv{}{q}$ (here, the coordinate is $\log q$) and $I_{11} \coloneqq 1 + D \ab(\frac{I_1(q)}{I_0(q)})$. An explicit computation using the mirror theorem and the results of Zagier-Zinger yields
+    \begin{align*}
+        I_{11} H + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} \1) \\
+        \ab( 1 + D\ab(\frac{\frac{I_1}{I_0} + D \ab(\frac{I_2}{I_0})}{I_{11}}) ) H^2 + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} H) \\
+        I_{11} H^3 &= S_{\tau}(z)^* (I_{11}H \star_{\tau} H^2).
+    \end{align*}
+    Because $S_{\tau}$ begins with the identity, this computes $H \star_{\tau}$.
+\end{exm}
+
+\subsection{Oscillating integrals}%
+\label{sub:Oscillating integrals}
+
+We will now reinterpret the genus zero mirror theorem, and we will return to this interpretation when we discuss higher genus invariants. In particular, we will interpret the I-function as an integral on some mirror family to \(X\), which for us will be a toric variety. Let
+\[ 0 \to \Lambda \to \Z^r \to N \to 0 \]
+be the fan sequence of \(X\). Applying \(\Hom(-, \C^{\times})\), we obtain the exact sequence
+\[ 1 \to (\C^{\times})^{\dim X} \to (\C^{\times})^r \to \Hom(\Lambda, \C^{\times}) \to 1. \]
+Suppose that the map \(\Lambda \to \Z^r\) is given by the matrix \((m_{ij})_{i=1,\ldots,r}^{j = 1, \ldots, \rho(X)}\). Then we consider the variety
+\[ E_q = \ab(\prod_{i=1}^r x_j^{m_{ij}} = q_i \middle\vert i=1, \ldots, \rho(X)) \]
+which is mirror to \(X\) and consider the superpotential \(f = x_1 + \cdots + x_r\). If we wish to consider the equivariant theory with equivariant parameters \(\lambda_1, \ldots, \lambda_r\) acting on each homogeneous coordinate of \(X\), we will consider \(f_{\lambda} = \sum_{i=1}^r (x_i - \lambda_i \log x_i)\). 
+
+\begin{exm}
+    When \(X = \P^n\), the mirror to \(X\) is the superpotential \(\sum_{i=1}^{n+1} (x_i - \lambda_i \log x_i)\) on the variety \(E_q = (x_1 \cdots x_{n+1} = q)\).   
+\end{exm}
+
+We now choose an appropriate Lefschetz thimble \(\Gamma_{\alpha}\) near each critical point \((x_{\alpha})\) of the (equivariant) superpotential and consider the integral
+\[ I_{\alpha} = \int_{\Gamma_{\alpha}} e^{f_{\lambda}/z} \prod_{i=1}^r \frac{\d{x_i}}{x_i}. \]
+This corresponds in the I-function to replacing each \(D_i\) in the expression by \(D_i - \lambda_i\) (turning on the equivariant parameters) and in the J-function to considering the fully equivariant GW theory of \(X\). In genus zero, the limit as \(\lambda_i \to 0\) exists, so we can safely recover the original mirror theorem from the following:
+
+\begin{thm}
+    This integral is annihilated by the same Picard-Fuchs equation as the I-function, and up to various prefactors, its asymptotic expansion as \(z \to 0^-\) along the negative real axis coincides with the restriction of the I-function corresponding to the T-fixed point on \(X\) which corresponds to the critical point \(( x_{\alpha} )\). 
+\end{thm}
+
+
+\subsection{The Lagrangian cone}%
+\label{sub:The Lagrangian cone}
+
+The quantum cohomology of \(X\) is an example of a \textit{Frobenius manifold}, which we will see later can be produced from any cohomological field theory. Write \(V = H^*(X)\) and let \((e_{\mu})\) be a basis for \(V\), so we can write $\bv = \sum_{\mu,n} t^{\mu}_n e_{\mu} z^n \in V\ps{z}$.
+The structure of a Frobenius manifold comes from the function
+\[
+    \mc{F}_0(\bv) = \sum_{n, \beta, \mu} \frac{q^{\beta}}{n!} \ab<\bv(\psi), \ldots, \bv(\psi)>_{0,n,\beta},
+\]
+which is also called the \textit{genus zero descendant potential} of \(X\). It satisfies the string equation, dilaton equation, and topological recursion relations: 
+\begin{align*}
+    \pdv{}{t_0^1} \mc{F}_0 &= \frac{1}{2} (\bv_0, \bv_0) + \sum_{n=0}^{\infty} \sum_{\mu} t_{n+1}^{\mu} \pdv{}{t_n^{\mu}} \mc{F}_0; \\
+    \pdv{}{t_1^1} \mc{F}_0 &= \sum_{n=0}^{\infty} \sum_{\mu} t_n^{\mu} \pdv{}{t_n^{\mu}}\mc{F}_0 - 2 \mc{F}_0; \\
+    \pdv{}{t_{k+1}^{\alpha},t_m^{\beta},t_n^{\gamma}} \mc{F}_0 &= \sum_{\mu,\nu} \pdv{}{t_k^{\alpha},t_0^{\mu}} \mc{F}_0 \cdot \eta^{\mu\nu} \cdot \pdv{}{t_0^{\nu},t_{m}^{\beta},t_n^{\gamma}} \mc{F}_0.
+\end{align*}
+To state the following result, we consider the infinite-dimensional vector space $V\ls{z^{-1}}$ (or a completion of this) with the symplectic form
+\[ \omega(\mbf{f}(z), \mbf{g}(z)) \coloneqq \on{Res}_{z=0}(\mbf{f}(-z), \mbf{g}(z)). \]
+We also consider the new variable\footnote{This is called the \textit{dilaton shift}.} $\bq = \bv - z$, so $\mc{F}_0$ is now a function near $\bq = -z$.
+
+\begin{thm}[Givental]
+    $\mc{F}$ satisfies the above PDEs if and only if the graph $\mc{L}$ of $\d{\mc{F}}$ is a Lagrangian cone with vertex at $\bq = 0$ such that its tangent spaces $L$ are tangent to $\mc{L}$ exactly along $zL \subset L$.
+\end{thm}
+
+We may recover the Lagrangian cone $\mc{L}$ by the following procedure. We find a fundamental solution 
+\[ S = \mr{Id} + S_1 z^{-1} + S_2 z^{-2} + \cdots \]
+to the quantum connection, which satisfies the equation
+\[ z \pdv{}{t^{\mu}}S = e_{\mu} \star S. \]
+Then, setting $J \coloneqq z S^*(z) \1$, we can then recover the Lagrangian cone by the following procedure:
+\begin{itemize}
+    \item The derivatives $\pdv{}{t^{\mu}} J$ form a basis of $L \cap V\ps{z^{-1}}$;
+    \item This implies that $z \pdv{}{t^{\mu},t^{\nu}} \in L \cap V \ps{z^{-1}}$. Writing these in terms of the first derivatives and using the fact that $J$ solves the quantum connection, we recover the Frobenius structure and hence the Lagrangian cone.
+\end{itemize}
+
+Using this, we can interpret the genus zero mirror theorem as:
+\begin{thm}
+    The I-function \(I_{\mbf{t}}(q,z)\) lies on the Lagrangian cone of \(X\).
+\end{thm}
+
+
+
+
+\section{Moduli of curves and CohFTs}%
+\label{sec:Moduli of curves and CohFTs}
+
+We will denote by $\Mbar_{g,n}$ the moduli space of stable curves of genus $g$ with $n$ marked points. This is nonempty if and only if $2g-2+n > 0$, in which case it is a Deligne-Mumford stack of dimension $3g-3+n$. There is a combinatorial structure to the collection of $\Mbar_{g,n}$, which is given by a collection of morphisms.
+\begin{itemize}
+    \item There is the gluing morphism 
+        \[q \colon \Mbar_{g,n+1} \times \Mbar_{h, m+1} \to \Mbar_{g+h,n+m}, \] 
+        which takes two curves and glues them along the last marked point to form a node;
+    \item There is the self-gluing morphism \[s \colon \Mbar_{g-1,n+2} \to \Mbar_{g,n},\] 
+        which glues the last two marked points.
+\end{itemize}
+There is of course another interesting map, which is the forgetful map
+\[ \pr \colon \Mbar_{g,n+1} \to \Mbar_{g,n} \]
+given by deleting the last marked point and then stabilizing. We are now able to define our enumerative theories of interest, which include Gromov-Witten theory.
+
+\begin{defn}
+    Given a vector space $V$ with a nondegenerate symmetric bilinear form $\eta$ and a unit element $\1 \in V$, a \textit{Cohomological Field Theory (CohFT)} $\Omega$ on $V$ is a collection $\Omega_{g,n}$ of $S_n$-equivariant linear maps
+    \[ \Omega_{g,n} \colon V^{\otimes n} \to H^*(\Mbar_{g,n}) \]
+    which satisfy the basic identity
+    \[ \Omega_{0,3}(\1, u,v) = \eta(u,v) \]
+    and the following combinatorial identities (we will let $e_{\mu}$ be a basis of $V$ such that $e_1 = \1$ and $e^{\mu}$ be the dual basis):
+    \begin{align*}
+        q^* \Omega_{g+h,n+m}(\bv_1, \bv_2) &= \sum_{\mu} \Omega_{g,n+1}(\bv_1, e_{\mu}) \cdot \Omega_{h,m+1}(  \bv_2, e^{\mu} ); \\
+        s^* \Omega_{g,n}(\bv) &= \sum_{\mu} \Omega_{g,n+2}(\bv, e_{\mu}, e^{\mu}).
+    \end{align*}
+    If in addition the identity
+    \[ \pr^*\Omega_{g,n}(\bv) = \Omega_{g,n+1}(\bv,\1) \]
+    is satisfied, then we say the CohFT has a \textit{flat unit} (or satisfies the \textit{string equation}).
+\end{defn}
+All of this can be generalized to super vector spaces, but for simplicity we will not deal with this case.
+
+\begin{exm}
+    The most important example of a CohFT is the Gromov-Witten theory of a smooth projective variety $X$. Here, recall that the source of a stable map is a \textbf{prestable} curve, so there is a stabilization morphism
+    \[ \st \colon \Mbar_{g,n}(X,\beta) \to \Mbar_{g,n} \]
+    which forgets the map and stabilizes the curve. Then, working over the Novikov ring, we will set $V = H^*(X)$, $\eta$ to be the Poincar\'e pairing, and $\1$ to be the fundamental class of $X$. The linear maps $\Omega^X_{g,n}$ are given by the formulae
+    \[ \Omega_{g,n}^X(\btau) \coloneqq \sum_{\beta} q^{\beta} \st_* \ab(\prod_{i=1}^n \ev_i(\tau_i) \cap [\Mbar_{g,n}(X,\beta)]^{\vir}), \]
+    where $\ev_i \colon \Mbar_{g,n}(X,\beta) \to X$ is the $i$-th evaluation map.
+\end{exm}
+
+\begin{exm}
+    Let $\pi \colon \mc{C}_{g,n} \to \Mbar_{g,n}$ be the universal curve. Then the \textit{Hodge bundle} is the vector bundle 
+    \[ \E_{g,n} \coloneqq \pi_* \omega_{\pi}. \]
+    We then consider the vector space $V = \C$ with the usual pairing and define the CohFT $\Omega^{\E}$ by the formula
+    \[ \Omega^{\E}_{g,n} \coloneqq c(\E_{g,n}). \]
+    The gluing axioms are satisfied by the equation $q^* \E_{g+h} = \E_g \oplus \E_h$ and the exact sequence
+    \[ 0 \to \E_{g-1} \to \E_g \to \mc{O} \to 0. \]
+    Here, because genus zero components do not contribute to global sections of $\omega$ and $\E$ does not depend on the marked points, this CohFT has a flat unit.
+\end{exm}
+
+\begin{rmk}
+    We will see later that this is related to the GW CohFT of a point by the quantum Riemann-Roch theorem. 
+\end{rmk}
+
+Given a CohFT $\Omega$, we may produce invariants by pairing the classes $\Omega_{g,n}(\bv)$ with various cohomology classes on $\Mbar_{g,n}$. The most important ones to consider are the classes
+\[ \bar{\psi}_i \coloneqq c_1( s_i^* \omega_{\pi} ), \]
+where $s_i \colon \Mbar_{g,n} \to \mc{C}_{g,n}$ is the $i$-th marked point.
+
+\begin{rmk}
+    In Gromov-Witten theory, these are called \textit{ancestors}. There are also descendants, which are given by the same formula except using the moduli space $\mf{M}_{g,n}$ of prestable curves instead of $\Mbar_{g,n}$, where we factor the morphism $\st$ defined above as
+    \[ \Mbar_{g,n}(X,\beta) \xrightarrow{\text{forget map}} \mf{M}_{g,n} \xrightarrow{\text{stabilize}} \Mbar_{g,n}. \]
+    The descendant classes are denoted by $\psi_i$.
+\end{rmk}
+
+\begin{exm}
+    We will calculate an invariant which will appear in the GW theory of Calabi-Yau threefolds. For any CohFT $\Omega$, consider the invariant
+    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega}\coloneqq \int_{\Mbar_{1,1}} \Omega_{1,1}(\1)\bar{\psi}_1. \]
+    Using the second gluing equation, the degree zero part of $\Omega_{1,1}(\1)$ is equal to
+    \[ \sum_{\mu} \Omega_{g,n+2}(\1, e_{\mu}, e^{\mu}) = \sum_{\mu} \eta(e_{\mu}, e^{\mu}), \]
+    which yields the (graded) dimension $\chi(V)$ of $V$. Therefore, we obtain
+    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega} = \frac{\chi(V)}{24}. \]
+\end{exm}
+
+\begin{exm}
+    Consider the GW CohFT of a point. This is given by $V = \C$ with the usual pairing and the formula 
+    \[ \Omega_{g,n} = 1. \]
+    Then we define the invariants
+    \[ \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} \coloneqq \int_{\Mbar_{g,n}} \Omega_{g,n} \cdot \bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}. \]
+    \begin{thm}[Kontsevich]
+        The function
+        \[ \mc{D} \coloneqq \exp \ab(\sum_{g,n} \frac{\hbar^{g-1}}{n!}\sum_{a_1 + \cdots + a_n = n} \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} t_{a_1}\cdots t_{a_n}) \]
+        is annihilated by the operators
+        \begin{align*}
+            L_{-1} \coloneqq{}& -\pdv{}{t_0} + \frac{\hbar^{-1}}{2} t_0^2 + \sum_{i=0}^{\infty} t_{i+1} \pdv{}{t_i};\\
+            L_0 \coloneqq{}& -\frac{3}{2} \pdv{}{t_1} + \sum_{i=0}^{\infty} \frac{2i+1}{2} t_i \pdv{}{t_i} + \frac{1}{16};\\
+            L_n \coloneqq{}& -\frac{(2n+3)!!}{2^{n+1}} \pdv{}{t_{n+1}} + \sum_{i=0}^{\infty} \frac{(2i+2n+1)!!}{(2i-1)!! 2^{n+1}} t_i \pdv{}{t_{i+n}} \\
+            &+ \frac{\hbar}{2} \sum_{i=0}^{n-1} \frac{(2i+1) (2i-1) \cdots (2i+1-2n)}{2^{n+1}} \pdv{}{t_i,t_{n-1-i}}.
+        \end{align*}
+    \end{thm}
+\end{exm}
+
+\begin{rmk}
+    This result (Virasoro constraints for a point) is equivalent to $\mc{D}$ being a tau-function for the KdV hierarchy and has been generalized by various authors.
+\end{rmk}
+
+
+
+\section{$R$-matrix action}%
+\label{sec:R-matrix action}
+
+In the early 2000s, Givental discovered a remarkable property of axiomatic enumerative theories, namely that one can transform CohFTs by the action of matrices $R(z) = R_0 + R_1 z + R_2 z^2 + \cdots \in \Hom(V, V')\ps{z}$ which satisfy the property
+\[ R^*(-z) R(z) = \mr{Id}_V. \]
+Traditionally, the literature requires that $V = V'$ and $R_0 = \mr{Id}$, but the MSP group has removed this restriction and also allows $\dim V < \dim V'$.
+
+In order to define the action of $R$ on a CohFT $\Omega$ defined on $V$, we need to review some of the combinatorial structure of $\Mbar_{g,n}$. For a curve $C\in \Mbar_{g,n}(\C)$, we may consider the dual graph of $C$, which has vertices, edges, and legs, which are defined as follows:
+\begin{itemize}
+    \item The vertices correspond to irreducible components of $C$ and are labelled by a non-negative integer, which is the genus;
+    \item The edges correspond to nodes of $C$ (in particular, we allow loops);
+    \item The legs correspond to marked points.
+\end{itemize}
+Any graph which appears as the dual graph of a stable curve is called a \textit{stable graph}.
+
+\begin{figure}[htpb]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape,every loop/.style={}]
+    \node[circle,draw] (A) at (0,0) {$2$};
+    \node[circle,draw] (B) at (2,2) {$3$};
+    \node[circle,draw] (C) at (2,0) {$0$};
+    \draw[thick] (A) -- node[above]{$\alpha$} (B) -- (C) -- node[below]{$\beta$} (A);
+    \draw[thick] (A) -- node[below]{$3$} (-1,-1);
+    \draw[thick] (A) -- node[above]{$1$} (-1,1);
+    \draw[thick] (C) -- node[right]{$2$} (2,-1);
+    \draw[thick] (C) edge[loop right] node[right] {$\psi$} (C);
+    \node[anchor=east] at (-1,-1) {$\psi$};
+    \node[anchor=east] at (1.7,1.8) {$\psi^2$};
+    \node[anchor=south] at (0.2,0.2) {$\psi$};
+  \end{tikzpicture}
+  \caption{Example of a stable graph in $\ol{\mc{M}}_{7,3}$ and associated tautological class. This stable graph describes the image of a map
+    $\ol{\mc{M}}_{2,4} \times \ol{\mc{M}}_{3,2} \times \ol{\mc{M}}_{0,5} \to \ol{\mc{M}}_{7,3}$.}
+  \label{fig:stablegraph}
+\end{figure}
+
+The first type of action on CohFTs is a translation action. Let $T \in V\ps{z}$. For a CohFT $\Omega$, we define
+\[ (T\Omega)_{g,n}(\bv) \coloneqq \sum_m \frac{1}{m!} p_* \Omega_{g,n+m}(\bv, T,\ldots,T) \]
+whenever the infinite sum makes sense.
+
+\begin{exm}
+    If $\Omega^X$ is the GW CohFT of a smooth projective variety $X$ and $\tau \in H^2(X)$ is a divisor class, then the infinite sum makes sense and we can define the shifted GW CohFT $\Omega^{X,\tau}$ of $X$. For example, if $X$ is the quintic threefold and $\tau = \frac{I_1}{I_0} H$, then shifting to $\tau$ is the same as the mirror map $q \mapsto Q(q) = q e^{\frac{I_1}{I_0}}$.
+\end{exm}
+
+The second type of action is the action of a matrix $R$ as in the beginning of this section. Let $G_{g,n}$ define the set of all stable graphs of genus $g$ with $n$ legs. Then we define
+\[ (R\Omega)_{g,n} \coloneqq \sum_{\Gamma \in G_{g,n}} \frac{1}{\ab|\Aut \Gamma|} \on{Cont}_{\Gamma}, \]
+where $\on{Cont}_{\Gamma}$ is defined by the following construction:
+\begin{itemize}
+    \item At the $i$-th leg, we place the map 
+        \[ R(-\bar{\psi}_i)^* \in \Hom(V',V) \ps{\bar{\psi}_i}; \]
+    \item At every edge, we place the bivector
+        \[ V(\bar{\psi}_1, \bar{\psi}_2) \coloneqq \sum_{\mu} \frac{e_{\mu} \otimes e^{\mu} - R(-\bar{\psi}_1)^* e_{\mu} \otimes R(-\bar{\psi}_2)^* e^{\mu}}{\bar{\psi}_1 + \bar{\psi}_2}; \]
+    \item At every vertex, we place the linear map
+        \[ \Omega_{g_v, n_v} \colon V^{\otimes n_v} \to H^*(\Mbar_{g_v, n_v}); \]
+    \item Finally, we consider the pushforward in cohomology along the gluing morphism $\prod_v \Mbar_{g_v, n_v} \to \Mbar_{g,n}$.
+\end{itemize}
+
+\begin{defn}
+    Let $R$ be as above. Then we define the translation
+    \[ T_R \coloneqq z (\1 - R(-z)^* \1') \in z V'\ps{z}. \]
+    Whenever it makes sense, we define
+    \[ R.\Omega \coloneqq RT\Omega. \]
+\end{defn}
+
+\begin{thm}[Chang-Guo-Li]
+    Suppose we work with coefficients in $\C\ps{q}$. Then if
+    \[ T_R \in z^2 V \ps{z} + zq V \ps{z}, \]
+    $R.\Omega$ is a well-defined CohFT. Moreover, if $\dim V = \dim V'$, $\1'$ is a unit for $R.\Omega$.
+\end{thm}
+
+We would like to remark a bit more about the translation action when $R_0 \neq \mr{Id}$. For simplicity, we will assume that $V = V'$ and $R_0 \1 = c \cdot \1$ for some constant $c$. Then we set $\tilde{T}_R \coloneqq z( \1 - c R(z)^{-1} \1)$ and use the dilaton equation to compute
+\begin{align*}
+    T_R \Omega_{g,n}(\bv) &= \sum_{m=0}^{\infty} \frac{1}{m!} p_*\Omega_{g,n+m}(\bv, T_R, \ldots, T_R) \\
+    &= \sum_{k,\ell \geq 0} \frac{1}{k!\ell!} p_* \Omega_{g,n+k+\ell}(\bv, ( (1-c^{-1})\1 \cdot \psi )^{\otimes k}, ( c^{-1} \tilde{T}_R )^{\otimes \ell}) \\
+    &= \sum_{k,\ell \geq 0} \frac{(1-c^{-1})^k \cdot c^{-\ell}}{\ell!} \binom{2g-2+n+k+\ell-1}{k} p_* \Omega_{g,n+\ell}(\bv, \tilde{T}_R^{\otimes \ell}) \\
+    &= \sum_{m=0}^{\infty} \frac{c^{2g-2+n}}{m!} p_* \Omega_{g,n+m}(\bv, \tilde{T}_R, \ldots, \tilde{T}_R)
+\end{align*}
+whenever this makes sense.
+
+
+\section{Reconstruction theorem}%
+\label{sec:Reconstruction theorem}
+
+Recall that every CohFT defines a Frobenius algebra. We will call a CohFT \textit{semisimple} if the corresponding Frobenius algebra is semisimple.
+
+\begin{thm}[Teleman]
+    Let $\Omega$ be a semisimple CohFT with flat unit and $\omega$ be its topological part. If $\Omega$ is semisimple, there exists a unique 
+    \[ R = \mr{Id} + R_1 z + \cdots \in \End(V)\ps{z} \]
+    such that
+    \[ \Omega = R.\omega. \]
+\end{thm}
+
+\begin{exm}
+    Recall the Hodge bundle CohFT from before. Recall that it is given by the formula
+    \[ \Omega^{\E}_{g,n} = c(\E) = 1 + \lambda_1 + \cdots + \lambda_g. \]
+    Taking the degree zero part, we see that $\omega^{\E}$ is the GW CohFT of a point. Using Mumford's computation
+    \[ \ch(\E) = g + \sum_{k=1}^{\infty} \frac{B_{2k}}{(2k)!}\ab(\kappa_{2k-1} + \frac{1}{2}\iota_*\sum_{i=0}^{2k-2} \bar{\psi}_1^{i} \bar{\psi}_2^{2g-2+i}), \]
+    where $\kappa_{m} = p_* \bar{\psi}_{n+1}^{m+1}$, $B_{2k}$ are the Bernoulli numbers, and $\iota$ is the inclusion of the boundary up to a $2:1$ \'etale cover, and the formula
+    \[ c(E) = \exp \ab(-\sum_k (-1)^k (k-1)!\ch_k(E)) \]
+    for any vector bundle $E$ (or by just using the quantum Riemann-Roch theorem\footnote{There is a sign error in Coates-Givental, which has propagated to the rest of the literature.} directly), we obtain the $R$-matrix
+    \[ R(z) = \exp\ab( \sum_{k=1}^{\infty} \frac{B_{2k}}{2k(2k-1)} z^{2k-1}) = 1+\frac{1}{12}z + \cdots. \]
+
+    As a sanity check, we will compute $\Omega_{1,1}^{\E}$ using the $R$-matrix. First, we consider the stable graphs in~\Cref{fig:03graphloop}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape, every loop/.style={}]
+    \node[circle,draw=black,thick] (B) at (-1,0) {$1$};
+    \draw[-,thick] (B) -- (-1,-0.6);
+    \node[circle,draw=black,thick] (A) at (1,0) {$0$};
+    \draw[-,thick] (A) -- (1,-0.6);
+    \path[every node/.style={font=\sffamily\small},thick]
+        (A)   edge[loop] (A);
+    \end{tikzpicture}
+    \end{center}
+    \caption{Stable graphs for $g=1, n=1$}%
+    \label{fig:03graphloop}
+    \end{figure}
+    The first graph $\Gamma_1$ gives us the contribution
+    \begin{align*}
+        \Cont_{\Gamma_1} &= T\omega_{1,1}^{\E}(R(z)^{-1}\1) \\
+        &= \omega_{1,1}^{\E}(R(z)^{-1}\1) + p_* \omega_{1,1}^{\E}(R(z)^{-1}\1, T_R(z)).
+    \end{align*}
+    Using the formula $B_2 = \frac{1}{6}$ and the fact that $\dim \Mbar_{1,1} = 1$, this becomes
+    \[ 1 - \frac{1}{12}\psi_1 + \frac{1}{12} \kappa_1. \]
+    The second graph does not receive tail contributions because $\dim \Mbar_{0,3} = 0$. The constant term of the edge contribution is $\frac{1}{12}$, so considering the automorphism and pushing forward to $\Mbar_{1,1}$ gives us
+    \[ \Cont_{\Gamma_2} = \frac{1}{12} \Delta, \]
+    where $\Delta$ denotes the boundary divisor (with the correct stack structure). Because $\psi_1 = \kappa_1$ in this case, we obtain
+    \[ 1+\lambda_1 = 1 + \frac{1}{12}(\kappa_1 - \psi_1 + \Delta) = 1 + \frac{1}{12} \Delta. \]
+\end{exm}
+
+
+
+
+\section{Operator formalism and geometric quantization}%
+\label{sec:Operator formalism and geometric quantization}
+
+We will return to the symplectic formalism of Givental. This is more convenient for certain computations, but it is in fact equal to what we have before, at least when we want to calculate generating functions. Recall that we had a Frobenius manifold structure on $V$ and we considered the vector space $\mc{V}\coloneqq V\ls{z^{-1}}$ with symplectic form
+\[ (\mbf{f}(z), \mbf{g}(z)) \coloneqq \on{Res}_{z=0} \eta(\mbf{f}(-z), \mbf{g}(z)). \]
+If we consider the polarization given by $\mc{V}_+ = V[z]$ and $\mc{V}_- = z^{-1}V\ps{z^{-1}}$, then letting $\bq$ be as before (with the dilaton shift), let $\bp$ be coordinates on $\mc{V}_-$ such that $(\bq, \bp)$ form a system of Darboux coordinates for $\mc{V}$.
+
+\begin{defn}
+    We will call any formal function of the form
+    \[ \mc{D} = \exp\ab(\sum_{g=0}^{\infty} \hbar^{g-1} \mc{F}_g) \]
+    an \textit{asymptotic element of the Fock space}.
+\end{defn}
+
+Then given such an asymptotic element of the Fock space, we will quantize (infinitesimal) symplectic transformations on $\mc{V}$ by the following formulae:
+\[ \wh{p_a p_b} \coloneqq \hbar \partial_{q_a} \partial_{q_b}, \qquad \wh{p_a q_b} \coloneqq q_b \partial_{q_a}, \qquad \wh{q_a q_b} = \frac{q_a q_b}{\hbar}. \]
+In particular, this will allow us to understand expressions like $\hat{R} \mc{D}$. However, we need to be careful because our formulae will involve both the fundamental solution $S_{\tau}$ and the $R$-matrix, and $S_{\tau}$ is a power series in $z^{-1}$.\footnote{This is because we expand $\frac{1}{z-\psi} = \sum_{n=0}^{\infty} \psi^n z^{-n-1}$.}
+
+\begin{thm}[Givental]
+    An operator of the form $S(z^{-1}) = \mr{Id} + S_1 z^{-1} + \cdots$ acts on (asymptotic) elements of the Fock space by the formula
+    \[ \hat{S}^{-1} \mc{D}(\bq) = e^{\frac{1}{2\hbar}W(\bq,\bq)} \mc{D}([S \bq]_+), \]
+    where $W = \sum \eta(W_{mn}q_m, q_n)$ is defined by the formula
+    \[ \frac{S(w^{-1})^* S(z^{-1}) - \mr{Id}}{w^{-1}+z^{-1}} = \sum \frac{W_{mn}}{w^m z^n}. \]
+    Operators of the form $R(z) = \mr{Id} + R_1 z + \cdots$ act by the formula
+    \[ \hat{R}\mc{D}(\bq) = e^{\frac{\hbar}{2} V(\partial_{\bq}, \partial_{\bq})} \mc{D}(R^{-1} \bq), \]
+    where $V = \sum \eta(p_m, V_{mn} p_n)$ is defined by 
+    \[ \frac{R(w)^* R(z) - \mr{Id}}{w+z} = \sum V_{mn} w^m z^n. \]
+\end{thm}
+
+For a semisimple CohFT, there is a system of \textit{canonical coordinates} $u_{\alpha}$ such that the $1$-form $\d{u}$ is a homomorphism of algebras $T_v V \to \C$. Then near a semisimple point, there is a asymptotic solution to the quantum connection of the form
+\[ \Psi \cdot  R \cdot e^{\frac{U}{z}}, \]
+where $\Psi$ switches from flat coordinates to canonical coordinates and $U = \on{diag}(u_{\alpha})$ is the matrix of canonical coordinates. Finally, define
+\[ C = \frac{1}{2} \int^u \sum R_1^{\alpha\alpha} \d{u_{\alpha}}. \]
+A corollary of Teleman's reconstruction theorem is the formula
+\[ \mc{D}^X = e^{C(u)} \hat{S}^{-1}_{\tau} \hat{\Psi} \hat{R} \wh{e^{\frac{U}{z}}} \prod_{i=1}^{\dim V} \mc{D}^{\mr{pt}} \]
+for the Gromov-Witten theory of any smooth projective variety with semisimple quantum cohomology.
+
+\begin{exm}
+    As a final example, we will apply Teleman's theorem to compute $F_1$ of any semisimple CohFT. Let $e_{\mu}$ denote an idempotent basis for the quantum product. We will compute
+    \[ \int_{\Mbar_{1,1}} \Omega_{1,1}(e_{\beta}). \]
+    Using the reconstruction theorem, we obtain
+    \begin{align*}
+        \int_{\Mbar_{1,1}}\Omega_{1,1}(e_{\beta}) ={}& \int_{\Mbar_{1,1}} T_R \omega_{1,1}(R(\bar{\psi})^{-1} e_{\beta}) + \frac{1}{2} T_R \omega_{0,3}(R(\bar{\psi})^{-1} e_{\beta}, V(\bar{\psi}_2, \bar{\psi}_3)) \\
+        ={}& \int_{\Mbar_{1,1}}T_R\omega_{1,1}(e_{\beta}) - \int_{\Mbar_{1,1}} T_R \omega_{1,1}(R_1 e_{\beta})\bar{\psi} \\ 
+        &+ \frac{1}{2}\sum_{\mu}  \omega_{0,3}(e_{\beta}, R_1 e^{\mu}, e_{\mu}) \\
+        ={}& \int_{\Mbar_{1,1}} ( \omega_{1,1}(e_{\beta}) + p_* ( \omega_{1,2}(e_{\beta}, R_1 \1) \bar{\psi}_2^2 )) \\
+        &- \int_{\Mbar_{1,1}} (\omega_{1,1}(R_1 e_{\beta})\bar{\psi}_1 + p_* ( \omega_{1,2}(R_1 e_{\beta}) \bar{\psi}_2^2 ) \bar{\psi}_1) \\
+        &+ \frac{1}{2} \sum_{\mu} \eta(e_{\beta} \star e_{\mu}, R_1 e^{\mu}) \\
+        ={}& \frac{1}{24} \sum_{\mu} ( \omega_{0,4}(e_{\mu}, e^{\mu}, e_{\beta}, R_1 \1) -\omega_{0,3}(e_{\mu}, e^{\mu}, R_1 e_{\beta}) )\\
+        &+ \frac{1}{2} \eta(e_{\beta}, R_1 e^{\beta}) \\
+        ={}& \frac{1}{24} \sum_{\mu}\sum_{\nu} \omega_{0,3}(e_{\mu}, e^{\mu}, e_{\nu})\omega_{0,3}(e^{\nu}, e_{\beta}, R_1 \1) \\
+        &-\frac{1}{24} \sum_{\mu} \omega_{0,3}(e_{\mu}, e^{\mu}, R_1 e_{\beta}) + \frac{1}{2} (R_1)_{\beta\beta} \\
+        ={}& \frac{1}{24} \ab(\eta(e^{\beta}, R_1 \1) - \sum_{\mu} \eta(e^{\mu}, R_1 e_{\beta})) + \frac{1}{2} (R_1)_{\beta\beta}.
+    \end{align*}
+    Using the identities
+    \begin{align*}
+        \eta(R_1 \1, e^{\beta}) - \sum_{\mu} \eta(R_1 e_{\beta}, e^{\mu}) &= \sum_{\mu} \Delta_{\mu} \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \\
+        &= -\frac{1}{2}\sum_{\mu} \Delta_{\mu} \partial_{u_{\beta}} \Delta_{\mu}^{-1} \\
+        &= \frac{1}{2} \sum_{\mu} \partial_{u_{\beta}} \log \Delta_{\mu},
+    \end{align*}
+    where $\Delta_{\mu} \coloneqq \eta(e_{\mu}, e_{\mu})^{-1}$, we obtain the result
+    \[ \int_{\Mbar_{1,1}} \Omega_{1,1} e_{\beta} = \frac{1}{48} \sum_{\mu} \partial_{u_{\mu}} \log \Delta_{\mu} + \frac{1}{2} (R_1)_{\beta\beta}, \]
+    which can be placed in the suggestive form
+    \[ \d{F_1^{\Omega}} = \sum_{\mu} \frac{\d{\log \Delta_{\mu}}}{48} + \frac{1}{2} (R_1)_{\mu\mu} \d{u_{\alpha}}. \]
+    This recovers a result which was already known to Givental.
+\end{exm}
+
+\section{How to compute the R-matrix}%
+\label{sec:How to compute the R-matrix}
+
+We will conclude by explaining how to compute the R-matrix, starting in the setting where the Frobenius manifold is conformal (for example the Gromov-Witten theory of a smooth projective variety, \(r\)-spin curves, etc). In this example, we will consider the Frobenius manifold for 3-spin curves. Let \(V\) be 2-dimensional with coordinates \(x\) and \(y\), where \(x\) corresponds to the unit. The metric is given by
+\[ \eta = \begin{pmatrix}
+    0 & 1 \\
+    1 & 0
+\end{pmatrix} \]
+and the primary genus zero potential is \(F(x,y) = \frac{1}{2} x^2 y + \frac{1}{72} y^4\). There is an \textit{Euler vector field}
+\[ E = x \pdv{}{x} + \frac{2}{3} y \pdv{}{y}, \]
+which acts with weights \(-1\) and \(-\frac{2}{3}\) on \(\partial_x\) and \(\partial_y\), respectively. The conformal dimension is \(\delta = \frac{1}{3}\), and we will define the degree operator
+\[ \mu(v) = [E,v] + \ab(1 - \frac{\delta}{2})v. \]
+Here, \(\partial_x\) has degree \(-\frac{1}{6}\) and \(\partial_y\) has degree \(\frac{1}{6}\).
+
+To make our lives easier, we will set \(\phi = \frac{y}{3}\) and define
+\[ \hat{\partial}_x = \phi^{1/4} \partial_x, \qquad \hat{\partial}_y = \phi^{-1/4} \partial_y, \]
+and then compute in this frame. In this setting, quantum multiplication is given by
+\[ \hat{\partial}_x \star \hat{\partial}_x = \phi^{1/4} \hat{\partial}_x, \qquad \hat{\partial}_x \star \hat{\partial}_y = \phi^{1/4} \hat{\partial}_y, \qquad \hat{\partial}_y \star \hat{\partial}_y = \phi^{1/4} \hat{\partial}_x. \]
+The last thing we need is that quantum multiplication by \(E\) is given by
+\[ E \star - = \begin{pmatrix}
+    x & 2 \phi^{3/2} \\
+    2 \phi^{3/2} & x 
+\end{pmatrix}. \]
+We will now compute the R-matrix \(R = 1 + R_1 z + \cdots\) by using the recursive equation
+\[ [R_{k+1}, E \star -] = (k + \mu) R_k. \]
+Setting \(R_k = \begin{psmallmatrix}
+    a_k & b_k \\
+    c_j & d_k
+\end{psmallmatrix}\), we obtain the equation
+\[ \ab[
+    \begin{pmatrix}
+        a_{k+1} & b_{k+1} \\
+        c_{k+1} & d_{k+1}
+    \end{pmatrix}, \begin{pmatrix}
+        x & 2 \phi^{3/2} \\
+        2 \phi^{3/2} & x 
+    \end{pmatrix}
+] = \frac{1}{6} \pdiagmat[empty={}]{6m-1, 6m+1} \begin{pmatrix}
+    a_k & b_k \\
+    c_k & d_k 
+\end{pmatrix}. \]
+
+The unique solution of this is in fact
+\begin{align*}
+    a_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{1+6k}{1-6k} \frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{even}},  \\
+    b_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{1+6k}{1-6k}\frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{odd}},  \\
+    c_k &= \frac{1}{1728^k \phi^{3k/2}}\frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{odd}}, \\
+    d_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{even}}. 
+\end{align*}
+If you are familiar with tautological relations on the moduli space of curves, you will see that the series \(a_k + b_k\) and \(c_k + d_k\) enter in the formulation of the Faber-Zagier relations and the formulation of Pixton's relations. 
+
+In the case where the Frobenius manifold is not conformal (for example in equivariant Gromov-Witten theory), we will need to use an oscillating integral or some other technique to fix initial values in the R-matrix. We will give an example computation here, which is due to Givental. In this setting, \(X = \P^n\), but the argument can be made to work for any Fano toric variety. Recall that the equivariant mirror of \(\P^n\) is the superpotential
+\[ W = x_1 + \cdots + x_{n+1} + \sum_{i=1}^{n+1} \lambda_i \log x_i \]
+(here, we change the sign of the equivariant parameters for convenience). Therefore, the oscillating integrals will look like
+\[ I = \int_{\Gamma \subset E_q = (x_1 \cdots x_{n+1}=q)} e^{W/z} \prod_{i=1}^{n+1} \frac{\d{x_i}}{x_i}. \]
+This is annihilated by the operator 
+\[ \prod_{i=1}^{n+1}\ab(zq \odv{}{q} -\lambda_i) - q, \]
+which is exactly the Picard-Fuchs equation satisfied by the I-function of projective space.
+
+To expand this integral near the critical points, we first need to compute the critical points. Here, using coordinates \(t = \log q\) and \(T_i = \log x_i\), we obtain the equation
+\[ x_i = L - \lambda_i, \]
+where \(L\) is the Lagrange multiplier. These satisfy the equation
+\[ \prod_{i=1}^{n+1} (L - \lambda_i) = q, \]
+and therefore for generic values of \(\lambda\), near \(q = 0\), the possible values \(L_i\) of the Lagrange multiplier are distinguished by which of the \(\lambda_i\) they begin with. Note that the function \(W\), the values of the Lagrange multipliers, and therefore the critical points, all depend continuously on \(\lambda\), so they admit non-equivariant limits at \(\lambda = 0\) when \(q \neq 0\).
+
+When \(q = 0\), the matrix \(\Psi\), transitions from the flat basis \(\ab{H^i}\) to the basis
+\[ L_i(H) = \prod_j \frac{H - \lambda_j}{(\lambda_i - \lambda_j)^{1/2}}, \]
+which are the leading terms of the canonical coordinates (simply compute the fixed points of the torus action via equivariant localization, and we will obtain this Lagrange interpolation). Therefore, we need to compute \(L_j \ab(z q \odv{}{q}) I\) in the \(q = 0\) limit. A direct computation shows that applying \(L_i \ab(z q \odv{}{q})\) to the integral introduces an additional factor proportional to \(\frac{q}{x_i}\) to the integrand of the oscillating integral. Because we can permute the indices, we will compute only the case where \(i = n+1\). Another direct computation shows that the integral vanishes at \(q = 0\) unless \( j = n+1\), so in fact we see that \(R\) is diagonal in the classical limit. When \(j = n+1\), we have
+\[ \frac{q}{x_{n+1}} = x_1 \cdots x_n, \]
+and the integral becomes
+\[ \int_{\Gamma} e^{\ab( \sum_{i=1}^n x_i + (\lambda_i - \lambda_{n+1})\log x_i ) / z} \d{x_1} \cdots \d{x_n} = \prod_{i=1}^n \int_{\R} e^{x_i/z} x_i^{(\lambda_i - \lambda_0)/z} \d{x_i}, \]
+which is simply a product of gamma functions.
+
+\begin{lem}
+    We have the asymptotics
+    \[ \log \Gamma(1+s) \sim s \log \ab(\frac{s}{e}) + \frac{1}{2} \log(2\pi s) + \sum_{k=1}^{\infty} \frac{B_{2k}}{2k} \frac{s^{1-2k}}{2k-1}. \]
+\end{lem}
+Using this, we see that at \(q = 0\), the diagonal matrix element of the R-matrix is given by
+\[ \log R = \sum_{k=1}^{\infty} \frac{B_{2k}}{2k} \frac{z^{2k-1}}{2k-1} \sum_{i =1}^n (\lambda_i - \lambda_{n+1})^{1-2k}. \]
+By a result of Givental, this implies that this R-matrix recovers the equivariant GW theory of \(\P^n\), and as a corollary, because the non-equivariant limit exists, we obtain Virasoro constraints for \(\P^n\). 
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
