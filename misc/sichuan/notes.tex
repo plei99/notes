@@ -136,7 +136,7 @@
 \newtheorem*{rmk*}{Remark}
 
 % shortcuts
-\newcommand{\Ima}{\mathrm{Im}}
+\DeclareMathOperator{\Ima}{Im}
 \newcommand{\A}{\mathbb{A}}
 \newcommand{\G}{\mathbb{G}}
 \newcommand{\N}{\mathbb{N}}
@@ -232,7 +232,7 @@
 \begin{document}
     
 \begin{abstract}
-    These are notes the log GLSM summer school at Sichuan University in July 2026.
+    These are notes from the log GLSM summer school at Sichuan University in July 2026.
 \end{abstract}
 
 \maketitle
@@ -620,7 +620,8 @@ and the quotient here is called the \textit{characteristic sheaf} or the \textit
     where \(j \colon U \to X\) is the open immersion. If \(D\) is a divisor, then this is called the \textit{divisorial log structure}.
 
     For example, if \(X = \A^1\) and \(D = \ab\{0\}\), then the characteristic sheaf vanishes everywhere except for the origin. Here, we compute
-    \[ M_X = \ab\{ \varphi \cdot t^n \mid \varphi \in \mc{O}_X^{\times} \} \cong \mc{O}_X^{\times} \oplus \N_{|0}. \]
+    \[ M_X = \ab\{ \varphi \cdot t^n \mid \varphi \in \mc{O}_X^{\times} \}. \]
+    The stalk is \(\mc{O}_X^{\times}\) everywhere except at the origin, where it is \(\mc{O}_{\A^1, 0}^{\times} \oplus \N\).
 \end{exm}
 
 \begin{exm}
@@ -1402,8 +1403,8 @@ where $s_i \colon \Mbar_{g,n} \to \mc{C}_{g,n}$ is the $i$-th marked point.
     \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega}\coloneqq \int_{\Mbar_{1,1}} \Omega_{1,1}(\1)\bar{\psi}_1. \]
     Using the second gluing equation, the degree zero part of $\Omega_{1,1}(\1)$ is equal to
     \[ \sum_{\mu} \Omega_{g,n+2}(\1, e_{\mu}, e^{\mu}) = \sum_{\mu} \eta(e_{\mu}, e^{\mu}), \]
-    which yields the (graded) dimension $\chi(V)$ of $V$. Therefore, we obtain
-    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega} = \frac{\chi(V)}{24}. \]
+    which yields the (graded) dimension $\chi(V)$ of $V$ (for example, if \(V = H^*(X)\) for a Calabi-Yau threefold \(X\), this is the topologial Euler characteristic of \(X\)). Therefore, we obtain
+    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega} = \frac{\dim V}{24}. \]
 \end{exm}
 
 \begin{exm}
@@ -2160,6 +2161,658 @@ Then \(f \in \mc{L}\) if and only if for all \(\alpha\), the following condition
     \[ T_{F_j} X = \frac{\Lambda_0}{\Lambda_j} + \cdots + \frac{\Lambda_n}{\Lambda_j} - 1. \]
 \end{exm}
 
+\subsection{Quantum K/GV correspondence}%
+\label{sub:Quantum K/GV correspondence}
+
+Our goal here will be to compute \(J^K(0)\) on a Calabi-Yau threefold. The following result was conjectured by Jockers-Mayr and by Garoufalidis-Scheidegger.
+
+\begin{thm}
+    We have
+    \begin{align*}
+        J^K(0) &\coloneqq (1-q) + \sum_{\beta, \alpha} Q^{\beta} \Phi^{\alpha} \ab<\frac{\Phi_{\alpha}}{1-qL}>_{0,1,\beta}^{X,K} \\
+        &= (1-q) + \sum_{\beta} \sum_{r=1}^{\infty} \mr{GV}_{\beta} Q^{r\beta} \ab[\sum_{j=1}^{n_1} \Phi^{1j} a(r, q^r) + \Phi^{01} b(r, q^r)],
+    \end{align*}
+    where \(\ab\{\Phi_{\alpha}\}_{\alpha=1}^N\) is a basis of \(K^0(X)\) decomposed such that
+    \[ \ab\{\Phi_{\alpha}\}_{\alpha=1}^N = \bigsqcup_{i=0}^3 \ab\{\Phi_{ij}\}_{j=1}^{n_i} \]
+    such that the collection \(\ch(\Phi_{ij})\) for fixed \(i\) form a basis of \(H^{2i}(X)\). We then select a dual basis \(\ab\{\Phi^{\alpha}\}_{\alpha} = \ab\{\Phi^{ij}\}_{i,j}\). Moveover, we set the multiple cover formulae
+    \begin{align*}
+        a(r, q^r) &= \frac{r-1}{1-q^r} + \frac{1}{(1-q^r)^2}, \\
+        b(r, q^r) &= \frac{r^2-1}{1-q^r} + \frac{3}{(1-q^r)^2} - \frac{2}{(1-q^r)^3}.
+    \end{align*}
+    Finally, GV denotes Gopakumar-Vafa invariants, which are defined in genus zero by
+    \[ \mr{GW}_{0,\beta} = \sum_{r \mid \beta} \frac{1}{r^3} \mr{GV}_{\beta/r}. \]
+    By M\"obius inversion, we see that
+    \[ \mr{GV}_{\beta} = \sum_{r \mid \beta} \frac{\mu(r)}{r^3} \mr{GW}_{0,\beta/r}. \]
+\end{thm}
+
+\begin{cor}
+    We have
+    \[ \ab<1>_{0,1,\beta}^K = \sum_{r \mid \beta} r^2 \mr{GV}_{\beta/r}. \]
+    Applying M\"obius inversion, we obtain\footnote{Note that this result was obtained in all genus by Ionel-Parker.}
+    \[ \mr{GV}_{\beta} = \sum_{r \mid \beta} r^2 \mu(r) \ab<1>_{0,1,\beta/r}^K \in \Z. \]
+    In addition, we can recover the usual GW invariants by\footnote{This is like if we apply Hirzebruch-Riemann-Roch to compute the K-theoretic pairing, the top degree term only sees the Chern characters of the two inputs.}
+    \[ \lim_{q \to 1} (1-q)^3 \ab<\frac{1}{1-qL}>_{0,1,\beta}^{X,K} = \sum_{r \mid \beta} \frac{-2}{r^3} \mr{GV}_{\beta/r} = -2 \mr{GW}_{\beta} = \ab<\psi>_{0,1,\beta}^{\mr{GW}}. \]
+\end{cor}
+
+Naively, we can think of \(J^K(0) \in \Z\ps{q}\ps{Q}\), but to be a bit more precise, we can consider
+\[ J^K(0) \in 1-q + \mc{K}_-. \]
+Here, we expand \(\frac{1}{1-qL} = \sum q^i L^i\). 
+We also need to consider the fact that if \(M\) is a DM stack and \(L\) is a line bundle on \(L\), then the function
+\[ f^{\Phi}(q) \coloneqq \chi\ab(M, \frac{\Phi}{1-qL}) \in \Z \ps{q} \]
+converges to a rational function for \(\abs{q} < \ep\). Note that there are poles only at roots of unity.
+
+This fact can be proved using the orbifold Riemann-Roch theorem. Decompose the inertia as
+\begin{align*}
+    IM &= \bigsqcup_{i \in I} M_i \\
+    &= \bigsqcup_{\zeta} M_{\zeta},
+\end{align*}
+where \(M_{\zeta}\) is the union of twisted sectors such that \(g\) acts on \(L\) with eigenvalue \(\zeta\). Using this, we can compute
+\begin{align*}
+    \chi\ab(M, \frac{1}{1-qL}) &= \sum_{i \in I} \int_{M_i} \on{td}(M_i) \on{ch} \ab(\frac{ \on{Tr}_g \ab(\frac{1}{1-qL}) }{\lambda_{-1}(N_{M_i/M}^*)}) \\
+    &= \sum_{\zeta} \int_{M_{\zeta}} \on{td}(M_{\zeta}) \sum_{k \geq 0} \frac{(\zeta q)^k}{(1-\zeta q)^{k+1}} \frac{( \on{ch}(L)-1 )^k}{\ch \lambda_{-1}(N^*)},
+\end{align*}
+and therefore all poles must be at roots of unity. Here, we use the expansion
+\[ \frac{1}{1-\zeta q L} = \sum_{k \geq 0} \frac{(\zeta q)^k}{(1-\zeta q)^{k+1}} (L-1)^k \]
+and take the Chern character.
+
+\begin{exm}
+    Let \(L = \mc{O}(1)\) on \(\P^1\). Then we have
+    \begin{align*}
+        \chi\ab(\P^1, \frac{1}{1-qL}) &= \chi\ab(\P^1, \frac{1}{1-q} + \frac{q}{(1-q)^2}(L-1)) \\
+        &= \sim_{i \geq 0} q^i (i+1) \\
+        &= \frac{1}{(1-q)^2}.
+    \end{align*}
+\end{exm}
+
+\begin{exm}
+    We will now consider weighted projective space. Then we have
+    \begin{align*}
+        \chi\ab(\P(w_1, \ldots, w_n), \frac{1}{1-qL}) &= \prod_{i=0}^n \frac{1}{1-q^{w_i}}. 
+    \end{align*}
+\end{exm}
+
+\subsection{Adelic characterization}%
+\label{sub:Adelic characterization}
+
+Recall that there is a relationship between GW and GV invariants using an explicit formula in all genus. On the other hand, we can recover GW invariants from KGW invariants via the \(q \to 1\) limit. In the other direction, we need the Givental-Tonita \textit{adelic characterization}. The idea is that if we have a rational function \(f\), then we can recover it from the Laurent expansions
+\[ f_{q=\zeta} = \sum f_{\zeta, k} (1-\zeta^{-1} q)^k \]
+at roots of unity \(\zeta\).
+
+We will study the inertia stack \(I\bar{M}_{0,1}(X, \beta)\). One can keep track of the components via~\Cref{fig:givental-png} or via~\Cref{fig:adelic-components}.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{givental.png}
+    \caption{A way to keep track of the inertia components due to Givental-Tonita.}
+    \label{fig:givental-png}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[
+        x=.74cm, y=.74cm,
+        % Components of the domain curve. A cover style means the component
+        % is a multiple cover of its image, drawn thick.
+        dom/.style      ={black,         line width=.75pt, line cap=round},
+        domcover/.style ={black,         line width=2.8pt, line cap=round},
+        redcover/.style ={red!75!black,  line width=2.8pt, line cap=round},
+        redtwig/.style  ={red!75!black,  line width=.75pt, line cap=round},
+        bluecover/.style={blue!65!black, line width=2.8pt, line cap=round},
+        bluetwig/.style ={blue!65!black, line width=.75pt, line cap=round},
+        % Everything downstairs in X is drawn thin.
+        img/.style      ={black,         line width=.65pt, line cap=round},
+        redimg/.style   ={red!75!black,  line width=.65pt, line cap=round},
+        blueimg/.style  ={blue!65!black, line width=.65pt, line cap=round},
+        grparrow/.style ={->, >=stealth, line width=.6pt},
+        fmap/.style     ={->, >=stealth, line width=.75pt},
+        bull/.style     ={circle, fill=black, inner sep=1.6pt},
+    ]
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% (a) zeta a primitive r-th root of unity, r >= 2.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{scope}
+        % The distinguished component: here g^r acts trivially on it, but g
+        % does not, so it is a multiple cover of its image.
+        \node[bull] at (-3.5,1.9) {};
+        \draw[domcover]
+            (-3.5,1.9)
+            .. controls (-2.95,2.40) and (-2.35,2.40) .. (-1.80,2.05)
+            .. controls (-1.25,1.72) and (-0.60,1.72) .. ( 0.15,2.05)
+            .. controls ( 0.80,2.35) and ( 1.20,1.78) .. ( 1.95,2.12);
+
+        % A leg meeting the distinguished component at a balanced node,
+        % sticking out on both sides.  Each end carries a red multiple cover
+        % together with the two branches interchanged by its automorphism.
+        \draw[dom] (-1.80,2.05) .. controls (-2.00,2.55) and (-2.12,2.85) .. (-2.31,3.14);
+        \draw[redcover] (-3.00,3.42) -- (-1.62,2.86);
+        \draw[redtwig] (-1.92,2.98) .. controls (-1.98,3.30) and (-1.94,3.52) .. (-1.84,3.70);
+        \draw[redtwig] (-1.92,2.98) .. controls (-1.62,2.94) and (-1.38,2.98) .. (-1.12,3.10);
+
+        \draw[dom] (-1.80,2.05) .. controls (-1.66,1.60) and (-1.74,1.22) .. (-1.93,0.90);
+        \draw[redcover] (-2.62,0.62) -- (-1.24,1.18);
+        \draw[redtwig] (-1.54,1.06) .. controls (-1.58,0.74) and (-1.52,0.50) .. (-1.42,0.30);
+        \draw[redtwig] (-1.54,1.06) .. controls (-1.26,1.10) and (-1.04,1.06) .. (-0.80,0.94);
+
+        % A second balanced node, where the two legs are themselves the
+        % multiple covers.
+        \draw[redcover] (0.15,2.05) -- (0.30,3.15);
+        \draw[redcover] (0.15,2.05) -- (0.02,0.95);
+
+        % The tail: the part cut off at the unbalanced node.
+        \draw[bluecover]
+            (1.95,2.12) .. controls (2.45,2.02) and (2.85,2.14) .. (3.30,2.48);
+        \draw[bluetwig] (2.64,2.13) .. controls (2.74,2.50) and (2.84,2.80) .. (2.96,3.06);
+        \draw[bluetwig] (2.64,2.13) .. controls (2.58,1.80) and (2.54,1.54) .. (2.48,1.30);
+        \draw[bluetwig] (2.64,2.13) .. controls (2.94,2.00) and (3.16,1.82) .. (3.36,1.60);
+
+        \draw[fmap] (0,0.55) -- node[right] {$f$} (0,-0.70);
+
+        % The target and the image of the map.
+        \draw[img] (-3.9,-3.2) -- (2.2,-3.2) -- (3.5,-0.9) -- (-2.6,-0.9) -- cycle;
+        \node[right] at (3.5,-0.9) {$X$};
+        \node[bull] at (-2.90,-1.90) {};
+        \draw[img] (-2.90,-1.90)
+            .. controls (-2.35,-1.55) and (-1.80,-1.50) .. (-1.30,-1.75)
+            .. controls (-0.80,-2.00) and (-0.25,-1.98) .. ( 0.30,-1.70)
+            .. controls ( 0.80,-1.45) and ( 1.15,-1.75) .. ( 1.70,-1.60);
+        % The two branches upstairs are folded onto the single one downstairs.
+        \draw[img]    (-1.30,-1.75) .. controls (-1.42,-2.02) and (-1.56,-2.18) .. (-1.72,-2.30);
+        \draw[redimg] (-1.72,-2.30) .. controls (-1.92,-2.46) and (-2.14,-2.58) .. (-2.36,-2.66);
+        \draw[redimg] (-2.02,-2.52) .. controls (-1.88,-2.66) and (-1.72,-2.76) .. (-1.54,-2.82);
+        \draw[redimg] ( 0.30,-1.70) .. controls ( 0.18,-2.05) and (-0.02,-2.30) .. (-0.28,-2.52);
+        \draw[blueimg] (1.70,-1.60) .. controls (2.02,-1.85) and (2.32,-2.02) .. (2.66,-2.14);
+        \draw[blueimg] (2.17,-1.92) .. controls (2.27,-1.78) and (2.36,-1.66) .. (2.46,-1.52);
+
+        \node at (0,-3.75) {(a) \(\zeta^r = 1\), \(\zeta \neq 1\)};
+    \end{scope}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% (b) zeta = 1.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{scope}[shift={(9,0)}]
+        % Now g acts trivially on the distinguished component, so it is drawn
+        % thin: it maps isomorphically onto its image.
+        \node[bull] at (-3.10,3.30) {};
+        \draw[dom] (-3.10,3.30) .. controls (-3.22,2.75) and (-3.24,1.95) .. (-3.35,1.15);
+        \draw[dom] (-3.21,2.54)
+            .. controls (-2.78,2.88) and (-2.42,2.34) .. (-2.00,2.44)
+            .. controls (-1.58,2.54) and (-1.28,2.88) .. (-0.86,2.80)
+            .. controls (-0.46,2.72) and (-0.22,2.34) .. ( 0.16,2.44)
+            .. controls ( 0.46,2.52) and ( 0.68,2.66) .. ( 0.85,2.85);
+        \draw[dom] (-3.28,1.75)
+            .. controls (-2.86,2.08) and (-2.48,1.50) .. (-2.06,1.48)
+            .. controls (-1.64,1.46) and (-1.34,1.80) .. (-0.92,1.68)
+            .. controls (-0.52,1.56) and (-0.28,1.14) .. ( 0.18,1.26)
+            .. controls ( 0.50,1.34) and ( 0.72,1.44) .. ( 0.95,1.58);
+
+        % The arms: g acts nontrivially on them, through the indicated cyclic
+        % group, which interchanges the thin branches sticking out.
+        \draw[redcover] (0.85,2.85) .. controls (1.22,3.30) and (1.62,3.60) .. (2.10,3.78);
+        \draw[redtwig] (1.37,3.37) .. controls (1.30,3.66) and (1.26,3.90) .. (1.22,4.12);
+        \draw[redtwig] (1.37,3.37) .. controls (1.66,3.30) and (1.90,3.18) .. (2.14,3.02);
+        \draw[grparrow, red!75!black]
+            (2.30,4.02) arc[start angle=140, end angle=-130, radius=.40];
+        \node[red!75!black, right] at (3.06,3.90) {$\Z_2$};
+
+        \draw[bluecover] (0.95,1.58) .. controls (1.30,1.95) and (1.68,2.16) .. (2.16,2.28);
+        \draw[bluetwig] (1.45,1.99) .. controls (1.42,2.32) and (1.46,2.58) .. (1.54,2.82);
+        \draw[bluetwig] (1.45,1.99) .. controls (1.72,1.86) and (1.94,1.68) .. (2.16,1.46);
+        \draw[bluetwig] (1.45,1.99) .. controls (1.30,1.72) and (1.20,1.50) .. (1.12,1.26);
+        \draw[grparrow, blue!65!black]
+            (2.36,2.52) arc[start angle=140, end angle=-130, radius=.40];
+        \node[blue!65!black, right] at (3.12,2.40) {$\Z_3$};
+
+        \draw[fmap] (0,0.55) -- node[right] {$f$} (0,-0.70);
+
+        % The target and the image of the map.
+        \draw[img] (-3.9,-3.2) -- (2.2,-3.2) -- (3.5,-0.9) -- (-2.6,-0.9) -- cycle;
+        \node[right] at (3.5,-0.9) {$X$};
+        \node[bull] at (-2.55,-1.55) {};
+        \draw[img] (-2.55,-1.55) .. controls (-2.58,-1.85) and (-2.72,-2.10) .. (-2.92,-2.34);
+        \draw[img] (-2.67,-1.97)
+            .. controls (-2.20,-1.62) and (-1.80,-1.66) .. (-1.35,-1.92)
+            .. controls (-0.95,-2.15) and (-0.55,-2.10) .. (-0.15,-1.92);
+        \draw[img] (-2.67,-1.97)
+            .. controls (-2.45,-2.30) and (-2.10,-2.46) .. (-1.70,-2.44)
+            .. controls (-1.15,-2.42) and (-0.60,-2.36) .. (-0.05,-2.42);
+        % Each arm is folded onto a single image curve with one branch.
+        \draw[redimg] (-0.15,-1.92) .. controls (0.25,-1.68) and (0.55,-1.42) .. (0.88,-1.18);
+        \draw[redimg] ( 0.39,-1.55) .. controls (0.63,-1.62) and (0.89,-1.62) .. (1.14,-1.56);
+        \draw[blueimg] (-0.05,-2.42) .. controls (0.45,-2.30) and (0.95,-2.12) .. (1.45,-1.96);
+        \draw[blueimg] ( 0.70,-2.21) .. controls (0.90,-2.36) and (1.14,-2.48) .. (1.38,-2.56);
+
+        \node at (0,-3.75) {(b) \(\zeta = 1\)};
+    \end{scope}
+    \end{tikzpicture}
+    \caption{The components of \(I\bar{M}_{0,1}(X,\beta)\), due to You-Cheng.}
+    \label{fig:adelic-components}
+\end{figure}
+
+We will now explain~\Cref{fig:adelic-components}. Let \(L_1\) be the cotangent line at the first marked point and let \(g\) be the automorphism of a point of \(I\bar{M}_{0,1}(X,\beta)\). Then \(\zeta\) is defined by the condition that \(g\) acts on \(L_1\) with eigenvalue \(\zeta\). In both pictures, the bullet denotes the first marked point and its image in \(X\), while a thick component is one which is a multiple cover of its image.
+
+First, suppose that \(\zeta = 1\). Then the black component is the maximal connected component containing the first marked point on which \(g\) acts as the identity. The red and blue components are precisely those on which \(g\) acts nontrivially, and we refer to them as \textit{arms}.
+
+Now suppose that \(\zeta\) is an \(r\)-th root of unity for some \(r \geq 2\). In this case, the nodes of the black component are required to be balanced with respect to the \(g\)-action, so we cut off the nonbalanced part, which is colored blue, and refer to it as the \textit{tail}. On what remains, the black component is the maximal connected component containing the first marked point on which \(g^r\) acts as the identity. Finally, after taking out the black component and the tail, we refer to the remaining components as \textit{legs}.
+
+% \begin{figure}[htpb]
+%     \centering
+%     \resizebox{\textwidth}{!}{%
+%     \begin{tikzpicture}[
+%         x=1cm,
+%         y=1cm,
+%         curve/.style={black, line width=1.25pt, line cap=round},
+%         fixed component/.style={black, line width=3.2pt, line cap=round},
+%         red component/.style={red!75!black, line width=3.2pt, line cap=round},
+%         blue component/.style={blue!70!black, line width=3.2pt, line cap=round},
+%         image curve/.style={black, line width=1.05pt, line cap=round},
+%         action arrow/.style={->, >=stealth, line width=.75pt},
+%         map arrow/.style={->, >=stealth, line width=.8pt},
+%         marked point/.style={circle, fill=black, inner sep=1.8pt}
+%     ]
+%         % The case of a nontrivial r-th root of unity.
+%         \begin{scope}[xshift=0cm]
+%             \node[font=\large] at (0,5.95)
+%                 {$r\geq 2,\qquad \zeta^r=1,\quad \zeta\neq 1$};
+%
+%             % Domain curve.
+%             \node[marked point] (p1) at (-3.15,3.7) {};
+%             \draw[fixed component]
+%                 (p1) .. controls (-2.25,4.15) and (-1.55,4.2) ..
+%                 (-1.15,3.92)
+%                 .. controls (-0.55,3.45) and (0.35,3.45) ..
+%                 (0.85,3.82)
+%                 .. controls (1.35,3.35) and (1.85,3.45) ..
+%                 (2.2,4.05);
+%             \fill (-1.15,3.92) circle (2.2pt);
+%             \fill (0.85,3.82) circle (2.2pt);
+%             \fill (2.2,4.05) circle (2.2pt);
+%
+%             % Two legs attached to balanced nodes.
+%             \draw[curve]
+%                 (-1.15,3.92) .. controls (-1.25,4.45) and (-1.35,4.78) ..
+%                 (-1.72,5.18);
+%             \draw[red component]
+%                 (-2.18,5.48) .. controls (-1.92,5.25) and (-1.65,5.08) ..
+%                 (-1.36,5.02);
+%             \draw[curve, red!75!black]
+%                 (-1.67,5.14) .. controls (-1.64,5.35) and (-1.59,5.55) ..
+%                 (-1.53,5.72);
+%             \draw[curve, red!75!black]
+%                 (-1.53,5.08) .. controls (-1.34,5.14) and (-1.18,5.25) ..
+%                 (-1.02,5.4);
+%             \draw[action arrow, red!75!black]
+%                 (-1.9,5.38) arc[start angle=20,end angle=315,radius=.42];
+%
+%             \draw[curve]
+%                 (-1.15,3.92) .. controls (-1.1,3.35) and (-1.25,3.0) ..
+%                 (-1.62,2.63);
+%             \draw[red component]
+%                 (-2.18,2.32) .. controls (-1.9,2.56) and (-1.6,2.75) ..
+%                 (-1.3,2.84);
+%             \draw[curve, red!75!black]
+%                 (-1.65,2.68) .. controls (-1.62,2.48) and (-1.59,2.25) ..
+%                 (-1.54,2.06);
+%             \draw[curve, red!75!black]
+%                 (-1.5,2.76) .. controls (-1.31,2.7) and (-1.14,2.58) ..
+%                 (-.98,2.42);
+%             \draw[action arrow, red!75!black]
+%                 (-1.85,2.57) arc[start angle=25,end angle=315,radius=.38];
+%
+%             % A second symmetric pair of balanced legs.
+%             \draw[curve] (0.2,3.48) .. controls (0.16,4.05) and (0.2,4.35) ..
+%                 (0.32,4.7);
+%             \draw[red component] (0.2,3.9) -- (0.33,4.72);
+%             \draw[curve] (0.2,3.48) .. controls (0.16,3.12) and (0.08,2.82) ..
+%                 (-0.02,2.48);
+%             \draw[red component] (0.11,3.05) -- (-0.03,2.46);
+%
+%             % The nonbalanced tail.
+%             \draw[blue component]
+%                 (2.2,4.05) .. controls (2.68,3.92) and (3.05,4.02) ..
+%                 (3.48,4.3);
+%             \draw[curve, blue!70!black] (2.86,4.08) -- (3.15,4.78);
+%             \draw[curve, blue!70!black] (2.95,4.07) -- (2.88,3.35);
+%             \draw[curve, blue!70!black] (2.95,4.07) -- (3.45,3.55);
+%
+%             % The target and the image of the map.
+%             \draw[curve]
+%                 (-3.55,-1.65) -- (2.48,-1.65) -- (3.48,1.0) --
+%                 (-2.65,1.0) -- cycle;
+%             \node[marked point] (xp1) at (-2.65,-0.25) {};
+%             \draw[image curve]
+%                 (xp1) .. controls (-2.05,0.04) and (-1.55,.22) ..
+%                 (-1.15,.12)
+%                 .. controls (-.5,-.05) and (-.2,-.1) ..
+%                 (.12,.18)
+%                 .. controls (.55,.55) and (1.0,.62) ..
+%                 (1.55,.45);
+%             % The first red orbit maps to a black connector followed by
+%             % one red image curve; its two thin branches fold to the
+%             % smaller red branch.
+%             \draw[image curve]
+%                 (-1.15,.12) .. controls (-1.23,-.08) and (-1.34,-.23) ..
+%                 (-1.48,-.32);
+%             \draw[red!75!black, line width=1.05pt, line cap=round]
+%                 (-1.48,-.32) .. controls (-1.62,-.45) and (-1.78,-.58) ..
+%                 (-1.92,-.65);
+%             \draw[red!75!black, line width=1.05pt, line cap=round]
+%                 (-1.69,-.51) .. controls (-1.58,-.64) and (-1.45,-.72) ..
+%                 (-1.31,-.76);
+%             \draw[red!75!black, line width=1.05pt, line cap=round]
+%                 (.12,.18) .. controls (.02,-.22) and (-.25,-.38) ..
+%                 (-.48,-.63);
+%             \draw[blue!70!black, line width=1.05pt, line cap=round]
+%                 (1.05,.57) .. controls (1.35,.12) and (1.68,-.18) ..
+%                 (2.08,-.38);
+%             \draw[blue!70!black, line width=1.05pt, line cap=round]
+%                 (1.78,-.2) .. controls (1.82,-.08) and (1.88,.04) ..
+%                 (1.96,.15);
+%             \draw[map arrow] (0,2.62) -- node[right] {$f$} (0,1.22);
+%             \node at (0,-2.1) {$(a)\ \zeta\neq 1$};
+%         \end{scope}
+%
+%         % The untwisted eigenvalue case.
+%         \begin{scope}[xshift=8.25cm]
+%             \node[font=\large] at (0,5.95)
+%                 {$I\overline{\mathcal M}_{0,1}(X,\beta),\qquad
+%                   \on{Tr} g|_{L_1}=\zeta$};
+%
+%             % Domain curve: the thick portions have multiple covers onto
+%             % their images.
+%             \node[marked point] (p2) at (-2.95,4.45) {};
+%             \draw[fixed component]
+%                 (p2) .. controls (-3.08,3.85) and (-3.08,3.18) ..
+%                 (-3.18,2.65);
+%             \draw[curve]
+%                 (-3.02,3.9) .. controls (-2.42,4.05) and (-2.0,3.62) ..
+%                 (-1.62,3.72)
+%                 .. controls (-1.18,3.3) and (-.72,3.18) ..
+%                 (-.2,3.32);
+%             \draw[curve]
+%                 (-3.13,3.25) .. controls (-2.6,3.52) and (-2.25,2.88) ..
+%                 (-1.8,2.68)
+%                 .. controls (-1.25,2.4) and (-.68,2.42) ..
+%                 (-.15,2.48);
+%
+%             % Nontrivial arms, shown in red and blue.
+%             \draw[curve]
+%                 (-.2,3.32) .. controls (.3,3.48) and (.5,3.72) ..
+%                 (.76,3.92);
+%             \draw[red component]
+%                 (.76,3.92) .. controls (1.1,4.42) and (1.5,4.72) ..
+%                 (2.02,4.9);
+%             \draw[curve, red!75!black]
+%                 (1.12,4.4) .. controls (1.08,4.68) and (1.05,4.92) ..
+%                 (1.02,5.18);
+%             \draw[curve, red!75!black]
+%                 (1.55,4.7) .. controls (1.82,4.62) and (2.04,4.48) ..
+%                 (2.25,4.3);
+%             \draw[action arrow, red!75!black]
+%                 (1.6,4.88) arc[start angle=210,end angle=-35,radius=.48];
+%             \node[red!75!black, left] at (1.02,5.08) {$\Z_2$};
+%
+%             \draw[curve]
+%                 (-.15,2.48) .. controls (.28,2.45) and (.55,2.64) ..
+%                 (.86,2.76);
+%             \draw[blue component]
+%                 (.86,2.76) .. controls (1.18,3.13) and (1.52,3.32) ..
+%                 (2.0,3.42);
+%             \draw[curve, blue!70!black]
+%                 (1.27,3.13) .. controls (1.34,3.4) and (1.43,3.65) ..
+%                 (1.55,3.9);
+%             \draw[curve, blue!70!black]
+%                 (1.57,3.33) .. controls (1.83,3.2) and (2.05,3.02) ..
+%                 (2.27,2.82);
+%             \draw[action arrow, blue!70!black]
+%                 (1.9,3.37) arc[start angle=145,end angle=-120,radius=.43];
+%             \node[blue!70!black, above] at (2.55,3.62) {$\Z_3$};
+%
+%             % Target X and the images of the colored components.
+%             \draw[curve]
+%                 (-3.55,-1.65) -- (2.48,-1.65) -- (3.48,1.0) --
+%                 (-2.65,1.0) -- cycle;
+%             \node[marked point] (xp2) at (-2.05,.02) {};
+%             \draw[image curve]
+%                 (xp2) .. controls (-2.0,-.32) and (-2.35,-.62) ..
+%                 (-2.62,-.93);
+%             \draw[image curve]
+%                 (-2.25,-.52) .. controls (-1.82,-.12) and (-1.55,-.12) ..
+%                 (-1.14,-.42)
+%                 .. controls (-.88,-.62) and (-.54,-.63) ..
+%                 (-.22,-.52);
+%             \draw[image curve]
+%                 (-2.25,-.52) .. controls (-2.58,-.44) and (-2.75,-.62) ..
+%                 (-2.98,-.83);
+%             \draw[red!75!black, line width=1.05pt]
+%                 (-.22,-.52) .. controls (.22,-.13) and (.5,.22) ..
+%                 (.82,.48);
+%             % The two thin red branches upstairs fold to this one
+%             % additional branch of the red image curve.
+%             \draw[red!75!black, line width=1.05pt, line cap=round]
+%                 (.345,.029) .. controls (.57,-.02) and (.77,.06) ..
+%                 (1.0,.18);
+%             % A chain of black components joins the blue image to the
+%             % distinguished black component.
+%             \draw[image curve]
+%                 (-2.25,-.52) .. controls (-2.12,-.76) and (-2.0,-.91) ..
+%                 (-1.88,-1.0);
+%             \draw[image curve]
+%                 (-1.88,-1.0) .. controls (-1.76,-.82) and (-1.53,-.91) ..
+%                 (-1.38,-1.18);
+%             \draw[image curve]
+%                 (-1.38,-1.18) .. controls (-.65,-.76) and (.08,-.68) ..
+%                 (.78,-.72);
+%             \draw[blue!70!black, line width=1.05pt, line cap=round]
+%                 (.78,-.72) .. controls (1.24,-.74) and (1.58,-.62) ..
+%                 (1.98,-.32);
+%             \draw[map arrow] (0,2.03) -- node[right] {$f$} (0,1.22);
+%             \node at (0,-2.1) {$(b)\ \zeta=1$};
+%         \end{scope}
+%     \end{tikzpicture}%
+%     }
+%     \caption{The decomposition of a component of
+%     \(I\overline{\mathcal M}_{0,1}(X,\beta)\) into its distinguished
+%     component, legs or arms, and tail, provided by You-Cheng. Thick curves indicate components
+%     that map with degree greater than one onto their images. Symmetric
+%     branches occur on the domain, and \(f\) folds each orbit to a single
+%     image curve in \(X\).}
+%     \label{fig:adelic-components}
+% \end{figure}
+%
+% We will now explain the meaning of the different parts of~\Cref{fig:adelic-components}. Let \(L_1\)
+% be the cotangent line at the first marked point and define \(\zeta\) by
+% \[
+%     g|_{L_1}=\zeta\,\mr{Id}_{L_1}.
+% \]
+% The bullets denote the first marked point and its image in \(X\), and a
+% thick curve denotes a component that is a multiple cover of its image.
+% The black component is the maximal connected component containing the
+% first marked point on which \(g\) acts trivially when \(\zeta=1\). The red
+% and blue components on which \(g\) acts nontrivially are called
+% \textit{arms}.
+%
+% More generally, suppose that \(\zeta\) is an \(r\)-th root of unity with
+% \(r\geq 2\). The nodes of the thick black component must be balanced with
+% respect to the \(g\)-action. Cut off the part attached at an unbalanced
+% node (the blue component in the figure); this part is called the
+% \textit{tail}. In what remains, the thick black component is the maximal
+% connected component containing the first marked point on which \(g^r\)
+% acts trivially. After removing the black component and the tail, the
+% remaining components are called \textit{legs}.
+
+The following definition is due to Givental. We write
+\[ \ab<\frac{\Phi}{1-qL}>_{0,1,\beta}^{X,K} \coloneqq \sum_{\zeta} \ab<\frac{\Phi}{1-qL}>_{0,1,\beta}^{X_{\zeta}}, \]
+where the \(X_{\zeta}\) term is simply the contribution of \(M_{\zeta}\) under the Riemann-Roch theorem. Now, we will define arms, legs, and tails. Here, we define the \textit{arms}
+\[ \mr{arm}(q) \coloneqq \sum_{\beta, \alpha, \zeta \neq 1} Q^{\beta} \Phi^{\alpha}\ab<\frac{\Phi}{1-qL}>_{0,1,\beta}^{X_{\zeta}}, \]
+the \textit{legs}
+\[ \mr{leg}_{\zeta}(q) \coloneqq \mr{leg}_r(q) = \Psi^r (\mr{arm}(q)), \]
+and the \textit{tails}
+\[ \mr{tail}_{\zeta}(q) \coloneqq \sum_{\beta, \alpha, \zeta' \neq \zeta} Q^{\beta} \Phi^{\alpha} \ab<\frac{\Phi^{\alpha}}{1-qL}>_{0,1,\beta}^{X_{\zeta'}}. \]
+
+\begin{prop}
+    The Laurent expansion of the J-function at \(q = 1\) is given by
+    \begin{align*}
+        J^K(0)_{q=1} &= J^{\mr{fake}}(\mr{arm}(q)) \\
+        &\coloneqq 1-q + \mr{arm}(q) + \sum_{n,\beta,\alpha} \ab<\frac{1}{1-qL}, \mr{arm}(L), \ldots, \mr{arm}(L)>_{0,n+1,\beta}^{\mr{fake}},
+    \end{align*}
+    where the fake invariants are computed by applying Riemann-Roch and only considering the contribution of the untwisted sector.
+\end{prop}
+
+\begin{prop}
+    At any other root of unity \(\zeta \neq 1\), we have
+    \begin{align*}
+        &J^K(0)_{q = \zeta} = (1-q) + \mr{tail}_{\zeta}(q) \\
+        &+ \sum_{n,\beta,\alpha} \frac{Q^{r\beta}\Phi^{\alpha}}{n!} \ab[\frac{\Phi_{\alpha}}{1-\zeta q L^{1/r}}, \mr{leg}_r(L), \ldots, \mr{leg}_r(L), 1 - \zeta^{-1}L^{1/r} + \mr{tail}_{\zeta}(\zeta^{-1} L^{1/r})]^{\mr{stem}},
+    \end{align*}
+    where the stem is some fake invariant of \(X \times B\mu_r\) defined on the moduli space
+    \[ \bar{M}_{-,n+2,\beta}^X(\beta) \coloneqq \bar{M}_{0,2}(X \times B\mu_r, \beta, (g, 1, \ldots, 1, g^{-1})). \]
+    It is defined by the formula
+    \begin{align*}
+        [\cdots]^{\mr{stem}} \coloneqq \int_{[\bar{M}_{0,n+2,\beta}^X(\zeta)]^{\vir}} \on{td}(T_{\bar{M}}) \on{ch}\ab(\frac{\on{Tr}(\cdots)}{\on{Tr}(\lambda_{-1}(N^*))}), 
+    \end{align*}
+    where \(N\) denotes the normal bundle of \(\bar{M}_{0,n+2,\beta}^X(\zeta) \subset \bar{M}_{0,nr+2}(X, r\beta)\).
+\end{prop}
+
+\begin{rmk}
+    If we can calculate the fake and stem theories, then we can compute genus zero quantum K invariants.
+\end{rmk}
+
+\subsection{Quantum K-theory of a point}%
+\label{sub:Quantum K-theory of a point}
+
+One natural question is to study higher genus quantum K-theory. We will begin with the simplest target, which is a point. One motivation for studying higher-genus would be to try to prove integrality of the Klemm-Pandharipande definition of GV invariants for Calabi-Yau fourfolds or the Pandharipande-Zinger definition of GV invariants for Calabi-Yau fivefolds (in this situation, we only need to consider genus \(1\)). One reason we need to consider the quantum K-theory of a point is because in \(I\bar{M}_{1,1}(X, \beta)\), there are some components where an entire curve of genus \(1\) is contracted to a point.
+
+\begin{quest}
+    What is the K-theoretic Witten-Kontsevich theorem?\footnote{According to You-Cheng, the difficulty lies everywhere.}
+\end{quest}
+
+We will first recall the cohomological Witten's conjecture. We will begin with the operator
+\[ L = \partial_x^2 + u(x) \]
+and deform it to
+\[ \tilde{L} = \partial_x^2 + u(x, T_3, T_5, \ldots), \]
+where we should think of \(x = T_1\) and \(u(x) = u(x, 0, 0,\ldots)\). Formally, write
+\[ L^{1/2} = \partial_x + \sum_{k > 0} a_{-k}(x) \partial_x^{-k} \]
+using the property
+\[ \partial^n \circ f = \sum_{m = 0}^{\infty} \binom{n}{m} f^{(m)} \partial^{n-m} \]
+for all integers \(n \in \Z\). In particular, we construct the (2-)KdV hierarchy by the equation
+\[ \pdv{\tilde{L}}{T_{2k+1}} = \ab[(\tilde{L}^{\frac{2k+1}{2}})_{\geq 0}, \tilde{L}] \]
+for all \(k \geq 0\). We define a \textit{\(\tau\)-function} to be a function \(\tau\) such that 
+\[ 2 \pdv[2]{}{x}\log \tau(x, T_3, T_5, \ldots) = u(x, T_3, T_5, \ldots). \]
+Now perform the above process using \(u = 2x\). Define the function
+\[ F(t_0, t_1, \ldots) \coloneqq \sum_{n \geq 0} \sum_{k_0, \ldots, k_n} \ab<\tau_0^{k_0} \cdots \tau_n^{k_n}> \frac{t_0^{k_0} \cdots t_n^{k_n}}{k_0! \cdots k_n!}. \]
+Note that because the genus is determined entirely by the number of insertions and the degree of the insertions, the notation
+\[ \ab<\tau_0^{k_0} \cdots \tau_n^{k_n}> \]
+uniquely determines a descendant GW invariant of a point.
+
+\begin{thm}[Kontsevich]
+    F is a \(\tau\)-function of the KdV hierarchy constructed starting with \(L = \partial_x^2 + 2x\) under the change of variables \(t_i = (2i+1)!! T_{2i+1}\).
+\end{thm}
+
+One application of this theorem is to consider virtual localization. For example, suppose we consider \(\bar{M}_{g,0}(X, d[C])\) where \(C\) is a unique rational curve in a Calabi-Yau threefold with normal bundle \(N = \mc{O}(-1)\oplus \mc{O}(-1)\). Then in this setting we can reduce to the local model and compute
+\begin{align*}
+    \int_{[\bar{M}_{g,0}(\P^1, d)]^{\vir}} c_{\mr{top}}(R^1 \pi_* N) = \sum_{m \vdash d} \frac{(-1)^{d-L(m)}}{\abs{\Aut(m)}} \prod_{i=1}^{L(m)} \int_{\bar{M}_{g, L(m)}} \frac{1 + \cdots + c_g(\mc{H})}{\prod_i (1-m_i \psi_i)}
+\end{align*}
+via virtual localization. If we would like a similar result in K-theory, then we will need to consider terms of the form
+\[ \chi\ab(\bar{M}_{g, L(m)}/\Aut(m), \frac{\lambda_{-1}(\mc{H})}{1-m_i L_i}), \]
+so we will need to consider the permutation-equivariant quantum K-theory of a point.
+
+We now proceed with a literature review. First, Lee computed the formula
+\[ \ab<\frac{1}{1-q_1 L}, \ldots, \frac{1}{1-q_n L}>_{0,n}^{\mr{pt}, K} = \ab(\prod_{i=1}^n \frac{1}{1-q_i}) \ab(1 + \sum_{i=1}^n \frac{q_i}{1-q_i})^{n-3}. \]
+Later, Lee-Qu gave a way to compute
+\[ \ab<\frac{1}{1-q_1 L}, \ldots, \frac{1}{1-q_n L}>_{1,n}^{\mr{pt}, K} \]
+in principle. Givental computed the formula
+\[ \sum_{n \geq 2} \ab<\frac{1}{1-q L}, 1, \ldots, 1>_{0,1+n}^{S_n} = (1-q) \exp\ab(\sum_{k > 0} \frac{\Psi^k}{k} \ab(1 + \frac{q}{1-q})). \]
+Finally, in 2024, Milanov computed 
+\begin{align*}
+    \sum_{n \geq 0}& \ab<\frac{1}{1-q_1 L}, \ldots, \frac{1}{1-q_r L}, 1, \ldots, 1>_{0,r+n}^{S_n} \\
+    &= \ab(\prod_{i=1}^{r} \frac{1}{1-q_i})\ab(1 + \sum_{i=1}^r \frac{q_i}{1-q_i}) \exp\ab(\frac{\Psi^k}{k} \ab(1 + \sum_{i=1}^r \frac{q_i}{1-q_i})). 
+\end{align*}
+
+Let \(s \in \Z\) and define the pluri-Hodge sheaf \(\mc{H}_s \coloneqq R^0 \pi_* (\omega_{\pi}^s)\). Considering the map \(\bar{M}_{g,n+1} \xrightarrow{\pi} \bar{M}_{g,n}\), we will denote the upstairs cotangent lines by \(L_i\) and the downstairs ones by \(\ell_i\).
+
+\begin{lem}
+    For all integers \(s\) and \(d_i\), we have
+    \[ \pi_*\ab(\omega_{\pi}^s\ab(\sum_{i=1}^r d_i D_i)) = \mc{H}_s \mc{H}_{1-s}^* + \sum_{i=1}^n \sum_{k=1}^{d_i} \ell_i^{-k+s}. \]
+\end{lem}
+
+\begin{rmk}
+    Note that if \(f(q) \in \Z[q]\), then \(\exp \sum_k \frac{\Psi^k}{k} (f(q)) \in \Z \ps{q}\). The reason is that this operation sends \(f = \sum_{i=1}^{n} a_i q^i\) to \(\prod_{i=1}^n \frac{1}{(1-q_i)^{a_i}}\).
+\end{rmk}
+
+\begin{proof}
+    When all \(d_i\) are zero, we see that
+    \[ R^0 \pi_* \omega_{\pi}^s - R^1 \pi_* \omega_{\pi}^s = \mc{H}_s - \mc{H}_{1-s}^* \]
+    by Serre duality. The next step is to show that
+    \[ \pi_* \omega_{\pi}^s ((r+1)D_i) = \pi_* \omega_{\pi}^s(r D_i) + \ell_i^{s-r-1}. \]
+    Here, we first consider the exact sequence
+    \[ 0 \to \mc{O} (-D_i) \to \mc{O} \to \mc{O}_{D_i} \to 0 \]
+    and twist by \(\omega_{\pi}^s\) to obtain
+    \[ 0 \to \omega_{\pi}^s(r D_i) \to \omega_{\pi}^s ((r+1)D_i) \to \omega_{\pi}^s ((r+1)D_i) \otimes \mc{O}_{D_i} \to 0 \]
+    and then compute the pushforward.
+\end{proof}
+
+\begin{lem}
+    Let \(f_i\) be rational functions, for example \(\frac{1}{1-q L}\). Then
+    \begin{align*}
+        \ab<f_1(L), \ldots, f_n(L), L_{n+1}^r>_{g, n+1} ={}& \sum_{i=1}^n \ab<f_1(L), \ldots, D(f_i f_{n+1}), \ldots, f_n(L_n)>_{g, n} \\
+        &+ \ab<f_1(L), \ldots, f_n(L) \mid \mc{H}_r - \mc{H}_{1-r}^*>_{g,n},
+    \end{align*}
+    where \(f_{n+1} = L_{n+1^r}\) and \((Df)(x) \coloneqq \frac{f(x)-f(1)}{x-1}\).
+\end{lem}
+
+To prove this, we need to consider the pushforward
+\begin{align*}
+    \pi_* (L_1^{d_1} \cdots L_{n+1}^{d_{n+1}}) &= \pi_* \ab(\pi^*(\ell_1^{d_1} \otimes \cdots \otimes \ell_n^{d_n}) \otimes \omega_{\pi}^{d_{n+1}}(d_i+d_{n+1})D_i).
+\end{align*}
+Here, we use the fact that \(L_i = (\pi^* \ell_i)(D_i)\) and \(L_{n+1} = \omega_{\pi}(D_1 + \cdots + D_n)\). Applying the previous lemma, we see that the pushforward becomes
+\[ (\ell_1^{d_1} \cdots \ell_n^{d_n})\ab(\mc{H}_{d_{n+1}} - \mc{H}_{1-d_{n+1}}^* + \sum_{i=1}^n \sum_{k=1}^{d_i + d_{n+1}} \ell_i^{-k+d_{n+1}}). \]
+Now, Lee's formula computes the correlators
+\[ \ab<(L-1)^{k_1}, \ldots, (L-1)^{k_n}>_{0,n} = \frac{(n-3)!}{\prod_{i=1}^n k_i \ab(n-3-\sum_i k_i)!} \]
+via the expansion
+\[ \frac{1}{1-qL} = \frac{1}{1-q} \sum_{k \geq 0} \frac{q^k(L-1)^k}{(1-q)^k}. \]
+Note here that there is no Hodge bundle in genus \(0\), so in fact the lemma can be used to obtain Lee's formula.
+
+\begin{lem}
+    We have
+    \[ \mc{H}_r - \mc{H}_{1-r}^* = \pi^* (\mc{H}_r - \mc{H}_{1-r}^*) - \sum_{i=1}^n (D^2 (\pi^* \ell_i)^r) \mc{O}_{D_i}. \]
+\end{lem}
+
+The lemmas collectively imply that we can reduce to the case of a single marking at the cost of making the insertions very complicated and introducing pluri-Hodge terms everywhere. In genus \(1\), life becomes easier because on \(\bar{M}_{1,1}\), we have 
+\[ \mc{H}_r = \mc{O}(r) = L_1^r. \]
+In this case, recall the classical formula
+\[ \chi\ab(\bar{M}_{1,1}, \frac{1}{1-qL}) = \frac{1}{(1-q^4)(1-q^6)}. \]
+Unfortunately, computing
+\[ \chi\ab(\bar{M}_{1,n}; \frac{1}{1-q_1 L} \cdots \frac{1}{1-q_n L}) \]
+is too hard, so we can try to compute
+\[ \chi\ab(\bar{M}_{1,1}; \frac{1}{1-q_1 L_1} \cdots \frac{1}{1-q_n L_1})  \]
+which is known, but it is unclear how to write a good formula for it. The reason we would consider this is the operation
+\[ \Z\ps{q} \xrightarrow{[]_r} \Z\ps{q_1, \ldots, q_r} \qquad q^k \to h_k(q_1, \ldots, q_r) \coloneqq \sum_{\ell_1 + \cdots + \ell_r = k} q_1^{\ell_1} \cdots q_r^{\ell_r}. \]
+Unfortunately, You-Cheng does not know how to write
+\[ \chi\ab(\bar{M}_{1,1}; \frac{1}{1-q_1 L_1} \cdots \frac{1}{1-q_n L_1}) = \ab[\frac{1}{(1-q^4)(1-q^6)}]_n \]
+in a nice form. In principle we can write formulae like
+\[ [f(q)]_2 \coloneqq \frac{q_1 f(q_1) - q_2 f(q_2)}{q_1 - q_2}, \]
+but this does not seem to help much.
+
+\subsection{Permutation-equivariant theory of a point}%
+\label{sub:Permutation-equivariant theory of a point}
+
+We can compute \(\chi\ab(\bar{M}_{1,1}, \frac{1}{1-q L})\) in another way. Consider the involution on an elliptic curve, which gives a map
+\[ \bar{M}_{1,1} \to \bar{M}_{0,1+3}/S_3. \]
+Then, Givental computes
+\[ \chi\ab([\bar{M}_{0,1+n-1}/S_{n-1}], \frac{1}{1-qL}) = \prod_{i=2}^{n-1} \frac{1}{1-q^i}. \]
+In particular, we obtain
+\[ \frac{1}{1-q^2} \cdots \frac{1}{1-q^3}, \]
+and then because the map is a \(\mu_2\)-gerbe (or a \(2:1\)-cover on objects), we obtain the desired formula.
+
+Consider \(\mc{H}_{g,1} \subset \bar{M}_{g,1}\) to be the hyperelliptic locus. Note that the marking lies on a Weierstrass point. Note that the fixed points of the hyperelliptic involution go to \(2g+1\) points on \(\P^1\), and therefore one would want to use the calculation
+\[ \chi\ab(\bar{M}_{0,1+2g+1}/S_{2g+1}, \frac{1}{1-q L}) = \prod_{i=2}^{2g+1} \frac{1}{1-q^i} \]
+to compute the quantity
+\(\chi\ab(\mc{H}_{g,1}, \frac{1}{1-qL})\). However, because of the way that the curves upstairs degenerate, we will need to consider the Hassett moduli space where the last \(2g+1\) markings have weight \(\frac{1}{2}\).
+ 
+
+
+
+
 
 
 \section{Quasimap wall-crossing (Yang Zhou)}%
@@ -2180,7 +2833,7 @@ where \(\pi\) is the universal curve and \(f\) is the universal stable map. We w
 \end{align*}
 then
 \[ J (Q, z) = 1+ \sum_{d>0} \phi^{\alpha} \ab<\frac{\phi_{\alpha}}{z(z-\psi)}>_{0,1}^X Q^d = \frac{I}{I_0} \]
-up to the mirror map \(Q = q \exp\ab(\frac{I_1}{I_0})\).
+up to the mirror map \(Q = q \exp\ab(\frac{I_1}{I_0})\). 
 
 \subsection{Naive counting}%
 \label{sub:Naive counting}
@@ -2188,7 +2841,10 @@ up to the mirror map \(Q = q \exp\ab(\frac{I_1}{I_0})\).
 We will consider ``maps'' \(\P^1 \to X \subset \P^4\) from a fixed \(\P^1\). For simplicity, we will assume \(X = \ab(\sum x_i^5 = 0)\) is the Fermat quintic. This is given by a collection \([f_0, \ldots, f_4]\) where \(f_i \in \C[u,v]\) such that \(\deg f_i = d\) and \(\sum f_i^5 = 0\). To be an actual morphism, we need the \(f_i\) to have no common zeroes, but this moduli is not proper, so we relax this condition. Then we consider the moduli space
 \[ QG(X, d) =  \ab\{ [f_0, \ldots, f_4] \middle\vert \Vectorstack{{ f_i \in \C[u,v] } { \deg (f_i = d) }}, \sum f_i^5 = 0, (f_0, \ldots, f_4) \neq (0,\ldots, 0) \} \bigg/ \C^{\times}. \]
 This lives inside the corresponding moduli space
-\[ QG(\P^4, d) \ab\{ [f_0, \ldots, f_4] \mid f_i \in \C[u,v], \deg f_i = d, (f_0, \ldots, f_4) \neq (0, \ldots, 0) \} \cong \P^{5d+5-1} \]
+\begin{align*}
+    QG(\P^4, d) &\coloneqq  \ab\{ [f_0, \ldots, f_4] \mid f_i \in \C[u,v], \deg f_i = d, (f_0, \ldots, f_4) \neq (0, \ldots, 0) \} \\
+    &\cong \P^{5d+5-1} 
+\end{align*}
 of rational maps to projective space. There are two problems. First, the domain is parameterized, so we need to account for the automorphisms of \(\P^1\). Second, to obtain stable maps, we need to blow up the domain.
 
 First, let \(\C^{\times}\) act on \(\P^1\) by scaling \(u\). Consider the special fixed locus \(F_{\star} \subset QG(X, d)\) defined by
@@ -2352,6 +3008,107 @@ In particular, we must define
     \[ \omega_C(\ep a_1 p_1 + \cdots + \ep a_n p_n) > 0, \]
     so we recover a weighted pointed curve with weights \((\ep a_1, \ldots, \ep a_n)\).
 \end{exm}
+
+\subsection{Master space}%
+\label{sub:Master space}
+
+Our method will be to perform virtual localization on a master space which interpolates the two moduli. Consider the \(\C^{\times}\)-action on \(\P^n\) given by
+\[ t \cdot [x_0 : \cdots : x_n] = [t x_0, x_1, \ldots, x_n]. \]
+The fixed loci consists of a \(\P^{n-1}\) where \(x_0 = 0\) and a point \([1, 0, \ldots, 0]\). Then we can compute
+\[ \int_{\P^{n-1}} H^{n-1} = 1 \]
+by transfering the computation to the other fixed locus. In particular, we lift to \(H \in H_{\C^{\times}}^* (\P^n) = \Q[H,z] / (H-z)H^n\) and compute
+\begin{align*}
+    \int_{\P^n} H^{n-1} &= \int_{\P^{n-1}} \frac{H^{n-1}}{-z+H} + \int_{\mr{pt}} \frac{z^{n-1}}{z^n}.
+\end{align*}
+Taking residues, we see that
+\begin{align*}
+    = 0 \on{Res}_{z = 0}\int_{\P^{n-1}} \frac{H^{n-1}}{-z+H} + 1 \\
+    &= 1 - \int_{\P^{n-1}}H^{n-1},
+\end{align*}
+which recovers the desired integral. The key fact we used here is that projective space is proper.
+
+\begin{exm}[Second toy example]
+    We will consider a second toy example. Recall Hassett's moduli of weighted pointed curves
+    \[ (C, x_1, \ldots, x_n) \]
+    where \(C\) is nodal and the \(x_i \in C^{\mr{sm}}\) can collide. The collisions are regulated by the fact that each marked point is given a weight \(\delta_i \in Q \cap (0,1]\) and are required to satisfy the following conditions:
+    \begin{enumerate}
+        \item For all \(x \in C^{\mr{sm}}\), then
+            \[ \sum_{x = x_i} \delta_i \leq 1; \]
+        \item We have the stability condition \(\omega_C(\delta_1 x_1 + \cdots + \delta_n x_n) > 0\). For example, if we have a rational tail, then \(\sum_{x_i \in C'} \delta_i > 1\).
+    \end{enumerate}
+\end{exm}
+
+\begin{exm}[Another toy example]
+    Our goal will be to once again compute
+    \[ \int_{\bar{M}_{0,4}} \psi_1 = 1. \]
+    Our first goal will be to change the stability condition. If we set
+    \[ \delta_+ = \ab(\frac{2}{3}, \frac{2}{3}, \frac{2}{3}, \frac{2}{3}), \]
+    we see that the stability condition does not change. However, if we set
+    \[ \delta_- = \ab(\frac{2}{3}, \frac{2}{3}, \frac{2}{3}, \frac{1}{3}), \]
+    the moduli space does not change, but the universal curve in fact becomes \(\P^1 \times \P^1\) with the section \(x_4\) being the diagonal. This tells us that
+    \[ \int_{\bar{M}_{0,4}^{\delta_-}} \psi_1 = 0, \]
+    and we will use this to compute in the \(\delta_+\) chamber. We can try to form a master space by both allowing rational tails with \(x_i, x_4\) and allowing \(x_1 = x_4\), but if we do this, we end up with a semistable point with a rational tail where \(x_1 = x_4\). We want to end up with this by taking a quotient from a master space, so we will add the data of a tangent vector to the moduli. Therefore, define the \(\delta_{\pm}\) master space to consist of objects of the form
+    \[ \xi = (C, x_1, \ldots, x_4, v \in T_{x_4} C \cup \infty) \]
+    where \(C\) is nodal, \(x_i\) are smooth points, \(x_1, x_2, x_3\) are disjoint,
+    \[ \sum_{x_i \in C'} \frac{2}{3} \delta_i > 1 \]
+    for all rational tails \(C'\), if \(v = 0\), then \(x_4\) is disjoint from the other \(x_i\), and whe \(v = \infty\), there are no rational tails where \(x_4 \neq x_i\) for \(i = 1,2,3\). 
+
+    We now give this master space an action of \(\C^{\times}\) by scaling \(v\). There are various fixed loci:
+    \begin{enumerate}
+        \item When \(v = 0\), we obtain \(\bar{M}_{0,4}^{\delta_+}\);
+        \item When \(v = \infty\), we obtain \(\bar{M}_{0,4}^{\delta_-}\);
+        \item There are fixed loci where \(v \neq 0,\infty\) and we have a rational tail with \(x_i = x_4\).
+    \end{enumerate}
+
+    If we consider a general point (with all four marked points disjoint), it will travel directly to itself along the \(\C^{\times}\)-action. However, if we start with a rational tail containing \(x_1\) and \(x_4\), then we first travel to a rational tail with general \(v\) but \(x_1 = x_4\), and if we smooth out the node, we obtain a single curve with \(x_1 = x_4\), but we allow \(v \to \infty\), which is another fixed point. Now we can integrate
+    \begin{align*}
+        \int_{\ms{Master}} \psi_1 = \int_{\bar{M}_{0,4}^{\delta_+}} \frac{\psi_1}{-z-?} + \int_{\bar{M}_{0,4}^{\delta_-}} \frac{\psi_1}{z+?} + \on{Cont}(12|34) + \on{Cont}(13|24) + \on{Cont}(14|23).
+    \end{align*}
+    Taking residues at \(z = 0\), we obtain
+    \begin{align*}
+        0 &= - \int_{\bar{M}_{0,4}^{\delta_+}} \psi_1 + 0 + 0 + 0 + \int_{\mr{pt}} \frac{(-z)}{(\pm z)(\pm z)},
+    \end{align*}
+    where in the final term the \(\pm z\) in the denominator are node smoothing parameters, and therefore we recover the desired integral.
+\end{exm}
+
+With all of our toy examples, we are finally ready to discuss the quasimap master space. Our first step at the \(\frac{1}{d_0}\) wall is to allow both degree \(d_0\) rational tails and length \(d_0\) base points. However, we can consider curves with a rational tail and a quasimap of the form
+\[ [x_0 u^{d_0}, \ldots, a_n u^{d_0}], \]
+which have infinitely many automorphisms. However, we cannot attach tangent vectors to the base points (because deformations will remove them), and there are also situations where there exists more than one degree \(d_0\) with a base point of length \(d_0\) (and then the automorphism group contains \(\C^{\times}\)).
+
+\begin{rmk}
+    There is a key observation. Suppsose that we have two rational tails of degree \(d_0\) and call the two nodes \(p_1\) and \(p_2\). Now define the space of smoothing parameters
+    \[ \C \cong \Theta_i = T_{p_i} E_i \otimes T_{p_i} C_g, \]
+    where \(E_i\) is the rational tail and \(C_g\) is the rest of the curve. We will consider the moduli
+    \[ \mf{M}_{g,n,d}^{\mr{wt}} \xrightarrow{\text{\'et}} \mf{M}_{g,n} \]
+    of weighted semistable curves labelled by degrees. Note that this morphism is highly non-separated. We will consider the open substack \(\mf{M}_{g,n,d}^{\mr{wt}, \ep_0}\) where the curves have no tail of degree strictly less than \(d_0\). Then we can consider the Cartier divisor \(\mc{Z}\) where there exists at least one tail of degree \(d_0\). In particular, we see that
+    \[ \Theta_i = N_{\mc{Z}_i} |_{\xi} \]
+    for the two branches \(\mc{Z}_1\) and \(\mc{Z}_2\) at the point of interest. We also see that \(\Theta_1 \otimes \Theta_2\ = \mc{O}(\mc{Z})|_{\xi}\), so we can add the data of
+    \[ v \in \ab(\bigotimes_i \Theta_i)^{\vee} \cup \ab\{\infty\} \]
+    and the data of 
+    \[ w \in \P(\Theta_1 \oplus\Theta_2). \]
+\end{rmk}
+
+The actual construction proceeds as follows. Consider \(\mc{Z} \subset \mf{M} = \mf{M}_{g,d}^{\mr{wt}, \ep_0}\). Define \(\tilde{\mf{M}} \to \cdots \to \mf{M}\) to be an iterated blowup along strata of \(\mc{Z}\). Then an object of the master space (a quasimap with calibrated tails) over a scheme \(S\) is given by the data of a quasimap
+\begin{equation*}
+\begin{tikzcd}
+    C \ar{d} \ar[dashrightarrow]{r}{f} & X \\
+    S
+\end{tikzcd}
+\end{equation*}
+inducing a morphism \(p \colon S \to \mf{M}_{g,d}^{\mr{wt}, \ep_0}\), a choice of a lift
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{\mf{M}} \ar{d}{\tau} \\
+    S \ar{r}{p} \ar[dashrightarrow]{ur}{w} & \mf{M}_{g,d}^{\mr{wt}, \ep_0},
+\end{tikzcd}
+\end{equation*}
+a line bundle \(\mc{N} \in \Pic S\), and \(v = (v_1, v_2)\) where \(v_1 \in H^0(\rho^* \mc{O}(-\mc{Z}))\) and \(v_2 \in H^0(\mc{N})\), where \((v_1, v_2)\) is nonvanishing. We also disallow basepoints of length strictly larger than \(d_0\) and require stability such that
+\begin{enumerate}
+    \item When \(v = 0\), we obtain \(\ep_+\)-stability;
+    \item When \(v = \infty\), we obtain \(\ep_-\)-stability;
+    \item Any constant tail (degree \(d_0\) with base point of length \(d_0\)) is an entangled tail. Here, we consider the last blowup such that \(w\) maps to an exceptional locus \(\bigcap_{i \in I} \tilde{\mc{Z}}_i\), and then the \(E_i\) are entangled tails for \(i \in I\);
+    \item If there exists a degree \(d_0\) tail, then all length \(d_0\) base points are on degree \(d_0\) tails.
+\end{enumerate}
 
 
 
@@ -2580,6 +3337,325 @@ Now suppose that \(S = \Spec (Q \to \C)\) is a log point with \(Q\) an fs sharp 
 From each half edge, we treat it as pointing outward from the attached vertex, and in particular, this means that a linear map to \(\R_{\geq 0}\) corresponds to a slope. We will call these \textit{contact orders}. In particular, we have \(c(h) = - c(\hat{h})\) if \(h \neq \hat{h}\) are related by \(\imath\). For all \(v \in \V\), we also define the \textit{degeneracy}
 \[ e_v \colon \Q_{\R}^{\vee} \to \R_{\geq 0} \qquad t \mapsto \Sigma(f)_t (v). \]
 In particular, \(e_v \in Q\) is an integral point.
+
+The next thing we need to introduce are punctured legs. They will be denoted by
+\[ \L^{\circ} = \ab\{ h \in \H \mid \Sigma(f)_t(h) \text{ is bounded and nontrivial for all } t \in Q_{\R}^{\vee}\}. \] 
+We will define prestability at \(h \in \L^{\circ}\) such that \(0 \in \ol{\Sigma(f)_t(h)}\), which is a technically necessary assumption. Under the assumption that all punctured legs are prestable, we can define the \textit{edge length} function
+\[ \ell \colon \E \cup \L^{\circ} \to \ms{Map}(Q_{\R}^{\vee}, \R_{\geq 0}) \qquad x \mapsto \ell(x) \colon t \mapsto \ell(x)(t). \]
+Note that \(\ell(E) \in Q\) is also an integral point for edges \(E\). For punctured legs, this is true up to subdivision.
+
+\subsection{Log GLSM invariants}%
+\label{sub:Log GLSM invariants}
+
+\begin{defn}
+    We will define the \textit{decorated tropical type} of a log map \(f\) as
+    \[ \bm{\tau} = (G, c \colon \H \to \Z, \beta \colon \V \to H_2(X)). \]
+\end{defn}
+
+\begin{defn}
+    A log or punctured map \(f\) is of \textit{compact type} if
+    \begin{enumerate}
+        \item \(\Ima \Sigma(f)_t\) is bounded for all \(t\);
+        \item \(f(p_h) \in 0_{\mf{P}}\) for all half-edges \(h\) with contact order \(0\).
+    \end{enumerate}
+\end{defn}
+
+We are now able to define the category \(\mc{R}(\mf{P}, \tau)\) of stable punctured R-maps fibered over the category \(\ms{LogSch}\) of fs log schemes and marked by \(\tau\).
+
+\begin{thm}
+    The stack \(\mc{R}(\mf{P},\bm{\tau})\) is represented by a proper DM stack with basic/minimal log structure.
+\end{thm}
+
+\begin{rmk}
+    If \(\V = \ab\{v\}\) is a singleton, then we will write
+    \[ \mc{R}_{g, c}(\mf{P}, \beta) \coloneqq \mc{R}(\mf{P}, \bm{\tau}). \]
+\end{rmk}
+
+Consider the diagram
+\begin{equation*}
+\begin{tikzcd}
+    & \mf{P} \ar{d} \\
+    \mc{C} \ar{ur}{f} \ar{d}{\pi} \ar{r} & B \C_{\omega}^{\times} \\
+    \mc{R},
+\end{tikzcd}
+\end{equation*}
+where we set \(\mc{R} \coloneqq \mc{R}(\mf{P}, \bm{\tau})\). Then the perfect obstruction theory is defined by
+\[ T_{\mc{R}/\ms{Log}_{\mf{M}_G}} \to \E_{\square} = R \pi_* f^* T_{\mf{P}/B\C_{\omega}^{\times}}. \]
+Here, both tangent bundles refer to the log tangent complex. From the perfect obstruction theory, this defines the canonical virtual cycle
+\[ [\mc{R}(\mf{P}, \bm{\tau})]^{\vir}. \]
+The main drawback of this virtual cycle is that it does not reproduce Gromov-Witten theory. However, we can consider how it differs from GW theory, but for this we need a birational modification. Let \(Q\) be a sharp monoid. It has a partial ordering by \(a < b\) if there exists a nonzero \(c \in Q\) such that \(a+c = b\).
+
+\begin{defn}
+    We say that either \(f\)  or \(\Sigma(f)\) has \textit{uniform maximal degeneracy} if there exists \(e_{\max} \in \ab\{e_v \mid v \in \V \}\) such that \(e_{\max} \geq e_v\) for all \(v \in \V\).
+\end{defn}
+
+\begin{rmk}
+    If \(f\) is compact type and has uniform maximal degeneracy, then \(\Sigma(f)\) is uniformly bounded by \(e_{\max}\).
+\end{rmk}
+
+\begin{defn}
+    Define \(\mc{U}(\mf{P}, \bm{\tau})\) to be the stack of stable punctured or log R-maps marked by \(\bm{\tau}\) with uniform maximal degeneracy.
+\end{defn}
+
+\begin{rmk}
+    If \(\V = \ab\{v\}\) is a singleton, then we will write
+    \[ \mc{U}_{g, c}(\mf{P}, \beta) \coloneqq \mc{U}(\mf{P}, \bm{\tau}). \]
+    If one of the contact orders is negative, then we will write
+    \[ \mc{U}_{g, c}(\infty, \beta) \coloneqq \mc{U}(\mf{P}, \bm{\tau}). \]
+\end{rmk}
+
+Note that there are two types of vertices: if a vertex is mapped to \(0\), then either there is at least one half-edge which points upwards or all contact orders are \(0\), in which case all are contracted. These are called \textit{log vertices}. The other type of vertex is one that does not go to \(0\). Either all half-edges point downwards, or there are some half-edges which point upwards. These are called \textit{\(\infty\)-vertices}. Moreover, the vertices which are compact types are the ones without upwards-pointing half-edges.
+
+If we forget the condition of having uniform maximal degeneracy, then there is a map
+\[ \mc{U}(\mf{P}, \bm{\tau}) \xrightarrow{F} \mc{R}(\mf{P}, \bm{\tau}) \]
+which is a subcategory over \(\ms{LogSch}\). However, as a morphism of algebraic stacks, it is log \'etale, proper, and surjective. In addition, \(\mc{U}\) has a canonical perfect obstruction theory which is pulled back from \(\mc{R}\). In the case when the set of vertices is a singleton, we have
+\begin{align*}
+    F_* [\mc{U}_{g, c}(\mf{P}, \beta)]^{\vir} &= [\mc{R}_{g, c}(\mf{P}, \beta)]^{\vir}; \\
+    F_* [\mc{U}_{g, c}(\infty, \beta)]^{\vir} &= [\mc{R}_{g, c}(\infty, \beta)]^{\vir}.
+\end{align*}
+In the case of a log vertex, we in fact have inclusions from the moduli of stable maps with p-fields as
+\begin{equation*}
+\begin{tikzcd}
+    \mc{U} \ar{rr}{F} & & \mc{R} \\
+    & \mc{R}_{g,c}(\mf{P}^{\circ}, \beta) \ar[hookrightarrow]{ul} \ar[hookrightarrow]{ur}.
+\end{tikzcd}
+\end{equation*}
+If we denote the moduli of p-fields by \(\mc{R}^{\circ}\), then the boundary
+\[ \Delta \coloneqq \mc{U} \setminus \mc{R}^{\circ} \]
+is a Cartier divisor. By the condition of having uniform maximal degeneracy, we have a section
+\[ e_{\max} \in H^0(\bar{M}_{\mc{U}}). \]
+This is equivalent to the data of a morphism
+\[ \mc{U} \to ([\A^1/\G_m], 0) \]
+which pulls \(0\) back to \(\Delta\).
+
+We will define a \textit{superpotential} to be a function
+\begin{equation*}
+\begin{tikzcd}
+    \mf{P}^{\circ} \ar{rr}{W} \ar{dr} && \mc{L}_{\omega} \ar{dl} \\
+    & B \C_{\times}^{\omega}.
+\end{tikzcd}
+\end{equation*}
+Its \textit{critical locus} is denoted by 
+\[ \on{Crit}(W) = (\d{W} = 0). \]
+We say that \(W\) has \textit{proper critical locus} if \(\on{Crit}(W) \to B\C_{\omega}^{\times}\) is proper.
+
+For example, suppose we are interested in GW theory. Let \(X\) be a smooth projective variety, \(V\) be a vector bundle on \(X\), and \(s \in H^0(V)\). Set \(Z = (s = 0)\). Then we obtain
+\[ W \colon \mf{P}^{\circ} = V^{\vee} \boxtimes \mc{L}_{\omega} \xrightarrow{s \otimes 1_{\omega}} \mc{L}_{\omega}. \]
+
+\begin{lem}
+    \(W\) has proper critical locus if and only if \(Z\) is smooth of expected codimension.
+\end{lem}
+
+\begin{exm}
+    Let \(X\) be a point, \(V = \C\), and \(s \neq 0\). Then \(\d{W} = s \neq 0\), so the critical locus is empty.
+\end{exm}
+
+Using the Kiem-Li method of cosection localization, we can obtain a virtual cycle
+\[ [\mc{R}_{G, c=n}(\mf{P}^{\circ}, \beta)]_W^{\vir}, \]
+which is supported on the critical locus. In GW theory, this equals the GW virtual cycle, 
+\[ \pm [\bar{M}_{g,n}(\on{Crit}(W), \beta)]^{\vir}, \]
+where the sign can be explicitly calculated.
+
+\begin{thm}
+    Let \(\bm{\tau}\) be a of compact type. In the compact type setting, 
+    \begin{enumerate}
+        \item \(\mc{U}(\mf{P}, \bm{\tau})\) has a reduced perfect obstruction theory, which yields a reduced virtual cycle \([\mc{U}(\mf{P}, \bm{\tau})]^{\vir}\);
+        \item \(\Delta\) has a reduced perfect obstruction theory, which yields a reduced virtual cycle \([\Delta]^{\vir}\);
+        \item We have \([\mc{U}_{g, c=n}(\mf{P}, \beta)]^{\on{red}} = \pm [\bar{M}_{g,n}(\on{Crit}(W), \beta)]^{\vir}\) in the case of a single log vertex. Moreover, there is the formula
+            \[ [\mc{U}_{g, c=n}(\mf{P}, \beta)]^{\on{red}} = [\mc{U}_{g, c=n}(\mf{P}, \beta)]^{\vir} - \tilde{r} [\Delta]^{\on{red}}, \]
+            where \(\tilde{r}\) is the pole order of \(W\) along \(\infty\).
+    \end{enumerate}
+\end{thm}
+
+\subsection{Tropical decomposition and finite generation}%
+\label{sub:Tropical decomposition and finite generation}
+
+From now on, we will consider a simpler setup where \(X\) is a smooth projetive variety and \(V\) is a line bundle on \(X\). In this case, we will assume that \(Z = (s = 0)\) is smooth of codimension \(1\). Moreover, we will assume that \(Z\) is a Calabi-Yau threefold. We will consider the invariants
+\[ N_{g, \beta} \coloneqq \int_{[\bar{M}_{g,0}(Z, \beta)]^{\vir}} 1 \in \Q \]
+and the generating series
+\[ F_g = \sum_{\beta \geq 0} N_{g, \beta} Q^{\beta} \in \Lambda \coloneqq \C \ps{Q}. \]
+
+\begin{conj}[Yamaguchi-Yau, Alim-L\"ange]
+    Suppose \(g=0\) mirror symmetry holds for \(Z\). Then there exists a finitely-generated \(\Q\)-algebra \(R \subset \Lambda'\) such that for all \(g \geq 2\), \(F_g \in (I_0(q))^{2g-2} R\).
+\end{conj}
+
+Our main goal is the following.
+
+\begin{thm}
+    Let \(Z\) be a Calabi-Yau threefold hypersurface in a Fano fourfold \(X\) with no odd cohomology. Let \(\{\phi_j\}\) be a basis of \(H^*(X)\) and \(\ab\{\phi^j\}\) be the dual basis. Then for all \(g \geq 0\), we have
+    \begin{align*}
+        &F_g = (-1)^{1-g} \sum_{\tau' \in G_g'} \frac{(-1)^{\abs{\V_{\infty}}}}{\Aut(\tau')} \cdot \prod_{E \in \E} c(E) \\
+        & \cdot \sum_{j_E \mid E = \ab\{E_{\log}, E_{\infty}\} \in \E} \prod_{\substack{v \in \V_{\infty} \\ g=1 \\ \H_v = \ab\{E_{\infty}\}}} c_1^{\mr{eff}}(\phi^{j_E}) \cdot \prod_{\substack{v \in \V_{\infty} \\ g(v) \geq 2}} \tilde{Q}^{\beta(v)} \cdot \exp \ab(\int_{\beta(v)} K(Q) )  \\
+        & \cdot \ab(\prod_{E_{\infty} \in \H_v'}\int \beta(v)\phi^{j_E}) \cdot c_{g(v), \beta(v)}^{\on{eff}} 
+         \cdot \prod_{v \in \V_{\log}} \Omega_{g(v), \abs{\H_1(v)}, \abs{\H_2(v)}} (\phi_{j_E} \colon E_{\log} \in \H_1(v)).
+    \end{align*}
+\end{thm}
+
+\begin{exm}
+    Let \(Y\) be a toric variety with its toric log structure. Then \(\Sigma(Y)\) is the toric fan treated as a cone complex, and we can consider its boundary \(\Delta_Y = \sum_{\rho \in \Sigma(Y)^1} \Delta_{\rho}\). 
+\end{exm}
+
+If we consider \([\Delta]^{\on{red}}\), we should obtain the similar formula
+\[ [\Delta]^{\on{red}} = \sum_{\rho \in \Sigma(\Delta)(1)} [\Delta_{\rho}]^{\on{red}}. \]
+The question now is what the \(\rho\) represent. In fact, they parameterize rigid tropical curves. In the tropicalization
+\begin{equation*}
+\begin{tikzcd}
+    \Sigma(C)_{\rho} \ar{d} \ar{r} & \Sigma(\mc{C}) \ar{r}{f} \ar{d} & \R_{\geq 0} \\
+    \rho \ar[hookrightarrow]{r} & \Sigma(\mc{U}),
+\end{tikzcd}
+\end{equation*}
+we see that \(f_{\rho}\) is rigid if and only if the source tropical curve is a bipartite graph with one set of vertives going to \(e_{\max}\) and the other set of vertices going to \(0\).
+
+\begin{exm}
+    Let \(X\) be a point and \(Z = \emptyset\). Also consider \(g = 2, n = 0\). Then the possible graphs are given in~\Cref{fig:tropgraphs}.
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape]
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (A) at (0,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B1) at (2,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (B2) at (2,2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C1) at (4,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C2) at (3.5,2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (C3) at (4.5,2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D1) at (6,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (D2) at (6,2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (E1) at (8,2) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (E2) at (7.5,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (E3) at (8.5,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F1) at (10,0) {};
+        \node[fill=black,circle,minimum size=6pt,inner sep=0pt] (F2) at (10,2) {};
+        \draw[-,thick] (B1) -- (B2);
+        \draw[-,thick] (C2) -- (C1) -- (C3);
+        \draw[-,thick] (D1) edge[bend left=20] (D2);
+        \draw[-,thick] (D2) edge[bend left=20] (D1);
+        \draw[-,thick] (E2) -- (E1) -- (E3);
+        \draw[-,thick] (F1) -- (F2);
+        \node at (0,-0.5) {$g=2$};
+        \node at (2,-0.5) {$g=1$};
+        \node at (4,-0.5) {$g=0$};
+        \node at (6,-0.5) {$g=0$};
+        \node at (7.5,-0.5) {$g=0$};
+        \node at (8.5,-0.5) {$g=0$};
+        \node at (10,-0.5) {$g=0$};
+        \node at (2,2.5) {$g=1$};
+        \node at (3.5,2.5) {$g=0$};
+        \node at (4.5,2.5) {$g=0$};
+        \node at (6,2.5) {$g=1$};
+        \node at (8,2.5) {$g=2$};
+        \node at (10,2.5) {$g=2$};
+        \draw[-,thick] (-0.5,-1) -- (10.5,-1);
+        \node at (0,-1.5) {$A$};
+        \node at (2,-1.5) {$B$};
+        \node at (4,-1.5) {$C$};
+        \node at (6,-1.5) {$D$};
+        \node at (8,-1.5) {$E$};
+        \node at (10,-1.5) {$F$};
+        \node at (1.7,1) {$1$};
+        \node at (3.5,1) {$1$};
+        \node at (4.5,1) {$1$};
+        \node at (5.5,1) {$1$};
+        \node at (6.5,1) {$1$};
+        \node at (7.5,1) {$2$};
+        \node at (8.5,1) {$2$};
+        \node at (9.7,1) {$3$};
+    \end{tikzpicture}
+    \end{center}
+        \caption{Graphs of tropical types for $X = \mr{pt}$ and \(Z = \emptyset\) when $g=2$.}%
+    \label{fig:tropgraphs}
+    \end{figure}
+\end{exm}
+
+\begin{thm}[Tropical quantum Lefschetz]
+    Let \(X\) and \(Z\) be as before. For any \(\beta \in H_2(X)\), any \(\alpha_1, \ldots, \alpha_n \in H^*(X)\), and any \(k_1, \ldots, k_n \in \N\), we have
+    \begin{align*}
+        \int_{[\bar{M}_{g,n}(Z,\beta)]^{\vir}} \prod_{j=1}^n \ev_j^* (\alpha_j) \psi^{k_j}={}& (-1)^{1-g+\beta \cdot Z} \cdot \prod_{\tau \vdash (g,n,\beta)} \frac{(-1)^{\abs{\V_{\infty}}}}{\abs{\Aut(\tau)}} \cdot \prod_{E \in \E} c(E) \\
+        & \cdot \sum_{\ab\{j_E \mid E = \ab\{E_{\log}, E_{\infty}\}\}}  \prod_{v \in \V_{\infty}} \int_{[\mc{U}_v]^{\on{red}}} \prod_{E_{\infty} \in \H_v} \ev_{E_{\infty}}^* \phi^{j_E}  \\
+        &  \cdot \prod_{v \in \V_{\log}} \int_{[\mc{R}_v]^{\vir}} \prod_{E_{\log}} \ev_{E_{\log}}^* (\phi_{j_E}) \cdot \prod_{h \in \L_v} \ev_h^* \alpha_h \cdot \psi_h^{k_n} .
+    \end{align*}
+\end{thm}
+
+\begin{rmk}
+    There is also a virtual localization formula, which can be applied to either the reduced theory (with only the R-torus action) or the canonical theory (which can be applied to the full automorphisms of the ambient space).
+\end{rmk}
+
+Now consider an \(\infty\)-vertex. Set \(\tau_v = (g, c, \beta)\) and set \(\mc{U}_v = \mc{U}_{g,c}(\infty, \beta)\). Then the first computation is that
+\begin{align*}
+    \on{red}\dim \mc{U}_v &= \chi(f^* T_{\mf{P}/B \C^{\times}_{\omega}}) + 1 + \on{trop}\dim  \\
+    &= \vir\dim \bar{M}_{g,n}(Z, \beta) + \sum_{h \in \H} (c(h) + 1),
+\end{align*}
+where the tropical dimension is \(3g-4+n\). Note that all contact orders are negative, so the second term is at most zero. In particular, we have proved that
+\begin{cor}
+    If \(\vir\dim \bar{M}_{g,n}(Z,\beta) < 0\), then \([\mc{U}_v]^{\on{red}} = 0\).
+\end{cor}
+We also have an \textit{balancing condition}, which states that 
+\[ \sum_{h \in \H} c(h) = \deg f^* \mc{O}(\infty) = \int_{\beta} c_1(V) - (2g-2+n). \]
+This can be rewritten as
+\[ 0 \geq \sum_{h \in \H} (c(h)+1) = \int_{\beta} c_1(V) - (2g-2). \]
+\begin{prop}
+    We see that \(\infty\)-vertices do not exist in the following cases:
+    \begin{enumerate}
+        \item We have \(g = 0\) and \(V\) is nef;
+        \item We have \(g=1\) and \(V\) is ample, unless \(\beta = 0\) and all \(c(h) = -1\).
+    \end{enumerate}
+\end{prop}
+
+\begin{defn}
+    A marking is a \textit{unit} if its contact order is \(-1\).
+\end{defn}
+
+\begin{notn}
+    We will denote the unit sector by \(\1\) and denote \(\tau_{v+\1} = (g, c+\1, \beta)\), \(\mc{U}_{v+\1} = U_{g, c+\1}(\infty, \beta)\), and \(\mc{R}_{v+\1} = \mc{R}_{g, c+\1}(\infty, \beta)\).
+\end{notn}
+
+\begin{thm}\leavevmode
+    \begin{enumerate}
+        \item There is a map \(F_{\1} \colon \mc{U}_{v+\1} \xrightarrow{s} \mc{C}^{\circ} \xrightarrow{\pi} \mc{U}_v\), where \(s\) is birational;
+        \item We have the equality \(s_* [\mc{U}_{v+\1}]^{\on{red}} = \pi^* [\mc{U}_v]^{\on{red}}\) of reduced virtual cycles;
+        \item If \(D\) is a divisor on \(X\), then \(F_{\1 *} (\ev_{\1}^* D \cap [\mc{U}_{v+\1}]^{\on{red}}) = \ab(\int_{\beta} D) [\mc{U}_v]^{\on{red}}\); 
+        \item Consider the diagram
+            \begin{equation*}
+            \begin{tikzcd}
+                \mc[U]_{v+\1} \ar{r}{F} \ar{d}[swap]{F_{\1}} & \bar{M}_{g,n+1} \ar{d}[swap]{p} \\
+                \mc{U}_v \ar{r}{F} & \bar{M}_{g,n}.
+            \end{tikzcd}
+            \end{equation*}
+            Then \(F_* [\mc{U}_{v+\1}]^{\on{red}} = p^* F_* [\mc{U}_v]^{\on{red}}\).
+    \end{enumerate}
+\end{thm}
+
+\begin{exm}
+    Consider the setting where \(g = 1\) and \(Z_d \subset X = \P^N\) is a hypersurface. We only need to consider \(\beta = 0\) and \(c(h) = -1\) for all \(h \in H\). Then we see that
+    \[ \prod_h \ev_h^* \alpha_h \cdot [\mc{U}_{1,c}(\infty,\beta)]^{\mr{red}} = \ev_{h^{\star}}^* \ab(\prod_h \alpha_h) \cap [\mc{U}_{1,\1}(\infty,\beta)]^{\on{red}}. \]
+\end{exm}
+
+\begin{prop}
+    We in fact have
+    \[ \mc{U}_{1,\1}(\infty, 0) \simeq \mc{R}_{1,\1}(\infty, 0) \]
+    and the equality
+    \[ [\mc{U}_{1,\1}(\infty, 0)]^{\on{red}} = c_{\dim X} \ab(\mc{H}^{\vee} \boxtimes T_{\mf{P}/B\C_{\omega}^{\times}} + \mc{O} - V). \]
+\end{prop}
+
+\begin{exm}
+    Now consider the quintic threefold \(Z_5 \subset \P^4\). Then we see that \(\on{red}\dim \mc{U}_v = \sum_{h \in \H} (c(h)+2)\). The unit axiom reduces us to the case when \(c(h) \leq -2\). We must now determine the number of new invariants we need to consider if all \(c(h) = -2\), which is equivalent to finding the number of possible \(\beta\). The balancing condition states that
+    \begin{align*}
+        \sum_{h \in \H} c(h) &= \int_{\beta} c_1(V) - (2g-2+n) \\
+        &= 5\beta - (2g-2+n),
+    \end{align*}
+    which implies that \(0 \geq \sum (c(h)+1) = 5\beta - (2g-2)\) and therefore that \(\beta \leq \frac{2g-2}{5}\).\footnote{This is exactly the number of unknowns predicted if we assume finite generation, the holomorphic anomaly equations, orbifold regularity, and the conifold gap condition.}
+\end{exm}
+
+\begin{conj}[Janda]\leavevmode
+    \begin{enumerate}
+        \item We have \(K(Q) = \log I_0(q) \cdot c_1(K_X^{\vee}) - \frac{I_1}{I_0}\) \\
+        \item The canonical theory satisfies \(\Omega \in I_0(q)^{2g-2+2n_1 + 3 n_2} \cdot R\). 
+    \end{enumerate}
+\end{conj}
+
+\begin{cor}
+    The above conjecture for \((X, V)\) implies Yamaguchi-Yau finite generation for \(Z\).
+\end{cor}
+
+
 
 
 
