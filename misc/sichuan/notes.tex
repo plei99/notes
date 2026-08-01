@@ -264,28 +264,39 @@
 \subsection{Our first moduli problems}%
 \label{sub:Our first moduli problem}
 
-Our first moduli space will be \(\P^{N-1}\), which parameterizes \(1\)-dimensional linear subspaces in \(\C^n\), or equivalently is \((\C^N \setminus 0) / \C^{\times}\), which here means the set of closed orbits of \(\C^{\times}\). This construction is our first example of geometric invariant theory. In general, a moduli problem will assign to every scheme \(T\) a collection of families over \(T\), and we can think of it as a functor
+Our first moduli space will be \(\P^{N-1}\), which parameterizes \(1\)-dimensional linear subspaces in \(\C^N\), or equivalently is the geometric quotient \((\C^N \setminus \{0\}) / \C^{\times}\). In this case every \(\C^{\times}\)-orbit in \(\C^N\setminus\{0\}\) is closed. This construction is our first example of geometric invariant theory. In general, a set-valued moduli problem assigns to every scheme \(T\) a collection of isomorphism classes of families over \(T\), and we can think of it as a functor
 \[ F \colon (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Set}. \]
 
 \begin{exm}
     Let \(C\) be a smooth projective curve. Then consider the assignment
-    \[ F_{r,d} \colon T \mapsto \ab\{ E \text{ vector bundle on } C \times T \mid \on{rk} E = r, \deg E = d \}/\sim, \]
-    which parameterizes vector bundles on \(C\) (but not quite correct). 
+    \[
+    \begin{aligned}
+        F_{r,d}\colon T \longmapsto
+        \Bigl\{
+        E \ \Bigm|\ &
+        E \text{ is a vector bundle on } C\times T,\\
+        &\operatorname{rk}(E_{\bar t})=r,\quad \deg(E_{\bar t})=d
+        \text{ for every geometric point } \bar t\to T
+        \Bigr\}\big/\!\sim .
+    \end{aligned}
+    \]
+    where \(E_{\bar t}=E|_{C\times\{\bar t\}}\) and \(\sim\) denotes isomorphism of vector bundles on \(C\times T\). This parameterizes isomorphism classes of families of vector bundles on \(C\), but it is still not the correct stack-valued moduli problem.
 \end{exm}
 
 \begin{exm}
     By the Yoneda Lemma, every scheme \(Y\) defines a moduli problem.
 \end{exm}
 
-Unfortunately, not every moduli problem is representable by a scheme or algebraic space, for example if it has automorphisms. For example, if we consider the moduli of line bundles on \(\P^1\), each object has an entire \(\C^{\times}\) of automorphisms. Therefore, when we consider moduli problems, we will also need to consider isomorphisms between the objects (and therefore the target of the functor should be the ategory of groupoids).
+Unfortunately, not every groupoid-valued moduli problem can be represented, as a stack, by a scheme or algebraic space. A scheme or algebraic space has trivial inertia, whereas objects in a moduli problem may have nontrivial automorphisms. For example, if we consider the moduli of line bundles on \(\P^1\), each line bundle has an entire \(\C^{\times}\) of automorphisms. Therefore, when we consider moduli problems, we need to remember both the objects and the isomorphisms between them, and the target of the functor should be the category of groupoids.
 
 \begin{defn}[informal]
-    A \textit{stack} \(\mf{X}\) is a functor
-    \[ (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Grpd}. \]
+    A \textit{stack} \(\mf{X}\) over \(S\) is a pseudofunctor
+    \[ (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Grpd} \]
+    which satisfies descent for objects and morphisms with respect to the fppf topology.
 \end{defn}
 
 \begin{exm}
-    Consider the stack \(\ms{Bun}_{r,d}(C)\) which sends a scheme \(T\) to the groupoid of vector bundles of rank \(r\) and degree \(d\) on \(T \times C\).     
+    Consider the stack \(\ms{Bun}_{r,d}(C)\) which sends a scheme \(T\) to the groupoid whose objects are vector bundles \(E\) on \(T\times C\) such that every geometric fiber \(E_{\bar t}\) has rank \(r\) and degree \(d\), and whose morphisms are isomorphisms of vector bundles on \(T\times C\).
 \end{exm}
 
 Unfortunately, there are far too many stacks to consider, so we will need to consider a subclass of stacks which is amenable to the methods of algebraic geometry.
@@ -297,37 +308,48 @@ Unfortunately, there are far too many stacks to consider, so we will need to con
 Note that the first condition means that for any morphism \(T \to \mf{X} \times \mf{X}\) from an algebraic space, then \(T \times_{\mf{X} \times \mf{X}} \mf{X}\) is an algebraic space. This is equivalent to all Isom sheaves being algebraic spaces and implies that any morphism from a scheme to \(\mf{X}\) is representable.
 
 \begin{rmk}
-    In the classical setting, if we have morphisms \(f\colon A \to C\) and \(g \colon B \to C\), then the fiber product is
-    \[ A \times_C B = \ab\{(a,b) \mid f(a) = g(b) \}. \]
-    However, in the setting of stacks, we need to replace equality by isomorphism, but this implies that we need to actually record the isomorphism.
+    For sets, if we have morphisms \(f\colon A\to C\) and \(g\colon B\to C\), then the fiber product is
+    \[ 
+        A\times_C B=\ab\{(a,b)\mid f(a)=g(b)\}. 
+    \] 
+    For schemes or algebraic spaces, the same formula describes the \(T\)-points of the scheme-theoretic fiber product. For stacks, a \(T\)-point of the \(2\)-fiber product \(\mf{A}\times_{\mf{C}}\mf{B}\) is a triple \((a,b,\phi)\), where \(a\in\mf{A}(T)\), \(b\in\mf{B}(T)\), and
+    \[ 
+        \phi\colon f(a)\xrightarrow{\sim}g(b) 
+    \]
+    is an isomorphism in \(\mf{C}(T)\). Thus equality must be replaced by an isomorphism, and the isomorphism must be recorded as part of the data.
 \end{rmk}
+
 
 \subsection{Quotient stacks}%
 \label{sub:Quotient stacks}
 
-Let \(G\) be an algebraic group an \(X\) be a scheme with an action of \(G\).
+Let \(G\) be an algebraic group and let \(X\) be a scheme with a left action of \(G\).
 
 \begin{defn}
-    The \textit{quotient stack} \([X/G]\) sends a stack \(T\) to the groupoid which consists of diagrams
+    The \textit{quotient stack} \([X/G]\) sends a scheme \(T\) to the groupoid whose objects are diagrams
     \begin{equation*}
     \begin{tikzcd}
         P \ar{r}{\varphi} \ar{d} & X \\
-        T
+        T,
     \end{tikzcd}
     \end{equation*}
-    where \(P\) is a principal \(G\)-bundle over \(T\) and \(\varphi\) is an equivariant morphism.   
+    where \(P\to T\) is a right principal \(G\)-bundle for the fppf topology and \(\varphi\) satisfies \(\varphi(pg)=g^{-1}\varphi(p)\). A morphism from \((P,\varphi)\) to \((P',\varphi')\) is an isomorphism of principal \(G\)-bundles \(P\xrightarrow{\sim}P'\) compatible with the maps to \(X\).
 \end{defn}
 
 \begin{exm}
-    Any smooth separated DM stack with either generically trivial stabilizer or quasi-projective coarse moduli space is a global quotient. Here, a DM stack is an algebraic stack with unramified diagonal.
+    Let \(\mf{X}\) be a smooth separated DM stack of finite type over \(\C\). If either the generic stabilizer of \(\mf{X}\) is trivial or the coarse moduli space of \(\mf{X}\) is quasi-projective, then \(\mf{X}\) is a global quotient. Here, a DM stack is an algebraic stack with unramified diagonal, and a global quotient means a stack of the form \([U/\on{GL}_n]\) for some algebraic space \(U\) with an action of \(\on{GL}_n\).
 \end{exm}
 
 \begin{exer}
     Show that the groupoid \([X/G](\C)\) is equivalent to the action groupoid of \(G(\C)\) acting on \(X(\C)\).
 \end{exer}
 
-The above exercise implies that as a groupoid (most importantly, not as an algebraic stack), we have
-\[ [X/G](\C) \simeq \bigsqcup_{[x_i] \in X(\C)/G(\C)} BG_{x_i}. \]
+After choosing one representative \(x_i\in X(\C)\) of each \(G(\C)\)-orbit, the above exercise implies that, as an abstract groupoid and not as an algebraic stack, we have
+\[ 
+    [X/G](\C) \simeq \bigsqcup_{[x_i] \in X(\C)/G(\C)} BG_{x_i}, 
+\]
+where \(G_{x_i}\) is the stabilizer of \(x_i\).
+
 
 \subsection{Fine vs coarse vs good moduli spaces}%
 \label{sub:Fine vs coarse vs good moduli spaces}
@@ -339,115 +361,352 @@ The above exercise implies that as a groupoid (most importantly, not as an algeb
 Unfortunately, it is very hard to find a fine moduli space, so we want to weaken this condition.
 
 \begin{defn}
-    A \textit{coarse moduli space} \(M\) for an algebraic stack \(\mf{X}\) is a morphism \(\pi \colon \mf{X} \to M\) such that
+    A \textit{coarse moduli space} for an algebraic stack \(\mf{X}\) is a morphism \(\pi\colon\mf{X}\to M\) to an algebraic space such that
     \begin{enumerate}
-        \item \(\pi\) is universal for morphisms from \(\mf{X}\) to algebraic spaces;
-        \item \(\pi\) is bijective on geometric points.
+        \item For every algebraic space \(Y\), composition with \(\pi\) induces a bijection
+        \[
+            \on{Hom}(M,Y)\xrightarrow{\sim}\on{Hom}(\mf{X},Y);
+        \]
+        \item For every algebraically closed field \(K\), the induced map
+        \[
+            \pi_0(\mf{X}(K))=\ab\{\text{isomorphism classes in }\mf{X}(K)\}
+            \longrightarrow M(K)
+        \]
+        is a bijection.
     \end{enumerate}
 \end{defn}
 
-Even these do not always exist, so we consider an even weaker notion.
+
+Even these do not always exist. A good moduli space is a different weakening: it replaces the requirement of a bijection on geometric points by a cohomological affineness condition.
 
 \begin{defn}
-    A \textit{good moduli space} \(q \colon \mf{X} \to X\) is a \textit{good moduli space} if
+    A quasi-compact morphism \(q\colon\mf{X}\to X\) from an algebraic stack to an algebraic space is a \textit{good moduli space} if
     \begin{enumerate}
-        \item The pushforward functor \(q_* \colon \ms{QCoh}(\mf{X}) \to \ms{QCoh}(X)\) is exact;
-        \item The natural map \(\mc{O}_X \to q_* \mc{O}_{\mf{X}}\) is an isomorphism.
+        \item The pushforward functor \(q_*\colon\ms{QCoh}(\mf{X})\to\ms{QCoh}(X)\) is exact;
+        \item The natural map \(\mc{O}_X\to q_*\mc{O}_{\mf{X}}\) is an isomorphism.
     \end{enumerate}
 \end{defn}
 
 \begin{table}[htpb]
     \centering
     \caption{Types of moduli spaces}
-    \label{tab:moduli-types}
-    \begin{tabular}{cccc}
-        \toprule
-        Can handle & finite stabilizer & infinite stabilizer & feature \\
-        \midrule
-        Fine moduli & No & No & Admits universal family \\
-        Coarse moduli & Yes & No & Bijection on points \\
-        Good moduli & Yes & Yes & S-equivalence \\
-        \bottomrule
+    \label{tab:moduli-types-corrected}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{
+        |p{0.18\textwidth}
+        |p{0.30\textwidth}
+        |p{0.22\textwidth}
+        |p{0.20\textwidth}|
+    }
+        \hline
+        \textbf{Notion}
+        & \textbf{Defining property}
+        & \textbf{Geometric behavior}
+        & \textbf{Feature}
+        \\
+        \hline
+        Fine moduli
+        & Represents the set-valued moduli functor
+        & Its points represent the objects recorded by the functor
+        & Admits a universal family
+        \\
+        \hline
+        Coarse moduli
+        & Universal for maps to algebraic spaces and bijective on geometric isomorphism classes
+        & One geometric point for each isomorphism class
+        & Forgets automorphisms
+        \\
+        \hline
+        Good moduli
+        & Cohomologically affine and
+          \(\mc{O}_X \simeq q_*\mc{O}_{\mf{X}}\)
+        & May identify distinct nonclosed points
+        & Gives \(S\)-equivalence in GIT-type examples
+        \\
+        \hline
     \end{tabular}
 \end{table}
 
+The existence of these moduli spaces is not determined only by whether stabilizers are finite or infinite. For example, \(B\G_m\to\on{Spec}\C\) is both a coarse moduli space and a good moduli space, even though its stabilizer is \(\G_m\).
+
 \begin{thm}[Keel-Mori]
-    Let \(\mf{X}\) be an algebraic stack which has finite inertia. Then it has a coarse moduli space. 
+    Let \(\mf{X}\) be an algebraic stack of finite type over \(\C\). If its inertia morphism
+    \[
+        I_{\mf{X}}
+        \coloneqq
+        \mf{X}\times_{\mf{X}\times\mf{X}}\mf{X}
+        \longrightarrow \mf{X}
+    \]
+    is finite, then \(\mf{X}\) admits a coarse moduli space. The fiber of \(I_{\mf{X}}\to\mf{X}\) over a geometric point \(x\) is the automorphism group \(\on{Aut}(x)\).
 \end{thm}
 
-\begin{thm}[Alper]
-    \dots\dots\footnote{Yaoxiong literally wrote this on the board.}
+\begin{thm}[Alper--Hall--Rydh]
+    Let
+    \[
+        q\colon \mf{X}\longrightarrow X
+    \]
+    be a good moduli space, where \(\mf{X}\) is a Noetherian
+    algebraic stack over \(\C\) with affine diagonal.
+    Let \(x\in\mf{X}(\C)\) be a closed point, and denote its
+    stabilizer group by \(G_x\).
+
+    Then there exists an affine scheme \(\on{Spec}A\) equipped
+    with an action of \(G_x\), together with a Cartesian diagram
+    \[
+        \begin{tikzcd}
+            {[\on{Spec}A/G_x]}
+                \arrow[r]
+                \arrow[d]
+            & \mf{X}
+                \arrow[d, "q"]
+            \\
+            \on{Spec}(A^{G_x})
+                \arrow[r, "\mathrm{\acute{e}tale}"]
+            & X,
+        \end{tikzcd}
+    \]
+    where
+    \[
+        \on{Spec}(A^{G_x})\longrightarrow X
+    \]
+    is an \'etale neighborhood of \(q(x)\).
 \end{thm}
 
-Unfortunately the stack \(\ms{Bun}_{r,d}(C)\) is ``too big to be good,'' namely that it is not quasi-compact and non-separated. For example, we can consider a vector bundle \(E_r = L_n \oplus M_{d-n} \oplus \mc{O}^{\bigoplus r-2}\), then send \(n \to \infty\), so this clearly cannot satisfy any finiteness condition. To see why this stack is non-separated, note that if \(E\) is a stable bundle, it has automorphisms given by \(\C^{\times}\), which is not proper. To fix this problem, we will study an open substack of semistable objects and then consider S-equivalence classes.
+For \(r\geq 2\), the stack \(\ms{Bun}_{r,d}(C)\) is locally of finite type, but it is neither quasi-compact nor separated. To see that it is not quasi-compact, choose line bundles \(L_n\) and \(M_{d-n}\) of degrees \(n\) and \(d-n\), respectively, and consider
+\[
+    E_n=L_n\oplus M_{d-n}\oplus\mc{O}_C^{\oplus r-2}.
+\]
+The bundle \(E_n\) contains a line subbundle of degree \(n\). In any quasi-compact family of vector bundles of fixed rank and degree, the degrees of line subbundles are bounded above, so the bundles \(E_n\) cannot all lie in a quasi-compact substack as \(n\to\infty\). To see that the stack is not separated, note that every vector bundle \(E\) has scalar automorphisms \(\G_m\subset\on{Aut}(E)\). Stabilizer groups of a separated algebraic stack are proper, whereas \(\G_m\) is not proper. Passing to semistable bundles does not make the stack separated; rather, it cuts out a bounded open substack of finite type which admits a good moduli space whose closed points are \(S\)-equivalence classes.
 
 \begin{defn}[Slope stability]
-    Define the quantity
-    \[ \mu(E) = \frac{\deg E}{\on{rk} E}. \]
-    E is \textit{(semi)stable} if for any proper subbundle \(F \subset E\), we have \(\mu(F) \leq \mu(E)\) or \(\mu(F) < \mu(E)\), respectively.   
+    For a nonzero vector bundle \(E\), define its slope by
+    \[ \mu(E)=\frac{\deg E}{\on{rk}E}. \]
+    The vector bundle \(E\) is \textit{semistable} if
+    \[ \mu(F)\leq\mu(E) \]
+    for every nonzero proper saturated subsheaf \(F\subset E\), and it is \textit{stable} if the inequality is strict. Since \(C\) is a smooth curve, a saturated subsheaf of a vector bundle is a subbundle, so it is equivalent to test nonzero proper subbundles.
 \end{defn}
 
-Armed this definition, we may now consider the substack \(\ms{Bun}_{r,d}^{\mr{ss}}(C)\), which is quasi-compact but still not separated (because of the problem of automorphisms).
+Armed with this definition, we may now consider the open substack \(\ms{Bun}_{r,d}^{\mr{ss}}(C)\). Semistable bundles of fixed rank and degree form a bounded family, so this stack is of finite type, and in particular quasi-compact. It is still not separated because every object has the nonproper scalar stabilizer \(\G_m\).
 
 \begin{defn}[S-equivalence]
-    Two vector bundles \(E\) and \(E'\) are \textit{S-equivalent} if they have the same associated graded pieces of their Jordan-Holder filtration. Here, the Jordan-Holder filtration is a filtration
-    \[ 0 = J_0 \subset J_1 \subset \cdots \subset J_N = E \]
-    such that all \(J_i / J_{i=1}\) are stable. While the filtration is not necessarily unique, the associated graded is unique.
+    Let \(E\) be a semistable vector bundle. A Jordan--H\"older filtration of \(E\) is a filtration
+    \[ 0=J_0\subset J_1\subset\cdots\subset J_N=E \]
+    such that every quotient \(J_i/J_{i-1}\) is stable of slope \(\mu(E)\). The filtration is not necessarily unique, but the associated graded vector bundle
+    \[
+        \on{gr}(E)=\bigoplus_{i=1}^N J_i/J_{i-1}
+    \]
+    is unique up to noncanonical isomorphism. Two semistable vector bundles \(E\) and \(E'\) of the same slope are \textit{S-equivalent} if \(\on{gr}(E)\simeq\on{gr}(E')\).
 \end{defn}
 
-Now we consider the moduli space \(M_{r,d}^{\mr{ss}}(C)\) be the moduli space of S-equivalence classes of semistable vector bundles on \(C\). The morphism \(\ms{Bun}_{r,d}^{\mr{ss}}(C) \to M_{r,d}^{\mr{ss}}(C)\) is a good moduli space.
+Now we consider the moduli space \(M_{r,d}^{\mr{ss}}(C)\) of \(S\)-equivalence classes of semistable vector bundles on \(C\). There is a good moduli space morphism
+\[
+    \ms{Bun}_{r,d}^{\mr{ss}}(C)\longrightarrow M_{r,d}^{\mr{ss}}(C),
+\]
+and the closed points of \(M_{r,d}^{\mr{ss}}(C)\) are in bijection with \(S\)-equivalence classes of semistable vector bundles.
 
 \begin{rmk}
-    The original method of proof for this theorem was to construct the moduli space using geometric invariant theory. The goal of this series of lectures will be to discuss how to prove this type of theorem without making reference to GIT.
+    The original method of proof for this theorem was to construct the moduli space using geometric invariant theory. The goal of this series of lectures will be to discuss an intrinsic approach using \(\Theta\)-stratifications together with existence criteria for good moduli spaces, without first choosing a GIT presentation.
 \end{rmk}
+
 
 \subsection{Theta-stratifications}%
 \label{sub:Theta-stratifications}
 
-Let \(\mf{X}\) be an algebraic stack and consider \(\Theta \coloneqq [\A^1 / \G_m]\). Then define the stack \(\ms{Filt}(\mf{X}) \coloneqq \ms{Map}(\Theta, \mf{X})\) of filtered objects and the stack \(\ms{Grad}(\mf{X}) \coloneqq \ms{Map}(B\G_m, \mf{X})\) of graded objects.    
+Let \(\mf{X}\) be an algebraic stack and consider \(\Theta\coloneqq[\A^1/\G_m]\), where the action on points is \(\lambda\cdot z=\lambda z\); equivalently, the coordinate function \(t\) has weight \(-1\). Assume that the mapping stacks below are algebraic. Then define the stack \(\ms{Filt}(\mf{X})\coloneqq\ms{Map}(\Theta,\mf{X})\) of filtered objects and the stack \(\ms{Grad}(\mf{X})\coloneqq\ms{Map}(B\G_m,\mf{X})\) of graded objects. There are canonical morphisms
+\[
+    \ev_1\colon\ms{Filt}(\mf{X})\to\mf{X},
+    \qquad
+    \on{gr}\colon\ms{Filt}(\mf{X})\to\ms{Grad}(\mf{X}),
+    \qquad
+    \sigma\colon\ms{Grad}(\mf{X})\to\ms{Filt}(\mf{X}).
+\]
+Here \(\ev_1\) is restriction to \(1\in\A^1\), \(\on{gr}\) is induced by the inclusion \(B\G_m=\{0\}/\G_m\hookrightarrow\Theta\), and \(\sigma\) is induced by the projection \(\Theta\to B\G_m\). In particular, \(\on{gr}\circ\sigma=\on{id}\). We also write \(\on{tot}=\ev_1\circ\sigma\colon\ms{Grad}(\mf{X})\to\mf{X}\).
 
 \begin{defn}
+    A \textit{\(\Theta\)-stratum} in an algebraic stack \(\mf{Y}\) is a union of connected components \(S\subset\ms{Filt}(\mf{Y})\) such that the restriction
+    \[
+        \ev_1|_S\colon S\longrightarrow\mf{Y}
+    \]
+    is a closed immersion.
+
     A \textit{\(\Theta\)-stratification} of \(\mf{X}\) consists of
     \begin{enumerate}
-        \item A totally ordered set \(I\);
-        \item For all \(\alpha \in I\) an open substack \(\mf{X}_{\leq \alpha} \subset \mf{X}\);
-        \item For all \(\alpha \in I\), a \(\Theta\)-stratum \(S_{\alpha} \subset \ms{Filt}(\mf{X}_{\leq \alpha})\) such that
-            \[ X_{<\alpha} = \bigcup_{\beta < \alpha} \mf{X}_{\leq \beta} = X_{\leq \alpha} \setminus \ev_1(S_{\alpha}). \]
-            This implies \(\mf{X} = \mf{X}^{\mr{ss}}\sqcup \bigsqcup_{\alpha} \ev_1(S_{\alpha})\). 
+        \item A totally ordered set \(I\) with a least element \(0\);
+        \item An increasing collection of open substacks \(\mf{X}_{\leq\alpha}\subset\mf{X}\), indexed by \(\alpha\in I\), such that
+        \[
+            \mf{X}_{\leq\alpha}\subset\mf{X}_{\leq\beta}
+            \quad\text{for }\alpha\leq\beta,
+            \qquad
+            \bigcup_{\alpha\in I}\mf{X}_{\leq\alpha}=\mf{X},
+        \]
+        and such that for every \(x\in|\mf{X}|\), the set \(\{\alpha\in I\mid x\in|\mf{X}_{\leq\alpha}|\}\) has a least element;
+        \item For every \(\alpha>0\), a \(\Theta\)-stratum \(S_\alpha\subset\ms{Filt}(\mf{X}_{\leq\alpha})\) such that
+        \[
+            \mf{X}_{<\alpha}
+            \coloneqq
+            \bigcup_{\beta<\alpha}\mf{X}_{\leq\beta}
+            =
+            \mf{X}_{\leq\alpha}\setminus\ev_1(S_\alpha).
+        \]
     \end{enumerate}
-    Here a \(\Theta\)-stratum is a union of connected components of \(\ms{Filt}( \mf{X}_{\leq \alpha} )\) such that \(\ev_1(S_{\alpha})\) is a closed substack.  
+    The semistable locus is \(\mf{X}^{\mr{ss}}\coloneqq\mf{X}_{\leq0}\), and the stratification gives a disjoint decomposition
+    \[
+        \mf{X}
+        =
+        \mf{X}^{\mr{ss}}
+        \sqcup
+        \bigsqcup_{\alpha>0}\ev_1(S_\alpha).
+    \]
 \end{defn}
 
 Consider the stack \(\ms{Bun}_G(C) = \ms{Map}(C, BG)\). We will consider the stack
 \[ \ms{Map}(\Theta, \ms{Bun}_G(C)) = \ms{Map}(\Theta \times C, BG). \]
-Any such map \(f\) is equivalent to a \(\G_m\)-equivariant principal G-bundle \(\mc{E}\) over \(\A^1 \times \C\), which when \(G = \on{GL}_n\) is equivalent to a graded \(\mc{O}_C\)-module. Here, we will take \(t\) to have weight \(1\). By flatness of \(\mc{E}\), the map \(t \colon \mc{E}_w \to \mc{E}_{w+1}\) is injective.    
+Any such map \(f\) is equivalent to a \(\G_m\)-equivariant principal \(G\)-bundle \(\mc{E}\) over \(\A^1\times C\). When \(G=\on{GL}_n\), this is equivalent to a \(\G_m\)-equivariant vector bundle on \(\A^1\times C\), or equivalently to a finitely generated graded locally free \(\mc{O}_C[t]\)-module
+\[
+    \mc{E}=\bigoplus_{w\in\Z}\mc{E}_w.
+\]
+With the convention above, the coordinate function \(t\) has weight \(-1\), so multiplication by \(t\) gives maps
+\[
+    t\colon\mc{E}_w\longrightarrow\mc{E}_{w-1}.
+\]
+Since \(\mc{E}\) is locally free over \(\mc{O}_C[t]\), multiplication by \(t\) is injective.
 
 \begin{rmk}
-    Consider the vector bundle \(E = \mf{E}_{|1 \times C}\). Then \(\mc{E}_{|(\G_m \times C)} = P_C^* E\), where \(P_C \colon C \times \G_m \to C\) is the projection to the first factor and thus \(E = \mc{E}[t^{-1}]_0\). Defining \(F^w E = \mc{E}_w \cdot t^{-w} \subset E\), we see that \(F^w E \subset F^{w+1} E\). This gives us a filtration
-    \[ 0 \subset \cdots \subset F^w E \subset F^{w+1} E \subset \cdots \subset E. \]
+    Consider the vector bundle \(E=\mc{E}|_{\{1\}\times C}\). Since \(\G_m\) acts freely on \(\G_m\times C\), equivariant descent gives
+    \[
+        \mc{E}|_{\G_m\times C}\simeq P_C^*E,
+    \]
+    where \(P_C\colon\G_m\times C\to C\) is the projection. Equivalently,
+    \[
+        E\simeq\big(\mc{E}[t^{-1}]\big)_0.
+    \]
+    Define
+    \[
+        F^wE\coloneqq t^w\mc{E}_w\subset\big(\mc{E}[t^{-1}]\big)_0=E.
+    \]
+    Since \(t\mc{E}_{w+1}\subset\mc{E}_w\), we have \(F^{w+1}E\subset F^wE\). The finite generation and local freeness of \(\mc{E}\) imply that this is a finite, exhaustive, and separated decreasing filtration by subbundles, which may be written as
+    \[
+        0=F^{b+1}E\subset F^bE\subset\cdots\subset F^aE=E.
+    \]
 
-    In the other direction, we will require the Rees construction which sends a vector bundle \(E\) with filtration \(F^{\bullet}\) a module
-    \[ \ms{Rees}(E, F^{\bullet}) \sum_w t^{-w} F^w E \subset E \otimes_{\C} \C[t, t^{-1}]. \]
+    In the other direction, let \(E\) be a vector bundle with a finite decreasing filtration \(F^\bullet E\) by subbundles such that the quotients \(F^wE/F^{w+1}E\) are locally free. The Rees construction is the graded \(\mc{O}_C[t]\)-module
+    \[
+        \ms{Rees}(E,F^\bullet)
+        \coloneqq
+        \bigoplus_{w\in\Z}t^{-w}F^wE
+        \subset
+        E\otimes_{\C}\C[t,t^{-1}].
+    \]
+    It is locally free over \(\mc{O}_C[t]\), and its fibers at \(t=1\) and \(t=0\) satisfy
+    \[
+        \ms{Rees}(E,F^\bullet)|_{t=1}\simeq E,
+        \qquad
+        \ms{Rees}(E,F^\bullet)|_{t=0}
+        \simeq
+        \bigoplus_w F^wE/F^{w+1}E.
+    \]
 \end{rmk}
 
-Therefore, a map from \(\Theta\) to the stack of vector bundles is simply a filtration on a vector bundle.
+Therefore, a map from \(\Theta\) to the stack of vector bundles is equivalent to a finite \(\Z\)-weighted filtration of a vector bundle by subbundles with locally free associated graded pieces.
+
 
 \subsection{Non-abelian localization}%
 \label{sub:Non-abelian localization}
 
-We will begin with the classical setting. Let \(X\) be a smooth projective variety with an action on \(\G_m\). Then let \(X^{\G_m} = \sqcup_{\alpha}Z_{\alpha}\). We can then compute equivariant Euler characteristics as
-\[ \chi_{\G_m}(X, F) = \sum_{\alpha} \chi_{\G_m} \ab(Z_{\alpha}, \frac{F_{|Z_{\alpha}}}{e(N_{Z_{\alpha}/X})}), \]
+We will begin with the classical setting. Let \(X\) be a smooth projective variety with an action of \(\G_m\), let \(F\) be a \(\G_m\)-equivariant perfect complex, and write
+\[
+    X^{\G_m}=\bigsqcup_\alpha Z_\alpha
+\]
+for the decomposition of the fixed locus into connected components. After localizing the representation ring \(R(\G_m)\) so that the equivariant Euler classes below become invertible, we have
+\[
+    \chi_{\G_m}(X,F)
+    =
+    \sum_\alpha
+    \chi_{\G_m}\ab(
+        Z_\alpha,
+        F|_{Z_\alpha}\otimes e(N_{Z_\alpha/X})^{-1}
+    ),
+\]
 where
-\[ e(N_{Z_{\alpha}/X}) = \lambda_{-1}(N_{Z_{\alpha}/Z}^{\vee}) = \sum (-1)^i [\Lambda^i N_{Z_{\alpha}/X}^{\vee}]. \]
+\[
+    e(N_{Z_\alpha/X})
+    =
+    \lambda_{-1}(N_{Z_\alpha/X}^\vee)
+    =
+    \sum_{i\geq0}(-1)^i[\Lambda^iN_{Z_\alpha/X}^\vee].
+\]
 
-We will now consider the stacky version. Let \(\mf{X} = \mf{X}^{\mr{ss}} \sqcup \bigsqcup S_{\alpha}\) be a \(\Theta\)-stratification and \(Z_{\alpha} = \sigma^{-1}(S_{\alpha})\), where \(\sigma \colon \ms{Grad}(\mf{X} \to \ms{Filt}(\mf{X}))\) is the projection \(\Theta \to B\G_m\).
+We will now consider the stacky version. Let
+\[
+    \mf{X}
+    =
+    \mf{X}^{\mr{ss}}
+    \sqcup
+    \bigsqcup_\alpha\ev_1(S_\alpha)
+\]
+be a \(\Theta\)-stratification. Since \(\ev_1|_{S_\alpha}\) is a closed immersion, we may identify \(S_\alpha\) with its image in \(\mf{X}\). The center of the stratum is
+\[
+    Z_\alpha\coloneqq\sigma^{-1}(S_\alpha)\subset\ms{Grad}(\mf{X}),
+\]
+where \(\sigma\colon\ms{Grad}(\mf{X})\to\ms{Filt}(\mf{X})\) is induced by the projection \(\Theta\to B\G_m\).
 
-\begin{thm}
-    Let \(\mf{X}\) be a quasi-smooth derived stack and \(F \in \ms{Perf}(\mf{X})\) satisfy various conditions. Then
-    \[ \chi(\mf{X}, F) = \chi(\mf{X}^{\mr{ss}}, F) + \sum_{\alpha} \chi(Z_{\alpha}, F_{|_{Z_{\alpha}}} \otimes \E_{\alpha}). \]
-    Here, if we split \(\L_{\mf{X},|Z_{\alpha}} = \L_{\alpha}^+ \oplus \L_{\alpha}^-\), we have
-    \[ E_{\alpha} = \on{Sym}(\L_{\alpha}^- \oplus (\L_{\alpha}^+)^{\vee}) \otimes \det (L_{\alpha}^+)^{\vee}[-\on{rk}(\L_{\alpha}^+)]. \]
+\begin{thm}[Virtual non-abelian localization]
+    Let \(\mf{X}\) be a quasi-smooth derived stack with a \(\Theta\)-stratification
+    \[
+        \mf{X}
+        =
+        \mf{X}^{\mr{ss}}
+        \sqcup
+        \bigsqcup_\alpha S_\alpha,
+    \]
+    where we identify every stratum with its image under \(\ev_1\), and let \(Z_\alpha\) be its center. Decompose the restriction of the cotangent complex according to the \(\G_m\)-weights as
+    \[
+        \L_{\mf{X}}|_{Z_\alpha}
+        \simeq
+        \L_\alpha^-
+        \oplus
+        \L_\alpha^0
+        \oplus
+        \L_\alpha^+,
+    \]
+    where the homology of \(\L_\alpha^-\), \(\L_\alpha^0\), and \(\L_\alpha^+\) is concentrated in negative, zero, and positive weights, respectively. Define
+    \[
+        \E_\alpha
+        \coloneqq
+        \on{Sym}\ab(
+            \L_\alpha^-
+            \oplus
+            (\L_\alpha^+)^\vee
+        )
+        \otimes
+        \det(\L_\alpha^+)^\vee
+        [-\on{rk}(\L_\alpha^+)]
+        \in
+        \ms{QCoh}(Z_\alpha).
+    \]
+    Here \(\det(\L_\alpha^+)\) and \(\on{rk}(\L_\alpha^+)\) denote the determinant and virtual rank of the perfect complex \(\L_\alpha^+\). We say that a complex of vector spaces is finite-dimensional if the direct sum of all of its cohomology groups is finite-dimensional.
+    Let \(F\in\ms{Perf}(\mf{X})\). Assume that
+    \[
+        R\Gamma\ab(
+            Z_\alpha,
+            F|_{Z_\alpha}\otimes\E_\alpha
+        )
+    \]
+    is finite-dimensional for every \(\alpha\) and is acyclic for all but finitely many \(\alpha\). Then \(R\Gamma(\mf{X},F)\) is finite-dimensional if and only if \(R\Gamma(\mf{X}^{\mr{ss}},F)\) is finite-dimensional, and
+    \[
+        \chi(\mf{X},F)
+        =
+        \chi(\mf{X}^{\mr{ss}},F)
+        +
+        \sum_\alpha
+        \chi\ab(
+            Z_\alpha,
+            F|_{Z_\alpha}\otimes\E_\alpha
+        ).
+    \]
+    Here quasi-smooth means that \(\L_{\mf{X}}\) is perfect of Tor-amplitude contained in \([-1,1]\).
 \end{thm}
+
 
 \subsection{Geometric invariant theory}%
 \label{sub:Geometric invariant theory}
