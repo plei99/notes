@@ -14,6 +14,7 @@
 \usetikzlibrary{decorations.pathmorphing,shapes}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta,patterns,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,shapes.geometric}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -279,7 +280,74 @@ Given $D$, we will order its crossings. For each crossing we have a $0$-resoluti
 % insert picture here
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{seb1.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round,
+      % Hopf link resolution: #1 = smoothing of crossing 1 (top), #2 = crossing 2 (bottom)
+      pics/hres/.style 2 args={code={
+        \begin{scope}[yscale=1.25]
+        \def\r{0.5}\def\a{53.13}\def\d{22}
+        \coordinate (L) at (-0.3,0); \coordinate (R) at (0.3,0);
+        \coordinate (T) at (0,0.4); \coordinate (B) at (0,-0.4);
+        \coordinate (Tu) at (0,0.5); \coordinate (Td) at (0,0.3); \coordinate (Tl) at (-0.1,0.4); \coordinate (Tr) at (0.1,0.4);
+        \coordinate (Bu) at (0,-0.3); \coordinate (Bd) at (0,-0.5); \coordinate (Bl) at (-0.1,-0.4); \coordinate (Br) at (0.1,-0.4);
+        % the four arcs
+        \draw (L) ++(\a+\d:\r) arc[start angle=\a+\d, end angle=360-\a-\d, radius=\r];
+        \draw (L) ++(-\a+\d:\r) arc[start angle=-\a+\d, end angle=\a-\d, radius=\r];
+        \draw (R) ++(-180+\a+\d:\r) arc[start angle=-180+\a+\d, end angle=180-\a-\d, radius=\r];
+        \draw (R) ++(180-\a+\d:\r) arc[start angle=180-\a+\d, end angle=180+\a-\d, radius=\r];
+        % crossing 1 (top)
+        \ifnum#1=0
+          \draw (L) ++(\a+\d:\r) to[out=\a+\d-90, in=270-\a-\d] ($(R)+(180-\a-\d:\r)$);
+          \draw (L) ++(\a-\d:\r) to[out=\a-\d+90, in=90-\a+\d] ($(R)+(180-\a+\d:\r)$);
+        \else
+          \draw (L) ++(\a+\d:\r) to[out=\a+\d-90, in=90-\a+\d] ($(R)+(180-\a+\d:\r)$);
+          \draw (L) ++(\a-\d:\r) to[out=\a-\d+90, in=270-\a-\d] ($(R)+(180-\a-\d:\r)$);
+        \fi
+        % crossing 2 (bottom)
+        \ifnum#2=0
+          \draw (L) ++(-\a-\d:\r) to[out=90-\a-\d, in=90+\a+\d] ($(R)+(180+\a+\d:\r)$);
+          \draw (L) ++(-\a+\d:\r) to[out=-90-\a+\d, in=270+\a-\d] ($(R)+(180+\a-\d:\r)$);
+        \else
+          \draw (L) ++(-\a-\d:\r) to[out=90-\a-\d, in=270+\a-\d] ($(R)+(180+\a-\d:\r)$);
+          \draw (L) ++(-\a+\d:\r) to[out=-90-\a+\d, in=90+\a+\d] ($(R)+(180+\a+\d:\r)$);
+        \fi
+        \end{scope}
+      }}]
+
+      % ---- the Hopf link H ----
+      \begin{scope}[yscale=1.25]
+        \def\r{0.5}\def\a{53.13}\def\g{19}
+        % left component: gap at crossing 1 (under), over at crossing 2
+        \draw (-0.3,0) ++(\a+\g:\r) arc[start angle=\a+\g, end angle=360+\a-\g, radius=\r];
+        % right component: gap at crossing 2 (under), over at crossing 1
+        \draw (0.3,0) ++(180+\a+\g:\r) arc[start angle=180+\a+\g, end angle=540+\a-\g, radius=\r];
+        % orientations
+        \draw[-{Stealth[length=1.6mm]}] (-0.3,0) ++(150:\r) arc[start angle=150, end angle=125, radius=\r];
+        \draw[-{Stealth[length=1.6mm]}] (0.3,0) ++(45:\r) arc[start angle=45, end angle=20, radius=\r];
+      \end{scope}
+      \node[font=\scriptsize] at (0,0.8) {$1$};
+      \node[font=\scriptsize] at (0,-0.82) {$2$};
+      \node[anchor=east] at (-0.85,0) {$H=$};
+      \node at (-0.3,-1.3) {$n_+=0,\ n_-=2$};
+
+      % squiggly arrow
+      \draw[-{Stealth[length=2mm]}, decorate,
+            decoration={snake, amplitude=0.6mm, segment length=3mm, post length=2.5mm}]
+            (1.45,0.1) -- (3.05,0.1);
+
+      % ---- cube of resolutions ----
+      \pic at (4.3,0) {hres={0}{0}};
+      \pic at (6.9,1.05) {hres={0}{1}};
+      \pic at (6.9,-1.05) {hres={1}{0}};
+      \pic at (9.5,0) {hres={1}{1}};
+      \node[font=\small] at (4.3,-1.05) {$00$};
+      \node[font=\small] at (6.9,0.05) {$01$};
+      \node[font=\small] at (6.9,-2.15) {$10$};
+      \node[font=\small] at (9.5,-1.05) {$11$};
+      \draw (5.15,0.3) -- (6.0,0.75);
+      \draw (5.15,-0.3) -- (6.0,-0.75);
+      \draw (7.8,0.75) -- (8.65,0.3);
+      \draw (7.8,-0.75) -- (8.65,-0.3);
+    \end{tikzpicture}
     \caption{Hopf link and resolution}%
     \label{fig:seb1}
 \end{figure}
@@ -296,7 +364,47 @@ Now for each $\alpha \in \qty{0,1}^n$, we assign the object $O\qty{m}$, where $O
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{seb3.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round]
+      % ---- 0-resolution: two circles, red disc around the crossing ----
+      \begin{scope}[shift={(0.85,0)}]
+        \draw (0,0.72) circle[radius=0.45];
+        \draw (0,-0.72) circle[radius=0.45];
+        \draw[red, line width=1pt] (0,0) circle[radius=0.75];
+      \end{scope}
+
+      % ---- pair of pants (merge) ----
+      \begin{scope}[shift={(2.95,1.25)}]
+        \draw (-0.42,0) ellipse[x radius=0.27, y radius=0.09];
+        \draw (0.42,0) ellipse[x radius=0.27, y radius=0.09];
+        \draw (-0.69,0) .. controls (-0.66,-0.5) and (-0.36,-0.7) .. (-0.34,-1);
+        \draw (0.69,0) .. controls (0.66,-0.5) and (0.36,-0.7) .. (0.34,-1);
+        \draw (-0.15,0) .. controls (-0.13,-0.5) and (0.13,-0.5) .. (0.15,0);
+        \draw (-0.34,-1) arc[start angle=180, end angle=360, x radius=0.34, y radius=0.09];
+        \draw[dashed] (0.34,-1) arc[start angle=0, end angle=180, x radius=0.34, y radius=0.09];
+      \end{scope}
+      \draw[-{Stealth[length=2.2mm]}] (1.95,-0.25) .. controls (2.8,-0.15) and (3.4,-0.1) .. (4.1,-0.1);
+
+      % ---- 1-resolution: the two circles merged ----
+      \begin{scope}[shift={(5.05,0)}]
+        \draw plot[smooth cycle, tension=0.7] coordinates {
+          (0,1.17) (0.38,1.02) (0.43,0.68) (0.3,0.4) (0.2,0.15) (0.2,-0.15) (0.3,-0.4)
+          (0.43,-0.68) (0.38,-1.02) (0,-1.17) (-0.38,-1.02) (-0.43,-0.68) (-0.3,-0.4)
+          (-0.2,-0.15) (-0.2,0.15) (-0.3,0.4) (-0.43,0.68) (-0.38,1.02)};
+        \draw[red, line width=1pt] (0,0) circle[radius=0.75];
+      \end{scope}
+
+      % ---- pants drawn the other way up (one circle to two) ----
+      \begin{scope}[shift={(10.4,1.25)}]
+        \draw (0,0) ellipse[x radius=0.5, y radius=0.09];
+        \draw (-0.5,0) .. controls (-0.52,-0.5) and (-0.72,-0.9) .. (-0.78,-1.28);
+        \draw (0.5,0) .. controls (0.52,-0.5) and (0.72,-0.9) .. (0.78,-1.28);
+        \draw (-0.12,-1.28) .. controls (-0.1,-0.85) and (0.1,-0.85) .. (0.12,-1.28);
+        \foreach \x in {-0.45,0.45}{
+          \draw (\x-0.33,-1.28) arc[start angle=180, end angle=360, x radius=0.33, y radius=0.09];
+          \draw[dashed] (\x+0.33,-1.28) arc[start angle=0, end angle=180, x radius=0.33, y radius=0.09];
+        }
+      \end{scope}
+    \end{tikzpicture}
     \caption{Saddle cobordism}%
     \label{fig:seb2}
 \end{figure}
@@ -309,7 +417,85 @@ The chain homotopy type of $[[L]]$ is a link invariant after passing to a quotie
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{seb5.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round,
+      every node/.style={inner sep=1pt},
+      % boundary circle seen from above (top of a cobordism)
+      pics/tcirc/.style={code={\draw (0,0) ellipse[x radius=0.2, y radius=0.065];}},
+      % boundary circle at the bottom of a cobordism
+      pics/bcirc/.style={code={
+        \draw (-0.2,0) arc[start angle=180, end angle=360, x radius=0.2, y radius=0.065];
+        \draw[dashed] (0.2,0) arc[start angle=0, end angle=180, x radius=0.2, y radius=0.065];}},
+      % disc capping a top circle / a bottom circle
+      pics/tdisc/.style={code={\pic{tcirc};
+        \draw (-0.2,0) .. controls (-0.2,-0.42) and (0.2,-0.42) .. (0.2,0);}},
+      pics/bdisc/.style={code={\pic{bcirc};
+        \draw (-0.2,0) .. controls (-0.2,0.42) and (0.2,0.42) .. (0.2,0);}},
+      % vertical tube of height 1.3
+      pics/vtube/.style={code={\pic{tcirc}; \pic at (0,-1.3) {bcirc};
+        \draw (-0.2,0) -- (-0.2,-1.3); \draw (0.2,0) -- (0.2,-1.3);}},
+      % tube joining two top circles 0.7 apart (U) / two bottom circles (arch)
+      pics/utube/.style={code={\pic{tcirc}; \pic at (0.7,0) {tcirc};
+        \draw (-0.2,0) .. controls (-0.2,-0.85) and (0.9,-0.85) .. (0.9,0);
+        \draw (0.2,0) .. controls (0.2,-0.4) and (0.5,-0.4) .. (0.5,0);}},
+      pics/arch/.style={code={\pic{bcirc}; \pic at (0.7,0) {bcirc};
+        \draw (-0.2,0) .. controls (-0.2,0.85) and (0.9,0.85) .. (0.9,0);
+        \draw (0.2,0) .. controls (0.2,0.4) and (0.5,0.4) .. (0.5,0);}},
+      lab/.style={font=\scriptsize}]
+
+      % ---- T = 2 ----
+      \begin{scope}[shift={(0.55,0)}]
+        \draw (0,0) ellipse[x radius=0.55, y radius=0.32];
+        \draw (-0.27,0.03) .. controls (-0.12,-0.1) and (0.12,-0.1) .. (0.27,0.03);
+        \draw (-0.19,-0.03) .. controls (-0.07,0.05) and (0.07,0.05) .. (0.19,-0.03);
+        \node at (0,-0.85) {$T$};
+      \end{scope}
+      \node[anchor=west] at (1.2,0) {$=2,$};
+
+      % ---- S = 0 ----
+      \begin{scope}[shift={(3.0,0)}]
+        \draw (0,0) circle[radius=0.4];
+        \draw (-0.4,0) arc[start angle=180, end angle=360, x radius=0.4, y radius=0.12];
+        \draw[dashed] (0.4,0) arc[start angle=0, end angle=180, x radius=0.4, y radius=0.12];
+        \node at (0,-0.85) {$S$};
+      \end{scope}
+      \node[anchor=west] at (3.5,0) {$=0,$};
+
+      % ---- 4Tu ----
+      \def\yt{0.75}\def\yb{-0.55}
+      % term 1: discs on 1,2; tube 3--4
+      \begin{scope}[shift={(5.2,0)}]
+        \pic at (0,\yt) {tdisc}; \pic at (0.7,\yt) {tdisc};
+        \pic at (0,\yb) {arch};
+        \node[lab] at (0,\yt+0.25) {$1$}; \node[lab] at (0.7,\yt+0.25) {$2$};
+        \node[lab] at (0,\yb-0.3) {$3$}; \node[lab] at (0.7,\yb-0.3) {$4$};
+      \end{scope}
+      \node at (6.45,0.1) {$-$};
+      % term 2: tube 1--3; discs on 2,4
+      \begin{scope}[shift={(6.9,0)}]
+        \pic at (0,\yt) {vtube};
+        \pic at (0.7,\yt) {tdisc}; \pic at (0.7,\yb) {bdisc};
+        \node[lab] at (0,\yt+0.25) {$1$}; \node[lab] at (0.7,\yt+0.25) {$2$};
+        \node[lab] at (0,\yb-0.3) {$3$}; \node[lab] at (0.7,\yb-0.3) {$4$};
+      \end{scope}
+      \node at (8.15,0.1) {$-$};
+      % term 3: discs on 1,3; tube 2--4
+      \begin{scope}[shift={(8.6,0)}]
+        \pic at (0,\yt) {tdisc}; \pic at (0,\yb) {bdisc};
+        \pic at (0.7,\yt) {vtube};
+        \node[lab] at (0,\yt+0.25) {$1$}; \node[lab] at (0.7,\yt+0.25) {$2$};
+        \node[lab] at (0,\yb-0.3) {$3$}; \node[lab] at (0.7,\yb-0.3) {$4$};
+      \end{scope}
+      \node at (9.85,0.1) {$+$};
+      % term 4: tube 1--2; discs on 3,4
+      \begin{scope}[shift={(10.3,0)}]
+        \pic at (0,\yt) {utube};
+        \pic at (0,\yb) {bdisc}; \pic at (0.7,\yb) {bdisc};
+        \node[lab] at (0,\yt+0.25) {$1$}; \node[lab] at (0.7,\yt+0.25) {$2$};
+        \node[lab] at (0,\yb-0.3) {$3$}; \node[lab] at (0.7,\yb-0.3) {$4$};
+      \end{scope}
+      \node[anchor=west] at (11.2,0.1) {$=0$};
+      \node at (7.9,-1.25) {$4\mathrm{Tu}$};
+    \end{tikzpicture}
     \caption{Relations for $\ms{Cob}^3//\ell$}%
     \label{fig:seb3}
 \end{figure}
@@ -318,7 +504,91 @@ Now we define the \textit{Bar-Natan category} $\ms{BN} \coloneqq \ms{Kom}(\ms{Ma
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{seb6.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round]
+      % ---- helpers for cobordisms between tangles (source on top, target below) ----
+      % top arc of a sheet, drawn in perspective: \cbThook{x}{y}{width}
+      \newcommand\cbThook[3]{\draw ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1});}
+      % bottom arc of a sheet (front solid, back dashed)
+      \newcommand\cbBhook[3]{\draw ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1}); \draw[dashed] ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03});}
+      % boundary circles: \cbTell{cx}{y}{rx} (seen from above), \cbBell (bottom, back dashed)
+      \newcommand\cbTell[3]{\draw ({#1},{#2}) ellipse[x radius={#3}, y radius=0.06];}
+      \newcommand\cbBell[3]{\draw ({#1-#3},{#2}) arc[start angle=180, end angle=360, x radius={#3}, y radius=0.06]; \draw[dashed] ({#1+#3},{#2}) arc[start angle=0, end angle=180, x radius={#3}, y radius=0.06];}
+      % handle (genus) symbol centred at (x,y)
+      \newcommand\cbHandle[2]{\draw[line width=0.6pt] ({#1-0.11},{#2+0.025}) .. controls +(0.06,-0.08) and +(-0.06,-0.08) .. ({#1+0.11},{#2+0.025}); \draw[line width=0.6pt] ({#1-0.075},{#2-0.012}) .. controls +(0.035,0.04) and +(-0.035,0.04) .. ({#1+0.075},{#2-0.012});}
+      % cap over a bottom circle / cup under a top circle: {cx}{y}{rx}{height}
+      \newcommand\cbDome[4]{\cbBell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{1.33*#4}) and +(0,{1.33*#4}) .. ({#1+#3},{#2});}
+      \newcommand\cbBowl[4]{\cbTell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{-1.33*#4}) and +(0,{-1.33*#4}) .. ({#1+#3},{#2});}
+      % ---- the four corners ----
+      % top left: the arc (one-strand tangle without the kink)
+      \begin{scope}[shift={(3.55,-0.7)}]
+        \draw (150:0.42) .. controls (0.02,0.24) and (0.2,0.2) .. (0.2,0) .. controls (0.2,-0.2) and (0.02,-0.24) .. (210:0.42);
+        \draw[red, line width=1pt] (0,0) circle[radius=0.42];
+      \end{scope}
+      \node at (8.4,-0.7) {$0$};
+      % bottom left: 0-smoothing of the kink (arc and a circle)
+      \begin{scope}[shift={(3.55,-5.25)}]
+        \draw (115:0.42) .. controls (-0.04,0.15) and (-0.04,-0.15) .. (245:0.42);
+        \draw (0.14,0) circle[radius=0.13];
+        \draw[red, line width=1pt] (0,0) circle[radius=0.42];
+      \end{scope}
+      % bottom right: 1-smoothing of the kink (an arc)
+      \begin{scope}[shift={(8.4,-5.25)}]
+        \draw plot[smooth, tension=0.6] coordinates {(125:0.42) (-0.17,0.19) (0.02,0.15) (0.22,0.13) (0.27,-0.02) (0.19,-0.14) (-0.02,-0.18) (-0.17,-0.24) (235:0.42)};
+        \draw[red, line width=1pt] (0,0) circle[radius=0.42];
+      \end{scope}
+
+      % ---- arrows ----
+      \begin{scope}[-{Stealth[length=1.8mm]}, line width=0.6pt]
+        \draw (4.1,-0.7) -- node[above] {$0$} (8.1,-0.7);
+        \draw (3.33,-1.2) -- (3.33,-4.75);
+        \draw (3.78,-4.75) -- (3.78,-1.2);
+        \draw (8.2,-4.78) -- node[left] {$0$} (8.2,-0.95);
+        \draw (8.6,-0.95) -- node[right] {$0$} (8.6,-4.78);
+        \draw (4.1,-5.07) -- (7.9,-5.07);
+        \draw (7.9,-5.45) -- (4.1,-5.45);
+      \end{scope}
+
+      % ---- F^0 = (sheet + capped torus) - (saddle) ----
+      \node at (0.3,-3.0) {$F^0=$};
+      \begin{scope}[shift={(0.72,-2.4)}, scale=0.95]
+        \cbThook{0}{0}{0.55}
+        \draw (0.08,-0.1) -- (0.08,-1.2);
+        \draw (0.55,0.03) -- (0.3,-1.07);
+        \cbBhook{0}{-1.1}{0.3}
+        \cbDome{0.74}{-1.1}{0.21}{0.62}
+        \cbHandle{0.74}{-0.84}
+      \end{scope}
+      \node at (1.83,-3.0) {$-$};
+      \begin{scope}[shift={(2.08,-2.4)}, scale=0.95]
+        \cbThook{0}{0}{0.85}
+        \draw (0.08,-0.1) -- (0.08,-1.2);
+        \cbBhook{0}{-1.1}{0.28}
+        \draw (0.28,-1.07) .. controls (0.3,-0.45) and (0.52,-0.45) .. (0.54,-1.1);
+        \cbBell{0.7}{-1.1}{0.16}
+        \draw (0.85,0.03) -- (0.86,-1.1);
+      \end{scope}
+
+      % ---- G^0 = sheet + cup ----
+      \begin{scope}[shift={(4.15,-2.5)}, scale=0.95]
+        \cbThook{0}{0}{0.3}
+        \draw (0.08,-0.1) -- (0.08,-1.4);
+        \draw (0.3,0.03) -- (0.55,-1.27);
+        \cbBhook{0}{-1.3}{0.55}
+        \cbBowl{0.88}{-0.05}{0.2}{0.5}
+      \end{scope}
+      \node[anchor=west] at (5.2,-3.1) {$=G^0$};
+
+      % ---- d = saddle ----
+      \node[anchor=east] at (4.55,-4.4) {$d=$};
+      \begin{scope}[shift={(4.6,-4.0)}, scale=0.95]
+        \cbThook{0}{0}{0.3}
+        \cbTell{0.72}{0}{0.17}
+        \draw (0.3,0.03) .. controls (0.3,-0.45) and (0.55,-0.45) .. (0.55,0);
+        \draw (0.89,0) -- (0.89,-0.67);
+        \draw (0.08,-0.1) -- (0.08,-0.8);
+        \cbBhook{0}{-0.7}{0.89}
+      \end{scope}
+    \end{tikzpicture}
     \caption{Diagram for R1}%
     \label{fig:seb4}
 \end{figure}
@@ -327,7 +597,77 @@ Then here hare the easy relations.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{seb7.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round]
+      % ---- helpers for cobordisms between tangles (source on top, target below) ----
+      % top arc of a sheet, drawn in perspective: \cbThook{x}{y}{width}
+      \newcommand\cbThook[3]{\draw ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1});}
+      % bottom arc of a sheet (front solid, back dashed)
+      \newcommand\cbBhook[3]{\draw ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1}); \draw[dashed] ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03});}
+      % boundary circles: \cbTell{cx}{y}{rx} (seen from above), \cbBell (bottom, back dashed)
+      \newcommand\cbTell[3]{\draw ({#1},{#2}) ellipse[x radius={#3}, y radius=0.06];}
+      \newcommand\cbBell[3]{\draw ({#1-#3},{#2}) arc[start angle=180, end angle=360, x radius={#3}, y radius=0.06]; \draw[dashed] ({#1+#3},{#2}) arc[start angle=0, end angle=180, x radius={#3}, y radius=0.06];}
+      % handle (genus) symbol centred at (x,y)
+      \newcommand\cbHandle[2]{\draw[line width=0.6pt] ({#1-0.11},{#2+0.025}) .. controls +(0.06,-0.08) and +(-0.06,-0.08) .. ({#1+0.11},{#2+0.025}); \draw[line width=0.6pt] ({#1-0.075},{#2-0.012}) .. controls +(0.035,0.04) and +(-0.035,0.04) .. ({#1+0.075},{#2-0.012});}
+      % cap over a bottom circle / cup under a top circle: {cx}{y}{rx}{height}
+      \newcommand\cbDome[4]{\cbBell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{1.33*#4}) and +(0,{1.33*#4}) .. ({#1+#3},{#2});}
+      \newcommand\cbBowl[4]{\cbTell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{-1.33*#4}) and +(0,{-1.33*#4}) .. ({#1+#3},{#2});}
+      \def\L{-1.0}\def\B{-1.9}
+      % ================= d F^0 =================
+      \node[anchor=east] at (1.45,-1.6) {$dF^0=$};
+      % term 1: (sheet + capped torus) followed by the saddle d
+      \begin{scope}[shift={(1.6,-1.05)}]
+        \cbThook{0}{0}{0.36}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (0.36,0.03) -- (0.36,\L) .. controls (0.36,\L-0.62) and (0.6,\L-0.62) .. (0.6,\L);
+        \cbDome{0.8}{\L}{0.2}{0.65}
+        \cbHandle{0.8}{\L+0.27}
+        \draw (1.0,\L) -- (1.0,\B+0.03);
+        \cbBhook{0}{\B}{1.0}
+      \end{scope}
+      \node at (3.2,-1.6) {$-$};
+      % term 2: saddle splitting off a circle, then merging it back
+      \begin{scope}[shift={(3.7,-1.05)}]
+        \cbThook{0}{0}{1.0}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (1.0,0.03) -- (1.0,\B+0.03);
+        \cbBhook{0}{\B}{1.0}
+        \draw (0.3,\L) .. controls (0.3,\L+0.65) and (0.58,\L+0.65) .. (0.58,\L)
+                       .. controls (0.58,\L-0.65) and (0.3,\L-0.65) .. cycle;
+        \cbBell{0.79}{\L}{0.21}
+      \end{scope}
+      \draw[line width=0.5pt] (1.2,-2.05) -- (5.1,-2.05);
+      \node[anchor=west] at (4.85,-1.6) {$=0,$};
+
+      % ================= G^0 F^0 =================
+      \node[anchor=east] at (7.95,-1.6) {$G^0F^0=$};
+      % term 1: hourglass sheet + closed torus
+      \begin{scope}[shift={(8.1,-0.75)}]
+        \cbThook{0}{0}{0.5}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (0.5,0.03) .. controls (0.45,-0.4) and (0.28,-0.6) .. (0.28,\L) .. controls (0.28,-1.35) and (0.45,-1.5) .. (0.5,\B+0.03);
+        \cbBhook{0}{\B}{0.5}
+        \cbDome{0.82}{\L}{0.2}{0.6}
+        \draw (0.62,\L) .. controls (0.62,\L-0.75) and (1.02,\L-0.75) .. (1.02,\L);
+        \cbHandle{0.82}{\L+0.27}
+      \end{scope}
+      \begin{scope}[cyan!60!blue, line width=0.9pt]
+        \node[font=\large] at (9.35,-0.35) {$=2$};
+        \draw[-{Stealth[length=2mm]}] (9.12,-0.55) -- (8.97,-1.2);
+      \end{scope}
+      \node at (9.6,-1.6) {$-$};
+      % term 2: saddle splitting off a circle, then capping it
+      \begin{scope}[shift={(9.95,-0.75)}]
+        \cbThook{0}{0}{1.0}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (1.0,0.03) -- (1.0,\L);
+        \draw (0.3,\L) .. controls (0.3,\L+0.6) and (0.58,\L+0.6) .. (0.58,\L);
+        \cbBell{0.79}{\L}{0.21}
+        \draw (0.58,\L) .. controls (0.58,\L-0.65) and (1.0,\L-0.65) .. (1.0,\L);
+        \draw (0.3,\L) .. controls (0.3,-1.4) and (0.45,-1.6) .. (0.5,\B+0.03);
+        \cbBhook{0}{\B}{0.5}
+      \end{scope}
+      \node[anchor=west] at (11.05,-1.6) {$=\mathrm{id}$};
+    \end{tikzpicture}
     \caption{Easy relations}%
     \label{fig:seb5}
 \end{figure}
@@ -336,7 +676,113 @@ Finally, here we see that we have a homotopy:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{seb8.png}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round]
+      % ---- helpers for cobordisms between tangles (source on top, target below) ----
+      % top arc of a sheet, drawn in perspective: \cbThook{x}{y}{width}
+      \newcommand\cbThook[3]{\draw ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1});}
+      % bottom arc of a sheet (front solid, back dashed)
+      \newcommand\cbBhook[3]{\draw ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1}); \draw[dashed] ({#1},{#2+0.1}) .. controls +({0.6*#3},0.03) and +(0,0.07) .. ({#1+#3},{#2+0.03});}
+      % boundary circles: \cbTell{cx}{y}{rx} (seen from above), \cbBell (bottom, back dashed)
+      \newcommand\cbTell[3]{\draw ({#1},{#2}) ellipse[x radius={#3}, y radius=0.06];}
+      \newcommand\cbBell[3]{\draw ({#1-#3},{#2}) arc[start angle=180, end angle=360, x radius={#3}, y radius=0.06]; \draw[dashed] ({#1+#3},{#2}) arc[start angle=0, end angle=180, x radius={#3}, y radius=0.06];}
+      % handle (genus) symbol centred at (x,y)
+      \newcommand\cbHandle[2]{\draw[line width=0.6pt] ({#1-0.11},{#2+0.025}) .. controls +(0.06,-0.08) and +(-0.06,-0.08) .. ({#1+0.11},{#2+0.025}); \draw[line width=0.6pt] ({#1-0.075},{#2-0.012}) .. controls +(0.035,0.04) and +(-0.035,0.04) .. ({#1+0.075},{#2-0.012});}
+      % cap over a bottom circle / cup under a top circle: {cx}{y}{rx}{height}
+      \newcommand\cbDome[4]{\cbBell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{1.33*#4}) and +(0,{1.33*#4}) .. ({#1+#3},{#2});}
+      \newcommand\cbBowl[4]{\cbTell{#1}{#2}{#3} \draw ({#1-#3},{#2}) .. controls +(0,{-1.33*#4}) and +(0,{-1.33*#4}) .. ({#1+#3},{#2});}
+      \def\L{-0.95}\def\B{-1.85}
+      % front half of an interior arc (composition level): {x}{y}{width}
+      \newcommand\cbMid[3]{\draw[line width=0.5pt] ({#1+#3},{#2+0.03}) .. controls +(0,-0.08) and +({0.5*#3},0) .. ({#1+0.08},{#2-0.1});}
+
+      \node[anchor=west] at (0,-0.4) {Clearly\quad ${\underbrace{F^1G^1}_{=0}}-\mathrm{id}+dh=0$.};
+      \node[anchor=east] at (3.55,-1.45) {$F^0G^0-\mathrm{id}+hd=$};
+
+      % term 1: G^0 followed by the first term of F^0
+      \begin{scope}[shift={(3.7,-1.0)}]
+        \cbThook{0}{0}{0.35}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (0.35,0.03) .. controls (0.4,-0.4) and (0.6,-0.6) .. (0.6,\L+0.03) .. controls (0.6,-1.3) and (0.4,-1.5) .. (0.35,\B+0.03);
+        \cbMid{0}{\L}{0.6}
+        \cbBhook{0}{\B}{0.35}
+        \cbBowl{0.95}{0}{0.19}{0.5}
+        \cbDome{0.95}{\B}{0.2}{0.62}
+        \cbHandle{0.95}{\B+0.27}
+      \end{scope}
+      \node at (5.4,-1.45) {$-$};
+      % term 2: G^0 followed by the second term of F^0
+      \begin{scope}[shift={(5.9,-1.0)}]
+        \cbThook{0}{0}{0.35}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (0.35,0.03) .. controls (0.4,-0.4) and (0.72,-0.6) .. (0.75,\L+0.03) .. controls (0.8,-1.3) and (1.0,-1.5) .. (1.0,\B);
+        \cbMid{0}{\L}{0.75}
+        \cbBowl{0.95}{0}{0.17}{0.4}
+        \cbBhook{0}{\B}{0.3}
+        \draw (0.3,\B+0.03) .. controls (0.3,\B+0.6) and (0.6,\B+0.6) .. (0.6,\B);
+        \cbBell{0.8}{\B}{0.2}
+      \end{scope}
+      \node at (7.55,-1.45) {$-$};
+      % term 3: identity
+      \begin{scope}[shift={(8.0,-1.0)}]
+        \cbThook{0}{0}{0.4}
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \draw (0.4,0.03) -- (0.4,\B+0.03);
+        \cbBhook{0}{\B}{0.4}
+        \cbTell{0.9}{0}{0.2}
+        \draw (0.7,0) -- (0.7,\B); \draw (1.1,0) -- (1.1,\B);
+        \cbBell{0.9}{\B}{0.2}
+      \end{scope}
+      \node at (9.6,-1.45) {$+$};
+      % term 4: d followed by h -- a sheet (arc and circle merged) and a separate cap on the bottom circle
+      \begin{scope}[shift={(10.05,-1.0)}]
+        \cbThook{0}{0}{0.35}
+        \cbTell{0.82}{0}{0.2}
+        \draw (0.35,0.03) .. controls (0.35,-0.6) and (0.62,-0.6) .. (0.62,0);
+        \draw (1.02,0) -- (1.02,\L+0.03) .. controls (1.02,-1.4) and (0.35,-1.3) .. (0.35,\B+0.03);
+        \draw (0.08,-0.1) -- (0.08,\B-0.1);
+        \cbMid{0}{\L}{1.02}
+        \cbBhook{0}{\B}{0.35}
+        \cbDome{1.2}{\B}{0.2}{0.5}
+      \end{scope}
+
+      % braces
+      \begin{scope}[decoration={brace, mirror, amplitude=5pt}, line width=0.6pt]
+        \draw[decorate] (3.65,-3.0) -- node[below=5pt] {$=F^0G^0$} (7.15,-3.0);
+        \draw[decorate] (7.95,-3.0) -- node[below=5pt] {$\mathrm{id}$} (9.2,-3.0);
+        \draw[decorate] (10.0,-3.0) -- node[below=5pt] {$hd$} (11.45,-3.0);
+      \end{scope}
+      \node[anchor=west] at (2.7,-3.55) {$=0$};
+
+      % ---- the surface to which 4Tu is applied ----
+      \node[anchor=west] at (0,-4.35) {by $4\mathrm{Tu}$ applied to};
+      \begin{scope}[shift={(4.1,-3.9)}]
+        \cbThook{0}{0}{0.4}
+        \draw (0.08,-0.1) -- (0.08,-1.9);
+        \draw (0.4,0.03) -- (0.4,-0.15);
+        \draw (0.4,-0.42) -- (0.4,-1.77);
+        \cbBhook{0}{-1.8}{0.4}
+        % elbow tube ending in circle 1
+        \draw (0.4,-0.15) .. controls (0.85,-0.1) and (1.2,-0.2) .. (1.2,-0.55);
+        \draw (0.4,-0.42) .. controls (0.65,-0.42) and (0.8,-0.45) .. (0.8,-0.55);
+        \cbBell{1.0}{-0.55}{0.2}
+        % cylinder ending in circle 2
+        \cbTell{1.75}{0}{0.2}
+        \draw (1.55,0) -- (1.55,-0.55); \draw (1.95,0) -- (1.95,-0.55);
+        \cbBell{1.75}{-0.55}{0.2}
+        % pair of pants with top circles 3 and 4
+        \cbTell{1.0}{-1.2}{0.2}
+        \cbTell{1.75}{-1.2}{0.2}
+        \draw (1.2,-1.2) .. controls (1.2,-1.55) and (1.55,-1.55) .. (1.55,-1.2);
+        \draw (0.8,-1.2) -- (0.83,-1.8);
+        \draw (1.95,-1.2) -- (1.92,-1.8);
+        \cbBell{1.375}{-1.8}{0.545}
+        \begin{scope}[font=\scriptsize]
+          \node at (0.62,-0.72) {$1$};
+          \node at (2.12,-0.68) {$2$};
+          \node at (0.62,-1.08) {$3$};
+          \node at (2.12,-1.08) {$4$};
+        \end{scope}
+      \end{scope}
+    \end{tikzpicture}
     \caption{The homotopy really is a homotopy}%
     \label{fig:seb6}
 \end{figure}

@@ -13,6 +13,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta,patterns,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,shapes.geometric}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -773,7 +774,23 @@ Our goal is to give a target space description of integrals over $\mc{M}_{\mr{GW
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{basicdeg}
+    \begin{tikzpicture}[x=0.0077cm,y=-0.0077cm,line cap=round,line join=round]
+      % X_1 and X_2 (gray panels)
+      \draw[gray,thick] (390,130) -- (95,130) -- (95,548) -- (390,548);
+      \draw[gray,thick] (390,130) -- (660,218) -- (655,655) -- (390,548);
+      % the divisor D
+      \draw[orange!90!red,thick] (390,130) -- (390,548);
+      % the smoothing X (blue)
+      \draw[blue!50!cyan!55!black,thick]
+        (128,188) .. controls (260,178) and (430,175) .. (612,255)
+        -- (606,690)
+        .. controls (470,605) and (300,568) .. (135,578) -- cycle;
+      % labels
+      \node[gray] at (80,82) {$X_1$};
+      \node[orange!90!red] at (395,82) {$D$};
+      \node[gray] at (712,195) {$X_2$};
+      \node[blue!50!cyan!55!black] at (355,690) {$X$};
+    \end{tikzpicture}
     \caption{Basic degeneration}
     \label{fig:basicdeg}
 \end{figure}
@@ -786,7 +803,42 @@ in algebraic cobordism. As proved by Levine-Pandharipande~\cite{algcob}, this re
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{extdeg}
+    \begin{tikzpicture}[x=0.0084cm,y=-0.0084cm,line cap=round,line join=round]
+      % hatching of the two P^1-bundles
+      \begin{scope}
+        \clip (295,128) -- (368,113) -- (368,436) -- (295,445) -- cycle;
+        \foreach \y in {150,175,...,450}
+          \draw[cyan!65!blue!90!black,thick] (280,\y) -- (380,\y-6);
+      \end{scope}
+      \begin{scope}
+        \clip (385,114) -- (475,128) -- (462,450) -- (385,437) -- cycle;
+        \foreach \y in {142,167,...,450}
+          \draw[cyan!65!blue!90!black,thick] (375,\y-4) -- (480,\y+2);
+      \end{scope}
+      \draw[cyan!65!blue!90!black,thick] (285,130) -- (378,113) -- (485,128);
+      \draw[cyan!65!blue!90!black,thick] (285,445) -- (375,436) -- (470,452);
+      % X_1 and X_2 (gray)
+      \draw[gray,thick] (285,130) -- (85,235) -- (95,555) -- (285,445);
+      \draw[gray,thick] (485,128) -- (680,245) -- (665,592) -- (470,452);
+      % divisors D_1, D_2, D_3
+      \draw[orange!90!red,thick] (285,130) -- (285,445);
+      \draw[orange!90!red,thick] (378,113) -- (375,436);
+      \draw[orange!90!red,thick] (485,128) -- (470,452);
+      % the smoothing X (blue)
+      \draw[blue!50!cyan!55!black,thick]
+        (105,240) .. controls (260,140) and (470,140) .. (645,255)
+        -- (630,592)
+        .. controls (470,440) and (300,440) .. (115,580) -- cycle;
+      % labels
+      \node[gray] at (100,165) {$X_1$};
+      \node[gray] at (672,185) {$X_2$};
+      \node[orange!90!red] at (268,90) {$D_1$};
+      \node[orange!90!red] at (382,68) {$D_2$};
+      \node[orange!90!red] at (494,92) {$D_3$};
+      \node[blue!50!cyan!55!black] at (565,330) {$X$};
+      \node[cyan!65!blue!90!black] at (318,522) {$\P$};
+      \node[cyan!65!blue!90!black] at (420,522) {$\P$};
+    \end{tikzpicture}
     \caption{Expanded degeneration}
     \label{fig:extdeg}
 \end{figure}
@@ -1002,7 +1054,34 @@ More generally, we can have several strands on a cylinder and one strand going a
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.3\textwidth]{cylbraid}
+    \begin{tikzpicture}[x=0.0083cm,y=-0.0083cm,line cap=round,line join=round,
+        strand/.style={thick,-{Stealth[length=5pt,width=5pt]}},
+        over/.style={preaction={draw,white,line width=4pt,-}}]
+      \colorlet{cyl}{gray}
+      \colorlet{str}{cyan!65!blue!90!black}
+      % bottom circle: back half (dashed)
+      \draw[cyl,thick,dashed] (139,520) arc[start angle=180,end angle=360,x radius=158,y radius=35];
+      % the winding strand, part on the back of the cylinder
+      \draw[str,thick,dash pattern=on 12pt off 5pt]
+        (437,165) .. controls (410,140) and (330,145) .. (270,162)
+        .. controls (190,182) and (120,215) .. (100,270);
+      % straight strands
+      \foreach \a/\b in {190/210,258/280,372/390}
+        \draw[strand,over] (\a,111) -- (\b,549);
+      % the winding strand, front parts
+      \draw[str,thick,over] (305,119) .. controls (310,190) and (345,235) .. (390,232)
+        .. controls (428,230) and (442,200) .. (437,165);
+      \draw[str,thick] (100,270) -- (98,284);
+      \draw[str,strand,over] (95,356) .. controls (100,390) and (150,392) .. (220,405)
+        .. controls (300,420) and (345,470) .. (340,553);
+      % top circle and front half of the bottom circle (drawn last)
+      \draw[cyl,thick] (282,75) ellipse[x radius=152,y radius=45];
+      \draw[cyl,thick] (139,520) arc[start angle=180,end angle=0,x radius=158,y radius=35];
+      % the operator g
+      \draw[orange!90!red,thick] (90,320) ellipse[x radius=26,y radius=36];
+      \draw[orange!90!red,thick] (96,302) .. controls (78,308) and (76,338) .. (91,338)
+        .. controls (104,338) and (104,318) .. (90,320);
+    \end{tikzpicture}
     \caption{Cylindrical braiding condition.}
     \label{fig:cylbraid}
 \end{figure}
@@ -1019,7 +1098,52 @@ The triple Hodge integral terms (\Cref{fig:thodge}) also involve nonsingular bou
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{triplehodge}
+    \begin{tikzpicture}[x=0.007cm,y=-0.007cm,line cap=round,line join=round,
+        arr/.style={thick,-{Stealth[length=6pt,width=6pt,open]}}]
+      \colorlet{cy}{cyan!65!blue!90!black}
+      \colorlet{gr}{lime!80!black}
+      \colorlet{og}{orange!90!red}
+      % toric diagram of the base
+      \draw[cy,thick] (95,280) .. controls (120,360) and (160,420) .. (195,472)
+        -- (95,625);
+      \draw[cy,thick] (195,472) .. controls (350,462) and (520,460) .. (680,455);
+      \draw[cy,thick] (775,275) -- (680,455) .. controls (720,520) and (760,580) .. (785,640);
+      \fill[og] (195,472) circle[radius=9];
+      \fill[magenta!50!purple!75!black] (680,455) circle[radius=9];
+      % contracted component (triple Hodge integral)
+      \draw[og,thick] plot[smooth cycle,tension=0.7] coordinates
+        {(205,88) (250,100) (258,150) (238,205) (268,252) (262,312) (215,352)
+         (165,332) (152,275) (182,215) (158,162) (170,105)};
+      \draw[og,thick] (207,146) .. controls (190,150) and (188,178) .. (202,177)
+        .. controls (213,175) and (211,160) .. (199,163);
+      \draw[og,thick] (211,274) .. controls (194,278) and (192,306) .. (206,305)
+        .. controls (217,303) and (215,288) .. (203,291);
+      % the two edge components
+      \draw[cy,thick] (254,125) .. controls (300,40) and (570,25) .. (645,72)
+        .. controls (682,98) and (665,140) .. (600,158)
+        .. controls (470,188) and (285,180) .. (254,125);
+      \draw[cy,thick] (478,43) .. controls (505,70) and (505,145) .. (488,171);
+      \draw[cy,thick,dashed] (478,43) .. controls (455,70) and (455,145) .. (488,171);
+      \draw[cy,thick] (250,305) .. controls (285,245) and (520,220) .. (600,262)
+        .. controls (640,285) and (620,318) .. (560,330)
+        .. controls (450,352) and (285,350) .. (250,305);
+      \draw[cy,thick] (450,238) .. controls (475,260) and (475,322) .. (458,343);
+      \draw[cy,thick,dashed] (450,238) .. controls (430,260) and (430,322) .. (458,343);
+      \node at (548,110) {$\mu_2$};
+      \node at (518,295) {$\mu_1$};
+      \fill[gr] (250,305) circle[radius=8];
+      % x -> x^{mu_i}
+      \draw[thick,-{Stealth[length=5pt,width=5pt,open]}] (460,370) -- (460,442);
+      \node[anchor=west] at (478,402) {$x \to x^{\mu_i}$};
+      % annotations
+      \draw[arr] (240,665) .. controls (215,570) and (228,450) .. (222,362);
+      \node at (300,725) {triple Hodge $\int$};
+      \draw[arr,gr] (335,525) .. controls (338,430) and (318,355) .. (275,320);
+      \node[gr] at (410,582) {$\psi$-classes};
+      \draw[arr,cy] (600,680) -- (600,570) .. controls (600,470) and (392,480) .. (392,405)
+        -- (392,302);
+      \node[cy,align=center] at (690,745) {Simple edge\\terms};
+    \end{tikzpicture}
     \caption{Triple Hodge integral terms.}
     \label{fig:thodge}
 \end{figure}
@@ -1032,7 +1156,22 @@ Of course, whenever the target is a GIT quotient (for example in the case of a N
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{ptcomb}
+    \begin{tikzpicture}[x=0.0108cm,y=-0.0108cm,line cap=round,line join=round]
+      \colorlet{gr}{lime!80!black}
+      % Hilbert scheme part: partition on top of the leg
+      \draw[thick] (107,118) -- (107,30) -- (143,30) -- (143,53) -- (163,53) -- (163,70)
+        -- (195,70) -- (195,83) -- (220,83) -- (220,118);
+      % PT part: boxes in front of the leg
+      \draw[gr,thick] (107,119) -- (37,119) -- (37,135) -- (57,135) -- (57,155)
+        -- (78,155) -- (78,171) -- (107,171);
+      % the leg
+      \draw[cyan!65!blue!90!black,thick] (107,118) rectangle (537,183);
+      % labels
+      \draw[thick,-{Stealth[length=5pt,width=5pt,open]}] (253,33) .. controls (235,36) and (220,44) .. (212,57);
+      \node[anchor=west] at (262,36) {$\Hilb$};
+      \draw[gr,thick,-{Stealth[length=5pt,width=5pt,open]}] (40,230) .. controls (30,205) and (38,185) .. (56,173);
+      \node[gr] at (80,226) {PT};
+    \end{tikzpicture}
     \caption{Combinatorics of one-legged PT vertex.}
     \label{fig:ptcomb}
 \end{figure}
@@ -1056,7 +1195,32 @@ In the second direction, we obtain
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{hyperplane}
+    \begin{tikzpicture}[x=0.0073cm,y=0.0073cm,line cap=round,line join=round]
+      \colorlet{cy}{cyan!65!blue!90!black}
+      \colorlet{gr}{lime!80!black}
+      \colorlet{db}{blue!50!cyan!55!black}
+      \pgfmathsetmacro{\m}{75/137}
+      % walls x_2 = x_3 + n (up-right) and x_1 = x_3 + n (down-right)
+      \foreach \n/\l/\r in {1/-315/240, 0/-300/255, -1/-205/340}
+        \draw[very thick] (\l,{\m*\l+150*\n}) -- (\r,{\m*\r+150*\n});
+      \foreach \n/\l/\r in {1/-170/340, 0/-240/220, -1/-315/190}
+        \draw[very thick] (\l,{-\m*\l+150*\n}) -- (\r,{-\m*\r+150*\n});
+      % walls x_1 = x_2 + n (vertical)
+      \draw[gr,line width=1.6pt] (-137,-335) -- (-137,325);
+      \draw[gr,line width=1.6pt] (0,-335) -- (0,370);
+      \draw[gr,line width=1.6pt] (137,-335) -- (137,345);
+      % directions of motion
+      \draw[orange!90!red,thick,-{Stealth[length=6pt,width=6pt,open]}] (46,75) -- (-91,0);
+      \draw[magenta!50!purple!75!black,thick,-{Stealth[length=6pt,width=6pt,open]}] (46,75) -- (183,0);
+      % labels
+      \node at (-185,398) {$\color{cy}g^{-(1)}\color{gr}R_{12}\color{cy}g^{(1)}$};
+      \node[gr] at (70,440) {$R_{12}(a_1/a_2)$};
+      \node[gr] at (-150,-385) {\small $x_1{=}x_2{+}1$};
+      \node[gr] at (20,-385) {\small $x_1{=}x_2$};
+      \node[gr] at (190,-385) {\small $x_1{=}x_2{-}1$};
+      \node[db] at (335,178) {$x_2=x_3$};
+      \node[db] at (318,-150) {$x_1=x_3$};
+    \end{tikzpicture}
     \caption{Hyperplane arrangement}
     \label{fig:hyperplane}
 \end{figure}
@@ -1204,7 +1368,16 @@ is again a union of planes with data coming from plane partitions (which are the
 Finally, it makes sense to replace $\C^{\times}$ by $E = \C^{\times}/q^{\Z}$, where all of the exact same equations hold (subject to writing the group operation on $E$ as multiplication). The elliptic cohomology of $\Hilb(\C^2, n)$ is drawn in~\Cref{fig:ellhilbc2}.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\textwidth]{ellhilbc2}
+    \begin{tikzpicture}[x=0.0147cm,y=-0.0147cm,line cap=round,line join=round]
+      \colorlet{pu}{magenta!50!purple!75!black}
+      \draw[lime!80!black,thick,-{Stealth[length=6pt,width=6pt,open]}] (90,182) -- (90,58);
+      \draw[thick,-{Stealth[length=5pt,width=6pt,open]}] (90,182) -- (274,180);
+      \draw[pu,thick] (90,182) -- (168,74);
+      \draw[pu,thick] (90,182) -- (222,120);
+      \node[pu] at (237,112) {$\lambda$};
+      \node at (55,42) {$S^n E$};
+      \node[anchor=west] at (274,186) {$a_1, a_2 \in E^2$};
+    \end{tikzpicture}
     \caption{Elliptic cohomology of $\Hilb(\C^2, n)$}
     \label{fig:ellhilbc2}
 \end{figure}

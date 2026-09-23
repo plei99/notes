@@ -13,6 +13,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathmorphing,shapes}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta,patterns,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,shapes.geometric}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -1584,7 +1585,61 @@ Because tropicalization is functorial, the morphism $C \to S$ induces a morphism
 For example, if $C$ has two components, then the node will correspond to the largest cone, each component corresponds to a copy of $\ol{M}_S$, and each marking will give a leg of infinite length. Above a point in $\Sigma(S)$, the distance between the two components is the edge length parameter evaluated at the point $x$. To see this more clearly, see~\Cref{fig:tropcurve-png}.
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\textwidth]{tropcurve.png}
+    \begin{tikzpicture}[x=0.0115cm, y=-0.0115cm, line width=1pt, line cap=round, line join=round, >={Stealth[length=5pt]}]
+      % title
+      \node[blue!60!cyan, font=\large] at (460,42)
+        {$C \longrightarrow S \qquad \Longrightarrow \qquad \Sigma(C) \longrightarrow \Sigma(S)$};
+      % ---------------- tropicalization ----------------
+      % copies of \ol{M}_S^\vee for the two components
+      \draw[blue!60!cyan, ->] (213,301) -- (439,178);
+      \draw[blue!60!cyan] (217,311) -- (428,421);
+      % the cone of the node
+      \draw[teal!70!green!80!cyan, ->] (228,306) -- (435,188);
+      \draw[teal!70!green!80!cyan] (228,306) -- (431,408);
+      % the marking p_i
+      \draw[black, ->] (208,320) -- (439,440);
+      \draw[black, ->] (208,320) -- (208,453);
+      % fibre over x
+      \draw[orange!80!yellow, ->] (330,238) -- (330,500);
+      \fill[orange!80!yellow] (330,238) ellipse (8 and 9) (330,371) ellipse (8 and 11);
+      \node[orange!80!yellow, anchor=east] at (326,300) {$\ell(x)$};
+      % the base \Sigma(S)
+      \draw[magenta!60!red!80!black, ->] (216,607) -- (440,607);
+      \fill[magenta!60!red!80!black] (216,607) circle (3.5);
+      \fill[orange!80!yellow] (330,607) ellipse (6 and 8);
+      \node[orange!80!yellow] at (330,637) {$x$};
+      \node[magenta!60!red!80!black, anchor=west] at (452,605) {$\ol{M}_S^{\vee}$};
+      % labels
+      \node[blue!60!cyan] at (447,135) {$(\ol{M}_{C,z_1})^{\vee} = \ol{M}_S^{\vee}$};
+      \node[teal!70!green!80!cyan] at (605,290) {$(\ol{M}_{C,q})^{\vee} = (\ol{M}_S \oplus_{\N} \N^2)^{\vee}$};
+      \node[blue!60!cyan] at (545,417) {$(\ol{M}_{C,z_2})^{\vee} = \ol{M}_S^{\vee}$};
+      \node[black, anchor=east] at (199,408) {$\ol{M}_{C,p_i}^{\vee} = (\ol{M}_S \oplus \N p_i)^{\vee}$};
+      \node[blue!60!cyan, anchor=west] at (420,512) {legs of infinite length};
+      \draw[blue!60!cyan, ->] plot[smooth, tension=0.7] coordinates
+        {(411,508) (389,507) (379,494) (383,478) (380,466) (367,459) (355,460)};
+      % ---------------- the curve ----------------
+      \begin{scope}[blue!60!cyan]
+        \draw plot[smooth cycle, tension=0.6] coordinates
+          {(933,364) (906,346) (896,312) (906,280) (911,256) (897,226) (884,182) (886,135)
+           (906,112) (935,115) (960,138) (982,200) (997,262) (995,312) (985,340) (966,362) (948,367)};
+        \draw plot[smooth cycle, tension=0.6] coordinates
+          {(933,364) (901,380) (868,433) (856,500) (861,546) (878,584) (903,603)
+           (933,590) (957,540) (964,490) (958,430) (947,378)};
+        \draw (856,500) .. controls (870,522) and (935,535) .. (963,503);
+        \draw[dashed] (864,489) .. controls (880,478) and (940,480) .. (960,495);
+        \foreach \c in {(930,173), (940,297)}
+          \draw[shift={\c}, rotate=58]
+            (-0.24cm,0) to[bend right=50] (0.24cm,0)
+            (-0.17cm,-0.07cm) to[bend left=50] (0.17cm,-0.07cm);
+        \fill (953,218) circle (3) (925,418) circle (3);
+        \node at (964,240) {$z_1$};
+        \node at (932,448) {$z_2$};
+      \end{scope}
+      \fill[teal!70!green!80!cyan] (933,364) circle (9);
+      \node[teal!70!green!80!cyan] at (872,352) {$q$};
+      \fill[black] (903,560) circle (4.5);
+      \node[black, anchor=west] at (908,558) {$p_i$};
+    \end{tikzpicture}
     \caption{Tropicalization of a log curve.}
     \label{fig:tropcurve-png}
 \end{figure}
@@ -1601,7 +1656,70 @@ Here, $P$ is a morphism of log schemes which is an isomorphism away from $P_i$ a
 This corresponds to allowing poles at $p_i$, and in the tropicalization makes edges finite-length. A picture is given in~\Cref{fig:punctured-png}.
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\textwidth]{punctured.png}
+    \begin{tikzpicture}[x=0.0115cm, y=-0.0115cm, line width=1pt, line cap=round, line join=round, >={Stealth[length=5pt]}]
+      % ---------------- tropicalization ----------------
+      % copies of \ol{M}_S^\vee for the two components
+      \draw[blue!60!cyan, ->] (213,301) -- (439,178);
+      \draw[blue!60!cyan] (217,311) -- (428,421);
+      % the cone of the node
+      \draw[teal!70!green!80!cyan, ->] (228,306) -- (435,188);
+      \draw[teal!70!green!80!cyan] (228,306) -- (431,408);
+      % the marking p_i
+      \draw[black, ->] (208,320) -- (439,440);
+      \draw[black, ->] (208,320) -- (208,453);
+      % fibre over x
+      \draw[orange!80!yellow, ->] (330,238) -- (330,558);
+      \fill[orange!80!yellow] (330,238) ellipse (8 and 9) (330,371) ellipse (8 and 11);
+      \node[orange!80!yellow, anchor=east] at (326,300) {$\ell(x)$};
+      % fibre over y: the punctured leg has finite length
+      \draw[orange!80!yellow, ->] (373,217) -- (373,520);
+      \fill[orange!80!yellow] (373,217) ellipse (7 and 9) (373,392) ellipse (7 and 11);
+      % the punctured ray
+      \draw[blue!60!cyan, dashed, ->] (208,320) -- (405,575);
+      \node[blue!60!cyan] at (434,490) {$(\ol{M}_{C^{\circ},p_i^{\circ}})^{\vee}$};
+      % the base \Sigma(S)
+      \draw[magenta!60!red!80!black, ->] (216,607) -- (440,607);
+      \fill[magenta!60!red!80!black] (216,607) circle (3.5);
+      \fill[orange!80!yellow] (330,607) ellipse (6 and 8);
+      \node[orange!80!yellow] at (330,637) {$x$};
+      \fill[orange!80!yellow] (373,607) ellipse (4 and 6);
+      \node[orange!80!yellow] at (374,637) {$y$};
+      \node[magenta!60!red!80!black, anchor=west] at (452,605) {$\ol{M}_S^{\vee}$};
+      % labels
+      \node[blue!60!cyan] at (447,135) {$(\ol{M}_{C,z_1})^{\vee} = \ol{M}_S^{\vee}$};
+      \node[teal!70!green!80!cyan] at (605,290) {$(\ol{M}_{C,q})^{\vee} = (\ol{M}_S \oplus_{\N} \N^2)^{\vee}$};
+      \node[blue!60!cyan] at (545,417) {$(\ol{M}_{C,z_2})^{\vee} = \ol{M}_S^{\vee}$};
+      \node[black, anchor=east] at (199,408) {$\ol{M}_{C,p_i}^{\vee} = (\ol{M}_S \oplus \N p_i)^{\vee}$};
+      \draw[blue!60!cyan] plot[smooth cycle, tension=0.7] coordinates
+        {(585,462) (650,457) (722,459) (747,492) (742,562) (702,607) (622,613) (575,598) (563,560) (566,525)};
+      \node[blue!60!cyan, align=center] at (655,532) {edge of\\ finite length};
+      \draw[blue!60!cyan, ->] plot[smooth, tension=0.6] coordinates
+        {(381,518) (420,521) (470,545) (512,534) (538,524) (564,525)};
+      % ---------------- the curve ----------------
+      \begin{scope}[blue!60!cyan]
+        \draw plot[smooth cycle, tension=0.6] coordinates
+          {(933,364) (906,346) (896,312) (906,280) (911,256) (897,226) (884,182) (886,135)
+           (906,112) (935,115) (960,138) (982,200) (997,262) (995,312) (985,340) (966,362) (948,367)};
+        \draw plot[smooth cycle, tension=0.6] coordinates
+          {(933,364) (901,380) (868,433) (856,500) (861,546) (878,584) (903,603)
+           (933,590) (957,540) (964,490) (958,430) (947,378)};
+        \draw (856,500) .. controls (870,522) and (935,535) .. (963,503);
+        \draw[dashed] (864,489) .. controls (880,478) and (940,480) .. (960,495);
+        \foreach \c in {(930,173), (940,297)}
+          \draw[shift={\c}, rotate=58]
+            (-0.24cm,0) to[bend right=50] (0.24cm,0)
+            (-0.17cm,-0.07cm) to[bend left=50] (0.17cm,-0.07cm);
+        \fill (953,218) circle (3) (925,418) circle (3);
+        \node at (964,240) {$z_1$};
+        \node at (932,448) {$z_2$};
+      \end{scope}
+      \fill[teal!70!green!80!cyan] (933,364) circle (9);
+      \node[teal!70!green!80!cyan] at (872,352) {$q$};
+      \fill[black] (903,560) circle (4.5);
+      \node[black, anchor=west] at (908,558) {$p_i$};
+      \node[blue!60!cyan, align=center] at (905,660) {$p_i^{\circ}$ : puncturing\\[2pt] $p_i$};
+      \draw[blue!60!cyan, ->] (846,610) .. controls (855,585) and (870,570) .. (893,564);
+    \end{tikzpicture}
     \caption{Tropicalization of a punctured curve.}
     \label{fig:punctured-png}
 \end{figure}
@@ -1656,7 +1774,26 @@ In this formulation, $W$ has proper critical locus if and only if $\on{Crit} W_{
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.5\textwidth]{interval.png}
+    \begin{tikzpicture}[x=0.01427cm, y=-0.01427cm, line width=1pt, line cap=round, >={Stealth[length=5pt]}]
+      % source: tropical curve
+      \draw[teal!70!green!80!cyan, <->] (101,13) -- (101,332);
+      \fill[teal!70!green!80!cyan] (101,148) circle (4.5) (101,254) circle (4.5);
+      \begin{scope}[orange!80!yellow, every node/.style={font=\large}]
+        \node[anchor=east] at (70,178) {$u_{\hat{h}}$};
+        \draw[->] (80,168) -- (80,192);
+        \node[anchor=east] at (70,238) {$u_{h}$};
+        \draw[->] (80,248) -- (80,224);
+        \node[anchor=east] at (70,285) {$u_{h'}$};
+        \draw[->] (80,274) -- (80,298);
+      \end{scope}
+      % Trop f
+      \draw[blue!60!cyan, ->] (236,219) -- (325,219) node[midway, above=2pt, font=\large] {$\on{Trop} f$};
+      % target
+      \draw[blue!60!cyan, ->] (401,321) -- (401,90);
+      \fill[blue!60!cyan] (401,321) circle (4);
+      \node[blue!60!cyan, anchor=west, font=\large] at (415,122) {$\R_{\geq 0}$};
+      \node[blue!60!cyan, font=\large] at (440,322) {$0$};
+    \end{tikzpicture}
     \caption{Contact orders. Note the last downward edge has finite length.}
     \label{fig:interval-png}
 \end{figure}

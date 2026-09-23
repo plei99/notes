@@ -13,6 +13,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta,patterns,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,shapes.geometric}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -360,28 +361,84 @@ Now we will discuss the space of orbits $M / G$. Right now, this is still a set,
         \centering
         \begin{subfigure}[b]{0.2\textwidth}
         \begin{center}
-            \includegraphics[scale=0.6]{orbits1.png}
+            \begin{tikzpicture}[x=0.44cm,y=0.44cm,line width=0.5pt,
+              ar/.style={-{Straight Barb[length=2.8pt,width=4.5pt]}}]
+              % transversal circle
+              \draw[magenta!70!black] (0,0) ellipse [x radius=1.3, y radius=1.02];
+              % axes (orbits along the eigenlines), flowing inward
+              \draw (-2.55,0) -- (2.95,0) (0,1.85) -- (0,-1.6);
+              \draw[ar] (-1.8,0) -- (-1.6,0);
+              \draw[ar] (2.5,0) -- (2.3,0);
+              \draw[ar] (0,1.6) -- (0,1.4);
+              \draw[ar] (0,-1.35) -- (0,-1.15);
+              % parabolic orbits y = c x^2, flowing into the origin
+              \foreach \c/\xa in {0.33/-2.2, 2.3/-0.9, 0.33/2.2, 2.3/0.9, -0.36/-2.05, -2.8/-0.75, -1.4/1.0, -0.18/2.6}{
+                \draw plot[domain=\xa:0,samples=30,smooth] (\x,{\c*\x*\x});
+                \pgfmathsetmacro\xm{0.80*\xa}
+                \pgfmathsetmacro\xn{0.78*\xa}
+                \draw[ar] (\xm,{\c*\xm*\xm}) -- (\xn,{\c*\xn*\xn});
+              }
+              % fixed point
+              \fill[green!70!lime!80!black] (0,0) circle (2.2pt);
+            \end{tikzpicture}
         \end{center}
         \caption{}
         \label{fig:orbits-a}
         \end{subfigure}
         \begin{subfigure}[b]{0.2\textwidth}
         \begin{center}
-            \includegraphics[scale=0.6]{orbits2.png}
+            \begin{tikzpicture}[x=0.39cm,y=0.39cm,line width=0.5pt,
+              ar/.style={-{Straight Barb[length=2.8pt,width=4.5pt]}}]
+              % hyperbolic orbits x y = c; flow is inward horizontally, outward vertically
+              \begin{scope}[cyan!70!blue]
+                \foreach \sx/\sy in {-1/1, 1/1, -1/-1, 1/-1}{
+                  \foreach \c in {0.5, 1.3}{
+                    \pgfmathsetmacro\xe{\c/2.0}
+                    \pgfmathsetmacro\xm{sqrt(\c)}
+                    \pgfmathsetmacro\xn{0.97*sqrt(\c)}
+                    \draw plot[domain=2.6:\xe,samples=40,smooth] ({\sx*\x},{\sy*\c/\x});
+                    \draw[ar] ({\sx*\xm},{\sy*\c/\xm}) -- ({\sx*\xn},{\sy*\c/\xn});
+                  }
+                }
+                \node[anchor=west] at (1.75,-1.2) {$x_1x_2$};
+              \end{scope}
+              % unstable (vertical) and stable (horizontal) axes
+              \draw[orange!85!red] (0,2.05) -- (0,-2.05);
+              \draw (-2.7,0) -- (2.9,0);
+              \fill[green!70!lime!80!black] (0,0) circle (2.2pt);
+            \end{tikzpicture}
         \end{center}
         \caption{}
         \label{fig:orbits-b}
         \end{subfigure}
         \begin{subfigure}[b]{0.2\textwidth}
         \begin{center}
-            \includegraphics[scale=0.6]{orbits3.png}
+            \begin{tikzpicture}[x=0.55cm,y=0.55cm,line width=0.5pt,
+              flow/.style={postaction={decorate},decoration={markings,
+                mark=at position 0.02 with {\arrow{Straight Barb[length=2.8pt,width=4.5pt]}}}}]
+              % circular orbits, counterclockwise
+              \draw[flow] (0,0) circle (0.52);
+              \draw[flow] (0,0) circle (1.18);
+              % transversal ray = orbit space
+              \draw[orange!85!red] (0,0) -- (2.35,0.2);
+              \fill (0,0) circle (1.2pt);
+              \node[anchor=north] at (2.0,-0.3) {$\R_{\geq 0}$};
+            \end{tikzpicture}
         \end{center}
         \caption{}
         \label{fig:orbits-c}
         \end{subfigure}
         \begin{subfigure}[b]{0.2\textwidth}
         \begin{center}
-            \includegraphics[scale=0.6]{orbits4.png}
+            \begin{tikzpicture}[x=0.55cm,y=0.55cm,line width=0.5pt,
+              flow/.style={postaction={decorate},decoration={markings,
+                mark=at position 0.53 with {\arrow{Straight Barb[length=2.8pt,width=4.5pt]}}}}]
+              \foreach \y in {1.47, 1.04, 0.42, -0.68, -1.16}{
+                \draw[flow] (0.4,\y) -- (4.0,\y);
+              }
+              % line of fixed points
+              \draw[line width=0.9pt, dash pattern=on 0.9pt off 2.6pt] (0.4,0) -- (4.2,0);
+            \end{tikzpicture}
         \end{center}
         \caption{}
         \label{fig:orbits-d}
@@ -616,7 +673,40 @@ Our strategy for dealing with this is to determine the universal cover, which is
 Previously, we discussed the long exact sequence arising from a fibration. To make this precise, we need to define $\pi_n(X,*)$. But this is simply the group $[S^n, X]^0$ of homotopy classes of based maps from $S^0$ to $X$. For $n > 1$, we can see that $\pi_n$ is commutative by the following picture (or the fact that $S^n$ is a double suspension).
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{pinab}
+    \begin{tikzpicture}[x=0.985cm,y=0.985cm,line width=0.7pt]
+      % ---- left square: complement of the two blobs maps to the basepoint
+      \begin{scope}
+        \begin{scope}[even odd rule]
+          \clip (0.5,-0.4) rectangle (4.5,-3.7)
+                (1.75,-2.0) ellipse [x radius=0.62, y radius=1.12]
+                (3.45,-2.05) ellipse [x radius=0.52, y radius=1.02];
+          \foreach \t in {-2,-1.66,...,12}{\draw[orange!85!red, line width=0.6pt] (\t-3,-4.5) -- (\t+1.5,0);}
+        \end{scope}
+        \begin{scope}
+          \clip (1.75,-2.0) ellipse [x radius=0.5, y radius=1.0];
+          \foreach \t in {-2,-1.8,...,12}{\draw[green!70!lime!80!black, line width=0.6pt] (\t-3,-4.5) -- (\t+1.5,0);}
+        \end{scope}
+        \begin{scope}
+          \clip (3.45,-2.05) ellipse [x radius=0.4, y radius=0.9];
+          \foreach \t in {-2,-1.8,...,12}{\draw[cyan!70!blue, line width=0.6pt] (\t-3,-4.5) -- (\t+1.5,0);}
+        \end{scope}
+        \draw[orange!85!red] (0.5,-0.4) rectangle (4.5,-3.7);
+      \end{scope}
+      % ---- right square: the two blobs swapped by a homotopy
+      \begin{scope}
+        \clip (8.2,-2.05) circle (0.53);
+        \foreach \t in {4,4.18,...,14}{\draw[green!70!lime!80!black, line width=0.6pt] (\t-3,-4.5) -- (\t+1.5,0);}
+      \end{scope}
+      \begin{scope}
+        \clip (9.85,-2.05) circle (0.5);
+        \foreach \t in {4,4.18,...,14}{\draw[cyan!70!blue, line width=0.6pt] (\t-3,-4.5) -- (\t+1.5,0);}
+      \end{scope}
+      \draw[green!70!lime!80!black] (8.2,-2.05) circle (0.53);
+      \draw[cyan!70!blue] (9.85,-2.05) circle (0.5);
+      \draw[-{Straight Barb[length=5pt,width=8pt]}] (9.7,-1.45) to[out=90,in=20] (8.4,-1.25);
+      \draw[-{Straight Barb[length=5pt,width=8pt]}] (8.4,-2.75) to[out=-90,in=-110] (9.8,-2.8);
+      \draw[orange!85!red] (6.95,-0.4) rectangle (10.9,-3.7);
+    \end{tikzpicture}
     \caption{Proof that $\pi_2$ is abelian by picture}%
     \label{fig:pinab}
 \end{figure}
@@ -825,7 +915,44 @@ Suppose we have integral manifolds $f_1 = c_1, \cdots, f_{n-k} = c_{n-k}$. Then 
 Conversely, suppose that $\mc{V}$ is our field of $k$-planes. Then denote $\Gamma_{\mc{V}}(M)$ to be the set of vector fields tangent to $\mc{V}$. Then we have this following picture:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{frob}
+    \begin{tikzpicture}[x=0.0243cm,y=-0.0243cm,line width=0.6pt,
+      ar/.style={-{Straight Barb[length=4pt,width=6pt]}}]
+      % coordinate neighbourhood
+      \draw[green!70!lime!80!black] (93.5,72.5) ellipse [x radius=73.5, y radius=62.5];
+      % the plane V(x_0) at x_0
+      \coordinate (x0) at (69,81);
+      % corners A, C lie on the straight rays from x_0 to the arrowheads
+      \coordinate (A) at ($(x0)!0.42!(141,34)$);
+      \coordinate (C) at ($(x0)!0.44!(198,63)$);
+      \coordinate (B) at ($(A)+(C)-(x0)$);
+      \draw (x0) -- (A) -- (B) -- (C) -- cycle;
+      \fill (x0) circle (1.6pt);
+      \node[below] at (x0) {$x_0$};
+      \node[anchor=west] at (B) {$V(x_0)$};
+      % coordinate directions spanning V(x_0)
+      \begin{scope}[cyan!70!blue]
+        \draw[ar] (C) -- (198,63);
+        \draw[ar] (A) -- (141,34);
+        \node[font=\small] at (206,80) {$\dfrac{d}{dx_1}$};
+        \node[font=\small] at (160,20) {$\dfrac{d}{dx_k}$};
+      \end{scope}
+      % the plane V(x) at a nearby point x
+      \begin{scope}[orange!85!red]
+        \coordinate (x) at (60,60);
+        \draw (x) -- (76,36) -- (105,24) -- (89,48) -- cycle;
+        \fill (x) circle (1.2pt);
+        \node at (52,70) {$x$};
+        \node[anchor=east] at (69,44) {$V(x)$};
+      \end{scope}
+      \draw[ar, green!70!lime!80!black] (x) -- (83,35);
+      \node[green!70!lime!80!black, font=\footnotesize] at (88,26) {$v(x)$};
+      % projection of v(x) onto V(x_0)
+      \draw[ar, blue!75!black] (86,40) -- (92,71);
+      % explanation
+      \draw[ar, cyan!70!blue] (240,108) to[out=80,in=-10] (224,73);
+      \node[cyan!70!blue, rotate=12, align=left, anchor=west] at (222,124)
+        {first $k$ coordinate\\ \quad directions span $V(x_0)$.};
+    \end{tikzpicture}
     \caption{Projection of tangent planes}%
     \label{fig:frob}
 \end{figure}
@@ -1136,7 +1263,44 @@ Now recall that by the spectral theorem, all unitary matrices can be diagonalize
 This set of diagonal matrices is usually denoted by $T$ and is isomorphic to $U(1)^n$. This is a maximal torus. In general this $S_n$ is replaced by the Weyl group. To draw an explicit picture in the case of $SU(2)$, we have
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{su2conj.png}
+    \begin{tikzpicture}[x=0.01129cm,y=-0.01129cm,line width=0.6pt]
+      \def\cx{472} \def\cy{335}
+      % the group SU(2) = S^3, drawn as a sphere
+      \draw (\cx,\cy) circle [radius=212];
+      % orbit of conjugation (a latitude sphere, drawn as a circle)
+      \begin{scope}[green!70!lime!80!black]
+        \draw[dashed] (\cx-200,257) arc[start angle=180, end angle=360, x radius=200, y radius=42];
+        \draw[postaction={decorate}, decoration={markings,
+          mark=at position 0.9 with {\arrow{Straight Barb[length=4pt,width=6pt]}}}]
+          (\cx-200,257) arc[start angle=180, end angle=0, x radius=200, y radius=42];
+        \node[anchor=west] at (705,225) {conjugation};
+      \end{scope}
+      % the maximal torus: a section of the conjugation action
+      \begin{scope}[orange!85!red]
+        \draw (\cx,\cy-212) arc[start angle=-90, end angle=90, x radius=97, y radius=212];
+        \draw[dashed] (\cx,\cy-212) arc[start angle=-90, end angle=-270, x radius=97, y radius=212];
+        \fill (568,297) circle (2.2pt);
+        \fill (395,215) circle (2.2pt);
+        \node at (440,255) {$\begin{psmallmatrix} z^{-1} & 0 \\ 0 & z \end{psmallmatrix}$};
+        \node at (625,345) {$\begin{psmallmatrix} z & 0 \\ 0 & z^{-1} \end{psmallmatrix}$};
+      \end{scope}
+      % centre of SU(2)
+      \begin{scope}[cyan!70!blue]
+        \fill (\cx,\cy-212) circle (2.2pt);
+        \fill (\cx,\cy+212) circle (2.2pt);
+        \node at (550,75) {$\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$};
+        \node at (510,598) {$\begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix}$};
+      \end{scope}
+      % legend
+      \node[font=\large] at (112,75) {$SU(2) \ni$};
+      \node[orange!85!red] at (275,75) {$\begin{pmatrix} z & 0 \\ 0 & z^{-1} \end{pmatrix}$};
+      \node[orange!85!red] at (80,180) {$\abs{z} = 1.$};
+      % annotation
+      \begin{scope}[violet!80!magenta!70!black]
+        \draw[-{Straight Barb[length=4pt,width=6pt]}] (618,548) to[out=110,in=-40] (566,468);
+        \node[rotate=22, align=left] at (765,568) {`section' of\\ the action by conj};
+      \end{scope}
+    \end{tikzpicture}
     \caption{Conjugation action of $SU(2)$ on itself}%
     \label{fig:su2conj}
 \end{figure}
@@ -1284,7 +1448,29 @@ Then this can actually be computed in terms of the hook lengths, where the hook 
 For fun, we can compute the number of three-dimensional partitions with a given two-dimensional base. These look something like
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{3dpartition}
+    \begin{tikzpicture}[line join=round, thick, scale=1.1]
+      % unit vectors: s = cube side, depth vector (0.4,0.25)
+      \def\s{0.7}
+      % floor: left wall edge, back edge, and the front profile of lambda
+      \draw (0,0) -- (1.2,0.75) -- (5.4,0.75);
+      \draw (0,0) -- (1.4,0) -- (1.8,0.25) -- (3.2,0.25) -- (3.6,0.5) -- (5.0,0.5) -- (5.4,0.75);
+      \node at (3.0,-0.3) {$\lambda$};
+      % the remaining part of the 3d partition (outline)
+      \draw[orange!85!red] (1.2,2.85) -- (1.2,3.35)
+        .. controls (1.2,3.85) and (1.7,3.95) .. (2.1,3.75)
+        .. controls (2.9,3.3) and (3.8,1.9) .. (4.8,1.35)
+        .. controls (5.25,1.1) and (5.3,0.9) .. (5.3,0.75);
+      % cubes (i = depth from front, j = column, k = level), back to front
+      \foreach \i/\j/\k in {2/0/0,2/1/0,2/0/1,2/0/2,1/0/0,1/1/0,1/0/1,0/0/0,0/1/0}{
+        \begin{scope}[shift={({\j*\s+\i*0.4},{\i*0.25+\k*\s})}, draw=orange!85!red, fill=white]
+          \filldraw (0,0) rectangle (\s,\s);                          % front
+          \filldraw (0,\s) -- (\s,\s) -- (\s+0.4,\s+0.25) -- (0.4,\s+0.25) -- cycle; % top
+          \filldraw (\s,0) -- (\s+0.4,0.25) -- (\s+0.4,\s+0.25) -- (\s,\s) -- cycle; % right
+        \end{scope}
+      }
+      \node[orange!85!red, rotate=20] at (-0.35,2.0) {$q^{\#\text{boxes}}$};
+      \node at (4.9,3.75) {contents $=$};
+    \end{tikzpicture}
     \caption{A $3$-dimensional partition}%
     \label{fig:3dpartition}
 \end{figure}
@@ -1467,14 +1653,180 @@ and therefore $T_m^* \text{Leaf} \xrightarrow{\qty{g,-}} T_m \text{Leaf}$ is an 
 Now we will discuss connections to Morse theory. The idea is that a Morse function (function with all critical points nondegenerate) on a compact manifold tells us a lot about the topology of the manifold. Here, a Morse function is precisely a function where $\grad f = 0$ implies $\laplacian f$ is nondegenerate. An example of a Morse function is the height function on a torus:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{morse.png}
+    \begin{tikzpicture}[x=0.705cm, y=0.705cm, thick]
+      % height axis
+      \draw[-{Triangle[open, length=3mm, width=2.2mm]}] (1.0,-8.85) -- (1.0,-1.0);
+      \node at (1.55,-0.75) {$f$};
+      % upright torus
+      \draw plot[domain=0:360, samples=90, smooth cycle] ({5.25+2.45*cos(\x)*(1-0.08*sin(\x))}, {-4.9+3.2*sin(\x)});
+      \draw (4.97,-3.9) .. controls (4.68,-4.5) and (4.75,-5.4) .. (5.15,-5.8);
+      \draw (4.97,-3.9) .. controls (5.3,-4.3) and (5.38,-5.25) .. (5.15,-5.8);
+      \draw (4.97,-3.9) -- (5.15,-3.68);
+      \draw (5.15,-5.8) .. controls (5.3,-5.9) .. (5.5,-5.97);
+      % critical points
+      \fill[orange!85!red] (5.25,-1.7) circle (2.3pt) (5.25,-8.1) circle (2.3pt);
+      \fill[lime!70!green] (4.97,-3.9) circle (2pt) (5.15,-5.8) circle (2pt);
+      % local model at the maximum
+      \begin{scope}[orange!85!red]
+        \draw (8.45,-2.0) .. controls (8.5,-1.45) and (10.1,-1.4) .. (10.15,-2.0);
+        \draw (8.45,-2.0) arc[start angle=180, end angle=360, x radius=0.85, y radius=0.25];
+        \draw[dashed] (8.45,-2.0) arc[start angle=180, end angle=0, x radius=0.85, y radius=0.25];
+      \end{scope}
+      % local model at the saddles: z = x^2 - y^2
+      \begin{scope}[shift={(9.55,-5.4)}, scale=0.95]
+        \def\X#1#2{0.906*(#1)+0.423*(#2)}
+        \def\Y#1#2#3{0.574*(-0.423*(#1)+0.906*(#2))+0.49*(#3)}
+        \begin{scope}[lime!70!green]
+          \draw plot[domain=-1:1, samples=30, smooth] ({\X{\x}{-1}}, {\Y{\x}{-1}{\x*\x-1}});
+          \draw plot[domain=-1:1, samples=30, smooth] ({\X{\x}{1}}, {\Y{\x}{1}{\x*\x-1}});
+          \draw plot[domain=-1:1, samples=30, smooth] ({\X{-1}{\x}}, {\Y{-1}{\x}{1-\x*\x}});
+          \draw plot[domain=-1:1, samples=30, smooth] ({\X{1}{\x}}, {\Y{1}{\x}{1-\x*\x}});
+        \end{scope}
+        \begin{scope}[orange!85!red]
+          \draw plot[domain=-1:1, samples=30, smooth] ({\X{\x}{0}}, {\Y{\x}{0}{\x*\x}});
+          \draw[dashed] plot[domain=-1:1, samples=30, smooth] ({\X{0}{\x}}, {\Y{0}{\x}{-\x*\x}});
+        \end{scope}
+      \end{scope}
+      % local model at the minimum
+      \begin{scope}[orange!85!red]
+        \draw (9.17,-7.62) ellipse [x radius=0.8, y radius=0.18];
+        \draw (8.37,-7.62) .. controls (8.45,-8.2) and (9.9,-8.2) .. (9.97,-7.62);
+      \end{scope}
+      % labels
+      \node[anchor=west] at (11.4,-1.8) {$-x^2-y^2$};
+      \node[anchor=west] at (11.9,-3.85) {$x^2-y^2$};
+      \node[anchor=west] at (11.9,-6.0) {$x^2-y^2$};
+      \node[anchor=west] at (11.9,-7.7) {$x^2+y^2$};
+    \end{tikzpicture}
     \caption{Morse function on a torus.}%
     \label{fig:morse}
 \end{figure}
 Now we can rebuild the manifold by gluing on handles, which are $D^i \times D^{n-i}$, where $n$ is the dimension of the manifold and the attaching map is on the $D^{i}$ part. This allows us to reconstruct the torus as follows:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.4]{morse2.png}
+    \begin{tikzpicture}[x=0.659cm, y=0.659cm, thick,
+        hatch/.style={line width=0.6pt}]
+      % colors
+      \colorlet{mblue}{cyan!65!blue!90!black}
+      \colorlet{msalmon}{orange!70!red!65}
+      \colorlet{mgreen}{lime!75!green!85!black}
+      \colorlet{myellow}{orange!45!yellow}
+      \colorlet{mdot}{orange!85!red}
+      % egg-shaped outline of an upright torus, centred at the origin
+      \def\egg{plot[domain=0:360, samples=90, smooth cycle] ({1.88*cos(\x)*(1-0.06*sin(\x))}, {2.47*sin(\x)})}
+      % hatching lines (spacing #1) to be clipped
+      \def\hatch#1#2{\pgfmathtruncatemacro\hn{14/#1}\foreach \i [evaluate=\i as \t using -11+\i*#1] in {0,...,\hn}{\draw[hatch,#2] (\t,-3) -- ++(8,5.76);}}
+      % the hole and the four critical points
+      \def\hole{%
+        \draw (-0.2,0.8) .. controls (-0.5,0.4) and (-0.45,-0.35) .. (-0.08,-0.67);
+        \draw (-0.2,0.8) .. controls (0.05,0.5) and (0.1,-0.3) .. (-0.08,-0.67);
+        \draw (-0.2,0.8) -- (-0.05,0.97);
+        \draw (-0.08,-0.67) .. controls (0,-0.75) .. (0.15,-0.82);
+        \fill[mgreen] (-0.2,0.8) circle (2.2pt) (-0.08,-0.67) circle (2.2pt);
+        \fill[mdot] (0,2.47) circle (2.4pt) (0,-2.47) circle (2.4pt);}
+
+      % ---------- height axis with nested sublevel sets ----------
+      \draw[-{Triangle[open, length=3mm, width=2.4mm]}] (0.97,-6.55) -- (0.97,-0.45);
+      \draw[myellow] (0.97,-0.97) -- (0.22,-0.97) -- (0.22,-6.3) -- (0.97,-6.3);
+      \draw[mgreen]  (0.97,-2.05) -- (0.5,-2.05) -- (0.5,-6.25) -- (0.97,-6.25);
+      \draw[msalmon] (0.97,-3.72) -- (0.72,-3.72) -- (0.72,-6.2) -- (0.97,-6.2);
+      \draw[mblue, very thick] (0.8,-5.15) -- (0.97,-5.15) (0.88,-5.15) -- (0.88,-6.15);
+
+      % ---------- torus 1: a neighbourhood of the minimum ----------
+      \begin{scope}[shift={(3.35,-3.5)}]
+        \begin{scope}
+          \clip \egg;
+          \clip (-1.42,-1.62) arc[start angle=180, end angle=360, x radius=1.42, y radius=0.3] -- (1.42,-3) -- (-1.42,-3) -- cycle;
+          \hatch{0.1}{mblue}
+        \end{scope}
+        \draw[mblue] (-1.42,-1.62) arc[start angle=180, end angle=360, x radius=1.42, y radius=0.3];
+        \draw[mblue, dashed] (-1.42,-1.62) arc[start angle=180, end angle=0, x radius=1.42, y radius=0.3];
+        \draw \egg;
+        \hole
+        \draw[mgreen, -{Stealth[length=2.2mm]}] (2.0,-1.65) -- (1.55,-2.3);
+        \node[mgreen] at (2.65,-2.6) {$-\mathrm{grad}$};
+        \node[mblue] at (0.35,-3.45) {$\mathrm{pt} = \mathbb{D}^0$};
+      \end{scope}
+
+      % ---------- torus 2: D^0 with a 1-handle attached ----------
+      \begin{scope}[shift={(7.86,-3.5)}]
+        \begin{scope}
+          \clip \egg;
+          \clip (-1.62,-1.25) arc[start angle=180, end angle=360, x radius=1.62, y radius=0.32] -- (1.62,-3) -- (-1.62,-3) -- cycle;
+          \hatch{0.3}{mblue}
+        \end{scope}
+        \draw[mblue] (-1.62,-1.25) arc[start angle=180, end angle=360, x radius=1.62, y radius=0.32];
+        \draw[mblue, dashed] (-1.62,-1.25) arc[start angle=180, end angle=0, x radius=1.62, y radius=0.32];
+        \draw \egg;
+        \hole
+        \draw[msalmon, very thick] (-0.55,-0.95) .. controls (-0.4,-0.72) and (-0.25,-0.62) .. (-0.08,-0.67)
+          .. controls (0.2,-0.8) and (0.33,-1.2) .. (0.35,-1.56);
+        \fill[mgreen] (-0.08,-0.67) circle (2.2pt);
+        \node[mblue] at (1.05,-3.4) {$\mathbb{D}^0 \cup{}$ glue $1$-handle.};
+      \end{scope}
+      % the 1-handle D^1 x D^1, attached along its blue ends
+      \begin{scope}[shift={(7.75,-8.25)}]
+        \begin{scope}
+          \clip (0,0) rectangle (3.5,0.4);
+          \hatch{0.35}{msalmon}
+        \end{scope}
+        \draw[msalmon] (0,0) rectangle (3.5,0.4);
+        \draw[mblue, line width=2pt] (0,-0.02) -- (0,0.42) (3.5,-0.02) -- (3.5,0.42);
+      \end{scope}
+
+      % ---------- torus 3: the second 1-handle ----------
+      \begin{scope}[shift={(12.03,-3.5)}]
+        \begin{scope}
+          \clip \egg;
+          \clip (-2,0) -- (2,0.1) -- (2,-3) -- (-2,-3) -- cycle;
+          \hatch{0.4}{msalmon}
+        \end{scope}
+        \draw \egg;
+        \hole
+        \draw[msalmon] (-1.12,-0.02) ellipse [x radius=0.77, y radius=0.2];
+        \draw[msalmon] (0.89,0.08) ellipse [x radius=0.99, y radius=0.22];
+        \draw[mgreen, line width=2.4pt] (-0.36,0.05) .. controls (-0.4,0.45) and (-0.35,0.6) .. (-0.2,0.8)
+          .. controls (-0.02,0.55) and (0.05,0.35) .. (0.05,0.05);
+        \fill[mgreen] (-0.2,0.8) circle (2.2pt);
+        \node[mgreen] at (1.6,-3.4) {glue $1$-handle};
+      \end{scope}
+      \begin{scope}[shift={(12.3,-8.25)}]
+        \begin{scope}
+          \clip (0,0) rectangle (2.8,0.4);
+          \hatch{0.25}{mgreen}
+        \end{scope}
+        \draw[mgreen] (0,0) rectangle (2.8,0.4);
+        \draw[msalmon, line width=2pt] (0,-0.02) -- (0,0.42) (2.8,-0.02) -- (2.8,0.42);
+      \end{scope}
+
+      % ---------- torus 4: the 2-handle ----------
+      \begin{scope}[shift={(17.22,-3.5)}]
+        \begin{scope}
+          \clip \egg;
+          \clip (-1.42,1.62) arc[start angle=180, end angle=360, x radius=1.42, y radius=0.28] -- (2.2,1.62) -- (2.2,-3) -- (-2.2,-3) -- (-2.2,1.62) -- cycle;
+          \hatch{0.42}{mgreen}
+        \end{scope}
+        \begin{scope}
+          \clip \egg;
+          \clip (-1.42,1.62) arc[start angle=180, end angle=360, x radius=1.42, y radius=0.28] -- (1.42,3) -- (-1.42,3) -- cycle;
+          \hatch{0.35}{myellow}
+        \end{scope}
+        \draw[mgreen] (-1.42,1.62) arc[start angle=180, end angle=360, x radius=1.42, y radius=0.28];
+        \draw[mgreen, dashed] (-1.42,1.62) arc[start angle=180, end angle=0, x radius=1.42, y radius=0.28];
+        \draw \egg;
+        \fill[white] (-0.17,0.08) ellipse [x radius=0.42, y radius=1.0];
+        \hole
+        \node[myellow] at (0.75,-3.4) {glue $2$-handle};
+      \end{scope}
+      % the 2-handle D^2
+      \begin{scope}[shift={(17.98,-7.97)}]
+        \begin{scope}
+          \clip (0,0) circle (0.95);
+          \hatch{0.35}{myellow}
+        \end{scope}
+        \draw[myellow] (0,0) circle (0.95);
+      \end{scope}
+    \end{tikzpicture}
     \caption{Handle decomposition of torus.}%
     \label{fig:morse2}
 \end{figure}
@@ -1556,7 +1908,25 @@ And is equal to the number of hyperplanes separating $x$ from $wx$, which is the
 Now we have a general statement: If $T$ acts by a Hamiltonian action on any symplectic manifold $M$, then the index of any component of the critical locus is even. Geometrically, in the context of Morse theory, something like the below cannot happen:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{hamiltonian.png}
+    \begin{tikzpicture}[x=0.529cm, y=0.529cm, thick, darkgray]
+      % the Hamiltonian as height
+      \draw[-{Triangle[open, length=3.5mm, width=3mm]}] (0.97,-7.35) -- (0.97,-0.65);
+      \draw (0.4,-5.97) -- (1.5,-5.97);
+      \node at (2.1,-1.0) {$H$};
+      \draw[double, double distance=2pt, -{Implies}] (14.4,0.0) -- (13.3,-1.3);
+      % the manifold M
+      \draw plot[smooth cycle, tension=0.6] coordinates {(5.25,-4.3) (5.55,-3.0) (6.6,-1.7) (8.7,-0.9) (10.8,-1.45)
+        (12.3,-3.0) (12.85,-4.8) (12.75,-5.8) (12.2,-6.7) (11.1,-7.1) (10.1,-6.65) (9.55,-5.95) (8.75,-5.45)
+        (8.02,-5.95) (7.6,-6.8) (6.9,-7.1) (6.0,-6.85) (5.5,-5.9)};
+      \node at (8.35,-2.4) {$M$};
+      % a disconnected level set
+      \draw (5.5,-5.8) arc[start angle=180, end angle=360, x radius=1.27, y radius=0.25];
+      \draw[dashed] (5.5,-5.8) arc[start angle=180, end angle=0, x radius=1.27, y radius=0.25];
+      \draw (9.57,-5.75) arc[start angle=180, end angle=360, x radius=1.61, y radius=0.25];
+      \draw[dashed] (9.57,-5.75) arc[start angle=180, end angle=0, x radius=1.61, y radius=0.25];
+      % crossed out
+      \draw[orange!80!red!75] (4.35,-2.95) -- (13.6,-6.9) (7.0,-7.6) -- (14.2,-3.5);
+    \end{tikzpicture}
     \caption{An impossible scenario}%
     \label{fig:hamiltonian}
 \end{figure}
@@ -1565,7 +1935,20 @@ In particular, every level set of $H$ is connected and $M$ is obtained by always
 For instance, if $T$ is the maximal torus in $G$ and $M$ is the (co)adjoint orbit, then this pixks out the diagonal elements of a matrix in $O$. For $G = SU(3)$, the image looks like below:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{su3polytope.png}
+    \begin{tikzpicture}[thick]
+      % hexagon = convex hull of the Weyl orbit of a generic point
+      \def\hex{(10:1.72) -- (50:1.72) -- (130:1.72) -- (170:1.72) -- (250:1.72) -- (290:1.72) -- cycle}
+      \begin{scope}
+        \clip \hex;
+        \foreach \t in {-3.25,-2.75,...,3.25}
+          \draw[orange!80!red!80, line width=0.7pt] ($(0,\t)+(-2,-1.7)$) -- ++(4,3.4);
+      \end{scope}
+      \draw[line join=round] \hex;
+      % walls of the Weyl chambers
+      \draw (90:2.35) -- (270:2.35);
+      \draw (150:2.55) -- (330:2.55);
+      \draw (30:2.55) -- (210:2.55);
+    \end{tikzpicture}
     \caption{Polytope associated to $SU(3)$}%
     \label{fig:su3polytope}
 \end{figure}
@@ -1649,7 +2032,35 @@ and so $h_{\alpha}$ is the unique vector of zero weight. Now we know the represe
 This proves that $\dim \mf{g}_{\alpha} = 1$ and that the $\alpha$ are reduced. Also, we know that in the diagram
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{rootstring}
+    \begin{tikzpicture}[x=0.529cm, y=0.529cm, thick,
+        tip/.style={-{Straight Barb[length=2mm, width=2.4mm]}}]
+      \colorlet{rblue}{cyan!65!blue!90!black}
+      \colorlet{rorange}{orange!85!red}
+      \colorlet{rgreen}{lime!75!green!85!black}
+      % the sl(2)-triple at C h_alpha
+      \draw[rorange, -{Triangle[open, length=2.5mm, width=2.2mm]}] (2.25,-5.7) -- (2.25,-3.65);
+      \node[rorange, anchor=west] at (2.4,-3.75) {$e_{\alpha}$};
+      \draw[tip] (2.25,-5.7) -- (2.25,-7.55);
+      \node[anchor=west] at (2.4,-8.0) {$e_{-\alpha}$};
+      \fill (2.25,-5.7) circle (2.5pt);
+      \node[anchor=east] at (2.05,-5.7) {$\C h_{\alpha}$};
+      % the alpha-string through beta
+      \draw[rblue, tip] (2.25,-5.7) -- (5.95,-2.15);
+      \draw[rblue, tip] (2.25,-5.7) -- (5.95,-9.25);
+      \draw (5.95,-2.1) -- (5.95,-9.4);
+      \foreach \y in {-2.1,-3.85,-5.75,-7.5}
+        \draw[tip] (5.95,\y) -- (5.95,\y-1.35);
+      \foreach \y in {-3.85,-5.75,-7.5}
+        \draw[rgreen, very thick] (5.7,\y) -- (6.2,\y);
+      % raising by e_alpha
+      \draw[rorange, -{Straight Barb[length=1.8mm, width=2.2mm]}] (5.75,-1.95) .. controls (5.2,-1.6) and (5.2,-0.7) .. (5.9,-0.5);
+      \foreach \y in {-2.1,-3.85,-5.75}
+        \draw[rorange, -{Straight Barb[length=1.8mm, width=2.2mm]}] (5.75,\y-1.6) .. controls (5.15,\y-1.3) and (5.15,\y-0.45) .. (5.75,\y-0.25);
+      % labels
+      \node[rblue, anchor=west] at (6.05,-0.45) {$\g_{\beta+\alpha}$};
+      \node[rblue, anchor=west] at (6.2,-2.1) {$\g_{\beta}$};
+      \node[rblue, anchor=west] at (6.3,-4.05) {$\g_{\beta-\alpha}$};
+    \end{tikzpicture}
     \caption{Root String}%
     \label{fig:rootstring}
 \end{figure}
@@ -1659,14 +2070,52 @@ the representation $\bigoplus_n \mf{g}_{\beta + n \alpha}$ is irreducible. These
 Our next goal is to show that $W$ is generated by the $r_{\alpha}$. Before we do this, we will discuss the group generated by reflections. For example, if we consider an equilateral triangle, we can find a discrete group generated by reflections.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{reflection.png}
+    \begin{tikzpicture}[x=1.45cm, y=1.45cm, line width=0.8pt, line cap=round]
+      \def\h{0.866}
+      \begin{scope}[cyan!75!blue]
+        % horizontal walls
+        \draw (-1.15,\h) -- (2.1,\h);
+        \draw (-1.65,0) -- (2.5,0);
+        % ascending walls through (a,0): from row r1 to row r2
+        \foreach \a/\ra/\rb in {0/-1.55/2.0, 1/-1.65/1.6, 2/-1.75/0.8}
+          \draw ({\a+\ra/2},{\ra*\h}) -- ({\a+\rb/2},{\rb*\h});
+        % descending walls through (a,0)
+        \foreach \a/\ra/\rb in {1/-1.3/2.3, 2/-1.1/2.4}
+          \draw ({\a-\ra/2},{\ra*\h}) -- ({\a-\rb/2},{\rb*\h});
+      \end{scope}
+      \node[anchor=north east] at (3.1,2.15) {discrete group};
+    \end{tikzpicture}
     \caption{Reflection hyperplanes}%
     \label{fig:reflection}
 \end{figure}
 We can consider the connected components of the complement, and these are called \textit{polytopes}. These can be studied in $\R^n, S^n, \mathbb{H}^n$, and other spaces. Each of these is a finite intersection of half-spaces and is called a \textit{polyhedron}. Then if $r_1, \ldots, r_n$ are the reflections in the facets of $\Delta$, they generate a group $\Gamma$. Now we can rephrase any word in the generators as a path, so for example, we have
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{reflwords}
+    \begin{tikzpicture}[x=3.25cm, y=3.25cm, every node/.style={font=\large}, line width=0.8pt, line cap=round, line join=round]
+      \def\h{0.866}
+      \begin{scope}[cyan!75!blue]
+        % horizontal walls
+        \draw (-1.1,0) -- (1.5,0);
+        \draw[rounded corners=4pt] (-1.1,\h) -- (1.5,\h) -- (1,0) -- ({1-0.2/2},{-0.2*\h});
+        % ascending walls through (a,0)
+        \foreach \a/\rb in {-1/2.2, 0/1.6}
+          \draw ({\a-0.2/2},{-0.2*\h}) -- ({\a+\rb/2},{\rb*\h});
+        % descending walls through (a,0)
+        \foreach \a/\rb in {1/2.2, 0/1.6}
+          \draw ({\a+0.25/2},{-0.2*\h}) -- ({\a-\rb/2},{\rb*\h});
+      \end{scope}
+      % chambers
+      \node at (0,{4/3*\h}) {$r_1\Delta$};
+      \node at (0,{2/3*\h}) {$\Delta$};
+      \node[below] at (0.05,\h) {$r_1$};
+      \node at (0.36,0.40) {$r_2$};
+      \node[orange!90!red] at (0.5,{1/3*\h}) {$r_2\Delta$};
+      \node[orange!90!red, anchor=west] at (0.8,{0.36}) {$r_2r_1r_2$};
+      \node (rr) at (1,{2/3*\h}) {$r_2r_1\Delta$};
+      \node[orange!90!red, anchor=west] at ([xshift=4pt]rr.east) {$=\ r_2r_1r_2\,r_2\Delta$};
+      % path
+      \draw[lime!70!green!80!black, -{Stealth[length=6pt]}] (0.17,0.61) .. controls (0.45,0.58) and (0.58,0.66) .. (0.7,0.77);
+    \end{tikzpicture}
     \caption{Words in the generators}%
     \label{fig:reflwords}
 \end{figure}
@@ -1704,7 +2153,42 @@ Recall that if $\Gamma$ is a discrete group generated by reflections, a \textit{
 Last time, we proved that the $r_i$ generate $\Gamma$, Next, by the following picture, we see that words in generators correspond to paths in the set of chambers:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{words}
+    \begin{tikzpicture}[line width=0.8pt, line cap=round, line join=round]
+      \colorlet{outer}{cyan!75!blue}
+      \colorlet{inner}{blue!55!cyan!70!black}
+      \colorlet{org}{orange!90!red}
+      \colorlet{grn}{lime!70!green!80!black}
+      % left: Delta and its neighbours
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (1.8,0);
+      \coordinate (C) at (0.9,1.56);
+      \coordinate (D) at (-0.9,1.56);
+      \coordinate (E) at (2.7,1.56);
+      \draw[outer] (A) -- (D) -- (E) -- (B);
+      \draw[inner] (A) -- (B) -- (C) -- cycle;
+      \node[outer] at (0,1.04) {$r_1\Delta$};
+      \node[outer] at (1.8,1.04) {$r_2\Delta$};
+      \node[grn] at (0.9,0.52) {$\Delta$};
+      % right: sigma applied
+      \begin{scope}[shift={(8.95,0)}]
+        \def\R{0.95}
+        \coordinate (P) at (115:\R);
+        \coordinate (Q) at (235:\R);
+        \coordinate (S) at (-5:\R);
+        \coordinate (P1) at ($(P)!2!($(Q)!0.5!(S)$)$); % reflection of P across QS
+        \coordinate (Q1) at ($(Q)!2!($(P)!0.5!(S)$)$); % reflection of Q across PS
+        \draw[outer] (P) -- (Q1) -- (P1) -- (Q);
+        \draw[inner] (P) -- (Q) -- (S) -- cycle;
+        \node[org] at ($1/3*(P)+1/3*(S)+1/3*(Q1)$) {$\sigma r_1\Delta$};
+        \node[org] at ($1/3*(Q)+1/3*(S)+1/3*(P1)$) {$\sigma r_2\Delta$};
+        \node[grn] at (0,0) {$\sigma\Delta$};
+      \end{scope}
+      % the map sigma
+      \draw[org, -{Stealth[length=6pt]}] (1.05,0.37) .. controls (3,1.2) and (6,0.9) .. (7.95,0.2)
+        node[pos=0.5, above=3pt] {$\sigma$};
+      % caption
+      \node[anchor=base west] at (-1.25,-1.5) {words in generators $\Longrightarrow$ paths in the set of chambers};
+    \end{tikzpicture}
     \caption{Words.}%
     \label{fig:words}
 \end{figure}
@@ -1729,7 +2213,55 @@ Last time, we proved that the $r_i$ generate $\Gamma$, Next, by the following pi
     For example, consider the triangle generated by three perpendicular great circles on the sphere. Each angle is $\frac{\pi}{2}$. In $\R^2$, we can consider the tiling of the plane by usual equilateral triangles, and in the hyperbolic plane, the fundamental domain of the $SL(2, \Z)$ action gives us a $(2,3,\infty)$ triangle.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\linewidth]{triangles.png}
+        \begin{tikzpicture}[line width=0.7pt, line cap=round, line join=round]
+          \colorlet{org}{orange!90!red}
+          \colorlet{dblue}{blue!55!cyan!70!black}
+          % ---- sphere: octant triangle (angles pi/2, pi/2, pi/2)
+          \begin{scope}[shift={(1.71,-1.85)}]
+            \draw[gray, line width=0.6pt] (0,0) circle (1.25);
+            \begin{scope}[dblue]
+              \draw plot[smooth, tension=0.7] coordinates {(0.11,1.31) (-0.05,1.2) (-0.36,0.5) (-0.51,-0.17) (-0.46,-0.51)};
+              \draw plot[smooth, tension=0.7] coordinates {(-0.25,1.33) (-0.05,1.2) (0.74,0.72) (1.2,0) (1.22,-0.25)};
+              \draw plot[smooth, tension=0.7] coordinates {(-0.8,-0.15) (-0.51,-0.17) (0,-0.145) (0.69,-0.07) (1.2,0) (1.26,0.05)};
+            \end{scope}
+            \draw[org] (-0.51,-0.17) ++(4:0.17) arc[start angle=4, end angle=84, radius=0.17];
+            \node[org] at (-0.15,0.1) {$\frac{\pi}{2}$};
+            \node[anchor=base] at (-0.4,-1.82) {$\color{org}\frac12+\frac12+\frac12$ $>1$.};
+          \end{scope}
+          % ---- Euclidean plane: equilateral tiling (angles pi/3)
+          \begin{scope}[shift={(5.09,-1.51)}, x=0.78cm, y=0.78cm, dblue]
+            \def\h{0.866}
+            \draw (-2.2,\h) -- (1.94,\h);
+            \draw (-1.87,0) -- (2.26,0);
+            \draw (-1.87,-\h) -- (2.41,-\h);
+            % descending lines
+            \draw (-2,{2*\h}) -- (0,{-2*\h});
+            \draw (-1,{2*\h}) -- (1,{-2*\h});
+            \draw (0,{2*\h}) -- (1.7,{-1.4*\h});
+            % ascending lines
+            \draw (0,{2*\h}) -- (-1.5,{-\h});
+            \draw (1,{2*\h}) -- (-1,{-2*\h});
+            \draw (1.7,{1.4*\h}) -- (0,{-2*\h});
+          \end{scope}
+          \node[org, anchor=base] at (5.74,-3.42) {$\frac13+\frac13+\frac13=1$.};
+          % ---- hyperbolic plane: (2,3,infinity) triangle
+          \begin{scope}[shift={(10.18,-3.13)}, x=0.945cm, y=0.945cm]
+            \begin{scope}
+              \clip (0,1) -- (0,2.75) -- (0.5,2.75) -- (0.5,0.866) arc[start angle=60, end angle=90, radius=1] -- cycle;
+              \foreach \t in {-0.3,-0.05,...,2.7}
+                \draw[org, line width=0.6pt] (0.08,\t) -- (0.42,{\t+0.55});
+            \end{scope}
+            \draw (-1.3,0) -- (1.8,0);
+            \draw (1,0) arc[start angle=0, end angle=180, radius=1];
+            \draw (0,1) -- (0,2.85);
+            \draw (0.5,0.866) -- (0.5,2.85);
+            \draw (0,-0.05) -- (0,0.05);
+            \node[org, left] at (-0.02,1.2) {$\frac12$};
+            \node[org, right] at (0.55,0.9) {$\frac13$};
+            \node[org, right] at (0.55,2.75) {$\frac1\infty$};
+            \node[org, anchor=base] at (0.55,-0.6) {$\frac12+\frac13<1$.};
+          \end{scope}
+        \end{tikzpicture}
         \caption{Triangles}%
         \label{fig:triangles}
     \end{figure}
@@ -1805,7 +2337,42 @@ For general algebraic varieties $X$, we can consider the canonical divisor $K_X$
     In the toric picture, blowup and blow down are represented by the following:
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.8]{Toric}
+        \begin{tikzpicture}[line width=0.9pt, line cap=round]
+          \colorlet{tblue}{cyan!75!blue}
+          \colorlet{torg}{orange!90!red}
+          \colorlet{tpur}{purple!60!violet}
+          \colorlet{tgrn}{lime!70!green!80!black}
+          \def\s{1.35}
+          % P^1 x P^1
+          \begin{scope}[shift={(0.78,-2.12)}]
+            \draw[torg] (-0.05,\s) -- (\s,\s) -- (\s,0);
+            \draw[tpur] (-0.12,0) -- (\s+0.18,0);
+            \draw[tblue] (0,-0.15) -- (0,\s+0.15);
+            \node[anchor=north east, inner sep=1pt] at (0,-0.02) {$x_0$};
+            \node[torg] at (0.8,-0.75) {$\P^1\times\P^1$};
+          \end{scope}
+          \draw[-{Stealth[length=6pt]}] (2.75,-1.5) to[out=25, in=180] node[pos=0.55, above=7pt] {blow up $x_0$} (4.25,-1.28);
+          % blowup of x_0
+          \begin{scope}[shift={(5.55,-1.83)}]
+            \def\c{0.42}
+            \draw[torg] (-0.05,\s) -- (\s+0.1,\s);
+            \draw[torg] (\s,\s+0.18) -- (\s,-0.18);
+            \draw[tpur] (\c-0.08,0) -- (\s+0.25,0);
+            \draw[tblue] (0,\c-0.08) -- (0,\s+0.1);
+            \draw[tgrn] (-0.1,\c+0.1) -- (\c+0.08,-0.08);
+          \end{scope}
+          \draw[-{Stealth[length=6pt]}] (7.62,-1.1) to[out=15, in=180]
+            node[pos=0.5, above=9pt] (bd) {blow down} (9.08,-1.0);
+          \draw[tblue] ([xshift=8pt]bd.east) ++(0,-0.15) -- ++(0,0.32);
+          \draw[tpur] ([xshift=16pt]bd.east) -- ++(0.55,0);
+          % P^2
+          \begin{scope}[shift={(13.35,-0.35)}]
+            \draw[torg] (-1.2,0) -- (0.3,0);
+            \draw[torg] (0,0.3) -- (0,-1.5);
+            \draw[tgrn] (-1.2,0.2) -- (0.35,-1.35);
+            \node at (-1.0,-1.8) {$\P^2$};
+          \end{scope}
+        \end{tikzpicture}
         \caption{Toric blowup and blowdown}%
         \label{fig:Toric}
     \end{figure}

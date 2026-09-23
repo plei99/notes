@@ -13,6 +13,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta,patterns,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,shapes.geometric}
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{braket} 
@@ -308,7 +309,50 @@ Another type of surgery is a flip, which changes a locus of codimension at least
 Then $X$ is (locally) a cone over $\P^1 \times \P^1$, so $K_X$ is not $\Q$-Cartier. Therefore, we can blow up the vertex, and the exceptional divisor is $E \simeq \P^1 \times \P^1$. Now the $\P^1 \times \P^1$ can be collapsed onto each of the two factors, so we obtain a birational map $\pi \colon X_1 \dashrightarrow X_1^+$. Here, if $C,C^+$ are the resulting curves, we have $K_{X_1}.C < 0$ and $K_{X_1^+}.C^+ > 0$.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{flip}
+    \begin{tikzpicture}[x=0.0252cm,y=-0.0252cm,line cap=round,line join=round,
+      every node/.style={font=\small}, ar/.style={-{Stealth[length=5pt]}}]
+      % ---- top: blow-up with exceptional divisor E = P^1 x P^1
+      \draw (184,16) -- (282,15);
+      \draw (176,81) -- (287,78);
+      \draw (184,16) -- (163,44) -- (176,81) -- (197,58) -- cycle;
+      \draw (237,16) -- (218,42) -- (230,78) -- (255,55) -- cycle;
+      \node at (236,3) {$E \simeq \P^1 \times \P^1$};
+      % ---- left: X_1 with the curve C
+      \node at (35,34) {$K_{X_1}.C < 0$};
+      \node at (36,68) {$X_1$};
+      \draw (39,81) -- (17,104) -- (18,147) -- (89,145);
+      \draw (39,81) -- (43,125) -- (18,147);
+      \draw (43,125) -- (89,145);
+      \draw (39,81) -- (85,112);
+      \draw[dashed] (17,104) -- (85,112);
+      \draw[red, very thick] (85,112) -- (89,145);
+      \node at (98,127) {$C$};
+      % ---- right: X_1^+ with the curve C^+
+      \node at (436,25) {$K_{X_1^+}.C^+ > 0$};
+      \node at (453,64) {$X_1^+$};
+      \draw (395,91) .. controls (420,82) and (440,78) .. (456,77) -- (455,113) -- (423,137) -- (362,122);
+      \draw (395,91) -- (424,102) -- (455,113);
+      \draw (424,102) -- (456,77);
+      \draw (424,102) -- (423,137);
+      \draw[dashed] (362,122) -- (424,102);
+      \draw[red, very thick] (362,122) -- (395,91);
+      \node at (377,94) {$C^+$};
+      % ---- bottom: the (double) cone X
+      \draw (182,154) -- (162,175) -- (169,204) -- (188,189) -- cycle;
+      \draw (182,154) -- (235,181) .. controls (245,185) and (250,189) .. (256,196);
+      \draw (169,204) -- (235,181) -- (288,166);
+      \fill (235,181) circle (1.8);
+      \node[anchor=west] at (298,193) {$K_X$ is not $\Q$-Cartier};
+      % ---- arrows
+      \draw[ar] (153,68) -- (118,97);
+      \draw[ar] (318,60) -- (345,86);
+      \draw[ar] (118,137) -- (148,162);
+      \draw[ar] (333,135) -- (298,159);
+      \draw[ar, dashed] (160,121) -- (304,123);
+      \draw[ar] (235,124) -- (235,166);
+      \node[cyan] at (237,98) {\textit{flip}};
+      \node at (262,112) {$\pi$ \ bir.\ map};
+    \end{tikzpicture}
     \caption{A Flip}%
     \label{fig:flip}
 \end{figure}
@@ -366,7 +410,66 @@ Therefore, the goal of the MMP is achieved if we can solve the conjectures of ex
 Here is an intuitive image of the bend-and-break process:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{bendbreak}
+    \begin{tikzpicture}[x=0.0186cm,y=-0.0186cm,line cap=round,line join=round,
+      every node/.style={font=\small}, ar/.style={-{Stealth[length=5pt]}}]
+      % ---------------- S (normalized graph)
+      \draw (240,24) .. controls (270,18) and (320,40) .. (352,50)
+            .. controls (330,75) and (305,105) .. (299,137)
+            .. controls (265,110) and (235,95) .. (202,85)
+            .. controls (220,65) and (235,45) .. (240,24);
+      \node at (295,12) {$S$};
+      % exceptional curves
+      \draw (251,33) .. controls (262,40) and (266,52) .. (266,65);
+      \draw (256,54) .. controls (268,52) and (280,56) .. (283,66);
+      \draw (281,66) .. controls (284,58) and (292,57) .. (295,66);
+      \draw (288,60) .. controls (298,56) and (312,55) .. (322,57);
+      \node[blue] at (331,58) {$E$};
+      % red curves
+      \draw[red] (241,44) -- (267,32);
+      \draw[red] (239,76) .. controls (255,90) and (272,103) .. (290,116);
+      \draw[red] (243,70) .. controls (260,82) and (276,95) .. (294,107);
+      \draw[red] (248,71) .. controls (265,79) and (282,87) .. (299,96);
+      % ---------------- C x D
+      \draw (129,153) .. controls (160,151) and (200,153) .. (230,154);
+      \draw (230,158) .. controls (224,185) and (221,210) .. (220,236);
+      \draw (125,238) .. controls (160,236) and (190,237) .. (218,237);
+      \draw (129,153) .. controls (131,180) and (132,210) .. (130,236);
+      \foreach \x/\b in {148/1,157/-1,170/1,188/-1,200/1,212/-1}
+        \draw[red] (\x,160) .. controls (\x-\b*1,185) and (\x+\b*1,210) .. (\x-3,232);
+      \fill[red] (164,152) circle (2.6);
+      \node at (80,192) {$C \times D$};
+      % projection to D
+      \draw[ar] (177,247) -- (177,273);
+      \draw (138,300) .. controls (165,292) and (200,291) .. (225,294);
+      \node at (240,296) {$D$};
+      % ---------------- X
+      \draw (383,87) .. controls (400,72) and (410,68) .. (425,70)
+            .. controls (445,72) and (465,85) .. (485,83)
+            .. controls (510,80) and (535,75) .. (548,70)
+            .. controls (530,110) and (518,150) .. (522,180)
+            .. controls (525,200) and (535,212) .. (542,223)
+            .. controls (515,235) and (480,245) .. (450,245)
+            .. controls (410,245) and (390,225) .. (363,227)
+            .. controls (372,180) and (378,130) .. (383,87);
+      \node at (565,70) {$X$};
+      % rational curves Z through x (blue) and deformed curves (red)
+      \coordinate (x) at (442,142);
+      \draw[blue] (408,125) .. controls (422,130) and (435,136) .. (x) .. controls (446,146) and (450,150) .. (453,153);
+      \draw[blue] (422,149) .. controls (428,144) and (435,142) .. (x) .. controls (458,134) and (472,130) .. (487,127);
+      \draw[blue] (430,153) .. controls (434,149) and (438,145) .. (x) .. controls (452,141) and (465,140) .. (477,141);
+      \node[blue] at (499,120) {$Z$};
+      \foreach \e/\c in {{(405,190)}/{(430,158) and (415,175)}, {(425,205)}/{(436,165) and (428,188)},
+                         {(441,212)}/{(446,168) and (444,195)}, {(457,211)}/{(456,162) and (466,195)},
+                         {(472,206)}/{(466,156) and (486,192)}}
+        \draw[red] (x) .. controls \c .. \e;
+      \fill[purple] (x) circle (2.2);
+      \node at (460,150) {$x$};
+      \node[anchor=east] at (620,20) {$x \in Z \cup {g_1}_* C'$};
+      % ---------------- maps
+      \draw[ar] (196,118) .. controls (188,124) and (183,130) .. (180,140);
+      \draw[ar] (331,100) -- (366,129);
+      \draw[ar, dashed] (285,188) -- (345,188);
+    \end{tikzpicture}
     \caption{Bend and Break}%
     \label{fig:bendbreak}
 \end{figure}
@@ -1036,7 +1139,84 @@ The idea of the proof is to study the dual graph of the resolution and use the W
 The geography of singularity types with implications looks like this:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{sing}
+    \begin{tikzpicture}[x=0.0102cm,y=-0.0102cm,line cap=round,line join=round,
+      every node/.style={font=\footnotesize},
+      imp/.style={double, double distance=1.6pt, -{Implies}},
+      hl/.style={fill=yellow!60, rounded corners=5pt, inner sep=2.5pt},
+      sm/.style={font=\scriptsize},
+      ar/.style={-{Stealth[length=5pt]}}]
+      % ---------------- regions
+      % singularities of the MMP (red)
+      \draw[red!70, thick] plot[smooth cycle, tension=0.6] coordinates
+        {(145,183) (210,145) (400,133) (600,130) (800,138) (895,158) (918,190)
+         (890,215) (750,225) (550,222) (300,215) (175,208)};
+      % singularities with good dualizing complex (dark green)
+      \draw[green!50!black, thick] plot[smooth cycle, tension=0.55] coordinates
+        {(40,300) (70,258) (120,244) (175,255) (210,295) (300,357) (450,410)
+         (540,455) (555,512) (530,555) (450,574) (350,572) (240,586) (140,580)
+         (65,535) (38,450)};
+      % singularities related to derived AG (light green)
+      \draw[lime!60!green!85!black, thick] plot[smooth cycle, tension=0.7] coordinates
+        {(405,345) (470,295) (630,262) (790,266) (900,290) (962,335)
+         (935,385) (753,410) (560,412) (440,390)};
+      % less rigid (purple)
+      \draw[violet, thick] plot[smooth cycle, tension=0.55] coordinates
+        {(578,130) (615,132) (632,165) (640,220) (665,258) (703,267) (745,243)
+         (778,205) (813,165) (850,144) (880,146) (894,168) (882,203) (858,232)
+         (846,262) (870,292) (928,298) (953,325) (945,358) (903,390) (803,412)
+         (678,437) (590,470) (550,512) (450,587) (350,597) (290,567) (272,520)
+         (290,465) (330,410) (380,345) (427,285) (470,225) (505,180) (540,148)};
+      % ---------------- labels of regions
+      \node[green!50!black, rotate=18, align=center, font=\scriptsize, inner sep=0pt]
+        at (148,92) {sing with\\good dualizing\\complex};
+      \draw[green!50!black, ar] (87,222) .. controls (84,180) and (85,145) .. (95,122);
+      \node[red, anchor=west] at (905,97) {sing of the MMP.};
+      \draw[red, ar] (830,138) .. controls (840,112) and (860,100) .. (885,100);
+      \draw[lime!60!green!85!black, ar] (753,410) -- (755,455);
+      \node[lime!60!green!85!black, align=left, anchor=north west, font=\scriptsize] at (738,468)
+        {sing related to\\ \ \ derived AG.};
+      \draw[violet, ar] (585,478) .. controls (588,510) and (605,540) .. (670,566);
+      \node[violet, anchor=west] at (695,572) {less rigid.};
+      % ---------------- top: symplectic, orbifolds = quotients
+      \node[hl] (sym) at (420,58) {symplectic};
+      \node (quo) at (580,58) {quotients};
+      \node at (580,2) {orbifolds};
+      \node at (580,30) {$\|$};
+      % ---------------- main chain
+      \node (ter) at (220,185) {Terminal};
+      \node (can) at (415,185) {Canonical};
+      \node (klt) at (575,185) {klt};
+      \node (dlt) at (727,185) {dlt};
+      \node (lc)  at (862,185) {lc};
+      \draw[imp] (ter) -- (can);
+      \draw[imp] (can) -- (klt);
+      \draw[imp] (klt) -- (dlt);
+      \draw[imp] (dlt) -- (lc);
+      \draw[imp, blue] (422,80) -- (422,153);
+      \draw[imp, blue] (575,80) -- (575,156);
+      % ---------------- rational / Du Bois / CM
+      \node[hl] (rat) at (500,355) {rational};
+      \node[hl] (db)  at (868,337) {Du Bois};
+      \node[hl] (cm)  at (400,508) {Cohen--Macaulay};
+      \draw[blue, double, double distance=1.6pt] (419,222) -- (458,322);
+      \node[sm, anchor=west] at (450,265) {$+$ Gorenstein};
+      \draw[imp, blue] (695,213) -- (574,318);
+      \draw[imp, blue] (450,398) -- (405,448);
+      \draw[imp, red] (605,352) -- (800,342);
+      \node[sm] at (720,310) {Kov\'acs 1999};
+      \draw[imp, red] (855,225) -- (855,285);
+      \node[sm, anchor=west] at (866,252) {Koll\'ar--Kov\'acs 2010};
+      \draw[imp, red] (940,331) .. controls (1030,318) and (1100,295) .. (1100,258)
+         .. controls (1100,218) and (1000,200) .. (903,190);
+      \node[sm] at (1090,188) {$+$ Gorenstein};
+      % ---------------- hypersurface chain
+      \node[anchor=west] (hyp) at (52,290) {Hypersurface};
+      \node[anchor=west] (ci) at (46,388) {Complete intersections};
+      \node[anchor=west] (gor) at (52,488) {Gorenstein};
+      \draw[imp] (112,318) -- (112,362);
+      \draw[imp] (104,412) -- (104,462);
+      \draw[imp, blue] (200,492) -- (283,504);
+    \end{tikzpicture}
     \caption{Map of singularities}%
     \label{fig:sing}
 \end{figure}
