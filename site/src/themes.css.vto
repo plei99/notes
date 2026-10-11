@@ -1,0 +1,32 @@
+---
+url: /themes.css
+layout: ~
+---
+{{# Generated from src/_data/themes.yaml: one block per theme, selected by
+    data-theme on <html>. The defaults also apply with no data-theme: the light
+    one always, the dark one when the system is set to dark. #}}
+{{ set all = themes.flatMap((family) => family.themes) }}
+{{ set defaults = [all.find((t) => !t.dark), all.find((t) => t.dark)] }}
+{{ function block(t, indent) }}
+{{ indent }}color-scheme: {{ t.dark ? "dark" : "light" }};
+{{ for role of ["paper", "text", "muted", "ink", "link", "rule"] }}
+{{ indent }}--{{ role }}: {{ t[role] }};
+{{ /for }}
+{{ indent }}--stage: {{ t.stage || "color-mix(in srgb, var(--paper) 92%, var(--text))" }};
+{{ indent }}--shadow: {{ t.dark ? "rgb(0 0 0 / 0.6)" : "rgb(17 17 17 / 0.35)" }};
+{{ /function }}
+:root {
+{{ block(defaults[0], "  ") }}
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+{{ block(defaults[1], "    ") }}
+  }
+}
+{{ for t of all }}{{ if t !== defaults[0] }}
+
+:root[data-theme="{{ t.id }}"] {
+{{ block(t, "  ") }}
+}
+{{ /if }}{{ /for }}

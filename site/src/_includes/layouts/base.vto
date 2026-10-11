@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}{{ if title !== site.title }} · {{ site.title }}{{ /if }} · {{ site.name }}</title>
+<meta name="description" content="{{ description || site.lede }}">
+<link rel="canonical" href="{{ url |> url(true) }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description || site.lede }}">
+<meta property="og:url" content="{{ url |> url(true) }}">
+<meta name="color-scheme" content="light dark">
+{{# The homepage's theme machinery, unchanged (its base.vto): each theme with
+    its brightness and its counterpart of the other brightness. #}}
+{{ set allThemes = themes.flatMap((family) => family.themes) }}
+{{ set themePairs = Object.fromEntries(themes.flatMap((family) => family.themes.map((t) => {
+  const same = family.themes.filter((o) => o.dark === t.dark);
+  const other = family.themes.filter((o) => o.dark !== t.dark);
+  const pair = other[Math.min(same.indexOf(t), other.length - 1)] ||
+    allThemes.find((o) => o.dark !== t.dark);
+  return [t.id, [t.dark ? 1 : 0, pair.id]];
+}))) }}
+<script>
+  // Apply saved preferences before first paint. They are the homepage's: the
+  // same localStorage keys and Path=/ cookies on the same origin, so a theme or
+  // font chosen there shows here, and the other way round (js/theme.js).
+  (function () {
+    function pref(key) {
+      try {
+        var v = localStorage.getItem(key);
+        if (v) return v;
+      } catch (_) {}
+      var m = document.cookie.match(new RegExp("(?:^|; )" + key + "=([^;]*)"));
+      return m ? decodeURIComponent(m[1]) : "";
+    }
+    var root = document.documentElement;
+    var keys = ["latin", "cjk"];
+    for (var i = 0; i < keys.length; i++) {
+      var v = pref(keys[i]);
+      if (v) root.dataset[keys[i]] = v;
+    }
+    var pairs = {{ JSON.stringify(themePairs) }};
+    var system = matchMedia("(prefers-color-scheme: dark)");
+    window.applyTheme = function () {
+      var theme = pref("theme");
+      var now = system.matches ? "dark" : "light";
+      var pair = pairs[theme];
+      if (pair && (pref("theme-system") || now) !== now &&
+          !!pair[0] !== system.matches) {
+        theme = pair[1];
+      }
+      if (theme) root.dataset.theme = theme;
+      else delete root.dataset.theme;
+    };
+    window.applyTheme();
+  })();
+</script>
+{{# Fonts are the homepage's own files, so they stay in step with its picker
+    and, on the shared origin, come from the same browser cache. #}}
+<link rel="preload" href="{{ site.homepage }}fonts/tex-gyre-pagella-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ site.homepage }}fonts/fonts.css">
+<link rel="stylesheet" href="{{ "/themes.css" |> url }}?v={{ rev }}">
+<link rel="stylesheet" href="{{ "/styles.css" |> url }}?v={{ rev }}">
+<script type="module" src="{{ "/js/theme.js" |> url }}?v={{ rev }}"></script>
+<script type="module" src="{{ kind === "note" ? "/js/note.js" : "/js/filter.js" |> url }}?v={{ rev }}"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="page">
+  <header class="masthead">
+    <p class="name"><a href="{{ site.homepage }}">{{ site.name }}</a></p>
+    <div class="controls">
+      <label class="scheme" hidden>
+        <span class="visually-hidden">Theme</span>
+        <select data-default-light="{{ allThemes.find((t) => !t.dark).id }}" data-default-dark="{{ allThemes.find((t) => t.dark).id }}">
+          {{ for family of themes }}
+          {{ if family.themes.length > 1 }}
+          <optgroup label="{{ family.family }}">
+            {{ for theme of family.themes }}
+            <option value="{{ theme.id }}">{{ theme.name }}</option>
+            {{ /for }}
+          </optgroup>
+          {{ else }}
+          <option value="{{ family.themes[0].id }}">{{ family.themes[0].name }}</option>
+          {{ /if }}
+          {{ /for }}
+        </select>
+      </label>
+      <label class="latin" hidden>
+        <span class="visually-hidden">Font</span>
+        <select>
+          {{ for group of site.latin_fonts }}
+          <optgroup label="{{ group.group }}"{{ if group.sans }} data-sans{{ /if }}>
+            {{ for font of group.fonts }}
+            <option value="{{ font.id }}">{{ font.name }}</option>
+            {{ /for }}
+          </optgroup>
+          {{ /for }}
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    {{ content }}
+  </main>
+
+  <footer class="colophon">
+    <p>
+      <a href="{{ "/" |> url }}">All notes</a>
+      <a href="{{ site.homepage }}">Homepage</a>
+    </p>
+    <p>
+      © 2026 {{ site.name }}
+      <a href="{{ site.repo }}">Source</a>
+    </p>
+  </footer>
+</div>
+</body>
+</html>

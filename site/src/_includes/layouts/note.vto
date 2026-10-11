@@ -1,0 +1,41 @@
+---
+layout: layouts/base.vto
+---
+{{ set n = note }}
+{{ set typeInfo = site.types[n.type] || { phrase: "Notes on", credit: "By" } }}
+{{ set parent = n.parent && notes.find((p) => p.slug === n.parent) }}
+{{ set original = n.translation_of && notes.find((p) => p.slug === n.translation_of) }}
+{{ set translations = notes.filter((t) => t.translation_of === n.slug) }}
+{{ set pdf = n.source |> pdf }}
+<article class="note"{{ if n.lang }} lang="{{ n.lang === "zh" ? "zh-CN" : n.lang }}"{{ /if }}>
+  <header class="note-head">
+    <p class="crumbs" lang="en">
+      <a href="{{ "/" |> url }}">All notes</a>
+      {{ if parent }}<span aria-hidden="true">/</span> <a href="{{ `/${parent.slug}/` |> url }}">{{ parent.title }}</a>{{ /if }}
+    </p>
+    <h1>{{ n.title }}</h1>
+    <p class="note-meta" lang="en">
+      {{ if n.lecturers && n.lecturers.length }}{{ typeInfo.credit }} {{ n.lecturers |> conjoin }}, {{ /if }}{{ n.place }}, {{ n.date }}.
+      {{ if original }}Translated by {{ n.translator }} from <a href="{{ `/${original.slug}/` |> url }}">the English notes</a>.{{ /if }}
+    </p>
+    <p class="note-links" lang="en">
+      {{ if pdf }}<a href="{{ pdf }}">PDF</a>{{ /if }}
+      <a href="{{ site.repo }}/blob/main/{{ n.source }}">TeX source</a>
+      {{ for t of translations }}<a href="{{ `/${t.slug}/` |> url }}" hreflang="zh-Hans">中文 ({{ t.translator }})</a>{{ /for }}
+    </p>
+  </header>
+
+  <div class="note-grid">
+    {{ if toc }}
+    <nav class="toc" aria-label="Contents">
+      <details open>
+        <summary>Contents</summary>
+        {{ toc }}
+      </details>
+    </nav>
+    {{ /if }}
+    <div class="note-body">
+      {{ content }}
+    </div>
+  </div>
+</article>
