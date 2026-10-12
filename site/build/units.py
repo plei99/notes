@@ -201,16 +201,18 @@ def standalone(s: str, start: int, end: int) -> bool:
     return before in ("", "\\centering", "\\[") and after in ("", "\\]", "\\\\")
 
 
+TRIGGER = re.compile(
+    r"\\begin\{(" + "|".join(DIAGRAM_ENVS) + r")\}|\\(" + "|".join(DIAGRAM_COMMANDS) + r")(?![A-Za-z@])"
+)
+
+
 def find_units(src: str) -> list[Span]:
     """Diagram units of a document body, in source order, non-overlapping."""
     s = mask_comments(src)
     maths = math_spans(s)
     moving = moving_argument_spans(s)
     candidates: list[Span] = []
-    trigger = re.compile(
-        r"\\begin\{(" + "|".join(DIAGRAM_ENVS) + r")\}|\\(" + "|".join(DIAGRAM_COMMANDS) + r")(?![A-Za-z@])"
-    )
-    for m in trigger.finditer(s):
+    for m in TRIGGER.finditer(s):
         if m.group(1):
             start, end = m.start(), env_end(s, m.group(1), m.start())
         else:
@@ -229,6 +231,21 @@ def find_units(src: str) -> list[Span]:
             continue
         units.append(sp)
     return units
+
+
+def inline_diagram_macros(preamble: str, body: str) -> str:
+    """Expand, in the body, argument-free preamble macros holding a diagram (a
+    custom title page, say): only the body is searched for units."""
+    pre = mask_comments(preamble)
+    for m in re.finditer(r"\\(?:re)?newcommand\*?\s*(?:\{\\([A-Za-z@]+)\}|\\([A-Za-z@]+))\s*", pre):
+        start = m.end()
+        if start >= len(pre) or pre[start] != "{":  # takes arguments
+            continue
+        definition = preamble[start + 1 : group_end(pre, start) - 1]
+        if TRIGGER.search(mask_comments(definition)):
+            name = m.group(1) or m.group(2)
+            body = re.sub(r"\\" + name + r"(?![A-Za-z@])", lambda _: definition, body)
+    return body
 
 
 PLACEHOLDER_DEF = r"""
@@ -250,6 +267,7 @@ def rewrite(src: str) -> tuple[str, str, list[Span]]:
     if begin < 0:
         raise ValueError("no \\begin{document}")
     preamble, body = src[:begin], src[begin:]
+    body = inline_diagram_macros(preamble, body)
     units = find_units(body)
 
     web, diag, last = [], [], 0
