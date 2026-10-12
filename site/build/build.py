@@ -324,6 +324,21 @@ MATH = re.compile(
 )
 
 
+# A browser will break a line between an inline formula and the comma after it,
+# or the bracket before it, which TeX never does; the two are kept together.
+STUCK = re.compile(
+    r"(?P<before>[(\[{“‘'\"（「『]*)(?P<math><math>(?:(?!</math>).)*</math>)"
+    r"(?P<after>[-–—.,;:!?)\]}’”'\"…，。；：、！？）」』A-Za-z]*)",
+    re.S,
+)
+
+
+def keep_together(page: str) -> str:
+    return STUCK.sub(
+        lambda m: f"<span class='nobr'>{m[0]}</span>" if m["before"] or m["after"] else m[0], page
+    )
+
+
 def unwrap_delims(tex: str) -> str:
     tex = tex.strip()
     for a, b in (("\\(", "\\)"), ("\\[", "\\]"), ("$$", "$$"), ("$", "$")):
@@ -402,7 +417,7 @@ def convert_math(page: str, macros: dict, log: Path) -> tuple[str, dict]:
         if raw[-1:].isspace():
             pieces.append(" ")
     pieces.append(page[last:])
-    return "".join(pieces), stats
+    return keep_together("".join(pieces)), stats
 
 
 def render_formula(item: dict, res: dict, stats: dict) -> str:

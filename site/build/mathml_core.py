@@ -193,12 +193,9 @@ def fix_table(table: ET.Element) -> None:
 # combining hat, which has no width of its own, comes out too wide or (in a
 # font without wide hats) to the left, so \\widehat there is \\hat, as in TeX,
 # whose smallest wide hat is the hat.
-# \\overline is not an accent in TeX but a rule set clear above its base;
-# set as an accent, its bar (a dash, low in its glyph) would cross a φ or an x.
 ACCENTS = {"^": "\u02c6", "\u02c6": "\u02c6", "~": "\u02dc", "\u02dc": "\u02dc", "\u00af": "\u00af",
            "\u02c7": "\u02c7", "\u02d8": "\u02d8", "\u02d9": "\u02d9", "\u00a8": "\u00a8",
            "\u00b4": "\u00b4", "`": "`", "\u02da": "\u02da", "\u20d7": "\u20d7"}
-OVERLINE = "\u2015"
 WIDE_HAT = "\u0302"
 
 
@@ -207,8 +204,6 @@ def fix_accent(el: ET.Element) -> None:
         return
     over = el[1]
     char = (over.text or "").strip()
-    if char == OVERLINE:
-        return
     vector = char == "\u2192" and over.get("stretchy") == "false"  # \\vec
     if char not in ACCENTS and not vector and over.get("accent") != "true":
         return
@@ -219,6 +214,23 @@ def fix_accent(el: ET.Element) -> None:
         over.text = "\u02c6" if narrow else WIDE_HAT
     elif char in ACCENTS:
         over.text = ACCENTS[char]
+
+
+# \\overline and \\underline are not accents in TeX but rules set a little clear
+# of their base. MathJax writes them as a dash (U+2015) over or under it, which
+# each font draws at its own height and length: across a φ in one, far above
+# it in another, shorter than the base in a third. They become an mrow with a
+# class, and CSS draws the rule along its edge.
+RULE = "\u2015"
+
+
+def fix_rule(el: ET.Element) -> bool:
+    if len(el) != 2 or el[1].tag != Q("mo") or (el[1].text or "").strip() != RULE:
+        return False
+    el.remove(el[1])
+    el.set("class", "overline" if el.tag == Q("mover") else "underline")
+    el.tag = Q("mrow")
+    return True
 
 
 # mpadded. MathJax pads with MathML 3's relative values (width="+0.833em": that
@@ -298,6 +310,8 @@ def walk(el: ET.Element, inherited: str | None = None) -> None:
         fix_table(el)
     elif tag == "menclose":
         fix_menclose(el)
+    elif tag in ("mover", "munder") and fix_rule(el):
+        pass  # now an mrow
     elif tag == "mover":
         fix_accent(el)
         fix_xarrow(el)
