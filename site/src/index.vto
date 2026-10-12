@@ -54,10 +54,8 @@ url: /
 
 <ol class="entries">
   {{ for note of listed }}
-  {{ set info = site.types[note.type] || { phrase: "Notes on" } }}
   {{ set pdf = note.source |> pdf }}
   {{ set translations = notes.filter((t) => t.translation_of === note.slug) }}
-  {{ set parent = note.parent && listed.find((p) => p.slug === note.parent) }}
   <li class="entry"
       {{ for facet of site.facets }}data-{{ facet.key }}="{{ facetValues(note, facet).map(slug).join(" ") }}"
       {{ /for }}      data-text="{{ [note.title, note.description, (note.lecturers || []).join(" "), note.place].join(" ").toLowerCase() }}">
@@ -68,11 +66,12 @@ url: /
       </h2>
       <p class="entry-where">{{ if note.lecturers && note.lecturers.length }}{{ note.lecturers |> conjoin }}, {{ /if }}{{ note.place }}</p>
       {{ if note.description }}<p class="entry-body">{{ note.description.trim() }}</p>{{ /if }}
-      <p class="entry-kind">
-        {{ info.phrase }} {{ values(note, "subjects") |> conjoin }}{{ if parent }}, part of <a href="{{ `/${parent.slug}/` |> url }}">{{ parent.title }}</a>{{ /if }}.
-        {{ if pdf }}<a class="entry-pdf" href="{{ pdf }}">PDF</a>{{ /if }}
-        {{ for t of translations }}<a class="entry-pdf" href="{{ `/${t.slug}/` |> url }}" lang="zh-Hans" hreflang="zh-Hans">中文 ({{ t.translator }})</a>{{ /for }}
+      {{ if pdf || translations.length }}
+      <p class="entry-links">
+        {{ if pdf }}<a href="{{ pdf }}">PDF</a>{{ /if }}
+        {{ for t of translations }}<a href="{{ `/${t.slug}/` |> url }}" lang="zh-Hans" hreflang="zh-Hans">中文 ({{ t.translator }})</a>{{ /for }}
       </p>
+      {{ /if }}
     </div>
   </li>
   {{ /for }}
