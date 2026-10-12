@@ -253,9 +253,10 @@ PLACEHOLDER_DEF = r"""
 \providecommand\HtmlDiagram[2]{\ifdefined\HCode\HCode{<span class="dg" data-n="#1" data-d="#2"></span>}\fi}
 """
 
-# unicode-math sets \mathsf, \mathrm and the rest in the text fonts (Optima, say);
-# the page draws them from the math font, so diagrams do too.
-SYM_ALPHABETS = "\\PassOptionsToPackage{mathrm=sym,mathit=sym,mathbf=sym,mathsf=sym,mathtt=sym}{unicode-math}\n"
+# unicode-math sets \mathrm and the rest in the text fonts; the page draws them
+# from the math font, so diagrams do too. \mathsf stays with the sans text
+# font, which is Optima, as on the page (styles.css .sf).
+SYM_ALPHABETS = "\\PassOptionsToPackage{mathrm=sym,mathit=sym,mathbf=sym,mathsf=text,mathtt=sym}{unicode-math}\n"
 
 PREVIEW_DEF = r"""
 % --- added by site/build: one tightly cropped page per diagram unit ---

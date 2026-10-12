@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import functools
 import re
+import subprocess
 import urllib.request
 from pathlib import Path
 
@@ -152,6 +153,16 @@ class Pairings:
         variable = sum(1 for (s, _), n in files.items() if n == name and s == style) > 1
         return sfnt(name, self.where, weight if variable else None)
 
+    def sans_font(self) -> str:
+        """\\setsansfont arguments for \\mathsf: Optima where installed, as the
+        page has it, else Epigrafica (see epigrafica.py)."""
+        found = subprocess.run(["fc-list", "Optima:style=Regular", "family"], capture_output=True, text=True).stdout
+        if "Optima" in found:
+            return "{Optima}"
+        regular = sfnt("epigrafica-regular.woff2", str(SITE / "src" / "fonts"))
+        bold = sfnt("epigrafica-bold.woff2", str(SITE / "src" / "fonts"))
+        return f"{{{regular.name}}}[Path={regular.parent}/,BoldFont={bold.name}]"
+
     def text_font(self, family: str) -> str:
         """\\newfontfamily arguments; a missing italic or bold is faked, as the
         browser does."""
@@ -187,6 +198,7 @@ class Pairings:
         # sets nothing here; the pairing's are set with copies of the commands.
         before += [
             "\\AddToHook{package/fontspec/after}{\\NewCommandCopy\\HtmlSetmainfont\\setmainfont"
+            "\\NewCommandCopy\\HtmlSetsansfont\\setsansfont"
             "\\RenewDocumentCommand\\setmainfont{O{}mO{}}{}\\RenewDocumentCommand\\setsansfont{O{}mO{}}{}"
             "\\RenewDocumentCommand\\setmonofont{O{}mO{}}{}}",
             "\\AddToHook{package/unicode-math/after}{\\NewCommandCopy\\HtmlSetmathfont\\setmathfont"
@@ -202,6 +214,7 @@ class Pairings:
             "\\usepackage{fontspec}",
             "\\usepackage{unicode-math}",
             f"\\HtmlSetmainfont{self.text_font(text)}",
+            f"\\HtmlSetsansfont{self.sans_font()}",
             f"\\HtmlSetmathfont{{{mfont.name}}}[Path={mfont.parent}/]",
         ]
         gaps = missing_slots(mfont, fallback) if mfont != fallback else []

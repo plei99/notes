@@ -14,6 +14,7 @@ site.data("rev", Date.now().toString(36));
 
 site.copy("styles.css");
 site.copy("js");
+site.copy("fonts");
 
 // build/build.py writes each note into src/n/<slug>/: the HTML fragments, which
 // notes.page.ts reads (their names start with _, so Lume skips them), any
