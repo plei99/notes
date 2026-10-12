@@ -189,7 +189,10 @@ def fix_table(table: ET.Element) -> None:
 # accent="true" MathML Core sets the ^ as a limit, small and raised, and fonts
 # keep their accents (and the wide ones) under the spacing and combining
 # forms, not ASCII. Only the combining hat stretches in browsers, so \\widehat
-# gets it; the rest keep their spacing forms, centred.
+# gets it; the rest keep their spacing forms, centred. Over one letter the
+# combining hat, which has no width of its own, comes out too wide or (in a
+# font without wide hats) to the left, so \\widehat there is \\hat, as in TeX,
+# whose smallest wide hat is the hat.
 # \\overline is not an accent in TeX but a rule set clear above its base;
 # set as an accent, its bar (a dash, low in its glyph) would cross a φ or an x.
 ACCENTS = {"^": "\u02c6", "\u02c6": "\u02c6", "~": "\u02dc", "\u02dc": "\u02dc", "\u00af": "\u00af",
@@ -211,7 +214,9 @@ def fix_accent(el: ET.Element) -> None:
         return
     el.set("accent", "true")
     if char in ("^", "\u02c6") and over.get("stretchy") != "false":
-        over.text = WIDE_HAT
+        base = el[0]
+        narrow = base.tag in (Q("mi"), Q("mn"), Q("mo")) and len((base.text or "").strip()) == 1
+        over.text = "\u02c6" if narrow else WIDE_HAT
     elif char in ACCENTS:
         over.text = ACCENTS[char]
 
