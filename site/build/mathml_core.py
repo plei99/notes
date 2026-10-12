@@ -190,9 +190,12 @@ def fix_table(table: ET.Element) -> None:
 # keep their accents (and the wide ones) under the spacing and combining
 # forms, not ASCII. Only the combining hat stretches in browsers, so \\widehat
 # gets it; the rest keep their spacing forms, centred.
+# \\overline is not an accent in TeX but a rule set clear above its base;
+# set as an accent, its bar (a dash, low in its glyph) would cross a φ or an x.
 ACCENTS = {"^": "\u02c6", "\u02c6": "\u02c6", "~": "\u02dc", "\u02dc": "\u02dc", "\u00af": "\u00af",
            "\u02c7": "\u02c7", "\u02d8": "\u02d8", "\u02d9": "\u02d9", "\u00a8": "\u00a8",
-           "\u00b4": "\u00b4", "`": "`", "\u02da": "\u02da", "\u2015": "\u2015", "\u20d7": "\u20d7"}
+           "\u00b4": "\u00b4", "`": "`", "\u02da": "\u02da", "\u20d7": "\u20d7"}
+OVERLINE = "\u2015"
 WIDE_HAT = "\u0302"
 
 
@@ -201,6 +204,8 @@ def fix_accent(el: ET.Element) -> None:
         return
     over = el[1]
     char = (over.text or "").strip()
+    if char == OVERLINE:
+        return
     vector = char == "\u2192" and over.get("stretchy") == "false"  # \\vec
     if char not in ACCENTS and not vector and over.get("accent") != "true":
         return
