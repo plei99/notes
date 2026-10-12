@@ -66,8 +66,8 @@ TEX4HT_CFG = r"""\Preamble{xhtml,mathjax,fn-in}
 
 
 def read_catalog() -> list[dict]:
-    """slug and source of every note. The full catalogue is YAML read by Lume;
-    this only needs two keys, so it reads them line by line."""
+    """slug, source and translation_of of every note. The full catalogue is YAML
+    read by Lume; this only needs these one-word keys, so it reads them line by line."""
     notes, cur = [], None
     for line in CATALOG.read_text().splitlines():
         m = re.match(r"^- slug:\s*(\S+)", line)
@@ -75,9 +75,9 @@ def read_catalog() -> list[dict]:
             cur = {"slug": m.group(1)}
             notes.append(cur)
             continue
-        m = re.match(r"^\s+source:\s*(\S+)", line)
+        m = re.match(r"^\s+(source|translation_of):\s*(\S+)", line)
         if m and cur is not None:
-            cur["source"] = m.group(1)
+            cur[m.group(1)] = m.group(2)
     return [n for n in notes if "source" in n]
 
 
@@ -403,7 +403,7 @@ def cut(page: str, pattern: str, tag: str = "div") -> tuple[str, list[str]]:
     return page, pieces
 
 
-FONT_NAME = re.compile(r"(ppl|qpl|zpl|lm|cm|ec|zi4|pzc|ptm|phv|pcr)([a-z]*)")
+FONT_NAME = re.compile(r"(ppl|qpl|zpl|lm|cm|ec|zi4|pzc|ptm|phv|pcr|fut)([a-z]*)")
 
 
 def font_shape(face: str) -> list[str]:
@@ -492,12 +492,29 @@ def tidy(page: str, svgs: dict[int, str], size_pt: float, fonts: dict[str, str],
 
     # Fonts.
     def classes(m: re.Match) -> str:
-        names = [fonts.get(c, c) for c in m.group(1).split()]
+        # Font classes the stylesheet never defined (pplri9t-) are read off the name.
+        names = [fonts.get(c, " ".join(font_shape(c)) if re.fullmatch(r"[a-z]+\d[a-z0-9]*-", c) else c) for c in m.group(1).split()]
         names = [n for n in " ".join(names).split() if n]
         return f" class='{' '.join(names)}'" if names else ""
 
     body = re.sub(r" class='([^']*)'", classes, body)
     body = re.sub(r"<span>([^<]*)</span>", r"\1", body)
+
+    # Citations. tex4ht leaves biblatex's citation links without a target
+    # (<a>ACGS24</a>, or <a x0-key\relax=''> with hyperref), so each is pointed
+    # at the bibliography entry carrying its label.
+    labels: dict[str, str] = {}
+    for m in re.finditer(r"<dt class='thebibliography' id='([^']+)'>\s*\[([^\]<]+)\]", body):
+        labels.setdefault(m.group(2).strip(), m.group(1))
+
+    def cite(m: re.Match) -> str:
+        ident = labels.get(re.sub(r"<[^>]+>", "", m.group(1)).strip())
+        return f"<a class='cite' href='#{ident}'>{m.group(1)}</a>" if ident else m.group(0)
+
+    # The label may keep a font span (footnotes, a smaller size).
+    body = re.sub(r"<a(?: x0-[^\s>]*\\relax='')?>((?:<span[^>]*>)?[^<]+(?:</span>)?)</a>", cite, body)
+    body = re.sub(r"<a (?:\\relax='' )?id='X0-'></a>", "", body)
+    info["citations"] = len(re.findall(r"<a class='cite'", body))
 
     # Headings: one h2 per top-level division, ids for the contents.
     found = list(headings(body))
@@ -583,10 +600,53 @@ def copy_images(body: str, html_dir: Path, dest: Path, log: Path) -> str:
     return re.sub(r"(<img [^>]*?src=')([^']+)(')", image, body)
 
 
+# Without biblatex, \cite leaves its keys for finish_note to link up.
+CITE_KEYS = r"""\AtBeginDocument{\renewcommand\cite[2][]{\HCode{<span class="cite-keys" data-keys="#2">}#1\HCode{</span>}}}
+"""
+
+
 def without_biblatex(src: str) -> str:
     src = re.sub(r"^([ \t]*\\usepackage(\[[^\]]*\])?\{biblatex\})", r"%\1", src, flags=re.M)
     src = re.sub(r"^([ \t]*\\(addbibresource|printbibliography|DeclareFieldFormat|AtEveryBibitem)\b)", r"%\1", src, flags=re.M)
-    return src
+    begin = src.find("\\begin{document}")
+    return src[:begin] + CITE_KEYS + src[begin:]
+
+
+def borrow_bibliography(body: str, toc: str, note: dict) -> tuple[str, str, int]:
+    """Link a biblatex-less note's citations to the bibliography of the note it
+    translates, which cites the same keys, and append that bibliography."""
+    spans = re.compile(r"""<span class=["']cite-keys["'] data-keys=["']([^"']*)["']>(.*?)</span>""", re.S)
+    parent = OUT / note.get("translation_of", "") / "_body.html"
+    if not spans.search(body) or not note.get("translation_of") or not parent.exists():
+        return body, toc, 0
+    source = parent.read_text()
+    start = source.find("<dl class='thebibliography'")
+    if start < 0:
+        return body, toc, 0
+    bib = source[start : element_end(source, start, "dl")]
+    entries = {
+        ident[3:]: (ident, label.strip())
+        for ident, label in re.findall(r"<dt class='thebibliography' id='([^']+)'>\s*\[([^\]<]+)\]", bib)
+    }
+
+    def cite(m: re.Match) -> str:
+        links = []
+        for key in (k.strip() for k in m.group(1).split(",")):
+            ident, label = entries.get(key, ("", key))
+            links.append(f"<a class='cite' href='#{ident}'>{label}</a>" if ident else label)
+        post = m.group(2).strip()
+        return "[" + "; ".join(links) + (f", {post}" if post else "") + "]"
+
+    body, count = spans.subn(cite, body)
+    tex = (REPO / note["source"]).read_text(encoding="utf-8", errors="replace")
+    title = re.search(r"\\printbibliography\[title=\{([^}]*)\}", tex)
+    title = title.group(1) if title else "References"
+    section = f"<h2 id='references'>{title}</h2>\n{bib}\n"
+    footnotes = body.find("<div class='footnotes'>")
+    body = body[:footnotes] + section + body[footnotes:] if footnotes >= 0 else body + section
+    if toc.endswith("</ol>"):
+        toc = toc[: -len("</ol>")] + f"<li><a href='#references'>{title}</a></li></ol>"
+    return body, toc, count
 
 
 # ---- One note --------------------------------------------------------------------
@@ -666,6 +726,9 @@ def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
     body, toc, info = tidy(page, svgs, font_size_pt(preamble), fonts, slug)
+    body, toc, borrowed = borrow_bibliography(body, toc, note)
+    if borrowed:
+        info["citations"] = info.get("citations", 0) + borrowed
     body = copy_images(body, page_file.parent, dest, log)
     report.update(info)
 
@@ -691,21 +754,24 @@ def main() -> None:
         notes = [n for n in notes if n["slug"] in args.slugs]
     CACHE.mkdir(parents=True, exist_ok=True)
     reports = []
+    # Translations borrow their originals' bibliographies, so they come after.
+    waves = [[n for n in notes if not n.get("translation_of")], [n for n in notes if n.get("translation_of")]]
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        futures = {pool.submit(build_note, n, not args.no_tex): n for n in notes}
-        for fut in as_completed(futures):
-            n = futures[fut]
-            try:
-                r = fut.result()
-            except Exception as e:  # noqa: BLE001
-                r = {"slug": n["slug"], "source": n["source"], "error": f"{type(e).__name__}: {e}"}
-            reports.append(r)
-            m = r.get("math", {})
-            status = r.get("error") or (
-                f"{m.get('formulas', 0)} formulas ({m.get('errors', 0)} errors), "
-                f"{r.get('diagrams', 0)}/{r.get('units', 0)} diagrams, {r.get('seconds', '?')}s"
-            )
-            print(f"{r['slug']:32} {status}", flush=True)
+        for wave in waves:
+            futures = {pool.submit(build_note, n, not args.no_tex): n for n in wave}
+            for fut in as_completed(futures):
+                n = futures[fut]
+                try:
+                    r = fut.result()
+                except Exception as e:  # noqa: BLE001
+                    r = {"slug": n["slug"], "source": n["source"], "error": f"{type(e).__name__}: {e}"}
+                reports.append(r)
+                m = r.get("math", {})
+                status = r.get("error") or (
+                    f"{m.get('formulas', 0)} formulas ({m.get('errors', 0)} errors), "
+                    f"{r.get('diagrams', 0)}/{r.get('units', 0)} diagrams, {r.get('seconds', '?')}s"
+                )
+                print(f"{r['slug']:32} {status}", flush=True)
     previous = {}
     report_file = CACHE / "report.json"
     if report_file.exists():
