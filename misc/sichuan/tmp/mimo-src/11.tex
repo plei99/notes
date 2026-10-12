@@ -1,0 +1,305 @@
+\section{Quasimap wall-crossing (Yang Zhou)}%
+\label{sec:Quasimap wall-crossing (Yang Zhou)}
+
+The main wall-crossing theorem and master-space construction in this lecture are from~\cite{Zhou2022}. Earlier genus-zero and higher-genus results appear in~\cite{CFK2014,CFK2020}, and the foundations of stable quasimaps are in~\cite{CFKM2014}.
+
+Let \(X\) be the quintic threefold. Our goal is to count genus zero curves on \(X\), which is a problem that was solved by Givental and Lian-Liu-Yau. Via the closed immersion \(X \subset \P^4\), we can write
+\[ \bar{M}_0(X, d) \subset \bar{M}_0(\P^4, d), \]
+which is smooth and has a torus action by \((\C^{\times})^5\). If a map is fixed by this action, the domain must have some components which map to the fixed points and some components which form an \(n :1\) cover of the \(1\)-dimensional orbits. In particular, the fixed locus is indexed by a set of graphs.
+
+In this setting, we have the quantum Lefschetz principle, which states that
+\[ [\bar{M}_0(X, d)]^{\on{vir}} = e(E) \cap [\bar{M}_0(\P^4, d)]. \]
+Here, the vector bundle \(E\) is defined by
+\[ E = \pi_* f^* \mc{O}(5), \]
+where \(\pi\) is the universal curve and \(f\) is the universal stable map. We will give a different perspective on the result that if
+\begin{align*}
+    I(q, z) &= 1 + \sum_{d > 0} \frac{\prod_{k=1}^{5d} (5H+kz)}{\prod_{k=1}^d (H+kz)^5} q^d \in H^*(X)[z^{-1}] \ps{q} \\
+    &= I_0(q) \cdot 1 + I_1(q) \frac{H}{z} + I_2(q) \frac{H^2}{z^2} + I_3(q) \frac{H^3}{z^3},
+\end{align*}
+then
+\[ J (Q, z) = 1+ \sum_{d>0} \phi^{\alpha} \ab<\frac{\phi_{\alpha}}{z(z-\psi)}>_{0,1}^X Q^d = \frac{I}{I_0} \]
+up to the mirror map \(Q = q \exp\ab(\frac{I_1}{I_0})\). 
+
+\subsection{Naive counting}%
+\label{sub:Naive counting}
+
+We will consider ``maps'' \(\P^1 \to X \subset \P^4\) from a fixed \(\P^1\). For simplicity, we will assume \(X = \ab(\sum x_i^5 = 0)\) is the Fermat quintic. This is given by a collection \([f_0, \ldots, f_4]\) where \(f_i \in \C[u,v]\) such that \(\deg f_i = d\) and \(\sum f_i^5 = 0\). To be an actual morphism, we need the \(f_i\) to have no common zeroes, but this moduli is not proper, so we relax this condition. Then we consider the moduli space
+\[ QG(X, d) =  \ab\{ [f_0, \ldots, f_4] \middle\vert \Vectorstack{{ f_i \in \C[u,v] } { \deg f_i = d }}, \sum f_i^5 = 0, (f_0, \ldots, f_4) \neq (0,\ldots, 0) \} \bigg/ \C^{\times}. \]
+This lives inside the corresponding moduli space
+\begin{align*}
+    QG(\P^4, d) &\coloneqq  \ab\{ [f_0, \ldots, f_4] \mid f_i \in \C[u,v], \deg f_i = d, (f_0, \ldots, f_4) \neq (0, \ldots, 0) \} \\
+    &\cong \P^{5d+5-1} 
+\end{align*}
+of rational maps to projective space. There are two problems. First, the domain is parameterized, so we need to account for the automorphisms of \(\P^1\). Second, to obtain stable maps, we need to blow up the domain.
+
+First, let \(\C^{\times}\) act on \(\P^1\) by scaling \(u\). Consider the special fixed locus \(F_{\star} \subset QG(X, d)\) defined by
+\[ F_{\star,d} = \ab\{ [f_0, \ldots, f_4] \text{ fixed and } (v=0) \text{ is not a common zero} \}. \]
+Therefore, \(F_{\star,d} = \ab\{ [a_0 u^d, \ldots, a_4 u^d] \mid [a_0, \ldots, a_4] \in X \} \cong X\). From this perspective, we can rewrite the I-function as
+\begin{align*}
+    I(q,z) &= \sum_{d > 0} \ab(\frac{[F_{\star, d}]^{\vir}}{e_{\C^{\times}}(N^{\vir})})^{\mr{PD}} q^d \\
+    &= 1 + \sum_{d > 0} \ab( \frac{[X]}{e_{\C^{\times}}(N^{\vir})})^{\mr{PD}} q^d
+\end{align*}
+using standard arguments in deformation theory. This lives in \(H^*_{\C^{\times}}(X) \ps{q}[z^{-1}]\).
+
+\subsection{Wall-crossing without rigor}%
+\label{sub:Wall-crossing without rigor}
+
+
+Second, consider a nodal curve \(C\) with a marking plus a tail with an action of \(\C^{\times}\) and suppose we have a map \(f \colon C \to X\). If we take the limit
+\[ \lim_{t \to 0} [f_0(t^{-1}u, v), \ldots, f_4(t^{-1}u, v)] = [a_0 u^{d_0}, \ldots, a_4 u^{d_0}], \]
+we see that the limit of the bubble lands in \(F_{\star, d_0}\), where the common zero is away from the node. Then we can replace this tail by a new marking which carries some terms of the I-function. For the quintic, this is simply \(I_1 H - I_0 \psi = [zI-z]_{+, z = -\psi}\). At the end of this process, we are left with \(C = \P^1\) with various contributions of the I-function.
+
+Note that if we consider \(\C^{\times}\) acting on \(\P^4\), then \(f \colon C \to \P^4\) is fixed if for all \(t \in \C^{\times}\), there exists \(\varphi_t\) such that
+\begin{equation*}
+\begin{tikzcd}
+    C \ar{r}{f} \ar{d}[swap]{\varphi_t} & \P^4 \\
+    C \ar{ur}[swap]{t \cdot f}
+\end{tikzcd}
+\end{equation*}
+commutes. Therefore, we obtain an action of \(\C^{\times}\) on the domain.
+
+We will define the moduli space \(Q_{g,n}^{\ep}(X, d)\) of \(\ep\)-stable quasimaps to \(X\), which is analogous to the moduli of stable maps. We want to think of these moduli spaces as being virtually birational to each other, and each of these is a proper DM stack with perfect obstruction theory, and therefore we can define quasimap invariants
+\[ \ab< \gamma_1 \psi_1^{a_1} \cdots \gamma_n \psi_n^{a_n}>_{g,n}^{\ep} \coloneqq \int_{[Q_{g,n}^{\ep}(X,d)]^{\vir}} \prod_{i=1}^n \ev_i^*(\gamma_i) \psi_i^{a_i}. \]
+Here, \(\ep \in \Q_{>0}\) is a positive rational number. The space of possible \(\ep\) has a wall and chamber structure, where the walls occur at \(\frac{1}{n}\) for positive integers \(n\). When \(\ep > 1\) we obtain Gromov-Witten theory (namely stable maps), and as we move to the left, we allow fewer rational tails but more basepoints. Eventually, in the \(\ep \to 0^+\) limit, no rational tails are allowed. In the end, we obtain the following wall-crossing formula around the wall at \(\frac{1}{d_0}\):
+\[ \ab<->_{g,n,d}^{\ep_+} - \ab<->_{g,n,d}^{\ep_-} = \sum_{k} \frac{1}{k!} \ab<-, \mu, \ldots, \mu>_{g,n+k, d-kd_0}^{\ep_+}. \]
+Here, \(\mu = [zI-z]_{+, q^{d_0}, z=-\psi}\). In the special case, where \(g = 0\), \(n = 1\), and \(\ep = 0^+\), we obtain
+\[ \sum \phi^{\alpha} \ab<\frac{\phi_{\alpha}}{z(z-\psi)}>^{\ep}_{0,1} = I_{z^{<0}}. \]
+Crossing all walls from the GW chamber, we obtain
+\[ I = 1 + \sum_{\substack{d \geq 1 \\ k \geq 0}} \frac{1}{k!} \sum_{\alpha} \phi^{\alpha} \ab< \frac{\phi_{\alpha}}{z(z-\psi)}, I_1 H - I_0 \psi, \ldots, I_1 H - I_0 \psi>_{0,1+k,d}^{\infty} q^d, \]
+which produces the mirror map via the dilaton and divisor equations.
+
+\subsection{Quasimaps}%
+\label{sub:Quasimaps}
+
+\begin{defn}
+    A \textit{prestable quasimap} to the quintic threefold \(X\) consists of 
+    \[(C, x_1, \ldots, x_n, \mc{L}, \varphi_0, \ldots, \varphi_4),\] 
+    where \((C, x_1, \ldots, x_n)\) is a prestable curve, \(\mc{L} \in \Pic C\), and \(\varphi_0, \ldots, \varphi_4 \in H^0(C, \mc{L})\), such that
+    \[ \varphi^{-1}(0) \coloneqq \ab\{x \in C \mid \varphi_0(x) = \cdots = \varphi_4(x) = 0 \} \]
+    is finite and away from the special points. In addition, we require that \(\sum \varphi_i^5 = 0\).
+\end{defn}
+
+Importantly, we will refer to \(\varphi^{-1}(0)\) as the set of \textit{base points}. Away from \(\varphi^{-1}(0)\), we have an actual morphism \(C \setminus \varphi^{-1}(0) \to X\). Geometrically, suppose we have a family over \(\A^1 \setminus 0\) where in the limit as \(t \to 0\), the zero loci \(\varphi_i^{-1}(0)\) will end up colliding. We can either preserve this quasimap in the central fiber, or we can blow up the central fiber some number of times to obtain an actual morphism at the cost of bubbling out a rational tail. Therefore, any moduli space of prestable quasimaps cannot be separated, so we must consider some kind of stability condition.
+
+\begin{defn}
+    A prestable quasimap \((C, \mathbf{x}, \mc{L}, \varphi)\) is \textit{\(\ep\)-stable} if
+    \begin{enumerate}
+        \item For all \(x \in \varphi^{-1}(0)\), we have \(\on{len}(x) \leq \frac{1}{\ep}\), where \(\on{len}(x) = \min \ab\{ \on{ord}_x (\varphi_i)\}\);
+        \item The \(\Q\)-line bundle \(\mc{L}^{\ep} \otimes \omega_C^{\log}\) has positive degree on every irreducible component of \(C\).
+    \end{enumerate}
+\end{defn}
+
+Note that for all irreducible components \(C' \subseteq C\), we have \(\deg \mc{L}|_{\mc{C}'} \geq 0\). Therefore, the things which change are curves of genus \(0\) with \(\leq 2\) special points or curves of genus \(1\) with no marked points. Note that in the \((0,0)\) and \((1,0)\) cases, we have \(C = C'\), and in the \((0,2)\) case, stability is equivalent to \(\deg \mc{L} > 0\), so in the \((0,1)\) case, the second condition is equivalent to 
+\[ \deg \mc{L}|_{C'} > \frac{1}{\ep}. \]
+
+\begin{exm}
+    In the \(\ep > 1\) chamber, note that the first condition implies that there are no basepoints, and the second condition implies that all unstable components have positive degree, and therefore we have recovered stable maps.
+
+    If we move into the chamber where \(\frac{1}{2} < \ep < 1\), then we must contract rational tails of degree \(1\). For example if we have a chain of two degree \(1\) rational curves ending in a tail, then we contract the outermost tail and are left with a single degree \(2\) rational tail with a basepoint of length \(1\). 
+
+    If we move into the \(\frac{1}{3} < \ep < \frac{1}{2}\) chamber, then we must contract all rational tails of degree \(2\) and replace them with basepoints of length \(2\). 
+\end{exm}
+
+\begin{rmk}
+    In the case of projective space, there is an actual morphism
+    \[ Q_g^{\ep_+}(\P^N, d) \to Q_g^{\ep_-}(\P^N, d) \qquad (C_g \cup C_0, \mc{L}, \varphi) \mapsto (C_g, \mc{L}|_{C_g}(p), \varphi(p)). \]
+    For a general target, this is not possible, but this idea gives intuition for the phenomenon of quasimap wall-crossing.
+\end{rmk}
+
+We will now discuss how to generalize this to more general target spaces. Let
+\[ X = V \sslash_{\theta} G, \]
+where \(V\) is affine, \(G\) is reductive, and \(\theta\) is a character of \(G\). We need to require that
+\begin{enumerate}
+    \item \(V^{\mr{ss}}(\theta) = V^s(\theta) \neq \emptyset\);
+    \item \(V\) has at worst lci singularities and \(V^s(\theta)\) is smooth.
+\end{enumerate}
+Note that we require the stable locus to have finite stabilizers. For convenience, we will also require
+\begin{enumerate}
+    \item \(V \sslash G\) is projective;
+    \item \(G\) acts freely on the stable locus.
+\end{enumerate}
+
+\begin{exm}
+    In the case of the quintic, \(V\) is the affine cone over the quintic. The unstable locus consists of the origin, which is the unique singular point.
+\end{exm}
+
+\begin{exm}
+    Another example is that we can consider \(\C^N \sslash (\C^{\times})^r\) with generic stability condition and obtain a toric variety.
+\end{exm}
+
+\begin{exm}
+    We can consider the Grassmannian
+    \[ G(2,4) = M_{2\times 4} \sslash GL_2, \]
+    where the unstable locus consists of matrices with rank strictly less than \(2\).
+\end{exm}
+
+\begin{rmk}
+    The condition on the stable locus is always satisfied when \(G\) is abelian for generic stability conditions, but for non-abelian \(G\) this is not always possible.
+\end{rmk}
+
+\begin{rmk}
+    For a general smooth projective variety, the origin is not necessarily lci, so it is unclear how to define quasimaps in a way where we can still define a virtual cycle.
+\end{rmk}
+
+\begin{defn}
+    A \textit{prestable quasimap} to \(V \sslash G\) is a map \(u \colon C \to [V/G]\) such that the base locus
+    \[ u^{-1}([V^{\mr{un}}(\theta) / G]) \]
+    is finite and away from the special points. By definition, \(u\) consists of a principal \(G\)-bundle \(P \to C\) together with an equivariant map \(P \to V\), which is equivalent to a section of the associated bundle \(P \times_G V\). 
+\end{defn}
+
+\begin{exm}
+    For the quintic, this exactly recovers a line bundle \(\mc{L} \in \Pic C\) (which is equivalent to a \(\C^{\times}\)-torsor) combined with a section of \(\on{Tot}(\mc{L}^{\oplus 5})\) which satisfies the defining equation.
+\end{exm}
+
+In order to define degrees, we can consider the line bundle \(\mc{L}_{\theta}\) on \([V/G]\). Then we can define the degree of \(C' \subset C\) under \(u\) to be
+\[ \deg (u^* \mc{L}_{\theta}|_{C'}). \]
+
+\begin{exm}
+    In the \(G(2,4)\) example, note that a principal \(\on{GL}_2\)-bundle is equivalent to rank \(2\) vector bundle \(\mc{E}\) on \(C\). Therefore, \(P \times_G V\) is equivalent to the data of \(\mc{E}^{\oplus 4}\), and therefore quasimaps to the Grassmannian are equivalent to stable quotients. In this case, we are looking for generically surjective
+    \[ \mc{O}^{\oplus 4} \to \mc{E}, \]
+    and because \(\theta = \det\), we see that \(u^* \mc{L}_{\theta} = \det \mc{E}\).
+\end{exm}
+
+\begin{exm}
+    Consider \(V = \C^{N+1}\) and note that \(\P^N = V \sslash \C^{\times}\). If we consider \(\theta_1 \colon z \mapsto z\), then we have 
+    \[ V^{\on{un}} = V((x_i)). \]
+    However, if we consider \(\theta \colon z \mapsto z^2\), then we have
+    \[ V^{\on{un}} = V((x_i x_j)). \]
+\end{exm}
+
+Here, we see that the scheme structure is sensitive to the choice of character, so we cannot simply naively define the length of a basepoint. Note that
+\[ V^{\on{un}} = V\ab(\ab< \bigoplus_{k \geq 1} R_k>), \qquad R_k = H^0([V/G], L_{\theta}^{\otimes k}). \]
+In particular, we must define
+\[ \on{len}(x) \coloneqq \min_{\substack{f \in R_k \\ k \geq 1}} \frac{\on{ord}_x u^*(f)}{k}. \]
+
+\begin{exm}
+    Let \(X = \mr{pt} = \C \sslash_{\theta} \C^{\times}\). Then a prestable quasimap is simply
+    \[ (C, \mc{L}, \varphi \in H^0(\mc{L})), \]
+    where \(\varphi^{-1}(0)\) is finite and away from the special points. In addition, if \(\deg \mc{L} = 1\), we have precisely recovered the data of a new marked point in \(C^{\mr{sm}}\).
+\end{exm}
+
+\begin{exm}
+    Now consider \(X = \mr{pt} = \C^n \sslash (\C^{\times})^n\). Also suppose that the degree is \((1, \ldots, 1)\). Now we will set
+    \[ \theta = (a_1, \ldots, a_n). \]
+    Therefore, note that
+    \[ \ab<R_1> = \ab<(x_1^{a_1} \cdots x_n^{a_n})>. \]
+    Because these all live in degree \(1\), we see that for a smooth point \(x \in C^{\mr{sm}}\), we have
+    \[ \on{len}_x = \sum \on{ord}_x (\varphi_i^{a_i}) = \sum a_i \on{ord}_x \varphi_i. \]
+    If we set \(\ab\{p_i\} = \varphi_i^{-1}(0)\), then the condition that \(\ep \cdot \on{len}(x) \leq 1\) is equivalent to requiring that 
+    \[ \sum_{x = p_i} \ep a_i \leq 1. \]
+    The degree condition now states that
+    \[ \ep \sum_i a_i + \deg \omega_C > 0. \]
+    Equivalently, this states that
+    \[ \omega_C(\ep a_1 p_1 + \cdots + \ep a_n p_n) > 0, \]
+    so we recover a weighted pointed curve with weights \((\ep a_1, \ldots, \ep a_n)\).
+\end{exm}
+
+\subsection{Master space}%
+\label{sub:Master space}
+
+The proof uses virtual localization~\cite{GP1999}; Hassett\textquotesingle s weighted moduli spaces~\cite{Hassett2003} provide one of the models for the construction.
+
+Our method will be to perform virtual localization on a master space which interpolates the two moduli. Consider the \(\C^{\times}\)-action on \(\P^n\) given by
+\[ t \cdot [x_0 : \cdots : x_n] = [t x_0, x_1, \ldots, x_n]. \]
+The fixed loci consists of a \(\P^{n-1}\) where \(x_0 = 0\) and a point \([1, 0, \ldots, 0]\). Then we can compute
+\[ \int_{\P^{n-1}} H^{n-1} = 1 \]
+by transfering the computation to the other fixed locus. In particular, we lift to \(H \in H_{\C^{\times}}^* (\P^n) = \Q[H,z] / (H-z)H^n\) and compute
+\begin{align*}
+    \int_{\P^n} H^{n-1} &= \int_{\P^{n-1}} \frac{H^{n-1}}{-z+H} + \int_{\mr{pt}} \frac{z^{n-1}}{z^n}.
+\end{align*}
+Taking residues, we see that
+\begin{align*}
+    0 &= \on{Res}_{z = 0}\int_{\P^{n-1}} \frac{H^{n-1}}{-z+H} + 1 \\
+    &= 1 - \int_{\P^{n-1}}H^{n-1},
+\end{align*}
+which recovers the desired integral. The key fact we used here is that projective space is proper.
+
+\begin{exm}[Second toy example]
+    We will consider a second toy example. Recall Hassett's moduli of weighted pointed curves
+    \[ (C, x_1, \ldots, x_n) \]
+    where \(C\) is nodal and the \(x_i \in C^{\mr{sm}}\) can collide. The collisions are regulated by the fact that each marked point is given a weight \(\delta_i \in \Q \cap (0,1]\) and are required to satisfy the following conditions:
+    \begin{enumerate}
+        \item For all \(x \in C^{\mr{sm}}\), then
+            \[ \sum_{x = x_i} \delta_i \leq 1; \]
+        \item We have the stability condition \(\omega_C(\delta_1 x_1 + \cdots + \delta_n x_n) > 0\). For example, if we have a rational tail, then \(\sum_{x_i \in C'} \delta_i > 1\).
+    \end{enumerate}
+\end{exm}
+
+\begin{exm}[Another toy example]
+    Our goal will be to once again compute
+    \[ \int_{\bar{M}_{0,4}} \psi_1 = 1. \]
+    Our first goal will be to change the stability condition. If we set
+    \[ \delta_+ = \ab(\frac{2}{3}, \frac{2}{3}, \frac{2}{3}, \frac{2}{3}), \]
+    we see that the stability condition does not change. However, if we set
+    \[ \delta_- = \ab(\frac{2}{3}, \frac{2}{3}, \frac{2}{3}, \frac{1}{3}), \]
+    the moduli space does not change, but the universal curve in fact becomes \(\P^1 \times \P^1\) with the section \(x_4\) being the diagonal. This tells us that
+    \[ \int_{\bar{M}_{0,4}^{\delta_-}} \psi_1 = 0, \]
+    and we will use this to compute in the \(\delta_+\) chamber. We can try to form a master space by both allowing rational tails with \(x_i, x_4\) and allowing \(x_1 = x_4\), but if we do this, we end up with a semistable point with a rational tail where \(x_1 = x_4\). We want to end up with this by taking a quotient from a master space, so we will add the data of a tangent vector to the moduli. Therefore, define the \(\delta_{\pm}\) master space to consist of objects of the form
+    \[ \xi = (C, x_1, \ldots, x_4, v \in T_{x_4} C \cup \infty) \]
+    where \(C\) is nodal, \(x_i\) are smooth points, \(x_1, x_2, x_3\) are disjoint,
+    \[ \sum_{x_i \in C'} \frac{2}{3} \delta_i > 1 \]
+    for all rational tails \(C'\), if \(v = 0\), then \(x_4\) is disjoint from the other \(x_i\), and when \(v = \infty\), there are no rational tails where \(x_4 \neq x_i\) for \(i = 1,2,3\). 
+
+    We now give this master space an action of \(\C^{\times}\) by scaling \(v\). There are various fixed loci:
+    \begin{enumerate}
+        \item When \(v = 0\), we obtain \(\bar{M}_{0,4}^{\delta_+}\);
+        \item When \(v = \infty\), we obtain \(\bar{M}_{0,4}^{\delta_-}\);
+        \item There are fixed loci where \(v \neq 0,\infty\) and we have a rational tail with \(x_i = x_4\).
+    \end{enumerate}
+
+    If we consider a general point (with all four marked points disjoint), it will travel directly to itself along the \(\C^{\times}\)-action. However, if we start with a rational tail containing \(x_1\) and \(x_4\), then we first travel to a rational tail with general \(v\) but \(x_1 = x_4\), and if we smooth out the node, we obtain a single curve with \(x_1 = x_4\), but we allow \(v \to \infty\), which is another fixed point. Now we can integrate
+    \begin{align*}
+        \int_{\ms{Master}} \psi_1 = \int_{\bar{M}_{0,4}^{\delta_+}} \frac{\psi_1}{-z-?} + \int_{\bar{M}_{0,4}^{\delta_-}} \frac{\psi_1}{z+?} + \on{Cont}(12|34) + \on{Cont}(13|24) + \on{Cont}(14|23).
+    \end{align*}
+    Taking residues at \(z = 0\), we obtain
+    \begin{align*}
+        0 &= - \int_{\bar{M}_{0,4}^{\delta_+}} \psi_1 + 0 + 0 + 0 + \int_{\mr{pt}} \frac{(-z)}{(\pm z)(\pm z)},
+    \end{align*}
+    where in the final term the \(\pm z\) in the denominator are node smoothing parameters, and therefore we recover the desired integral.
+\end{exm}
+
+With all of our toy examples, we are finally ready to discuss the quasimap master space. Our first step at the \(\frac{1}{d_0}\) wall is to allow both degree \(d_0\) rational tails and length \(d_0\) base points. However, we can consider curves with a rational tail and a quasimap of the form
+\[ [a_0 u^{d_0}, \ldots, a_n u^{d_0}], \]
+which have infinitely many automorphisms. However, we cannot attach tangent vectors to the base points (because deformations will remove them), and there are also situations where there exists more than one degree \(d_0\) with a base point of length \(d_0\) (and then the automorphism group contains \(\C^{\times}\)).
+
+\begin{rmk}
+    There is a key observation. Suppose that we have two rational tails of degree \(d_0\) and call the two nodes \(p_1\) and \(p_2\). Now define the space of smoothing parameters
+    \[ \C \cong \Theta_i = T_{p_i} E_i \otimes T_{p_i} C_g, \]
+    where \(E_i\) is the rational tail and \(C_g\) is the rest of the curve. We will consider the moduli
+    \[ \mf{M}_{g,n,d}^{\mr{wt}} \xrightarrow{\text{\'et}} \mf{M}_{g,n} \]
+    of weighted semistable curves labelled by degrees. Note that this morphism is highly non-separated. We will consider the open substack \(\mf{M}_{g,n,d}^{\mr{wt}, \ep_0}\) where the curves have no tail of degree strictly less than \(d_0\). Then we can consider the Cartier divisor \(\mc{Z}\) where there exists at least one tail of degree \(d_0\). In particular, we see that
+    \[ \Theta_i = N_{\mc{Z}_i} |_{\xi} \]
+    for the two branches \(\mc{Z}_1\) and \(\mc{Z}_2\) at the point of interest. We also see that \(\Theta_1 \otimes \Theta_2\ = \mc{O}(\mc{Z})|_{\xi}\), so we can add the data of
+    \[ v \in \ab(\bigotimes_i \Theta_i)^{\vee} \cup \ab\{\infty\} \]
+    and the data of 
+    \[ w \in \P(\Theta_1 \oplus\Theta_2). \]
+\end{rmk}
+
+The actual construction proceeds as follows. Consider \(\mc{Z} \subset \mf{M} = \mf{M}_{g,d}^{\mr{wt}, \ep_0}\). Define \(\tilde{\mf{M}} \to \cdots \to \mf{M}\) to be an iterated blowup along strata of \(\mc{Z}\). Then an object of the master space (a quasimap with calibrated tails) over a scheme \(S\) is given by the data of a quasimap
+\begin{equation*}
+\begin{tikzcd}
+    C \ar{d} \ar[dashrightarrow]{r}{f} & X \\
+    S
+\end{tikzcd}
+\end{equation*}
+inducing a morphism \(p \colon S \to \mf{M}_{g,d}^{\mr{wt}, \ep_0}\), a choice of a lift
+\begin{equation*}
+\begin{tikzcd}
+    & \tilde{\mf{M}} \ar{d}{\tau} \\
+    S \ar{r}{p} \ar[dashrightarrow]{ur}{w} & \mf{M}_{g,d}^{\mr{wt}, \ep_0},
+\end{tikzcd}
+\end{equation*}
+a line bundle \(\mc{N} \in \Pic S\), and \(v = (v_1, v_2)\) where \(v_1 \in H^0(w^* \mc{O}(-\mc{Z}))\) and \(v_2 \in H^0(\mc{N})\), where \((v_1, v_2)\) is nonvanishing. We also disallow basepoints of length strictly larger than \(d_0\) and require stability such that
+\begin{enumerate}
+    \item When \(v = 0\), we obtain \(\ep_+\)-stability;
+    \item When \(v = \infty\), we obtain \(\ep_-\)-stability;
+    \item Any constant tail (degree \(d_0\) with base point of length \(d_0\)) is an entangled tail. Here, we consider the last blowup such that \(w\) maps to an exceptional locus \(\bigcap_{i \in I} \tilde{\mc{Z}}_i\), and then the \(E_i\) are entangled tails for \(i \in I\);
+    \item If there exists a degree \(d_0\) tail, then all length \(d_0\) base points are on degree \(d_0\) tails.
+\end{enumerate}
+
+
+
+
+
+
+

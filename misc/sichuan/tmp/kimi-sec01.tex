@@ -1,0 +1,577 @@
+\section{\(\Theta\)-分层（Yaoxiong Wen 与 Bin Wang）}%
+\label{sec:Theta-stratifications}
+
+\subsection{我们的第一批模问题}%
+\label{sub:Our first moduli problem}
+
+我们的第一个模空间将是 \(\P^{N-1}\)，它参数化 \(\C^N\) 中的 \(1\) 维线性子空间，等价地说，它是几何商 \((\C^N \setminus \{0\}) / \C^{\times}\)。在这种情形下，\(\C^N\setminus\{0\}\) 中的每条 \(\C^{\times}\)-轨道都是闭的。这一构造是我们关于几何不变量理论的第一个例子。一般地，一个取值于集合的模问题把每个概形 \(T\) 对应到 \(T\) 上的族的同构类所成的集合，我们可以把它看作一个函子
+\[ F \colon (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Set}. \]
+
+\begin{exm}
+    设 \(C\) 为一条光滑射影曲线。考虑对应
+    \[
+    \begin{aligned}
+        F_{r,d}\colon T \longmapsto
+        \Bigl\{
+        E \ \Bigm|\ &
+        E \text{ is a vector bundle on } C\times T,\\
+        &\operatorname{rk}(E_{\bar t})=r,\quad \deg(E_{\bar t})=d
+        \text{ for every geometric point } \bar t\to T
+        \Bigr\}\big/\!\sim,
+    \end{aligned}
+    \]
+    其中 \(E_{\bar t}=E|_{C\times\{\bar t\}}\)，\(\sim\) 表示 \(C\times T\) 上向量丛的同构。它参数化 \(C\) 上向量丛族的同构类，但这仍不是正确的取值于栈的模问题。
+\end{exm}
+
+\begin{exm}
+    由 Yoneda 引理，每个概形 \(Y\) 都定义一个模问题。
+\end{exm}
+
+遗憾的是，并非每个取值于广群的模问题都能作为栈由概形或代数空间表示。概形或代数空间的惯性是平凡的，而模问题中的对象可能有非平凡的自同构。例如，若考虑 \(\P^1\) 上线丛的模问题，每个线丛都有整整一个 \(\C^{\times}\) 的自同构。因此，在考虑模问题时，我们既要记住对象，也要记住它们之间的同构，函子的目标应当是广群范畴。
+
+\begin{defn}[非正式]
+    \(S\) 上的\textit{栈} \(\mf{X}\) 是一个伪函子
+    \[ (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Grpd} \]
+    它关于 fppf 拓扑满足对象与态射的下降条件。
+\end{defn}
+
+\begin{exm}
+    考虑栈 \(\ms{Bun}_{r,d}(C)\)，它把概形 \(T\) 送到如下的广群：其对象为 \(T\times C\) 上满足每个几何纤维 \(E_{\bar t}\) 的秩为 \(r\)、度为 \(d\) 的向量丛 \(E\)，其态射为 \(T\times C\) 上向量丛的同构。
+\end{exm}
+
+遗憾的是，需要考虑的栈实在太多了，因此我们需要考虑一个适于用代数几何方法处理的栈的子类。
+
+\begin{defn}
+    \textit{代数栈}是具有可表（由代数空间）对角态射、并且带有一个从概形 \(U\) 出发的光滑满射（该 \(U\) 称为图册）的栈。 
+\end{defn}
+
+注意到，第一个条件意味着：对任何从代数空间出发的态射 \(T \to \mf{X} \times \mf{X}\)，\(T \times_{\mf{X} \times \mf{X}} \mf{X}\) 都是代数空间。这等价于所有 Isom 层都是代数空间，并蕴含任何从概形到 \(\mf{X}\) 的态射都是可表的。
+
+\begin{rmk}
+    对于集合，若有映射 \(f\colon A\to C\) 与 \(g\colon B\to C\)，则纤维积为
+    \[ 
+        A\times_C B=\ab\{(a,b)\mid f(a)=g(b)\}. 
+    \] 
+    对于概形或代数空间，同样的公式描述了概形论意义下纤维积的 \(T\)-点。对于栈，\(2\)-纤维积 \(\mf{A}\times_{\mf{C}}\mf{B}\) 的一个 \(T\)-点是三元组 \((a,b,\phi)\)，其中 \(a\in\mf{A}(T)\)，\(b\in\mf{B}(T)\)，而
+    \[ 
+        \phi\colon f(a)\xrightarrow{\sim}g(b) 
+    \]
+    是 \(\mf{C}(T)\) 中的一个同构。因此，相等必须被替换为同构，且该同构必须作为数据的一部分被记录下来。
+\end{rmk}
+
+
+\subsection{商栈}%
+\label{sub:Quotient stacks}
+
+设 \(G\) 为代数群，\(X\) 为带有 \(G\) 左作用的概形。
+
+\begin{defn}
+    \textit{商栈} \([X/G]\) 把概形 \(T\) 送到如下的广群：其对象为图
+    \begin{equation*}
+    \begin{tikzcd}
+        P \ar{r}{\varphi} \ar{d} & X \\
+        T,
+    \end{tikzcd}
+    \end{equation*}
+    其中 \(P\to T\) 是关于 fppf 拓扑的右主 \(G\)-丛，\(\varphi\) 满足 \(\varphi(pg)=g^{-1}\varphi(p)\)。从 \((P,\varphi)\) 到 \((P',\varphi')\) 的态射是与到 \(X\) 的映射相容的主 \(G\)-丛同构 \(P\xrightarrow{\sim}P'\)。
+\end{defn}
+
+\begin{exm}
+    设 \(\mf{X}\) 为 \(\C\) 上有限型的光滑分离 Deligne–Mumford 栈。若 \(\mf{X}\) 的一般稳定化子是平凡的，或者 \(\mf{X}\) 的粗模空间是拟射影的，则 \(\mf{X}\) 是整体商~\cite{EHKV2001}。这里，Deligne–Mumford 栈是具有无分歧对角态射的代数栈，整体商是指形如 \([U/\on{GL}_n]\) 的栈，其中 \(U\) 是某个带有 \(\on{GL}_n\) 作用的代数空间。
+\end{exm}
+
+\begin{exer}
+    证明广群 \([X/G](\C)\) 等价于 \(G(\C)\) 作用于 \(X(\C)\) 的作用广群。
+\end{exer}
+
+在为每条 \(G(\C)\)-轨道选定一个代表元 \(x_i\in X(\C)\) 之后，上述练习表明，作为抽象广群（而非代数栈），我们有
+\[ 
+    [X/G](\C) \simeq \bigsqcup_{[x_i] \in X(\C)/G(\C)} BG_{x_i}, 
+\]
+其中 \(G_{x_i}\) 是 \(x_i\) 的稳定化子。
+
+
+\subsection{细模空间、粗模空间与好模空间}%
+\label{sub:Fine vs coarse vs good moduli spaces}
+
+\begin{defn}
+    一个模问题的\textit{细模空间}是表示该函子的概形或代数空间 \(M\)。 
+\end{defn}
+
+遗憾的是，细模空间很难找到，因此我们希望放宽这一条件。
+
+\begin{defn}
+    代数栈 \(\mf{X}\) 的\textit{粗模空间}是一个到代数空间的态射 \(\pi\colon\mf{X}\to M\)，使得
+    \begin{enumerate}
+        \item 对每个代数空间 \(Y\)，与 \(\pi\) 复合诱导出双射
+        \[
+            \on{Hom}(M,Y)\xrightarrow{\sim}\on{Hom}(\mf{X},Y);
+        \]
+        \item 对每个代数闭域 \(K\)，诱导映射
+        \[
+            \pi_0(\mf{X}(K))=\ab\{\text{isomorphism classes in }\mf{X}(K)\}
+            \longrightarrow M(K)
+        \]
+        是双射。
+    \end{enumerate}
+\end{defn}
+
+
+即使这样的模空间也并不总存在。好模空间是另一种放宽：它把在几何点上为双射的要求替换为一个上同调仿射性条件~\cite{Alper2013}。
+
+\begin{defn}
+    从代数栈到代数空间的拟紧态射 \(q\colon\mf{X}\to X\) 称为\textit{好模空间}，如果
+    \begin{enumerate}
+        \item 前推函子 \(q_*\colon\ms{QCoh}(\mf{X})\to\ms{QCoh}(X)\) 是正合的；
+        \item 自然映射 \(\mc{O}_X\to q_*\mc{O}_{\mf{X}}\) 是同构。
+    \end{enumerate}
+\end{defn}
+
+\begin{table}[htpb]
+    \centering
+    \caption{模空间的类型}
+    \label{tab:moduli-types-corrected}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{
+        p{0.18\textwidth}
+        p{0.30\textwidth}
+        p{0.22\textwidth}
+        p{0.20\textwidth}
+    }
+        \toprule
+        \textbf{概念}
+        & \textbf{定义性质}
+        & \textbf{几何行为}
+        & \textbf{特征}
+        \\
+        \midrule
+        细模
+        & 表示取值于集合的模函子
+        & 其点表示函子所记录的对象
+        & 具有万有族
+        \\
+        粗模
+        & 对到代数空间的映射是万有的，且在几何同构类上为双射
+        & 每个同构类对应一个几何点
+        & 遗忘自同构
+        \\
+        好模
+        & 上同调仿射且
+          \(\mc{O}_X \simeq q_*\mc{O}_{\mf{X}}\)
+        & 可能把不同的非闭点等同起来
+        & 在 GIT 型例子中给出 \(S\)-等价
+        \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+这些模空间的存在性并不只由稳定化子是有限还是无限来决定。例如，尽管 \(B\G_m\to\on{Spec}\C\) 的稳定化子是 \(\G_m\)，但它既是粗模空间也是好模空间。
+
+\begin{thm}[Keel-Mori {\cite{KeelMori1997}}]
+    设 \(\mf{X}\) 为 \(\C\) 上有限型的代数栈。若其惯性态射
+    \[
+        I_{\mf{X}}
+        \coloneqq
+        \mf{X}\times_{\mf{X}\times\mf{X}}\mf{X}
+        \longrightarrow \mf{X}
+    \]
+    是有限的，则 \(\mf{X}\) 具有粗模空间。\(I_{\mf{X}}\to\mf{X}\) 在几何点 \(x\) 上的纤维是自同构群 \(\on{Aut}(x)\)。
+\end{thm}
+
+\begin{thm}[Alper--Hall--Rydh {\cite{AHR2020}}]
+    设
+    \[
+        q\colon \mf{X}\longrightarrow X
+    \]
+    是一个好模空间，其中 \(\mf{X}\) 是 \(\C\) 上具有仿射对角态射的
+    Noether 代数栈。设 \(x\in\mf{X}(\C)\) 为闭点，记其
+    稳定化子群为 \(G_x\)。
+
+    则存在一个带有 \(G_x\) 作用的仿射概形 \(\on{Spec}A\)，
+    连同笛卡儿图
+    \[
+        \begin{tikzcd}
+            {[\on{Spec}A/G_x]}
+                \arrow[r]
+                \arrow[d]
+            & \mf{X}
+                \arrow[d, "q"]
+            \\
+            \on{Spec}(A^{G_x})
+                \arrow[r, "\mathrm{\acute{e}tale}"]
+            & X,
+        \end{tikzcd}
+    \]
+    其中
+    \[
+        \on{Spec}(A^{G_x})\longrightarrow X
+    \]
+    是 \(q(x)\) 的一个平展邻域。
+\end{thm}
+
+当 \(r\geq 2\) 时，栈 \(\ms{Bun}_{r,d}(C)\) 是局部有限型的，但它既非拟紧也非分离。为看出它不是拟紧的，分别取度为 \(n\) 与 \(d-n\) 的线丛 \(L_n\) 与 \(M_{d-n}\)，并考虑
+\[
+    E_n=L_n\oplus M_{d-n}\oplus\mc{O}_C^{\oplus r-2}.
+\]
+丛 \(E_n\) 包含一个度为 \(n\) 的线子丛。在任何固定秩与度的拟紧向量丛族中，线子丛的度有上界，因此当 \(n\to\infty\) 时，丛 \(E_n\) 不可能全部落在某个拟紧子栈中。为看出该栈不是分离的，注意到每个向量丛 \(E\) 都有标量自同构 \(\G_m\subset\on{Aut}(E)\)。分离代数栈的稳定化子群是本征的，而 \(\G_m\) 不是本征的。过渡到半稳定丛并不会使栈变成分离的；它的作用是切出一个有限型的有界开子栈，该子栈具有好模空间，其闭点恰为 \(S\)-等价类。
+
+\begin{defn}[斜率稳定性]
+    对非零向量丛 \(E\)，定义其斜率为
+    \[ \mu(E)=\frac{\deg E}{\on{rk}E}. \]
+    称向量丛 \(E\) 是\textit{半稳定}的，如果
+    \[ \mu(F)\leq\mu(E) \]
+    对每个非零真饱和子层 \(F\subset E\) 都成立；若不等式严格成立，则称其为\textit{稳定}的。由于 \(C\) 是光滑曲线，向量丛的饱和子层即为子丛，因此等价地只需检验非零真子丛。
+\end{defn}
+
+有了这一定义，我们现在可以考虑开子栈 \(\ms{Bun}_{r,d}^{\mr{ss}}(C)\)。固定秩与度的半稳定丛构成一个有界族，因此该栈是有限型的，特别地，是拟紧的。它仍然不是分离的，因为每个对象都有非本征的标量稳定化子 \(\G_m\)。
+
+\begin{defn}[S-等价]
+    设 \(E\) 为半稳定向量丛。\(E\) 的一个 Jordan--H\"older 滤过是滤过
+    \[ 0=J_0\subset J_1\subset\cdots\subset J_N=E \]
+    使得每个商 \(J_i/J_{i-1}\) 都是斜率为 \(\mu(E)\) 的稳定丛。该滤过不一定唯一，但相伴分次向量丛
+    \[
+        \on{gr}(E)=\bigoplus_{i=1}^N J_i/J_{i-1}
+    \]
+    在非典范同构意义下唯一。称两个具有相同斜率的半稳定向量丛 \(E\) 与 \(E'\) 是\textit{S-等价}的，如果 \(\on{gr}(E)\simeq\on{gr}(E')\)。
+\end{defn}
+
+现在我们考虑 \(C\) 上半稳定向量丛的 \(S\)-等价类的模空间 \(M_{r,d}^{\mr{ss}}(C)\)。存在一个好模空间态射
+\[
+    \ms{Bun}_{r,d}^{\mr{ss}}(C)\longrightarrow M_{r,d}^{\mr{ss}}(C),
+\]
+且 \(M_{r,d}^{\mr{ss}}(C)\) 的闭点与半稳定向量丛的 \(S\)-等价类一一对应。
+
+\begin{rmk}
+    这一定理最初的证明方法是用几何不变量理论构造模空间。本系列讲座的目标则是讨论一种内蕴的方法：使用 \(\Theta\)-分层连同好模空间的存在性判据，而无需事先选取 GIT 表示。
+\end{rmk}
+
+
+\subsection{\(\Theta\)-分层}%
+\label{sub:Theta-stratifications}
+
+这里所用的 \(\Theta\)-分层与数值不变量的框架是在~\cite{HLinstability} 中建立的。
+
+设 \(\mf{X}\) 为代数栈，考虑 \(\Theta\coloneqq[\A^1/\G_m]\)，其中在点上的作用为 \(\lambda\cdot z=\lambda z\)；等价地，坐标函数 \(t\) 的权重为 \(-1\)。假设下面的映射栈都是代数的。定义滤过对象的栈 \(\ms{Filt}(\mf{X})\coloneqq\ms{Map}(\Theta,\mf{X})\) 与分次对象的栈 \(\ms{Grad}(\mf{X})\coloneqq\ms{Map}(B\G_m,\mf{X})\)。存在典范态射
+\[
+    \ev_1\colon\ms{Filt}(\mf{X})\to\mf{X},
+    \qquad
+    \on{gr}\colon\ms{Filt}(\mf{X})\to\ms{Grad}(\mf{X}),
+    \qquad
+    \sigma\colon\ms{Grad}(\mf{X})\to\ms{Filt}(\mf{X}).
+\]
+这里 \(\ev_1\) 是到 \(1\in\A^1\) 的限制，\(\on{gr}\) 由包含 \(B\G_m=\{0\}/\G_m\hookrightarrow\Theta\) 诱导，\(\sigma\) 由投影 \(\Theta\to B\G_m\) 诱导。特别地，\(\on{gr}\circ\sigma=\on{id}\)。我们还记 \(\on{tot}=\ev_1\circ\sigma\colon\ms{Grad}(\mf{X})\to\mf{X}\)。
+
+\begin{defn}
+    代数栈 \(\mf{Y}\) 中的一个\textit{\(\Theta\)-层}是连通分支之并 \(S\subset\ms{Filt}(\mf{Y})\)，使得限制
+    \[
+        \ev_1|_S\colon S\longrightarrow\mf{Y}
+    \]
+    是闭浸入。
+
+    \(\mf{X}\) 的一个\textit{\(\Theta\)-分层}由以下数据组成：
+    \begin{enumerate}
+        \item 一个带有最小元 \(0\) 的全序集 \(I\)；
+        \item 一族递增的开子栈 \(\mf{X}_{\leq\alpha}\subset\mf{X}\)，以 \(\alpha\in I\) 为指标，使得
+        \[
+            \mf{X}_{\leq\alpha}\subset\mf{X}_{\leq\beta}
+            \quad\text{for }\alpha\leq\beta,
+            \qquad
+            \bigcup_{\alpha\in I}\mf{X}_{\leq\alpha}=\mf{X},
+        \]
+        且对每个 \(x\in|\mf{X}|\)，集合 \(\{\alpha\in I\mid x\in|\mf{X}_{\leq\alpha}|\}\) 都有最小元；
+        \item 对每个 \(\alpha>0\)，一个 \(\Theta\)-层 \(S_\alpha\subset\ms{Filt}(\mf{X}_{\leq\alpha})\)，使得
+        \[
+            \mf{X}_{<\alpha}
+            \coloneqq
+            \bigcup_{\beta<\alpha}\mf{X}_{\leq\beta}
+            =
+            \mf{X}_{\leq\alpha}\setminus\ev_1(S_\alpha).
+        \]
+    \end{enumerate}
+    半稳定轨迹是 \(\mf{X}^{\mr{ss}}\coloneqq\mf{X}_{\leq0}\)，且该分层给出无交分解
+    \[
+        \mf{X}
+        =
+        \mf{X}^{\mr{ss}}
+        \sqcup
+        \bigsqcup_{\alpha>0}\ev_1(S_\alpha).
+    \]
+\end{defn}
+
+考虑栈 \(\ms{Bun}_G(C) = \ms{Map}(C, BG)\)。我们将考虑栈
+\[ \ms{Map}(\Theta, \ms{Bun}_G(C)) = \ms{Map}(\Theta \times C, BG). \]
+任何一个这样的映射 \(f\) 都等价于 \(\A^1\times C\) 上一个 \(\G_m\)-等变主 \(G\)-丛 \(\mc{E}\)。当 \(G=\on{GL}_n\) 时，这等价于 \(\A^1\times C\) 上一个 \(\G_m\)-等变向量丛，又等价于一个有限生成的分次局部自由 \(\mc{O}_C[t]\)-模
+\[
+    \mc{E}=\bigoplus_{w\in\Z}\mc{E}_w.
+\]
+按照上面的约定，坐标函数 \(t\) 的权重为 \(-1\)，因此乘以 \(t\) 给出映射
+\[
+    t\colon\mc{E}_w\longrightarrow\mc{E}_{w-1}.
+\]
+由于 \(\mc{E}\) 在 \(\mc{O}_C[t]\) 上局部自由，乘以 \(t\) 是单射。
+
+\begin{rmk}
+    考虑向量丛 \(E=\mc{E}|_{\{1\}\times C}\)。由于 \(\G_m\) 在 \(\G_m\times C\) 上自由作用，等变下降给出
+    \[
+        \mc{E}|_{\G_m\times C}\simeq P_C^*E,
+    \]
+    其中 \(P_C\colon\G_m\times C\to C\) 是投影。等价地，
+    \[
+        E\simeq\big(\mc{E}[t^{-1}]\big)_0.
+    \]
+    定义
+    \[
+        F^wE\coloneqq t^w\mc{E}_w\subset\big(\mc{E}[t^{-1}]\big)_0=E.
+    \]
+    由于 \(t\mc{E}_{w+1}\subset\mc{E}_w\)，我们有 \(F^{w+1}E\subset F^wE\)。\(\mc{E}\) 的有限生成性与局部自由性蕴含这是一个由子丛构成的有限、穷竭且分离的递减滤过，可以写成
+    \[
+        0=F^{b+1}E\subset F^bE\subset\cdots\subset F^aE=E.
+    \]
+
+    反方向地，设 \(E\) 是一个向量丛，带有一个由子丛构成的有限递减滤过 \(F^\bullet E\)，使得商 \(F^wE/F^{w+1}E\) 均局部自由。Rees 构造是分次 \(\mc{O}_C[t]\)-模
+    \[
+        \ms{Rees}(E,F^\bullet)
+        \coloneqq
+        \bigoplus_{w\in\Z}t^{-w}F^wE
+        \subset
+        E\otimes_{\C}\C[t,t^{-1}].
+    \]
+    它在 \(\mc{O}_C[t]\) 上局部自由，且其在 \(t=1\) 与 \(t=0\) 处的纤维满足
+    \[
+        \ms{Rees}(E,F^\bullet)|_{t=1}\simeq E,
+        \qquad
+        \ms{Rees}(E,F^\bullet)|_{t=0}
+        \simeq
+        \bigoplus_w F^wE/F^{w+1}E.
+    \]
+\end{rmk}
+
+因此，从 \(\Theta\) 到向量丛栈的映射，等价于向量丛的一个由子丛构成的有限 \(\Z\)-加权滤过，且其相伴分次件均局部自由。
+
+
+\subsection{非交换局部化}%
+\label{sub:Non-abelian localization}
+
+我们从经典情形开始。设 \(X\) 是带有 \(\G_m\) 作用的光滑射影簇，\(F\) 是一个 \(\G_m\)-等变完美复形，并把
+\[
+    X^{\G_m}=\bigsqcup_\alpha Z_\alpha
+\]
+记为不动点轨迹到连通分支的分解。将表示环 \(R(\G_m)\) 局部化、使下面的等变 Euler 类变为可逆之后，我们有
+\[
+    \chi_{\G_m}(X,F)
+    =
+    \sum_\alpha
+    \chi_{\G_m}\ab(
+        Z_\alpha,
+        F|_{Z_\alpha}\otimes e(N_{Z_\alpha/X})^{-1}
+    ),
+\]
+其中
+\[
+    e(N_{Z_\alpha/X})
+    =
+    \lambda_{-1}(N_{Z_\alpha/X}^\vee)
+    =
+    \sum_{i\geq0}(-1)^i[\Lambda^iN_{Z_\alpha/X}^\vee].
+\]
+
+我们现在考虑栈的版本。设
+\[
+    \mf{X}
+    =
+    \mf{X}^{\mr{ss}}
+    \sqcup
+    \bigsqcup_\alpha\ev_1(S_\alpha)
+\]
+是一个 \(\Theta\)-分层。由于 \(\ev_1|_{S_\alpha}\) 是闭浸入，我们可以把 \(S_\alpha\) 等同于它在 \(\mf{X}\) 中的像。该层的中心是
+\[
+    Z_\alpha\coloneqq\sigma^{-1}(S_\alpha)\subset\ms{Grad}(\mf{X}),
+\]
+其中 \(\sigma\colon\ms{Grad}(\mf{X})\to\ms{Filt}(\mf{X})\) 由投影 \(\Theta\to B\G_m\) 诱导。
+
+\begin{thm}[虚拟非交换局部化 {\cite[Theorem~5.1]{HLlocalization}}]
+    设 \(\mf{X}\) 是带有 \(\Theta\)-分层
+    \[
+        \mf{X}
+        =
+        \mf{X}^{\mr{ss}}
+        \sqcup
+        \bigsqcup_\alpha S_\alpha,
+    \]
+    的拟光滑导出栈，其中我们把每个层等同于它在 \(\ev_1\) 下的像，并设 \(Z_\alpha\) 为其中心。把余切复形的限制按 \(\G_m\)-权重分解为
+    \[
+        \L_{\mf{X}}|_{Z_\alpha}
+        \simeq
+        \L_\alpha^-
+        \oplus
+        \L_\alpha^0
+        \oplus
+        \L_\alpha^+,
+    \]
+    其中 \(\L_\alpha^-\)、\(\L_\alpha^0\) 与 \(\L_\alpha^+\) 的同调分别集中在负、零、正权重。定义
+    \[
+        \E_\alpha
+        \coloneqq
+        \on{Sym}\ab(
+            \L_\alpha^-
+            \oplus
+            (\L_\alpha^+)^\vee
+        )
+        \otimes
+        \det(\L_\alpha^+)^\vee
+        [-\on{rk}(\L_\alpha^+)]
+        \in
+        \ms{QCoh}(Z_\alpha).
+    \]
+    这里 \(\det(\L_\alpha^+)\) 与 \(\on{rk}(\L_\alpha^+)\) 分别表示完美复形 \(\L_\alpha^+\) 的行列式与虚拟秩。我们称一个向量空间复形是有限维的，如果它所有上同调群的直和是有限维的。
+    设 \(F\in\ms{Perf}(\mf{X})\)。假设
+    \[
+        R\Gamma\ab(
+            Z_\alpha,
+            F|_{Z_\alpha}\otimes\E_\alpha
+        )
+    \]
+    对每个 \(\alpha\) 都是有限维的，且对除有限多个之外的所有 \(\alpha\) 都是零调的。则 \(R\Gamma(\mf{X},F)\) 有限维当且仅当 \(R\Gamma(\mf{X}^{\mr{ss}},F)\) 有限维，并且
+    \[
+        \chi(\mf{X},F)
+        =
+        \chi(\mf{X}^{\mr{ss}},F)
+        +
+        \sum_\alpha
+        \chi\ab(
+            Z_\alpha,
+            F|_{Z_\alpha}\otimes\E_\alpha
+        ).
+    \]
+    这里拟光滑是指 \(\L_{\mf{X}}\) 是 Tor 幅度包含于 \([-1,1]\) 的完美复形。
+\end{thm}
+
+
+\subsection{几何不变量理论}%
+\label{sub:Geometric invariant theory}
+
+关于几何不变量理论，参见~\cite{MFK1994}。下面的向量丛例子使用 Harder--Narasimhan 滤过~\cite{HN1975}。
+
+设 \(G\) 为约化群，\(X\) 为带有一个 \(G\)-等变线丛 \(\mc{L}\) 的射影概形。半稳定轨迹可以用 Hilbert--Mumford 判据来定义，它由所有这样的点组成：对所有余特征
+\(\lambda \colon \G_m \to G\)，我们可以定义点 
+\[ x_0 = \lim_{t \to 0} \lambda(t) x \]
+并定义量
+\[ \mu^L(x, \lambda) \coloneqq \frac{-\on{wt}_{x_0}(\mc{L})}{\norm{\lambda}}. \]
+一个点是半稳定的，如果对 \(G\) 的所有余特征都有 \(\mu^L(x, \lambda) \leq 0\)。稳定轨迹由所有使不等式严格成立且稳定化子有限的点组成。
+
+\begin{thm}[{\cite{MFK1994}}]
+    稳定轨迹与半稳定轨迹在 \(X\) 中都是开的。此外，\(X^{\on{ss}}/G\) 是好商，\(X^s/G\) 是几何商。  
+\end{thm}
+
+\begin{exm}
+    考虑亏格至少为 \(2\) 的曲线上秩 \(r\)、度 \(d\) 的向量丛的模栈 \(\ms{Bun}_{r,d}\)。回忆半稳定轨迹定义为由斜率半稳定的向量丛组成。事实上，这可以通过 GIT 得到。
+
+    在 \(C\) 上固定一个丰沛线丛 \(\mc{O}(1)\)。则存在某个 \(n_0\)，使得对所有 \(n \geq n_0\) 与 \(E \in \ms{Bun}_{r,d}\)，\(E(n)\) 都是整体生成的。因此我们可以考虑
+    \[ H^0(C, E(n)) \twoheadrightarrow E(n). \]
+    若令 \(V = \C^N\)，其中 \(N = h^0(E(n))\)，则有满射
+    \[ V \otimes \mc{O}_C(-n) \twoheadrightarrow E. \]
+    因此我们可以把 \(E\) 看作某个 Quot 概形中的一员。在 Quot 概形上，我们可以考虑万有族
+    \begin{equation*}
+    \begin{tikzcd}
+        V \otimes \mc{O}_C(-n) \ar[twoheadrightarrow]{r} \ar{d} & \mc{E} \\
+        \ms{Quot}_{V \otimes \mc{O}_C(-n), p_E} \times C \ar{r}{p} & \ms{Quot}_{V \otimes \mc{O}_C(-n)}.
+    \end{tikzcd}
+    \end{equation*}
+    现在定义线丛
+    \[ \mc{L} \coloneqq \det R^0 p_* (\mc{E}(m)) \]
+    其中 \(m \gg 0\)。我们还可以考虑 \(\mr{SL}(V)\) 在 Quot 概形上的作用。对某个余特征 \(\lambda\)，我们可以把 \(V\) 分裂为
+    \[ V = V_1 \oplus V_2 \]
+    权重分别为 \(s\) 与 \(N-s\)。 
+    然后考虑
+    \[ V_1 \otimes \mc{O}_C(-n) \subset V \otimes \mc{O}_C(-n) \twoheadrightarrow E \]
+    并考虑由此诱导的滤过
+    \[ 0 \to F^1 E \to E \to E / F^1 E \to 0 \]
+    于是我们看到 
+    \[ \lim_{t \to 0} \lambda(t) E = F^1 E \oplus E/F^1 E. \]
+    接着计算限制 \(\mc{L}_{|\on{gr}_F E}\)，得到空间 \(H^0(C, F^1 E(m))\) 与 \(H^0(C, E(m)/F^1 E(m))\)，因此 \(\mc{L}\) 的权重由
+    \[ (N-s) p_{F^1 E}(m) - s p_{E/F^1 E}(m), \]
+    给出，这恢复了 GIT。
+\end{exm}
+
+我们现在考虑不稳定轨迹。设 \(E\) 为 \(C\) 上的向量丛。则存在唯一的滤过
+\[ 0 \subset F^{\ell} E \subseteq \cdots \subseteq F^0 E = E \]
+使得
+\begin{enumerate}
+    \item 所有 \(\on{gr}_F^i E\) 都是半稳定的；
+    \item 对所有 \(i\) 都有 \(\mu(\on{gr}_F^i E) > \mu(\on{gr}_F^{i-1} E)\)。 
+\end{enumerate}
+\begin{rmk}
+    从 GIT 的角度看，我们其实应当把 \(\mu\) 取为约化 Hilbert 多项式。
+\end{rmk}
+
+\subsection{\(\Theta\)-分层的构造}%
+\label{sub:Construction of Theta-stratifications}
+
+设 \(\mf{X}\) 是一个合理的代数栈。\footnote{这里，合理是指诸如局部有限展示且对角态射 qcqs 之类的条件。}现在考虑 \(\A^1 \times C\) 上的某个族 \(\mc{E}\)。如果限制到中心纤维，我们会看到 \(\G_m\) 作用在 \(\on{gr}_F E\) 上，这意味着我们有一个映射 \(\G_m \to \Aut \on{gr}_F E\)，由此可以计算权重。 
+
+注意到态射 \(\sigma \colon \ms{Grad}(\mf{X}) \to \ms{Filt}(\mf{X})\) 是一个 \(\Theta\)-收缩，因此
+\[ \pi_0(\ms{Filt}(\mf{X})) = \pi_0(\ms{Grad}(\mf{X})). \]
+
+\begin{exm}
+    设 \(\mf{X} = BG\)。则我们有
+    \[\ms{Filt}(\mf{X}) = \bigsqcup_{[\lambda]} B P_{\lambda}, \]
+    其中 \(P_{\lambda}\) 是对应于余特征 \(\lambda\) 的抛物子群，且我们总可以在单个 Weyl 房中选取代表元。此外，我们有
+    \[ \ms{Grad}(\mf{X}) = \bigsqcup_{\lambda \in \mathbb{X}_*(T)/W} B L_{\lambda}, \]
+    其中 \(L_{\lambda}\) 是对应于 \(\lambda\) 的 Levi 子群。
+\end{exm}
+
+\begin{defn}
+    \(\mf{X}\) 中的一个\textit{\(\Theta\)-层}是连通分支之并 \(S \subseteq \ms{Filt}(\mf{X})\)，使得
+    \[ \ev_1 \colon S \to \mf{X} \]
+    是闭浸入。
+\end{defn}
+
+粗略地说，闭浸入是单射，因此 \(S\) 中的一个对象由 \(\mf{X}\) 中的一个对象和一个“典范滤过”组成。
+
+\begin{defn}
+    一个\textit{\(\Theta\)-分层}是一族递增的开子栈
+    \[ \mf{X}_{\leq c} \subseteq \mf{X}, \qquad c \in \Gamma, \]
+    其中 \(\Gamma\) 是某个全序集，连同 \(\Theta\)-层
+    \[ S_c \subseteq \ms{Filt}(\mf{X}_{\leq c}), \]
+    并要求满足
+    \[ \mf{X}_{\leq c} = \ev_1(S_c) \sqcup \bigcup_{c' < c} \mf{X}_{\leq c'}. \]
+    特别地，这蕴含
+    \[ \mf{X} = \mf{X}^{\mr{ss}} \sqcup \bigsqcup_{c > 0} \ev_1(S_c). \]
+\end{defn}
+
+类似于 Hilbert--Mumford 判据，我们将用数值不变量来构造 \(\Theta\)-分层。
+\begin{defn}
+    一个取值于全序集 \(\Gamma\) 的\textit{数值不变量} \(\mu\)，是对任意 \(p \in \mf{X}(\C)\) 与任意非退化同态 \(\gamma \colon \G_m^q \to \Aut(p)\)，指定一个尺度不变函数
+    \[ \mu \colon \R^q \setminus \ab\{0\} \to \Gamma \]
+    它们需满足
+    \begin{enumerate}
+        \item 该指定在域扩张下不变。由于我们在 \(\C\) 上工作，这一点不再详述；
+        \item 若有 \(\G_m^q \hookrightarrow \G_m^n \hookrightarrow \Aut(p)\)，则有分解 \(\R^q \setminus \ab\{0\} \to \R^n \setminus \{0\} \to \Gamma\)；
+        \item 若有某个 \(\xi \colon S \to \mf{X}\) 与具有有限核的 \(\gamma \colon \G_{m, S}^q \to \Aut(\xi)\)，则函数 \(\mu_{\kappa(s)}\) 在 \(S\) 上局部常值，其中 \(s\) 取遍 \(S\) 的点。
+    \end{enumerate}
+\end{defn}
+
+我们给出一个从数值不变量 \(\mu\) 出发的构造的朴素版本。定义 \(x \in \mf{X}\) 为半稳定的，如果对任何满足 \(f(1) = x\) 的非退化 \(f \in \ms{Filt}(\mf{X})\) 都有 \(\mu(f) \leq 0\)。若 \(x\) 是不稳定的，则定义其不稳定度为
+\[ M^{\mu}(x) \coloneqq \sup \ab\{ \mu(f) \mid f \in \ms{Filt}(\mf{X}), \ev_1(f) = x\}. \]
+若某个滤过 \(f\) 达到该上确界，我们称之为“Harder-Narasimhan 滤过”。
+
+\begin{defn}
+    称数值不变量 \(\mu\) 是\textit{标准}的，如果
+    \begin{enumerate}
+        \item 对 \(x \in \R^q \setminus \ab\{0\}\)，\(\mu(x)\) 与 \(\mu(-x)\) 不同时为正；
+        \item 每个函数 \(\mu_{\gamma}\) 都是严格拟凹的，即对所有 \(\delta \in [0,1]\) 以及满足 \(\mu(x_0), \mu(x_1) \geq 0\) 的线性无关 \(x_0, x_1 \in \R^q\)，有 
+            \[\mu_{\gamma}(\delta x_0 + (1-\delta)x_1) \geq \max\ab\{\mu_{\gamma}(x_0), \mu_{\gamma}(x_1)\}.\] 若其中任何一个值严格为正，则要求不等式严格成立。
+    \end{enumerate}
+\end{defn}
+
+下一个条件是某种有理性。我们考虑 \(\mathbb{X}_*(T)_{\R}\)，目标是找到有理点。这引出条件 (R)：若 \(\mu_{\gamma}\) 对某个 \(\gamma\) 取到正值，则它在某个有理点处取到最大值。
+
+\begin{thm}[{\cite{HLinstability}}]
+    设 \(\mf{X}\) 是一个栈，\(\mu\) 是满足条件 (R) 的标准数值不变量。则 \(\mu\) 定义一个 \(\Theta\)-分层当且仅当它满足以下条件：
+    \begin{itemize}
+        \item 对任何具有分式域 \(K\) 与剩余域 \(k\) 的离散赋值环 \(R\)，有 \(\mu(f_K^{\mr{HN}}) \leq M^{\mu}(f_k)\)（HN-特殊化）；
+        \item 对任何从有限型概形出发的映射 \(B \colon T \to \mf{X}\)，存在拟紧开子栈 \(\mf{X}' \subseteq \mf{X}\)，使得对任何有限型点 \(p \in T(k)\) 以及 \(B(p)\) 的任一满足 \(\mu(f) > 0\) 的滤过 \(f\)，都存在 \(B(p)\) 的另一滤过 \(f'\)，满足 \(\mu(f') \geq \mu(f)\) 且 \(f'(0) \in \mf{X}'\)（HN-有界性）。
+    \end{itemize}
+\end{thm}
+
+这里的关键在于：标准性与条件 (R) 结合 HN-有界性蕴含存在性，而 HN-特殊化蕴含唯一性。

@@ -1,0 +1,458 @@
+\section{五次三维流形高亏格 GW 不变量的结构（Shuai Guo）}%
+\label{sec:Structure of higher-genus GW invariants of the quintic (Shuai Guo)}
+
+\subsection{问题}%
+\label{sub:The problem (Guo)}
+
+我们考虑五次三维流形 \(X = X_5 \subset \P^4\)，并询问其中包含多少条亏格为 \(g\)、次数为 \(d\) 的曲线。在亏格零的情形，答案的开头为
+\[ 2875, \qquad 609250, \qquad 317206375, \qquad \ldots \]
+
+由于 \(X\) 是 Calabi-Yau 的，模空间 \(\Mbar_{g,n}(X,\beta)\) 的虚拟维数为零，且弦方程给出 \(\ab<\1, \gamma_2, \ldots, \gamma_n>_{g,n,\beta} = 0\)，除非 \((g,n,\beta) = (0,3,0)\)。因此我们定义主不变量为
+\[ N_{g,\beta} \coloneqq \ab<>_{g,0,\beta} = \int_{[\Mbar_g(X,\beta)]^{\vir}} 1 \]
+并把这些数打包进生成级数
+\[ F_g(Q) \coloneqq \sum_{\beta \text{ 有效}} N_{g,\beta}Q^{\beta}. \]
+
+不变量 \(N_{g,\beta}\) 是有理数，而我们真正想要的整数是 BPS 不变量 \(n_{g,\beta}\)。它们由正次数部分 \(F_g^+\) 通过多重覆盖变换定义：
+\[ \sum_{g \geq 0} F_g^+(Q)\lambda^{2g-2} = \sum_{\substack{g \geq 0 \\ \beta > 0}} n_{g,\beta} \sum_{k \geq 1} \frac{1}{k} \ab(2 \sin \frac{k\lambda}{2})^{2g-2}Q^{k\beta}. \]
+注意，只有 \(n_{g,\beta}\) 被期望是整的，且上面的那些数就是 \(n_{0,d}\)。
+
+\begin{table}[htpb]
+    \centering
+    \caption{五次三维流形的首批 BPS 不变量 \(n_{g,d}\)}
+    \label{tab:quinticbps}
+    \begin{tabular}{crrrrr}
+        \toprule
+        \(g\) & \(d=1\) & \(d=2\) & \(d=3\) & \(d=4\) & \(d=5\) \\
+        \midrule
+        0 & 2875 & 609250 & 317206375 & 242467530000 & 229305888887625 \\
+        1 & 0 & 0 & 609250 & 3721431625 & 12129909700200 \\
+        2 & 0 & 0 & 0 & 534750 & 75478987900 \\
+        3 & 0 & 0 & 0 & 8625 & \(-15663750\) \\
+        4 & 0 & 0 & 0 & 0 & 49250 \\
+        5 & 0 & 0 & 0 & 0 & 1100 \\
+        6 & 0 & 0 & 0 & 0 & 10 \\
+        7 & 0 & 0 & 0 & 0 & 0 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+我们看到~\Cref{tab:quinticbps} 的每一列最终都变为零。这就是 Castelnuovo 界，对五次三维流形而言，它断言一旦 \(g > \frac{d^2+5d+10}{10}\) 就有 \(n_{g,d} = 0\)，它由 Liu--Ruan~\cite{LiuRuanCastelnuovo} 证明。表中各项的整性即 Gopakumar-Vafa 猜想，由 Ionel--Parker~\cite{IonelParker2018} 证明。
+
+在亏格零的情形，Candelas-de la Ossa-Green-Parkes 利用镜流形上的周期积分计算了 \(F_0\)，我们在~\Cref{sub:Enumerative mirror symmetry in genus zero} 中讨论过。在高亏格的情形，Bershadsky-Cecotti-Ooguri-Vafa 给出了一个递推，它在相差有限多个未知常数的意义下由 \(h < g\) 的 \(F_h\) 产生 \(F_g\)。我们的目标是解释 log GLSM 如何确定这种不确定性。
+
+\subsection{亏格零与 B-模型的多项式结构}%
+\label{sub:Genus zero and the polynomial structure of the B-model}
+
+回忆~\Cref{sub:Enumerative mirror symmetry in genus zero}，对五次三维流形我们考虑 \(I\)-函数
+\[
+    I(q,z) = z\sum_{d \geq 0} q^{H/z+d} \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d (H+mz)^5} = I_0 z + I_1 H + I_2 \frac{H^2}{z} + I_3 \frac{H^3}{z^2},
+\]
+其各分量被 Picard-Fuchs 算子
+\[ D^4 - 5q(5D+1)(5D+2)(5D+3)(5D+4), \qquad D = q \odv{}{q} \]
+零化。若记 \(J_k = I_k/I_0\) 及 \(\frac{I_1}{I_0} = \log q + \tau(q)\)，从而 \(Q = e^{I_1/I_0} = qe^{\tau(q)} = q + O(q^2)\)，则亏格零镜面定理断言
+\[ F_0(Q) = \frac{5}{2}\ab(J_1 J_2 - J_3). \]
+
+对我们的目的而言，把五次三维流形的公式置于一般的镜面对称图景中是有用的。设 \(\mc{X} = \ab\{(X,\omega)\}\) 是一族 Calabi-Yau 三维流形，具有 Kähler 模空间 \(\mc{M} \ni Q = e^{2\pi i \omega}\)，并设 \(\mc{X}^{\vee} = \ab\{(X^{\vee},J)\}\) 是具有复模空间 \(\mc{M}^{\vee} \ni q\) 的镜像族。Picard-Fuchs 方程的解是 \(X^{\vee}\) 上的周期，并组装为
+\[ I(z) = zI_0\varphi_0 + I_1 + I_2 z^{-1} + I_3 z^{-2}, \]
+它落在 \(z\varphi_0, \varphi_{\alpha}, \varphi^{\alpha}z^{-1}, \varphi^0 z^{-2}\) 的张成空间中。这里 \(I_1 = \sum_{\alpha} I_1^{\alpha}\varphi_{\alpha}\)、\(I_2 = \sum_{\alpha} I_{2,\alpha}\varphi^{\alpha}\)、\(I_3 = I_{3,0}\varphi^0\)，而镜面映射同样是 \(Q = e^{I_1/I_0} = qe^{\tau(q)}\)。
+
+我们将用到五次三维流形复模空间直线上的三个特殊点：大复结构点 \(q=0\)、锥形点 \(q = 5^{-5}\)（此处有一个周期为零），以及轨形（或 Landau-Ginzburg）点 \(q = \infty\)。镜面映射在 \(q=0\) 处有定义，且在该点的展开产生 Gromov-Witten 不变量；而在高亏格中我们将在另外两个点处施加边界条件。
+
+我们现在用三点函数重新表述镜面定理。取 \(\mc{M}^{\vee}\) 上的局部坐标 \(q_i\)，设 \(\ab\{\phi_i\}\) 为 A-侧对应的基，并定义
+\[ C^A_{ijk}(Q) \coloneqq I_0^2 \ab<\phi_i, \phi_j, \phi_k>^X_{0,3}, \qquad C^B_{ijk}(q) \coloneqq \int_{X^{\vee}} \partial_i \partial_j \partial_k \Omega \wedge \Omega. \]
+
+\begin{thm}[镜面定理 {\cite{Givental1998,LLY1997}}]
+    我们有 \(C^A_{ijk}(Q(q)) = C^B_{ijk}(q)\)。此外 \(C^B_{ijk} \in \Delta^{-1}\Q[q]\)，因此它是 \(\mc{M}^{\vee}\) 上整体定义的亚纯函数，极点只沿判别式出现。
+\end{thm}
+
+特别地，乘以 \(I_0\) 的适当幂次并施加镜面映射后，亏格零生成函数成为 \(q\) 的有理函数，极点只沿判别式出现。因此它由有限多个系数决定。
+
+\begin{exm}
+    对超平面基下的五次三维流形，
+    \[ C_{111} = \frac{5}{1-5^5 q}. \]
+\end{exm}
+
+\begin{exm}
+    对 \(X = X_{3,3} \subset \P^2 \times \P^2\)，Yukawa 耦合为
+    \begin{align*}
+        C_{111} &= \frac{3^4 q_1 (2+3^3q_1+3^3q_2)}{\Delta}, & C_{222} &= \frac{3^4 q_2(2+3^3q_1+3^3q_2)}{\Delta}, \\
+        C_{112} &= \frac{(1-3^3q_1-3^3q_2)(1+2\cdot 3^3 q_1 - 3^3 q_2)}{\Delta}, \\
+        C_{122} &= \frac{(1-3^3q_1-3^3q_2)(1-3^3q_1+2\cdot3^3q_2)}{\Delta},
+    \end{align*}
+    其中
+    \[ \Delta = 1 - 3\cdot3^3(q_1+q_2) + 3\cdot3^6(q_1^2 - 7q_1q_2+q_2^2) - 3^9(q_1+q_2)^3. \]
+\end{exm}
+
+在高亏格的情形，我们期望存在满足下式的规范化势 \(f^A_{g,i}\)：
+\[ f^A_{g,i}(Q(q)) = f^B_{g,i}(q) \in \Delta^{-(2g-2+n)}\Q[q], \]
+其中右端由一个对图的求和计算。
+
+\subsection{BCOV Feynman 规则}%
+\label{sub:The BCOV Feynman rule}
+
+B-模型的 Feynman 规则与全纯反常方程源于~\cite{BCOV1994}。对五次三维流形，Chang--Guo--Li 在~\cite{CGL2021} 中证明了多项式性，并在~\cite{CGL2026} 中证明了 Feynman 规则。
+
+我们现在把 BCOV 递推作为一条 Feynman 规则来讨论。它来自辛变换量子化的一个有限维模型，如~\Cref{sub:Operator formalism and geometric quantization} 所述。设 \(\mc{H} = \mc{H}^- \oplus \mc{H}^+ \subset \mc{H}_{\infty}\) 为辛空间，满足 \(d+1 = \dim \mc{H}^+ = \dim \mc{H}^-\)，并置
+\[ R = \begin{pmatrix} A & B \\ C & D \end{pmatrix} \in \End \mc{H}, \qquad \mc{Q}(\mbf{x},\bp) = (\bp, D^{-1}\mbf{x}) - \frac{1}{2}(\bp, D^{-1}C\bp). \]
+给定总势 \(F(\hbar, \mbf{x})\)，我们由 Gauss 积分形式地定义变换后的势
+\[ f(\hbar, \mbf{x}) \coloneqq (\wh{R}F)(\hbar,\mbf{x}) = \ln \int e^{\hbar^{-1}(\mc{Q}(\mbf{x},\bp') - \mbf{x}'\bp') + F(\hbar,\mbf{x}')}\d{\mbf{x}'}\d{\bp'}. \]
+按稳相展开给出对图的求和。这里，\(D^{-1}C\) 提供每条边上的传播子，而 \(F\) 提供顶点。
+
+对 Calabi-Yau 三维流形，传播子按指标个数分别记为 \(S^{\varphi\varphi}\)、\(S^{\varphi}\) 与 \(S\)，而顶点是规范化的 A-模型关联函数
+\[ P^A_{g,n}(Q) = I_0^{2-2g}\ab<\phi_1, \ldots, \phi_n>^X_{g,n}. \]
+注意，这些与后面将出现的、解量子微分方程的算子 \(S_{\tau}(z)\) 毫无关系。
+
+\begin{exm}
+    对无标记的亏格二五次三维流形，Feynman 规则为
+    \begin{align*}
+        f_2^B ={}& P_2 + \frac{1}{2}S^{\varphi\varphi}P_{1,1}^2 + \frac{1}{2}S^{\varphi\varphi}P_{1,2} + (S^{\varphi\varphi})^2 P_{1,1} + \frac{1}{8}(S^{\varphi\varphi})^2 P_{0,4} \\
+        &+ \frac{1}{8}(S^{\varphi\varphi})^3 + \frac{1}{12}(S^{\varphi\varphi})^3 + \frac{\chi}{24}S^{\varphi}P_{1,1} + \frac{1}{2}\frac{\chi}{24}S^{\varphi}S^{\varphi\varphi} \\
+        &+ \frac{1}{2}\frac{\chi}{24}\ab(\frac{\chi}{24}-1)S,
+    \end{align*}
+    其中 \(\chi = \chi(X_5) = -200\)。这是传播子的一个三次多项式。
+\end{exm}
+
+如~\Cref{sub:R-matrix action} 所述，我们可以把它解释为对稳定图的求和。顶点 \(v\) 贡献低亏格关联函数 \(P_{g_v, \on{val}(v)}\)；内部边将两个插入与传播子缩并；腿记录其余的插入。每个图以 \(\frac{1}{\ab|\Aut \Gamma|}\) 加权。如常，
+\[ g(\Gamma) = h^1(\Gamma) + \sum_v g_v, \qquad 2g_v - 2 + \on{val}(v) > 0, \]
+而 \(f_g^B\) 是所有亏格 \(g\) 稳定图的贡献之和。
+
+\subsection{全纯反常方程}%
+\label{sub:The holomorphic anomaly equation}
+
+我们现在把递推改写为一个微分方程。B-模型振幅 \(\mc{F}_g(z,\bar{z})\) 不是全纯的，且对 \(g \geq 2\)，其偏离全纯性的程度由下式给出：
+\[ \partial_{\bar{i}} \mc{F}_g = \frac{1}{2}\bar{C}_{\bar{i}}^{jk}\ab( D_j D_k \mc{F}_{g-1} + \sum_{r=1}^{g-1} D_j \mc{F}_r D_k \mc{F}_{g-r} ). \]
+这里，\(C_{ijk}\) 是 Yukawa 耦合，\(\bar{C}_{\bar{i}}^{jk}\) 由 \(\bar{C}_{\bar{i}\bar{j}\bar{k}}\) 用 Weil-Petersson 度量提升两个指标得到，而 \(D_j\) 是 Hodge 线丛适当幂次上的协变导数。右端两项是 \(\Mbar_g\) 的两个边界层片，即非分离结点与分离结点。因子 \(\frac{1}{2}\) 遗忘两个分支的次序。
+
+若我们选取局部的 \(\bar{\partial}\)-原函数
+\[ \partial_{\bar{i}}S^{jk} = \bar{C}_{\bar{i}}^{jk}, \qquad \partial_{\bar{i}}S^j = G_{i\bar{\ell}}S^{\ell j}, \qquad \partial_{\bar{i}}S = G_{i\bar{\ell}}S^{\ell}, \]
+使得在相差一个全纯项的意义下，反常方程成为多项式偏微分方程
+\[ \pdv{\mc{F}_g}{S^{jk}} = \frac{1}{2}\ab( D_jD_k \mc{F}_{g-1} + \sum_{r=1}^{g-1} D_j \mc{F}_r D_k \mc{F}_{g-r} ). \]
+这些传播子只在相差全纯张量的意义下有定义，而这种自由正是全纯不确定性的来源。
+
+\begin{rmk}
+    在我们将用于五次三维流形的单参数规范化变量下，它写成
+    \[ -\partial_0 P_g = \frac{1}{2}P_{g-1,2} + \frac{1}{2}\sum_{r=1}^{g-1}P_{r,1}P_{g-r,1}, \qquad -\partial_1 P_g = 0. \]
+\end{rmk}
+
+为了看出图求和为何满足此方程，注意在无标记的势中，非全纯生成元只出现在边因子中。因此沿传播子方向的导数会挑出单独一条边并将其剪开。两个半边成为所得低亏格顶点上的标记，而协变导数由除子方程对应于这些标记。剪开一个环得到 \(P_{g-1,2}\)，剪开一条分离边得到 \(P_{g_1,1}P_{g_2,1}\)。
+
+\begin{rmk}
+    需要说明，这里的蕴含关系是单向的。BCOV 图规则蕴含反常方程，但反常方程本身并不能决定图规则。要恢复同一个解，我们还需要传播子约定、低亏格顶点数据以及边界条件。
+\end{rmk}
+
+若所有低亏格顶点均已知，则右端已知，因此我们可以对非全纯生成元积分，得到
+\[ P_g = P_g^{\mr{particular}} + f_g(Y), \]
+其中有限生成性给出全纯不确定性
+\[ f_g(Y) = P_g|_{A = B_1 = B_2 = B_3 = 0} = \sum_{i=0}^{3g-3}a_{i,g}Y^i, \qquad Y = (1-5^5q)^{-1}. \]
+我们看到，反常方程在每个亏格留下 \(3g-2\) 个未知系数。
+
+\begin{rmk}
+    对五次三维流形，次数零数据连同轨形正则性消去了这些自由度中的 \(\ceil{\frac{3g-3}{5}}+1\) 个，而锥形点空隙又提供 \(2g-2\) 个进一步的条件，因此
+    \[ 3g-2 - \ab(\ceil*{\frac{3g-3}{5}}+1) - (2g-2) = \floor*{\frac{2g-2}{5}} \]
+    个参数余留下来，它们是真正新的有效不变量。这恰好是~\Cref{eqn:balancing condition} 所预言的 \(\infty\)-顶点未知量的个数，即满足 \(\beta \leq \frac{2g-2}{5}\) 的 \(\beta\) 的个数。
+\end{rmk}
+
+于是我们得到物理学家提出的如下猜想性算法：BCOV Feynman 规则、Landau-Ginzburg 点处的轨形正则性（这是 LG/CY 对应的一种形式，对五次三维流形而言是 Guo-Ruan-Janda 正在进行的工作），以及锥形点空隙条件。此外还可加上 Gopakumar-Vafa 整性与 Castelnuovo 界。
+
+\subsection{四种理论}%
+\label{sub:Four theories}
+
+回忆~\Cref{sec:Log GLSM (Qile Chen)}，log GLSM 携带两个虚拟闭链。约化闭链恢复五次三维流形 Gromov-Witten 理论，而典范等变闭链容许一个单位根特殊化，它是半单的，因此可由 Givental-Teleman 计算。二部图求和
+\[ \Omega^{\mr{GW}}_{g,n} = \sum_{\Gamma \text{ 二部}} \frac{1}{\ab|\Aut \Gamma|} \ab( \prod_{v \in V_{\infty}(\Gamma)} c^{\mr{eff}}_{g_v,\beta_v}) \Cont^{\mr{can}}_{\Gamma} \]
+以前者由后者表出，代价是在 \(\infty\)-顶点处引入有效不变量 \(c^{\mr{eff}}_{g,\beta}\)。把它们替换为形式参数 \(\mbf{C} = \ab\{c_{g,\beta}\}\) 即得\textit{扩张 \(\mbf{C}\)-族}，其顶点数据由亚纯与橡胶 log GLSM 理论提供。
+
+我们将考虑以下四种理论。
+\begin{itemize}
+    \item \textit{\(t\)-扭转几何理论}令 \(\lambda_i = 0\) 并保留辅助权 \(t\)。它有稳定映射与稳定商两个版本，其中商版本给出下面的亏格二局部化公式。
+    \item \textit{形式五次三维流形}，即形式 \(\lambda\)-扭转理论，令 \(t = 0\) 且 \(\lambda_i = \zeta_5^i \lambda\)。它是一个半单 CohFT，因此具有普适且可计算的 \(R\)-矩阵。
+    \item \textit{扩张 \(\mbf{C}\)-族}在二者之间插值，同时具有形式顶点与亚纯顶点的二部图就生活在其中。
+    \item \textit{五次三维流形 Gromov-Witten 理论}通过令 \(\mbf{C} = \mbf{C}^{\mr{eff}}\) 再令 \(\lambda \to 0\) 得到，它才是我们想计算的理论。
+\end{itemize}
+
+\begin{warn}
+    在高亏格中，\(t\)-扭转稳定商理论的 \(t^0\) 系数并不是形式 \(\lambda\)-扭转理论的 \(\lambda^0\) 系数。
+\end{warn}
+
+\subsection{形式五次三维流形}%
+\label{sub:The formal quintic}
+
+形式五次三维流形及其全纯反常方程在~\cite{LhoPandharipande2019} 中得到了研究；它与扩张理论的比较则在~\cite{GJRstructure} 中展开。
+
+设 \(E = \mc{O}_{\P^4}(5)\)，并设 \(\pi \colon \mc{C} \to \Mbar_{g,n}(\P^4,d)\) 为万有曲线。\(t\)-扭转闭链为
+\[ e(R\pi_* f^* E \otimes [1]) \cap [\Mbar_{g,n}(\P^4,d)]^{\vir}, \]
+其中 \([1]\) 的等变第一陈类为 \(t\)。若改从完全 \((\C^{\times})^5\)-等变闭链出发，形式五次三维流形即单位根特殊化
+\[ [\Mbar_{g,n}(\P^4,d)]^{\vir,\lambda} \coloneqq \ab( e(R\pi_*f^*E \otimes [1]) \cap [\Mbar_{g,n}(\P^4,d)]^{\vir}_{(\C^{\times})^5})\Big|_{t=0, \; \lambda_i = \zeta_5^i \lambda}, \]
+其中 \(\zeta_5 = e^{2\pi i/5}\)。关系 \(H^5 = \lambda^5\) 使量子乘积在一般点处半单，同时保留 \(\lambda\) 作为参数。
+
+状态空间、单位元与配对由以下给出：
+\[ \mc{H}_{\lambda} = \Q(\lambda)[H]/(H^5-\lambda^5), \quad \1 = 1, \quad (\gamma_1,\gamma_2)^{\lambda} = \int_{\P^4, (\C^{\times})^5} e(\mc{O}(5))\gamma_1\gamma_2 \Big|_{\lambda_i = \zeta_5^i\lambda}, \]
+而 CohFT 类为
+\[ \Omega^{\lambda}_{g,n}(\gamma_1, \ldots, \gamma_n) = \sum_{d \geq 0} q^d \rho_* \ab( \prod_{i=1}^n \ev_i^*(\gamma_i) \cap [\Mbar_{g,n}(\P^4,d)]^{\vir,\lambda}), \]
+其中 \(\rho\) 遗忘映射并稳定化定义域。若以 \(\tau(q) = I^{\lambda}_1(q)/I^{\lambda}_0(q)\) 作 \(\tau(q)H\) 平移，则平移后的理论 \(\Omega^{\lambda,\tau}\) 是半单的。把标量扩张到 \(\Q(\zeta_5,\lambda)\) 后，幂等元基满足
+\[ \omega^{\lambda}_{g,n}(e_{\alpha_1}, \ldots, e_{\alpha_n}) = \sum_{\alpha}\Delta_{\alpha}^{g-1}\prod_i \delta_{\alpha,\alpha_i}. \]
+于是~\Cref{thm:teleman} 给出
+\[ \Omega^{\lambda,\tau}_{g,n} = \sum_{\Gamma \in G_{g,n}} \frac{1}{\ab|\Aut\Gamma|}\iota_* \Cont_{\Gamma} \]
+其装饰如~\Cref{sub:R-matrix action} 所示。携带 \(\gamma\) 的腿得到 \(R^{-1}(\bar{\psi})\gamma\)，边得到
+\[ V_R(z_1,z_2) = \frac{\sum_{\alpha} e_{\alpha}\otimes e^{\alpha} - \sum_{\alpha} R^{-1}(z_1)e_{\alpha} \otimes R^{-1}(z_2)e^{\alpha}}{z_1+z_2}, \]
+而顶点得到拓扑场论 \(\omega\)，缺失的保单位元部分通过 \(T(z) = z(\1 - R^{-1}(z)\1)\) 插入到被遗忘的标记处。
+
+\begin{rmk}
+    我们看到边因子没有极点。令 \(z_2 = -z_1\) 并使用辛条件的形式 \(R^{-1}(z) = R^*(-z)\)，分子为零。因此它被 \(z_1+z_2\) 整除，故 \(V_R\) 是两个余切线变量的幂级数。\(z_1^p z_2^q\) 的系数是连同 \(\bar{\psi}_1^p \bar{\psi}_2^q\) 置于结点处的类，而将它与相邻的两个拓扑场论张量缩并即把分支粘合起来。
+\end{rmk}
+
+\subsection{如何计算 \(R\)-矩阵}%
+\label{sub:How to compute the R-matrix (Guo)}
+
+为计算 \(R\)-矩阵，我们从形式等变 \(I\)-函数出发：
+\[ I^{\lambda}(q,z) = z\sum_{d\geq0}q^d \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d ((H+mz)^5 - \lambda^5)} = zI_0 + I_1^{\lambda}H + z^{-1}I_2^{\lambda}H^2 + \cdots. \]
+直到 \(H\) 为止的系数都与 \(\lambda\) 无关，故 \(I_1^{\lambda} = I_1 - I_0 \log q\)，且镜面平移 \(\tau(q) = I_1^{\lambda}(q)/I_0(q)\) 不含对数。置
+\[ D = q\odv{}{q}, \qquad Y = (1-5^5q)^{-1}, \qquad L = Y^{1/5} \]
+并引入诸基
+\[ \phi_k = I_{1,1}\cdots I_{k,k}H^k, \qquad \bar{\phi}_k = I_0 L^{-k-1}\phi_k, \]
+其中对角 Birkhoff 因子由递推定义：
+\[ I_{p,0} = I_p, \qquad I_{p,r} = \frac{I_{p-1,r-1}}{I_{r-1,r-1}} + D \ab( \frac{I_{p,r-1}}{I_{r-1,r-1}}), \quad 1 \leq r \leq p, \]
+于是特别有 \(I_{1,1} = 1+D\tau\)。幂等元与典范坐标由以下给出：
+\[ e_{\alpha} = \frac{1}{5}\sum_{i=0}^4 h_{\alpha}^{-i}\frac{\phi_i}{L^i}, \qquad u_{\alpha} = h_{\alpha}\int_0^q (L(s)-1)\frac{\d{s}}{s}, \qquad h_{\alpha} = \zeta_5^{\alpha}\lambda. \]
+
+我们将用量子微分方程来确定 \(R\)-矩阵对 \(q\) 的依赖。基本解满足
+\[ zDS_{\tau}(z) + S_{\tau}(z)H = M_{\tau}S_{\tau}(z), \qquad M_{\tau} = \dot{\tau}\star, \quad \dot{\tau} \coloneqq (1+D\tau)H = I_{1,1}H, \]
+而在规范化的典范方向 \(\alpha\) 上，稳相近似给出
+\[ (S_{\tau})_{i\bar{\alpha}}(z)C_{\alpha}(z)^{-1} = e^{u_{\alpha}/z}R_{i\bar{\alpha}}(z), \]
+从而
+\[ (zD+h_{\alpha}L)R_{i\bar{\alpha}} = \sum_j (M_{\tau})_i^j R_{j\bar{\alpha}}. \]
+这里，\(C_{\alpha}(z)\) 是 \(q=0\) 处的量子 Riemann-Roch（等价地，Gamma 函数）因子，它与辛条件一起固定了微分方程无法看到的常数。与~\Cref{sub:How to compute the R-matrix} 末尾一样，微分方程给出递推，而振荡积分给出初始条件。
+
+记 \(R(z) = \mr{Id} + R_1 z + R_2 z^2 + \cdots\)，我们可以用上面的方程由前面的各项逐个确定 \(R_{k+1}\)。有两个特点使五次三维流形成为可处理的。第一，单位根基有五个扇区，而一个模 \(5\) 的电荷规则在每一行只允许一种剩余模式，于是大多数矩阵元在计算开始之前就已为零。第二，每个系数都落在有限生成环
+\[ \mc{R} = \Q[A,B_1,B_2,B_3,Y], \qquad A = \frac{DI_{1,1}}{I_{1,1}}, \quad B_k = \frac{D^k I_0}{I_0}, \]
+中，因此稳定图求和归结为有限的代数计算。
+
+\begin{rmk}
+    特别地，由维数原因，固定的亏格只需要 \(R\) 的有限部分。在 \(\Mbar_{g,n}\) 上只有总次数不超过 \(3g-3+n\) 的类有贡献，其余都积分为零，因此对无标记的势我们只需要 \(R_0, \ldots, R_{3g-3}\)。亏格 \(4\) 止于 \(z^9\)，亏格 \(5\) 止于 \(z^{12}\)。
+\end{rmk}
+
+\subsection{亏格二}%
+\label{sub:Genus two}
+
+这里讨论的亏格二镜面公式归功于 Guo--Janda--Ruan~\cite{GJRgenus2}。
+
+我们现在在亏格二中把两条路线都走一遍。几何路线使用 \(t\)-扭转稳定商理论，施加虚拟局部化得到五项贡献，然后施加稳定商墙交叉落到五次三维流形 Gromov-Witten 理论上。形式路线使用半单的 \(\lambda\)-扭转理论与 \(R\)-矩阵来计算稳定图求和。这只给出形式的首项部分，之后还必须加上有效与亚纯的剩余图。
+
+\begin{notn}
+    记
+    \[ \ab<\alpha_1, \ldots, \alpha_n>^{t,\mr{SQ}}_{g,n} \coloneqq \sum_{d\geq0}q^d \int_{[\Mbar_{g,n}(\P^4,d)]^{\vir}}e(R\pi_*\mc{L}^{\otimes 5}\otimes[-1])\prod_i \ev_i^*(\alpha_i), \]
+    其中 \(\mc{L}\) 是万有稳定商线丛，且 \(c_1^{\C^{\times}}([-1]) = -t\)（下面会再回到这个符号约定）。这是稳定商的符号约定，与上面稳定映射闭链中出现的 \([1]\) 并不相同。
+\end{notn}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[scale=0.95,transform shape]
+        \draw[gray] (-0.9,0) -- (11.2,0);
+        \draw[gray] (-0.9,2.2) -- (11.2,2.2);
+        \node[anchor=east,gray] at (-0.9,0) {$0$};
+        \node[anchor=east,gray] at (-0.9,2.2) {$\infty$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (a) at (0,0) {$\Sigma_2(d)$};
+        \node at (0,-1) {$\Gamma^2$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (b0) at (2.7,0) {$\Sigma_1(d)$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (b1) at (2.7,2.2) {$\Sigma_1(0)$};
+        \draw[thick] (b0) -- (b1);
+        \node at (2.7,-1) {$\Gamma^1$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (c0) at (5.6,0) {$\Sigma_0(d)$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (c1) at (4.9,2.2) {$\Sigma_1(0)$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (c2) at (6.6,2.2) {$\Sigma_1(0)$};
+        \draw[thick] (c0) -- (c1);
+        \draw[thick] (c0) -- (c2);
+        \node at (5.6,-1) {$\Gamma_b^0$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (d0) at (9.6,0) {$\Sigma_0(d)$};
+        \node[ellipse,draw,thick,minimum width=1.5cm,minimum height=0.75cm] (d1) at (9.6,2.2) {$\Sigma_1(0)$};
+        \draw[thick] (d0) to[bend left=25] (d1);
+        \draw[thick] (d0) to[bend right=25] (d1);
+        \node at (9.6,-1) {$\Gamma_a^0$};
+    \end{tikzpicture}
+    \caption{亏格二的四个非常值局部化图，每个顶点画成其 Riemann 曲面分支。}%
+    \label{fig:g2loc}
+\end{figure}
+
+四个非常值图绘于~\Cref{fig:g2loc}，其贡献为
+\begin{align*}
+    \Cont_{\Gamma^2} &= \ab<>^{t,\mr{SQ}}_{2,0}, \\
+    \Cont_{\Gamma^1} &= -\ab< \frac{-\frac{5}{2}H^3 + \frac{5}{24}H^4t^{-1}}{(t-5H)(t-5H-\psi)}>^{t,\mr{SQ}}_{1,1}, \\
+    \Cont_{\Gamma_b^0} &= \ab< \frac{-\frac{5}{2}H^3+\frac{5}{24}H^4t^{-1}}{(t-5H)(t-5H-\psi_1)}, \frac{-\frac{5}{2}H^3+\frac{5}{24}H^4t^{-1}}{(t-5H)(t-5H-\psi_2)}>^{t,\mr{SQ}}_{0,2},
+\end{align*}
+而对双边图，记 \(H_1 = H \otimes 1\)、\(H_2 = 1 \otimes H\)，有
+\[ \Cont_{\Gamma_a^0} = \ab< \frac{\frac{5}{3}(H^3\otimes H^4 + H^4 \otimes H^3)t^{-1} + \frac{65}{24}H^4 \otimes H^4 t^{-2}}{(t-5H_1)(t-5H_1-\psi_1)(t-5H_2)(t-5H_2-\psi_2)}>^{t,\mr{SQ}}_{0,2}. \]
+注意这些关联函数生活在 \(\P^4\) 上，因此 \(H^4\) 存在且非零。
+
+还有来自次数零图的第五项贡献，它是常数
+\[ -2c_{2,0} = -\frac{5}{144}, \qquad c_{2,0} = -\frac{1}{2}N_{2,0} = \frac{5}{288}, \]
+把五项贡献相加，我们得到局部化恒等式
+\[ F_2^{\mr{SQ}}(q) = \Cont_{\Gamma^2} + \Cont_{\Gamma^1} + \frac{1}{2}\Cont_{\Gamma_a^0} + \frac{1}{2}\Cont_{\Gamma_b^0} - 2c_{2,0}, \]
+其中两个因子 \(\frac{1}{2}\) 来自 \(\Gamma_a^0\) 与 \(\Gamma_b^0\) 的自同构。
+
+置 \(Q = qe^{\tau(q)}\) 与 \(L = (1-5^5q)^{-1/5}\)，其中 \(\tau(q) = I_1(q)/I_0(q) - \log q\) 是通常的镜面平移。我们现在施加稳定商墙交叉，得到精确恒等式
+\[ F_2^{\mr{GW}}(Q) = I_0(q)^2 F_2^{\mr{SQ}}(q). \]
+引入 \(D_u = L^{-1}q\odv{}{q}\) 与诸生成元
+\[ \mc{X}_k = D_u^k \log \frac{I_0}{L}, \qquad \mc{Y}_k = D_u^k \log \frac{I_0I_{1,1}}{L^2}, \qquad I_{1,1} = 1 + q \odv{\tau}{q}, \quad D_u L = \frac{1}{5}(L^5-1), \]
+各个扭转图贡献会涉及额外的生成元。对我们而言关键的一点是，这些额外生成元在上面的线性组合中相互抵消，恰好留下有限生成变量。记 \(X = \mc{X}_1\)、\(Y_1 = \mc{Y}_1\)，我们得到
+\begin{align*}
+    F^{\mr{GW}}_2(Q) = \frac{I_0^2}{L^2}\Big(&\frac{70}{9}\mc{X}_3 + \frac{575}{18}X\mc{X}_2 + \frac{557}{72}X^3 + \frac{5}{6}Y_1\mc{X}_2 \\
+    &- \frac{629}{72}Y_1X^2 - \frac{23}{24}Y_1^2 X - \frac{1}{24}Y_1^3 \\
+    &+ \frac{125}{36}\mc{X}_2 L^4 - \frac{5}{24}X^2L^4 - \frac{35}{9}Y_1XL^4 - \frac{5}{24}Y_1^2L^4 \\
+    &- \frac{1441}{300}XL^3 - \frac{41}{300}Y_1L^3 + \frac{31459}{7200}XL^8 + \frac{2141}{7200}Y_1L^8 \\
+    &+ \frac{29621}{12000}L^{12} - \frac{116369}{36000}L^7 + \frac{547}{750}L^2\Big).
+\end{align*}
+若在大半径处展开，则得到
+\[ F_2^{\mr{GW}}(Q) = -\frac{5}{144} + \frac{575}{48}Q + \frac{5125}{2}Q^2 + \frac{7930375}{6}Q^3 + O(Q^4), \]
+这些系数是 Gromov-Witten 不变量 \(N_{2,d}\)，而不是~\Cref{tab:quinticbps} 中的 BPS 整数。
+
+我们现在转向形式路线。\(\Omega^{\lambda}_{2,0}\) 的 Givental-Teleman 公式是对七个无腿亏格二稳定图的求和，这些图绘于~\Cref{fig:g2stable}。只需用到 \(R^{-1}(z)\) 直到 \(z^3\) 的部分，而平移把七种拓扑展开为 \(17\) 个带装饰的层片。
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[scale=1,transform shape,every loop/.style={min distance=8mm,looseness=10}]
+        \node[circle,draw=black,thick] (a) at (0,0) {$2$};
+        \node at (0,-1.15) {$1$};
+
+        \node[circle,draw=black,thick] (b1) at (1.7,0) {$1$};
+        \node[circle,draw=black,thick] (b2) at (2.9,0) {$1$};
+        \draw[thick] (b1) -- (b2);
+        \node at (2.3,-1.15) {$\frac{1}{2}$};
+
+        \node[circle,draw=black,thick] (c) at (4.6,0) {$1$};
+        \draw[thick] (c) edge[loop above] (c);
+        \node at (4.6,-1.15) {$\frac{1}{2}$};
+
+        \node[circle,draw=black,thick] (d1) at (6.3,0) {$1$};
+        \node[circle,draw=black,thick] (d2) at (7.5,0) {$0$};
+        \draw[thick] (d1) -- (d2);
+        \draw[thick] (d2) edge[loop right] (d2);
+        \node at (6.9,-1.15) {$\frac{1}{2}$};
+
+        \node[circle,draw=black,thick] (e) at (0.7,-2.7) {$0$};
+        \draw[thick] (e) edge[loop left] (e);
+        \draw[thick] (e) edge[loop right] (e);
+        \node at (0.7,-3.85) {$\frac{1}{8}$};
+
+        \node[circle,draw=black,thick] (f1) at (3.3,-2.7) {$0$};
+        \node[circle,draw=black,thick] (f2) at (4.8,-2.7) {$0$};
+        \draw[thick] (f1) -- (f2);
+        \draw[thick] (f1) edge[loop left] (f1);
+        \draw[thick] (f2) edge[loop right] (f2);
+        \node at (4.05,-3.85) {$\frac{1}{8}$};
+
+        \node[circle,draw=black,thick] (g1) at (7.0,-2.7) {$0$};
+        \node[circle,draw=black,thick] (g2) at (8.5,-2.7) {$0$};
+        \draw[thick] (g1) -- (g2);
+        \draw[thick] (g1) to[bend left=45] (g2);
+        \draw[thick] (g1) to[bend right=45] (g2);
+        \node at (7.75,-3.85) {$\frac{1}{12}$};
+    \end{tikzpicture}
+    \caption{七个无腿亏格二稳定图，以各顶点的亏格标记，并以 \(\frac{1}{\ab|\Aut\Gamma|}\) 加权。在幻灯片中每个顶点被画成其 Riemann 曲面分支。}%
+    \label{fig:g2stable}
+\end{figure}
+
+\begin{rmk}
+    这些是稳定曲线的对偶图，而不是~\Cref{fig:tropgraphs} 中的图——后者是对 log GLSM 的约化理论施加热带分解公式得到的刚性热带型。两组拓扑列表在这里恰好一致，但顶点在两者中的含义不同。这里的顶点是定义域曲线的一个分支，携带一个拓扑场论张量；那里的顶点是二部热带曲线的一个层级，携带一个 log 顶点或 \(\infty\)-顶点模问题。
+\end{rmk}
+
+对形式路线，我们内蕴地定义规范化势为
+\[ P_2^{\lambda} \coloneqq \frac{Y}{I_0^2}F_2^{\lambda}, \qquad Y = L^5. \]
+完整的图求和落在 \(\Q[L,\mc{X}_1,\mc{X}_2,\mc{X}_3,\mc{Y}_1]\) 中，且等于
+\begin{align*}
+    P_2^{\lambda} ={}& -\frac{1}{128}L^{12} - \frac{23}{960}L^8\mc{X}_1 - \frac{9}{640}L^8\mc{Y}_1 + \frac{109}{16000}L^7 \\
+    &- \frac{3}{80}L^4\mc{X}_1^2 - \frac{19}{320}L^4\mc{X}_1\mc{Y}_1 - \frac{3}{80}L^4\mc{Y}_1^2 - \frac{1}{64}L^4\mc{X}_2 \\
+    &+ \frac{19}{1920}L^3\mc{X}_1 - \frac{47}{48000}L^2 \\
+    &- \frac{67}{1152}\mc{X}_1^3 - \frac{101}{1152}\mc{X}_1^2\mc{Y}_1 - \frac{5}{48}\mc{X}_1\mc{Y}_1^2 - \frac{1}{24}\mc{Y}_1^3 \\
+    &- \frac{25}{288}\mc{X}_1\mc{X}_2 - \frac{1}{48}\mc{X}_2\mc{Y}_1 - \frac{19}{1152}\mc{X}_3.
+\end{align*}
+需要说明，这是精确的形式 \(\lambda\)-扭转答案，而不是 \(F_2^{\mr{GW}}\)。还要注意 \(Y = L^5\) 是判别式生成元，而 \(\mc{Y}_1\) 是对数导数生成元。
+
+\subsection{有限生成与扩张族}%
+\label{sub:Finite generation and the extended family}
+
+回忆上面有限生成的环 \(\mc{R} = \Q[A,B_1,B_2,B_3,Y]\)，我们给它赋予如下分次：
+\[ \deg A = \deg B_1 = 1, \qquad \deg B_2 = 2, \qquad \deg B_3 = 3, \qquad \deg Y = 0. \]
+对如前定义的 \(\phi_k = I_{1,1}\cdots I_{k,k}H^k\)，置
+\[ \wt{\Omega}^{\lambda}_{g,n} \coloneqq 5^{g-1}\ab(\frac{Y}{I_0^2})^{g-1}\Omega^{\lambda,\tau}_{g,n}. \]
+
+\begin{thm}[分次有限生成 {\cite{GJRstructure}}]%
+\label{thm:graded finite generation}
+    我们有
+    \[ \wt{\Omega}^{\lambda}_{g,n}(\phi_{a_1}, \ldots, \phi_{a_n}) \in \bigoplus_{k \geq 0}\lambda^{5k}H^{2(3g-3+\sum_i a_i - 5k)}(\Mbar_{g,n},\Q)\otimes \mc{R}_{3g-3+\sum_i a_i}. \]
+    因此，在组装二部剩余图之后，扩张族的非等变分量满足
+    \[ P^{\mbf{C}}_{g,n} = 5^{1-g}\int_{\Mbar_{g,n}}\wt{\Omega}^{\mbf{C}}_{g,n}(\phi_1^{\otimes n}) = \ab( \frac{Y}{I_0^2})^{g-1}\int_{\Mbar_{g,n}}\Omega^{\mbf{C}}_{g,n}(\phi_1^{\otimes n}) \in \mc{R}_{3g-3+n}. \]
+\end{thm}
+
+特别地，在每个固定的 \((g,n)\) 处只能出现有限多个分次单项式，且只有阶数不超过 \(3g-3+n\) 的 \(R\)-矩阵项能有贡献。
+
+我们用二部图求和来组织扩张理论：
+\[ \Omega^{\mbf{C},\lambda}_{g,n} = \sum_{\Gamma \text{ 二部}} \frac{1}{\ab|\Aut\Gamma|}\prod_{v\in V_{\infty}(\Gamma)} C^{\infty}_{g_v,\mu_v}(\mbf{C};\vec{a}_v) \prod_{v \in V_0(\Gamma)}C^{\lambda}_{g_v,\vec{\delta}_v}(\vec{a}_v)\prod_{e \in E(\Gamma)}V_e, \]
+其中 \(C^{\infty}\) 是有效或亚纯顶点因子，\(C^{\lambda}\) 是形式零顶点关联函数，\(\mu_v\) 与 \(\vec{\delta}_v\) 记录与顶点关联的次数，而 \(V_e\) 是边因子。极限 \(\lambda \to 0\) 只在完整的图求和之后取。令 \(\mbf{C}=0\) 留下形式 \(\lambda\)-扭转首项扇区。令 \(\mbf{C}=\mbf{C}^{\mr{eff}}\) 且 \(\lambda\to0\) 恢复五次三维流形 Gromov-Witten 理论。对一条普适边求导会将其剪开并产生全纯反常方程，而有效顶点保持不动。
+
+为导出全纯反常方程，记 \(P^{\mbf{C}}_g \coloneqq P^{\mbf{C}}_{g,0}\) 并引入
+\[ \mc{U} = B_1, \qquad \mc{V} = A + 2B_1, \qquad \mc{V}_2 = D\mc{U} + \mc{U}^2 - \mc{U}\mc{V}, \qquad \mc{V}_3 = (D+\mc{V})\mc{V}_2, \]
+以及两个非全纯方向
+\[ \partial_1 = \partial_{\mc{U}}, \qquad \partial_0 = \partial_{\mc{V}} - \mc{U}\partial_{\mc{V}_2} - \mc{U}^2\partial_{\mc{V}_3}. \]
+
+\begin{thm}[扩张族的全纯反常方程 {\cite{GJRstructure}}]
+    我们有
+    \[ -\partial_0 P^{\mbf{C}}_g = \frac{1}{2}P^{\mbf{C}}_{g-1,2} + \frac{1}{2}\sum_{\substack{g_1+g_2=g\\g_1,g_2\geq1}}P^{\mbf{C}}_{g_1,1}P^{\mbf{C}}_{g_2,1}, \qquad -\partial_1 P^{\mbf{C}}_g = 0. \]
+\end{thm}
+
+我们用~\Cref{sub:The holomorphic anomaly equation} 的剪开论证来证明它，论证可行是因为 \(R\)-矩阵传播子的导数恰好是
+\[ 5\mc{B}_{\partial_0} = \bar{\phi}_1 \otimes \bar{\phi}_1, \qquad 5\mc{B}_{\partial_1} = \bar{\phi}_0\otimes\bar{\phi}_2 + \bar{\phi}_2\otimes\bar{\phi}_0. \]
+\(R^{-1}\) 以及每条边的导数都停留在同一个分次环内，因此剪开一条被求导的边后，表达式封闭于 \(\mc{R}\) 中的低亏格关联函数。若令 \(\mbf{C}=0\)，我们就恢复了形式 \(\lambda\)-扭转理论的同一组方程。
+
+\subsection{边界条件}%
+\label{sub:Boundary conditions}
+
+我们将使用关于全纯不确定性的两个条件来源。
+
+第一，我们使用轨形点（即 Landau-Ginzburg 点）\(q = \infty\)（等价地 \(L \to 0\)）处的正则性。对形式势或组装后的扩张势 \(F_g^{\star}\)，置
+\[ \mc{P}_g^{\mr{orb},\star} \coloneqq \ab(\frac{L}{I_0})^{2g-2}F_g^{\star} = \Phi_g^{\star}(\mc{X}_1,\mc{X}_2,\mc{X}_3,\mc{Y}_1,L^{-1},L^5). \]
+\Cref{thm:graded finite generation} 限制了 \(L\) 可能出现的 Laurent 幂次，而形式 LG/CY 等同断言：在解析延拓并等同规范化的 CY 基与 LG 基之后，同一个形式 \(R\)-矩阵多项式同时描述两个相。因此
+\[ \lim_{L\to0}\Phi_g^{\star}(\mc{X}_1,\mc{X}_2,\mc{X}_3,\mc{Y}_1,L^{-1},L^5) \text{ 存在}, \]
+而对 \(f_g(Y) = \sum_{i=0}^{3g-3}a_{i,g}Y^i\)（其中 \(Y = L^5\)），五次三维流形的界为
+\[ a_{i,g} = 0 \qquad \text{对 } i \leq \ceil*{\frac{3(g-1)}{5}}. \]
+注意，这是关于组装后的规范化图贡献的陈述，而不是关于单个裸亚纯顶点或橡胶顶点关联函数的陈述。
+
+第二，我们研究锥形点。置
+\[ q = 5^{-5}(1+t_c)^{-1}, \qquad T_c = \frac{I_1^{\mr{co}}(t_c)}{I_0^{\mr{co}}(t_c)}, \]
+其中 \(I_0^{\mr{co}}, I_1^{\mr{co}}\) 是一对局部锥形点周期，规范化为使趋于零的平坦坐标在锥形点处满足 \(T_c = 0\)。给定有限生成数据的有理表达式 \(f\)，把所有生成元展成 \(T_c\) 的 Laurent 级数并代入，即得其锥形点取值 \(f^{\mr{co}}\)。\Cref{thm:graded finite generation} 给出极点界
+\[ F_g^{\mbf{C},\mr{co}} = O\ab(T_c^{-(2g-2)}), \]
+但我们需要的是更强的\textit{空隙}条件
+\[ F_g^{\mr{co}} = \frac{c_g}{T_c^{2g-2}} + O(1), \]
+即所有中间的负幂次 \(T_c^{-(2g-3)}, \ldots, T_c^{-1}\) 都为零。这是 \(2g-2\) 个条件，并不由有限生成性蕴含。
+
+\begin{conj}[形式锥形点空隙]%
+\label{conj:formal conifold gap}
+    形式 \(\lambda\)-扭转势具有普适的首项
+    \[ F_g^{\lambda,\mr{co}} = \frac{(-1)^{g-1}B_{2g}}{2g(2g-2)T_c^{2g-2}} + O(1), \]
+    其中 \(B_{2g}\) 是 Bernoulli 数。
+\end{conj}
+
+\begin{exm}
+    在亏格二中，算得的展开式开头为
+    \[ F_2^{\lambda,\mr{co}} = \frac{1}{240T_c^2} + \frac{31}{6000} - \frac{7169}{3600000}T_c + \frac{22951}{45000000}T_c^2 + O(T_c^3). \]
+    这就是亏格二空隙，而不仅仅是极点阶的界。
+\end{exm}
+
+我们还必须考虑出现在剩余图中的、带有有理后裔插入的形式关联函数，即
+\[ C^{\lambda}_{g,\vec{\delta}}(\vec{a}) \coloneqq \ab< \frac{H^{3-a_1}}{-5H\ab(-\frac{5H}{\delta_1}-\psi_1)}, \ldots, \frac{H^{3-a_n}}{-5H\ab(-\frac{5H}{\delta_n}-\psi_n)}>^{\lambda}_{g,n} \]
+其中 \(\delta_i \geq 1\) 且 \(a_i \in \ab\{0,1,2,3,4\}\)。
+
+\begin{conj}[带特殊插入的正则性]%
+\label{conj:special correlator regularity}
+    我们有 \(\ab(C^{\lambda}_{g,\vec{\delta}}(\vec{a}))^{\mr{co}} = O(1)\)。
+\end{conj}
+
+对固定的 \(\vec{a}\) 与 \(\vec{\delta}\)，\(\psi\)-展开中的个别项可以有极点。注意，该断言针对的是完整的有理后裔插入：其负幂次在对 \(\vec{a}\) 取剩余图求和之前就已相互抵消。它是关于这些特定形式关联函数的陈述，而不是关于每个未组装的亚纯关联函数的陈述。
+
+我们可以用~\Cref{conj:formal conifold gap,conj:special correlator regularity} 把空隙转移到五次三维流形 Gromov-Witten 理论上。剩余图贡献具有如下形状：
+\[ \sum_{\vec{a}} \prod_{v \in V_{\infty}(\Gamma)}I_0^{2g_v-2+\ell(\mu_v)}C^{\infty}_{g_v,\mu_v}(\vec{a}_v)\prod_{v\in V_0(\Gamma)}C^{\lambda}_{g_v,\vec{\delta}_v}(\vec{a}_v), \]
+而 \(C^{\infty}\) 因子是 \(q\) 的有限多项式，因此在锥形点处正则。于是形式首项空隙连同特殊关联函数的正则性蕴含扩张族的空隙，从而蕴含五次三维流形的空隙。
+
+\begin{rmk}
+    \Cref{conj:formal conifold gap,conj:special correlator regularity} 在一般情形仍是公开的，但 Guo-Janda-Ruan 已对五次三维流形验证了 \(g \leq 5\) 的情形。扩张族的极点界是一个定理，而空隙由这两个猜想推出，并对 \(g \leq 5\) 由显式计算证明。在本系列讲座举行时，五次三维流形 Gromov-Witten 理论的全亏格空隙因此以这两个猜想为条件，而对 \(g \leq 5\) 是无条件的。\footnote{此后，Chang--Guo--You--Zhang 在~\cite{CGYZ2026} 中宣布了五次三维流形 Gromov--Witten 理论锥形点空隙的全亏格证明。上述两个关于形式理论的猜想是彼此独立的陈述。}
+\end{rmk}
+
+把这一切汇总起来，我们从 Picard-Fuchs 数据出发，计算 Givental \(R\)-矩阵与算子 \(S_{\tau}(z)\)。然后得到形式稳定图与亚纯剩余图，运用全纯反常方程与有限生成性，最后施加轨形点与锥形点的边界条件来确定 \(F_g^{\mr{GW}}\)。

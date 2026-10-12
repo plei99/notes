@@ -1,0 +1,350 @@
+\section{\(\Theta\)-分层（Yaoxiong Wen and Bin Wang）}%
+\label{sec:Theta-stratifications}
+
+\subsection{我们的第一个模问题}%
+\label{sub:Our first moduli problem}
+
+我们的第一个模空间将是 \(\P^{N-1}\)，它参数化 \(\C^N\) 中的 \(1\)-维线性子空间，等价地也是几何商 \((\C^N \setminus \{0\}) / \C^{\times}\)。此时 \(\C^N\setminus\{0\}\) 中的每个 \(\C^{\times}\)-轨道都是闭的。这一构造是我们关于几何不变量理论的第一个例子。一般地，一个集合值模问题对每个概形 \(T\) 指派 \(T\) 上一族族的同构类的集合，我们可以把它看作一个函子
+\[ F \colon (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Set}. \]
+
+\begin{exm}
+    设 \(C\) 是一条光滑射影曲线。考虑指派
+    \[
+    \begin{aligned}
+        F_{r,d}\colon T \longmapsto
+        \Bigl\{
+        E \ \Bigm|\ &
+        E \text{ is a vector bundle on } C\times T,\\
+        &\operatorname{rk}(E_{\bar t})=r,\quad \deg(E_{\bar t})=d
+        \text{ for every geometric point } \bar t\to T
+        \Bigr\}\big/\!\sim,
+    \end{aligned}
+    \]
+    其中 \(E_{\bar t}=E|_{C\times\{\bar t\}}\)，\(\sim\) 表示 \(C\times T\) 上向量丛的同构。这参数化了 \(C\) 上向量丛族的同构类，但它仍然不是正确的叠值模问题。
+\end{exm}
+
+\begin{exm}
+    由 Yoneda 引理，每个概形 \(Y\) 都定义一个模问题。
+\end{exm}
+
+遗憾的是，并非每个群胚值模问题都能作为叠被概形或代数空间表示。概形或代数空间具有平凡惯性，而模问题中的对象可能有非平凡自同构。例如，若考虑 \(\P^1\) 上可逆层的模，则每个可逆层都有整个 \(\C^{\times}\) 的自同构。因此，当我们考虑模问题时，需要同时记住对象以及它们之间的同构，而函子的目标应为群胚范畴。
+
+\begin{defn}[informal]
+    一个 \(S\) 上的 \textit{叠} \(\mf{X}\) 是一个伪函子
+    \[ (\ms{Sch}_{/S})^{\mr{op}} \to \ms{Grpd} \]
+    它关于 fppf 拓扑满足对象与态射的下降。
+\end{defn}
+
+\begin{exm}
+    考虑叠 \(\ms{Bun}_{r,d}(C)\)，它把概形 \(T\) 送到这样的群胚：其对象是 \(T\times C\) 上的向量丛 \(E\)，使得每个几何纤维 \(E_{\bar t}\) 的秩为 \(r\)、次数为 \(d\)，其态射是 \(T\times C\) 上向量丛的同构。
+\end{exm}
+
+遗憾的是，要考虑的叠太多了，因此我们需要考虑对代数几何方法适用的一类叠。
+
+\begin{defn}
+    一个 \textit{代数叠} 是具有（由代数空间）可表示的对角态射、并且存在从概形 \(U\)（称为图册）出发的光滑满态射的叠。
+\end{defn}
+
+注意到第一个条件意味着，对任意从代数空间出发的态射 \(T \to \mf{X} \times \mf{X}\)，\(T \times_{\mf{X} \times \mf{X}} \mf{X}\) 是代数空间。这等价于所有 Isom 层都是代数空间，并蕴含从概形到 \(\mf{X}\) 的任意态射都是可表示的。
+
+\begin{rmk}
+    对于集合，若我们有态射 \(f\colon A\to C\) 与 \(g\colon B\to C\)，则纤维积为
+    \[ 
+        A\times_C B=\ab\{(a,b)\mid f(a)=g(b)\}. 
+    \] 
+    对于概形或代数空间，同一公式描述了概形论纤维积的 \(T\)-点。对于叠，\(2\)-纤维积 \(\mf{A}\times_{\mf{C}}\mf{B}\) 的一个 \(T\)-点是一个三元组 \((a,b,\phi)\)，其中 \(a\in\mf{A}(T)\)，\(b\in\mf{B}(T)\)，而
+    \[ 
+        \phi\colon f(a)\xrightarrow{\sim}g(b) 
+    \]
+    是 \(\mf{C}(T)\) 中的同构。因此等式必须用同构代替，且该同构必须作为数据的一部分被记录。
+\end{rmk}
+
+
+\subsection{商叠}%
+\label{sub:Quotient stacks}
+
+设 \(G\) 是代数群，\(X\) 是带有 \(G\) 左作用的概形。
+
+\begin{defn}
+    \textit{商叠} \([X/G]\) 把概形 \(T\) 送到这样的群胚：其对象是图表
+    \begin{equation*}
+    \begin{tikzcd}
+        P \ar{r}{\varphi} \ar{d} & X \\
+        T,
+    \end{tikzcd}
+    \end{equation*}
+    其中 \(P\to T\) 是 fppf 拓扑下的右主 \(G\)-丛，\(\varphi\) 满足 \(\varphi(pg)=g^{-1}\varphi(p)\)。从 \((P,\varphi)\) 到 \((P',\varphi')\) 的态射是主 \(G\)-丛的同构 \(P\xrightarrow{\sim}P'\)，且与到 \(X\) 的映射相容。
+\end{defn}
+
+\begin{exm}
+    设 \(\mf{X}\) 是 \(\C\) 上有限型的光滑分离 DM 叠。若 \(\mf{X}\) 的一般稳定化子平凡，或 \(\mf{X}\) 的粗模空间拟射影，则 \(\mf{X}\) 是整体商~\cite{EHKV2001}。这里，DM 叠是具非分歧对角的代数叠，整体商是指形如 \([U/\on{GL}_n]\) 的叠，其中 \(U\) 是某个带有 \(\on{GL}_n\) 作用的代数空间。
+\end{exm}
+
+\begin{exer}
+    证明群胚 \([X/G](\C)\) 等价于 \(G(\C)\) 作用在 \(X(\C)\) 上的作用群胚。
+\end{exer}
+
+在选取每个 \(G(\C)\)-轨道的代表元 \(x_i\in X(\C)\) 之后，上述习题蕴含：作为抽象群胚而非代数叠，我们有
+\[ 
+    [X/G](\C) \simeq \bigsqcup_{[x_i] \in X(\C)/G(\C)} BG_{x_i}, 
+\]
+其中 \(G_{x_i}\) 是 \(x_i\) 的稳定化子。
+
+
+\subsection{细模空间、粗模空间与良模空间}%
+\label{sub:Fine vs coarse vs good moduli spaces}
+
+\begin{defn}
+    模问题的 \textit{细模空间} 是表示该函子的概形或代数空间 \(M\)。
+\end{defn}
+
+遗憾的是，细模空间很难找到，因此我们希望减弱这一条件。
+
+\begin{defn}
+    代数叠 \(\mf{X}\) 的 \textit{粗模空间} 是到代数空间的态射 \(\pi\colon\mf{X}\to M\)，使得
+    \begin{enumerate}
+        \item 对每个代数空间 \(Y\)，与 \(\pi\) 复合诱导双射
+        \[
+            \on{Hom}(M,Y)\xrightarrow{\sim}\on{Hom}(\mf{X},Y);
+        \]
+        \item 对每个代数闭域 \(K\)，诱导映射
+        \[
+            \pi_0(\mf{X}(K))=\ab\{\text{isomorphism classes in }\mf{X}(K)\}
+            \longrightarrow M(K)
+        \]
+        是双射。
+    \end{enumerate}
+\end{defn}
+
+
+即便是这些也并非总存在。良模空间是另一种减弱：它把几何点上的双射要求替换为上同调仿射性条件~\cite{Alper2013}。
+
+\begin{defn}
+    从代数叠到代数空间的拟紧态射 \(q\colon\mf{X}\to X\) 是 \textit{良模空间}，若
+    \begin{enumerate}
+        \item 前推函子 \(q_*\colon\ms{QCoh}(\mf{X})\to\ms{QCoh}(X)\) 正合；
+        \item 自然映射 \(\mc{O}_X\to q_*\mc{O}_{\mf{X}}\) 是同构。
+    \end{enumerate}
+\end{defn}
+
+\begin{table}[htpb]
+    \centering
+    \caption{模空间的类型}
+    \label{tab:moduli-types-corrected}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{
+        p{0.18\textwidth}
+        p{0.30\textwidth}
+        p{0.22\textwidth}
+        p{0.20\textwidth}
+    }
+        \toprule
+        \textbf{概念}
+        & \textbf{定义性质}
+        & \textbf{几何行为}
+        & \textbf{特征}
+        \\
+        \midrule
+        细模
+        & 表示集合值模函子
+        & 其点表示函子所记录的对象
+        & 容许泛族
+        \\
+        粗模
+        & 对到代数空间的映射具有泛性，且在几何同构类上为双射
+        & 每个同构类对应一个几何点
+        & 遗忘自同构
+        \\
+        良模
+        & 上同调仿射且
+          \(\mc{O}_X \simeq q_*\mc{O}_{\mf{X}}\)
+        & 可能等同不同的非闭点
+        & 在 GIT 型例子中给出 \(S\)-等价
+        \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+这些模空间的存在性并不只由稳定化子是有限还是无限决定。例如，\(B\G_m\to\on{Spec}\C\) 既是粗模空间又是良模空间，尽管其稳定化子是 \(\G_m\)。
+
+\begin{thm}[Keel-Mori {\cite{KeelMori1997}}]
+    设 \(\mf{X}\) 是 \(\C\) 上有限型的代数叠。若其惯性态射
+    \[
+        I_{\mf{X}}
+        \coloneqq
+        \mf{X}\times_{\mf{X}\times\mf{X}}\mf{X}
+        \longrightarrow \mf{X}
+    \]
+    有限，则 \(\mf{X}\) 容许一个粗模空间。\(I_{\mf{X}}\to\mf{X}\) 在几何点 \(x\) 上的纤维是自同构群 \(\on{Aut}(x)\)。
+\end{thm}
+
+\begin{thm}[Alper--Hall--Rydh {\cite{AHR2020}}]
+    设
+    \[
+        q\colon \mf{X}\longrightarrow X
+    \]
+    是良模空间，其中 \(\mf{X}\) 是 \(\C\) 上具有仿射对角的 Noetherian
+    代数叠。
+    设 \(x\in\mf{X}(\C)\) 是闭点，记其
+    稳定化子群为 \(G_x\)。
+
+    则存在带有 \(G_x\) 作用的仿射概形 \(\on{Spec}A\)，
+    以及笛卡尔图表
+    \[
+        \begin{tikzcd}
+            {[\on{Spec}A/G_x]}
+                \arrow[r]
+                \arrow[d]
+            & \mf{X}
+                \arrow[d, "q"]
+            \\
+            \on{Spec}(A^{G_x})
+                \arrow[r, "\mathrm{\acute{e}tale}"]
+            & X,
+        \end{tikzcd}
+    \]
+    其中
+    \[
+        \on{Spec}(A^{G_x})\longrightarrow X
+    \]
+    是 \(q(x)\) 的 \'etale 邻域。
+\end{thm}
+
+当 \(r\geq 2\) 时，叠 \(\ms{Bun}_{r,d}(C)\) 局部有限型，但它既非拟紧也非分离。为看出它非拟紧，选取次数分别为 \(n\) 与 \(d-n\) 的线丛 \(L_n\) 和 \(M_{d-n}\)，并考虑
+\[
+    E_n=L_n\oplus M_{d-n}\oplus\mc{O}_C^{\oplus r-2}.
+\]
+丛 \(E_n\) 包含一个次数为 \(n\) 的线子丛。在固定秩与次数的任意拟紧向量丛族中，线子丛的次数有上界，故当 \(n\to\infty\) 时，丛 \(E_n\) 不可能全都落在某个拟紧子叠中。为看出该叠非分离，注意每个向量丛 \(E\) 都有标量自同构 \(\G_m\subset\on{Aut}(E)\)。分离代数叠的稳定化子群是真（proper）的，而 \(\G_m\) 不是真（proper）的。过渡到半稳定丛并不能使该叠分离；相反，它截出一个有限型的有界开子叠，该子叠容许良模空间，其闭点是 \(S\)-等价类。
+
+\begin{defn}[Slope stability]
+    对非零向量丛 \(E\)，定义其斜率为
+    \[ \mu(E)=\frac{\deg E}{\on{rk}E}. \]
+    若对每个非零真饱和子层 \(F\subset E\) 都有
+    \[ \mu(F)\leq\mu(E), \]
+    则称向量丛 \(E\) 为 \textit{半稳定}；若不等式严格，则称其为 \textit{稳定}。由于 \(C\) 是光滑曲线，向量丛的饱和子层是子丛，因此等价于检验非零真子丛。
+\end{defn}
+
+有了这个定义，我们现在可以考虑开子叠 \(\ms{Bun}_{r,d}^{\mr{ss}}(C)\)。固定秩与次数的半稳定丛构成有界族，因此该叠有限型，特别地拟紧。它仍非分离，因为每个对象都有非真的标量稳定化子 \(\G_m\)。
+
+\begin{defn}[S-equivalence]
+    设 \(E\) 是半稳定向量丛。\(E\) 的 Jordan--H\"older 滤过是滤过
+    \[ 0=J_0\subset J_1\subset\cdots\subset J_N=E \]
+    使得每个商 \(J_i/J_{i-1}\) 都是斜率为 \(\mu(E)\) 的稳定丛。该滤过未必唯一，但相伴分次向量丛
+    \[
+        \on{gr}(E)=\bigoplus_{i=1}^N J_i/J_{i-1}
+    \]
+    在非典范同构意义下唯一。若 \(\on{gr}(E)\simeq\on{gr}(E')\)，则称同斜率的两个半稳定向量丛 \(E\) 与 \(E'\) 是 \textit{S-等价}。
+\end{defn}
+
+现在考虑 \(C\) 上半稳定向量丛的 \(S\)-等价类的模空间 \(M_{r,d}^{\mr{ss}}(C)\)。存在良模空间态射
+\[
+    \ms{Bun}_{r,d}^{\mr{ss}}(C)\longrightarrow M_{r,d}^{\mr{ss}}(C),
+\]
+且 \(M_{r,d}^{\mr{ss}}(C)\) 的闭点与半稳定向量丛的 \(S\)-等价类一一对应。
+
+\begin{rmk}
+    该定理最初的证明方法是利用几何不变量理论构造模空间。本系列讲座的目标将是讨论一种内蕴方法，使用 \(\Theta\)-分层以及良模空间的存在性判据，而无需先选取 GIT 表述。
+\end{rmk}
+
+
+\subsection{\(\Theta\)-分层}%
+\label{sub:Theta-stratifications}
+
+这里所使用的 \(\Theta\)-分层与数值不变量的框架是在~\cite{HLinstability} 中发展的。
+
+设 \(\mf{X}\) 是代数叠，考虑 \(\Theta\coloneqq[\A^1/\G_m]\)，其中点上的作用为 \(\lambda\cdot z=\lambda z\)；等价地，坐标函数 \(t\) 的权为 \(-1\)。假设下面的映射叠都是代数的。定义滤过对象的叠 \(\ms{Filt}(\mf{X})\coloneqq\ms{Map}(\Theta,\mf{X})\) 与分次对象的叠 \(\ms{Grad}(\mf{X})\coloneqq\ms{Map}(B\G_m,\mf{X})\)。存在典范态射
+\[
+    \ev_1\colon\ms{Filt}(\mf{X})\to\mf{X},
+    \qquad
+    \on{gr}\colon\ms{Filt}(\mf{X})\to\ms{Grad}(\mf{X}),
+    \qquad
+    \sigma\colon\ms{Grad}(\mf{X})\to\ms{Filt}(\mf{X}).
+\]
+这里 \(\ev_1\) 是限制到 \(1\in\A^1\)，\(\on{gr}\) 由包含 \(B\G_m=\{0\}/\G_m\hookrightarrow\Theta\) 诱导，\(\sigma\) 由投影 \(\Theta\to B\G_m\) 诱导。特别地，\(\on{gr}\circ\sigma=\on{id}\)。我们还记 \(\on{tot}=\ev_1\circ\sigma\colon\ms{Grad}(\mf{X})\to\mf{X}\)。
+
+\begin{defn}
+    代数叠 \(\mf{Y}\) 中的一个 \textit{\(\Theta\)-层} 是连通分支的并 \(S\subset\ms{Filt}(\mf{Y})\)，使得限制
+    \[
+        \ev_1|_S\colon S\longrightarrow\mf{Y}
+    \]
+    是闭浸入。
+
+    \(\mf{X}\) 的 \textit{\(\Theta\)-分层} 由以下数据组成：
+    \begin{enumerate}
+        \item 一个带有最小元 \(0\) 的全序集 \(I\)；
+        \item 一族递增的开子叠 \(\mf{X}_{\leq\alpha}\subset\mf{X}\)，由 \(\alpha\in I\) 索引，使得
+        \[
+            \mf{X}_{\leq\alpha}\subset\mf{X}_{\leq\beta}
+            \quad\text{for }\alpha\leq\beta,
+            \qquad
+            \bigcup_{\alpha\in I}\mf{X}_{\leq\alpha}=\mf{X},
+        \]
+        且使得对每个 \(x\in|\mf{X}|\)，集合 \(\{\alpha\in I\mid x\in|\mf{X}_{\leq\alpha}|\}\) 有最小元；
+        \item 对每个 \(\alpha>0\)，一个 \(\Theta\)-层 \(S_\alpha\subset\ms{Filt}(\mf{X}_{\leq\alpha})\)，使得
+        \[
+            \mf{X}_{<\alpha}
+            \coloneqq
+            \bigcup_{\beta<\alpha}\mf{X}_{\leq\beta}
+            =
+            \mf{X}_{\leq\alpha}\setminus\ev_1(S_\alpha).
+        \]
+    \end{enumerate}
+    半稳定轨迹为 \(\mf{X}^{\mr{ss}}\coloneqq\mf{X}_{\leq0}\)，且该分层给出不交分解
+    \[
+        \mf{X}
+        =
+        \mf{X}^{\mr{ss}}
+        \sqcup
+        \bigsqcup_{\alpha>0}\ev_1(S_\alpha).
+    \]
+\end{defn}
+
+考虑叠 \(\ms{Bun}_G(C) = \ms{Map}(C, BG)\)。我们将考虑叠
+\[ \ms{Map}(\Theta, \ms{Bun}_G(C)) = \ms{Map}(\Theta \times C, BG). \]
+任何这样的映射 \(f\) 等价于 \(\A^1\times C\) 上的 \(\G_m\)-等变主 \(G\)-丛 \(\mc{E}\)。当 \(G=\on{GL}_n\) 时，这等价于 \(\A^1\times C\) 上的 \(\G_m\)-等变向量丛，或等价地等价于有限生成分次局部自由 \(\mc{O}_C[t]\)-模
+\[
+    \mc{E}=\bigoplus_{w\in\Z}\mc{E}_w.
+\]
+按照上述约定，坐标函数 \(t\) 的权为 \(-1\)，因此乘以 \(t\) 给出映射
+\[
+    t\colon\mc{E}_w\longrightarrow\mc{E}_{w-1}.
+\]
+由于 \(\mc{E}\) 在 \(\mc{O}_C[t]\) 上局部自由，乘以 \(t\) 是单射。
+
+\begin{rmk}
+    考虑向量丛 \(E=\mc{E}|_{\{1\}\times C}\)。由于 \(\G_m\) 自由作用在 \(\G_m\times C\) 上，等变下降给出
+    \[
+        \mc{E}|_{\G_m\times C}\simeq P_C^*E,
+    \]
+    其中 \(P_C\colon\G_m\times C\to C\) 是投影。等价地，
+    \[
+        E\simeq\big(\mc{E}[t^{-1}]\big)_0.
+    \]
+    定义
+    \[
+        F^wE\coloneqq t^w\mc{E}_w\subset\big(\mc{E}[t^{-1}]\big)_0=E.
+    \]
+    由于 \(t\mc{E}_{w+1}\subset\mc{E}_w\)，我们有 \(F^{w+1}E\subset F^wE\)。\(\mc{E}\) 的有限生成性与局部自由性蕴含这是一个由子丛构成的有限、穷尽且分离的递减滤过，可写为
+    \[
+        0=F^{b+1}E\subset F^bE\subset\cdots\subset F^aE=E.
+    \]
+
+    反过来，设 \(E\) 是带有由子丛构成的有限递减滤过 \(F^\bullet E\) 的向量丛，使得商 \(F^wE/F^{w+1}E\) 局部自由。Rees 构造是分次 \(\mc{O}_C[t]\)-模
+    \[
+        \ms{Rees}(E,F^\bullet)
+        \coloneqq
+        \bigoplus_{w\in\Z}t^{-w}F^wE
+        \subset
+        E\otimes_{\C}\C[t,t^{-1}].
+    \]
+    它在 \(\mc{O}_C[t]\) 上局部自由，且其在 \(t=1\) 与 \(t=0\) 处的纤维满足
+    \[
+        \ms{Rees}(E,F^\bullet)|_{t=1}\simeq E,
+        \qquad
+        \ms{Rees}(E,F^\bullet)|_{t=0}
+        \simeq
+        \bigoplus_w F^wE/F^{w+1}E.
+    \]
+\end{rmk}
+
+因此，从 \(\Theta\) 到向量丛叠的映射等价于向量丛的一个由子丛构成的有限 \(\Z\)-加权滤过，其相伴分次片局部自由。

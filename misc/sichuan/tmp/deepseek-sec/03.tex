@@ -1,0 +1,301 @@
+\section{对数几何引论 (Tingting Fang and Zijian Han)}%
+\label{sec:Intro to log geometry (Tingting Fang and Zijian Han)}
+
+\subsection{动机}%
+\label{sub:Motivation}
+
+在计数几何中，我们将考虑紧化模空间上的相交数。这将要求我们的对象以某种方式退化，例如定义域曲线成为结点曲线、映射落入边界除子，或者我们退化目标。在通常的几何中，我们将这些视为奇异的，但在对数几何中，有一种方法将这些情形视为 \textit{对数光滑} 的。在对数几何中，我们将用函数以及它们在边界上消失的方式的数据（即态射 \(\alpha \colon M_X \to \mc{O}_X\)）来替代函数。
+
+\begin{exm}
+    考虑 \(\A^1\) 上的一族曲线 \((xy=t)\)，其中中心纤维是结点曲线。在对数几何中，如果我们在 \(\A^1\) 上放置除子对数结构，那么这族曲线是对数光滑的。
+\end{exm}
+
+\subsection{幺半群}%
+\label{sub:Monoids}
+
+\begin{defn}
+    一个 \textit{幺半群} 是带单位的交换半群。
+\end{defn}
+
+对于幺半群 \(P\)，我们可以通过标准的 Grothendieck 构造关联一个群 \(P^{\mr{gp}}\)
+\[ P^{\mr{gp}} = \ab\{(a,b) \mid (a,b) \sim (c,d) \text{ if there exists } s \in P \text{ such that } a+d+s = b+c+s \}. \]
+\begin{defn}
+如果自然态射 \(P \hookrightarrow P^{\mr{gp}}\) 是单射，我们称 \(P\) 是 \textit{整的（integral）}。
+\end{defn}
+
+\begin{exm}
+    如果 \(P\) 有生成元 \(a,b,c\) 且满足关系 \(a+c=b+c\)，那么在 \(P^{\on{gp}}\) 中我们有 \(a = b\)，故 \(P\) 不是整的。
+\end{exm}
+
+\begin{defn}
+    一个幺半群 \(P\) 是
+    \begin{itemize}
+        \item \textit{精细的（fine）}，若 \(P\) 有限生成且整；
+        \item \textit{饱和的（saturated）}，若对任意 \(p \in P^{\mr{gp}}\) 和任意自然数 \(n\)，当 \(np \in P\) 时有 \(p \in P\)；
+        \item \textit{无挠的}，若 \(P^{\mr{gp}}\) 无挠；
+        \item \textit{尖的（sharp）}，若单位元是唯一可逆元。
+    \end{itemize}
+\end{defn}
+
+\subsection{对数结构}%
+\label{sub:Log structures}
+
+设 \(X\) 是一个概形。
+\begin{defn}
+    \(X\) 上的一个 \textit{预对数结构} 是 \(X\) 的小 \'etale 拓扑上的一个幺半群层 \(M_X\) 以及一个态射 \(\alpha \colon M_X \to \mc{O}_X\)。若 \(\alpha^{-1}(\mc{O}_X^{\times}) \simeq \mc{O}_X^{\times}\)，其中同构由 \(\alpha\) 给出，则称之为 \textit{对数结构}。
+\end{defn}
+
+我们现在考虑正合列
+\[ 0 \to \alpha^{-1}(\mc{O}_X^{\times}) \to M_X \to \bar{M}_X \to 0, \]
+此处的商称为 \textit{特征层} 或 \textit{幽灵层}。
+
+\begin{exm}
+    设 \(M_X = \mc{O}_X^{\times}\) 且 \(\alpha\) 为恒等映射。此时对数结构没有提供额外的信息。
+\end{exm}
+
+\begin{exm}
+    设 \(X\) 为正则簇，\(D\) 为闭子概形。置 \(U = X \setminus D\)。然后定义
+    \[ M_X = \mc{O}_X \cap j_* \mc{O}_U^{\times}, \]
+    其中 \(j \colon U \to X\) 是开浸入。若 \(D\) 是除子，则称之为 \textit{除子对数结构}。
+
+    例如，若 \(X = \A^1\) 且 \(D = \ab\{0\}\)，则特征层除原点外处处消失。这里我们计算
+    \[ M_X = \ab\{ \varphi \cdot t^n \mid \varphi \in \mc{O}_X^{\times} \}. \]
+    除原点外，茎处处为 \(\mc{O}_X^{\times}\)，而在原点处为 \(\mc{O}_{\A^1, 0}^{\times} \oplus \N\)。
+\end{exm}
+
+\begin{exm}
+    现在设 \(X = \A^2\) 且 \(D\) 为坐标轴之并。则
+    \begin{align*}
+        M_{X,D} &= \ab\{f \in k[x,y] \mid f \text{ is invertible outside } D \} \\
+        &= \ab\{\varphi \cdot x^a \cdot y^b\}.
+    \end{align*}
+    注意这里在一般点处，我们看到 \(M_p = \mc{O}_{X,p}^{\times}\)。在原点处，我们看到 \(\mc{O}_{X,p}^{\times}\oplus \N^2\)。在 \(x\)-轴上的一般点处，我们看到 \(x^a\) 可逆，于是看到茎 \(\mc{O}_{X,p}^{\times}\oplus \N \cdot b\)。类似地，我们可以计算 \(y\)-轴上一般点处的茎。
+\end{exm}
+
+正如我们可以将层与预层相关联，我们将把对数结构与预对数结构相关联。首先，范畴 \(\mc{C}\) 中的推出记作 \(B \sqcup_A C\)，它是如下图表的余极限
+\begin{equation*}
+\begin{tikzcd}
+    A \ar{r}{f} \ar{d}[swap]{g} & B \\
+    C.
+\end{tikzcd}
+\end{equation*}
+当 \(\mc{C}\) 为交换幺半群时，则
+\[ B \sqcup_A C = (B \oplus C)/\sim, \qquad (f(a) + b, c) \sim (b, g(a)+c). \]
+
+\begin{exm}
+    考虑态射 \(2 \colon \N \to \N\) 和 \(3 \colon \N \to \N\)。则推出是幺半群
+    \[ P = \frac{\N \oplus \N}{(3, 0) \sim (0,2)} \simeq \N \setminus \{1\}. \]
+\end{exm}
+
+如果我们把 \(\mc{C}\) 替换为交换幺半群层的范畴，我们可以在截面上作推出，然后再层化。
+
+\begin{defn}
+    预对数结构 \(\alpha \colon M_X \to \mc{O}_X\) 的 \textit{相伴对数结构} 是推出
+    \[ M_X \sqcup_{\alpha^{-1}(\mc{O}_X^{\times})} \mc{O}_X^{\times}. \]
+    到 \(\mc{O}_X\) 的映射由 \((a,b) \to \alpha(a) b\) 给出。
+\end{defn}
+
+\begin{defn}
+    对数概形的态射 \((X, M_X) \to (Y, M_Y)\) 由以下数据组成
+    \begin{enumerate}
+        \item 底层概形的态射 \(\ul{f} \colon \ul{X} \to \ul{Y}\)；
+        \item 一个映射 \(f^{\flat} \colon f^* M_Y \to M_X\)，其中 \(f^* M_Y\) 是与 \(f^{-1} M_Y\) 相伴的对数结构。
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    对数概形 \((X, \alpha \colon M_X \to \mc{O}_X)\) 的一个 \textit{图表} 是从常值幺半群 \(P_X \to M_X\) 的一个态射，使得 \(M_X \simeq P_X^a \simeq P_X \oplus_{\alpha_P^{-1}(\mc{O}_X^{\times})} \mc{O}_X^{\times}\)，其中 \(\alpha_P \colon P_X \to M_X \to \mc{O}_X\)。
+\end{defn}
+
+图表在指定对数结构时很有用。例如，若有 \(P_X \to \mc{O}_X\)，则 \(P_X^a\) 给出 \(X\) 上的一个对数结构。
+
+\begin{exm}
+    平凡对数结构由图表 \(P = \ab\{0\}\) 给出。
+\end{exm}
+
+\begin{exm}
+    设 \(X = \Spec k\)，并由 \(\alpha_{\N} \colon \N \to k\) 给出对数结构，它将 \(0\) 送到 \(1\)，将 \(1\) 送到 \(0\)。这称为 \textit{标准对数点}，也可以通过将 \(\A^1\) 上的除子对数结构限制到原点得到。
+\end{exm}
+
+\begin{exm}
+    考虑图表 \(\N \to \mc{O}_{\A^1}\)，它将 \(n \mapsto t^n\)。这恢复了 \(\A^1\) 上相对于原点的除子对数结构。
+\end{exm}
+
+\begin{exm}
+    考虑图表 \(\N^2 \to \mc{O}_{\A^2}\)，它将 \((a,b) \mapsto x^a y^b\)。这恢复了 \(\A^2\) 上相对于环面边界的除子对数结构。
+\end{exm}
+
+\begin{defn}
+    对数映射 \(f \colon (X, M_X) \to (Y, M_Y)\) 的一个 \textit{图表} 是一个三元组 \((P_X\to M_X, Q_Y \to M_Y, Q \to P)\)，其中 \(P_X \to M_X\) 和 \(Q_Y \to M_Y\) 是图表，且图表
+    \begin{equation*}
+    \begin{tikzcd}
+        Q_X \ar{r} \ar{d} & P_X \ar{d} \\
+        f^* M_Y \ar{r} & M_X
+    \end{tikzcd}
+    \end{equation*}
+    交换。
+\end{defn}
+
+\begin{defn}
+    对数概形 \((X, M_X)\) 称为 \textit{有限生成的、精细的、整的、饱和的}，若存在覆盖 \(U \to X\) 的 \'etale 局部图表 \(P_U \to M_U\)，使得 \(P\) 相应地是有限生成的、精细的、整的或饱和的。
+\end{defn}
+
+\subsection{对数光滑性}%
+\label{sub:Log smoothness}
+
+\begin{defn}
+    考虑交换图表
+    \begin{equation*}
+    \begin{tikzcd}
+        T_0 \ar{r}{\phi} \ar{d}{j} & X \ar{d}{f} \\
+        T_1 \ar{r}{\psi} & Y,
+    \end{tikzcd}
+    \end{equation*}
+    其中 \(j\) 是严格闭浸入（这里指的是 \(M_{T_0} = j^* M_{T_1}\)）。精细对数概形的态射 \(f \colon X \to Y\) 称为 \textit{对数光滑（相应地，对数 \'etale）}，若
+    \begin{enumerate}
+        \item 底层映射 \(\ul{f} \colon \ul{X} \to \ul{Y}\) 局部有限表现；
+        \item 对任意如上交换图表，在 \(T_1\) 上 \'etale 局部地存在（相应地，存在唯一的）态射 \(g \colon T_1 \to X\)，使得 \(\phi = g \circ j\) 且 \(\psi = f \circ g\)。
+    \end{enumerate}
+\end{defn}
+
+我们现在给出对数光滑性的图表局部判别法。
+
+\begin{thm}[{\cite[Theorem~3.5]{Kato1989}}]
+    设 \(f \colon X \to Y\) 是精细对数概形的态射。假设有图表 \(Q \to M_Y\)，其中 \(Q\) 是精细幺半群。则 \(f\) 对数光滑当且仅当在 \(X\) 上 \'etale 局部地存在延拓 \(Q \to M_Y\) 的 \(f\) 的图表，满足
+    \begin{enumerate}
+        \item \(Q^{\mr{gp}} \to P^{\mr{gp}}\) 的核与余核的挠部分都是有限群，其阶在 \(X\) 上可逆；
+        \item 诱导态射 \(\ul{X} \to \ul{Y} \times_{\Spec \Z[Q]} \Spec \Z[P]\) 在经典意义下是 \'etale。
+    \end{enumerate}
+\end{thm}
+
+\begin{exm}
+    设 \(X\) 是由幺半群 \(P\) 给出的仿射环面簇 \(\Spec \C[P]\)。注意 \(P^a \simeq M_{X, X \setminus T}\) 诱导出除子对数结构。然后考虑映射 \(f \colon X \to \mr{pt}\)，其中该点具有平凡对数结构。我们注意到态射 \(0 \to P^{\mr{gp}}\) 无核且余核无挠，并且映射
+    \[ \ul{X} \to \Spec \C \times_{\Spec \Z} \Spec \Z[P] = \Spec \C[P] \]
+    是同构，故任何环面簇都相对于具有平凡对数结构的点对数光滑。
+\end{exm}
+
+从这个例子，我们可以大致把对数光滑性看作相对于基底的局部环面性。
+
+\begin{exm}
+    回忆族 \(xy = t\)，其对数结构相对于中心纤维，定义在具有相对于 \(0\) 的除子对数结构的 \(\A^1\) 上。我们将考虑的图表映射实际上是 \(\Delta \colon \N \to \N^2\)。取群化后，映射变为 \(\Delta \colon \Z \to \Z^2\)。核平凡且余核无挠，故我们验证了第一个条件。然后考虑映射
+    \[ \ul{X} \to \Spec \C[t] \times_{\Spec \Z[\N]} \Spec \Z[\N^2] = \Spec \frac{\C[u,v,t]}{uv-t}, \]
+    它是同构，故这族曲线是对数光滑的。
+\end{exm}
+
+\subsection{对数结构的叠}%
+\label{sub:Stack of log structures}
+
+对数结构的叠及其与对数光滑性的关系归功于 Olsson~\cite{Olsson2003}。
+
+设 \(S\) 是精细对数概形。我们考虑范畴 \(\ms{Log}_S\)，其对象是精细对数概形 \((T, M_T) \to S\)，其态射是 \(S\) 上的严格态射 \((T, M_T) \to (T', M_{T'})\)。
+\begin{enumerate}
+    \item 该范畴 \(\ms{Log}_S\) 是 \(\ms{Sch}_{/S}\) 上的一个群胚纤维范畴，分类所有映入 \(S\) 的精细对数概形；
+    \item \(\ms{Log}_S\) 是 \(S\) 上局部有限型的代数叠；
+    \item 态射 \(f \colon X \to S\) 对数光滑当且仅当 \(X \to \ms{Log}_S\) 光滑。将光滑替换为 \'etale 同样成立。
+\end{enumerate}
+
+\subsection{热带化}%
+\label{sub:Tropicalization}
+
+设 \(X\) 是精细对数概形。则 \(X\) 的热带化定义为余极限
+\[\Sigma(X) \coloneqq \bigsqcup_{x \in X} \Hom(\bar{M}_{X,x}, \R_{\geq 0}) \biggm/ \sim, \]
+其中等价关系如下：若点 \(x\) 特殊化到 \(y\)，则诱导映射 \(\sigma_x \to \sigma_y\) 诱导出从 \(\sigma_x\) 到其像的等价。
+
+现在假设 \(X\) 有一个由 \(X_i\) 给出的分层，使得 \(\bar{M}_{|X_i}\) 为常值。对任意 \(X_i\)，所有点 \(x \in X_i\) 满足 \(x \in \ol{\ab\{\eta_{X_i}\}}\)，故我们只需考虑各层的一般点，然后粘合各个面。
+
+\begin{exm}
+    考虑具有平凡对数结构的 \(X\)。注意对任意点 \(x \in X\)，有 \(\bar{M}_{X,x} = 0\)，故 \(\sigma_X = \ab\{0\}\)。于是 \(\Sigma(X) = \ab\{0\}\)。
+\end{exm}
+
+\begin{exm}
+    考虑相对于原点的 \(\A^1\)（带除子对数结构）。容易看出 \(\sigma_0 = \Hom(\N, \R_{\geq 0}) = \R_{\geq 0}\)，\(\sigma_{\eta} = \ab\{0\}\)，故热带化为 \(\R_{\geq 0}\)。
+\end{exm}
+
+\begin{exm}
+    考虑带环面对数结构（相对于 \(xy = 0\) 的除子对数结构）的 \(\A^2\)。则 \(\sigma_{(0,0)} = \R^2_{\geq 0}\)、\(\sigma_{(x,0)} = \R_{\geq 0}\)、\(\sigma_{(0,y)} = \R_{\geq 0}\)、\(\sigma_{(x,y)} = \ab\{0\}\)，故我们得到 \(\A^2\) 作为环面簇的扇，将其视作锥复形。
+\end{exm}
+
+\begin{exm}
+    设 \(X_{\Sigma}\) 是带相对于 \(X_{\Sigma} \setminus T\) 的除子对数结构的环面簇。则
+    \[ \Sigma(X_{\Sigma}) = \Sigma, \]
+    故一个可能的口号是：对环面簇作热带化会恢复通常环面几何的结构（减去扇在某个实向量空间中的嵌入）。
+\end{exm}
+
+\begin{exm}
+    设 \(X = \Spec k[x,y,t]/(xy-t^{\ell})\)，带相对于 \(xy = 0\) 的除子对数结构。则存在图表
+    \[ Q = \ab<e_x, e_y, e_t \mid e_x + e_y = \ell e_t>. \]
+    注意 \(M_X = Q^a = Q \oplus_{\alpha^{-1}(\mc{O}_X^{\times})} \mc{O}_X^{\times}\) 且 \(\bar{M}_X = Q\)。因此，在奇异点 \(q\) 处我们有
+    \begin{align*}
+        \sigma_q &= \Hom(Q, \R_{\geq 0}) \\
+        &= \ab\{ (\rho_x, \rho_y, \rho_t) \in \R_{\geq 0}^3 \mid \rho_x + \rho_y = \ell \rho_t \} \\
+        &= \ab\{ (\rho_t, \rho_x) \in \R_{\geq 0}^2 \mid 0 \leq \rho_x \leq \ell \rho_t \}
+    \end{align*}
+    它恢复了给出 \(X\) 作为环面簇的锥。在 \(x = 0\) 的一般点 \(\eta_x\) 处，我们看到 \(\bar{M}_{X, \eta_x} = \N e_t\)，因此 \(\sigma_{\eta_x} = \R_{\geq 0}\)。类似地，我们看到 \(\sigma_{\eta_y} = \R_{\geq 0}\)。剩下的问题是粘合。
+
+    注意 \(\bar{M}_{X, q} \to \bar{M}_{X, \eta_x}\) 由 \(e_t \mapsto e_t\)、\(e_x \mapsto \ell e_t\)、\(e_y \mapsto 0\) 给出，因此映射 \(\sigma_{\eta_x} \to \sigma_q\) 将 \(\rho_t\) 送到 \((\rho_t, \rho_x)\)，其中 \(\rho_x = \ell \rho_t\)。
+
+    给出具有结点中心纤维的一族曲线的态射 \(X \to \A^1_t\)，其热带化由将锥投影到 \(\R_{\geq 0}\) 给出。
+\end{exm}
+
+
+\subsection{对数曲线}%
+\label{sub:Log curves}
+
+目前，所有幺半群和对数概形都将是精细的（甚至是 fs 的）。有两个原因：
+\begin{enumerate}
+    \item 若 \(P\) 是精细幺半群，则其对偶是 fs 且尖的；
+    \item 若 \(X = (\ul{X}, M_X)\) 是精细对数概形，则对任意几何点 \(\bar{x} \to X\)，存在 \(\bar{x}\) 的一个具有图表的 \'etale 邻域。
+\end{enumerate}
+
+我们现在讨论幺半群之间映射的各种几何性质。
+\begin{defn}
+    映射 \(\theta \colon P \to Q\) 称为 \textit{整的}，若映射 \(\Spec\C[Q] \to \Spec \C[P]\) 平坦。
+\end{defn}
+
+例如，任何非零映射 \(\N \to \N\) 和对角映射 \(\Delta \colon\N \to \N^2\) 都是整的。若一个映射是整的，则对任意 \(P \to P'\)，幺半群 \(P' \oplus_P Q\) 是精细的。
+
+\begin{exm}
+    推出可能不是精细的，例如考虑
+    \[ \ab< a ,b,c \mid a+c=b+c> = \N^3 \oplus_{\N^2} \N. \]
+\end{exm}
+
+\begin{defn}
+    精细对数概形之间的映射 \(f \colon X \to Y\) 称为整的，若在 \(X\) 的每个几何点处，映射
+    \[ (f^*\bar{M}_Y)_{\bar{x}} \to \bar{M}_{X,\bar{x}} \]
+    是整的。
+\end{defn}
+
+\begin{defn}
+    fs 幺半群之间的映射 \(P \to Q\) 称为 \textit{饱和的}，若对任意 \(P \to P'\)，幺半群 \(P' \oplus_P Q\) 也是 fs 的。
+\end{defn}
+
+\begin{exm}
+    映射 \(\Delta \colon \N \to \N^2\) 是饱和的，但 \(\ell \colon \N \to \N\) 不是。
+\end{exm}
+
+\begin{defn}
+    fs 对数概形 \(S\) 上的一个 \textit{对数曲线} 是 fs 对数概形之间对数光滑且整的映射 \(\pi \colon \mc{C} \to S\)，使得底层的几何纤维是约化连通曲线。
+\end{defn}
+
+\begin{prop}[{\cite{Kato1989}}]
+    设 \(f \colon X \to Y\) 是 fs 对数概形之间对数光滑且整的映射。则 \(\ul{f}\) 平坦。
+\end{prop}
+
+\begin{thm}[{\cite{FKato2000}}]
+    对数曲线的底层族是结点曲线族。
+\end{thm}
+
+\begin{exm}
+    设 \(P = \N \setminus \ab\{1\}\)。则 \(\Spec (P \to k[P])\) 在 \(k\) 上对数光滑，但 \(\Spec k[P]\) 是一个尖点。
+\end{exm}
+
+\begin{defn}
+    fs 基 \(S\) 上的一个 \textit{\(n\) 点对数曲线} 由数据 \((\pi \colon \mc{C} \to S), \vec{p} = \ab\{p_i\}_{i=1}^n\) 组成，使得
+    \begin{enumerate}
+        \item 底层族是预稳定曲线；
+        \item \(\pi\) 是 fs 对数概形之间的对数光滑映射；
+        \item 在 \(\ul{\pi}\) 的光滑轨迹 \(U\) 上，有
+            \[ \bar{M}_{\mc{C}}|_U \simeq \pi^* \bar{M}_S \oplus \bigoplus_{i=1}^n p_i \ul{\N}. \]
+    \end{enumerate}
+\end{defn}
+

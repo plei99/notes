@@ -1,0 +1,557 @@
+\section{面向高亏格的 GW 理论导引（Patrick Lei）}%
+\label{sec:Intro to GW theory with a view to higher genus (Patrick Lei)}
+
+
+\subsection{GW 理论简介}%
+\label{sub:Introduction to GW theory}
+
+关于虚拟基本类的构造，见~\cite{BehrendFantechi1997}；关于公理与量子上同调，见~\cite{KM1994}。
+
+这些讲座的目标是以一种便于进行高亏格计算的方式讨论 Gromov--Witten 理论。Gromov--Witten 理论研究模空间 \(\Mbar_{g,n}(X, \beta)\) 上的积分，其中 \(X\) 是光滑射影代数簇，\(\beta \in H_2(X, \Z)\) 是有效曲线类。有如下图表
+\begin{equation*}
+\begin{tikzcd}
+    \mc{C} \ar{r}{f} \ar[bend right=20]{d}[swap]{\pi} & X \\
+    \Mbar_{g,n}(X, \beta) \ar[bend right=20]{u}[swap]{\sigma_i} \ar{ur}[swap]{\on{ev}_i}
+\end{tikzcd}
+\end{equation*}
+其中 \(\mc{C}\) 是万有曲线，\(\sigma_i\) 是 \(\pi\) 的给出标记点的截面，\(f\) 是万有稳定映射，\(\ev_i = f \circ \sigma_i\) 是赋值态射。尽管 \(\Mbar_{g,n}(X, \beta)\) 一般是奇异的、不等维的且可约的，仍存在一个特殊的类
+\[ [\Mbar_{g,n}(X, \beta)]^{\vir} \in A_{\ab(c_1(X), \beta) + (\dim X - 3)(1-g) + n}(\Mbar_{g,n}(X, \beta), \Q), \]
+称为\textit{虚拟基本类}。
+
+\begin{exer}
+    用形变理论中的标准论证验证 \(\Mbar_{g,n}(X, \beta)\) 的``期望维数''就是上面给出的数。
+\end{exer}
+
+在 \(X\) 光滑且射影的假设下，\(\Mbar_{g,n}(X, \beta)\) 是本征的，因此我们可以定义\textit{GW 不变量}
+\[ \ab<\tau_{a_1}(\alpha_1), \cdots, \tau_{a_n}(\alpha_n)>_{g,n,\beta} \coloneqq \int_{[\Mbar_{g,n}(X, \beta)]^{\vir}} \prod_{i=1}^n \ev_i^* \alpha_i \cdot \psi_i^{a_i} \]
+其中 \(\alpha_i \in H^*(X)\)。这里 \(\psi_i\) 定义为 \(\psi_i = c_1(\sigma_i^*(\omega_{\pi}))\)。
+
+不幸的是，计算单个 Gromov--Witten 不变量非常困难，因此我们将考虑一个更加困难的问题，即研究 GW 不变量的生成级数，例如当 \(X\) 是 Calabi--Yau 三维流形时的
+\[ F_g = \sum_{\beta \geq 0} q^{\beta} \ab<>_{g,0,\beta} \]
+级数。这里 \(q\) 是记录曲线类的形式变量，我们把环 \(\Q\ps{q^{\beta} \mid \beta \in H_2(X, \Z)_{\mr{eff}}}\) 记为 \(\Lambda\)。我们还将考虑其他一些结构。首先可以考虑\textit{量子上同调环}，其乘积 \(a \star_{\mbf{t}} b\) 由公式给出
+\[
+    (a \star_{\mbf{t}} b, c) = \sum_{\substack{\beta \geq 0 \\ n \geq 0}} \ab<a,b,c, \mbf{t}, \ldots, \mbf{t}>_{0,3+n,\beta} \frac{q^{\beta}}{n!}.
+\]
+这里 \(a,b,c, \mbf{t} \in H^*(X)\)。我们还将考虑\textit{量子联络}。设 \(\ab\{ e_i \}\) 是 \(H^*(X)\) 的一组基。量子联络是 \(H^*(X) \times \P^1_z\) 上纤维为 \(H^*(X)\) 的平凡丛上的联络，由公式给出
+\[ \nabla_{t^i} = \partial_{t^i} + \frac{1}{z} e_i \star_{\mbf{t}}. \]
+有时，考虑 \(z\)-方向上的联络也很有用，它由
+\[ \nabla_{z \odv{}{z}} \coloneqq z \odv{}{z} - \frac{1}{z} E_X \star_{\mbf{t}} + \mu_X, \]
+给出，其中 \(\mu_X(\alpha) = \frac{\deg(\alpha) - \dim X}{2} \alpha\) 是分次算子，而
+\[ E_X = c_1(X) + \sum_i \ab(1 - \frac{\deg(e_i)}{2})t^i e_i \]
+是\textit{Euler 向量场}。由于我们主要关心 Calabi--Yau 簇，故不考虑这部分。
+
+\subsection{亏格零的计数镜面对称}%
+\label{sub:Enumerative mirror symmetry in genus zero}
+
+数学家发展并研究 Gromov--Witten 理论的动力出现在 1990 年代初：当时 Candelas、de la Ossa、Green 与 Parkes~\cite{CandelasEtAl1991} 通过把问题转化为在另一个称为\textit{镜像五次三维流形}的 Calabi--Yau 三维流形上计算周期积分（等价地，研究其 Hodge 结构的变分），预言了一般五次三维流形上低次数有理曲线的数目。在亏格零时，所有不变量都可以由\textit{J-函数} \(J_{\mbf{t}}(q,z) \in H^*(X, \Lambda)[z]\) 恢复，其定义为
+\[ \ab( J_{\mbf{t}}(q, z), \alpha ) \coloneqq (z + \mbf{t}, \alpha) + \sum_{n, \beta} \frac{q^{\beta}}{n!} \ab< \frac{\alpha}{z-\psi}, \mbf{t}, \ldots, \mbf{t}>_{0,1+n, \beta} \]
+对任意 \(\mbf{t} \in H^*(X, \Lambda)[z]\) 与 \(\alpha \in H^*(X)\)，其中 \((-,-)\) 是 Poincar\'e 配对。因此，计算所有带后裔（即 \(\psi\)-类）的亏格零 Gromov--Witten 不变量的问题归结为计算 J-函数的问题。
+
+\begin{rmk}
+    我们把 \(\frac{1}{z-\psi}\) 展开为 \(\sum_{k=0}^{\infty} \psi^k z^{-k-1}\)。
+\end{rmk}
+
+应当注意，J-函数可以由量子微分方程的一个基本解得到，该基本解由
+\[ ( S_{\mbf{t}}(z) \phi , \alpha) = (\phi, \alpha) + \sum_{n, \beta} \frac{q^{\beta}}{n!} \ab<\frac{\alpha}{z-\psi}, \phi, \mbf{t}, \ldots, \mbf{t}>_{0, 2+n, \beta}. \]
+给出。它具有性质 \(S_{\mbf{t}}^*(-z) S_{\mbf{t}}(z) = \on{Id}\)，这通常称为\textit{辛性质}。由此可以通过 \(z S_{\mbf{t}}^*(z)\cdot 1 = J_{\mbf{t}}(q, z)\) 恢复 J-函数。
+
+在物理中，镜面对称是称为 A-模型与 B-模型的两种不同理论之间的对偶，因此现在我们需要引入 B-模型一侧的对象。为节省时间（并简化记号），我们假设 \(X\) 是环簇且 \(-K_X\) 是 nef。设 \(D_1, \ldots, D_r\) 是 \(X\) 的全部环面不变除子。定义 \(I\)-函数
+\[
+    I_{\mbf{t}}(q, z) \coloneqq z e^{\mbf{t}/z} \sum_{\beta \geq 0} q^{\beta} \frac{\prod_{i=1}^r \prod_{m = -\infty}^{0} (D_i + mz)}{\prod_{i=1}^r \prod_{m=-\infty}^{\beta \cdot D_i} (D_i + mz)}.
+\]
+注意这里把出现的任何 \((D_i + mz)^{-1}\) 展开为 \(\frac{1}{mz} \ab(1 - \frac{D_i}{mz} + \cdots)\)，也就是关于 \(\frac{D_i}{mz}\) 的等比级数。此外，I-函数被一个称为\textit{Picard--Fuchs 方程}的微分方程零化，它是某种超几何型方程。
+
+\begin{exm}
+    若 \(\mbf{t} = 0\) 且 \(X = \P^1\)，我们得到
+    \begin{align*}
+        I(q,z) &= z\sum_{d \geq 0} q^d \frac{1}{\prod_{m=1}^d (H + mz)^2} \\
+        &= z\sum_{d \geq 0} \ab(\frac{q}{z^2})^d \frac{1}{(d!^2)} + O(H),
+    \end{align*}
+    因此事实上首项正是第一类 Bessel 函数。
+\end{exm}
+
+若 \(X\) 是环簇 \(Y\) 中由线丛 \(L_1, \ldots, L_k\) 截出的完全交，且这些线丛对任何到 \(Y\) 的亏格零稳定映射都满足 \(H^1(f^* L_i) = 0\)（这称为\textit{凸的}），那么量子 Lefschetz 定理~\cite{CoatesGivental2007} 允许我们把 \([\Mbar_{g,n}(X, \beta)]^{\vir}\) 替换为 \(e\ab(\bigoplus \pi_* f^* L_i) \cap [\Mbar_{g,n}(Y, \beta)]^{\vir}\)，从而在 \(Y\) 上进行所有计算。此时 I-函数定义为
+\[
+    I_{\mbf{t}}(q,z) \coloneqq z e^{\mbf{t}/z} \sum_{\beta \geq 0} q^{\beta} \frac{\prod_{i=1}^k \prod_{m=-\infty}^{L_i \cdot \beta} (L_i + mz)}{\prod_{i=1}^k \prod_{m=-\infty}^{0} (L_i + mz)} \frac{\prod_{i=1}^r \prod_{m = -\infty}^{0} (D_i + mz)}{\prod_{i=1}^r \prod_{m=-\infty}^{\beta \cdot D_i} (D_i + mz)},
+\]
+这里我们滥用记号，把 \(L_i\) 与其第一陈类混同。
+
+\begin{exm}
+    五次三维流形由 \(\mc{O}_{\P^4}(5)\) 的一个截面截出，其在 \(\mbf{t} = 0\) 处的 I-函数为
+    \[ I(q,z) = z \sum_{d \geq 0} q^d \frac{\prod_{m=1}^{5d}(5H+mz)}{\prod_{m=1}^d (H+mz)^5}. \]
+\end{exm}
+
+亏格零镜面定理的内容是这两个对象之间的对应。更准确地说，当 \(-K_X\) 为 nef 时，它们通过一个变量替换相联系。
+
+\begin{thm}[{\cite{Givental1998,LLY1997}}]
+    把 \(\mbf{t} = 0\) 时的 I-函数写成 \(I_0(q) \cdot z + I_1(q) + O(z^{-1})\)。则有
+    \[
+        J_{\tau(\mbf{t})}(q,z) = \frac{I_{\mbf{t}}(q,z)}{I_0(q)},
+    \]
+    其中 \(\tau(\mbf{t}) = \frac{\mbf{t} + I_1(q)}{I_0(q)}\)。
+\end{thm}
+
+\begin{exm}
+    当 \(X = \P^1\) 时，注意 \(I_0(q) = 1\) 且 \(I_1(q) = 0\)，因此事实上有等式
+    \[ J_{\mbf{t}}(q,z) = I_{\mbf{t}}(q,z). \]
+\end{exm}
+
+\begin{exm}
+    当 \(X\) 是五次三维流形时，为方便起见，我们把 I-函数的各分量改写为 \(I_0(q) \cdot z + I_1(q)H + O(z^{-1})\)。我们有
+    \[ I_0(q) = \sum_{d \geq 0} \frac{(5d)!}{(d!)^5} q^d, \qquad I_1(q) = \sum_{d \geq 0} \frac{(5d)!}{(d!)^5} \ab(5\sum_{m=d+1}^{5d} \frac{1}{m}) q^d, \]
+    因此此时镜面映射是非平凡的。取 \(\mbf{t} = 0\)，可见 \(\tau = \frac{I_1(q)H}{I_0(q)}\)，于是得到
+    \[ J_{\tau}(q,z) = \frac{I(q,z)}{I_0(q)}. \]
+    由除子方程，左端也等于 \(J(qe^{I_1/I_0}, z)\)，我们也将这一变量替换称为镜面映射。
+    因此，我们可以用镜面定理来计算 $\star_{\tau}$。沿 \(H^2\) 方向的量子联络化为常微分方程
+    \[ (H+zD) S_{\tau}(z)^* = S_{\tau}(z)^* \cdot I_{11} H \star_{\tau}, \]
+    其中 $D \coloneqq q \odv{}{q}$（这里坐标为 $\log q$），$I_{11} \coloneqq 1 + D \ab(\frac{I_1(q)}{I_0(q)})$。利用镜面定理与 Zagier--Zinger~\cite{ZagierZinger2008} 的结果作显式计算，得到
+    \begin{align*}
+        I_{11} H + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} \1) \\
+        \ab( 1 + D\ab(\frac{\frac{I_1}{I_0} + D \ab(\frac{I_2}{I_0})}{I_{11}}) ) H^2 + \cdots &= S_{\tau}(z)^* (I_{11} H \star_{\tau} H) \\
+        I_{11} H^3 &= S_{\tau}(z)^* (I_{11}H \star_{\tau} H^2).
+    \end{align*}
+    由于 $S_{\tau}$ 以单位元开头，这就算出了 $H \star_{\tau}$。
+\end{exm}
+
+\subsubsection{振荡积分}%
+\label{ssub:Oscillating integrals}
+
+现在我们将重新诠释亏格零镜面定理；之后讨论高亏格不变量时，我们还会回到这一诠释。特别地，我们将把 I-函数解释为 \(X\) 的某个镜像族上的积分；对我们而言，\(X\) 将是环簇。设
+\[ 0 \to \Lambda \to \Z^r \to N \to 0 \]
+是 \(X\) 的扇序列。对其作用 \(\Hom(-, \C^{\times})\)，得到正合序列
+\[ 1 \to (\C^{\times})^{\dim X} \to (\C^{\times})^r \to \Hom(\Lambda, \C^{\times}) \to 1. \]
+设映射 \(\Lambda \to \Z^r\) 由矩阵 \((m_{ij})_{i=1,\ldots,r}^{j = 1, \ldots, \rho(X)}\) 给出。我们考虑簇
+\[ E_q = \ab(\prod_{i=1}^r x_j^{m_{ij}} = q_i \middle\vert i=1, \ldots, \rho(X)) \]
+它与 \(X\) 互为镜像，并考虑超势 \(f = x_1 + \cdots + x_r\)。若想考虑等变理论，即让等变参数 \(\lambda_1, \ldots, \lambda_r\) 分别作用于 \(X\) 的各齐次坐标，则考虑 \(f_{\lambda} = \sum_{i=1}^r (x_i - \lambda_i \log x_i)\)。
+
+\begin{exm}
+    当 \(X = \P^n\) 时，\(X\) 的镜像是簇 \(E_q = (x_1 \cdots x_{n+1} = q)\) 上的超势 \(\sum_{i=1}^{n+1} (x_i - \lambda_i \log x_i)\)。
+\end{exm}
+
+现在，在（等变）超势的每个临界点 \((x_{\alpha})\) 附近选取适当的 Lefschetz 顶针 \(\Gamma_{\alpha}\)，并考虑积分
+\[ I_{\alpha} = \int_{\Gamma_{\alpha}} e^{f_{\lambda}/z} \prod_{i=1}^r \frac{\d{x_i}}{x_i}. \]
+在 I-函数中，这对应于把表达式中的每个 \(D_i\) 替换为 \(D_i - \lambda_i\)（打开等变参数）；在 J-函数中，这对应于考虑 \(X\) 的完全等变 GW 理论。在亏格零时，\(\lambda_i \to 0\) 的极限存在，因此我们可以由下述定理稳妥地恢复原来的镜面定理：
+
+\begin{thm}[{\cite{Givental1996}}]
+    该积分被与 I-函数相同的 Picard--Fuchs 方程零化；并且在相差若干前置因子的意义下，它沿负实轴 \(z \to 0^-\) 的渐近展开与 I-函数限制到临界点 \(( x_{\alpha} )\) 所对应的 \(X\) 上 \(T\)-不动点处的部分一致。
+\end{thm}
+
+
+\subsubsection{Lagrange 锥}%
+\label{ssub:The Lagrangian cone}
+
+\(X\) 的量子上同调是\textit{Frobenius 流形}的一个例子；我们之后会看到，任何上同调场论都能产生一个 Frobenius 流形。记 \(V = H^*(X)\)，取 \(V\) 的一组基 \((e_{\mu})\)，于是可写 $\bv = \sum_{\mu,n} t^{\mu}_n e_{\mu} z^n \in V\ps{z}$。
+Frobenius 流形的结构来自函数
+\[
+    \mc{F}_0(\bv) = \sum_{n, \beta, \mu} \frac{q^{\beta}}{n!} \ab<\bv(\psi), \ldots, \bv(\psi)>_{0,n,\beta},
+\]
+它也被称为 \(X\) 的\textit{亏格零后裔势}。它满足弦方程、胀子方程与拓扑递归关系：
+\begin{align*}
+    \pdv{}{t_0^1} \mc{F}_0 &= \frac{1}{2} (\bv_0, \bv_0) + \sum_{n=0}^{\infty} \sum_{\mu} t_{n+1}^{\mu} \pdv{}{t_n^{\mu}} \mc{F}_0; \\
+    \pdv{}{t_1^1} \mc{F}_0 &= \sum_{n=0}^{\infty} \sum_{\mu} t_n^{\mu} \pdv{}{t_n^{\mu}}\mc{F}_0 - 2 \mc{F}_0; \\
+    \pdv{}{t_{k+1}^{\alpha},t_m^{\beta},t_n^{\gamma}} \mc{F}_0 &= \sum_{\mu,\nu} \pdv{}{t_k^{\alpha},t_0^{\mu}} \mc{F}_0 \cdot \eta^{\mu\nu} \cdot \pdv{}{t_0^{\nu},t_{m}^{\beta},t_n^{\gamma}} \mc{F}_0.
+\end{align*}
+为陈述下面的结果，我们考虑无穷维向量空间 $V\ls{z^{-1}}$（或其完备化），并配备辛形式
+\[ \omega(\mbf{f}(z), \mbf{g}(z)) \coloneqq \on{Res}_{z=0}(\mbf{f}(-z), \mbf{g}(z)). \]
+再考虑新变量\footnote{这称为\textit{胀子平移}。} $\bq = \bv - z$，于是 $\mc{F}_0$ 现在是 $\bq = -z$ 附近的函数。
+
+\begin{thm}[Givental {\cite{Givental2004}}]
+    $\mc{F}_0$ 满足上述偏微分方程组，当且仅当 $\d{\mc{F}_0}$ 的图像 $\mc{L}$ 是一个顶点在 $\bq = 0$ 处的 Lagrange 锥，且其切空间 $L$ 恰好沿 $zL \subset L$ 与 $\mc{L}$ 相切。
+\end{thm}
+
+我们可以通过如下步骤恢复 Lagrange 锥 $\mc{L}$。先求出量子联络的基本解
+\[ S = \mr{Id} + S_1 z^{-1} + S_2 z^{-2} + \cdots \]
+它满足方程
+\[ z \pdv{}{t^{\mu}}S = e_{\mu} \star S. \]
+然后令 $J \coloneqq z S^*(z) \1$，便可按如下步骤恢复 Lagrange 锥：
+\begin{itemize}
+    \item 导数 $\pdv{}{t^{\mu}} J$ 构成 $L \cap V\ps{z^{-1}}$ 的一组基；
+    \item 由此可知 $z \pdv{}{t^{\mu},t^{\nu}} J \in L \cap V \ps{z^{-1}}$。把它们用一阶导数表出，并利用 $J$ 是量子联络的解这一事实，我们便恢复了 Frobenius 结构，进而恢复 Lagrange 锥。
+\end{itemize}
+
+利用这一点，亏格零镜面定理可以诠释为：
+\begin{thm}[{\cite{Givental1998}}]
+    I-函数 \(I_{\mbf{t}}(q,z)\) 位于 \(X\) 的 Lagrange 锥上。
+\end{thm}
+
+
+
+
+\subsection{曲线模空间与 CohFT}%
+\label{sub:Moduli of curves and CohFTs}
+
+上同调场论的概念由 Kontsevich--Manin~\cite{KM1994} 引入。
+
+记 $\Mbar_{g,n}$ 为亏格 $g$、带 $n$ 个标记点的稳定曲线的模空间。它非空当且仅当 $2g-2+n > 0$，此时它是维数为 $3g-3+n$ 的 Deligne--Mumford 栈。全体 $\Mbar_{g,n}$ 具有一种组合结构，由一族态射给出。
+\begin{itemize}
+    \item 粘合态射
+        \[q \colon \Mbar_{g,n+1} \times \Mbar_{h, m+1} \to \Mbar_{g+h,n+m}, \]
+        把两条曲线沿最后一个标记点粘合，形成一个结点；
+    \item 自粘合态射 \[s \colon \Mbar_{g-1,n+2} \to \Mbar_{g,n},\]
+        把最后两个标记点粘合起来。
+\end{itemize}
+当然还有另一个有趣的映射，即遗忘映射
+\[ \pr \colon \Mbar_{g,n+1} \to \Mbar_{g,n} \]
+它删去最后一个标记点再稳定化。现在我们可以定义所关心的计数理论，其中包括 Gromov--Witten 理论。
+
+\begin{defn}
+    给定带非退化对称双线性型 $\eta$ 与单位元 $\1 \in V$ 的向量空间 $V$，$V$ 上的\textit{上同调场论（CohFT）} $\Omega$ 是一族 $S_n$-等变线性映射
+    \[ \Omega_{g,n} \colon V^{\otimes n} \to H^*(\Mbar_{g,n}) \]
+    满足基本恒等式
+    \[ \Omega_{0,3}(\1, u,v) = \eta(u,v) \]
+    以及如下组合恒等式（取 $V$ 的基 $e_{\mu}$ 使 $e_1 = \1$，并记 $e^{\mu}$ 为对偶基）：
+    \begin{align*}
+        q^* \Omega_{g+h,n+m}(\bv_1, \bv_2) &= \sum_{\mu} \Omega_{g,n+1}(\bv_1, e_{\mu}) \cdot \Omega_{h,m+1}(  \bv_2, e^{\mu} ); \\
+        s^* \Omega_{g,n}(\bv) &= \sum_{\mu} \Omega_{g,n+2}(\bv, e_{\mu}, e^{\mu}).
+    \end{align*}
+    若还满足恒等式
+    \[ \pr^*\Omega_{g,n}(\bv) = \Omega_{g,n+1}(\bv,\1) \]
+    则称该 CohFT 具有\textit{平坦单位元}（或满足\textit{弦方程}）。
+\end{defn}
+所有这些都可以推广到超向量空间，但为简单起见，我们不处理这种情形。
+
+\begin{exm}
+    CohFT 最重要的例子是光滑射影簇 $X$ 的 Gromov--Witten 理论。回忆稳定映射的源是\textbf{预稳定}曲线，因此存在稳定化态射
+    \[ \st \colon \Mbar_{g,n}(X,\beta) \to \Mbar_{g,n} \]
+    它遗忘映射并把曲线稳定化。然后，在 Novikov 环上展开，令 $V = H^*(X)$，$\eta$ 为 Poincar\'e 配对，$\1$ 为 $X$ 的基本类。线性映射 $\Omega^X_{g,n}$ 由公式
+    \[ \Omega_{g,n}^X(\btau) \coloneqq \sum_{\beta} q^{\beta} \st_* \ab(\prod_{i=1}^n \ev_i^*(\tau_i) \cap [\Mbar_{g,n}(X,\beta)]^{\vir}), \]
+    给出，其中 $\ev_i \colon \Mbar_{g,n}(X,\beta) \to X$ 是第 $i$ 个赋值映射。
+\end{exm}
+
+\begin{exm}
+    设 $\pi \colon \mc{C}_{g,n} \to \Mbar_{g,n}$ 为万有曲线。\textit{Hodge 丛}是向量丛
+    \[ \E_{g,n} \coloneqq \pi_* \omega_{\pi}. \]
+    然后取向量空间 $V = \C$ 并配备通常的配对，由公式
+    \[ \Omega^{\E}_{g,n} \coloneqq c(\E_{g,n}). \]
+    定义 CohFT $\Omega^{\E}$。粘合公理由等式 $q^* \E_{g+h} = \E_g \oplus \E_h$ 与正合序列
+    \[ 0 \to \E_{g-1} \to \E_g \to \mc{O} \to 0. \]
+    满足。这里，由于亏格零分支对 $\omega$ 的整体截面没有贡献，且 $\E$ 不依赖于标记点，这个 CohFT 具有平坦单位元。
+\end{exm}
+
+\begin{rmk}
+    我们之后会看到，量子 Riemann--Roch 定理把它与一点的 GW CohFT 联系起来。
+\end{rmk}
+
+给定一个 CohFT $\Omega$，把类 $\Omega_{g,n}(\bv)$ 与 $\Mbar_{g,n}$ 上的各种上同调类配对，即可产生不变量。其中最重要的类是
+\[ \bar{\psi}_i \coloneqq c_1( s_i^* \omega_{\pi} ), \]
+其中 $s_i \colon \Mbar_{g,n} \to \mc{C}_{g,n}$ 是第 $i$ 个标记点。
+
+\begin{rmk}
+    在 Gromov--Witten 理论中，这些称为\textit{祖先}。此外还有后裔，它们由同样的公式给出，只是把 $\Mbar_{g,n}$ 换成预稳定曲线的模空间 $\mf{M}_{g,n}$，并把上面定义的态射 $\st$ 分解为
+    \[ \Mbar_{g,n}(X,\beta) \xrightarrow{\text{遗忘映射}} \mf{M}_{g,n} \xrightarrow{\text{稳定化}} \Mbar_{g,n}. \]
+    后裔类记为 $\psi_i$。
+\end{rmk}
+
+\begin{exm}
+    我们来计算一个将出现在 Calabi--Yau 三维流形 GW 理论中的不变量。对任意 CohFT $\Omega$，考虑不变量
+    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega}\coloneqq \int_{\Mbar_{1,1}} \Omega_{1,1}(\1)\bar{\psi}_1. \]
+    利用第二个粘合方程，$\Omega_{1,1}(\1)$ 的次数零部分等于
+    \[ \sum_{\mu} \Omega_{0,3}(\1, e_{\mu}, e^{\mu}) = \sum_{\mu} \eta(e_{\mu}, e^{\mu}), \]
+    这给出 $V$ 的（分次）维数 $\chi(V)$（例如，若 \(X\) 是 Calabi--Yau 三维流形且 \(V = H^*(X)\)，这就是 \(X\) 的拓扑 Euler 示性数）。因此我们得到
+    \[ \ab<\1\bar{\psi}_1>_{1,1}^{\Omega} = \frac{\dim V}{24}. \]
+\end{exm}
+
+\begin{exm}
+    考虑一点的 GW CohFT。它由 $V = \C$ 配备通常的配对以及公式
+    \[ \Omega_{g,n} = 1. \]
+    给出。然后定义不变量
+    \[ \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} \coloneqq \int_{\Mbar_{g,n}} \Omega_{g,n} \cdot \bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}. \]
+    \begin{thm}[Kontsevich {\cite{Kontsevich1992}}]
+        函数
+        \[ \mc{D} \coloneqq \exp \ab(\sum_{g,n} \frac{\hbar^{g-1}}{n!}\sum_{a_1 + \cdots + a_n = 3g-3+n} \ab<\bar{\psi}_1^{a_1} \cdots \bar{\psi}_n^{a_n}>_{g,n} t_{a_1}\cdots t_{a_n}) \]
+        被下列算子零化：
+        \begin{align*}
+            L_{-1} \coloneqq{}& -\pdv{}{t_0} + \frac{\hbar^{-1}}{2} t_0^2 + \sum_{i=0}^{\infty} t_{i+1} \pdv{}{t_i};\\
+            L_0 \coloneqq{}& -\frac{3}{2} \pdv{}{t_1} + \sum_{i=0}^{\infty} \frac{2i+1}{2} t_i \pdv{}{t_i} + \frac{1}{16};\\
+            L_n \coloneqq{}& -\frac{(2n+3)!!}{2^{n+1}} \pdv{}{t_{n+1}} + \sum_{i=0}^{\infty} \frac{(2i+2n+1)!!}{(2i-1)!! 2^{n+1}} t_i \pdv{}{t_{i+n}} \\
+            &+ \frac{\hbar}{2} \sum_{i=0}^{n-1} \frac{(2i+1) (2i-1) \cdots (2i+1-2n)}{2^{n+1}} \pdv{}{t_i,t_{n-1-i}}.
+        \end{align*}
+    \end{thm}
+\end{exm}
+
+\begin{rmk}
+    这一结果（一点的 Virasoro 约束）等价于 $\mc{D}$ 是 KdV 族的 $\tau$-函数，并已被多位作者推广。
+\end{rmk}
+
+
+
+\subsection{$R$-矩阵作用}%
+\label{sub:R-matrix action}
+
+2000 年代初，Givental 发现了公理化计数理论的一个引人注目的性质，即可以用满足性质
+\[ R^*(-z) R(z) = \mr{Id}_V. \]
+的矩阵 $R(z) = R_0 + R_1 z + R_2 z^2 + \cdots \in \Hom(V, V')\ps{z}$ 的作用来变换 CohFT。传统上，文献要求 $V = V'$ 且 $R_0 = \mr{Id}$，但 MSP 团队去掉了这一限制，还允许 $\dim V < \dim V'$。
+
+为了定义 $R$ 对定义在 $V$ 上的 CohFT $\Omega$ 的作用，我们需要回顾 $\Mbar_{g,n}$ 的一些组合结构。对曲线 $C\in \Mbar_{g,n}(\C)$，可以考虑 $C$ 的对偶图，它有顶点、边与腿，定义如下：
+\begin{itemize}
+    \item 顶点对应 $C$ 的不可约分支，并用一个非负整数（即亏格）标记；
+    \item 边对应 $C$ 的结点（特别地，我们允许自环）；
+    \item 腿对应标记点。
+\end{itemize}
+凡是作为某条稳定曲线的对偶图出现的图都称为\textit{稳定图}。
+
+\begin{figure}[htpb]
+  \centering
+  \begin{tikzpicture}[scale=1,transform shape,every loop/.style={}]
+    \node[circle,draw] (A) at (0,0) {$2$};
+    \node[circle,draw] (B) at (2,2) {$3$};
+    \node[circle,draw] (C) at (2,0) {$0$};
+    \draw[thick] (A) -- node[above]{$\alpha$} (B) -- (C) -- node[below]{$\beta$} (A);
+    \draw[thick] (A) -- node[below]{$3$} (-1,-1);
+    \draw[thick] (A) -- node[above]{$1$} (-1,1);
+    \draw[thick] (C) -- node[right]{$2$} (2,-1);
+    \draw[thick] (C) edge[loop right] node[right] {$\psi$} (C);
+    \node[anchor=east] at (-1,-1) {$\psi$};
+    \node[anchor=east] at (1.7,1.8) {$\psi^2$};
+    \node[anchor=south] at (0.2,0.2) {$\psi$};
+  \end{tikzpicture}
+  \caption{$\ol{\mc{M}}_{7,3}$ 中稳定图的例子及其相伴的 tautological 类。这个稳定图描述了一个映射
+    $\ol{\mc{M}}_{2,4} \times \ol{\mc{M}}_{3,2} \times \ol{\mc{M}}_{0,5} \to \ol{\mc{M}}_{7,3}$ 的像。}
+  \label{fig:stablegraph}
+\end{figure}
+
+对 CohFT 的第一种作用是平移作用。设 $T \in V\ps{z}$。对 CohFT $\Omega$，我们定义
+\[ (T\Omega)_{g,n}(\bv) \coloneqq \sum_m \frac{1}{m!} p_* \Omega_{g,n+m}(\bv, T,\ldots,T) \]
+只要该无穷和有意义。
+
+\begin{exm}
+    若 $\Omega^X$ 是光滑射影簇 $X$ 的 GW CohFT，且 $\tau \in H^2(X)$ 是除子类，则该无穷和有意义，于是可以定义 $X$ 的平移 GW CohFT $\Omega^{X,\tau}$。例如，若 $X$ 是五次三维流形且 $\tau = \frac{I_1}{I_0} H$，则平移到 $\tau$ 与镜面映射 $q \mapsto Q(q) = q e^{\frac{I_1}{I_0}}$ 相同。
+\end{exm}
+
+第二种作用是本节开头所述矩阵 $R$ 的作用。记 $G_{g,n}$ 为亏格 $g$、带 $n$ 条腿的所有稳定图的集合。我们定义
+\[ (R\Omega)_{g,n} \coloneqq \sum_{\Gamma \in G_{g,n}} \frac{1}{\ab|\Aut \Gamma|} \on{Cont}_{\Gamma}, \]
+其中 $\on{Cont}_{\Gamma}$ 由如下构造给出：
+\begin{itemize}
+    \item 在第 $i$ 条腿处，放置映射
+        \[ R(-\bar{\psi}_i)^* \in \Hom(V',V) \ps{\bar{\psi}_i}; \]
+    \item 在每条边处，放置双向量
+        \[ V(\bar{\psi}_1, \bar{\psi}_2) \coloneqq \sum_{\mu} \frac{e_{\mu} \otimes e^{\mu} - R(-\bar{\psi}_1)^* e_{\mu} \otimes R(-\bar{\psi}_2)^* e^{\mu}}{\bar{\psi}_1 + \bar{\psi}_2}; \]
+    \item 在每个顶点处，放置线性映射
+        \[ \Omega_{g_v, n_v} \colon V^{\otimes n_v} \to H^*(\Mbar_{g_v, n_v}); \]
+    \item 最后，沿粘合态射 $\prod_v \Mbar_{g_v, n_v} \to \Mbar_{g,n}$ 取上同调中的前推。
+\end{itemize}
+
+\begin{defn}
+    设 $R$ 如上。我们定义平移
+    \[ T_R \coloneqq z (\1 - R(-z)^* \1') \in z V\ps{z}. \]
+    只要下式有意义，就定义
+    \[ R.\Omega \coloneqq RT\Omega. \]
+\end{defn}
+
+\begin{thm}[Chang-Guo-Li {\cite[Theorem~2.7]{CGL2026}}]
+    设我们在系数 $\C\ps{q}$ 下展开。若
+    \[ T_R \in z^2 V \ps{z} + zq V \ps{z}, \]
+    则 $R.\Omega$ 是良定义的 CohFT。此外，若 $\dim V = \dim V'$，则 $\1'$ 是 $R.\Omega$ 的单位元。
+\end{thm}
+
+关于 $R_0 \neq \mr{Id}$ 时的平移作用，我们再作一点说明。为简单起见，假设 $V = V'$，且存在常数 $c$ 使得 $R_0 \1 = c \cdot \1$。令 $\tilde{T}_R \coloneqq z( \1 - c R(z)^{-1} \1)$，并用胀子方程计算
+\begin{align*}
+    T_R \Omega_{g,n}(\bv) &= \sum_{m=0}^{\infty} \frac{1}{m!} p_*\Omega_{g,n+m}(\bv, T_R, \ldots, T_R) \\
+    &= \sum_{k,\ell \geq 0} \frac{1}{k!\ell!} p_* \Omega_{g,n+k+\ell}(\bv, ( (1-c^{-1})\1 \cdot \psi )^{\otimes k}, ( c^{-1} \tilde{T}_R )^{\otimes \ell}) \\
+    &= \sum_{k,\ell \geq 0} \frac{(1-c^{-1})^k \cdot c^{-\ell}}{\ell!} \binom{2g-2+n+k+\ell-1}{k} p_* \Omega_{g,n+\ell}(\bv, \tilde{T}_R^{\otimes \ell}) \\
+    &= \sum_{m=0}^{\infty} \frac{c^{2g-2+n}}{m!} p_* \Omega_{g,n+m}(\bv, \tilde{T}_R, \ldots, \tilde{T}_R)
+\end{align*}
+（只要其有意义）。
+
+
+\subsection{重构定理}%
+\label{sub:Reconstruction theorem}
+
+回忆每个 CohFT 都定义一个 Frobenius 代数。若对应的 Frobenius 代数是半单的，我们就称该 CohFT 是\textit{半单}的。
+
+\begin{thm}[Teleman {\cite{Teleman2012}}]%
+\label{thm:teleman}
+    设 $\Omega$ 是带平坦单位元的半单 CohFT，$\omega$ 为其拓扑部分。则存在唯一的
+    \[ R = \mr{Id} + R_1 z + \cdots \in \End(V)\ps{z} \]
+    使得
+    \[ \Omega = R.\omega. \]
+\end{thm}
+
+\begin{exm}
+    回忆前面的 Hodge 丛 CohFT。它由公式
+    \[ \Omega^{\E}_{g,n} = c(\E) = 1 + \lambda_1 + \cdots + \lambda_g. \]
+    给出。取次数零部分，可见 $\omega^{\E}$ 是一点的 GW CohFT。利用 Mumford 的计算
+    \[ \ch(\E) = g + \sum_{k=1}^{\infty} \frac{B_{2k}}{(2k)!}\ab(\kappa_{2k-1} + \frac{1}{2}\iota_*\sum_{i=0}^{2k-2} \bar{\psi}_1^{i} (-\bar{\psi}_2)^{2k-2-i}), \]
+    其中 $\kappa_{m} = p_* \bar{\psi}_{n+1}^{m+1}$，$B_{2k}$ 是 Bernoulli 数，$\iota$ 是边界的包含（相差一个 $2:1$ \'etale 覆盖），以及公式
+    \[ c(E) = \exp \ab(-\sum_k (-1)^k (k-1)!\ch_k(E)) \]
+    对任意向量丛 $E$ 成立（或者直接用量子 Riemann--Roch 定理\footnote{Coates--Givental 原文有一处符号错误，并已传播到后续文献中。}），我们得到 $R$-矩阵
+    \[ R(z) = \exp\ab( \sum_{k=1}^{\infty} \frac{B_{2k}}{2k(2k-1)} z^{2k-1}) = 1+\frac{1}{12}z + \cdots. \]
+
+    作为合理性检验，我们用 $R$-矩阵计算 $\Omega_{1,1}^{\E}$。首先考虑~\Cref{fig:03graphloop} 中的稳定图。
+    \begin{figure}[htpb]
+    \begin{center}
+    \begin{tikzpicture}[scale=1, transform shape, every loop/.style={}]
+    \node[circle,draw=black,thick] (B) at (-1,0) {$1$};
+    \draw[-,thick] (B) -- (-1,-0.6);
+    \node[circle,draw=black,thick] (A) at (1,0) {$0$};
+    \draw[-,thick] (A) -- (1,-0.6);
+    \path[every node/.style={font=\sffamily\small},thick]
+        (A)   edge[loop] (A);
+    \end{tikzpicture}
+    \end{center}
+    \caption{$g=1, n=1$ 的稳定图}%
+    \label{fig:03graphloop}
+    \end{figure}
+    第一个图 $\Gamma_1$ 给出的贡献为
+    \begin{align*}
+        \Cont_{\Gamma_1} &= T\omega_{1,1}^{\E}(R(z)^{-1}\1) \\
+        &= \omega_{1,1}^{\E}(R(z)^{-1}\1) + p_* \omega_{1,1}^{\E}(R(z)^{-1}\1, T_R(z)).
+    \end{align*}
+    利用公式 $B_2 = \frac{1}{6}$ 与 $\dim \Mbar_{1,1} = 1$ 的事实，上式化为
+    \[ 1 - \frac{1}{12}\psi_1 + \frac{1}{12} \kappa_1. \]
+    由于 $\dim \Mbar_{0,3} = 0$，第二个图没有尾贡献。边贡献的常数项为 $\frac{1}{12}$，因此计入自同构并前推到 $\Mbar_{1,1}$ 便得到
+    \[ \Cont_{\Gamma_2} = \frac{1}{12} \Delta, \]
+    其中 $\Delta$ 表示边界除子（带正确的栈结构）。由于此时 $\psi_1 = \kappa_1$，我们得到
+    \[ 1+\lambda_1 = 1 + \frac{1}{12}(\kappa_1 - \psi_1 + \Delta) = 1 + \frac{1}{12} \Delta. \]
+\end{exm}
+
+
+
+
+\subsection{算子形式体系与几何量子化}%
+\label{sub:Operator formalism and geometric quantization}
+
+我们回到 Givental 的辛形式体系。它对某些计算更为方便，而且实际上与之前的表述相等，至少在我们想要计算生成函数时是如此。回忆 $V$ 上有 Frobenius 流形结构，并且我们考虑了带辛形式
+\[ (\mbf{f}(z), \mbf{g}(z)) \coloneqq \on{Res}_{z=0} \eta(\mbf{f}(-z), \mbf{g}(z)). \]
+的向量空间 $\mc{V}\coloneqq V\ls{z^{-1}}$。若考虑由 $\mc{V}_+ = V[z]$ 与 $\mc{V}_- = z^{-1}V\ps{z^{-1}}$ 给出的极化，令 $\bq$ 如前（含胀子平移），并令 $\bp$ 为 $\mc{V}_-$ 上的坐标，使得 $(\bq, \bp)$ 构成 $\mc{V}$ 的一组 Darboux 坐标。
+
+\begin{defn}
+    形如
+    \[ \mc{D} = \exp\ab(\sum_{g=0}^{\infty} \hbar^{g-1} \mc{F}_g) \]
+    的形式函数称为\textit{Fock 空间的渐近元}。
+\end{defn}
+
+给定这样一个 Fock 空间的渐近元，我们用如下公式把 $\mc{V}$ 上的（无穷小）辛变换量子化：
+\[ \wh{p_a p_b} \coloneqq \hbar \partial_{q_a} \partial_{q_b}, \qquad \wh{p_a q_b} \coloneqq q_b \partial_{q_a}, \qquad \wh{q_a q_b} = \frac{q_a q_b}{\hbar}. \]
+特别地，这使我们能够理解 $\hat{R} \mc{D}$ 之类的表达式。不过我们需要小心，因为我们的公式同时涉及基本解 $S_{\tau}$ 与 $R$-矩阵，而 $S_{\tau}$ 是 $z^{-1}$ 的幂级数。\footnote{这是因为我们采用展开式 $\frac{1}{z-\psi} = \sum_{n=0}^{\infty} \psi^n z^{-n-1}$。}
+
+\begin{thm}[Givental {\cite{Givental2001quantization}}]
+    形如 $S(z^{-1}) = \mr{Id} + S_1 z^{-1} + \cdots$ 的算子按下式作用于 Fock 空间的（渐近）元：
+    \[ \hat{S}^{-1} \mc{D}(\bq) = e^{\frac{1}{2\hbar}W(\bq,\bq)} \mc{D}([S \bq]_+), \]
+    其中 $W = \sum \eta(W_{mn}q_m, q_n)$ 由公式
+    \[ \frac{S(w^{-1})^* S(z^{-1}) - \mr{Id}}{w^{-1}+z^{-1}} = \sum \frac{W_{mn}}{w^m z^n}. \]
+    定义。形如 $R(z) = \mr{Id} + R_1 z + \cdots$ 的算子按下式作用：
+    \[ \hat{R}\mc{D}(\bq) = e^{\frac{\hbar}{2} V(\partial_{\bq}, \partial_{\bq})} \mc{D}(R^{-1} \bq), \]
+    其中 $V = \sum \eta(p_m, V_{mn} p_n)$ 由下式定义：
+    \[ \frac{R(w)^* R(z) - \mr{Id}}{w+z} = \sum V_{mn} w^m z^n. \]
+\end{thm}
+
+对半单 CohFT，存在一组\textit{典范坐标} $u_{\alpha}$，使得 $1$-形式 $\d{u}$ 是代数同态 $T_v V \to \C$。此时在半单点附近，量子联络有形如
+\[ \Psi \cdot  R \cdot e^{\frac{U}{z}}, \]
+的渐近解，其中 $\Psi$ 把平坦坐标转换为典范坐标，$U = \on{diag}(u_{\alpha})$ 是典范坐标的对角矩阵。最后定义
+\[ C = \frac{1}{2} \int^u \sum R_1^{\alpha\alpha} \d{u_{\alpha}}. \]
+Teleman 重构定理的一个推论是公式
+\[ \mc{D}^X = e^{C(u)} \hat{S}^{-1}_{\tau} \hat{\Psi} \hat{R} \wh{e^{\frac{U}{z}}} \prod_{i=1}^{\dim V} \mc{D}^{\mr{pt}} \]
+它适用于任何量子上同调半单的光滑射影簇的 Gromov--Witten 理论。
+
+\begin{exm}
+    作为最后一个例子，我们应用 Teleman 定理计算任意半单 CohFT 的 $F_1$。记 $e_{\mu}$ 为量子乘积的幂等元基。我们来计算
+    \[ \int_{\Mbar_{1,1}} \Omega_{1,1}(e_{\beta}). \]
+    利用重构定理，我们得到
+    \begin{align*}
+        \int_{\Mbar_{1,1}}\Omega_{1,1}(e_{\beta}) ={}& \int_{\Mbar_{1,1}} T_R \omega_{1,1}(R(\bar{\psi})^{-1} e_{\beta}) + \frac{1}{2} T_R \omega_{0,3}(R(\bar{\psi})^{-1} e_{\beta}, V(\bar{\psi}_2, \bar{\psi}_3)) \\
+        ={}& \int_{\Mbar_{1,1}}T_R\omega_{1,1}(e_{\beta}) - \int_{\Mbar_{1,1}} T_R \omega_{1,1}(R_1 e_{\beta})\bar{\psi} \\
+        &+ \frac{1}{2}\sum_{\mu}  \omega_{0,3}(e_{\beta}, R_1 e^{\mu}, e_{\mu}) \\
+        ={}& \int_{\Mbar_{1,1}} ( \omega_{1,1}(e_{\beta}) + p_* ( \omega_{1,2}(e_{\beta}, R_1 \1) \bar{\psi}_2^2 )) \\
+        &- \int_{\Mbar_{1,1}} (\omega_{1,1}(R_1 e_{\beta})\bar{\psi}_1 + p_* ( \omega_{1,2}(R_1 e_{\beta}) \bar{\psi}_2^2 ) \bar{\psi}_1) \\
+        &+ \frac{1}{2} \sum_{\mu} \eta(e_{\beta} \star e_{\mu}, R_1 e^{\mu}) \\
+        ={}& \frac{1}{24} \sum_{\mu} ( \omega_{0,4}(e_{\mu}, e^{\mu}, e_{\beta}, R_1 \1) -\omega_{0,3}(e_{\mu}, e^{\mu}, R_1 e_{\beta}) )\\
+        &+ \frac{1}{2} \eta(e_{\beta}, R_1 e^{\beta}) \\
+        ={}& \frac{1}{24} \sum_{\mu}\sum_{\nu} \omega_{0,3}(e_{\mu}, e^{\mu}, e_{\nu})\omega_{0,3}(e^{\nu}, e_{\beta}, R_1 \1) \\
+        &-\frac{1}{24} \sum_{\mu} \omega_{0,3}(e_{\mu}, e^{\mu}, R_1 e_{\beta}) + \frac{1}{2} (R_1)_{\beta\beta} \\
+        ={}& \frac{1}{24} \ab(\eta(e^{\beta}, R_1 \1) - \sum_{\mu} \eta(e^{\mu}, R_1 e_{\beta})) + \frac{1}{2} (R_1)_{\beta\beta}.
+    \end{align*}
+    利用恒等式
+    \begin{align*}
+        \eta(R_1 \1, e^{\beta}) - \sum_{\mu} \eta(R_1 e_{\beta}, e^{\mu}) &= \sum_{\mu} \Delta_{\mu} \int_{\Mbar_{0,4}} \Omega_{0,4}(e_{\mu}, e_{\mu}, e_{\mu}, e_{\beta}) \\
+        &= -\frac{1}{2}\sum_{\mu} \Delta_{\mu} \partial_{u_{\beta}} \Delta_{\mu}^{-1} \\
+        &= \frac{1}{2} \sum_{\mu} \partial_{u_{\beta}} \log \Delta_{\mu},
+    \end{align*}
+    其中 $\Delta_{\mu} \coloneqq \eta(e_{\mu}, e_{\mu})^{-1}$，我们得到结果
+    \[ \int_{\Mbar_{1,1}} \Omega_{1,1}(e_{\beta}) = \frac{1}{48} \sum_{\mu} \partial_{u_{\beta}} \log \Delta_{\mu} + \frac{1}{2} (R_1)_{\beta\beta}, \]
+    它可以写成富有启发性的形式
+    \[ \d{F_1^{\Omega}} = \sum_{\mu} \ab( \frac{\d{\log \Delta_{\mu}}}{48} + \frac{1}{2} (R_1)_{\mu\mu} \d{u_{\mu}} ). \]
+    这恢复了 Givental 早已知晓的一个结果。
+\end{exm}
+
+\subsection{如何计算 R-矩阵}%
+\label{sub:How to compute the R-matrix}
+
+最后我们解释如何计算 R-矩阵，先从 Frobenius 流形为共形的情形开始（例如光滑射影簇的 Gromov--Witten 理论、\(r\)-spin 曲线等）。在本例中，我们按~\cite{PPZ2015} 考虑 3-spin 曲线的 Frobenius 流形。设 \(V\) 是 2 维的，坐标为 \(x\) 与 \(y\)，其中 \(x\) 对应单位元。度量为
+\[ \eta = \begin{pmatrix}
+    0 & 1 \\
+    1 & 0
+\end{pmatrix} \]
+亏格零原始势为 \(F(x,y) = \frac{1}{2} x^2 y + \frac{1}{72} y^4\)。存在一个\textit{Euler 向量场}
+\[ E = x \pdv{}{x} + \frac{2}{3} y \pdv{}{y}, \]
+它分别以权重 \(-1\) 与 \(-\frac{2}{3}\) 作用于 \(\partial_x\) 与 \(\partial_y\)。共形维数为 \(\delta = \frac{1}{3}\)，我们定义次数算子
+\[ \mu(v) = [E,v] + \ab(1 - \frac{\delta}{2})v. \]
+这里 \(\partial_x\) 的次数为 \(-\frac{1}{6}\)，\(\partial_y\) 的次数为 \(\frac{1}{6}\)。
+
+为简便起见，我们令 \(\phi = \frac{y}{3}\) 并定义
+\[ \hat{\partial}_x = \phi^{1/4} \partial_x, \qquad \hat{\partial}_y = \phi^{-1/4} \partial_y, \]
+然后在这一标架下进行计算。此时量子乘法由
+\[ \hat{\partial}_x \star \hat{\partial}_x = \phi^{1/4} \hat{\partial}_x, \qquad \hat{\partial}_x \star \hat{\partial}_y = \phi^{1/4} \hat{\partial}_y, \qquad \hat{\partial}_y \star \hat{\partial}_y = \phi^{1/4} \hat{\partial}_x. \]
+给出。我们需要的最后一件事是，与 \(E\) 的量子乘法由
+\[ E \star - = \begin{pmatrix}
+    x & 2 \phi^{3/2} \\
+    2 \phi^{3/2} & x
+\end{pmatrix}. \]
+给出。现在利用递推方程
+\[ [R_{k+1}, E \star -] = (k + \mu) R_k. \]
+来计算 R-矩阵 \(R = 1 + R_1 z + \cdots\)。令 \(R_k = \begin{psmallmatrix}
+    a_k & b_k \\
+    c_k & d_k
+\end{psmallmatrix}\)，得到方程
+\[ \ab[
+    \begin{pmatrix}
+        a_{k+1} & b_{k+1} \\
+        c_{k+1} & d_{k+1}
+    \end{pmatrix}, \begin{pmatrix}
+        x & 2 \phi^{3/2} \\
+        2 \phi^{3/2} & x
+    \end{pmatrix}
+] = \frac{1}{6} \pdiagmat[empty={}]{6k-1, 6k+1} \begin{pmatrix}
+    a_k & b_k \\
+    c_k & d_k
+\end{pmatrix}. \]
+
+该方程的唯一解实际上是
+\begin{align*}
+    a_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{1+6k}{1-6k} \frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{even}},  \\
+    b_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{1+6k}{1-6k}\frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{odd}},  \\
+    c_k &= \frac{1}{1728^k \phi^{3k/2}}\frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{odd}}, \\
+    d_k &= \frac{1}{1728^k \phi^{3k/2}} \frac{(6k)!}{(3k)!(2k)!} \delta_{k, \text{even}}.
+\end{align*}
+如果你熟悉曲线模空间上的 tautological 关系，就会看到级数 \(a_k + b_k\) 与 \(c_k + d_k\) 出现在 Faber--Zagier 关系与 Pixton 关系的表述之中。
+
+当 Frobenius 流形不是共形的（例如在等变 Gromov--Witten 理论中），我们需要用振荡积分或其他技巧来确定 R-矩阵中的初值。这里给出一个例子计算，它归功于 Givental~\cite{Givental2001semisimple}。此时 \(X = \P^n\)，但该论证可以推广到任何 Fano 环簇。回忆 \(\P^n\) 的等变镜像是超势
+\[ W = x_1 + \cdots + x_{n+1} + \sum_{i=1}^{n+1} \lambda_i \log x_i \]
+（这里为方便起见，我们改变了等变参数的符号）。因此振荡积分形如
+\[ I = \int_{\Gamma \subset E_q = (x_1 \cdots x_{n+1}=q)} e^{W/z} \prod_{i=1}^{n+1} \frac{\d{x_i}}{x_i}. \]
+它被算子
+\[ \prod_{i=1}^{n+1}\ab(zq \odv{}{q} -\lambda_i) - q, \]
+零化，这正是射影空间的 I-函数所满足的 Picard--Fuchs 方程。
+
+为了在临界点附近展开该积分，我们首先需要算出临界点。这里用坐标 \(t = \log q\) 与 \(T_i = \log x_i\)，得到方程
+\[ x_i = L - \lambda_i, \]
+其中 \(L\) 是 Lagrange 乘子。它们满足方程
+\[ \prod_{i=1}^{n+1} (L - \lambda_i) = q, \]
+因此对一般的 \(\lambda\) 取值，在 \(q = 0\) 附近，Lagrange 乘子的可能取值 \(L_i\) 由它们以哪个 \(\lambda_i\) 为首项来区分。注意函数 \(W\)、Lagrange 乘子的取值乃至临界点都连续依赖于 \(\lambda\)，所以当 \(q \neq 0\) 时，它们在 \(\lambda = 0\) 处存在非等变极限。
+
+当 \(q = 0\) 时，矩阵 \(\Psi\) 从平坦基 \(\ab{H^i}\) 过渡到基
+\[ L_i(H) = \prod_{j \neq i} \frac{H - \lambda_j}{(\lambda_i - \lambda_j)^{1/2}}, \]
+它们是典范坐标的首项（只需用等变局部化计算环面作用的不动点，就会得到这一 Lagrange 插值）。因此我们需要计算 \(q = 0\) 极限下的 \(L_j \ab(z q \odv{}{q}) I\)。直接计算表明，把 \(L_i \ab(z q \odv{}{q})\) 作用于积分，会在振荡积分的被积函数中引入一个正比于 \(\frac{q}{x_i}\) 的额外因子。由于我们可以置换指标，故只计算 \(i = n+1\) 的情形。另一直接计算表明，除非 \( j = n+1\)，该积分在 \(q = 0\) 处为零，因此事实上 \(R\) 在经典极限下是对角的。当 \(j = n+1\) 时，有
+\[ \frac{q}{x_{n+1}} = x_1 \cdots x_n, \]
+积分变为
+\[ \int_{\Gamma} e^{\ab( \sum_{i=1}^n x_i + (\lambda_i - \lambda_{n+1})\log x_i ) / z} \d{x_1} \cdots \d{x_n} = \prod_{i=1}^n \int_{\R} e^{x_i/z} x_i^{(\lambda_i - \lambda_{n+1})/z} \d{x_i}, \]
+它只是 \(\Gamma\)-函数的乘积。
+
+\begin{lem}
+    我们有渐近展开
+    \[ \log \Gamma(1+s) \sim s \log \ab(\frac{s}{e}) + \frac{1}{2} \log(2\pi s) + \sum_{k=1}^{\infty} \frac{B_{2k}}{2k} \frac{s^{1-2k}}{2k-1}. \]
+\end{lem}
+利用此式可知，在 \(q = 0\) 处，R-矩阵的对角矩阵元由
+\[ \log R = \sum_{k=1}^{\infty} \frac{B_{2k}}{2k} \frac{z^{2k-1}}{2k-1} \sum_{i =1}^n (\lambda_i - \lambda_{n+1})^{1-2k}. \]
+给出。由 Givental 的一个结果，这意味着该 R-矩阵恢复了 \(\P^n\) 的等变 GW 理论；作为推论，由于非等变极限存在，我们得到 \(\P^n\) 的 Virasoro 约束。
+

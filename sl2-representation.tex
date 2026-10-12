@@ -1,0 +1,65 @@
+\documentclass[tikz,border=3mm]{standalone}
+\usepackage{amsmath,amssymb}
+
+\begin{document}
+\begin{tikzpicture}[
+    weight/.style={circle, draw, fill=blue!10, minimum size=14mm, inner sep=0pt},
+    arrow/.style={->, >=stealth, thick},
+    label/.style={font=\small, fill=white, inner sep=1pt}
+]
+
+% Title
+\node[font=\large\bfseries] at (0, 1.5) {Irreducible $\mathfrak{sl}_2$-Representation $V(n)$};
+
+% Weight spaces (from highest weight n to lowest weight -n)
+% Weights: n, n-2, n-4, ..., -n+2, -n
+\node[weight] (w0) at (-6, 0) {$V_n$};
+\node[weight] (w1) at (-4, 0) {$V_{n-2}$};
+\node[weight] (w2) at (-2, 0) {$V_{n-4}$};
+\node         at (0, 0) {$\cdots$};
+\node[weight] (w3) at (2, 0) {$V_{-n+4}$};
+\node[weight] (w4) at (4, 0) {$V_{-n+2}$};
+\node[weight] (w5) at (6, 0) {$V_{-n}$};
+
+% Weight labels below
+\node[below=3mm of w0] {$n$};
+\node[below=3mm of w1] {$n-2$};
+\node[below=3mm of w2] {$n-4$};
+\node[below=3mm of w3] {$-n+4$};
+\node[below=3mm of w4] {$-n+2$};
+\node[below=3mm of w5] {$-n$};
+
+% Action of e (raising operator, goes left to right, increases weight by 2)
+\draw[arrow, blue] (w0) -- node[label, above] {$e$} (w1);
+\draw[arrow, blue] (w1) -- node[label, above] {$e$} (w2);
+\draw[arrow, blue] (w2) -- node[label, above] {$e$} (-1, 0);
+\draw[arrow, blue] (1, 0) -- node[label, above] {$e$} (w3);
+\draw[arrow, blue] (w3) -- node[label, above] {$e$} (w4);
+\draw[arrow, blue] (w4) -- node[label, above] {$e$} (w5);
+
+% Action of f (lowering operator, goes right to left, decreases weight by 2)
+\draw[arrow, red, bend right=40] (w1) to node[label, below] {$f$} (w0);
+\draw[arrow, red, bend right=40] (w2) to node[label, below] {$f$} (w1);
+\draw[arrow, red, bend right=40] (-1, 0) to node[label, below] {$f$} (w2);
+\draw[arrow, red, bend right=40] (w3) to node[label, below] {$f$} (1, 0);
+\draw[arrow, red, bend right=40] (w4) to node[label, below] {$f$} (w3);
+\draw[arrow, red, bend right=40] (w5) to node[label, below] {$f$} (w4);
+
+% Legend
+\node[anchor=north west, align=left, font=\small] at (-7, -1.5) {
+    \textbf{Legend:}\\
+    \textcolor{blue}{$e$}: raising operator ($e \cdot v_\mu \in V_{\mu+2}$)\\
+    \textcolor{red}{$f$}: lowering operator ($f \cdot v_\mu \in V_{\mu-2}$)\\
+    $h \cdot v_\mu = \mu v_\mu$ on $V_\mu$
+};
+
+% Formulas
+\node[anchor=north east, align=right, font=\small] at (7, -1.5) {
+    \textbf{Action formulas:}\\
+    $e \cdot v_k = (n-k+2) v_{k-2}$\\
+    $f \cdot v_k = (k+2) v_{k+2}$\\
+    $h \cdot v_k = k v_k$
+};
+
+\end{tikzpicture}
+\end{document}

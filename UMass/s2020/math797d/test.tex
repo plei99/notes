@@ -1,0 +1,130 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz-3dplot}
+
+\begin{document}
+
+% Set viewing angle to match the isometric-style sketch
+% Rotated to show Top, Front-Left, and Front-Right faces clearly
+\tdplotsetmaincoords{60}{120}
+
+\begin{tikzpicture}[
+    tdplot_main_coords,
+    scale=2.5,
+    line join=round,
+    line cap=round
+]
+
+    % --- 1. CONFIGURATION ---
+    \def\s{2}       % Half-width of the cube (goes from -\s to \s)
+    \def\k{0.7}     % Cut size (how big the corner chop is)
+    \def\d{0.6}     % Dent depth (how deep the pyramid goes in)
+    
+    % Colors to match the red marker aesthetic
+    \definecolor{faceColor}{rgb}{0.9, 0.8, 0.8}  % Pale red for main faces
+    \definecolor{dentColor}{rgb}{0.8, 0.5, 0.5}  % Darker red for the holes
+
+    % --- 2. COORDINATE DEFINITIONS ---
+    
+    % We define the corners of a cube centered at (0,0,0)
+    % Visible corners in this view:
+    % 1. Front-Top-Right (The Central Corner closest to viewer): (\s, \s, \s)
+    % 2. Back-Top-Right (Top edge): (-\s, \s, \s)
+    % 3. Front-Bot-Right (Right edge): (\s, -\s, \s)
+    % 4. Front-Top-Left (Left edge): (\s, \s, -\s) 
+    % Note: Axes orientation in tdplot: x=Left/Front, y=Right/Front, z=Top
+    
+    % --- CORNER 1: CENTER (Closest to viewer) ---
+    % Coordinates: (\s, \s, \s)
+    % Cut points:
+    \coordinate (C1_x) at (\s-\k, \s, \s); % Point on x-edge
+    \coordinate (C1_y) at (\s, \s-\k, \s); % Point on y-edge
+    \coordinate (C1_z) at (\s, \s, \s-\k); % Point on z-edge
+    \coordinate (C1_in) at (\s-\d, \s-\d, \s-\d); % Inner apex
+    
+    % --- CORNER 2: TOP-LEFT (in sketch projection) ---
+    % Coordinates: (-\s, \s, \s) (The corner at x=-s)
+    \coordinate (C2_x) at (-\s+\k, \s, \s);
+    \coordinate (C2_y) at (-\s, \s-\k, \s);
+    \coordinate (C2_z) at (-\s, \s, \s-\k);
+    \coordinate (C2_in) at (-\s+\d, \s-\d, \s-\d);
+
+    % --- CORNER 3: TOP-RIGHT (in sketch projection) ---
+    % Coordinates: (\s, -\s, \s) (The corner at y=-s)
+    \coordinate (C3_x) at (\s-\k, -\s, \s);
+    \coordinate (C3_y) at (\s, -\s+\k, \s);
+    \coordinate (C3_z) at (\s, -\s, \s-\k);
+    \coordinate (C3_in) at (\s-\d, -\s+\d, \s-\d);
+
+    % --- CORNER 4: BOTTOM (in sketch projection) ---
+    % Coordinates: (\s, \s, -\s) (The corner at z=-s)
+    \coordinate (C4_x) at (\s-\k, \s, -\s);
+    \coordinate (C4_y) at (\s, \s-\k, -\s);
+    \coordinate (C4_z) at (\s, \s, -\s+\k);
+    \coordinate (C4_in) at (\s-\d, \s-\d, -\s+\d);
+
+
+    % --- 3. DRAWING THE DENTS (Darker Interior) ---
+    % We draw these first (background layer)
+    
+    % Style for dents
+    \tikzset{dentStyle/.style={fill=dentColor, draw=black!60, thin}}
+
+    % Center Corner Dent (Visible: all 3 facets)
+    \draw[dentStyle] (C1_x) -- (C1_in) -- (C1_y) -- cycle;
+    \draw[dentStyle] (C1_y) -- (C1_in) -- (C1_z) -- cycle;
+    \draw[dentStyle] (C1_z) -- (C1_in) -- (C1_x) -- cycle;
+
+    % Top Corner Dent (Visible facets: Facing Front and Right)
+    \draw[dentStyle] (C2_x) -- (C2_in) -- (C2_y) -- cycle; % Top-ish facet
+    \draw[dentStyle] (C2_y) -- (C2_in) -- (C2_z) -- cycle; % Side facet
+    % (Third facet hidden by the face itself)
+
+    % Right Corner Dent
+    \draw[dentStyle] (C3_x) -- (C3_in) -- (C3_y) -- cycle;
+    \draw[dentStyle] (C3_x) -- (C3_in) -- (C3_z) -- cycle;
+
+    % Bottom Corner Dent
+    \draw[dentStyle] (C4_z) -- (C4_in) -- (C4_y) -- cycle;
+    \draw[dentStyle] (C4_z) -- (C4_in) -- (C4_x) -- cycle;
+
+
+    % --- 4. DRAWING THE FACES (Lighter Exterior) ---
+    % Defined as polygons connecting the cut-points
+    
+    \tikzset{faceStyle/.style={fill=faceColor, draw=black, thick, fill opacity=0.85}}
+
+    % TOP FACE (z = \s)
+    % Connects corners: C2, C1, C3. The 4th corner is hidden (-s, -s, s).
+    % Path: C1_x -> C2_x -> (around corner 2) -> C2_y -> (to hidden corner) -> ... -> C3_y -> (around corner 3) -> C3_x -> (back to start)
+    % Simplifying: Since (-s, -s, s) is hidden and uncut in sketch view, we fake the back corner slightly or treat it as sharp.
+    \draw[faceStyle] 
+        (C1_x) -- (C2_x) -- (C2_y) -- (-\s, -\s, \s) -- (C3_y) -- (C3_x) -- cycle;
+
+    % LEFT FACE (y = \s)
+    % Connects corners: C2, C1, C4. The 4th corner is hidden (-s, s, -s).
+    \draw[faceStyle]
+        (C1_y) -- (C2_y) -- (C2_z) -- (-\s, \s, -\s) -- (C4_y) -- (C4_z) -- cycle;
+
+    % RIGHT FACE (x = \s)
+    % Connects corners: C3, C1, C4. The 4th corner is hidden (s, -s, -s).
+    \draw[faceStyle]
+        (C1_z) -- (C3_z) -- (C3_x) -- (\s, -\s, -\s) -- (C4_x) -- (C4_z) -- cycle;
+
+
+    % --- 5. REDRAW DENT OUTLINES (Visual cleanup) ---
+    % Redraw the "star" lines inside the dents to ensure they sit on top of any bleed
+    \draw[thin, black!70] (C1_x) -- (C1_in) -- (C1_y);
+    \draw[thin, black!70] (C1_y) -- (C1_in) -- (C1_z);
+    \draw[thin, black!70] (C1_z) -- (C1_in) -- (C1_x);
+
+    \draw[thin, black!70] (C2_x) -- (C2_in) -- (C2_y);
+    \draw[thin, black!70] (C2_y) -- (C2_in) -- (C2_z);
+    
+    \draw[thin, black!70] (C3_x) -- (C3_in) -- (C3_y);
+    \draw[thin, black!70] (C3_x) -- (C3_in) -- (C3_z);
+
+    \draw[thin, black!70] (C4_z) -- (C4_in) -- (C4_y);
+    \draw[thin, black!70] (C4_z) -- (C4_in) -- (C4_x);
+
+\end{tikzpicture}
+\end{document}
