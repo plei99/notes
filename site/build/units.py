@@ -253,6 +253,10 @@ PLACEHOLDER_DEF = r"""
 \providecommand\HtmlDiagram[2]{\ifdefined\HCode\HCode{<span class="dg" data-n="#1" data-d="#2"></span>}\fi}
 """
 
+# unicode-math sets \mathsf, \mathrm and the rest in the text fonts (Optima, say);
+# the page draws them from the math font, so diagrams do too.
+SYM_ALPHABETS = "\\PassOptionsToPackage{mathrm=sym,mathit=sym,mathbf=sym,mathsf=sym,mathtt=sym}{unicode-math}\n"
+
 PREVIEW_DEF = r"""
 % --- added by site/build: one tightly cropped page per diagram unit ---
 \usepackage[active,tightpage]{preview}
@@ -283,5 +287,5 @@ def rewrite(src: str) -> tuple[str, str, list[Span]]:
     diag.append(body[last:])
 
     web_src = preamble + PLACEHOLDER_DEF + "".join(web)
-    diag_src = "\\def\\pgfsysdriver{pgfsys-dvisvgm.def}\n" + preamble + PREVIEW_DEF + "".join(diag)
+    diag_src = "\\def\\pgfsysdriver{pgfsys-dvisvgm.def}\n" + SYM_ALPHABETS + preamble + PREVIEW_DEF + "".join(diag)
     return web_src, diag_src, units
