@@ -7,10 +7,18 @@ url: /
 {{ set listed = notes.filter((n) => !n.translation_of) }}
 {{ set built = new Set(search.pages("kind=note").map((p) => p.slug)) }}
 {{ set values = (note, key) => [].concat(note[key] || []) }}
-{{# Each facet's options, most common first. #}}
+{{ set slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-") }}
+{{# A note's values in a facet, with each value filed `under` another followed by
+    that one: enumerative geometry is algebraic geometry too. #}}
+{{ set facetValues = (note, facet) => [...new Set(values(note, facet.key).flatMap(
+  (v) => facet.under && facet.under[v] ? [facet.under[v], v] : [v]))] }}
+{{# Each facet's options, most common first; values filed under another are
+    offered inside it rather than on their own. #}}
 {{ set facetOptions = Object.fromEntries(site.facets.map((f) => {
   const counts = {};
-  for (const note of listed) for (const v of values(note, f.key)) counts[v] = (counts[v] || 0) + 1;
+  for (const note of listed) for (const v of facetValues(note, f)) {
+    if (!(f.under && f.under[v])) counts[v] = (counts[v] || 0) + 1;
+  }
   return [f.key, Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))];
 })) }}
 
@@ -20,21 +28,26 @@ url: /
 </header>
 
 <form class="filters" role="search" aria-label="Filter notes" hidden>
-  {{ for facet of site.facets }}
-  <fieldset class="facet" data-facet="{{ facet.key }}">
-    <legend>{{ facet.label }}</legend>
-    <div class="options">
-      {{ for [value, count] of facetOptions[facet.key] }}
-      <button type="button" class="option" aria-pressed="false" data-value="{{ value |> key }}">{{ value }}<span class="count">{{ count }}</span></button>
-      {{ /for }}
-    </div>
-  </fieldset>
-  {{ /for }}
-  <div class="facet facet--search">
-    <label class="legend" for="q">Search</label>
-    <div class="options">
-      <input id="q" type="search" name="q" placeholder="Titles, lecturers, descriptions" autocomplete="off">
-    </div>
+  <div class="filter-bar">
+    {{ for facet of site.facets }}
+    <details class="facet" data-facet="{{ facet.key }}">
+      <summary><span class="facet-label">{{ facet.label }}</span> <span class="facet-value">any</span></summary>
+      <div class="menu">
+        {{ for [value, count] of facetOptions[facet.key] }}
+        <label class="option"><input type="checkbox" value="{{ slug(value) }}"><span class="option-name">{{ value }}</span><span class="count">{{ count }}</span></label>
+        {{ for child of Object.keys(facet.under || {}).filter((c) => facet.under[c] === value) }}
+        <div class="suboptions" role="radiogroup" aria-label="{{ child }} within {{ value }}" data-parent="{{ slug(value) }}" data-child="{{ slug(child) }}">
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="all"><span class="option-name">all</span><span class="count"></span></label>
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="only" data-summary="{{ child }}"><span class="option-name">{{ child }} only</span><span class="count"></span></label>
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="none" data-summary="{{ value }} without {{ child.split(" ")[0] }}"><span class="option-name">no {{ child }}</span><span class="count"></span></label>
+        </div>
+        {{ /for }}
+        {{ /for }}
+      </div>
+    </details>
+    {{ /for }}
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" type="search" name="q" placeholder="Search titles, lecturers, descriptions" autocomplete="off">
   </div>
   <p class="filter-status" aria-live="polite"><span class="shown">{{ listed.length }} notes</span> <button type="button" class="clear" hidden>Show all</button></p>
 </form>
@@ -46,10 +59,8 @@ url: /
   {{ set translations = notes.filter((t) => t.translation_of === note.slug) }}
   {{ set parent = note.parent && listed.find((p) => p.slug === note.parent) }}
   <li class="entry"
-      data-location="{{ values(note, "location").map((v) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-")).join(" ") }}"
-      data-type="{{ values(note, "type").map((v) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-")).join(" ") }}"
-      data-subjects="{{ values(note, "subjects").map((v) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-")).join(" ") }}"
-      data-text="{{ [note.title, note.description, (note.lecturers || []).join(" "), note.place].join(" ").toLowerCase() }}">
+      {{ for facet of site.facets }}data-{{ facet.key }}="{{ facetValues(note, facet).map(slug).join(" ") }}"
+      {{ /for }}      data-text="{{ [note.title, note.description, (note.lecturers || []).join(" "), note.place].join(" ").toLowerCase() }}">
     <p class="entry-when">{{ note.date }}</p>
     <div>
       <h2 class="entry-title">

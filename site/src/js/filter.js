@@ -1,10 +1,13 @@
 // Filters on the index. Without JavaScript the form stays hidden and every note
 // is listed.
 //
-// Options within a facet widen the list (Columbia or UMass); facets narrow it
-// (Columbia and courses). Each option's count is how many notes it would leave
-// given the other facets, so a dead end shows as 0 before it is chosen. The
-// state lives in the query string, so a filtered list can be linked to.
+// Each facet is a menu of checkboxes. Options within a facet widen the list
+// (Columbia or UMass); facets narrow it (Columbia and courses). Each option's
+// count is how many notes it would leave given the other facets, so a dead end
+// shows as 0 before it is chosen. A value filed under another (enumerative
+// geometry under algebraic geometry) is a choice inside that option: all of it,
+// only those notes, or none of them. The state lives in the query string, so a
+// filtered list can be linked to.
 
 const form = document.querySelector(".filters");
 const entries = [...document.querySelectorAll(".entry")];
@@ -17,42 +20,85 @@ const empty = document.querySelector(".empty");
 const PARAM = { location: "location", type: "type", subjects: "subject" };
 const chosen = Object.fromEntries(facets.map((f) => [f.dataset.facet, new Set()]));
 
+// parent value -> { child, mode: "all" | "only" | "none" }
+const subs = Object.fromEntries(
+  [...form.querySelectorAll(".suboptions")].map((group) => [
+    group.dataset.parent,
+    { child: group.dataset.child, mode: "all", group },
+  ]),
+);
+
 function words() {
   return search.value.toLowerCase().split(/\s+/).filter(Boolean);
+}
+
+function has(entry, key, value, mode = subs[value]?.mode ?? "all") {
+  const values = entry.dataset[key].split(" ");
+  if (!values.includes(value)) return false;
+  if (mode === "all") return true;
+  return values.includes(subs[value].child) === (mode === "only");
 }
 
 function matches(entry, except) {
   for (const [key, set] of Object.entries(chosen)) {
     if (key === except || set.size === 0) continue;
-    if (!entry.dataset[key].split(" ").some((v) => set.has(v))) return false;
+    if (![...set].some((v) => has(entry, key, v))) return false;
   }
   return words().every((w) => entry.dataset.text.includes(w));
 }
 
+function count(pool, key, value, mode) {
+  return pool.filter((e) => has(e, key, value, mode)).length;
+}
+
 function render() {
-  let count = 0;
+  let total = 0;
   for (const entry of entries) {
     const on = matches(entry);
     entry.hidden = !on;
-    if (on) count++;
+    if (on) total++;
   }
   for (const facet of facets) {
     const key = facet.dataset.facet;
     const pool = entries.filter((e) => matches(e, key));
-    for (const button of facet.querySelectorAll(".option")) {
-      const value = button.dataset.value;
-      const n = pool.filter((e) => e.dataset[key].split(" ").includes(value)).length;
-      button.querySelector(".count").textContent = n;
-      button.setAttribute("aria-pressed", chosen[key].has(value));
-      button.classList.toggle("is-empty", n === 0 && !chosen[key].has(value));
+    const picked = [];
+    for (const box of facet.querySelectorAll("input[type=checkbox]")) {
+      const value = box.value;
+      const on = chosen[key].has(value);
+      const n = count(pool, key, value);
+      box.checked = on;
+      box.parentElement.querySelector(".count").textContent = n;
+      box.parentElement.classList.toggle("is-empty", n === 0 && !on);
+      if (!on) continue;
+      const name = box.parentElement.querySelector(".option-name").textContent;
+      const sub = subs[value];
+      picked.push(
+        sub && sub.mode !== "all"
+          ? sub.group.querySelector(`[value=${sub.mode}]`).dataset.summary
+          : name,
+      );
     }
+    for (const sub of Object.values(subs)) {
+      if (!facet.contains(sub.group)) continue;
+      const parent = sub.group.dataset.parent;
+      for (const radio of sub.group.querySelectorAll("input")) {
+        const n = count(pool, key, parent, radio.value);
+        radio.checked = chosen[key].has(parent) && sub.mode === radio.value;
+        radio.parentElement.querySelector(".count").textContent = n;
+        radio.parentElement.classList.toggle("is-empty", n === 0 && !radio.checked);
+      }
+    }
+    const summary = facet.querySelector(".facet-value");
+    summary.textContent = picked.join(", ") || "any";
+    summary.title = picked.join(", ");
+    facet.classList.toggle("is-active", picked.length > 0);
   }
   const filtering = Object.values(chosen).some((s) => s.size) || words().length;
   shown.textContent = filtering
-    ? `${count} of ${entries.length} notes`
+    ? `${total} of ${entries.length} notes`
     : `${entries.length} notes`;
   for (const button of clears) button.hidden = !filtering;
-  empty.hidden = count > 0;
+  empty.hidden = total > 0;
   save();
 }
 
@@ -60,6 +106,11 @@ function save() {
   const params = new URLSearchParams();
   for (const [key, set] of Object.entries(chosen)) {
     if (set.size) params.set(PARAM[key], [...set].join(","));
+  }
+  for (const [parent, sub] of Object.entries(subs)) {
+    if (sub.mode !== "all" && chosen.subjects?.has(parent)) {
+      params.set(sub.child, sub.mode);
+    }
   }
   if (search.value.trim()) params.set("q", search.value.trim());
   const query = params.toString();
@@ -73,17 +124,52 @@ function load() {
       chosen[key]?.add(v);
     }
   }
+  for (const sub of Object.values(subs)) {
+    const mode = params.get(sub.child);
+    if (mode === "only" || mode === "none") sub.mode = mode;
+  }
   search.value = params.get("q") || "";
 }
 
-form.addEventListener("click", (event) => {
-  const button = event.target.closest(".option");
-  if (!button) return;
-  const set = chosen[button.closest(".facet").dataset.facet];
-  const value = button.dataset.value;
-  if (set.has(value)) set.delete(value);
-  else set.add(value);
+form.addEventListener("change", (event) => {
+  const input = event.target;
+  const facet = input.closest(".facet");
+  if (!facet) return;
+  const set = chosen[facet.dataset.facet];
+  if (input.type === "checkbox") {
+    if (input.checked) set.add(input.value);
+    else {
+      set.delete(input.value);
+      if (subs[input.value]) subs[input.value].mode = "all";
+    }
+  } else if (input.type === "radio") {
+    const parent = input.closest(".suboptions").dataset.parent;
+    subs[parent].mode = input.value;
+    set.add(parent);
+  }
   render();
+});
+
+// One menu open at a time; a click elsewhere or Escape closes it.
+for (const facet of facets) {
+  facet.addEventListener("toggle", () => {
+    if (!facet.open) return;
+    for (const other of facets) if (other !== facet) other.open = false;
+  });
+}
+
+document.addEventListener("click", (event) => {
+  for (const facet of facets) {
+    if (facet.open && !facet.contains(event.target)) facet.open = false;
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  const open = facets.find((f) => f.open);
+  if (!open) return;
+  open.open = false;
+  open.querySelector("summary").focus();
 });
 
 search.addEventListener("input", render);
@@ -92,6 +178,7 @@ form.addEventListener("submit", (event) => event.preventDefault());
 for (const button of clears) {
   button.addEventListener("click", () => {
     for (const set of Object.values(chosen)) set.clear();
+    for (const sub of Object.values(subs)) sub.mode = "all";
     search.value = "";
     render();
   });

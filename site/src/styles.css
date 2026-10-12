@@ -309,59 +309,128 @@ main {
   color: var(--muted);
 }
 
-/* The filters share the list's grid: each facet's name sits in the column
-   where the entries keep their dates. */
+/* The filters: a menu per facet, like the masthead's selects, and a search
+   field, on one line above the list. */
 .filters {
   margin-bottom: 2.25rem;
 }
 
-.facet {
-  display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
-  gap: 0 1.5rem;
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.75rem;
   padding: 0.55rem 0;
-  border: 0;
   border-top: 1px solid var(--rule);
+  font-size: 1rem;
+}
+
+.facet {
+  position: relative;
   min-width: 0;
 }
 
-.facet legend,
-.facet .legend {
-  float: left; /* lets a legend take a grid cell */
-  padding: 0;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.9;
-}
-
-.options {
+.facet summary {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 1.1rem;
+  gap: 0.4em;
+  max-width: 22rem;
+  padding-right: 1.1rem;
+  list-style: none;
+  cursor: pointer;
+  line-height: 1.9;
 }
 
-.option {
-  padding: 0;
-  border: 0;
-  background: none;
+.facet summary::-webkit-details-marker {
+  display: none;
+}
+
+.facet summary::after {
+  content: "▾";
+  position: absolute;
+  right: 0;
+  color: var(--muted);
+}
+
+.facet[open] summary::after {
+  content: "▴";
+}
+
+.facet-label {
+  color: var(--muted);
+}
+
+.facet-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.facet.is-active .facet-value {
   color: var(--text);
-  font: inherit;
-  font-size: 1rem;
-  line-height: 1.9;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 0.1em;
-  text-underline-offset: 0.25em;
+  font-weight: 700;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: -0.75rem;
+  z-index: 5;
+  min-width: max(100%, 15rem);
+  padding: 0.4rem 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--text) 12%, transparent);
+}
+
+/* An option is a row: checkmark, name, count. The input itself is hidden; the
+   checkmark shows its state. */
+.option {
+  display: grid;
+  grid-template-columns: 1.4rem 1fr auto;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  padding: 0.15rem 0.9rem 0.15rem 0.75rem;
+  line-height: 1.6;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.option:hover {
-  text-decoration-color: var(--rule);
+.option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.option[aria-pressed="true"] {
+.option::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--ink);
   font-weight: 700;
-  text-decoration-color: var(--ink);
+}
+
+.option:has(input:checked)::before {
+  content: "✓";
+}
+
+.option:hover,
+.option:has(input:focus-visible) {
+  background: color-mix(in srgb, var(--text) 7%, var(--paper));
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+.option-name {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.option:has(input:checked) .option-name {
+  font-weight: 700;
 }
 
 .option.is-empty {
@@ -369,16 +438,25 @@ main {
   opacity: 0.55;
 }
 
+/* All, only or none of a value filed under this one, set in from it. */
+.suboptions .option {
+  padding-left: 2.65rem;
+  font-size: 0.92em;
+}
+
 .count {
-  margin-left: 0.25em;
+  grid-column: 3;
+  grid-row: 1;
   color: var(--muted);
   font-size: 0.8em;
   font-weight: 400;
   font-variant-numeric: oldstyle-nums;
 }
 
-.facet--search input {
-  width: min(100%, 22rem);
+.filter-bar input[type="search"] {
+  flex: 1 1 14rem;
+  max-width: 22rem;
+  margin-left: auto;
   padding: 0.15rem 0;
   border: 0;
   border-bottom: 1px solid var(--rule);
@@ -386,14 +464,13 @@ main {
   background: none;
   color: var(--text);
   font: inherit;
-  font-size: 1rem;
 }
 
-.facet--search input::placeholder {
+.filter-bar input[type="search"]::placeholder {
   color: var(--muted);
 }
 
-.facet--search input:focus-visible {
+.filter-bar input[type="search"]:focus-visible {
   outline: none;
   border-bottom-color: var(--ink);
 }
@@ -945,14 +1022,28 @@ aside.footnotetext p {
   body {
     font-size: 1.06rem;
   }
-  .entry,
-  .facet {
+  .entry {
     grid-template-columns: 1fr;
   }
-  .facet legend,
-  .facet .legend {
-    float: none;
-    line-height: 1.6;
+  .filter-bar input[type="search"] {
+    margin-left: 0;
+    max-width: none;
+  }
+  /* Menus span the bar, so the last one cannot run off the screen. */
+  .filter-bar {
+    position: relative;
+  }
+  .facet {
+    position: static;
+  }
+  .facet summary {
+    position: relative;
+  }
+  .menu {
+    left: 0;
+    right: 0;
+    top: auto;
+    margin-top: 0.35rem;
   }
   .entry-when {
     line-height: 1.4;
