@@ -245,6 +245,26 @@ def fix_xarrow(el: ET.Element) -> None:
         base[0].set("form", "infix")
 
 
+# Operator names. MathJax follows \\dim, \\sin, ... with an invisible function
+# application (U+2061) and spaces them itself; a browser gives it no width,
+# so `\\dim B` would read dimB. TeX puts a thin space there, but none before
+# an opening bracket: \\sin(x).
+OPENING = set("([{⟨⌊⌈|‖")
+
+
+def fix_function_application(el: ET.Element) -> None:
+    children = list(el)
+    for i, child in enumerate(children):
+        if child.tag != Q("mo") or (child.text or "") != "\u2061":
+            continue
+        following = children[i + 1] if i + 1 < len(children) else None
+        while following is not None and following.tag == Q("mrow") and len(following):
+            following = following[0]
+        if following is not None and following.tag == Q("mo") and (following.text or "").strip()[:1] in OPENING:
+            continue
+        child.set("rspace", "0.1667em")
+
+
 def fix_menclose(el: ET.Element) -> None:
     notation = el.attrib.pop("notation", "box")
     el.tag = Q("mrow")
@@ -277,6 +297,7 @@ def walk(el: ET.Element, inherited: str | None = None) -> None:
         fix_mpadded(el)
     elif tag == "mspace":
         el.attrib.pop("linebreak", None)
+    fix_function_application(el)
     for i, child in enumerate(list(el)):
         if child.tail and not child.tail.strip():
             child.tail = None

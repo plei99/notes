@@ -393,7 +393,14 @@ def convert_math(page: str, macros: dict, log: Path) -> tuple[str, dict]:
     for m, group in zip(matches, groups):
         pieces.append(page[last : m.start()])
         last = m.end()
+        # tex4ht keeps the space after an inline formula inside its span
+        # (`\(X\) </span>be`); it goes back between the formula and the text.
+        raw = m.group("inline") or ""
+        if raw[:1].isspace():
+            pieces.append(" ")
         pieces.extend(rendered[g] if isinstance(g, int) else htmllib.escape(g, False) for g in group)
+        if raw[-1:].isspace():
+            pieces.append(" ")
     pieces.append(page[last:])
     return "".join(pieces), stats
 
