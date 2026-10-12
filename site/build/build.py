@@ -9,7 +9,9 @@ For each note, in its own scratch directory under site/.cache/<slug>/:
 
  1. Diagram units (see units.py) are found. A copy of the source with each unit
     wrapped in a `preview` environment is run through LaTeX in DVI mode and
-    dvisvgm, giving one SVG per unit.
+    dvisvgm, giving one SVG per unit; then again through XeLaTeX once per font
+    pairing of the site (fontvariants.py), so each diagram can be shown in the
+    fonts the reader picked.
  2. A copy with each unit replaced by a placeholder goes through tex4ht
     (make4ht) in MathJax mode, which handles sectioning, theorems, references,
     footnotes and the bibliography, and leaves the mathematics as TeX source.
@@ -49,6 +51,17 @@ sys.path.insert(0, str(HERE))
 import mathml_core  # noqa: E402
 import texfix  # noqa: E402
 import units as unitlib  # noqa: E402
+
+try:  # fontTools, for drawing diagrams in the site's fonts (build/.venv)
+    import fontvariants
+except ImportError:
+    fontvariants = None
+
+# The site's font pairings, set up once in main(); None draws diagrams only in
+# the notes' own fonts.
+PAIRINGS = None
+# The pairing a page shows before any choice is made (styles.css :root).
+DEFAULT_PAIRING = "pagella"
 
 SHARED_FILES = ["notes.sty", "essay.sty", "macaulay2.sty", "math.bib"]
 SKIP_SUFFIXES = {
@@ -221,9 +234,38 @@ def theme_svg(svg: str, n: int, size_pt: float) -> str:
     return head + svg[head_end:]
 
 
-def render_diagrams(tex: Path, diag_src: str, engine: str, log: Path) -> dict[int, str]:
+# Alphabet commands that, under unicode-math, must be braced after _ and ^.
+SCRIPT_ALPHABETS = {"mathbb", "mathcal", "mathfrak", "mathscr", "mathrm", "mathbf", "mathsf", "mathit", "mathtt", "mathbbm", "bm", "boldsymbol"}
+
+
+def brace_scripts(src: str, macros: dict) -> str:
+    """Brace a sub- or superscript that is a bare macro: `_\\C` with
+    \\C = \\mathbb{C}, or `_\\mf{P}` with \\mf = \\mathfrak, work under pdfLaTeX,
+    but unicode-math's alphabets need `_{\\C}` and `_{\\mf{P}}`."""
+    takes = {k: (0 if isinstance(v, str) else v[1]) for k, v in macros.items()}
+    takes.update({a: 1 for a in SCRIPT_ALPHABETS})
+    begin = src.find("\\begin{document}")
+    body = src[begin:]
+    out, last = [], 0
+    for m in re.finditer(r"([_^])\s*\\([A-Za-z]+)(?![A-Za-z])", body):
+        if m.start() < last or m.group(2) not in takes:
+            continue
+        end = m.end()
+        for _ in range(takes[m.group(2)]):
+            j = unitlib.skip_space(body, end)
+            if j < len(body) and body[j] == "{":
+                end = unitlib.group_end(body, j)
+            elif j < len(body):
+                end = j + 1
+        out.append(body[last : m.start()] + f"{m.group(1)}{{" + body[m.start() + 1 : end] + "}")
+        last = end
+    out.append(body[last:])
+    return src[:begin] + "".join(out)
+
+
+def render_diagrams(tex: Path, diag_src: str, engine: str, log: Path, name: str = "diagrams") -> dict[int, str]:
     work = tex.parent
-    stem = tex.stem + "-diagrams"
+    stem = f"{tex.stem}-{name}"
     (work / f"{stem}.tex").write_text(diag_src)
     cmd = {
         "pdf": ["latex"],
@@ -234,8 +276,10 @@ def render_diagrams(tex: Path, diag_src: str, engine: str, log: Path) -> dict[in
     dvi = work / (f"{stem}.xdv" if engine == "xe" else f"{stem}.dvi")
     if not dvi.exists():
         return {}
-    out = work / "diagrams"
-    out.mkdir(exist_ok=True)
+    out = work / name
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir()
     run(["dvisvgm", "--no-fonts", "--exact-bbox", "--optimize", "-p", "1-", "-o", str(out / "%p.svg"), dvi.name], work, log)
     return read_diagrams(out)
 
@@ -486,7 +530,7 @@ def tidy(page: str, svgs: dict[int, str], size_pt: float, fonts: dict[str, str],
             return f"<span class='diagram-missing'>[diagram {n}: see the PDF]</span>"
         info["diagrams"] += 1
         cls = "diagram diagram--display" if display else "diagram"
-        return f"<span class='{cls}' role='img' aria-label='Diagram'>{theme_svg(svgs[n], n, size_pt)}</span>"
+        return f"<span class='{cls}' data-n='{n}' role='img' aria-label='Diagram'>{theme_svg(svgs[n], n, size_pt)}</span>"
 
     body = re.sub(r"""<span class=["']dg["'] data-d=["'](?P<d>\d)["'] data-n=["'](?P<n>\d+)["']>\s*</span>""", diagram, body)
 
@@ -681,6 +725,19 @@ def build_note(note: dict, tex_runs: bool = True) -> dict:
     tex.write_text(web_src)
     svgs = render_diagrams(tex, diag_src, engine, log) if units else {}
     report["svgs"] = len(svgs)
+    for old in tex.parent.glob("diagrams-*"):
+        shutil.rmtree(old)
+    if units and PAIRINGS:
+        # Options the font packages are asked for, here or in a shared style file.
+        scan = preamble + "".join(
+            (REPO / f).read_text(errors="replace") for f in SHARED_FILES if f.endswith(".sty") and f[:-4] in preamble
+        )
+        report["pairings"] = {}
+        braced = brace_scripts(src, texfix.scrape_macros(preamble))
+        for v in PAIRINGS.pairs:
+            before, setup = PAIRINGS.latex(v, scan)
+            _, pairing_src, _ = unitlib.rewrite(braced, before, setup)
+            report["pairings"][v] = len(render_diagrams(tex, pairing_src, "xe", log, f"diagrams-{v}"))
 
     page_file = run_tex4ht(tex, engine, bib, log)
     if not page_file and bib:
@@ -709,6 +766,7 @@ def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
         return report
     svgs = read_diagrams(tex.parent / "diagrams")
     report.setdefault("svgs", len(svgs))
+    pairings = {d.name.removeprefix("diagrams-"): read_diagrams(d) for d in sorted(tex.parent.glob("diagrams-*"))}
     preamble = (REPO / note["source"]).read_text(encoding="utf-8", errors="replace").split("\\begin{document}")[0]
     others = [p.name for p in page_file.parent.glob(f"{tex.stem}*.html") if p != page_file]
     if others:
@@ -725,12 +783,21 @@ def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
-    body, toc, info = tidy(page, svgs, font_size_pt(preamble), fonts, slug)
+    size_pt = font_size_pt(preamble)
+    body, toc, info = tidy(page, {**svgs, **pairings.get(DEFAULT_PAIRING, {})}, size_pt, fonts, slug)
     body, toc, borrowed = borrow_bibliography(body, toc, note)
     if borrowed:
         info["citations"] = info.get("citations", 0) + borrowed
     body = copy_images(body, page_file.parent, dest, log)
     report.update(info)
+
+    # Every pairing's drawings, for the page to swap in; a diagram a pairing
+    # failed to draw keeps the notes' own fonts.
+    if pairings:
+        (dest / "diagrams").mkdir()
+        for v, drawn in pairings.items():
+            pairing_svgs = {n: theme_svg(svg, n, size_pt) for n, svg in {**svgs, **drawn}.items()}
+            (dest / "diagrams" / f"{v}.json").write_text(json.dumps(pairing_svgs, separators=(",", ":")))
 
     (dest / "_body.html").write_text(body)
     (dest / "_toc.html").write_text(toc)
@@ -753,6 +820,13 @@ def main() -> None:
             sys.exit(f"unknown slugs: {', '.join(sorted(unknown))}")
         notes = [n for n in notes if n["slug"] in args.slugs]
     CACHE.mkdir(parents=True, exist_ok=True)
+    global PAIRINGS
+    if fontvariants is None:
+        print("fontTools not found (see the README): diagrams stay in the notes' own fonts", flush=True)
+    elif not args.no_tex:
+        PAIRINGS = fontvariants.Pairings()
+        for v in PAIRINGS.pairs:  # converts the fonts once, before the threads
+            PAIRINGS.latex(v)
     reports = []
     # Translations borrow their originals' bibliographies, so they come after.
     waves = [[n for n in notes if not n.get("translation_of")], [n for n in notes if n.get("translation_of")]]

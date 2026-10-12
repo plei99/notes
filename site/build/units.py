@@ -265,14 +265,21 @@ PREVIEW_DEF = r"""
 """
 
 
-def rewrite(src: str) -> tuple[str, str, list[Span]]:
-    """Return (web source, diagram source, units) for a full LaTeX document."""
+def split(src: str) -> tuple[str, str, list[Span]]:
+    """(preamble, body, units) of a full LaTeX document."""
     begin = src.find("\\begin{document}")
     if begin < 0:
         raise ValueError("no \\begin{document}")
     preamble, body = src[:begin], src[begin:]
     body = inline_diagram_macros(preamble, body)
-    units = find_units(body)
+    return preamble, body, find_units(body)
+
+
+def rewrite(src: str, before_class: str = "", before_begin: str = "") -> tuple[str, str, list[Span]]:
+    """Return (web source, diagram source, units) for a full LaTeX document.
+    before_class and before_begin go into the diagram source only, to draw the
+    diagrams in other fonts."""
+    preamble, body, units = split(src)
 
     web, diag, last = [], [], 0
     for n, u in enumerate(units, 1):
@@ -287,5 +294,8 @@ def rewrite(src: str) -> tuple[str, str, list[Span]]:
     diag.append(body[last:])
 
     web_src = preamble + PLACEHOLDER_DEF + "".join(web)
-    diag_src = "\\def\\pgfsysdriver{pgfsys-dvisvgm.def}\n" + SYM_ALPHABETS + preamble + PREVIEW_DEF + "".join(diag)
+    diag_src = (
+        "\\def\\pgfsysdriver{pgfsys-dvisvgm.def}\n" + SYM_ALPHABETS + before_class
+        + preamble + before_begin + PREVIEW_DEF + "".join(diag)
+    )
     return web_src, diag_src, units

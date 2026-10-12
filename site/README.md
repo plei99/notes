@@ -6,12 +6,14 @@ homepage's themes, fonts and saved preferences (same origin, same storage keys).
 
 ## Building
 
-Requires TeX Live (with tex4ht, dvisvgm), Python 3.9+, Node and Deno 2.
+Requires TeX Live (with tex4ht, dvisvgm), Python 3.9+, Node and Deno 2. The
+diagrams are drawn in the homepage's fonts, read from a checkout beside this
+repository (`../plei99.github.io/src/fonts`) or else from the live site.
 
 ```sh
 cd site
-(cd build && npm install)   # MathJax, once
-deno task notes             # compile every note to HTML (about 5 minutes)
+deno task setup             # once: Python venv with fontTools, and MathJax
+deno task notes             # compile every note to HTML (about 20 minutes)
 deno task notes good-moduli-spaces schemes  # ...or some, by slug
 deno task serve             # preview at http://localhost:3000/
 deno task publish           # build and push to gh-pages
@@ -29,8 +31,13 @@ cache in `.cache/`, which is enough after changing anything in `build/` except
    diagram and spectral sequence, widened to the whole formula when one sits
    inside mathematics. A copy of the note with each unit in a `preview`
    environment goes through LaTeX in DVI mode and dvisvgm: one SVG per unit,
-   drawn in the PDF's fonts. They are inlined in the text colour, so they
-   follow the theme.
+   in the PDF's fonts. Then once more per font pairing of the site
+   (`fontvariants.py`): XeLaTeX with the note's font packages switched off and
+   the pairing's text and math fonts set by unicode-math, symbols the math
+   font lacks taken from Asana Math as the browser does. The default
+   pairing's drawings are inlined in the text colour, so they follow the
+   theme; the others wait in `diagrams/<pairing>.json` beside the page, and
+   `note.js` swaps them in when the reader picks a font.
 2. **Structure.** A copy with each unit replaced by a placeholder goes through
    tex4ht (`make4ht`, MathJax mode), which handles sections, theorems,
    references, footnotes and the bibliography.

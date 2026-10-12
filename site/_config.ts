@@ -16,10 +16,11 @@ site.copy("styles.css");
 site.copy("js");
 
 // build/build.py writes each note into src/n/<slug>/: the HTML fragments, which
-// notes.page.ts reads (their names start with _, so Lume skips them), and any
-// images the note includes, which belong beside the note's page at /<slug>/.
+// notes.page.ts reads (their names start with _, so Lume skips them), any
+// images the note includes, and its diagrams in each font pairing
+// (diagrams/<pairing>.json), which belong beside the note's page at /<slug>/.
 site.copy(
-  [".png", ".jpg", ".jpeg", ".gif", ".svg"],
+  [".png", ".jpg", ".jpeg", ".gif", ".svg", ".json"],
   (path) => path.replace(/^\/n\//, "/"),
 );
 
