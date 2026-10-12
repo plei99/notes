@@ -30,7 +30,7 @@ export default function* ({ notes }: { notes: Note[] }) {
       slug: note.slug,
       title: note.title,
       description: note.description?.trim(),
-      lang: note.lang,
+      lang: note.lang ?? "en",
       note,
       toc: read(new URL("_toc.html", dir)) ?? "",
       content,

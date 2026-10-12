@@ -1,14 +1,18 @@
+{{ set s = site.strings[lang] || site.strings.en }}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ s.lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ title }}{{ if title !== site.title }} · {{ site.title }}{{ /if }} · {{ site.name }}</title>
-<meta name="description" content="{{ description || site.lede }}">
+<title>{{ title }}{{ if title !== s.title }} · {{ s.title }}{{ /if }} · {{ site.name }}</title>
+<meta name="description" content="{{ description || s.lede }}">
 <link rel="canonical" href="{{ url |> url(true) }}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ title }}">
-<meta property="og:description" content="{{ description || site.lede }}">
+<meta property="og:description" content="{{ description || s.lede }}">
+{{ if altUrl }}
+<link rel="alternate" hreflang="{{ lang === "zh" ? "en" : "zh-Hans" }}" href="{{ altUrl |> url(true) }}">
+{{ /if }}
 <meta property="og:url" content="{{ url |> url(true) }}">
 <meta name="color-scheme" content="light dark">
 {{# The homepage's theme machinery, unchanged (its base.vto): each theme with
@@ -66,14 +70,14 @@
 <script type="module" src="{{ kind === "note" ? "/js/note.js" : "/js/filter.js" |> url }}?v={{ rev }}"></script>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">{{ s.skip }}</a>
 
 <div class="page">
   <header class="masthead">
-    <p class="name"><a href="{{ site.homepage }}">{{ site.name }}</a></p>
+    <p class="name"><a href="{{ site.homepage }}{{ lang === "zh" ? "zh/" : "" }}">{{ site.name }}</a></p>
     <div class="controls">
       <label class="scheme" hidden>
-        <span class="visually-hidden">Theme</span>
+        <span class="visually-hidden">{{ s.theme }}</span>
         <select data-default-light="{{ allThemes.find((t) => !t.dark).id }}" data-default-dark="{{ allThemes.find((t) => t.dark).id }}">
           {{ for family of themes }}
           {{ if family.themes.length > 1 }}
@@ -89,7 +93,7 @@
         </select>
       </label>
       <label class="latin" hidden>
-        <span class="visually-hidden">Font</span>
+        <span class="visually-hidden">{{ s.latin_font }}</span>
         <select>
           {{ for group of site.latin_fonts }}
           <optgroup label="{{ group.group }}"{{ if group.sans }} data-sans{{ /if }}>
@@ -100,6 +104,22 @@
           {{ /for }}
         </select>
       </label>
+      {{# Chinese pages can also choose the Chinese face, as on the homepage. #}}
+      {{ if lang === "zh" }}
+      <label class="cjk" hidden>
+        <span class="visually-hidden">{{ s.cjk_font }}</span>
+        <select>
+          <option value="serif">{{ s.cjk_serif }}</option>
+          <option value="sans" data-sans>{{ s.cjk_sans }}</option>
+          <option value="rounded" data-sans>{{ s.cjk_rounded }}</option>
+          <option value="wenkai">{{ s.cjk_kai }}</option>
+        </select>
+      </label>
+      {{ /if }}
+      {{# The index has both languages; the link names the one it switches to. #}}
+      {{ if altUrl }}
+      <a class="langswitch" lang="{{ lang === "zh" ? "en" : "zh-CN" }}" hreflang="{{ lang === "zh" ? "en" : "zh-Hans" }}" href="{{ altUrl |> url }}">{{ s.switch }}</a>
+      {{ /if }}
     </div>
   </header>
 
@@ -109,12 +129,12 @@
 
   <footer class="colophon">
     <p>
-      <a href="{{ "/" |> url }}">All notes</a>
-      <a href="{{ site.homepage }}">Homepage</a>
+      <a href="{{ (lang === "zh" ? "/zh/" : "/") |> url }}">{{ s.all_notes }}</a>
+      <a href="{{ site.homepage }}{{ lang === "zh" ? "zh/" : "" }}">{{ s.homepage }}</a>
     </p>
     <p>
       © 2026 {{ site.name }}
-      <a href="{{ site.repo }}">Source</a>
+      <a href="{{ site.repo }}">{{ s.source }}</a>
     </p>
   </footer>
 </div>

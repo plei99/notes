@@ -89,14 +89,14 @@ function render() {
       }
     }
     const summary = facet.querySelector(".facet-value");
-    summary.textContent = picked.join(", ") || "any";
+    summary.textContent = picked.join(document.documentElement.lang === "zh-CN" ? "、" : ", ") || form.dataset.any;
     summary.title = picked.join(", ");
     facet.classList.toggle("is-active", picked.length > 0);
   }
   const filtering = Object.values(chosen).some((s) => s.size) || words().length;
-  shown.textContent = filtering
-    ? `${total} of ${entries.length} notes`
-    : `${entries.length} notes`;
+  shown.textContent = (filtering ? form.dataset.countSome : form.dataset.countAll)
+    .replace("{shown}", total)
+    .replace("{n}", entries.length);
   for (const button of clears) button.hidden = !filtering;
   empty.hidden = total > 0;
   save();

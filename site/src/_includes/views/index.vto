@@ -1,0 +1,85 @@
+{{# The index, in English (index.vto) or Chinese (zh/index.vto): `lang` picks the
+    strings (site.yaml), the names of the filter values, and each note's own
+    `zh` title, description, date and place. #}}
+{{ set s = site.strings[lang] }}
+{{ set nm = (value) => lang === "zh" ? (site.zh_names[value] || value) : value }}
+{{ set fill = (text, vars) => Object.entries(vars).reduce((t, [k, v]) => t.replaceAll(`{${k}}`, v), text) }}
+{{ set local = (note) => lang === "zh" && note.zh ? { ...note, ...note.zh } : note }}
+{{ set people = (list) => lang === "zh" ? list.join("、")
+  : list.length < 2 ? list.join("") : `${list.slice(0, -1).join(", ")} and ${list.at(-1)}` }}
+{{# Translations are listed under the notes they translate, not on their own. #}}
+{{ set listed = notes.filter((n) => !n.translation_of) }}
+{{ set built = new Set(search.pages("kind=note").map((p) => p.slug)) }}
+{{ set values = (note, key) => [].concat(note[key] || []) }}
+{{ set slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-") }}
+{{# A note's values in a facet, with each value filed `under` another followed by
+    that one: enumerative geometry is algebraic geometry too. #}}
+{{ set facetValues = (note, facet) => [...new Set(values(note, facet.key).flatMap(
+  (v) => facet.under && facet.under[v] ? [facet.under[v], v] : [v]))] }}
+{{# Each facet's options, most common first; values filed under another are
+    offered inside it rather than on their own. #}}
+{{ set facetOptions = Object.fromEntries(site.facets.map((f) => {
+  const counts = {};
+  for (const note of listed) for (const v of facetValues(note, f)) {
+    if (!(f.under && f.under[v])) counts[v] = (counts[v] || 0) + 1;
+  }
+  return [f.key, Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))];
+})) }}
+
+<header class="index-head">
+  <h1>{{ s.title }}</h1>
+  <p class="lede">{{ s.lede }}</p>
+</header>
+
+<form class="filters" role="search" aria-label="{{ s.filter }}" hidden
+      data-any="{{ s.any }}" data-count-all="{{ s.count_all }}" data-count-some="{{ s.count_some }}">
+  <div class="filter-bar">
+    {{ for facet of site.facets }}
+    <details class="facet" data-facet="{{ facet.key }}">
+      <summary><span class="facet-label">{{ nm(facet.label) }}</span> <span class="facet-value">{{ s.any }}</span></summary>
+      <div class="menu">
+        {{ for [value, count] of facetOptions[facet.key] }}
+        <label class="option"><input type="checkbox" value="{{ slug(value) }}"><span class="option-name">{{ nm(value) }}</span><span class="count">{{ count }}</span></label>
+        {{ for child of Object.keys(facet.under || {}).filter((c) => facet.under[c] === value) }}
+        <div class="suboptions" role="radiogroup" aria-label="{{ nm(child) }} / {{ nm(value) }}" data-parent="{{ slug(value) }}" data-child="{{ slug(child) }}">
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="all"><span class="option-name">{{ s.all }}</span><span class="count"></span></label>
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="only" data-summary="{{ fill(s.summary_only, { child: nm(child) }) }}"><span class="option-name">{{ fill(s.only, { child: nm(child) }) }}</span><span class="count"></span></label>
+          <label class="option"><input type="radio" name="{{ slug(value) }}-{{ slug(child) }}" value="none" data-summary="{{ fill(s.summary_without, { value: nm(value) }) }}"><span class="option-name">{{ fill(s.without, { child: nm(child) }) }}</span><span class="count"></span></label>
+        </div>
+        {{ /for }}
+        {{ /for }}
+      </div>
+    </details>
+    {{ /for }}
+    <label class="visually-hidden" for="q">{{ s.search }}</label>
+    <input id="q" type="search" name="q" placeholder="{{ s.search_placeholder }}" autocomplete="off">
+  </div>
+  <p class="filter-status" aria-live="polite"><span class="shown">{{ fill(s.count_all, { n: listed.length }) }}</span> <button type="button" class="clear" hidden>{{ s.show_all }}</button></p>
+</form>
+
+<ol class="entries">
+  {{ for original of listed }}
+  {{ set note = local(original) }}
+  {{ set pdf = note.source |> pdf }}
+  {{ set translations = notes.filter((t) => t.translation_of === note.slug) }}
+  <li class="entry"
+      {{ for facet of site.facets }}data-{{ facet.key }}="{{ facetValues(note, facet).map(slug).join(" ") }}"
+      {{ /for }}      data-text="{{ [note.title, note.description, (note.lecturers || []).join(" "), note.place, original.title, original.place].join(" ").toLowerCase() }}">
+    <p class="entry-when">{{ note.date }}</p>
+    <div>
+      <h2 class="entry-title">
+        {{ if built.has(note.slug) }}<a href="{{ `/${note.slug}/` |> url }}">{{ note.title }}</a>{{ else if pdf }}<a href="{{ pdf }}">{{ note.title }}</a>{{ else }}{{ note.title }}{{ /if }}
+      </h2>
+      <p class="entry-where">{{ if note.lecturers && note.lecturers.length }}{{ people(note.lecturers) }}{{ lang === "zh" ? "，" : ", " }}{{ /if }}{{ note.place }}</p>
+      {{ if note.description }}<p class="entry-body">{{ note.description.trim() }}</p>{{ /if }}
+      {{ if pdf || translations.length }}
+      <p class="entry-links">
+        {{ if pdf }}<a href="{{ pdf }}">{{ s.pdf }}</a>{{ /if }}
+        {{ for t of translations }}<a href="{{ `/${t.slug}/` |> url }}" lang="zh-Hans" hreflang="zh-Hans">{{ fill(s.translation, { translator: t.translator }) }}</a>{{ /for }}
+      </p>
+      {{ /if }}
+    </div>
+  </li>
+  {{ /for }}
+</ol>
+<p class="empty" hidden>{{ s.none }} <button type="button" class="clear">{{ s.show_all_notes }}</button></p>
