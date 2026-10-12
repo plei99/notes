@@ -79,7 +79,7 @@ TEX4HT_CFG = r"""\Preamble{xhtml,mathjax,fn-in}
 
 
 def read_catalog() -> list[dict]:
-    """slug, source and translation_of of every note. The full catalogue is YAML
+    """slug, source, translation_of and lang of every note. The full catalogue is YAML
     read by Lume; this only needs these one-word keys, so it reads them line by line."""
     notes, cur = [], None
     for line in CATALOG.read_text().splitlines():
@@ -88,7 +88,7 @@ def read_catalog() -> list[dict]:
             cur = {"slug": m.group(1)}
             notes.append(cur)
             continue
-        m = re.match(r"^\s+(source|translation_of):\s*(\S+)", line)
+        m = re.match(r"^\s+(source|translation_of|lang):\s*(\S+)", line)
         if m and cur is not None:
             cur[m.group(1)] = m.group(2)
     return [n for n in notes if "source" in n]
@@ -504,7 +504,9 @@ def headings(body: str):
         pos = end
 
 
-def tidy(page: str, svgs: dict[int, str], size_pt: float, fonts: dict[str, str], slug: str) -> tuple[str, str, dict]:
+def tidy(
+    page: str, svgs: dict[int, str], size_pt: float, fonts: dict[str, str], slug: str, abstract_name: str | None = None
+) -> tuple[str, str, dict]:
     info: dict = {"diagrams": 0, "missing_diagrams": []}
     body = page[page.find(">", page.find("<body")) + 1 : page.rfind("</body>")]
     body = re.sub(r"<!--\s*l\.\s*\d+\s*-->", "", body)
@@ -520,7 +522,15 @@ def tidy(page: str, svgs: dict[int, str], size_pt: float, fonts: dict[str, str],
     body = re.sub(r"<h[1-6][^>]*>(\s|<a [^>]*></a>)*(Contents|目录|目錄)\s*</h[1-6]>", "", body)
     body = re.sub(r"<(h[1-6]|div) class='(titleHead|author|date)'.*?</\1>", "", body, flags=re.S)
     if abstracts:
-        body = "<div class='abstract'>" + re.sub(r"^<div class='abstract'[^>]*>|</div>\s*$", "", abstracts[0].strip()) + "</div>" + body
+        abstract = re.sub(r"^<div class='abstract'[^>]*>|</div>\s*$", "", abstracts[0].strip())
+        # tex4ht sets the run-in title in a small-caps font, which drops a
+        # Chinese \abstractname; the title is written out again.
+        title = re.search(r"<span class='title'>", abstract)
+        if title and abstract_name:
+            end = element_end(abstract, title.start(), "span")
+            stop = "." if abstract_name.isascii() else ""
+            abstract = abstract[: title.start()] + f"<span class='title'>{abstract_name}{stop}</span>" + abstract[end:]
+        body = "<div class='abstract'>" + abstract + "</div>" + body
 
     # Diagrams.
     def diagram(m: re.Match) -> str:
@@ -784,7 +794,10 @@ def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
     size_pt = font_size_pt(preamble)
-    body, toc, info = tidy(page, {**svgs, **pairings.get(DEFAULT_PAIRING, {})}, size_pt, fonts, slug)
+    # The abstract's title: the note's own \abstractname, else 摘要 on a Chinese page.
+    named = re.search(r"\\renewcommand\s*\{?\\abstractname\}?\s*\{([^}]*)\}", texfix.strip_comments(preamble))
+    abstract_name = named.group(1).strip() if named else ("摘要" if note.get("lang") == "zh" else None)
+    body, toc, info = tidy(page, {**svgs, **pairings.get(DEFAULT_PAIRING, {})}, size_pt, fonts, slug, abstract_name)
     body, toc, borrowed = borrow_bibliography(body, toc, note)
     if borrowed:
         info["citations"] = info.get("citations", 0) + borrowed
