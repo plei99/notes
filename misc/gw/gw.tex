@@ -1,0 +1,488 @@
+% !TEX program = latexmk
+% !TEX options = -lualatex -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{MnSymbol}
+\usepackage{bm}
+\usepackage{accents}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+\usetikzlibrary{automata,positioning}
+\usetikzlibrary{arrows.meta, shapes.geometric}
+\usetikzlibrary{decorations.markings, fit}
+\usepackage{tikz-cd}
+\usepackage{forest} 
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\usepackage{physics2}
+\usephysicsmodule{ab,ab.legacy,diagmat,xmat,braket,op.legacy}
+\usepackage{derivative}
+\usepackage{fixdif}
+\usepackage{stmaryrd}
+% \usepackage{euscript} 
+% \usepackage[mathcal]{eucal}
+\usepackage{stackengine} 
+%\usepackage{/home/patrickl/homework/macaulay2}
+
+%font
+% \usepackage[sc]{mathpazo}
+% \usepackage{inconsolata}
+\usepackage{microtype}
+\usepackage{fontspec}
+
+\setmainfont[Numbers=OldStyle]{TeX Gyre Pagella}
+\setsansfont{Optima}
+\usepackage{unicode-math}
+\setmathfont{Asana Math}
+\defaultfontfeatures{Scale=MatchLowercase}
+
+
+%CS packages
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% typeset and bib
+\usepackage[english]{babel} 
+% \usepackage[utf8]{inputenc} 
+% \usepackage[T1]{fontenc}
+% \usepackage[backend=biber,style=alphabetic,maxalphanames=4,maxnames=5,hyperref]{biblatex}
+\usepackage[bookmarks, colorlinks, breaklinks]{hyperref} 
+\hypersetup{linkcolor=blue,citecolor=magenta,filecolor=black,urlcolor=blue}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\usepackage{subcaption}
+\usepackage[shortcuts]{extdash}
+
+
+% other formatting packages
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep}
+\usepackage{csquotes}
+%\usepackage{titlesec}
+%\usepackage{titling}
+%\usepackage{fancyhdr}
+%\usepackage{lastpage}
+% \usepackage{parskip} 
+\newlist{mydescription}{description}{1}
+\setlist[mydescription]{style=nextline,
+                        font=\bfseries,
+                        % Tweak the next 4 options as needed:
+                        labelindent=1cm, 
+                        leftmargin =2cm,
+                        rightmargin=1cm,
+                        topsep     =1ex
+                       }
+
+\usepackage{lipsum}
+
+% delimiters
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{claim}[thm]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exm}[thm]{Example}
+\newtheorem{exms}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{rmks}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+\newtheorem{conv}[thm]{Convention}
+
+
+% unnumbered theorems
+\theoremstyle{plain}
+\newtheorem*{thm*}{Theorem}
+\newtheorem*{prop*}{Proposition}
+\newtheorem*{lem*}{Lemma}
+\newtheorem*{cor*}{Corollary}
+\newtheorem*{conj*}{Conjecture}
+
+% unnumbered definitions
+\theoremstyle{definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{defns*}{Definitions}
+\newtheorem*{con*}{Construction}
+\newtheorem*{exm*}{Example}
+\newtheorem*{exms*}{Examples}
+\newtheorem*{notn*}{Notation}
+\newtheorem*{notns*}{Notations}
+\newtheorem*{addm*}{Addendum}
+
+
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+
+% shortcuts
+\newcommand{\Ima}{\mathrm{Im}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\k}{\Bbbk}
+\renewcommand{\L}{\mathbb{L}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Mbar}{\overline{\mathcal{M}}}
+\newcommand{\g}{\symbffrak{g}}
+\newcommand{\h}{\symbffrak{h}}
+\newcommand{\n}{\symbffrak{n}}
+\renewcommand{\b}{\symbffrak{b}}
+\newcommand{\ep}{\varepsilon}
+\newcommand*{\dt}[1]{
+   \accentset{\mbox{\Huge\bfseries .}}{#1}}
+%\renewcommand{\abstractname}{Official Description}
+\newcommand{\mc}[1]{\mathcal{#1}}
+% \newcommand{\msc}[1]{\mathscr{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\bv}{\mbf{v}}
+\newcommand{\bq}{\mbf{q}}
+\newcommand{\bp}{\mbf{p}}
+\newcommand{\btau}{\bm{\tau}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\2}{\mathbf{2}}
+\newcommand{\3}{\mathbf{3}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\II}{\mr{I}\hspace{-1.3pt}\mr{I}}
+\newcommand{\III}{\mr{I}\hspace{-1.3pt}\mr{I}\hspace{-1.3pt}\mr{I}}
+\renewcommand{\v}{\mbf{v}}
+\newcommand{\w}{\mbf{w}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\pre}{\mr{pre}}
+\newcommand{\vir}{\mr{vir}}
+\newcommand{\fl}{\mr{fl}}
+\newcommand{\ps}[1]{\lBrack #1 \rBrack}
+\newcommand{\ls}[1]{(\!( #1 )\!)}
+\newcommand{\GL}{\mr{GL}}
+\newcommand{\SL}{\mr{SL}}
+\newcommand{\SO}{\mr{SO}}
+\newcommand{\Sp}{\mr{Sp}}
+\newcommand{\gl}{\mf{gl}}
+\renewcommand{\sl}{\mf{sl}}
+\newcommand{\so}{\mf{so}}
+\renewcommand{\sp}{\mf{sp}}
+\newcommand{\dbar}{\bar{\partial}}
+
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\NS}{NS}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\Cont}{Cont}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Fock}{\mc{F}ock}
+\DeclareMathOperator{\Crit}{Crit}
+\DeclareMathOperator{\QH}{QH}
+\DeclareMathOperator{\QDM}{QDM}
+
+% \addbibresource{../../notes/math.bib}
+
+\title{Quantum D-modules of projective bundles and blowups}
+\author{Lectures by Yuki Koto \\ Notes by Patrick Lei}
+\date{October 2026}
+\allowdisplaybreaks
+
+\begin{document}
+    
+\begin{abstract}
+    In this lecture series, we review the basics of quantum D-modules and Givental's formalism. We then explain the projective bundle formula and the blowup formula, which are proved using Fourier transforms associated with rank-one torus actions. If time permits, we will also discuss a nonabelian version of the Fourier transform.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section*{Motivation}
+
+One motivation for us comes from mirror symmetry. Let \(X\) be a Fano variety (or more generally, log Calabi-Yau). Then we expect there to be a mirror \(\check{X}\), which is an LG model. Via some version of Saito theory (which may not actually be well-defined), we obtain a Gauss-Manin conjecture. This will correspond to the quantum D-module of \(X\), which is defined using Gromov-Witten theory.
+
+Another motivation comes from the study of other areas of algebraic geometry\footnote{Which we have historically been quite isolated from for various reasons}. Katzarkov-Kontsevich-Pantev-Yu define Hodge atoms which establish an irrationality criterion for varieties and was used to prove the irrationality of the cubic fourfold. Recently, an unreleased internal model at OpenAI proved the generalized Mukai conjecture using Gromov-Witten theory.
+
+\section{Quantum D-modules}
+
+Let \(X\) be a smooth projective variety and \((\phi_i)_i\) be a homogeneous basis with corresponding coordinates \((\tau^i)_i\). Then we define the \textit{(big) quantum cohomology} 
+\[ \mr{QH}^*(X) \coloneqq (H^*(X) \ps{Q, \tau}, \star), \]
+where \(\C[Q] \coloneqq \C[\mr{NE}_{\N}(X)]\) keeps track of effective curve classes, and here we are taking a graded completion of \(\C[Q, \tau]\) where
+\[ \deg Q^{\beta} = 2 \int_{\beta} c_1(X) \qquad \text{and} \qquad \deg \tau^i = 2 - \deg \phi_i. \]
+
+\begin{exm}
+    Let \(X = \P^n\) and \(\tau = 0\). Then the curve classes are just non-negative integers, so \(Q\) has degree \(2(n+1)\). In this case, \(\C\ps{Q} = \C[Q]\).
+\end{exm}
+
+\begin{exm}
+    Let \(X\) have \(\C[Q] = \C[Q_1, Q_2]\) where \(\deg Q_1 = 2\) and \(\deg Q_2 = -2\). In this case, we actually have
+    \[ \C\ps{Q_1, Q_2} = \bigoplus_{n \geq 0} Q_1^n \C\ps{Q_1 Q_2} \oplus \bigoplus_{n<0} Q_2^n \C\ps{Q_1 Q_2}, \]
+    which lives in all even degrees.
+\end{exm}
+
+Now let \(\alpha, \beta, \gamma \in H^*(X)\). The quantum product is defined by the formula
+\[ (\alpha \star \beta, \gamma)^X \coloneqq \sum_{d, n} \frac{Q^d}{n!} \ab<\alpha, \beta, \gamma, \tau, \ldots, n>_{0, n+3, d}^X, \]
+where \((-,-)^X\) is the Poincar\'e pairing and \(\tau = \sum_i \tau^i \phi_i\).
+
+\begin{rmk}
+    We can define the quantum cohomology as a formal Frobenius manifold, but this is equivalent to the approach taken by the speaker, so we will skip it.
+\end{rmk}
+
+\begin{defn}
+    We will now define the quantum D-module
+    \[ \on{QDM}(X) \coloneqq (H^*(X)[z]\ps{Q, \tau}, \nabla^X, P_X). \]
+    The connection \(\nabla^X\) is known as the \textit{quantum connection} and is defined by
+    \begin{align*}
+        \nabla_{z \xi Q \partial_Q}^X &\coloneqq z \xi Q \partial_Q + \xi \star -, \\
+        \nabla_{z \partial_{\tau^i}}^X &\coloneqq z \partial_{\tau^i} + \phi_i \star - \\
+        \nabla_{z^2 \partial_z}^X &\coloneqq z^2 \partial_z - (E_X \star -) + z \cdot \mu_X.
+    \end{align*}
+    Here, the first definition makes sense only for \(\xi \in H^2(X)\) and the \textit{Euler vector field} is defined by
+    \[ E_X \coloneqq c_1(X) + \sum_i \ab(1 - \frac{\deg \phi_i}{2}) \tau^i \phi_i. \]
+    Additionally, the \textit{grading operator} is defined by \(\mu_X (\phi_i) = \frac{\deg \phi_i - \dim X}{2} \phi_i\). Finally, the pairing
+    \[ P_X \coloneqq \on{QDM}(X)^{\otimes 2} \to \C[z] \ps{Q, \tau} \]
+    is given by the formula
+    \[ P_X (f(z), g(z)) \coloneqq \int_X f(-z) \cup g(z). \]
+\end{defn}
+
+\begin{exm}
+    Let \(X = \P^1\). Then we have
+    \[ \on{QH}^*(\P^1) \cong \frac{\C[p, Q, \tau^0]\ps{\tau^1}}{p^2 - Q e^{\tau^1}} \]
+    and
+    \[ \on{QDM}(\P^1) = H^*(\P^1)[z, Q, \tau^0]\ps{\tau^1} \]
+    with the relevant connections.
+\end{exm}
+
+\begin{rmks}\leavevmode
+    \begin{enumerate}
+        \item The object \(\QDM(X)\) is not a D-module in the usual sense of D-modules.\footnote{Maybe it is an R-module?}
+        \item The objects \(\QH\) and \(\QDM\) contain the same information, namely that one can be recovered from the other.
+        \item The ring \(\QH^*(X)\) is a quantization of the usual cohomology ring \(H^*(X)\) as a ring and \(\QDM(X)\) is a quantization of \(H^*(X)\) as a graded \(H^*(X)\)-module.
+    \end{enumerate}
+\end{rmks}
+
+We will now produce the fundamental solution \(M_X(\tau)\) to the quantum connection. This is given by the formula
+\[ (M_X(\tau)\alpha, \beta)^X = (\alpha, \beta)^X + \sum_{(n,d \neq (0,0))} \frac{Q^d}{n!} \ab< \frac{\beta}{z-\psi}, \tau, \ldots, \tau, \alpha>_{0,n+2, d}^X \]
+for all \(\alpha, \beta \in H^*(X)\).
+
+\begin{prop}\leavevmode
+    We have
+    \[ \begin{vmatrix}
+        z \xi Q \partial_Q + \xi \cup \\
+        z \partial_{\tau^i} \\
+        z^2 \partial_z - c_1(X) + z \cdot \mu_X
+    \end{vmatrix} \circ M_X(\tau) = M_X(\tau) \circ \begin{vmatrix}
+        z \xi Q \partial_Q + \xi \star \\
+        z \partial_{\tau^i} + \phi_i \star \\
+        z^2 \partial_z - E_X \star + z \cdot \mu_X
+    \end{vmatrix}. \]
+    Moreover, \(M_X(\tau) 1 = J_X(\tau)\) and \(M_X(\tau) \phi_i = z \partial_{\tau^i} J_X(\tau)\). We also have the asymptotics
+    \[ M_X(\tau) = e^{\tau/z} \mr{id} + O(Q) \]
+    and the property
+    \[ (M_X(\tau) \alpha, M_X(\tau)|_{z \mapsto -z} \beta)^X = (\alpha, \beta)^X. \]
+\end{prop}
+
+\section{Givental formalism}%
+\label{sec:Givental formalism}
+
+Define
+\[ \bm{t}(z) = \sum_{k \geq 0} \sum_i t_k^i \phi_i z^k \]
+and the genus zero descendent GW potential
+\[ \mc{F}_X (z 1 + \bm{t}(z)) \coloneqq \sum_{n, d} \frac{Q^d}{n!}\ab<\bm{t}(-\psi), \ldots, \bm{t}(-\psi)>_{0,n,d}^X. \]
+Now define the symplectic vector space
+\[ \mc{H}_X \coloneqq H^*(X)[z^{\pm}] \ps{Q}. \]
+This is actually functorial, but we will skip the discussion of this. Then define the form
+\[ \Omega_X \colon \mc{H}_X \times \mc{H}_X \to \C\ps{Q} \]
+by the formula
+\[ \Omega_X(f(z), g(z)) \coloneqq [z^{-1}] (f(-z), g(z))^X. \]
+This makes \(\mc{H}_X\) an infinite-dimensional symplectic vector space over \(\C\ps{Q}\).
+
+There is a decomposition
+\[ \mc{H}_X = \mc{H}_+ \oplus \mc{H}_-, \]
+where
+\[ \mc{H}_+ = H^*(X)[z]\ps{Q} \qquad \text{and} \qquad \mc{H}_- = z^{-1} H^*(X)[z^{-1}]\ps{Q}. \]
+Finally, we can define \(\mc{L}_X\) to be the graph of \(\d{\mc{F}_X}\) and refer to it as the \textit{Givental cone}.
+
+\begin{thm}
+    \(\mc{L}_X \subset \mc[H]_X\) is an overruled Lagrangian cone; namely:
+    \begin{enumerate}
+        \item \(\mc{L}_X \subset (\mc{H}_X, \Omega_X)\) is Lagrangian;
+        \item It is a cone, namely that if \(I(\tau) \in \mc{L}_X\) and \(F(\tau, z)I(\tau) \in \mc{L}_X\) if \(F(\tau, z) = 1 + O(\tau)\);
+        \item For any \(f \in \mc{L}_X\), we have \(T_f \mc{L}_X \cap \mc{L}_X = z T_f \mc{L}_X\).
+    \end{enumerate}
+\end{thm}
+
+\begin{figure}[H]
+    \centering
+    \pgfmathsetmacro\elev{25}    % elevation of the viewpoint above \(\mc{H}_+\)
+    \pgfmathsetmacro\halfang{35} % half-angle of the cone
+    \pgfmathsetmacro\cutht{3}    % height at which the cone is cut off
+    \pgfmathsetmacro\diskr{4.3}  % radius of the disk drawn in \(\mc{H}_+\)
+    \pgfmathsetmacro\fazim{-62}  % azimuth of the ruling through \(f\)
+    \pgfmathsetmacro\rimr{\cutht*tan(\halfang)}
+    % the outline of the cone consists of the rulings at azimuths -\silaz and 180+\silaz
+    \pgfmathsetmacro\silaz{asin(tan(\halfang)*tan(\elev))}
+    \begin{tikzpicture}[x={(1cm,0cm)}, y={(0cm,{sin(\elev)*1cm})}, z={(0cm,{cos(\elev)*1cm})},
+        line width=0.5pt, line join=round,
+        axis/.style={gray!75},
+        cone/.style={orange!85!yellow!80!black},
+        tan/.style={red!70!black}]
+      % unit vectors along the ruling through f and along the horizontal circle through f;
+      % they span T_f L_X
+      \coordinate (g) at ({sin(\halfang)*cos(\fazim)},{sin(\halfang)*sin(\fazim)},{cos(\halfang)});
+      \coordinate (u) at ({-sin(\fazim)},{cos(\fazim)},0);
+      \coordinate (f) at ({\rimr*cos(\fazim)},{\rimr*sin(\fazim)},\cutht);
+      \coordinate (f0) at ({\rimr*cos(\fazim)},{\rimr*sin(\fazim)},0);
+
+      % below H_+
+      \draw[axis] (0,0,-1.7) -- (0,0,0);
+      \begin{scope}[x={(g)}, y={(u)}]
+        \fill[red!60, fill opacity=0.12] (-1.2,-1.3) -- (0,-1.3) -- (0,3) -- (-1.2,3) -- cycle;
+        \draw[tan] (0,-1.3) -- (-1.2,-1.3) -- (-1.2,3) -- (0,3);
+        \draw[tan, line width=1.1pt] (-2.1,0) -- (0,0);
+      \end{scope}
+
+      % H_+
+      \fill[gray!25, fill opacity=0.45] (0,0,0) circle [radius=\diskr];
+      \draw[axis, dashed] (0,0,0) circle [radius=\diskr];
+      \draw[axis] (-\diskr,0,0) -- (\diskr,0,0);
+      \draw[axis] ({-\diskr*cos(58)},{-\diskr*sin(58)},0) -- ({\diskr*cos(58)},{\diskr*sin(58)},0);
+      \node[anchor=west] at ({\diskr*cos(-12)},{\diskr*sin(-12)},0) {$\mc{H}_+$};
+
+      % H_- above H_+
+      \draw[axis] (0,0,0) -- (0,0,4.5) node[above, text=black] {$\mc{H}_-$};
+
+      % the cone L_X
+      \fill[yellow!80!orange, fill opacity=0.25] (0,0,0)
+        -- plot[domain={-\silaz}:{180+\silaz}, samples=60] ({\rimr*cos(\x)},{\rimr*sin(\x)},\cutht) -- cycle;
+      \fill[orange!50!yellow, fill opacity=0.12]
+        plot[domain=0:360, samples=90] ({\rimr*cos(\x)},{\rimr*sin(\x)},\cutht) -- cycle;
+      \draw[cone, line width=0.8pt] ({\rimr*cos(-\silaz)},{\rimr*sin(-\silaz)},\cutht) -- (0,0,0)
+        -- ({\rimr*cos(180+\silaz)},{\rimr*sin(180+\silaz)},\cutht);
+      \draw[cone, line width=0.8pt]
+        plot[domain=0:360, samples=90] ({\rimr*cos(\x)},{\rimr*sin(\x)},\cutht) -- cycle;
+      \node[cone, anchor=west] at ({\rimr*cos(-\silaz)},{\rimr*sin(-\silaz)},\cutht) {$\mc{L}_X$};
+
+      % projection of f to H_+
+      \draw[tan, densely dashed] (f) -- (f0);
+      \draw[tan] (f0) +(-2pt,-2pt) -- +(2pt,2pt) +(-2pt,2pt) -- +(2pt,-2pt);
+
+      % T_f L_X above H_+, and the ruling z T_f L_X = T_f L_X \cap L_X
+      \begin{scope}[x={(g)}, y={(u)}]
+        \fill[red!60, fill opacity=0.12] (0,-1.3) -- (5.6,-1.3) -- (5.6,3) -- (0,3) -- cycle;
+        \draw[tan] (0,-1.3) -- (5.6,-1.3) -- (5.6,3) -- (0,3);
+        \draw[tan, line width=1.1pt] (0,0) -- (5.6,0);
+        \node[tan, anchor=north west] at (0.5,3) {$T_f\mc{L}_X$};
+        \node[tan, anchor=north] at (-2.1,0) {$zT_f\mc{L}_X$};
+      \end{scope}
+      \fill[tan] (f) circle (1.4pt) node[anchor=south east, inner sep=2pt] {$f$};
+      \fill (0,0,0) circle (1.1pt);
+    \end{tikzpicture}
+    \caption{Schematic of the Givental cone}
+\end{figure}
+
+\begin{exm}
+    When \(X = \P^1\), we see that the basis \(1, p, z, pz, z^2, \ldots\) is dual to the basis \(z^{-1}p, z^{-1}, z^{-2}p, z^{-2}, z^{-3}p, \ldots\). When we multiply by \(z\), we see that \(\mc{H}_-\) is not preserved.
+\end{exm}
+
+\begin{rmk}
+    Let \(F\) be a formal function on \(\mc{H}_+\). Then the graph \(\mc{L}\) of \(\d{F}\) is an overruled Lagrangian cone if and only if \(F\) satisfies the string equation, dilaton equation, and topological recursion relations.
+\end{rmk}
+
+There is an informal description of the Lagrangian cone as
+\[ \mc{L}_X = \bigcup_{t \in H^*(X)\ps{Q}} z T_t \mc{L}_X \coloneqq M_X(t) \mc{H}_+. \]
+In particular, we see that
+\[ M_X(\tau) \colon \QDM(X) \to T_{\tau} \mc{L}_X \]
+is an isomorphism intertwining \(\nabla\) and \(\d\). This essentially explains all of genus zero Gromov-Witten theory.
+
+\begin{table}[htpb]
+    \centering
+    \caption{Comparison}
+    \label{tab:qdmvslagcone}
+
+    \begin{tabular}{ccc}
+        \toprule
+        & \(\QDM(X)\) & \(T_{\tau} \mc{L}_X\) \\
+        \midrule
+        differential operator & hard & easy \\
+        description as \(\C[z]\ps{Q,\tau}\)-module & easy & hard \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+For example, if we consider
+\begin{equation*}
+\begin{tikzcd}
+    \QDM(\P(V)) \ar{r} \ar{d}{M_{\P(V)}} & \QDM(B)^{\oplus N} \ar{d}{M_B} \\
+    T \mc{L}_{\P(V)} \ar{r} & (T \mc{L}_B)^{\oplus N},
+\end{tikzcd}
+\end{equation*}
+we prove that the bottom arrow is an isomorphism, then go around the diagram to obtain the top arrow.
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
