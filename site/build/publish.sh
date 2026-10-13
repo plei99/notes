@@ -3,19 +3,19 @@
 # https://plei99.github.io/notes/.
 #
 # The branch holds one commit, replaced on every publish, so the generated HTML
-# never accumulates in the repository's history. Run `deno task notes` first if
-# any note has changed; this only rebuilds the Lume site around them.
+# never accumulates in the repository's history. Run `bun run notes` first if
+# any note has changed; this only rebuilds the pages around them.
 set -eu
 
 site=$(cd "$(dirname "$0")/.." && pwd)
 remote=$(git -C "$site/.." remote get-url origin)
 
 cd "$site"
-deno task build
+bun run build
 
 out=$(mktemp -d)
 trap 'rm -rf "$out"' EXIT
-cp -R _site/. "$out"
+cp -R dist/. "$out"
 touch "$out/.nojekyll" # serve files as they are, without Jekyll
 
 cd "$out"

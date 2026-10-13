@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the LaTeX notes into HTML fragments for the Lume site.
+"""Compile the LaTeX notes into HTML fragments for the notes site.
 
     python3 site/build/build.py                 # every note in the catalogue
     python3 site/build/build.py moduli tc      # just these slugs
@@ -21,8 +21,9 @@ For each note, in its own scratch directory under site/.cache/<slug>/:
     collected into a table of contents, font classes made semantic, diagrams
     inlined as SVGs drawn in the text colour.
 
-Output goes to site/src/n/<slug>/: _body.html, _toc.html and _meta.json, which
-src/notes.page.ts turns into pages, plus any images the note includes.
+Output goes to site/generated/<slug>/: _body.html, _toc.html and _meta.json,
+which pages/[slug].tsx and scripts/finish.ts turn into the note's page, plus any
+images the note includes and its diagrams in each font pairing.
 """
 
 from __future__ import annotations
@@ -44,8 +45,7 @@ HERE = Path(__file__).resolve().parent
 SITE = HERE.parent
 REPO = SITE.parent
 CACHE = SITE / ".cache"
-OUT = SITE / "src" / "n"
-CATALOG = SITE / "src" / "_data" / "notes.yaml"
+OUT = SITE / "generated"
 
 sys.path.insert(0, str(HERE))
 import mathml_core  # noqa: E402
@@ -79,19 +79,11 @@ TEX4HT_CFG = r"""\Preamble{xhtml,mathjax,fn-in}
 
 
 def read_catalog() -> list[dict]:
-    """slug, source, translation_of and lang of every note. The full catalogue is YAML
-    read by Lume; this only needs these one-word keys, so it reads them line by line."""
-    notes, cur = [], None
-    for line in CATALOG.read_text().splitlines():
-        m = re.match(r"^- slug:\s*(\S+)", line)
-        if m:
-            cur = {"slug": m.group(1)}
-            notes.append(cur)
-            continue
-        m = re.match(r"^\s+(source|translation_of|lang):\s*(\S+)", line)
-        if m and cur is not None:
-            cur[m.group(1)] = m.group(2)
-    return [n for n in notes if "source" in n]
+    """Every note in the catalogue, data/notes.ts, which Bun reads for us."""
+    out = subprocess.run(
+        ["bun", "scripts/catalog.ts"], cwd=SITE, capture_output=True, text=True, check=True,
+    ).stdout
+    return [n for n in json.loads(out) if "source" in n]
 
 
 # ---- Running things ------------------------------------------------------------
@@ -393,7 +385,7 @@ def convert_math(page: str, macros: dict, log: Path) -> tuple[str, dict]:
                 group.append(text)
         groups.append(group)
     proc = subprocess.run(
-        ["node", str(HERE / "tex2mml.mjs")], input=json.dumps({"macros": macros, "items": items}),
+        ["bun", str(HERE / "tex2mml.mjs")], input=json.dumps({"macros": macros, "items": items}),
         capture_output=True, text=True, cwd=HERE, timeout=1800,
     )
     if proc.returncode:

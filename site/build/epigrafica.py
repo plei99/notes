@@ -6,7 +6,7 @@ first; elsewhere Epigrafica (A. Tsolomitis, after MgOpen Cosmetica; GPL), an
 Optima-like face in TeX Live, takes its place. TeX Live has it only as Type 1,
 so this converts it to WOFF2 once:
 
-    build/.venv/bin/python build/epigrafica.py   # writes src/fonts/
+    build/.venv/bin/python build/epigrafica.py   # writes public/fonts/
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from fontTools.pens.t2CharStringPen import T2CharStringPen
 from fontTools.t1Lib import T1Font
 
 SITE = Path(__file__).resolve().parent.parent
-OUT = SITE / "src" / "fonts"
+OUT = SITE / "public" / "fonts"
 FACES = {"Epigrafica-Ortha": ("epigrafica-regular", "Regular"), "Epigrafica-Entona": ("epigrafica-bold", "Bold")}
 
 

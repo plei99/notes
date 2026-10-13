@@ -20,11 +20,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SITE = HERE.parent
-STYLES = SITE / "src" / "styles.css"
+STYLES = SITE / "public" / "styles.css"
 FONTS_URL = "https://plei99.github.io/fonts/"
 # The homepage checkout beside this repository, when there is one: it may hold
 # fonts not yet published.
-LOCAL_FONTS = SITE.parent.parent / "plei99.github.io" / "src" / "fonts"
+LOCAL_FONTS = SITE.parent.parent / "plei99.github.io" / "public" / "fonts"
 CACHE = SITE / ".cache" / "fonts"
 
 # The math font the browser falls back to for symbols a math font lacks (see
@@ -159,8 +159,8 @@ class Pairings:
         found = subprocess.run(["fc-list", "Optima:style=Regular", "family"], capture_output=True, text=True).stdout
         if "Optima" in found:
             return "{Optima}"
-        regular = sfnt("epigrafica-regular.woff2", str(SITE / "src" / "fonts"))
-        bold = sfnt("epigrafica-bold.woff2", str(SITE / "src" / "fonts"))
+        regular = sfnt("epigrafica-regular.woff2", str(SITE / "public" / "fonts"))
+        bold = sfnt("epigrafica-bold.woff2", str(SITE / "public" / "fonts"))
         return f"{{{regular.name}}}[Path={regular.parent}/,BoldFont={bold.name}]"
 
     def text_font(self, family: str) -> str:
