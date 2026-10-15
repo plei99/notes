@@ -208,7 +208,12 @@ def nest(entries: list[tuple[int, str, str, str]]) -> list[tuple[int, str, str, 
     return out
 
 
-def tidy_headings(body: str) -> tuple[str, list[tuple[int, str, str, str]], int]:
+# amsart runs these in (amsart.cls \@startsection with a negative afterskip); oxide,
+# like LaTeXML, leaves that to ltx-amsart.css, which the site does not load.
+AMSART_RUNIN = {"subsection", "subsubsection"}
+
+
+def tidy_headings(body: str, runin: set[str] = frozenset()) -> tuple[str, list[tuple[int, str, str, str]], int]:
     """Each division's title becomes `<hN>` (h2 for the shallowest division, a part
     aside) with its number in `span.secnum`; the entries of the contents come back too."""
     found = []  # (start, end, id, kind, tag, attrs, inner)
@@ -239,6 +244,12 @@ def tidy_headings(body: str) -> tuple[str, list[tuple[int, str, str, str]], int]
             plain = re.sub(r"\s+id=(\"[^\"]*\"|'[^']*')", "", plain)
             toc.append((level, ident, num, re.sub(r"\.(</span>)?$", r"\1", plain)))
         tag = f"h{min(max(level, 2), 6)}"
+        # A heading titlesec formatted has its own shape (and says so with ltx_runin).
+        if kind in runin and "ltx_tag_titlesec" not in title and "ltx_runin" not in attrs:
+            # A bold head ending in a full stop, as amsart sets it: "1.1. Title."
+            attrs = attrs.replace('class="ltx_title ', 'class="ltx_title ltx_runin ltx_font_bold ', 1)
+            if not re.search(r"[.!?:]\s*(</[^>]+>\s*)*$", title):
+                title += "."
         pieces.append(f"<{tag}{attrs}>{num_html}{title}</{tag}>")
     pieces.append(body[last:])
     return "".join(pieces), nest(toc), len(found)
@@ -400,7 +411,8 @@ def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[
     body = drop_front_matter(article_text(page))
     notes: list[tuple[int, str, str]] = []
     body = take_footnotes(body, notes)
-    body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)))
+    runin = AMSART_RUNIN if 'href="ltx-amsart.css"' in page else frozenset()
+    body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin)
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
     body = keep_together(body)
     body, images, missing = copy_images(body, out_dir, dest)
