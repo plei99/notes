@@ -400,6 +400,18 @@ def keep_together(body: str) -> str:
     return STUCK.sub(lambda m: f"<span class='nobr'>{m[0]}</span>" if m["before"] or m["after"] else m[0], body)
 
 
+WIDE_RULE = re.compile(r'(<span class="ltx_rule" style=")width:([\d.]+)pt;([^"]*)display:inline-block;')
+
+
+def full_width_rules(body: str) -> str:
+    """A rule about as wide as the text (\\rule{\\textwidth}{…}) fills its line in TeX,
+    so what follows starts below it; oxide gives it a fixed width in points, inline,
+    which a wider column sets text beside. It spans the column as a block instead."""
+    return WIDE_RULE.sub(
+        lambda m: f"{m[1]}width:100%;{m[3]}display:block;" if float(m[2]) >= 200 else m[0], body
+    )
+
+
 def mark_qed(body: str) -> str:
     """oxide ends a proof's last paragraph with a bare ∎; in `span.qed` it sits at
     the right margin, as tex4ht's did."""
@@ -414,7 +426,7 @@ def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[
     runin = AMSART_RUNIN if 'href="ltx-amsart.css"' in page else frozenset()
     body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin)
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
-    body = keep_together(body)
+    body = full_width_rules(keep_together(body))
     body, images, missing = copy_images(body, out_dir, dest)
     body = body + ("\n" + render_footnotes(notes) if notes else "")
     info = {"headings": headings, "toc": len(toc), "diagrams": diagrams, "footnotes": len(notes), "images": images}
