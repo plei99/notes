@@ -253,6 +253,10 @@ ANY_TAG = re.compile(r"<[a-zA-Z][^>]*>")
 CUSTOM_COLOUR = re.compile(r"(--ltx-(?:fg|bg|fill|stroke)-color:)(#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|black|white|gr[ae]y)\b")
 COLOUR_ATTR = re.compile(r"""\scolor=(['"])(#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|black|white|gr[ae]y)\1""")
 FO_FONT = re.compile(r"font-size:([\d.]+)pt")
+# oxide's user units are LaTeXML pixels, 100 per inch, not TeX points (72.27 per
+# inch): every length went through px = pt * 100 / 72.27
+# (latexml_core/src/common/numeric_ops.rs).
+PX_PER_PT = 100 / 72.27
 
 
 def recolour(m: re.Match) -> str:
@@ -273,23 +277,24 @@ def recolour(m: re.Match) -> str:
 
 def labels_in_points(m: re.Match) -> str:
     """oxide sets a label in `font-size:10pt`, CSS points. The picture's units are
-    TeX points, scaled to the text by the em sizes of the svg, so the same number
-    of units (`10px`) sets the label as large as the text around the picture."""
+    LaTeXML pixels (see PX_PER_PT), scaled to the text by the em sizes of the svg,
+    so the label's size in units (10pt = 13.837px) sets it as large as the text
+    around the picture."""
     tag = recolour(m)
-    return FO_FONT.sub(r"font-size:\1px", tag) if tag.startswith("<foreignObject") else tag
+    return FO_FONT.sub(lambda f: f"font-size:{float(f.group(1)) * PX_PER_PT:.3f}px", tag) if tag.startswith("<foreignObject") else tag
 
 
 def draw(svg: str, size_pt: float) -> str:
     """One picture sized in ems of the note's font, drawn in the text colour."""
     head_end = svg.find(">") + 1
     head = ANY_TAG.sub(recolour, svg[:head_end])
-    # Lengths are unitless TeX points: ems of the note's own font size.
+    # Lengths are unitless LaTeXML pixels: ems of the note's own font size.
     head = re.sub(
-        r"""\b(width|height)=['"]([-\d.]+)(?:pt|px)?['"]""", lambda m: f"{m.group(1)}='{float(m.group(2)) / size_pt:.3f}em'", head
+        r"""\b(width|height)=['"]([-\d.]+)(?:pt|px)?['"]""", lambda m: f"{m.group(1)}='{float(m.group(2)) / (size_pt * PX_PER_PT):.3f}em'", head
     )
     # An inline picture sits on the baseline by this much.
     head = re.sub(
-        r"vertical-align:(-?[\d.]+)(?:px|pt)", lambda m: f"vertical-align:{float(m.group(1)) / size_pt:.3f}em", head
+        r"vertical-align:(-?[\d.]+)(?:px|pt)", lambda m: f"vertical-align:{float(m.group(1)) / (size_pt * PX_PER_PT):.3f}em", head
     )
     return head + ANY_TAG.sub(labels_in_points, svg[head_end:])
 
@@ -355,12 +360,28 @@ def copy_images(body: str, html_dir: Path, dest: Path) -> tuple[str, int, list[s
 # ---- One note ------------------------------------------------------------------------
 
 
+GROUP_OPEN = re.compile(r'<table\b[^>]*\bclass="[^"]*\bltx_equationgroup\b')
+
+
+def scroll_equation_groups(body: str) -> str:
+    """Each group of aligned equations in `div.ltx_eqn_scroll`. A group is a table
+    whose rows share their columns, and a table cannot scroll itself without
+    giving up that layout; a group wider than the column scrolls in the div."""
+    pieces, pos = [], 0
+    while (m := GROUP_OPEN.search(body, pos)) :
+        end = element_end(body, m.start(), "table")
+        pieces += [body[pos : m.start()], "<div class='ltx_eqn_scroll'>", body[m.start() : end], "</div>"]
+        pos = end
+    pieces.append(body[pos:])
+    return "".join(pieces)
+
+
 def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[str, str, dict]:
     """oxide's page to the note's fragment, its contents and what was found on the way."""
     body = drop_front_matter(article_text(page))
     notes: list[tuple[int, str, str]] = []
     body = take_footnotes(body, notes)
-    body, toc, headings = tidy_headings(body)
+    body, toc, headings = tidy_headings(scroll_equation_groups(body))
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
     body, images, missing = copy_images(body, out_dir, dest)
     body = body + ("\n" + render_footnotes(notes) if notes else "")
