@@ -376,12 +376,18 @@ def scroll_equation_groups(body: str) -> str:
     return "".join(pieces)
 
 
+def mark_qed(body: str) -> str:
+    """oxide ends a proof's last paragraph with a bare ∎; in `span.qed` it sits at
+    the right margin, as tex4ht's did."""
+    return re.sub(r"\s*([∎□■])\s*</p>", r" <span class='qed'>\1</span></p>", body)
+
+
 def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[str, str, dict]:
     """oxide's page to the note's fragment, its contents and what was found on the way."""
     body = drop_front_matter(article_text(page))
     notes: list[tuple[int, str, str]] = []
     body = take_footnotes(body, notes)
-    body, toc, headings = tidy_headings(scroll_equation_groups(body))
+    body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)))
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
     body, images, missing = copy_images(body, out_dir, dest)
     body = body + ("\n" + render_footnotes(notes) if notes else "")
