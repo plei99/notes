@@ -376,6 +376,19 @@ def scroll_equation_groups(body: str) -> str:
     return "".join(pieces)
 
 
+# As build.py's keep_together: a browser breaks a line between an inline formula
+# and the comma after it, or the bracket before it, which TeX never does.
+STUCK = re.compile(
+    r"(?P<before>[(\[{“‘'\"（「『]*)(?P<math><math\b[^>]*\bdisplay=\"inline\"[^>]*>(?:(?!</math>).)*</math>)"
+    r"(?P<after>[-–—.,;:!?)\]}’”'\"…，。；：、！？）」』A-Za-z]*)",
+    re.S,
+)
+
+
+def keep_together(body: str) -> str:
+    return STUCK.sub(lambda m: f"<span class='nobr'>{m[0]}</span>" if m["before"] or m["after"] else m[0], body)
+
+
 def mark_qed(body: str) -> str:
     """oxide ends a proof's last paragraph with a bare ∎; in `span.qed` it sits at
     the right margin, as tex4ht's did."""
@@ -389,6 +402,7 @@ def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[
     body = take_footnotes(body, notes)
     body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)))
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
+    body = keep_together(body)
     body, images, missing = copy_images(body, out_dir, dest)
     body = body + ("\n" + render_footnotes(notes) if notes else "")
     info = {"headings": headings, "toc": len(toc), "diagrams": diagrams, "footnotes": len(notes), "images": images}
