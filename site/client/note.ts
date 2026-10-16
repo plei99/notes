@@ -14,7 +14,7 @@ wide.addEventListener("change", fit);
 // The page carries the default pairing's; when the reader's pairing differs,
 // its drawings are fetched from diagrams/<pairing>.json beside the page and
 // swapped in, and again whenever the font picker changes. The effective
-// pairing follows theme.ts: no Latin choice and a sans Chinese face mean Fira.
+// pairing follows theme.ts: no Latin choice and a sans Chinese face mean Lato.
 type Drawings = Record<string, string> | null;
 
 const root = document.documentElement;
@@ -25,7 +25,7 @@ let shown = "pagella";
 function pairing() {
   if (root.dataset.latin) return root.dataset.latin;
   return ["sans", "rounded"].includes(root.dataset.cjk ?? "")
-    ? "fira"
+    ? "lato"
     : "pagella";
 }
 
