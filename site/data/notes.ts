@@ -79,7 +79,7 @@ export const notes: Note[] = [
     source: "misc/sichuan/notes-combined.tex",
     title: "对数 GLSM 及相关专题",
     description:
-      "Chinese translation of the notes from the Log GLSM summer school at Sichuan University. Seven models translated the notes and blindly scored each other's translations section by section; each section is the best-scoring one, by Claude, GPT, Kimi or DeepSeek.",
+      "An experimental machine translation into Chinese of the notes from the Log GLSM summer school at Sichuan University.",
     date: "Summer 2026",
     sort: "2026-07",
     place: "Sichuan University",
@@ -89,6 +89,7 @@ export const notes: Note[] = [
     lang: "zh",
     translation_of: "log-glsm",
     translator: "Claude, GPT, Kimi and DeepSeek",
+    judging: "misc/sichuan/judging.json",
   },
   {
     slug: "higher-genus-gw",

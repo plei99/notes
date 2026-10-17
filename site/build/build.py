@@ -533,7 +533,8 @@ def tidy(
     body, more = cut(body, r"<div class='abstract'")
     abstracts += more
     body, _ = cut(body, r"<div class='tableofcontents'")
-    body = re.sub(r"<h[1-6][^>]*>(\s|<a [^>]*></a>)*(Contents|目录|目錄)\s*</h[1-6]>", "", body)
+    # The contents' heading; empty where \contentsname is set for babel only.
+    body = re.sub(r"<h[1-6][^>]*>(\s|<a [^>]*></a>)*(Contents|目录|目錄)?\s*</h[1-6]>", "", body)
     body = re.sub(r"<(h[1-6]|div) class='(titleHead|author|date)'.*?</\1>", "", body, flags=re.S)
     if abstracts:
         abstract = re.sub(r"^<div class='abstract'[^>]*>|</div>\s*$", "", abstracts[0].strip())
