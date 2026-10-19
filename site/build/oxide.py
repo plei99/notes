@@ -133,6 +133,19 @@ def drop_front_matter(body: str) -> str:
 
 # ---- Footnotes
 
+# What a screen reader says for a footnote's mark and for the link back to it: the
+# mark alone ("1", "*") does not say where it leads (WCAG 2.4.4). Each name keeps
+# the visible mark (WCAG 2.5.3).
+FOOTNOTE_WORDS = {
+    "en": {"note": "Footnote {}", "back": "Back to footnote {} in the text", "list": "Footnotes"},
+    "zh": {"note": "脚注 {}", "back": "返回正文脚注 {}", "list": "脚注"},
+}
+
+
+def footnote_words(lang: str | None) -> dict[str, str]:
+    return FOOTNOTE_WORDS.get(lang or "en", FOOTNOTE_WORDS["en"])
+
+
 NOTE_OPEN = re.compile(r'<span (?:id="([^"]*)" )?class="ltx_note ltx_role_(\w+)"[^>]*>')
 NOTE_SHAPE = re.compile(
     r'<sup class="ltx_note_mark">(.*?)</sup><span class="ltx_note_outer"><span class="ltx_note_content">'
@@ -141,7 +154,7 @@ NOTE_SHAPE = re.compile(
 )
 
 
-def take_footnotes(body: str, notes: list[tuple[int, str, str]]) -> str:
+def take_footnotes(body: str, notes: list[tuple[int, str, str]], lang: str | None = None) -> str:
     """Footnotes out of the text and into `notes` as (number, mark, content); each
     leaves its mark behind, linked to the list at the end of the page. A note's
     own footnotes are numbered after it."""
@@ -160,25 +173,32 @@ def take_footnotes(body: str, notes: list[tuple[int, str, str]]) -> str:
         content = content.lstrip()
         if content.startswith('<span class="ltx_tag ltx_tag_note"'):
             content = content[element_end(content, 0, "span") :]
-        notes[n - 1] = (n, mark, take_footnotes(content.strip(), notes))
+        notes[n - 1] = (n, mark, take_footnotes(content.strip(), notes, lang))
         ident = f" id='{m.group(1)}'" if m.group(1) else ""  # \footref points at it
         pieces.append(body[pos : m.start()])
-        pieces.append(f"<span class='footnote-mark'{ident}><a href='#fn{n}' id='fn{n}-bk'><sup>{mark}</sup></a></span>")
+        name = htmllib.escape(footnote_words(lang)["note"].format(strip_tags(mark).strip()), quote=True)
+        pieces.append(
+            f"<span class='footnote-mark'{ident}><a href='#fn{n}' id='fn{n}-bk' role='doc-noteref' aria-label='{name}'>"
+            f"<sup>{mark}</sup></a></span>"
+        )
         pos = end
     pieces.append(body[pos:])
     return "".join(pieces)
 
 
-def render_footnotes(notes: list[tuple[int, str, str]]) -> str:
+def render_footnotes(notes: list[tuple[int, str, str]], lang: str | None = None) -> str:
     if not notes:
         return ""
-    out = ["<div class='footnotes'>"]
+    words = footnote_words(lang)
+    # A labelled section is a region a reader can jump to, as the notes' own list.
+    out = [f"<section class='footnotes' aria-label='{htmllib.escape(words['list'], quote=True)}'>"]
     for n, mark, content in notes:
-        label = f"<span class='footnote-mark'><a href='#fn{n}-bk'><sup>{mark}</sup></a></span>"
+        back = htmllib.escape(words["back"].format(strip_tags(mark).strip()), quote=True)
+        label = f"<span class='footnote-mark'><a href='#fn{n}-bk' role='doc-backlink' aria-label='{back}'><sup>{mark}</sup></a></span>"
         # A paragraph cannot hold blocks; a note that has any goes in the aside as it is.
         inner = f"{label} {content}" if BLOCK_TAG.search(content) else f"<p>{label} {content}</p>"
         out.append(f"<aside class='footnotetext' role='doc-footnote' id='fn{n}'>{inner}</aside>")
-    out.append("</div>")
+    out.append("</section>")
     return "\n".join(out)
 
 
@@ -418,17 +438,17 @@ def mark_qed(body: str) -> str:
     return re.sub(r"\s*([∎□■])\s*</p>", r" <span class='qed'>\1</span></p>", body)
 
 
-def post_process(page: str, size_pt: float, out_dir: Path, dest: Path) -> tuple[str, str, dict]:
+def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str | None = None) -> tuple[str, str, dict]:
     """oxide's page to the note's fragment, its contents and what was found on the way."""
     body = drop_front_matter(article_text(page))
     notes: list[tuple[int, str, str]] = []
-    body = take_footnotes(body, notes)
+    body = take_footnotes(body, notes, lang)
     runin = AMSART_RUNIN if 'href="ltx-amsart.css"' in page else frozenset()
     body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin)
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
     body = full_width_rules(keep_together(body))
     body, images, missing = copy_images(body, out_dir, dest)
-    body = body + ("\n" + render_footnotes(notes) if notes else "")
+    body = body + ("\n" + render_footnotes(notes, lang) if notes else "")
     info = {"headings": headings, "toc": len(toc), "diagrams": diagrams, "footnotes": len(notes), "images": images}
     if missing:
         info["missing_images"] = missing
@@ -447,7 +467,7 @@ def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
-    body, toc, info = post_process(page_file.read_text(encoding="utf-8", errors="replace"), build.font_size_pt(preamble), page_file.parent, dest)
+    body, toc, info = post_process(page_file.read_text(encoding="utf-8", errors="replace"), build.font_size_pt(preamble), page_file.parent, dest, note.get("lang"))
     report.update(info)
     report["units"] = info["diagrams"]
     report["bytes"] = len(body.encode())
