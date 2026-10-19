@@ -10,6 +10,42 @@ function fit() {
 fit();
 wide.addEventListener("change", fit);
 
+// A formula, diagram or table wider than the column scrolls sideways in its own
+// box (these are the boxes styles.css gives overflow-x: auto). None holds
+// anything that takes focus, and not every browser makes such a box focusable
+// by itself, so a keyboard could not reach what is scrolled out of view
+// (WCAG 2.1.1). Each box that overflows takes focus, and gives it back when the
+// column is wide enough again.
+const scrollers = document.querySelectorAll<HTMLElement>(
+  `.note-body :is(.eq, .diagram--display, table.ltx_equation, .ltx_eqn_scroll,
+    .ltx_inline-block table.ltx_eqn_table, .ltx_td table.ltx_eqn_table,
+    table.ltx_tabular.ltx_centering, .ltx_listing)`,
+);
+
+function reachable() {
+  for (const box of scrollers) {
+    const overflows = box.scrollWidth > box.clientWidth + 1;
+    if (overflows && !box.hasAttribute("tabindex")) {
+      box.tabIndex = 0;
+      box.dataset.scrollFocus = "";
+    } else if (!overflows && box.dataset.scrollFocus !== undefined) {
+      box.removeAttribute("tabindex");
+      delete box.dataset.scrollFocus;
+    }
+  }
+}
+
+let pending = 0;
+const body = document.querySelector(".note-body");
+if (body && scrollers.length) {
+  // Widths change with the window, the zoom and the fonts as they load.
+  new ResizeObserver(() => {
+    cancelAnimationFrame(pending);
+    pending = requestAnimationFrame(reachable);
+  }).observe(body);
+  document.fonts.ready.then(reachable);
+}
+
 // Diagrams are drawings, made once per font pairing (build/fontvariants.py).
 // The page carries the default pairing's; when the reader's pairing differs,
 // its drawings are fetched from diagrams/<pairing>.json beside the page and
