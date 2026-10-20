@@ -441,8 +441,12 @@ def full_width_rules(body: str) -> str:
 
 def mark_qed(body: str) -> str:
     """oxide ends a proof's last paragraph with a bare ∎; in `span.qed` it sits at
-    the right margin, as tex4ht's did."""
-    return re.sub(r"\s*([∎□■])\s*</p>", r" <span class='qed'>\1</span></p>", body)
+    the right margin, as tex4ht's did. oxide's `\\qed` is ∎ (U+220E), Perl
+    LaTeXML's choice; amsthm's default `\\qedsymbol` is `\\openbox` (amsthm.sty
+    422-426), the □ the PDF prints, so ∎ becomes □, in text and in a display's
+    `\\qedhere` alike. No note redefines `\\qedsymbol`."""
+    body = body.replace("\u220e", "\u25a1")
+    return re.sub(r"\s*([□■])\s*</p>", r" <span class='qed'>\1</span></p>", body)
 
 
 def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str | None = None) -> tuple[str, str, dict]:
