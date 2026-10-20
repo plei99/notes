@@ -337,6 +337,11 @@ def draw(svg: str, size_pt: float) -> str:
     return head + ANY_TAG.sub(labels_in_points, svg[head_end:])
 
 
+# The start or the end of an element that is a block of its own, as oxide writes them.
+BLOCK_START = r"<(?:p|div|figure|li|td|th|dd|section)\b[^>]*>"
+BLOCK_END = r"</(?:p|div|figure|li|td|th|dd|section|ul|ol|table|h[1-6])>"
+
+
 def draw_diagrams(body: str, size_pt: float) -> tuple[str, int]:
     """Every picture outermost-first, in `span.diagram`. A picture inside a formula
     (tikz-cd in an `mtext`) is drawn the same but not wrapped, as a span cannot
@@ -350,11 +355,15 @@ def draw_diagrams(body: str, size_pt: float) -> tuple[str, int]:
         if in_math:
             pieces += [before, svg]
         else:
-            tail = body[:m.start()][-120:]
+            tail = body[:m.start()][-800:]
             # Centred, or the only thing in its paragraph, figure or line.
-            alone = re.search(r'<(?:p class="ltx_p[^"]*"|span class="ltx_inline-block"|figure[^>]*)>\s*$', tail) and re.match(
-                r"\s*</(?:p|span|figure)>", after
-            )
+            alone = re.search(r'<(?:p class="ltx_p[^"]*"|figure[^>]*)>\s*$', tail) and re.match(r"\s*</(?:p|figure)>", after)
+            if not alone and (wrap := re.search(r'<span class="ltx_inline-block">\s*$', tail)):
+                # The inline-block of a picture is alone unless text or a formula of the paragraph comes first
+                # (the inline Dynkin diagrams of "A_n: o-o-o"): nothing but span starts since the last block.
+                lead = tail[: wrap.start()]
+                last = max((x.end() for x in re.finditer(BLOCK_START + "|" + BLOCK_END, lead)), default=0)
+                alone = re.fullmatch(r"(?:\s|<span\b[^>]*>)*", lead[last:]) and re.match(r"\s*</span>", after)
             centred = re.search(r'class="[^"]*\bltx_centering\b', m.group(0))
             marked = re.search(r'class="[^"]*\bltx_markedasmath\b', m.group(0))
             display = bool(centred or (alone and not marked))
