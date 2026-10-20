@@ -5,7 +5,7 @@
     python3 site/build/oxide.py good-moduli-spaces schemes
     python3 site/build/oxide.py --jobs 4
 
-An alternative to build.py that writes the same per-note output; the pages
+What `bun run notes` runs; it writes the same per-note output as build.py, the older tex4ht pipeline; the pages
 (pages/[slug].tsx, components/Note.tsx, scripts/finish.ts) cannot tell the two
 apart. For each note, in its own scratch directory under site/.cache/oxide-<slug>/:
 

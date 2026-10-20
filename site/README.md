@@ -10,27 +10,26 @@ the LaTeX pipeline in `build/` is Python.
 
 ## Building
 
-Requires TeX Live (with tex4ht, dvisvgm), Python 3.9+ and a canary build of Bun
-(Bake is experimental and only in canary builds; developed against
-1.4.4-canary.1). Put the canary `bun` first on your `PATH`, since package
-scripts call `bun` again. The diagrams are drawn in the homepage's fonts, read
-from a checkout beside this repository (`../plei99.github.io/public/fonts`) or
-else from the live site.
+Requires TeX Live, [latexml-oxide](https://github.com/plei99/latexml-oxide)
+(a release build of `latexml_oxide`; `build/oxide.py` looks for it in a checkout
+at the path in `OXIDE_BIN`), Python 3.9+ and a canary build of Bun (Bake is
+experimental and only in canary builds; developed against 1.4.4-canary.1). Put
+the canary `bun` first on your `PATH`, since package scripts call `bun` again.
 
 ```sh
 cd site
 bun install                 # once: React, MathJax, the checkers
 bun run setup               # once: Python venv with fontTools
-bun run notes               # compile every note to HTML (about 20 minutes)
+bun run notes               # convert every note to HTML with latexml-oxide
 bun run notes good-moduli-spaces schemes  # ...or some, by slug
 bun run dev                 # preview at http://localhost:3001/notes/
 bun run check               # dprint check, oxlint, bun check
 bun run publish             # build and push to gh-pages
 ```
 
-`bun run notes --no-tex` reruns only the MathML and HTML stages from the cache
-in `.cache/`, which is enough after changing anything in `build/` except
-`units.py`.
+`bun run notes --no-oxide` redoes only the HTML stage from the conversions
+cached in `.cache/oxide-<slug>/`. `bun run notes:tex4ht` runs the older
+pipeline, `build/build.py` (tex4ht, MathJax, dvisvgm), described at the end.
 
 ## Layout
 
@@ -63,7 +62,7 @@ scripts/
   serve.ts              The dev server
   catalog.ts            The catalogue as JSON, for build.py
 build/                  The LaTeX pipeline (Python) and publish.sh
-generated/              What build.py writes (not committed)
+generated/              What the notes build writes (not committed)
 ```
 
 Bake's React shell owns `<html>`, so each page renders a `<template data-shell>`
@@ -73,7 +72,19 @@ empty `.note-body` and `finish.ts` puts the text in.
 
 ## How a note becomes a page
 
-`build/build.py`, for each note in `data/notes.ts`:
+`build/oxide.py`, for each note in `data/notes.ts`, stages the note in
+`.cache/oxide-<slug>/` and converts it with latexml-oxide, a Rust port of
+LaTeXML, in the note's engine persona: TeX Live packages through oxide's own
+bindings, the note's own `.sty` files read as they are. One run gives HTML5
+with MathML Core and SVG: sectioning, theorems, references, footnotes, the
+bibliography, the mathematics, and the TikZ and tikz-cd pictures, whose labels
+are real text in the page's fonts. The HTML is then cut down to the note's
+text (title block and oxide's contents removed, headings numbered and collected
+into the table of contents, footnotes moved to the end). Fragments land in
+`generated/<slug>/`; `pages/[slug].tsx` and `scripts/finish.ts` turn them into
+pages. `.cache/report.json` lists every note's errors, warnings and status.
+
+The older pipeline, `build/build.py`, goes through four stages for each note:
 
 1. **Diagrams.** `units.py` finds every tikz-cd, TikZ, Young tableau, Dynkin
    diagram and spectral sequence, widened to the whole formula when one sits
