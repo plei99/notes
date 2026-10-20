@@ -458,6 +458,23 @@ def mark_qed(body: str) -> str:
     return re.sub(r"\s*([□■])\s*</p>", r" <span class='qed'>\1</span></p>", body)
 
 
+BIBITEM = re.compile(r'<li\b[^>]*\bclass="ltx_bibitem\b[^"]*"[^>]*>\s*(<span class="ltx_tag\b[^>]*>)')
+
+
+def wrap_bibliography(body: str) -> str:
+    """The label of a reference and the rest of it side by side, in the two columns the
+    list shares (the label column is as wide as the longest label): the rest of each
+    `li.ltx_bibitem` goes in `div.ltx_bibbody`."""
+    pieces, pos = [], 0
+    while (m := BIBITEM.search(body, pos)) :
+        tag_end = element_end(body, m.start(1), "span")
+        li_end = body.index("</li>", tag_end)
+        pieces += [body[pos:tag_end], "<div class='ltx_bibbody'>", body[tag_end:li_end].strip(), "</div>"]
+        pos = li_end
+    pieces.append(body[pos:])
+    return "".join(pieces)
+
+
 def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str | None = None) -> tuple[str, str, dict]:
     """oxide's page to the note's fragment, its contents and what was found on the way."""
     body = drop_front_matter(article_text(page))
@@ -466,7 +483,7 @@ def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str
     runin = AMSART_RUNIN if 'href="ltx-amsart.css"' in page else frozenset()
     body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin)
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
-    body = full_width_rules(keep_together(body))
+    body = wrap_bibliography(full_width_rules(keep_together(body)))
     body, images, missing = copy_images(body, out_dir, dest)
     body = body + ("\n" + render_footnotes(notes, lang) if notes else "")
     info = {"headings": headings, "toc": len(toc), "diagrams": diagrams, "footnotes": len(notes), "images": images}

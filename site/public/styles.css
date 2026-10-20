@@ -2253,21 +2253,32 @@ aside.footnotetext p {
   padding: 0;
 }
 
+/* The labels share a column as wide as the longest label, then the entry, as
+   the live page has it (dl.thebibliography is a grid of max-content and 1fr). */
+.note-body ul.ltx_biblist:has(> li.ltx_bibitem > .ltx_bibbody) {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 0.7em;
+}
+
 .note-body li.ltx_bibitem {
-  position: relative;
-  padding: 0.15em 0 0.15em 3.3em;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  padding: 0.15em 0;
   margin-top: 0.35em;
   list-style: none;
 }
 
-/* The label hangs in the margin; the blocks of the reference run on after
-   each other, as the entry is set in the PDF. */
+/* The label sits right-aligned in its column; the blocks of the reference run
+   on after each other, as the entry is set in the PDF. */
 .note-body li.ltx_bibitem > .ltx_tag {
-  position: absolute;
-  left: 0;
-  width: 2.6em;
   text-align: right;
   white-space: nowrap;
+}
+
+.note-body li.ltx_bibitem > .ltx_bibbody {
+  min-width: 0;
 }
 
 .note-body .ltx_bibblock {
