@@ -897,6 +897,14 @@ math {
   font-variant-numeric: lining-nums;
 }
 
+/* A matrix says its own column spacing (oxide: columnspacing="5pt"); Chromium
+   adds 0.4em either side of every cell and half an ex above and below, which
+   made a matrix wider and taller than LaTeX's and MathJax's (the three
+   psmallmatrix of lie-algebras Lecture 10 overran the column). */
+mtable[columnspacing] > mtr > mtd {
+  padding: 0.25ex 0.14em;
+}
+
 /* An inline formula and the punctuation touching it, which no line splits. */
 .nobr {
   white-space: nowrap;
@@ -2047,6 +2055,22 @@ aside.footnotetext p {
 }
 
 /* ---- Displayed equations ---------------------------------------------- */
+/* A display wider than the column scrolls; a soft edge shows on the side that
+   has more (the covers scroll away with the content, the shadows stay). */
+.note-body .ltx_eqn_scroll,
+.note-body table.ltx_equation {
+  --edge: color-mix(in srgb, var(--ink) 22%, transparent);
+  background:
+    linear-gradient(to right, var(--paper), var(--paper)) left center / 1.2em
+    100% no-repeat local,
+    linear-gradient(to left, var(--paper), var(--paper)) right center / 1.2em
+    100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left
+    center / 0.5em 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right
+    center / 0.5em 100% no-repeat scroll;
+}
+
 /* A displayed formula is a table of three cells: padding, formula, padding,
    and a fourth with the number at the right. As the site's .eq: a flex line,
    the formula centred, the number at the right edge (and kept in view when
@@ -2095,6 +2119,14 @@ aside.footnotetext p {
   right: 0;
   padding-left: 1.5em;
   background: var(--paper);
+}
+
+/* ...and a number at the left stays at the left edge of a wide formula. */
+.note-body table.ltx_equation .ltx_eqn_eqno.ltx_align_left {
+  right: auto;
+  left: 0;
+  padding-right: 1.5em;
+  padding-left: 0;
 }
 
 .note-body .ltx_eqn_eqno {
@@ -2183,6 +2215,12 @@ aside.footnotetext p {
 
 .note-body table.ltx_equationgroup .ltx_eqn_eqno .ltx_tag {
   float: right;
+}
+
+/* A number at the left (leqno) hangs the other way: floated right it would
+   leave the table and be cut off by div.ltx_eqn_scroll. */
+.note-body table.ltx_equationgroup .ltx_eqn_eqno.ltx_align_left .ltx_tag {
+  float: left;
 }
 
 /* A table of equations inside a narrow box (a cell, a minipage) scrolls in it. */
