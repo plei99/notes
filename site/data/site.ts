@@ -12,21 +12,13 @@ export const site: Site = {
       group: "Serif",
       fonts: [
         { id: "pagella", name: "Pagella" },
-        { id: "euler", name: "Pagella + Euler" },
-        { id: "bonum", name: "Bonum" },
-        { id: "schola", name: "Schola" },
-        { id: "latin-modern", name: "Latin Modern" },
-        { id: "libertinus", name: "Libertinus" },
         { id: "garamond", name: "Garamond" },
-        { id: "hundar", name: "Hundar" },
       ],
     },
     {
       group: "Sans",
       sans: true,
       fonts: [
-        { id: "fira", name: "Fira Sans" },
-        { id: "new-cm-sans", name: "New CM Sans" },
         { id: "lato", name: "Lato" },
       ],
     },

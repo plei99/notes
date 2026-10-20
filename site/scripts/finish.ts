@@ -10,10 +10,10 @@
 //   It is often megabytes of MathML: React would copy it into the RSC payload
 //   and, past 512 kB, warn that it cannot render it progressively.
 // - public/ is copied, the browser scripts in client/ are compiled into js/,
-//   themes.css is written, and each note's images and diagrams are copied
-//   beside its page.
+//   themes.css is written, and each note's images and diagrams, and a machine
+//   translation's judging, are copied beside its page.
 import { cp, rm } from "node:fs/promises";
-import { allThemes, GENERATED, type Theme } from "../lib/site";
+import { allThemes, GENERATED, notes, type Theme } from "../lib/site";
 
 const OUT = "dist";
 const rev = Date.now().toString(36);
@@ -135,6 +135,17 @@ for (
   if (rest.length === 0 || rest.at(-1)!.startsWith("_")) continue;
   if (!(await Bun.file(`${OUT}/${slug}/index.html`).exists())) continue;
   await Bun.write(`${OUT}/${file}`, Bun.file(`${GENERATED}/${file}`));
+  assets++;
+}
+// A machine translation's judging, for the dialog on its page
+// (client/judging.ts).
+for (const note of notes) {
+  if (!note.judging) continue;
+  if (!(await Bun.file(`${OUT}/${note.slug}/index.html`).exists())) continue;
+  await Bun.write(
+    `${OUT}/${note.slug}/judging.json`,
+    Bun.file(`../${note.judging}`),
+  );
   assets++;
 }
 console.log(`Finished ${pages} pages and ${assets} note files in ${OUT}/`);

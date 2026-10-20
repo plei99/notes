@@ -8,6 +8,7 @@ import {
   ui,
   url,
 } from "../lib/site";
+import Judging from "./Judging";
 
 /** A note's page: its header, the contents and the text from build/build.py. */
 export default async function Note(
@@ -45,10 +46,23 @@ export default async function Note(
               lecturers.length > 1 && type.credits ? type.credits : type.credit
             } ${conjoin(lecturers)}, `}
           {note.place}, {note.date}.
-          {original && (
+          {original && !note.judging && (
             <>
               {" "}Translated by {note.translator} from{" "}
               <a href={url(`/${original.slug}/`)}>the English notes</a>.
+            </>
+          )}
+          {original && note.judging && (
+            <>
+              {" "}An experimental machine translation of{" "}
+              <a href={url(`/${original.slug}/`)}>the English notes</a>.{" "}
+              <button
+                type="button"
+                className="judging-open"
+                aria-haspopup="dialog"
+              >
+                How it was made
+              </button>
             </>
           )}
         </p>
@@ -80,6 +94,7 @@ export default async function Note(
         }
         <div className="note-body" data-fragment={note.slug} />
       </div>
+      {note.judging && <Judging />}
     </article>
   );
 }

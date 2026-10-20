@@ -93,11 +93,11 @@ picker.hidden = false;
 // The font pickers: Latin text (with its math companion) on every page, and
 // the Chinese face on Chinese pages. Each sets one attribute on <html> and is
 // saved under the same key. With no attribute the stylesheet pairs sans with
-// sans (a Chinese sans brings Fira, a Latin sans brings Source Han Sans), so
+// sans (a Chinese sans brings Lato, a Latin sans brings Source Han Sans), so
 // a picker with nothing chosen shows that effective value; choosing anything,
 // including the default face, makes it explicit. The lists mirror styles.css.
 type FontAttribute = "latin" | "cjk";
-const SANS_LATIN = ["fira", "new-cm-sans", "lato"];
+const SANS_LATIN = ["lato"];
 const SANS_CJK = ["sans", "rounded"];
 const pickers: Partial<Record<FontAttribute, HTMLSelectElement>> = {};
 
@@ -105,7 +105,7 @@ function effective(attr: FontAttribute) {
   const chosen = root.dataset[attr];
   if (chosen) return chosen;
   if (attr === "latin") {
-    return SANS_CJK.includes(root.dataset.cjk ?? "") ? "fira" : "pagella";
+    return SANS_CJK.includes(root.dataset.cjk ?? "") ? "lato" : "pagella";
   }
   return SANS_LATIN.includes(root.dataset.latin ?? "") ? "sans" : "serif";
 }

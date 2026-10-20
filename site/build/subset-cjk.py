@@ -36,10 +36,12 @@ FONTS = SITE / "public" / "fonts"
 CJK = re.compile(r"[⺀-⿟　-〿぀-ヿ㐀-䶿一-鿿豈-﫿＀-￯]")
 # Always included, so ordinary punctuation never depends on the content.
 PUNCTUATION = "U+3000-303F,U+FF01-FF0F,U+FF1A-FF20,U+FF3B-FF40,U+FF5B-FF65"
-# Where the site's text is: the code and data, and the notes as built.
+# Where the site's text is: the code and data, the notes as built, and the
+# machine translations' judging (notes.ts's `judging`), which shows terms.
 SOURCES = [
     *(f"{folder}/**/*.{ext}" for folder in ("data", "pages", "components", "client", "lib") for ext in ("ts", "tsx")),
     "generated/*/_*.html",
+    "../misc/**/judging.json",
 ]
 
 

@@ -71,6 +71,11 @@ export type Note = Facets & {
   /** The slug of the note this translates; listed under it on the index. */
   translation_of?: string;
   translator?: string;
+  /**
+   * For a machine translation picked from several: the judges' scores and
+   * comments (.json, from the repository root), shown in a dialog on its page.
+   */
+  judging?: string;
   /** The slug of the note this is part of. */
   parent?: string;
   /** A beamer deck. */
