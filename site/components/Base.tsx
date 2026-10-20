@@ -11,7 +11,6 @@ import {
   ui,
   url,
 } from "../lib/site";
-import How from "./How";
 
 export type PageInfo = {
   lang: Lang;
@@ -106,7 +105,6 @@ export default async function Base(
           url(kind === "note" ? "/js/note.js" : "/js/filter.js")
         }?v=${rev}`}
       />
-      <script type="module" src={`${url("/js/how.js")}?v=${rev}`} />
 
       <a className="skip-link" href="#main">{t.skip}</a>
 
@@ -196,15 +194,11 @@ export default async function Base(
             <a href={home}>{t.homepage}</a>
           </p>
           <p>
-            © 2026 {site.name}{" "}
-            <button type="button" className="how-open" aria-haspopup="dialog">
-              {t.how}
-            </button>{" "}
+            © 2026 {site.name} <a href={site.converter}>{t.how}</a>{" "}
             <a href={site.repo}>{t.source}</a>
           </p>
         </footer>
       </div>
-      <How lang={lang} />
     </>
   );
 }

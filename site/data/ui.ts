@@ -39,7 +39,6 @@ export const ui: Ui = {
     translation: "中文 ({translator})",
     switch: "中文",
     how: "How the notes were converted to HTML",
-    how_failed: "The diagram could not be loaded.",
     close: "Close",
   },
   zh: {
@@ -76,7 +75,6 @@ export const ui: Ui = {
     translation: "中文译本（{translator}）",
     switch: "en",
     how: "这些笔记如何转换为 HTML",
-    how_failed: "无法载入流程图。",
     close: "关闭",
   },
 };

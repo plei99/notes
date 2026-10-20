@@ -4,6 +4,7 @@ export const site: Site = {
   name: "Patrick Lei",
   homepage: "https://plei99.github.io/",
   repo: "https://github.com/plei99/notes",
+  converter: "https://github.com/plei99/latexml-oxide",
 
   // The same font pairings as the homepage (data/site.ts there); `id` is the
   // data-latin value that styles.css and the homepage's fonts.css agree on.

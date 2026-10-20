@@ -15,8 +15,10 @@ apart. For each note, in its own scratch directory under site/.cache/oxide-<slug
     SVG in one go: sectioning, theorems, references, footnotes, the bibliography,
     the mathematics and the TikZ / tikz-cd pictures (drawn as SVG, their labels
     set in HTML and MathML). It runs as the corpus protocol runs it
-    (latexml/fork/corpus/run_one.sh): raw packages and classes, in the note's
-    engine persona. Errors, warnings and the status code are read off its log.
+    (latexml/fork/corpus/run_one.sh), in the note's engine persona, with
+    OXIDE_PROTOCOL=native by default: TeX Live packages and classes through
+    oxide's own bindings, the note's own .sty files (notes.sty) read raw;
+    OXIDE_PROTOCOL=raw reads every package and class raw. Errors, warnings and the status code are read off its log.
  3. The HTML is cut down to the note's text: the `article` element without the
     title block, the authors and dates, and oxide's own contents; headings get
     numbers in `span.secnum` and levels that start at h2; footnotes move to a
@@ -61,6 +63,11 @@ TEX_BIN = os.environ.get("TEXBIN", "/usr/local/texlive/2026/bin/universal-darwin
 # oxide's own timeout; the process gets a little longer to write its log.
 OXIDE_TIMEOUT = 600
 PERSONAS = {"xe": "xetex,", "lua": "luatex,", "pdf": ""}
+# latexml.sty's options for each protocol, as run_one.sh has them.
+PROTOCOLS = {"native": "localrawstyles", "raw": "rawstyles,rawclasses"}
+PROTOCOL = os.environ.get("OXIDE_PROTOCOL", "native")
+if PROTOCOL not in PROTOCOLS:
+    sys.exit(f"oxide.py: OXIDE_PROTOCOL must be native or raw, not {PROTOCOL!r}")
 # oxide dates its output from this, so a rerun gives the same text.
 SOURCE_DATE_EPOCH = "1767225600"
 
@@ -77,7 +84,7 @@ def run_oxide(tex: Path, engine: str, work: Path) -> dict:
     log = work / "oxide.log"
     log.unlink(missing_ok=True)
     cmd = [
-        OXIDE_BIN, f"--preload=[{PERSONAS[engine]}rawstyles,rawclasses]latexml.sty",
+        OXIDE_BIN, f"--preload=[{PERSONAS[engine]}{PROTOCOLS[PROTOCOL]}]latexml.sty",
         f"--timeout={OXIDE_TIMEOUT}", f"--path={tex.parent}", f"--sourcedirectory={tex.parent}",
         f"--log={log}", f"--dest={out / (tex.stem + '.html')}", tex.name,
     ]

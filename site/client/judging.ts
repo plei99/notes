@@ -652,7 +652,7 @@ opener.addEventListener("click", () => {
 });
 
 // A click on the backdrop closes the dialog, where closedby="any" is not
-// supported yet, as in how.ts.
+// supported yet.
 dialog.addEventListener("click", (event) => {
   if (event.target !== dialog) return;
   const box = dialog.getBoundingClientRect();

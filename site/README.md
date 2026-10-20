@@ -43,7 +43,6 @@ components/
   Base.tsx              <head>, masthead, footer
   Index.tsx             The filterable list of notes
   Note.tsx              A note's header, contents and text
-  How.tsx               The colophon's flowchart of how the notes are built
 lib/
   site.ts               Data, URLs under /notes/, the fragments, theme pairs
   inline.ts             Builds client/inline/*.ts into the scripts inlined in <head>
@@ -57,7 +56,6 @@ client/                 Browser scripts, compiled one to one into /js/ (DOM only
   theme.ts, dom.ts      The homepage's theme and font pickers, unchanged
   filter.ts             The index's filters
   note.ts               Contents open or closed; diagrams in the chosen fonts
-  how.ts                Draws the flowchart with Mermaid when the dialog opens
   inline/               The head script that applies saved preferences
 public/                 Copied verbatim: styles.css, fonts/
 scripts/

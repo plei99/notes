@@ -89,6 +89,8 @@ export type Site = {
   name: string;
   homepage: string;
   repo: string;
+  /** latexml-oxide, which converts the notes to HTML; the colophon links to it. */
+  converter: string;
   latin_fonts: {
     group: string;
     sans?: true;
@@ -141,7 +143,6 @@ export type UiKey =
   | "translation"
   | "switch"
   | "how"
-  | "how_failed"
   | "close";
 export type Ui = Localized<Record<UiKey, string>>;
 
