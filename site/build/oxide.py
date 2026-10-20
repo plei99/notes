@@ -227,12 +227,20 @@ def section_number(tag_html: str) -> str:
 
 def nest(entries: list[tuple[int, str, str, str]]) -> list[tuple[int, str, str, str]]:
     """No entry deeper than one below the one before it, so the contents nest as
-    lists do: a section under an untitled chapter would otherwise open two at once."""
+    lists do: a section under an untitled chapter would otherwise open two at once.
+    The first entry stands at its own level, as it does on the live page (an
+    unnumbered section before the first chapter is indented like a section)."""
     out: list[tuple[int, str, str, str]] = []
-    base = min((e[0] for e in entries), default=2)
     for level, ident, num, title in entries:
-        out.append((min(level, (out[-1][0] if out else base - 1) + 1), ident, num, title))
+        out.append((min(level, out[-1][0] + 1) if out else level, ident, num, title))
     return out
+
+
+def render_toc(entries: list[tuple[int, str, str, str]]) -> str:
+    """build.render_toc; a first entry deeper than the shallowest opens lists inside
+    lists, which are in an `li` of their own (an `ol` holds `li` only)."""
+    toc = build.render_toc(entries)
+    return re.sub(r"^((?:<ol>)+)", lambda m: "<ol>" + "<li><ol>" * (m.group(1).count("<ol>") - 1), toc)
 
 
 # amsart runs these in (amsart.cls \@startsection with a negative afterskip); oxide,
@@ -489,7 +497,7 @@ def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str
     info = {"headings": headings, "toc": len(toc), "diagrams": diagrams, "footnotes": len(notes), "images": images}
     if missing:
         info["missing_images"] = missing
-    return body, build.render_toc(toc), info
+    return body, render_toc(toc), info
 
 
 def finish_note(note: dict, work: Path, report: dict, t0: float) -> dict:
