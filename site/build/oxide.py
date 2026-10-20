@@ -225,6 +225,19 @@ def section_number(tag_html: str) -> str:
     return words[-1].rstrip(".") if words else ""
 
 
+TOC_NUMBER = re.compile(r'<a href="#([^"]+)"[^>]*><span class="ltx_text ltx_ref_title">(?=<span class="ltx_tag ltx_tag_ref">)')
+
+
+def toc_numbers(page: str) -> dict[str, str]:
+    """Each division's number as oxide's own contents print it, by id. The contents
+    line has `\\thechapter` (`\\numberline`), where a chapter style may head the
+    chapter with something else: memoir's demo2 prints "One" (memoir.cls 3063-3067)."""
+    numbers = {}
+    for m in TOC_NUMBER.finditer(page):
+        numbers[m.group(1)] = section_number(page[m.end() : element_end(page, m.end(), "span")])
+    return numbers
+
+
 def nest(entries: list[tuple[int, str, str, str]]) -> list[tuple[int, str, str, str]]:
     """No entry deeper than one below the one before it, so the contents nest as
     lists do: a section under an untitled chapter would otherwise open two at once.
@@ -248,7 +261,7 @@ def render_toc(entries: list[tuple[int, str, str, str]]) -> str:
 AMSART_RUNIN = {"subsection", "subsubsection"}
 
 
-def tidy_headings(body: str, runin: set[str] = frozenset()) -> tuple[str, list[tuple[int, str, str, str]], int]:
+def tidy_headings(body: str, runin: set[str] = frozenset(), numbers: dict[str, str] | None = None) -> tuple[str, list[tuple[int, str, str, str]], int]:
     """Each division's title becomes `<hN>` (h2 for the shallowest division, a part
     aside) with its number in `span.secnum`; the entries of the contents come back too."""
     found = []  # (start, end, id, kind, tag, attrs, inner)
@@ -272,6 +285,8 @@ def tidy_headings(body: str, runin: set[str] = frozenset()) -> tuple[str, list[t
         if title.startswith('<span class="ltx_tag ltx_tag_'):
             cut = element_end(title, 0, "span")
             num, title = section_number(title[:cut]), title[cut:].strip()
+            # The number the contents give it, as the live page shows it (toc_numbers).
+            num = (numbers or {}).get(ident, num)
         num_html = f"<span class='secnum'>{htmllib.escape(num)}</span> " if num else ""
         if level <= 3 and kind != "part":
             # The contents carry no footnote marks and no ids (the text has them).
@@ -485,11 +500,12 @@ def wrap_bibliography(body: str) -> str:
 
 def post_process(page: str, size_pt: float, out_dir: Path, dest: Path, lang: str | None = None) -> tuple[str, str, dict]:
     """oxide's page to the note's fragment, its contents and what was found on the way."""
+    numbers = toc_numbers(page)
     body = drop_front_matter(article_text(page))
     notes: list[tuple[int, str, str]] = []
     body = take_footnotes(body, notes, lang)
     runin = AMSART_RUNIN if 'href="ltx-amsart.css"' in page else frozenset()
-    body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin)
+    body, toc, headings = tidy_headings(scroll_equation_groups(mark_qed(body)), runin, numbers)
     body, diagrams = draw_diagrams(drop_pgf_alttext(body), size_pt)
     body = wrap_bibliography(full_width_rules(keep_together(body)))
     body, images, missing = copy_images(body, out_dir, dest)
