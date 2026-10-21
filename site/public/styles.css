@@ -1960,6 +1960,12 @@ aside.footnotetext p {
   display: inline;
 }
 
+/* The paragraph a run-in head is set into is inline, so its bottom margin is
+   gone; the paragraph after it keeps the usual separation. */
+.note-body .ltx_runin + .ltx_para + :is(.ltx_para, p) {
+  margin-top: 0.85em;
+}
+
 /* A theorem's number and its name are part of the head, which is bold in the
    source (oxide marks it); the number is not the muted section number. */
 .note-body .ltx_tag_theorem,
@@ -2010,8 +2016,13 @@ aside.footnotetext p {
   margin-bottom: 0;
 }
 
-/* The ∎ ending a proof is a character on the proof's last line (oxide writes
-   it after the text); nothing in the markup can float it. */
+/* The proof-end mark is floated to the right margin of the proof's last line
+   (`span.qed`, from oxide.py's mark_qed). When that line holds nothing else,
+   as after a closing display, the proof contains the float, so the mark stays
+   at the end of its own proof rather than on the next block's first line. */
+.note-body .ltx_proof {
+  display: flow-root;
+}
 
 /* ---- Lists ------------------------------------------------------------ */
 /* oxide writes the label of an item as a text tag, with list-style-type: none
