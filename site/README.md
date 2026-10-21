@@ -10,9 +10,9 @@ the LaTeX pipeline in `build/` is Python.
 
 ## Building
 
-Requires TeX Live, [latexml-oxide](https://github.com/plei99/latexml-oxide)
-(a release build of `latexml_oxide`; `build/oxide.py` looks for it in a checkout
-at the path in `OXIDE_BIN`), Python 3.9+ and a canary build of Bun (Bake is
+Requires TeX Live, [latexml-oxide](https://github.com/plei99/latexml-oxide) (a
+release build of `latexml_oxide`; `build/oxide.py` looks for it in a checkout at
+the path in `OXIDE_BIN`), Python 3.9+ and a canary build of Bun (Bake is
 experimental and only in canary builds; developed against 1.4.4-canary.1). Put
 the canary `bun` first on your `PATH`, since package scripts call `bun` again.
 
@@ -75,12 +75,12 @@ empty `.note-body` and `finish.ts` puts the text in.
 `build/oxide.py`, for each note in `data/notes.ts`, stages the note in
 `.cache/oxide-<slug>/` and converts it with latexml-oxide, a Rust port of
 LaTeXML, in the note's engine persona: TeX Live packages through oxide's own
-bindings, the note's own `.sty` files read as they are. One run gives HTML5
-with MathML Core and SVG: sectioning, theorems, references, footnotes, the
+bindings, the note's own `.sty` files read as they are. One run gives HTML5 with
+MathML Core and SVG: sectioning, theorems, references, footnotes, the
 bibliography, the mathematics, and the TikZ and tikz-cd pictures, whose labels
-are real text in the page's fonts. The HTML is then cut down to the note's
-text (title block and oxide's contents removed, headings numbered and collected
-into the table of contents, footnotes moved to the end). Fragments land in
+are real text in the page's fonts. The HTML is then cut down to the note's text
+(title block and oxide's contents removed, headings numbered and collected into
+the table of contents, footnotes moved to the end). Fragments land in
 `generated/<slug>/`; `pages/[slug].tsx` and `scripts/finish.ts` turn them into
 pages. `.cache/report.json` lists every note's errors, warnings and status.
 
