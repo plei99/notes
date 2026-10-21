@@ -21,6 +21,7 @@ import type { Note } from "./types";
 //   - Boston College      Boston College
 //   - Simons Center       Simons Center for Geometry and Physics, Stony Brook
 //   - Sichuan University  Sichuan University (Meishan campus)
+//   - SCMS                Shanghai Center for Mathematical Sciences, Fudan
 //   - Online              Zoom, YouTube, Bilibili
 //   - Other               one-off venues (Cornell conference, AGNES)
 //
@@ -90,6 +91,26 @@ export const notes: Note[] = [
     translation_of: "log-glsm",
     translator: "Claude, GPT, Kimi and DeepSeek",
     judging: "misc/sichuan/judging.json",
+  },
+  {
+    slug: "quantum-d-modules",
+    source: "misc/gw/gw.tex",
+    title: "Quantum D-modules of projective bundles and blowups",
+    description:
+      "How do quantum D-modules change under projective bundles and blowups? Learn about the Fourier transform approach of Iritani and Koto here.",
+    date: "Oct 2026",
+    sort: "2026-10",
+    place: "SCMS",
+    location: "SCMS",
+    type: "lecture series",
+    subjects: ["enumerative geometry", "algebraic geometry"],
+    zh: {
+      title: "射影丛与爆破的量子 D-模",
+      description:
+        "量子 D-模在射影丛与爆破下如何变化？这里介绍 Iritani 与 Koto 基于 Fourier 变换的方法。",
+      date: "2026 年 10 月",
+      place: "上海数学中心",
+    },
   },
   {
     slug: "higher-genus-gw",

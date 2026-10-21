@@ -14,6 +14,8 @@
 \usetikzlibrary{automata,positioning}
 \usetikzlibrary{arrows.meta, shapes.geometric}
 \usetikzlibrary{decorations.markings, fit}
+\usetikzlibrary{fadings}
+\tikzfading[name=fade right, left color=transparent!0, right color=transparent!100]
 \usepackage{tikz-cd}
 \usepackage{forest} 
 \usepackage{listings}
@@ -40,6 +42,8 @@
 \usepackage{unicode-math}
 \setmathfont{Asana Math}
 \defaultfontfeatures{Scale=MatchLowercase}
+\usepackage{luatexja-fontspec}
+\setmainjfont{FandolSong}
 
 
 %CS packages
@@ -152,6 +156,8 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\X}{\mathbb{X}}
 \newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\bS}{\mathbb{S}}
 \renewcommand{\k}{\Bbbk}
 \renewcommand{\L}{\mathbb{L}}
 \renewcommand{\P}{\mathbb{P}}
@@ -165,7 +171,7 @@
 \newcommand*{\dt}[1]{
    \accentset{\mbox{\Huge\bfseries .}}{#1}}
 %\renewcommand{\abstractname}{Official Description}
-\newcommand{\mc}[1]{\mathcal{#1}}
+\renewcommand{\mc}[1]{\mathcal{#1}}
 % \newcommand{\msc}[1]{\mathscr{#1}}
 \newcommand{\T}{\mathbb{T}}
 \newcommand{\mf}[1]{\mathfrak{#1}}
@@ -173,7 +179,8 @@
 \newcommand{\bv}{\mbf{v}}
 \newcommand{\bq}{\mbf{q}}
 \newcommand{\bp}{\mbf{p}}
-\newcommand{\btau}{\bm{\tau}}
+\newcommand{\bt}{\mbf{t}}
+\newcommand{\btau}{\symbf{\tau}}
 \newcommand{\mr}[1]{\mathrm{#1}}
 \newcommand{\on}[1]{\operatorname{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
@@ -240,6 +247,8 @@
 \DeclareMathOperator{\Crit}{Crit}
 \DeclareMathOperator{\QH}{QH}
 \DeclareMathOperator{\QDM}{QDM}
+\DeclareMathOperator{\SQDM}{SQDM}
+\DeclareMathOperator{\FT}{FT}
 
 % \addbibresource{../../notes/math.bib}
 
@@ -258,13 +267,13 @@
 
 \tableofcontents
 
-\section*{Motivation}
+\section{GW theory}
 
 One motivation for us comes from mirror symmetry. Let \(X\) be a Fano variety (or more generally, log Calabi-Yau). Then we expect there to be a mirror \(\check{X}\), which is an LG model. Via some version of Saito theory (which may not actually be well-defined), we obtain a Gauss-Manin conjecture. This will correspond to the quantum D-module of \(X\), which is defined using Gromov-Witten theory.
 
 Another motivation comes from the study of other areas of algebraic geometry\footnote{Which we have historically been quite isolated from for various reasons}. Katzarkov-Kontsevich-Pantev-Yu define Hodge atoms which establish an irrationality criterion for varieties and was used to prove the irrationality of the cubic fourfold. Recently, an unreleased internal model at OpenAI proved the generalized Mukai conjecture using Gromov-Witten theory.
 
-\section{Quantum D-modules}
+\subsection{Quantum D-modules}
 
 Let \(X\) be a smooth projective variety and \((\phi_i)_i\) be a homogeneous basis with corresponding coordinates \((\tau^i)_i\). Then we define the \textit{(big) quantum cohomology} 
 \[ \mr{QH}^*(X) \coloneqq (H^*(X) \ps{Q, \tau}, \star), \]
@@ -343,13 +352,13 @@ for all \(\alpha, \beta \in H^*(X)\).
     \[ (M_X(\tau) \alpha, M_X(\tau)|_{z \mapsto -z} \beta)^X = (\alpha, \beta)^X. \]
 \end{prop}
 
-\section{Givental formalism}%
-\label{sec:Givental formalism}
+\subsection{Givental formalism}%
+\label{sub:Givental formalism}
 
 Define
-\[ \bm{t}(z) = \sum_{k \geq 0} \sum_i t_k^i \phi_i z^k \]
+\[ \bt(z) = \sum_{k \geq 0} \sum_i t_k^i \phi_i z^k \]
 and the genus zero descendent GW potential
-\[ \mc{F}_X (z 1 + \bm{t}(z)) \coloneqq \sum_{n, d} \frac{Q^d}{n!}\ab<\bm{t}(-\psi), \ldots, \bm{t}(-\psi)>_{0,n,d}^X. \]
+\[ \mc{F}_X (z 1 + \bt(z)) \coloneqq \sum_{n, d} \frac{Q^d}{n!}\ab<\bt(-\psi), \ldots, \bt(-\psi)>_{0,n,d}^X. \]
 Now define the symplectic vector space
 \[ \mc{H}_X \coloneqq H^*(X)[z^{\pm}] \ps{Q}. \]
 This is actually functorial, but we will skip the discussion of this. Then define the form
@@ -451,7 +460,7 @@ Finally, we can define \(\mc{L}_X\) to be the graph of \(\d{\mc{F}_X}\) and refe
 \end{rmk}
 
 There is an informal description of the Lagrangian cone as
-\[ \mc{L}_X = \bigcup_{t \in H^*(X)\ps{Q}} z T_t \mc{L}_X \coloneqq M_X(t) \mc{H}_+. \]
+\[ \mc{L}_X = \bigcup_{t \in H^*(X)\ps{Q}} z T_t \mc{L}_X \coloneqq z M_X(t) \mc{H}_+. \]
 In particular, we see that
 \[ M_X(\tau) \colon \QDM(X) \to T_{\tau} \mc{L}_X \]
 is an isomorphism intertwining \(\nabla\) and \(\d\). This essentially explains all of genus zero Gromov-Witten theory.
@@ -478,6 +487,569 @@ For example, if we consider
 \end{tikzcd}
 \end{equation*}
 we prove that the bottom arrow is an isomorphism, then go around the diagram to obtain the top arrow.
+
+\section{Equivariant GW theory}%
+\label{sec:Equivariant GW theory}
+
+Now let \(X\) be a smooth semiprojective (projective over affine) \(T\)-variety, where \(T = (\C^{\times})^r\) is a torus. We can run the same formalism as before to obtain 
+\[ M_{X, T}(\btau) \colon \QDM_T(X) \xrightarrow{\sim} T_{\btau} \mc{L}_{X, T}. \]
+This still intertwines \(\nabla\) and \(\d\), but there are additional operators, called \textit{shift operators}, which we will denote by \(\bS\) and \(\mc{S}\).
+
+In this setting, we have the genus-zero potential
+\[ F_{X, T}^0(X) \coloneqq \sum_{n, d} \frac{Q^d}{n!} \ab<\btau, \ldots, \btau>_{0,n,d}^{X,T} \]
+and therefore \(\star_{\btau}\), \(\nabla_{z \partial_{\btau^i}}\), \(\nabla_{z \xi Q \partial_Q}\), and \(\nabla_{z^2 \partial_z}\). Here, we will denote by \(\tau = (\tau^i)_{i \in I}\) coordinates corresponding to a homogeneous basis \(\phi_i)_{i \in I}\) of \(H^*(X)\) and \(\btau = (\tau^{i, \vec{\ell}})_{i \in I, \vec{\ell} \in \Z_{\geq 0}^r}\) coordinates corresponding to a basis \((\phi_i \lambda^{\vec{\ell}})_{i, \vec{\ell}}\) of \(H_T^*(X) \cong H^*(X) \otimes H_T^*(\mr{pt})\) (here this is a non-canonical isomorphism of \(H_T^*(\mr{pt})\)-modules due to Goresky-Kottwitz-MacPherson).
+
+Note here that we need to make the modification
+\[
+    \nabla_{z^2 \partial_z}^X = z^2 \partial_z - (E_{X, T} \star -) + z \cdot \mu_{X, T}
+\]
+and define
+\[ E_{X, T} = c_1^T(X) + \sum_{i, \vec{\ell}} \ab(1 - \frac{\deg \phi_i \lambda^{\vec{\ell}}}{2})\phi_i \tau^{i, \vec{\ell}} \lambda^{\ell} \]
+and the operator
+\[ \mu_{X, T} \in \End_{\C}(H_T^*(X)) \colon \phi_i \lambda^{\vec{\ell}} \mapsto (\deg \phi_i \lambda^{\vec{\ell}} - \dim X) \phi_i \lambda^{\vec{\ell}}. \]
+We also can define
+\[ \mc{F}_{X, T}(z + \bt(z)) = \sum_{n, d} \frac{Q^d}{n!} \ab<\bt(-\psi), \ldots, \bt(-\psi)>_{0,n,d}^{X,T} \]
+and the Givental cone \(\mc{L}_{X,T} \subset \mc{H}_{X, T} \coloneqq H_T^*(X)\ls{z^{-1}} \cap H_{T times \C_z^{\times}}^*(X)_{\mr{loc}}\). Note here that the localization occurs in the category of graded rings, so expressions of the form \(\ab<\frac{\phi_i}{z+\psi}, \ldots>\) live in \(H_{T \times \C^{\times}}^*(\mr{pt})_{\mr{loc}}\).
+
+\subsection{Shift operators}%
+\label{sub:Shift operators}
+
+\begin{exm}
+    Let \(X = \C^n\) carry the scaling action of \(\C^{\times}\). Note that \(\tau^0\) has degree \(2\), so
+    \[ \QH_{\C^{\times}}^*(\C^n) = \C[\tau^0, \lambda] \]
+    and
+    \[ \QDM_{\C^{\times}}(\C^n) = (\C[z, \lambda]\ps{\tau^{0,k}; k \geq 0}, \nabla, \bS, P). \]
+    Since the classical and quantum products coincide, \(\nabla\) and \(P\) are easy to define. The operator \(\bS\) is an endomorphism of \(\C[z, \lambda]\ps{\btau}\) given by the formula
+    \[ f(z, \lambda, \btau) \mapsto \lambda^n f(z, \lambda - z, 0) + O(\btau). \]
+    Note that \(M_{\C^n, \C^{\times}}(\btau) = \exp(\btau/z)\) gives an isomorphism \(\QDM_{\C^{\times}}(\C^n) \simeq T_{\btau} \mc{L}_{\C^n, \C^{\times}}\), and \(\bS = M^{-1} \circ \mc{S} \circ M\). In this setting, \(\mc{S}\) is given by
+    \[ g \mapsto \lambda^n g |_{\lambda \mapsto \lambda - z}, \] 
+    so the terms containing \(\btau\) come from \(M\).
+\end{exm}
+
+\begin{rmk}
+    From the example we can see that \(\QH\) and \(\nabla_{z \partial_{\tau}}\) do not depend on \(n\), but \(\bS\) does.
+\end{rmk}
+
+\begin{rmk}
+    Later, we will use shift operators to lift Kirwan surjectivity
+    \[ H_{\C^{\times}}^*(\C^n) \twoheadrightarrow H^*(\P^{n-1}) \]
+    to obtain an isomorphism
+    \[ \QDM_{\C^{\times}}(\C^n) \xrightarrow{\sim} s^* \QDM(\P^{n-1}). \]
+    More generally, we expect that the ``completion''
+    \[ \QDM_T(X)_L \to \QDM(X \sslash_L T) \]
+    is a quantization of the usual Kirwan map \(\kappa_L\) and that \(\QDM_T(X)\) is a K\"ahler moduli space. with various limit points being GIT quotients \(X \sslash_L T\) or \(X \sslash_{L'} T\).
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[line width=0.5pt, line join=round, >={Stealth[length=5pt]},
+            edge/.style={black!80, line width=0.8pt},
+            nbhd/.style={orange!85!yellow!80!black},
+            limit/.style={circle, draw=black!80, fill=white, line width=0.7pt, inner sep=1.5pt}]
+          \coordinate (A) at (2.6,3.4);   % X /_L T
+          \coordinate (B) at (4.7,1.0);   % X /_L' T
+          \coordinate (C) at (4.7,-2.3);
+          \coordinate (P) at (-3.6,0.9);  % where the upper edge trails off
+          \coordinate (Q) at (-3.3,-3.0); % where the lower edge trails off
+          % boundary of the K\"ahler moduli space, cusped at the GIT limit points
+          \def\kmupper{(P) .. controls (-1.0,2.4) and (1.6,2.9) .. (A)}
+          \def\kmcusps{(A) .. controls (1.75,2.95) and (2.9,1.0) .. (B)
+            .. controls (3.7,1.0) and (3.9,-1.4) .. (C)}
+          \def\kmlower{(C) .. controls (3.4,-0.9) and (0.0,-1.0) .. (Q)}
+          \def\kmregion{\kmupper -- \kmcusps -- \kmlower -- cycle}
+
+          \begin{scope}
+            \clip[overlay] (-3.0,-3.5) rectangle (6,4);
+            \fill[blue!6] \kmregion;
+            \begin{scope}
+              \clip \kmregion;
+              % neighbourhoods of the limit points
+              \fill[orange!30, fill opacity=0.85] (A) circle (1.15);
+              \fill[orange!30, fill opacity=0.85] (B) circle (0.95);
+              \draw[nbhd, densely dashed] (A) circle (1.15);
+              \draw[nbhd, densely dashed] (B) circle (0.95);
+            \end{scope}
+            \draw[edge] \kmupper;
+            \draw[edge] \kmcusps;
+            \draw[edge] \kmlower;
+          \end{scope}
+
+          % the space continues to the left
+          \fill[overlay, white, path fading=fade right, fit fading=false,
+              fading transform={xscale=2.8, yscale=2.2}]
+            (-6.35,-3.6) rectangle (3.05,4.0);
+          \node[black!70] at (-1.9,-2.45) {\(\cdots\)};
+
+          \node[limit, label={[label distance=1pt]east:\(X \sslash_L T\)}] at (A) {};
+          \node[limit, label={[label distance=1pt]east:\(X \sslash_{L'} T\)}] at (B) {};
+
+          \node[anchor=south] (QL) at (0.4,4.3) {\(\QDM_T(X)_L\)};
+          \draw[->, nbhd] (QL.east) to[out=0, in=110] ($(A)+(-0.55,-0.6)$);
+          \node[anchor=north west] (QLp) at (5.6,0.0) {\(\QDM_T(X)_{L'}\)};
+          \draw[->, nbhd] (QLp.west) to[out=180, in=-60] ($(B)+(-0.62,-0.10)$);
+
+          \node[font=\itshape] at (1.0,0.6) {K\"ahler moduli};
+          \node (M) at (-2.4,-0.4) {\(\QDM_T(X)\)};
+          \draw[->] (M.east) to[out=0, in=180] (1.6,-0.3);
+        \end{tikzpicture}
+        \caption{Equivariant K\"ahler moduli with GIT quotients as limit points}
+        \label{fig:kahlermoduli}
+    \end{figure}
+
+    In the example, if we consider small quantum cohomology, we see that
+    \[ \C[\lambda] \cong \on{SQH}_{\C^{\times}}^* (\C^n) \xrightarrow{\sim} \on{SQH}^*(\P^{n-1}) \cong \C[p]. \]
+    Dependence on the dimension can be recovered by considering the structure as a \(\C[Q]\)-module.
+\end{rmk}
+
+\begin{rmk}
+    In symplectic topology, we can study quantum cohomology using the loop space
+    \[ LX \coloneqq \ab\{ f \colon S^1 \to X \}. \]
+    From the torus action on \(X\), we obtain a torus action on \(LX\) given by
+    \[ (t \cdot f)(\theta) = t \cdot f(\theta). \]
+    There is also an action of \(\pi_1(T)\) on \(LX\), where if \(g \colon S^1 \to T\) is a group homomorphism, then
+    \[ (g \circ f)(\theta) \coloneqq g(\theta) \cdot f(\theta). \]
+    This action of \(\pi_1(T)\) is where the shift operators come from.
+\end{rmk}
+
+We will now actually introduce shift operators, which defines a \(\C\ps{\on{NE}_{\N}^T(X)}\)-module structure on \(\QDM_T(X)\), where \(\on{NE}_{\N}^T(X)\) is an equivariant analogue of the monoid \(\on{NE}_{\N}(X)\) of effective curve classes.
+
+\begin{defn}
+    Define
+    \[ N_1^T(X) \subset H_2^T(X, \Z) \]
+    to be the subgroup generated by vertical curve classes with respect to the fibration
+    \begin{equation*}
+    \begin{tikzcd}
+        X \ar{r} & X_T \ar{d} \\
+        & BT,
+    \end{tikzcd}
+    \end{equation*}
+    where \(X_T \coloneqq (X \times ET)/T\) and by \(s_{x*} \sigma\) for any \(x \in X^T\) and \(\sigma \in H_2(BT, \Z)\).
+\end{defn}
+
+\begin{lem}
+    The complex
+    \[ 0 \to N_1(X) \to N_1^T(X) \to H_2^T(\mr{pt}, \Z) \to 0 \]
+    is exact.
+\end{lem}
+
+\begin{proof}[Sketch of proof]
+    By definition, we see that \(N_1^T \twoheadrightarrow H_2^T(\mr{pt}, \Z)\). Then we consider the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        N_1(X) \ar{r} \ar{d} & N_1^T(X) \ar{d} \\
+        H_2(X, \Z) \ar{r} & H_2^T(X, \Z), 
+    \end{tikzcd}
+    \end{equation*}
+    where the vertical arrows are injective by definition and the bottom arrow is injective by the spectral sequence for \(X \to X_T \to BT\). This implies the top arrow is injective, so it remains to show that the relevant image and kernel coincide. It is enough to show that for all \(x, x' \in X^T\) lying on different fixed components and \(\sigma \in H_2(BT, \Z)\), then \(s_{x*} \sigma - s_{x'\sigma} \in N_1(X)\). It is clear that they are linked by a chain of \(T\)-fixed rational curves. Note that if \(x, x'\) lie on the same fixed component, then they define the same homology class.
+
+    Now let \(\sigma \colon \P^1 \to BT\). Then between \(s_{x*}\sigma\) and \(s_{x'*}\sigma\) is a chain of Hirzebruch surfaces. For simplicity, suppose there are two surfaces \(\F_k\) and \(\F_{k'}\), both attaching to \(s_{x''*}\sigma\). If \(P\) and \(P'\) denote fiber classes, we see that
+    \[ s_{x*}\sigma - s_{x'*}\sigma = \pm k P \pm k' P'. \]
+\end{proof}
+
+Now let \(\beta \in N_1^T(X)\) and set \(k = -\bar{\beta} \in H_2^T(\mr{pt}, \Z)\). Define
+\[ E_k \coloneqq (X \times (\C^2 \setminus 0)) / \C^{\times}, \]
+where the action is defined by \(\begin{psmallmatrix}
+    k & 1 & 1 
+\end{psmallmatrix}\). This can be viewed as some form of a ``twisted'' graph space and is the fiber product
+\begin{equation*}
+\begin{tikzcd}
+    E_k \ar{r} \ar{d} & X_T \ar{d} \\
+    \P^1 \ar{r}{k} & BT.
+\end{tikzcd}
+\end{equation*}
+There is an action of \(\hat{T} \coloneqq T \times \C^{\times}\) on \(E_k\) given by the formula
+\[ (\lambda, z) \cdot [x,u,v] = [\lambda x, u, zv]. \]
+Denote by \(X_0\) and \(X_{\infty}\) be the fibers at \(0 = [1,0]\) and \(\infty = [0,1]\). Then the action of \(\hat{T}\) on \(X_0\) is given by
+\[ (\lambda, z) \cdot x = \lambda x \]
+whereas the action on \(X_{\infty}\) is given by
+\[ (\lambda, z) \cdot x = \lambda z^{-k} x. \]
+The identity map \(X_0 \simeq X_{\infty}\) induces a nontrivial map
+\[ \Phi_k \colon H_{\hat{T}}^*(X_0) \xrightarrow{\sim} H_{\hat{T}}^*(X_{\infty}) \qquad f(\lambda, z) \alpha \mapsto f(\lambda - kz, z) \alpha. \]
+Here, we have to identify \(\hat{T}\) with itself by \((\lambda, z) \mapsto (\lambda z^k, z)\).
+
+Now for any
+\[ \btau = \sum_{i, \vec{\ell}} \tau^{i, \vec{\ell}}\phi_i \lambda^{\vec{\ell}} \in H_T^*(X), \]
+there exists some \(\hat{\btau} \in H_T^*(E_k)\) such that \(\hat{\btau}|_{X_0} = \btau\) and \(\hat{\btau} |_{X_{\infty}} = \Phi_k(\btau)\). Moreover, there exists a unique connected component \(F_0(k) \subseteq X^{k(\C^{\times})}\) whose normal bundle has only negative weights (using Morse theory for the real moment map, this is the top connected component of the fixed locus, which is the critical locus). Let \(\sigma_0(k) \in \on{NE}_{\N}(E_k)\) be the section class associated to \(F_0(k)\).
+
+\begin{defn}
+    For \(\beta \in N_1^T(X)\), define the \textit{shift operator}
+    \[ \bS^{\beta} \colon H_T^*(X)[z]\ps{Q, \btau} \to Q^{\beta + \sigma_0(-\bar{\beta})} H_T^*(X)[z]\ps{Q, \btau} \]
+    as follows: for any \(\alpha_0 \in H_{\hat{T}}^*(X_0)\) and \(\alpha_{\infty} \in H_{\hat{T}}^*(X_{\infty})\), we have
+    \[ (\Phi_{-\bar{\beta}} \circ \bS^{\beta} \alpha_0, \alpha_{\infty})^{X_{\infty}, \hat{T}} = \sum_{\substack{n \geq 0 \\ d \in N_1(X)}} \frac{Q^d}{n!} \ab< i_{0*} \alpha_0, \hat{\btau}, \ldots, \hat{\btau}, i_{\infty *} \alpha_0>_{0,n+2, d-\beta}^{E_{-\bar{\beta}}, \hat{T}}. \]
+\end{defn}
+
+Note that \(\Phi_{-\bar{\beta}} \circ \bS^{\beta}\) is \(H_{\hat{T}}^*(\mr{pt})\)-linear, but because \(\Phi_{-\bar{\beta}}\) is not linear, neither is \(\bS^{\beta}\), and in fact we have
+\[ \bS^{\beta}(f(\lambda, z)\alpha) = f(\lambda - (\lambda, \beta)z, z) \bS^{\beta} \alpha. \]
+Equivalently, for all \(\lambda \in H_T^*(\mr{pt})\), we have the commutator identity
+\[ [\lambda, \bS^{\beta}] = (\lambda, \beta) \cdot z \bS^{\beta}. \]
+
+\begin{rmk}
+    The map \(\btau \mapsto \hat{\btau}\) is not \(H_{\hat{T}}^*(\mr{pt})\) is not \(H_T^*(\mr{pt})\)-linear, so we need to work over \(\C \ps{Q, \btau}\).
+\end{rmk}
+
+\begin{defn}
+    Define
+    \[ \mr{NE}_{\N}^T(X) \coloneqq \mr{NE}_{\N}(X) + \sum_{k \in \Hom(\C^{\times}, T)} -\sigma_0(k) \subseteq N_1^T(X). \]
+\end{defn}
+
+\begin{prop}
+    The shift operators give \(\QDM_T(X)\) the structure of a \(\C\ps{\mr{NE}_{\N}^T(X)}\)-module.
+\end{prop}
+
+\subsection{Shift operators for Givental cones}%
+\label{sub:Shift operators for Givental cones}
+
+Define
+\[ \mc{H}_{X,T}^{\mr{rat}} \coloneqq H_{\hat{T}}^*(X)_{\mr{loc}} \ps{Q}, \]
+where the additional factor of \(\C^{\times}\) acts trivially. By the localization formula, we know
+\[ H_{\hat{T}}^*(X)_{\mr{loc}} \cong \bigoplus_{F \subseteq X^T} H_{\hat{T}}^*(F)_{\mr{loc}}. \]
+
+\begin{defn}
+    For \(\beta \in N_1^T(X)\), define
+    \[ \mc{S}^{\beta} \colon \mc{H}_X^{\mr{rat}} \to Q^{\beta + \sigma_0(-\bar{\beta})} \mc{H}_X^{\mr{rat}} \]
+    as follows: for any fixed component \(F \subset X^T\) and \(f \in \mc{H}_X^{\mr{rat}}\), we have
+    \[ (\mc{S}^{\beta}f)_F \coloneqq Q^{\beta + \sigma_F(-\bar{\beta})} \cdot \ab[\prod_{\alpha \in \Hom(T, \C^{\times})} \prod_{j=1}^{\on{rk}(N_{F,\alpha})} \frac{1}{\prod_{c=1}^{-\alpha \cdot \bar{\beta}}(\rho_{F, \alpha, j} + \alpha + cz)}] \cdot (f|_F)_{\lambda \mapsto \lambda - \bar{\beta} z}, \]
+    where we decompose \(N_F = \bigoplus_{\alpha \in \Hom(T, \C^{\times})} N_{F, \alpha}\) and \(\rho_{F, \alpha}\) are the Chern roots of \(N_{F, \alpha}\).
+\end{defn}
+
+\begin{prop}\leavevmode
+    \begin{enumerate}
+        \item We have \(\mc{S}^{\beta_1} \circ \mc{S}^{\beta_2} = \mc{S}^{\beta_1 + \beta_2}\);
+        \item \(\mc{S}^{\beta}\) commutes with commutators via
+        \begin{align*}
+            [z\partial_{\tau^i}, \mc{S}^{\beta}] &= 0 \\
+            [z \xi Q \partial_Q + \xi \cup -, \mc{S}^{\beta}] &= (\xi, \beta) \cdot z \mc{S}^{\beta} \\
+            [z^2 \partial_z - (c_1^T(X) \cup -) + z \mu_{X,T}, \mc{S}^{\beta}] &= 0;
+        \end{align*}
+        \item The shift operators intertwine the fundamental solution:
+        \[ \mc{S}^{\beta} \circ M_{X. T}(\btau) = M_{X, T}(\btau) \circ \bS^{\beta}. \]
+    \end{enumerate}
+\end{prop}
+
+\begin{cor}\leavevmode
+    \begin{enumerate}
+        \item We have \(\bS^{\beta_1} \circ \bS^{\beta_2} = \bS^{\beta_1 + \beta_2}\);
+        \item \(\bS^{\beta}\) commutes with commutators via
+        \begin{align*}
+            [\nabla_{\partial_{\tau^i}}, \bS^{\beta}] &= 0 \\
+            [\nabla_{z \xi Q \partial_Q}, \bS^{\beta}] &= (\xi, \beta) \cdot z \bS^{\beta} \\
+            [\nabla_{z^2 \partial_z}, \mc{S}^{\beta}] &= 0.
+        \end{align*}
+    \end{enumerate}
+\end{cor}
+
+\section{Fourier transforms}%
+\label{sec:Fourier transforms}
+
+There are two kinds of Fourier transforms, which were introduced by Iritani: continuous and discrete. Let \(W\) be a smooth semi-projective \(T\)-variety, where \(T = \C^{\times}\).
+
+\subsection{Discrete Fourier transform}%
+\label{sub:Discrete Fourier transform}
+
+This is a quantization of the Kirwan map. Let \(L\) be a \(T\)-linearized ample line bundle on \(W\) such that \(\emptyset \neq W^s = W^{\mr{ss}}\) is acted on freely by \(T\) and \(W \sslash_L T\) is smooth and projective. Then there is the Kirwan map
+\[ \kappa_L \colon H_T^*(W) \twoheadrightarrow H^*(W \sslash_L T). \]
+Conjecturally, this should quantize to
+\[ \on{FT}_L \colon \QDM_T(W)_L \to \QDM(W \sslash_L T). \]
+It will intertwine the shift operator \(\bS\) with the Novikov variable \(q\) and the equivariant parameter with the quantum connection \(\nabla_{z \kappa(\lambda) q \partial_q}\).
+
+\begin{exm}
+    Let \(W = \C^n\) with the diagonal action. Then the Kirwan map is
+    \[ \C[\lambda] = H_T^*(\C^n) \twoheadrightarrow H^*(\P^{n-1}) \cong \C[p]/(p^n) \qquad \kappa(\lambda) = p. \]
+    At the level of small quantum D-modules, we have
+    \[ \on{SQDM}_{\C^{\times}}(\C^n) = H_{\C^{\times}}(\C^n)[z] = \C[\lambda, z] \]
+    but we have a nontrivial shift operator
+    \[ \bS \colon f(\lambda, z) \mapsto \lambda^n f(\lambda - z, z). \]
+    In the quotient, we have
+    \[ \on{SQDM}(\P^{n-1}) = H^*(\P^{n-1})[z,q] \qquad \nabla_{z q \partial_q} = z q \partial_q + p \star_0 -, \]
+    where \(\on{SQH}^*(\P^{n-1}) = \C[p,q]/(p^n-q)\).
+    Note here that \(\on{SQDM}(\P^{n-1}) = \bigoplus_{i=0}^{n-1} \C[z,q] \cdot p^i\) whereas \(\on{SQDM}_{\C^{\times}}(\C^n) = \bigoplus_{i=0}^{n-1} \C[z,\bS] \cdot \lambda^i\). Note here that
+    \[ \lambda^{n+1} = \bS \lambda + z \bS 1. \]
+    We may now define the map
+    \[ \on{FT} \colon \on{SQDM}_{\C^{\times}}(\C^n) \to \on{SQDM}(\P^{n-1}) \qquad \lambda^i \mapsto p^i. \]
+    More generally, we have
+    \[ \FT \ab(\sum_{i=1}^{n-1} c_i(z, \bS) \lambda^i) \coloneqq \sum_{i=0}^{n-1} c_i(z, q) p^i. \]
+    In this case, \(\FT\) is an isomorphism. It is clear that it intertwines \(\bS\) and \(q\). It is a bit less obvious that it intertwines \(\lambda\) and \(\nabla_{z q \partial_q}\), but this is also not hard to check.
+\end{exm}
+
+Note that \(\QDM_T(W) = H_T^*(W)[q]\ps{\mc{Q}, \mathbb{U}}\) has the action of \(\bS^{\beta}\) for all \(\beta \in \on{NE}_{\N}^T(W)\), whereas \(\QDM_T(W)_{\mr{loc}} = H_T^*(W)_{\mr{loc}}[z]\ps{\mc{Q}, \mathbb{U}}\) has the action of \(\beta \in N_1^T(W)\).
+
+\begin{defn}
+    Let \(c_L \subset c_T(W) \subseteq N_T^1(W)_{\R}\) be the GIT chamber. Then we define
+    \[ c_{L, \N}^{\vee} \coloneqq c_L^{\vee} \cap N_1^T(W) \subseteq N_1^T(W). \]
+\end{defn}
+In progress work of Iritani-Sanda will show that \(c_T(W)^{\vee} = \on{NE}_{\N}^T(W)\).
+
+Now we can define \(\QDM_T(W)_L\) to be the graded completion of 
+\[ \C[c_{L,\N}^{\vee}] \cdot \QDM_T(W) \subseteq \QDM_T(W)_{\mr{loc}}. \]
+Here, note that \(\deg \bS^{\beta} \coloneqq 2 (c_1^T(W), \beta)\).
+
+\begin{conj}[Reduction conjecture, Iritani, Iritani-Sanda]
+    There exists \(\tau(\mathbb{U}) \in H^*(W \sslash_L T)\ps{c_{L, \N}^{\vee}, \mathbb{U}}\), or equivalently, \(\tau \colon H_T^*(W) \to H^*(W \sslash_L T)\) over \(\C\ps{c_{L,\N}^{\vee}, \mathbb{U}}\), such that there exists \(\FT_L\) and \((\cdot)_L^{\wedge}\) fitting into the diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \QDM_T(W)_L \ar{r}{\FT_L} \ar{d}{M_{W,T}(\mathbb{U})} & \tau^* \QDM(W \sslash_L T) \ar{d}{M_{W \sslash_L T}}(\tau(\mathbb{U})) \\
+        T_{\mathbb{U}} \mc{L}_{W,T,L} \ar{r}{(\cdot)_L^{\wedge}} & T_{\tau(\mathbb{U})} \mc{L}_{W \sslash_L T}
+    \end{tikzcd}
+    \end{equation*}
+    such that \(\lambda\) on the left side is intertwined with \(\nabla_{z \kappa_L(\lambda) q \partial_q}\) and \(z \kappa_L(\lambda) q \partial_q + \kappa_L (\lambda) \cup -\) on the right side, and \(\bS^{\beta}\) on the left side is intertwined with \(q^{\beta}\) on the right side. Moreover, the bottom arrow is given by
+    \[ f \mapsto (f)_L^{\wedge} \coloneqq \sum_{[\beta] \in N_1^T(W) / N_1(W)} q^{\beta} \kappa_L(\mc{S}^{-\beta} f). \]
+\end{conj}
+
+\begin{exm}
+    Let \(W = \C^n\) with diagonal torus action. Then \(J_{\C^n, \C^{\times}}(\btau = 0) = 1 \in T_0 \mc{L}_{\C^n, \C^{\times}}\). Its Fourier trasnform is given by 
+    \begin{align*}
+        (1)^{\wedge} &= \sum_{k \in \Z} q^k \kappa(\mc{S}^{-k} 1).
+    \end{align*}
+    Note that \(\mc{S} \colon f(\lambda, z) \mapsto \lambda^n f(\lambda - z, z)\), so \(\mc{S}^{-1} \colon f(\lambda, z) \mapsto \frac{f(\lambda + z, z)}{(\lambda + z)^n}\), and therefore
+    \[ \mc{S}^{-1} 1 = \frac{1}{(\lambda + z)^n} \xrightarrow{\kappa} \frac{1}{(p+z)^n}. \]
+    Applying again, we see that
+    \begin{align*}
+        \mc{S}^{-2} 1 &= \mc{S}^{-1} \ab(\frac{1}{(\lambda + z)^n}) \\
+        &= \frac{1}{(\lambda+z)^n (\lambda + 2z)^n} \\
+        &\xrightarrow{\kappa} \frac{1}{(p+z)^n (p+2z)^n}.
+    \end{align*}
+    On the other hand, we see that \(\mc{S} 1 = \lambda^n\) is killed by the Kirwan map, so in fact we see that
+    \begin{align*}
+        (1)^{\wedge} &= \sum_{k \in \Z} q^k \kappa(\mc{S}^{-k} 1) \\
+        &= \sum_{k \geq 0} q^k \frac{1}{\prod_{c=1}^k (p+cz)^n} \\
+        &= J_{\P^{n-1}}(\tau = 0) \in T_0 \mc{L}_{\P^{n-1}}.
+    \end{align*}
+    To recover the big I-function, just replace \(1\) by \(e^{\mathbb{U}/z}\).
+\end{exm}
+
+\begin{thm}
+    The reduction conjecture is true for:
+    \begin{itemize}
+        \item Projective bundles \(\P(V) = V \sslash \C^{\times}\), due to Iritani-Koto;
+        \item (Possibly non-split) toric bundles \(\bigoplus_i V_i \sslash T\), due to Koto;
+        \item When \(T = \C^{\times}\) and there exists a \(\C^{\times}\)-fixed divisor such that \(T\) acts on \(N_{D/W}\) with weight \(\pm 1\) and \(W \sslash_L \C^{\times} = D\), due to Iritani. This plays a crucial role in the blowup formula.
+    \end{itemize}
+\end{thm}
+
+
+\subsection{Continuous Fourier transform}%
+\label{sub:Continuous Fourier transform}
+
+This is a quantization of equivariant localization. Let \(W^T \supseteq F\) be a connected component of the fixed locus. Then there exists 
+\[ \on{FT}_F \colon \QDM_T(W) \to \QDM(F)^{\oplus c_F}, \]
+where \(c_F \in \Z_{\geq 0}\) is determined the action of \(T\) on \(N_{F/W}\). Here, it is defined as a phase asymptotic approximation of the integral
+\[ \int e^{\eta(\lambda)/z} G_F' f|_F \d{\lambda}. \]
+
+Informally, define
+\[ G_F \coloneqq \prod_{\rho: \text{ Chern roots of } N_{F/W}} \frac{(-z)^{-\rho/z}}{\sqrt{-2\pi z}} \Gamma\ab(-\frac{\rho}{z}). \]
+Now consider the map
+\[ \mc{H}_{W,T} \to \mc{H}_F \qquad f \mapsto g_F \cdot f|_F. \]
+This intertwines \(\bS^{\beta}\) with \(Q^{\beta + \sigma_0(-\bar{\beta})} \cdot e^{-z \bar{\beta} \partial_{\lambda}}\). Applying the classical idea of the Mellin transform, we can consider the integral
+\[ \int e^{\lambda \log s_F} G_F \cdot f|_F \d{\lambda} \]
+and turn the shift operator into a variable \(S^{\beta}\). Unfortunately, this integral is ill-defined because the integrand contains \(\log z\) and \(\log s_F\).
+
+Instead, we will consider a stationary phase approximation. Here, \(S_F \coloneqq S^{\sigma_F(1)}\), where \(\sigma_F \colon BG \to X_T\) is a section. Then, we can rewrite the integral as
+\[ \int e^{\lambda \log S_F/z} G_F f|_F \d{\lambda} = \int e^{\eta(\lambda)/z} G_F' f|_F \d{\lambda}, \]
+where
+\begin{align*}
+    \eta(\lambda) &\coloneqq \lambda \log S_F - \sum_{\alpha \in \Hom(T, \C^{\times})} r_{\alpha}(w_{\alpha} \lambda \log (w_{\alpha} \lambda) - w_{\alpha \lambda}).
+\end{align*}
+Here, if we write
+\[ N_{F/W} = \bigoplus_{\alpha \in \Hom(T, \C^{\times})} N_{\alpha}, \]
+then \(r_{\alpha} \coloneqq \on{rk}(N_{\alpha})\) and \(w_{\alpha} \coloneqq \frac{\alpha}{\lambda}\). Finally, we define
+\[ G_F' \coloneqq G_F \cdot e^{\sum_{\alpha} r_{\alpha}(w_{\alpha}\lambda \log w_{\alpha \lambda} - w_{\alpha} \lambda)/z}. \] 
+Setting \(c_F \coloneqq \abs{\sum_{\alpha} r_{\alpha} w_{\alpha}} \in \Z_{\geq 0}\) and \(\lambda_0 \coloneqq S_F^{1/c_F}\) (up to scaling by a rational number), then we have the stationary phase approximation
+\[ \sqrt{2 \pi z} e^{\eta(\lambda_0)/z} = \prod_{\alpha} (w_{\alpha} \lambda_0)^{-c_1(N_{\alpha})/z} \cdot \mc{F}_{F, 0}(f). \]
+Note here that \(\eta'(\lambda_0) = 0\).
+
+\begin{defn}
+    We define
+    \begin{align*}
+        \mc{F}_{F,0}(f) \coloneqq{}& \sqrt{\frac{\lambda_0}{c_F}} \cdot \prod_{\alpha}(w_{\alpha}\lambda_0)^{-\frac{c_1(N_{\alpha})}{z}} \cdot \ab[\exp \ab(\frac{z \lambda_0}{2c_F} \partial_{\tilde{\lambda}}^2) e^{\eta_{\geq 3}(\tilde{\lambda})/z} (G_F' f|_F)_{\lambda \to \lambda_0 + \tilde{\lambda}}]_{\tilde{\lambda} = 0}.
+    \end{align*}
+    Here, we write \(\eta(\lambda_0 + \tilde{\lambda}) = \eta(\lambda_0) - \frac{c_F}{2\lambda} \tilde{\lambda}^2 + \eta_{\geq 3}(\tilde{\lambda})\), where \(\eta_{\geq 3}(\tilde{\lambda}) \in O(\tilde{\lambda}^3)\). For all \(0 \geq j < c_F\), there is \(\mc{F}_{F, j}(f)\) corresponding to all of the critical points of \(\eta\).
+\end{defn}
+
+\begin{thm}[Iritani]
+    For all \(0 \leq j \leq c_F - 1\) there exists \(\sigma_j \colon H_T^*(W) \to H^*(F)\) and a Fourier transform \(\FT_{F, j}\) fitting into a commutative diagram
+    \begin{equation*}
+    \begin{tikzcd}
+        \QDM_T(W) \ar{r}{\FT_{F,j}} \ar{d}{M_{W,T}(\mathbb{U})} & \sigma_j^* \QDM(F) \ar{d}{M_F(\sigma_j(\mathbb{U}))} \\
+        T_{\mathbb{U}} \mc{L}_{W,T} \ar{r}{\mc{F}_{F,j}} & T_{\sigma_j(\mathbb{U})} \mc{L}_F
+    \end{tikzcd}
+    \end{equation*}
+    which intertwines \(\bS^{\beta}\) and \(\mc{S}^{\beta}\) on the left with formal variables \(S^{\beta}\) on the right and intertwines \(\lambda\) on the left with \(\nabla_{z \lambda S \partial_S} + \lambda_j\) and \(z \lambda S \partial_S + \lambda_j\) on the right. Here, the \(\lambda_j\) are the critical points of \(\eta (\lambda)\).
+\end{thm}
+
+\begin{rmk}
+    Iritani actually introduced
+    \[ \mc{F}_{F,0}^{入谷} \coloneqq \prod_{\alpha} (w_{\alpha} \lambda_0)^{-c_1(N_{\alpha})/z} \cdot \mc{F}_{F, 0}(f). \]
+\end{rmk}
+
+\begin{exm}
+    Again, consider \(W = \C^n\) with the diagonal action of \(\C^{\times}\). Then set \(F = \ab\{0\} = W^{\C^{\times}}\). Note here that \(\lambda_0 = S^{1/n}\) and \(\eta(\lambda) = \lambda \log S - n (\lambda \log \lambda - \lambda)\). Then we see that
+    \[ \FT_{F, 0} = \mc{F}_{F, 0} \colon \C[\lambda, z] = \SQDM_{\C^{\times}}(\C^n) \to (\tau = n S^{1/n})^* \SQDM(\mr{pt}) = \C[z]\ls{S^{-1/n'}}, \] 
+    where \(n' = n\) when \(n\) is odd and \(n' = 2n\) when \(n\) is even. Note that this sends
+    \[ 1 \mapsto \frac{S^{-\frac{n-1}{2n}}}{\sqrt{n}} \ab(1 + \frac{n^2-1}{24n} \cdot \frac{z}{S^{1/n}} + O \ab( \ab(\frac{z}{S})^2)). \]
+    Also, this intertwines \(\lambda\) and \(\bS\) with \(\nabla_{z S \partial_S} = z S \partial_S + S^{1/n}\) and \(S\). Moreover, \(\nabla_{z^2 \partial_z}\) is intertwined with \(\nabla_{z^2 \partial_z} = z^2 \partial_z - n S^{1/n}\).
+\end{exm}
+
+
+\section{Projective bundle formula}%
+\label{sec:Projective bundle formula}
+
+Let \(W \coloneqq V\) be a vector bundle of rank \(r\) over a smooth projective base \(B\). Assume that there exists a surjection \(\mc{O}_B^{\oplus N} \twoheadrightarrow V^{\vee}\), which ensures that \(V\) is semi-projective. If this is not true, we can replace \(V\) by \(V \otimes \mc{O}_B(-M)\) for some \(M\). Then we see that
+\[ V \sslash_L T \cong \P(V) \]
+for some \(L\) and \(V^T = B\).
+
+The reduction conjecture predicts the existence of a Fourier transform
+\[ \FT \colon \QDM_{\C^{\times}}(V) \dashrightarrow \tau^* \QDM(\P(V)). \]
+There is also a continuous Fourier transform
+\[ \FT_B \colon \QDM_{\C^{\times}}(V) \to \bigoplus_{i=0}^{r-1} \sigma_i^* \QDM(B). \]
+
+We will write \(\C \ps{Q} \coloneqq \C \ps{\on{NE}_{\N}(B)}\) and note that
+\[ \QDM(B) = H^*(B)[z] \ps{Q, \sigma} \]
+where \(\sigma \in H^*(B)\). We note that 
+\[ \C\ps{\on{NE}_{\N}(\P(V))} = \C[q] \ps{Q}. \]
+Here, \(\beta \in \on{NE}_{\N}(\P(V))\) is associated to \(q^{(\beta, \mc{O}_{\P(V)}(1))} Q^{\pi_* \beta}\), where \(\pi \colon \P(V) \to B\) is the structure morphism.
+
+\begin{thm}[Iritani-Koto]
+    There exists 
+    \[ \sigma_i(\tau) \in H^*(B)\ls{q^{-1/r'}} \ps{Q, \tau} \] 
+    for \(i = 0, \ldots, r-1\) such that there exists
+    \[ \Phi \colon \QDM(\P(V))_{\mr{loc}} \xrightarrow{\sim} \bigoplus_{i=0}^{r-1} \sigma_i^* \QDM(B). \]
+    Here, \(\QDM(\P(V))_{\mr{loc}} = \QDM(\P(V)) \otimes \C[z]\ls{q^{-1/r'}} \ps{Q,\tau}\). Moreover, \(\Phi\) intertwines the quantum connections and is linear over \(\C[z]\ls{q^{-1/r'}} \ps{Q,\tau}\).
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    The first step is to prove the reduction conjecture for \(\P(V) = V \sslash \C^{\times}\). The second step is to prove that \(\FT_L\) is an isomorphism. Once we have done this, we define a \(\C[z,q]\ps{Q, \tau}\)-module homomorphism
+    \[ \Phi \colon \QDM(\P(V)) \to \bigoplus_{i=1}^{r-1}\sigma_i^* \QDM(B) \]
+    as
+    \[ \tau^* \QDM(\P(V)) \xrightarrow[\sim]{\FT_L^{-1}} \QDM_{\C^{\times}}(V) \xrightarrow{\FT_B} \bigoplus_i \sigma_i^* \QDM(B). \]
+    Unfortunately, this is linear only over \(\C[z,q]\ps{Q, \mathbb{U}}\), so we need a lift \(u \colon H^*(\P(V)) \to H^*_{\C^{\times}}(V)\) (here, \(u(\tau) \in H^*_{\C^{\times}}(V) \ps{\tau}\) and \(\tau(u(\tau)) = \tau\)) of \(\tau \colon H^*_{\C^{\times}}(V) \to H^*(\P(V))\). This is not hard to find, so we obtain a morphism
+    \[ \QDM(\P(V)) \to \bigoplus_i \bar{\sigma}_i^* \QDM(B), \]
+    where \(\bar{\sigma}_i = \sigma_i \circ u\). Now if we set \(p = c_1(\mc{O}_{\P(V)}(1))\) and consider \(\phi \in H^*(B)\), we see that
+    \[ \Phi_i(\phi p^k)|_{Q = \tau = 0} = \frac{1}{\sqrt{r}} \lambda_i^{k- \frac{r-1}{2}} (\phi + O(q^{-1/r})), \]
+    where \(\lambda_i = \zeta_r^i q^{1/r}\). Once we invert \(q^{1/r}\), we see that \(\Phi\) is an isomorphism.
+\end{proof}
+
+\begin{rmk}
+    For example, when \(B\) is a point, then \(z \mathbb{I}(\mathbb{U}) = M_{\{^{r-1}} (\tau(\mathbb{U})) \cdot R\) (here the big I-function is defined using light markings) via Birkhoff factorization. This defines \(\tau(\mathbb{U})\) as a mirror map.
+\end{rmk}
+
+\begin{cor}
+As rings, we have an isomorphism
+        \[ (\QH^*(\P(V)), \star_{\tau}) \cong \bigoplus_{i=1}^r (\QH^*(B), \star_{\sigma_i(\tau)}) \]
+        over \(\C \ls{q^{-1/r}}\ps{Q}\).
+Moreover, the genus-zero Gromov-Witten invariants of \(\P(V)\) can be recovered from the genus-zero invariants of \(B\) and the total Chern class \(c(V)\).
+\end{cor}
+
+\begin{thm}
+    We have
+    \[ I_{\P(V)} = \sum_{k \geq 0} q^k \cdot \frac{J_V|_{\lambda \to p + kz}}{\prod_{c=1}^k \prod_{\delta: \text{ Chenr roots of }V} (p + \delta + cz)} \in z^{-1} \mc{L}_{\P(V)}, \]
+    where \(J_V\) is the equivariant J-function of \(V\).
+\end{thm}
+
+\begin{proof}[Sketch of proof]
+    Consider the short exact sequence
+    \[ 0 \to \mc{Q} \to \mc{O}^{\oplus N} \twoheadrightarrow V^{\vee} \to 0. \]
+    This gives us an inclusion \(V \hookrightarrow \mc{O}^{\oplus N}\), which descends to
+    \[ \P(V) \hookrightarrow B \times \P^{N-1}, \]
+    which is cut out by a regular section of \(\mc{Q} \boxtimes \mc{O}_{\P^{N-1}}(1)\). We can now use quantum Lefschetz to relate \(\mc{L}_{\P(V)}\) and \(\mc{L}_{B \times \P^{N-1}, (\mc{Q} \boxtimes \mc{O}(1), e_{\C^{\times}})}\). Quantum Riemann-Roch relates this to \(\mc{L}_{B \times \P^{N-1}}\), the work of Brown relates \(\mc{L}_{B \times \P^{N-1}}\) and \(\mc{L}_B\), and finally quantum Riemann-Roch relates \(\mc{L}_B\) and \(\mc{L}_V\). 
+\end{proof}
+
+\begin{rmk}
+    To prove a mirror theorem for general non-split toric bundles, this strategy fails because \(\mc{Q}\) is not convex in general. However, we can use virtual localization to reduce to the case of projective bundles.
+\end{rmk}
+
+\section{Blowup formula}%
+\label{sec:Blowup formula}
+
+Let \(W \coloneqq \Bl_{Z \times 0} (X \times \P^1)\).
+
+\begin{thm}
+    There exists a map
+    \[ H^*(\Bl_Z X) \xrightarrow{\sim} H^*(X) \oplus H^*(Z)^{\oplus c-1} \qquad \tilde{\tau} \mapsto (\tau(\tilde{\tau}), \ab\{ s_j(\tilde{\tau})\}_{0 \leq j \leq c-2}) \]
+    and a map
+    \[ \Psi \colon \QDM(\Bl_Z X)_{\mr{loc}} \xrightarrow{\sim} \tau^* \QDM(X) \oplus \bigoplus_{j=0}^{c-2} s_j^* \QDM(Z). \]
+    Here, \(c\) is the codimension of \(Z\) and the maps are defined over \(\C \ls{q^{-1/(c-2)}} \ps{Q, \tilde{\tau}}\).
+\end{thm}
+
+\begin{cor}
+    We obtain a corresponding decomposition
+    \[ (\QH^*(\Bl_Z X), \star_{\tilde{\tau}}) \cong (\QH^*(X), \star_{\tau(\tilde{\tau})}) \oplus_{j=0}^{c-2} (\QH^*(Z), \star_{s_j(\tilde{\tau})}) \]
+    over \(\C \ls{q^{-1/(c-2)}} \ps{Q}\).
+\end{cor}
+
+\begin{thm}
+    The genus-zero Gromov-Witten invariants of \(\Bl_Z X\) can  be recovered from those of \(X\) and \(Z\), and from \(c(N_{Z/X})\).
+\end{thm}
+
+\begin{proof}
+    Consider the master space \(W\) with the action of \(\C^{\times}\). It has two GIT quotients \(W \sslash_L \C^{\times} = X\) and \(W \sslash_{\tilde{L}} = \Bl_Z X\). There are three fixed components
+    \[ W^{\C^{\times}} = X \sqcup \Bl_Z X \sqcup Z, \]
+    so we have three continuous Fourier transforms and two conjectural discrete Fourier transforms
+    \begin{equation*}
+    \begin{tikzcd}
+        \QDM(X) & & \QDM(X)\\
+        \QDM(\Bl_Z X) & \QDM_{\C^{\times}}(W) \ar{l}[swap]{\FT_{\Bl_Z X}} \ar{ul}[swap]{\FT_X} \ar{dl}{\FT_Z} \ar[dashrightarrow]{ur}{\FT_L} \ar[dashrightarrow]{dr}[swap]{\FT_{\tilde{L}}} \\
+        \QDM(Z)^{\oplus c-1} & & \QDM(\Bl_Z X).
+    \end{tikzcd}
+    \end{equation*}
+    The first step of the proof is to show that \(\FT_X\) contains essentially the same information as \(\FT_L\) and that \(\FT_{\Bl_Z X}\) contains essentially the same information as \(\FT_{\tilde{L}}\). The next step is to prove that
+    \[ \FT_{\tilde{L}} \colon \QDM_{\C^{\times}}(W)_{\tilde{L}} \to \QDM(\Bl_Z X) \]
+    is an isomorphism. Then we combine the Fourier transforms to construct \(\Psi\) and finally show that \(\Psi\) is an isomorphism.
+\end{proof}
+
+\begin{exm}
+    Let \(X = \P^{m+n-1} \supseteq Z = \P^{n-2}\). Assume that \(m \geq 1\) and \(n \geq 2\) and set \(\tilde{X} = \Bl_Z X \cong \P(\mc{O}_{\P^m}^{\oplus n+1} \oplus \mc{O}_{\P^m}(-1))\). Note that
+    \[ H^*(\tilde{X}) = \C[p,h]/(h^{m+1}, p^n - h p^{n-1}), \]
+    where \(p = c_1(\mc{O}_X(1))\) and \(h = c_1(\mc{O}_{\P^m}(1))\). Using the J-function, we can compute the small quantum cohomology
+    \[ \on{SQH}^*(\tilde{X}) \cong \frac{\C[p,h,q,Q]}{(h^{m+1} - q(p-h), p^{n-1}(p-h)-Q)}, \]
+    where \(\deg Q = 2n\) and \(\deg q = 2m\). Doing some algebra, we can obtain an ad hoc blowup formula and deduce
+    \[ \on{SQH}^*(\tilde{X}) \otimes_{\C[q,Q]} \C[q^{\pm 1/m}] \ps{Q} \xrightarrow{\sim} \Vectorstack{{\C[p_X, q^{\pm 1/m}]\ps{Q}/p_X^{m+n}-qQ} {\oplus} {\bigoplus_{j=0}^{m-1} \C[p_{z,j}f, q^{\pm 1/m}]\ps{Q}/(p_{Z,j}^{n-1} + \lambda_j^{-1}Q)}}. \]
+
+    On the other hand, an ad hoc version of the projective bundle formula viewing \(\tilde{X}\) as an \(\P^{n-1}\)-bundle over \(B = \P^m\) gives us
+    \[ \on{SQH}^*(\tilde{X}) \otimes_{\C[q,Q]} \C[Q^{\pm 1/n}]\ps{q} \xrightarrow{\sim} \bigoplus_{j=0}^{n-1} \frac{\C[p_{B,j} Q^{\pm 1/n}]\ps{q}}{(p_{B,j}^{m+1} - q \zeta_n^j Q^{1/n})}. \]
+    Therefore, we have the following picture of \(\on{SQH}^*(\tilde{X})\):
+    
+    \begin{center}
+    \begin{tikzpicture}[
+        font=\normalfont\small,
+        axis/.style={-{Stealth[length=5pt]}, line width=0.6pt},
+        callout/.style={-{Stealth[length=4pt]}, line width=0.5pt,
+            shorten >=2pt},
+        point/.style={circle, draw, fill=white, line width=0.6pt,
+            inner sep=0pt, minimum size=4.5pt},
+        every node/.style={inner sep=3pt}
+    ]
+        \draw[axis] (-3.2,0) -- (4.8,0) node[right] {\(q\)};
+        \draw[axis] (0,-1.5) -- (0,3.9) node[above] {\(Q\)};
+
+        \node[point] (origin) at (0,0) {};
+        \node[point] (Q-axis) at (0,2.2) {};
+        \node[point] (q-axis) at (2.1,0) {};
+        \node[point] (generic) at (2.6,2.65) {};
+
+        \node[anchor=north east, align=right] at (-0.2,2)
+            {\(q=0\)\\\(Q\neq 0\)};
+        \node[above=6pt] at (q-axis) {\(Q=0,\ q\neq 0\)};
+        \node[below=6pt] at (generic) {\(q,Q\neq 0\)};
+
+        \node[anchor=east] (projective) at (-0.9,3.2)
+            {\(H^*(\P^m)^{\oplus n}\)};
+        \node (semisimple) at (3.8,3.55) {\(\C^{n(m+1)}\)};
+        \node (classical) at (-1.5,-1.15) {\(H^*(\tilde{X})\)};
+        \node (blowup) at (3.3,-1.2)
+            {\(H^*(X)\oplus H^*(Z)^{\oplus m}\)};
+
+        \draw[callout] (projective.south east)
+            to[out=-45,in=150] (Q-axis.north west);
+        \draw[callout] (semisimple.south west)
+            to[out=-145,in=55] (generic.north east);
+        \draw[callout] (classical.north east)
+            to[out=45,in=-135] (origin.south west);
+        \draw[callout] (blowup.north)
+            to[out=135,in=-65] (q-axis.south east);
+    \end{tikzpicture}
+    \end{center}
+\end{exm}
+
+
 
 
 \end{document}

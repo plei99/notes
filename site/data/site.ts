@@ -59,6 +59,7 @@ export const site: Site = {
     "Boston College": "波士顿学院",
     "Simons Center": "Simons 中心",
     "Sichuan University": "四川大学",
+    SCMS: "上海数学中心",
     Online: "线上",
     Other: "其他",
     course: "课程",

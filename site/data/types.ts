@@ -13,6 +13,7 @@ export type Location =
   | "Boston College"
   | "Simons Center"
   | "Sichuan University"
+  | "SCMS"
   | "Online"
   | "Other";
 
