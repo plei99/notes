@@ -2090,20 +2090,52 @@ aside.footnotetext p {
 }
 
 /* ---- Displayed equations ---------------------------------------------- */
-/* A display wider than the column scrolls; a soft edge shows on the side that
-   has more (the covers scroll away with the content, the shadows stay). */
+/* A display wider than the column scrolls; a soft edge shows on each side that
+   has more. The edges follow the display's own scroll timeline, so a display
+   that fits (no timeline) draws none; where scroll timelines are missing there
+   are no edges either. */
+@property --eqn-edge-l {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+@property --eqn-edge-r {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+@keyframes eqn-edges {
+  0% {
+    --eqn-edge-l: transparent;
+    --eqn-edge-r: var(--edge);
+  }
+
+  8% {
+    --eqn-edge-l: var(--edge);
+  }
+
+  92% {
+    --eqn-edge-r: var(--edge);
+  }
+
+  100% {
+    --eqn-edge-l: var(--edge);
+    --eqn-edge-r: transparent;
+  }
+}
+
 .note-body .ltx_eqn_scroll,
 .note-body table.ltx_equation {
   --edge: color-mix(in srgb, var(--ink) 22%, transparent);
   background:
-    linear-gradient(to right, var(--paper), var(--paper)) left center / 1.2em
-    100% no-repeat local,
-    linear-gradient(to left, var(--paper), var(--paper)) right center / 1.2em
-    100% no-repeat local,
-    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left
+    radial-gradient(farthest-side at 0 50%, var(--eqn-edge-l), transparent) left
     center / 0.5em 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right
-    center / 0.5em 100% no-repeat scroll;
+    radial-gradient(farthest-side at 100% 50%, var(--eqn-edge-r), transparent)
+    right center / 0.5em 100% no-repeat scroll;
+  animation: eqn-edges linear both;
+  animation-timeline: scroll(self inline);
 }
 
 /* A displayed formula is a table of three cells: padding, formula, padding,
