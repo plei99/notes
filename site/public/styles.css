@@ -2416,6 +2416,43 @@ aside.footnotetext p {
   vertical-align: middle;
 }
 
+/* A tabular inside a formula (a Young tableau in text) is written in spans;
+   they get the table layout the elements would have, as LaTeXML.css gives them. */
+.note-body span.ltx_tabular {
+  display: inline-table;
+  border-collapse: collapse;
+  text-indent: 0;
+}
+
+.note-body span.ltx_tabular > :is(.ltx_thead, .ltx_tbody, .ltx_tfoot) {
+  display: table-row-group;
+}
+
+.note-body span.ltx_tabular .ltx_tr {
+  display: table-row;
+}
+
+.note-body span.ltx_tabular .ltx_tr > :is(.ltx_td, .ltx_th) {
+  display: table-cell;
+}
+
+/* Between the column pairs of an align, amsmath leaves space; the empty cell
+   after a pair's right column carries it. */
+.note-body
+  table.ltx_eqn_align
+  td.ltx_td.ltx_eqn_cell
+  + td.ltx_td.ltx_eqn_cell:empty {
+  padding-left: 1.5em;
+}
+
+/* A box or a diagram inside a formula is as wide as its content: a percentage
+   would be of the formula's shrink-to-fit width and squeeze the drawing. */
+.note-body mtext .ltx_inline-block,
+.note-body mtext .diagram,
+.note-body mtext .diagram svg {
+  max-width: none;
+}
+
 /* Tabulars: rules are the text's colour, a double rule is a double line. */
 .note-body table.ltx_tabular {
   display: inline-table;
