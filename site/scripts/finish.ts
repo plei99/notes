@@ -13,7 +13,8 @@
 //   themes.css is written, and each note's images and diagrams, and a machine
 //   translation's judging, are copied beside its page.
 import { cp, rm } from "node:fs/promises";
-import { allThemes, GENERATED, notes, type Theme } from "../lib/site";
+import { allThemes, GENERATED, notes, type Theme, url } from "../lib/site";
+import { noteBody, scriptHash, securePage } from "../lib/security";
 
 const OUT = "dist";
 const rev = Date.now().toString(36);
@@ -61,7 +62,7 @@ async function finishPage(html: string) {
     .replaceAll("__REV__", rev);
   if (!fragment) return html;
   const body = await Bun.file(`${GENERATED}/${fragment}/_body.html`).text();
-  return html.replace("<!--body-->", () => body);
+  return html.replace("<!--body-->", () => noteBody(body, fragment));
 }
 
 // Generated from data/themes.ts: one block per theme, selected by data-theme
@@ -111,13 +112,24 @@ await cp("public", OUT, { recursive: true });
 
 // Each browser script is compiled on its own, keeping its imports, so
 // client/note.ts becomes js/note.js. client/inline/ is built into the pages.
-const transpiler = new Bun.Transpiler({ loader: "ts", target: "browser" });
+const scripts = new Map<string, string>();
 for (const file of new Bun.Glob("*.ts").scanSync("client")) {
   if (file.endsWith(".d.ts")) continue;
-  const code = transpiler.transformSync(
-    await Bun.file(`client/${file}`).text(),
-  );
-  await Bun.write(`${OUT}/js/${file.replace(/\.ts$/, ".js")}`, code);
+  // Bundle local imports, including the SVG sanitizer, into each entry. No
+  // package import or CDN loader is left for the browser to resolve.
+  const result = await Bun.build({
+    entrypoints: [`client/${file}`],
+    target: "browser",
+    format: "esm",
+    minify: true,
+  });
+  if (!result.success) {
+    throw new AggregateError(result.logs, `Building client/${file} failed`);
+  }
+  const code = await result.outputs[0]!.text();
+  const asset = `/js/${file.replace(/\.ts$/, ".js")}`;
+  await Bun.write(`${OUT}${asset}`, code);
+  scripts.set(url(asset), scriptHash(code));
 }
 await Bun.write(`${OUT}/themes.css`, themesCss());
 
@@ -147,5 +159,9 @@ for (const note of notes) {
     Bun.file(`../${note.judging}`),
   );
   assets++;
+}
+for (const file of new Bun.Glob("**/*.html").scanSync(OUT)) {
+  const page = `${OUT}/${file}`;
+  await Bun.write(page, securePage(await Bun.file(page).text(), scripts));
 }
 console.log(`Finished ${pages} pages and ${assets} note files in ${OUT}/`);

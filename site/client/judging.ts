@@ -638,7 +638,7 @@ function render(d: Data) {
 opener.addEventListener("click", () => {
   dialog.showModal();
   failed.hidden = true;
-  loaded ??= fetch("judging.json")
+  loaded ??= fetch("judging.json", { mode: "same-origin", redirect: "error" })
     .then((r) => {
       if (!r.ok) throw new Error(`judging.json: ${r.status}`);
       return r.json() as Promise<Data>;

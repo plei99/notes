@@ -1,5 +1,8 @@
 // On a note page: the contents start open where they sit beside the text, and
 // closed where they would push the text below the fold.
+import { replaceDiagram } from "./diagram.js";
+import { diagramFont } from "./fonts.js";
+
 const toc = document.querySelector<HTMLDetailsElement>(".toc details");
 const wide = matchMedia("(min-width: 64rem)");
 
@@ -59,23 +62,23 @@ const fetched: Record<string, Promise<Drawings>> = {};
 let shown = "pagella";
 
 function pairing() {
-  if (root.dataset.latin) return root.dataset.latin;
-  return ["sans", "rounded"].includes(root.dataset.cjk ?? "")
-    ? "lato"
-    : "pagella";
+  return diagramFont(root.dataset.latin, root.dataset.cjk);
 }
 
 async function redraw() {
   const want = pairing();
   if (want === shown || diagrams.length === 0) return;
-  fetched[want] ??= fetch(`diagrams/${want}.json`)
+  fetched[want] ??= fetch(`diagrams/${want}.json`, {
+    mode: "same-origin",
+    redirect: "error",
+  })
     .then((r) => (r.ok ? r.json() as Promise<Drawings> : null))
     .catch(() => null);
   const drawings = await fetched[want];
   if (!drawings || pairing() !== want) return;
   for (const span of diagrams) {
     const svg = drawings[span.dataset.n!];
-    if (svg) span.innerHTML = svg;
+    if (typeof svg === "string") replaceDiagram(span, svg);
   }
   shown = want;
 }

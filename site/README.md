@@ -23,7 +23,7 @@ bun run setup               # once: Python venv with fontTools
 bun run notes               # convert every note to HTML with latexml-oxide
 bun run notes good-moduli-spaces schemes  # ...or some, by slug
 bun run dev                 # preview at http://localhost:3001/notes/
-bun run check               # dprint check, oxlint, bun check
+bun run check               # formatting, lint, types, font coverage, security tests
 bun run publish             # build and push to gh-pages
 ```
 
@@ -45,6 +45,7 @@ components/
 lib/
   site.ts               Data, URLs under /notes/, the fragments, theme pairs
   inline.ts             Builds client/inline/*.ts into the scripts inlined in <head>
+  security.ts           Hash-based script policy and integrity-checked module loaders
 data/
   types.ts              The shape of everything below, and the filter vocabularies
   notes.ts              The catalogue
@@ -111,6 +112,29 @@ The older pipeline, `build/build.py`, goes through four stages for each note:
 Fragments land in `generated/<slug>/`; `pages/[slug].tsx` and
 `scripts/finish.ts` turn them into pages. A formula MathJax cannot read is shown
 as its TeX source; `.cache/report.json` lists every note's counts and errors.
+
+## Browser security
+
+Every generated page starts with a hash-based Content Security Policy. Hashed
+loaders start only the compiled site modules, with Subresource Integrity. The
+policy blocks injected scripts, inline event handlers, `javascript:` URLs,
+`eval`, embedded documents and form submissions. Inline style attributes remain
+allowed for the generated mathematics and SVG geometry; inline style blocks are
+blocked. Fonts and their stylesheet can also load from the homepage's `/fonts/`
+directory, including during local preview.
+
+The build rejects scripts in generated note bodies. Legacy font variants are
+limited to the three published font names, fetched without redirects on the same
+origin, and sanitized with the bundled DOMPurify before insertion. Local glyph
+references are preserved; scripts, event handlers, foreign HTML and external SVG
+references are removed. There is no runtime CDN dependency. Saved font names are
+validated and malformed preference cookies are ignored. The MathJax build
+dependency's older xmldom pin is overridden to 0.9.12, which fixes its reported
+XML parsing and serialization vulnerabilities. MathJax and xmldom run during
+conversion and are not shipped to the browser.
+
+Run `bun run check` before publishing. The publishing command builds this policy
+into the existing `gh-pages` artifact; hardening the source does not publish it.
 
 ## The catalogue
 
