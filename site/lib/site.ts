@@ -2,6 +2,7 @@
 // from the site/ directory.
 import { themes } from "../data/themes";
 import type { Note, Theme } from "../data/types";
+import { noteBody } from "./security";
 
 export { notes } from "../data/notes";
 export { site } from "../data/site";
@@ -29,10 +30,12 @@ export const rev = "__REV__";
 // and the images and diagrams that scripts/finish.ts copies beside it.
 export const GENERATED = "generated";
 
-/** A note's table of contents, as HTML. */
+/** A note's table of contents, as HTML. Like the text, it may hold no script. */
 export async function toc(slug: string) {
   const file = Bun.file(`${GENERATED}/${slug}/_toc.html`);
-  return (await file.exists()) ? await file.text() : "";
+  return (await file.exists())
+    ? noteBody(await file.text(), `${slug}/_toc.html`)
+    : "";
 }
 
 /** The notes with a page; the index links the others to their PDF. */

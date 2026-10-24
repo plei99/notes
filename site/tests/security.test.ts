@@ -1,7 +1,11 @@
 import { expect, test } from "bun:test";
 import { createHash } from "node:crypto";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { runInNewContext } from "node:vm";
 import { noteBody, securePage } from "../lib/security";
+import { GENERATED, toc } from "../lib/site";
 
 test("the policy authorizes exact inline bytes and pins entry script integrity", () => {
   const code = '\nwindow.example = "allowed";\n';
@@ -101,5 +105,26 @@ test("note bodies cannot nominate scripts for the page policy to authorize", () 
     ]
   ) {
     expect(() => noteBody(fragment, "example")).toThrow();
+  }
+});
+
+test("a note's contents cannot nominate scripts either", async () => {
+  // The contents reach the page through React, not through finish.ts.
+  const contents =
+    "<ol><li><a href='#S1'><span class='secnum'>1</span> Schemes</a></li></ol>";
+  const cwd = process.cwd();
+  const dir = await mkdtemp(path.join(tmpdir(), "notes-toc-"));
+  await Bun.write(`${dir}/${GENERATED}/plain/_toc.html`, contents);
+  await Bun.write(
+    `${dir}/${GENERATED}/scripted/_toc.html`,
+    "<ol><li><a href='#S1'>Schemes<script>alert(1)</script></a></li></ol>",
+  );
+  process.chdir(dir);
+  try {
+    expect(await toc("plain")).toBe(contents);
+    await expect(toc("scripted")).rejects.toThrow();
+  } finally {
+    process.chdir(cwd);
+    await rm(dir, { recursive: true });
   }
 });

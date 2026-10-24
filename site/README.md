@@ -123,7 +123,7 @@ allowed for the generated mathematics and SVG geometry; inline style blocks are
 blocked. Fonts and their stylesheet can also load from the homepage's `/fonts/`
 directory, including during local preview.
 
-The build rejects scripts in generated note bodies. Legacy font variants are
+The build rejects scripts in generated note fragments. Legacy font variants are
 limited to the three published font names, fetched without redirects on the same
 origin, and sanitized with the bundled DOMPurify before insertion. Local glyph
 references are preserved; scripts, event handlers, foreign HTML and external SVG

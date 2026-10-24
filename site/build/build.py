@@ -647,13 +647,19 @@ def render_toc(entries: list[tuple[int, str, str, str]]) -> str:
 
 
 def copy_images(body: str, html_dir: Path, dest: Path, log: Path) -> str:
+    # Only files under the build tree are published: an absolute or ../ path
+    # in \includegraphics would otherwise copy any local file into the site.
+    root = html_dir.parent.resolve()
+
     def image(m: re.Match) -> str:
         src = htmllib.unescape(m.group(2))
+        if re.match(r"(?:[a-z][a-z0-9+.-]*:|/|#)", src, re.I):
+            return m.group(0)
         path = html_dir / src
         if not path.exists():
             alt = list(html_dir.parent.rglob(Path(src).name))
             path = alt[0] if alt else path
-        if not path.exists():
+        if not path.is_file() or not path.resolve().is_relative_to(root):
             return m.group(0)
         name = path.name
         if path.suffix.lower() in (".pdf", ".eps"):
