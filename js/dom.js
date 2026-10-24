@@ -1,0 +1,1 @@
+function o(e,n){let t=document.getElementById(e);if(!(t instanceof n))throw Error(`#${e} is missing or not a ${n.name}`);return t}function m(e,n,t=document){let r=t.querySelector(e);if(!(r instanceof n))throw Error(`${e} is missing or not a ${n.name}`);return r}export{o as byId,m as query};
