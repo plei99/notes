@@ -51,7 +51,7 @@ data/
   notes.ts              The catalogue
   site.ts               Font pairings, credits, facets, filter values in Chinese
   ui.ts                 Interface strings for en + zh
-  themes.ts             The homepage's colour themes; /themes.css comes from this
+  themes.ts             The homepage's light and dark themes; /themes.css comes from this
 client/                 Browser scripts, compiled one to one into /js/ (DOM only)
   theme.ts, dom.ts      The homepage's theme and font pickers, unchanged
   filter.ts             The index's filters

@@ -13,7 +13,7 @@
 //   themes.css is written, and each note's images and diagrams, and a machine
 //   translation's judging, are copied beside its page.
 import { cp, rm } from "node:fs/promises";
-import { allThemes, GENERATED, notes, type Theme, url } from "../lib/site";
+import { GENERATED, notes, type Theme, themes, url } from "../lib/site";
 import { noteBody, scriptHash, securePage } from "../lib/security";
 
 const OUT = "dist";
@@ -70,8 +70,8 @@ async function finishPage(html: string) {
 // the dark one when the system is set to dark.
 function themesCss() {
   const [light, dark] = [
-    allThemes.find((t) => !t.dark)!,
-    allThemes.find((t) => t.dark)!,
+    themes.find((t) => !t.dark)!,
+    themes.find((t) => t.dark)!,
   ];
   const block = (t: Theme, indent: string) =>
     [
@@ -89,7 +89,7 @@ function themesCss() {
   }\n}\n\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme]) {\n${
     block(dark, "    ")
   }\n  }\n}\n`;
-  for (const t of allThemes) {
+  for (const t of themes) {
     if (t !== light) {
       css += `\n:root[data-theme="${t.id}"] {\n${block(t, "  ")}\n}\n`;
     }

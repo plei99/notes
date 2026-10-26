@@ -1,7 +1,7 @@
 // Data and helpers shared by the pages. Everything here runs at build time,
 // from the site/ directory.
 import { themes } from "../data/themes";
-import type { Note, Theme } from "../data/types";
+import type { Note } from "../data/types";
 import { noteBody } from "./security";
 
 export { notes } from "../data/notes";
@@ -71,20 +71,10 @@ export const fill = (text: string, vars: Record<string, string | number>) =>
     text,
   );
 
-export const allThemes: Theme[] = themes.flatMap((f) => f.themes);
-
-// Each theme's brightness and its counterpart of the other brightness: the
-// theme in the same place among its family's other half (Gruvbox Dark Soft for
-// Gruvbox Light Soft, the last one if the other half is shorter), or the
-// default when the family has none. As on the homepage (lib/site.ts there).
+// Each theme's brightness and the other theme, its counterpart.
 export const themePairs: Record<string, [0 | 1, string]> = Object.fromEntries(
-  themes.flatMap((family) =>
-    family.themes.map((t) => {
-      const same = family.themes.filter((o) => o.dark === t.dark);
-      const other = family.themes.filter((o) => o.dark !== t.dark);
-      const pair = other[Math.min(same.indexOf(t), other.length - 1)] ??
-        allThemes.find((o) => o.dark !== t.dark)!;
-      return [t.id, [t.dark ? 1 : 0, pair.id]];
-    })
-  ),
+  themes.map((t) => [
+    t.id,
+    [t.dark ? 1 : 0, themes.find((o) => o.dark !== t.dark)!.id],
+  ]),
 );

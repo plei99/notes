@@ -72,8 +72,8 @@ select.addEventListener("change", () => {
   save(select.value);
 });
 
-// A saved theme that no longer exists (an old "dark", the removed light Nord)
-// falls back to the default. One saved before themes followed the system
+// A saved theme that no longer exists (one of the terminal colour schemes the
+// picker used to offer) falls back to the default. One saved before themes followed the system
 // setting is taken to have been chosen under the current one.
 showCurrent();
 if (select.selectedIndex < 0) {
