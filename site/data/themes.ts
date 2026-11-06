@@ -1,10 +1,12 @@
 import type { Theme } from "./types";
 
-// The two themes, light and dark: Modus Operandi and Modus Vivendi from
-// Protesilaos Stavrou's Modus themes, built for at least 7:1 contrast. This
-// file is the single source: themes.css is generated from it and so is the
-// picker in the masthead. The homepage has the same two, so a choice made on
-// one site shows on the other.
+// The two themes, light and dark: the homepage's, one palette in two keys.
+// Warm paper (or warm near-black), teal for what can be followed and
+// terracotta for marks, so a link and a mark never share a colour. Body text is
+// at least 13:1 against the paper and muted text at least 5:1. This file is
+// the single source: themes.css is generated from it and so is the picker in
+// the masthead. The homepage has the same two, so a choice made on one site
+// shows on the other.
 //
 // Each theme gives the page's colour roles:
 //   paper  background             ink    marked points and cycles in the figure
@@ -22,24 +24,24 @@ export const themes: Theme[] = [
     id: "light",
     name: { en: "Light", zh: "浅色" },
     dark: false,
-    paper: "#ffffff",
-    text: "#000000",
-    muted: "#595959",
-    ink: "#3548cf",
-    link: "#3548cf",
-    rule: "#c4c4c4",
-    stage: "#f2f2f2",
+    paper: "#f6f1e7",
+    text: "#2a2622",
+    muted: "#6b6257",
+    ink: "#b5462b",
+    link: "#18666f",
+    rule: "#cfc4b2",
+    stage: "#ece5d7",
   },
   {
     id: "dark",
     name: { en: "Dark", zh: "深色" },
     dark: true,
-    paper: "#000000",
-    text: "#ffffff",
-    muted: "#989898",
-    ink: "#2fafff",
-    link: "#79a8ff",
-    rule: "#535353",
-    stage: "#1e1e1e",
+    paper: "#1a1714",
+    text: "#ede6da",
+    muted: "#b1a797",
+    ink: "#e8876a",
+    link: "#82b8c7",
+    rule: "#433b33",
+    stage: "#2b251f",
   },
 ];
