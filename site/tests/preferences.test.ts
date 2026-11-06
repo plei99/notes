@@ -15,10 +15,12 @@ test("font variants are limited to the three published diagram files", () => {
       "constructor",
     ]
   ) {
-    expect(diagramFont(value)).toBe("pagella");
+    expect(diagramFont(value)).toBe("lato");
   }
+  expect(diagramFont(undefined)).toBe("lato");
   expect(diagramFont(undefined, "rounded")).toBe("lato");
   expect(diagramFont(undefined, "serif")).toBe("pagella");
+  expect(diagramFont(undefined, "wenkai")).toBe("pagella");
 });
 
 test("invalid saved fonts and malformed cookies leave preferences usable", async () => {

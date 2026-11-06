@@ -53,7 +53,8 @@ if (body && scrollers.length) {
 // The page carries the default pairing's; when the reader's pairing differs,
 // its drawings are fetched from diagrams/<pairing>.json beside the page and
 // swapped in, and again whenever the font picker changes. The effective
-// pairing follows theme.ts: no Latin choice and a sans Chinese face mean Lato.
+// pairing follows theme.ts: no Latin choice means Lato, unless the Chinese face
+// is a serif, which brings Pagella. Legacy pages inline Pagella's drawings.
 type Drawings = Record<string, string> | null;
 
 const root = document.documentElement;

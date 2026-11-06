@@ -71,16 +71,18 @@
 
 :root {
   --link-hover: color-mix(in srgb, var(--link) 65%, var(--text));
-  --cjk: "Source Han Serif SC", "Notes Source Han Serif SC";
-  --latin: "TeX Gyre Pagella", "Palatino Linotype", Palatino, "Book Antiqua";
-  --latin-math: "Asana Math";
-  --serif:
+  /* Lato carries only Latin, so Chinese falls through to --cjk; Latin inside
+     Chinese text stays in Lato, which is the intended pairing. */
+  --cjk: "Source Han Sans SC", "Notes Source Han Sans SC";
+  --latin: Lato;
+  --latin-math: "Lete Sans Math";
+  --face:
     var(--latin),
     var(--cjk),
-    "Noto Serif CJK SC",
-    "Songti SC",
-    Georgia,
-    serif;
+    "Noto Sans CJK SC",
+    "PingFang SC",
+    system-ui,
+    sans-serif;
   --mono: Iosevka, ui-monospace, SFMono-Regular, Menlo, monospace;
   /* Asana Math has every symbol the notes use (⦇ ⦈ for Laurent series are
      missing from half the math fonts); it is fetched only when needed. */
@@ -90,36 +92,38 @@
   --gutter: clamp(1.25rem, 4vw, 3rem);
 }
 
-:root[data-cjk="wenkai"] {
-  --cjk: "LXGW WenKai", "Notes LXGW WenKai";
+:root[data-cjk="serif"] {
+  --cjk: "Source Han Serif SC", "Notes Source Han Serif SC";
 }
 
-:root[data-cjk="sans"] {
-  --cjk: "Source Han Sans SC", "Notes Source Han Sans SC";
+:root[data-cjk="wenkai"] {
+  --cjk: "LXGW WenKai", "Notes LXGW WenKai";
 }
 
 :root[data-cjk="rounded"] {
   --cjk: "Resource Han Rounded SC", "Notes Resource Han Rounded SC";
 }
 
-:root[data-cjk="sans"]:not([data-latin]),
-:root[data-cjk="rounded"]:not([data-latin]) {
-  --latin: Lato;
-  --latin-math: "Lete Sans Math";
+/* Serif pairs with serif until told otherwise, as on the homepage: a Chinese
+   serif with no Latin choice brings Pagella and Asana Math, and a Latin serif
+   with no Chinese choice brings LXGW WenKai. Explicit choices ("lato",
+   "sans") are attributes too, so they win over these. client/theme.ts and
+   client/fonts.ts mirror these lists. */
+:root[data-cjk="serif"]:not([data-latin]),
+:root[data-cjk="wenkai"]:not([data-latin]),
+:root[data-latin="pagella"] {
+  --latin: "TeX Gyre Pagella", "Palatino Linotype", Palatino, "Book Antiqua";
+  --latin-math: "Asana Math";
 }
 
-:root[data-latin="lato"]:not([data-cjk]) {
-  --cjk: "Source Han Sans SC", "Notes Source Han Sans SC";
+:root[data-latin="pagella"]:not([data-cjk]),
+:root[data-latin="garamond"]:not([data-cjk]) {
+  --cjk: "LXGW WenKai", "Notes LXGW WenKai";
 }
 
 :root[data-latin="garamond"] {
   --latin: "EB Garamond", Garamond;
   --latin-math: "Garamond Math";
-}
-
-:root[data-latin="lato"] {
-  --latin: Lato;
-  --latin-math: "Lete Sans Math";
 }
 
 /* \mathsf, as in the PDFs: Optima where it is installed (every Mac and
@@ -162,7 +166,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--text);
-  font: 400 1.125rem/1.6 var(--serif);
+  font: 400 1.125rem/1.6 var(--face);
   font-variant-numeric: oldstyle-nums;
   text-rendering: optimizeLegibility;
 }
@@ -922,7 +926,7 @@ mtable[columnspacing] > mtr > mtd {
 
 /* \text is in the text font, as in TeX, not the math font (Garamond Math, say). */
 math mtext {
-  font-family: var(--serif);
+  font-family: var(--face);
 }
 
 .eq {
@@ -1774,7 +1778,7 @@ aside.footnotetext p {
 }
 
 .note-body .ltx_font_serif {
-  font-family: var(--serif);
+  font-family: var(--face);
 }
 
 /* \emph in an upright context is italic; in italic text, upright (oxide says

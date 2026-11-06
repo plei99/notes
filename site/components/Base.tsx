@@ -64,7 +64,7 @@ export default async function Base(
       }
       <link
         rel="preload"
-        href={`${site.homepage}fonts/tex-gyre-pagella-regular.woff2`}
+        href={`${site.homepage}fonts/lato-regular.woff2`}
         as="font"
         type="font/woff2"
         crossOrigin=""
@@ -131,9 +131,9 @@ export default async function Base(
               <select>
                 {site.latin_fonts.map((group) => (
                   <optgroup
-                    key={group.group}
-                    label={group.group}
-                    data-sans={group.sans ? "" : undefined}
+                    key={group.group.en}
+                    label={group.group[lang]}
+                    data-serif={group.serif ? "" : undefined}
                   >
                     {group.fonts.map((font) => (
                       <option key={font.id} value={font.id}>{font.name}</option>
@@ -147,10 +147,10 @@ export default async function Base(
               <label className="cjk" hidden>
                 <span className="visually-hidden">{t.cjk_font}</span>
                 <select>
-                  <option value="serif">{t.cjk_serif}</option>
-                  <option value="sans" data-sans="">{t.cjk_sans}</option>
-                  <option value="rounded" data-sans="">{t.cjk_rounded}</option>
-                  <option value="wenkai">{t.cjk_kai}</option>
+                  <option value="sans">{t.cjk_sans}</option>
+                  <option value="rounded">{t.cjk_rounded}</option>
+                  <option value="wenkai" data-serif="">{t.cjk_kai}</option>
+                  <option value="serif" data-serif="">{t.cjk_serif}</option>
                 </select>
               </label>
             )}

@@ -6,5 +6,5 @@ export type LatinFont = typeof latinFonts[number];
 // font, never an arbitrary path to fetch and insert as a diagram.
 export function diagramFont(latin?: string, cjk?: string): LatinFont {
   if (latinFonts.includes(latin as LatinFont)) return latin as LatinFont;
-  return cjk === "sans" || cjk === "rounded" ? "lato" : "pagella";
+  return cjk === "serif" || cjk === "wenkai" ? "pagella" : "lato";
 }

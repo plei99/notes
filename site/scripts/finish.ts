@@ -12,12 +12,29 @@
 // - public/ is copied, the browser scripts in client/ are compiled into js/,
 //   themes.css is written, and each note's images and diagrams, and a machine
 //   translation's judging, are copied beside its page.
+// - The preloaded font takes the version (?v=) the homepage's fonts.css gives
+//   it, so the preload is the very request that stylesheet makes.
 import { cp, rm } from "node:fs/promises";
-import { GENERATED, notes, type Theme, themes, url } from "../lib/site";
+import { GENERATED, notes, site, type Theme, themes, url } from "../lib/site";
 import { noteBody, scriptHash, securePage } from "../lib/security";
 
 const OUT = "dist";
 const rev = Date.now().toString(36);
+
+// The homepage versions its font URLs by content, and pages here load its live
+// fonts.css, so the versions come from there. Offline, preloads stay
+// unversioned: the page still works, the font just arrives twice.
+const fontsCss = await fetch(`${site.homepage}fonts/fonts.css`)
+  .then((r) => (r.ok ? r.text() : ""))
+  .catch(() => "");
+const fontVersions = new Map(
+  [...fontsCss.matchAll(/url\("\/fonts\/([\w-]+\.woff2)(\?v=\w+)"\)/g)].map(
+    (m) => [m[1]!, m[2]!],
+  ),
+);
+if (!fontVersions.size) {
+  console.warn("Homepage fonts.css unavailable; font preloads unversioned.");
+}
 
 async function finishPage(html: string) {
   let lang = "";
@@ -60,6 +77,12 @@ async function finishPage(html: string) {
       "",
     )
     .replaceAll("__REV__", rev);
+  for (const [file, version] of fontVersions) {
+    html = html.replaceAll(
+      `href="${site.homepage}fonts/${file}"`,
+      `href="${site.homepage}fonts/${file}${version}"`,
+    );
+  }
   if (!fragment) return html;
   const body = await Bun.file(`${GENERATED}/${fragment}/_body.html`).text();
   return html.replace("<!--body-->", () => noteBody(body, fragment));

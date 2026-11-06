@@ -10,17 +10,15 @@ export const site: Site = {
   // data-latin value that styles.css and the homepage's fonts.css agree on.
   latin_fonts: [
     {
-      group: "Serif",
+      group: { en: "Sans", zh: "无衬线" },
+      fonts: [{ id: "lato", name: "Lato" }],
+    },
+    {
+      group: { en: "Serif", zh: "衬线" },
+      serif: true,
       fonts: [
         { id: "pagella", name: "Pagella" },
         { id: "garamond", name: "Garamond" },
-      ],
-    },
-    {
-      group: "Sans",
-      sans: true,
-      fonts: [
-        { id: "lato", name: "Lato" },
       ],
     },
   ],
