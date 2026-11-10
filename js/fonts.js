@@ -1,0 +1,1 @@
+var a=["pagella","garamond","lato"],o=["serif","sans","rounded","wenkai"];function s(n,t){if(a.includes(n))return n;return t==="serif"||t==="wenkai"?"pagella":"lato"}export{o as cjkFonts,s as diagramFont,a as latinFonts};
