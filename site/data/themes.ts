@@ -1,12 +1,13 @@
 import type { Theme } from "./types";
 
-// The two themes, light and dark: the homepage's, one palette in two keys.
-// Warm paper (or warm near-black), teal for what can be followed and
-// terracotta for marks, so a link and a mark never share a colour. Body text is
-// at least 13:1 against the paper and muted text at least 5:1. This file is
-// the single source: themes.css is generated from it and so is the picker in
-// the masthead. The homepage has the same two, so a choice made on one site
-// shows on the other.
+// The two themes, light and dark: the homepage's, one palette in two keys, the
+// same Kelvin family as my terminal and editor. A faintly cool near-white (or a
+// deep blue-black), blue for what can be followed and red for marks, so a link
+// and a mark never share a colour. The dark key is pastel and the light key
+// bold. Body text is at least 15:1 against the paper and muted text at least
+// 6:1. This file is the single source: themes.css is generated from it and so
+// is the picker in the masthead. The homepage has the same two, so a choice
+// made on one site shows on the other.
 //
 // Each theme gives the page's colour roles:
 //   paper  background             ink    marked points and cycles in the figure
@@ -24,24 +25,24 @@ export const themes: Theme[] = [
     id: "light",
     name: { en: "Light", zh: "浅色" },
     dark: false,
-    paper: "#f6f1e7",
-    text: "#2a2622",
-    muted: "#6b6257",
-    ink: "#b5462b",
-    link: "#18666f",
-    rule: "#cfc4b2",
-    stage: "#ece5d7",
+    paper: "#f9fbfe",
+    text: "#0e1826",
+    muted: "#535b67",
+    ink: "#d2132b",
+    link: "#0655e6",
+    rule: "#cbd0d8",
+    stage: "#eef1f6",
   },
   {
     id: "dark",
     name: { en: "Dark", zh: "深色" },
     dark: true,
-    paper: "#1a1714",
-    text: "#ede6da",
-    muted: "#b1a797",
-    ink: "#e8876a",
-    link: "#82b8c7",
-    rule: "#433b33",
-    stage: "#2b251f",
+    paper: "#0b121b",
+    text: "#e7ecf4",
+    muted: "#a9b3c0",
+    ink: "#ef7d83",
+    link: "#77a6ff",
+    rule: "#28313d",
+    stage: "#161d27",
   },
 ];
